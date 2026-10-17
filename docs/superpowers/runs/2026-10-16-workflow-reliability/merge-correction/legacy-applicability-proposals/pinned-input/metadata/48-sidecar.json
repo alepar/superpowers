@@ -1,0 +1,620 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-26-review.md",
+  "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+  "rawByteCount": 14808,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+    "durablePath": "task-report-history-r1/raw/task-26-review.md",
+    "sha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+    "byteCount": 14808,
+    "logicalRole": "review",
+    "ordinal": 26,
+    "logicalTaskId": "super-plan-ufz.29",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-26-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 26 independent review — super-plan-ufz.29",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 26 independent review — super-plan-ufz.29\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29"
+      ],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 161,
+      "bodyLineStart": 2,
+      "rawText": "# Task 26 independent review — super-plan-ufz.29\n\nStatus: CLEAN\nBase: 1d0ab308f09598c8c2826cfbca2af119a631d37a\nHead: 7db21aaec321ce133ad792f9ffc0e05879e4cf40\n\n",
+      "bodyRawText": "\nStatus: CLEAN\nBase: 1d0ab308f09598c8c2826cfbca2af119a631d37a\nHead: 7db21aaec321ce133ad792f9ffc0e05879e4cf40\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 52,
+          "byteEnd": 66
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a\n",
+          "text": "Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 66,
+          "byteEnd": 113
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40\n",
+          "text": "Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 113,
+          "byteEnd": 160
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 16,
+      "byteStart": 161,
+      "byteEnd": 1616,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n\n✅ Current `bd show super-plan-ufz.29 --json` and `bd comments super-plan-ufz.29` read: acceptance matches the brief; no comments or amendments. Frozen task 26 brief, implementation report, parent reliability spec, finding-continuity design, and relevant progress entries read. No conflicting requirement found.\n\n✅ The existing Recovery record carries immutable invocationId/base/head before output writers. Finish reuses the compact persisted source, and the authoritative producer guard rejects mismatched source, unbound partial bundles and existing output paths. The first assembly creates the binding; cluster/seam/single/stub guards reread it. No new agent, engine or finding lifecycle introduced.\n\n✅ The regression preserves finding-bearing cluster, assembly digest and direct package bytes on same-ID advance/resume and checks original source prompts, explicit mismatch refusal, new identity capture, absent launch persistence and unavailable/confirmed reviewPath behavior. It executes real source guards emitted by real builders while agent replies and remaining writer steps are simulated, as disclosed.\n\n✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n\n",
+      "bodyRawText": "\n✅ Current `bd show super-plan-ufz.29 --json` and `bd comments super-plan-ufz.29` read: acceptance matches the brief; no comments or amendments. Frozen task 26 brief, implementation report, parent reliability spec, finding-continuity design, and relevant progress entries read. No conflicting requirement found.\n\n✅ The existing Recovery record carries immutable invocationId/base/head before output writers. Finish reuses the compact persisted source, and the authoritative producer guard rejects mismatched source, unbound partial bundles and existing output paths. The first assembly creates the binding; cluster/seam/single/stub guards reread it. No new agent, engine or finding lifecycle introduced.\n\n✅ The regression preserves finding-bearing cluster, assembly digest and direct package bytes on same-ID advance/resume and checks original source prompts, explicit mismatch refusal, new identity capture, absent launch persistence and unavailable/confirmed reviewPath behavior. It executes real source guards emitted by real builders while agent replies and remaining writer steps are simulated, as disclosed.\n\n✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current `bd show super-plan-ufz.29 --json` and `bd comments super-plan-ufz.29` read: acceptance matches the brief; no comments or amendments. Frozen task 26 brief, implementation report, parent reliability spec, finding-continuity design, and relevant progress entries read. No conflicting requirement found.\n",
+          "text": "✅ Current `bd show super-plan-ufz.29 --json` and `bd comments super-plan-ufz.29` read: acceptance matches the brief; no comments or amendments. Frozen task 26 brief, implementation report, parent reliability spec, finding-continuity design, and relevant progress entries read. No conflicting requirement found.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 181,
+          "byteEnd": 494
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The existing Recovery record carries immutable invocationId/base/head before output writers. Finish reuses the compact persisted source, and the authoritative producer guard rejects mismatched source, unbound partial bundles and existing output paths. The first assembly creates the binding; cluster/seam/single/stub guards reread it. No new agent, engine or finding lifecycle introduced.\n",
+          "text": "✅ The existing Recovery record carries immutable invocationId/base/head before output writers. Finish reuses the compact persisted source, and the authoritative producer guard rejects mismatched source, unbound partial bundles and existing output paths. The first assembly creates the binding; cluster/seam/single/stub guards reread it. No new agent, engine or finding lifecycle introduced.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 495,
+          "byteEnd": 888
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The regression preserves finding-bearing cluster, assembly digest and direct package bytes on same-ID advance/resume and checks original source prompts, explicit mismatch refusal, new identity capture, absent launch persistence and unavailable/confirmed reviewPath behavior. It executes real source guards emitted by real builders while agent replies and remaining writer steps are simulated, as disclosed.\n",
+          "text": "✅ The regression preserves finding-bearing cluster, assembly digest and direct package bytes on same-ID advance/resume and checks original source prompts, explicit mismatch refusal, new identity capture, absent launch persistence and unavailable/confirmed reviewPath behavior. It executes real source guards emitted by real builders while agent replies and remaining writer steps are simulated, as disclosed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 889,
+          "byteEnd": 1300
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n",
+          "text": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1301,
+          "byteEnd": 1615
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "lineStart": 17,
+      "lineEnd": 22,
+      "byteStart": 1616,
+      "byteEnd": 1674,
+      "bodyLineStart": 18,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1627,
+          "byteEnd": 1643
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1643,
+          "byteEnd": 1660
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1660,
+          "byteEnd": 1673
+        }
+      ]
+    },
+    {
+      "section": "Reachability and focused source checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Reachability and focused source checks\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Reachability and focused source checks"
+      ],
+      "lineStart": 23,
+      "lineEnd": 32,
+      "byteStart": 1674,
+      "byteEnd": 3173,
+      "bodyLineStart": 24,
+      "rawText": "## Reachability and focused source checks\n\nRisk: persisted binding might be omitted by compact ledger reads. Checked captured `ledger-digest`: Recovery records are retained verbatim under its existing size cap; the new small record fits, and the coordinator reads Resume/Finish facts before selecting final source. The helper rereads the full ledger before writer authorization.\n\nRisk: one writer or ordinary caller might still omit source or overwrite partial outputs. Traced Finish -> assemblePrompt -> reviewWriteGuard -> dispatch-text bind-review-source; checked single, cluster, seam and stub sibling builders, and ordinary dispatch-text final-review/assemble calls. All use the shared guard and source pair. Assembler source refusal stops direct fallback; ordinary assembler failure retains fallback. Refused seam/cluster writes preserve files with unconfirmed paths remaining null as applicable.\n\nRisk: malformed/conflicting source facts might silently select the newest head. Checked coordinator's recoveryProblem/source loop and helper's Launch/Recovery comparison: valid matching facts retain the old pair, conflict refuses output. Launch-only binding can cause Workflow refusal rather than recapture; refusal is allowed by acceptance.\n\nThe adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n\n",
+      "bodyRawText": "\nRisk: persisted binding might be omitted by compact ledger reads. Checked captured `ledger-digest`: Recovery records are retained verbatim under its existing size cap; the new small record fits, and the coordinator reads Resume/Finish facts before selecting final source. The helper rereads the full ledger before writer authorization.\n\nRisk: one writer or ordinary caller might still omit source or overwrite partial outputs. Traced Finish -> assemblePrompt -> reviewWriteGuard -> dispatch-text bind-review-source; checked single, cluster, seam and stub sibling builders, and ordinary dispatch-text final-review/assemble calls. All use the shared guard and source pair. Assembler source refusal stops direct fallback; ordinary assembler failure retains fallback. Refused seam/cluster writes preserve files with unconfirmed paths remaining null as applicable.\n\nRisk: malformed/conflicting source facts might silently select the newest head. Checked coordinator's recoveryProblem/source loop and helper's Launch/Recovery comparison: valid matching facts retain the old pair, conflict refuses output. Launch-only binding can cause Workflow refusal rather than recapture; refusal is allowed by acceptance.\n\nThe adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: persisted binding might be omitted by compact ledger reads. Checked captured `ledger-digest`: Recovery records are retained verbatim under its existing size cap; the new small record fits, and the coordinator reads Resume/Finish facts before selecting final source. The helper rereads the full ledger before writer authorization.\n",
+          "text": "Risk: persisted binding might be omitted by compact ledger reads. Checked captured `ledger-digest`: Recovery records are retained verbatim under its existing size cap; the new small record fits, and the coordinator reads Resume/Finish facts before selecting final source. The helper rereads the full ledger before writer authorization.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 1717,
+          "byteEnd": 2053
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: one writer or ordinary caller might still omit source or overwrite partial outputs. Traced Finish -> assemblePrompt -> reviewWriteGuard -> dispatch-text bind-review-source; checked single, cluster, seam and stub sibling builders, and ordinary dispatch-text final-review/assemble calls. All use the shared guard and source pair. Assembler source refusal stops direct fallback; ordinary assembler failure retains fallback. Refused seam/cluster writes preserve files with unconfirmed paths remaining null as applicable.\n",
+          "text": "Risk: one writer or ordinary caller might still omit source or overwrite partial outputs. Traced Finish -> assemblePrompt -> reviewWriteGuard -> dispatch-text bind-review-source; checked single, cluster, seam and stub sibling builders, and ordinary dispatch-text final-review/assemble calls. All use the shared guard and source pair. Assembler source refusal stops direct fallback; ordinary assembler failure retains fallback. Refused seam/cluster writes preserve files with unconfirmed paths remaining null as applicable.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2054,
+          "byteEnd": 2577
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: malformed/conflicting source facts might silently select the newest head. Checked coordinator's recoveryProblem/source loop and helper's Launch/Recovery comparison: valid matching facts retain the old pair, conflict refuses output. Launch-only binding can cause Workflow refusal rather than recapture; refusal is allowed by acceptance.\n",
+          "text": "Risk: malformed/conflicting source facts might silently select the newest head. Checked coordinator's recoveryProblem/source loop and helper's Launch/Recovery comparison: valid matching facts retain the old pair, conflict refuses output. Launch-only binding can cause Workflow refusal rather than recapture; refusal is allowed by acceptance.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2578,
+          "byteEnd": 2920
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n",
+          "text": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2921,
+          "byteEnd": 3172
+        }
+      ]
+    },
+    {
+      "section": "Review commands and identity isolation",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Review commands and identity isolation\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Review commands and identity isolation"
+      ],
+      "lineStart": 33,
+      "lineEnd": 40,
+      "byteStart": 3173,
+      "byteEnd": 4204,
+      "bodyLineStart": 34,
+      "rawText": "## Review commands and identity isolation\n\nAll source reads used captured `git show 7db21aae:<path>` and `git diff 1d0ab308..7db21aae`, never mutable checkout source. No product tests, reproductions, source writes, tracker mutations, Herdr actions, checkout changes or detached worktree were performed. Report/brief/current requirements/progress are task control records, not substituted product source.\n\n`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40` passed. Each captured commit resolved with its own `git rev-parse --verify <sha>^{commit}`. An initial combined two-operand --verify command returned 'Needed a single revision'; corrected independent checks both passed.\n\n`bash <SDD_SCRIPTS>/review-package <PLAN_FILE> 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40 <DIFF_FILE>` passed: one commit, 254512-byte package; named initial diff generated and inspected along with focused Git diffs. Package contains 11 changed files.\n\n",
+      "bodyRawText": "\nAll source reads used captured `git show 7db21aae:<path>` and `git diff 1d0ab308..7db21aae`, never mutable checkout source. No product tests, reproductions, source writes, tracker mutations, Herdr actions, checkout changes or detached worktree were performed. Report/brief/current requirements/progress are task control records, not substituted product source.\n\n`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40` passed. Each captured commit resolved with its own `git rev-parse --verify <sha>^{commit}`. An initial combined two-operand --verify command returned 'Needed a single revision'; corrected independent checks both passed.\n\n`bash <SDD_SCRIPTS>/review-package <PLAN_FILE> 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40 <DIFF_FILE>` passed: one commit, 254512-byte package; named initial diff generated and inspected along with focused Git diffs. Package contains 11 changed files.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All source reads used captured `git show 7db21aae:<path>` and `git diff 1d0ab308..7db21aae`, never mutable checkout source. No product tests, reproductions, source writes, tracker mutations, Herdr actions, checkout changes or detached worktree were performed. Report/brief/current requirements/progress are task control records, not substituted product source.\n",
+          "text": "All source reads used captured `git show 7db21aae:<path>` and `git diff 1d0ab308..7db21aae`, never mutable checkout source. No product tests, reproductions, source writes, tracker mutations, Herdr actions, checkout changes or detached worktree were performed. Report/brief/current requirements/progress are task control records, not substituted product source.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 3216,
+          "byteEnd": 3577
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40` passed. Each captured commit resolved with its own `git rev-parse --verify <sha>^{commit}`. An initial combined two-operand --verify command returned 'Needed a single revision'; corrected independent checks both passed.\n",
+          "text": "`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40` passed. Each captured commit resolved with its own `git rev-parse --verify <sha>^{commit}`. An initial combined two-operand --verify command returned 'Needed a single revision'; corrected independent checks both passed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3578,
+          "byteEnd": 3911
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`bash <SDD_SCRIPTS>/review-package <PLAN_FILE> 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40 <DIFF_FILE>` passed: one commit, 254512-byte package; named initial diff generated and inspected along with focused Git diffs. Package contains 11 changed files.\n",
+          "text": "`bash <SDD_SCRIPTS>/review-package <PLAN_FILE> 1d0ab308f09598c8c2826cfbca2af119a631d37a 7db21aaec321ce133ad792f9ffc0e05879e4cf40 <DIFF_FILE>` passed: one commit, 254512-byte package; named initial diff generated and inspected along with focused Git diffs. Package contains 11 changed files.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 3912,
+          "byteEnd": 4203
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Test evidence"
+      ],
+      "lineStart": 41,
+      "lineEnd": 48,
+      "byteStart": 4204,
+      "byteEnd": 5619,
+      "bodyLineStart": 42,
+      "rawText": "## Test evidence\n\nRetained evidence inspected with captured Git reads. Focused command `node tests/super-code/invocation-source-binding-r1.mjs`: 11 scenarios passed. Unchanged `node tests/super-code/replay-harness.mjs`: 2277 passed, 0 failed. Unchanged `bash tests/super-code/test-dispatch-text.sh`: all tests passed. RED log records the intended missing-durable-source assertion failure. It does not establish later assertions ran before the fix.\n\nThe final measurement tree b92dfaf4bbf2e897fe1b190a435e0a872564916e resolves. `git diff --stat b92dfaf4bbf2e897fe1b190a435e0a872564916e 7db21aae^{tree}` shows only six retained evidence additions: reviewed source, instructions and regression match the tested snapshot. The local command executions are live; canned agent replies are not fresh live-agent evaluations. Evidence is plausible for mechanical acceptance with exactly that limitation.\n\nTest changes inspected using both `git diff --stat 1d0ab308..7db21aae -- <TEST_PATHSPECS>` and `git diff 1d0ab308..7db21aae -- <TEST_PATHSPECS>`, where TEST_PATHSPECS were the full dispatch list ('tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**', '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*', '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*'). Both succeeded; one new 172-line regression, no existing tests weakened/deleted/skipped. No tests were rerun.\n\n",
+      "bodyRawText": "\nRetained evidence inspected with captured Git reads. Focused command `node tests/super-code/invocation-source-binding-r1.mjs`: 11 scenarios passed. Unchanged `node tests/super-code/replay-harness.mjs`: 2277 passed, 0 failed. Unchanged `bash tests/super-code/test-dispatch-text.sh`: all tests passed. RED log records the intended missing-durable-source assertion failure. It does not establish later assertions ran before the fix.\n\nThe final measurement tree b92dfaf4bbf2e897fe1b190a435e0a872564916e resolves. `git diff --stat b92dfaf4bbf2e897fe1b190a435e0a872564916e 7db21aae^{tree}` shows only six retained evidence additions: reviewed source, instructions and regression match the tested snapshot. The local command executions are live; canned agent replies are not fresh live-agent evaluations. Evidence is plausible for mechanical acceptance with exactly that limitation.\n\nTest changes inspected using both `git diff --stat 1d0ab308..7db21aae -- <TEST_PATHSPECS>` and `git diff 1d0ab308..7db21aae -- <TEST_PATHSPECS>`, where TEST_PATHSPECS were the full dispatch list ('tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**', '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*', '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*'). Both succeeded; one new 172-line regression, no existing tests weakened/deleted/skipped. No tests were rerun.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Retained evidence inspected with captured Git reads. Focused command `node tests/super-code/invocation-source-binding-r1.mjs`: 11 scenarios passed. Unchanged `node tests/super-code/replay-harness.mjs`: 2277 passed, 0 failed. Unchanged `bash tests/super-code/test-dispatch-text.sh`: all tests passed. RED log records the intended missing-durable-source assertion failure. It does not establish later assertions ran before the fix.\n",
+          "text": "Retained evidence inspected with captured Git reads. Focused command `node tests/super-code/invocation-source-binding-r1.mjs`: 11 scenarios passed. Unchanged `node tests/super-code/replay-harness.mjs`: 2277 passed, 0 failed. Unchanged `bash tests/super-code/test-dispatch-text.sh`: all tests passed. RED log records the intended missing-durable-source assertion failure. It does not establish later assertions ran before the fix.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 43,
+          "lineEnd": 43,
+          "byteStart": 4222,
+          "byteEnd": 4652
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The final measurement tree b92dfaf4bbf2e897fe1b190a435e0a872564916e resolves. `git diff --stat b92dfaf4bbf2e897fe1b190a435e0a872564916e 7db21aae^{tree}` shows only six retained evidence additions: reviewed source, instructions and regression match the tested snapshot. The local command executions are live; canned agent replies are not fresh live-agent evaluations. Evidence is plausible for mechanical acceptance with exactly that limitation.\n",
+          "text": "The final measurement tree b92dfaf4bbf2e897fe1b190a435e0a872564916e resolves. `git diff --stat b92dfaf4bbf2e897fe1b190a435e0a872564916e 7db21aae^{tree}` shows only six retained evidence additions: reviewed source, instructions and regression match the tested snapshot. The local command executions are live; canned agent replies are not fresh live-agent evaluations. Evidence is plausible for mechanical acceptance with exactly that limitation.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 45,
+          "lineEnd": 45,
+          "byteStart": 4653,
+          "byteEnd": 5098
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes inspected using both `git diff --stat 1d0ab308..7db21aae -- <TEST_PATHSPECS>` and `git diff 1d0ab308..7db21aae -- <TEST_PATHSPECS>`, where TEST_PATHSPECS were the full dispatch list ('tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**', '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*', '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*'). Both succeeded; one new 172-line regression, no existing tests weakened/deleted/skipped. No tests were rerun.\n",
+          "text": "Test changes inspected using both `git diff --stat 1d0ab308..7db21aae -- <TEST_PATHSPECS>` and `git diff 1d0ab308..7db21aae -- <TEST_PATHSPECS>`, where TEST_PATHSPECS were the full dispatch list ('tests/**', 'test/**', 'spec/**', '**/tests/**', '**/test/**', '**/spec/**', '*_test.*', '*.test.*', 'test_*.*', '*_spec.*', '*.spec.*', '**/*_test.*', '**/*.test.*', '**/test_*.*', '**/*_spec.*', '**/*.spec.*'). Both succeeded; one new 172-line regression, no existing tests weakened/deleted/skipped. No tests were rerun.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 47,
+          "lineEnd": 47,
+          "byteStart": 5099,
+          "byteEnd": 5618
+        }
+      ]
+    },
+    {
+      "section": "Check records",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Check records\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Check records"
+      ],
+      "lineStart": 49,
+      "lineEnd": 115,
+      "byteStart": 5619,
+      "byteEnd": 10670,
+      "bodyLineStart": 50,
+      "rawText": "## Check records\n\nThe following original records are preserved without relabeling. Both required local checks have matching live/pass records. Their scope is deterministic mechanics, not instruction behavior. Capture commands and environment prefix are retained verbatim below.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"captureCommands\": [\n    \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\",\n    \"mkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\"\n  ],\n  \"executionPrefix\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\",\n  \"scope\": \"Live local test-command execution. Workflow replies are simulated; no fresh live-agent behavior evaluation is claimed.\"\n}\n```\n\n",
+      "bodyRawText": "\nThe following original records are preserved without relabeling. Both required local checks have matching live/pass records. Their scope is deterministic mechanics, not instruction behavior. Capture commands and environment prefix are retained verbatim below.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"captureCommands\": [\n    \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\",\n    \"mkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\"\n  ],\n  \"executionPrefix\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\",\n  \"scope\": \"Live local test-command execution. Workflow replies are simulated; no fresh live-agent behavior evaluation is claimed.\"\n}\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The following original records are preserved without relabeling. Both required local checks have matching live/pass records. Their scope is deterministic mechanics, not instruction behavior. Capture commands and environment prefix are retained verbatim below.\n",
+          "text": "The following original records are preserved without relabeling. Both required local checks have matching live/pass records. Their scope is deterministic mechanics, not instruction behavior. Capture commands and environment prefix are retained verbatim below.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 51,
+          "lineEnd": 51,
+          "byteStart": 5637,
+          "byteEnd": 5897
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"captureCommands\": [\n    \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\",\n    \"mkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\"\n  ],\n  \"executionPrefix\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\",\n  \"scope\": \"Live local test-command execution. Workflow replies are simulated; no fresh live-agent behavior evaluation is claimed.\"\n}\n```\n",
+          "text": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"captureCommands\": [\n    \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\",\n    \"mkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\",\n    \"GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\"\n  ],\n  \"executionPrefix\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\",\n  \"scope\": \"Live local test-command execution. Workflow replies are simulated; no fresh live-agent behavior evaluation is claimed.\"\n}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 53,
+          "lineEnd": 114,
+          "byteStart": 5898,
+          "byteEnd": 10669
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Failure attribution"
+      ],
+      "lineStart": 116,
+      "lineEnd": 119,
+      "byteStart": 10670,
+      "byteEnd": 11061,
+      "bodyLineStart": 117,
+      "rawText": "## Failure attribution\n\n`failureAttribution: []`. Relevant progress entries record usage-limit recovery and pending caller evaluation, but no recorded run-failure ownership association requiring adjudication. The retained RED demonstrates this defect; it is not a measured run-start baseline or a full task-base exoneration record. No unsupported association or run-owner release inferred.\n\n",
+      "bodyRawText": "\n`failureAttribution: []`. Relevant progress entries record usage-limit recovery and pending caller evaluation, but no recorded run-failure ownership association requiring adjudication. The retained RED demonstrates this defect; it is not a measured run-start baseline or a full task-base exoneration record. No unsupported association or run-owner release inferred.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "`failureAttribution: []`. Relevant progress entries record usage-limit recovery and pending caller evaluation, but no recorded run-failure ownership association requiring adjudication. The retained RED demonstrates this defect; it is not a measured run-start baseline or a full task-base exoneration record. No unsupported association or run-owner release inferred.\n",
+          "text": "`failureAttribution: []`. Relevant progress entries record usage-limit recovery and pending caller evaluation, but no recorded run-failure ownership association requiring adjudication. The retained RED demonstrates this defect; it is not a measured run-start baseline or a full task-base exoneration record. No unsupported association or run-owner release inferred.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 118,
+          "lineEnd": 118,
+          "byteStart": 10694,
+          "byteEnd": 11060
+        }
+      ]
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Structured result\n",
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Structured result"
+      ],
+      "lineStart": 120,
+      "lineEnd": 180,
+      "byteStart": 11061,
+      "byteEnd": 14808,
+      "bodyLineStart": 121,
+      "rawText": "## Structured result\n\n```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "bodyRawText": "\n```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 122,
+          "lineEnd": 180,
+          "byteStart": 11083,
+          "byteEnd": 14808
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Spec compliance"
+      ],
+      "positionInSection": 4,
+      "key": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+      "text": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+      "rawText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1301,
+      "byteEnd": 1615,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1627,
+      "byteEnd": 1643,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1643,
+      "byteEnd": 1660,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1660,
+      "byteEnd": 1673,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "lineStart": 122,
+      "lineEnd": 180,
+      "byteStart": 11083,
+      "byteEnd": 14808,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "lineStart": 122,
+      "lineEnd": 180,
+      "byteStart": 11083,
+      "byteEnd": 14808,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

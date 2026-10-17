@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "ordinal": 4,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+  "originalArtifact": "task-report-history-r1/raw/task-10-review-seam.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-10-review-seam.md",
+  "rawSha256": "0207f7ebb7bd0c49f2aba519a6837addbf5598f359f7683a43bd2e216c816257",
+  "rawByteCount": 3892,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 23,
+    "byteStart": 0,
+    "byteEnd": 3892,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/3",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/04-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/3/interpretedPassages/0",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        37,
+        51
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Finding:none is an explicit declaration for this seam-only review."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/3/interpretedPassages/1",
+      "roles": [
+        "review-scope"
+      ],
+      "span": [
+        52,
+        365
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Prior fix evidence read; task logic was not rereviewed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/3/interpretedPassages/2",
+      "roles": [
+        "claimed-prior-repair",
+        "review-context"
+      ],
+      "span": [
+        2025,
+        2614
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Prior fix and sibling fixtures described; no new finding asserted."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/3/interpretedPassages/3",
+      "roles": [
+        "review-scope"
+      ],
+      "span": [
+        3547,
+        3892
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Static compatibility only; no test execution or new live measurement."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-04-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Finding:none is an explicit declaration for this seam-only review.",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 37,
+      "byteEnd": 51,
+      "rawText": "Finding: none\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3892,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 38
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-04-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "roles": [
+        "review-scope"
+      ],
+      "interpretation": "Prior fix evidence read; task logic was not rereviewed.",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 52,
+      "byteEnd": 365,
+      "rawText": "Seam-only review of 86c0cdb0195c60838fedfdbc53776bf10277ae5f onto caf187cef8d1769da6184de42332a31bc7e30dcb, with sibling baseline 15084177065dbaaa4eff1992cfb2fbfb56cee5f8. HEAD resolved to the requested implementation head. Read task-10-report-fix.md as prior-fix evidence; no task-logic re-review was performed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3892,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 53
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-04-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "roles": [
+        "claimed-prior-repair",
+        "review-context"
+      ],
+      "interpretation": "Prior fix and sibling fixtures described; no new finding asserted.",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 2025,
+      "byteEnd": 2614,
+      "rawText": "- The previous fix retains same-source contradiction gaps across complete run-failure history. It changes no alias or recurrence transport contract. The sibling alias, exact-detail, blocker and Unicode retry fixtures remain present with their assertions unchanged by this task; the additive attribution scenario exercises the same run/ledger helpers without redefining them. The sibling scanner baseline remains 464; the task adds no template literals, using concatenation for its new generated text. No shared fixture/signature/schema incompatibility or vacuous assertion was identified.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3892,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 2026
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-04-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "roles": [
+        "review-scope"
+      ],
+      "interpretation": "Static compatibility only; no test execution or new live measurement.",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 3547,
+      "byteEnd": 3892,
+      "rawText": "`git diff --check caf187cef8d1769da6184de42332a31bc7e30dcb 86c0cdb0195c60838fedfdbc53776bf10277ae5f` exited 0. This is static post-rebase compatibility evidence; no tests ran and no new live measurement is claimed. No source/tests, commits, branch state, tracker state or Herdr state were changed. Only authorized review artifacts were written.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3892,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 3548
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Scoped empty finding supported. All other narrative is seam evidence/context, not fifteen distinct findings.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "New findings within five-file seam compatibility review only.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterScopedEmptyBasis": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/3",
+      "passageIndex": 0,
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 37,
+      "byteEnd": 51,
+      "rawText": "Finding: none\n",
+      "roles": [
+        "explicit-empty"
+      ]
+    }
+  ],
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [],
+  "retainedArtifact": "legacy-report-adapters-r1/04-task-10-review-seam.md",
+  "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6"
+}

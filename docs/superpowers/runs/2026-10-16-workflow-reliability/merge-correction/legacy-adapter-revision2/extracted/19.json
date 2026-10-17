@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+  "artifact": "legacy-report-adapters-r1/19-task-14-review.md",
+  "kind": "task-report",
+  "verdict": "NEEDS_FIX",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000708",
+      "position": 1,
+      "key": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).",
+      "text": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator)."
+    },
+    {
+      "section": "Findings — adapter/review-finding/raw-section-5/raw-byte-000001114",
+      "position": 1,
+      "key": "skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.",
+      "text": "skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename."
+    },
+    {
+      "section": "Findings — adapter/review-finding/raw-section-6/raw-byte-000002012",
+      "position": 1,
+      "key": "[pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.",
+      "text": "[pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section."
+    }
+  ]
+}

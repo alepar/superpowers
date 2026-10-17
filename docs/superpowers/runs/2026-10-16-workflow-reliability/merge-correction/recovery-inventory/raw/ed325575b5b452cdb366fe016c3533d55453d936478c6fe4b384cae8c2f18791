@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "capturedSourceHead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "reportingScope": "mechanical Finish reconciliation only; final review, profile and acceptance remain caller-owned",
+  "verdict": "reconciled; caller acceptance remains open",
+  "invocation": {
+    "mappedCount": 11,
+    "mappedIds": [
+      "super-plan-ufz.22",
+      "super-plan-ufz.23",
+      "super-plan-ufz.24",
+      "super-plan-ufz.25",
+      "super-plan-ufz.26",
+      "super-plan-ufz.27",
+      "super-plan-ufz.28",
+      "super-plan-ufz.29",
+      "super-plan-ufz.30",
+      "super-plan-ufz.31",
+      "super-plan-ufz.32"
+    ],
+    "trackerClosedIds": [
+      "super-plan-ufz.22",
+      "super-plan-ufz.23",
+      "super-plan-ufz.24",
+      "super-plan-ufz.25",
+      "super-plan-ufz.26",
+      "super-plan-ufz.27",
+      "super-plan-ufz.28",
+      "super-plan-ufz.29",
+      "super-plan-ufz.30",
+      "super-plan-ufz.31",
+      "super-plan-ufz.32"
+    ],
+    "landedIds": [
+      "super-plan-ufz.22",
+      "super-plan-ufz.23",
+      "super-plan-ufz.24",
+      "super-plan-ufz.25",
+      "super-plan-ufz.26",
+      "super-plan-ufz.27",
+      "super-plan-ufz.28",
+      "super-plan-ufz.29",
+      "super-plan-ufz.30",
+      "super-plan-ufz.31",
+      "super-plan-ufz.32"
+    ],
+    "closureUnconfirmed": [],
+    "gitEvidence": [
+      {
+        "id": "super-plan-ufz.22",
+        "base": "7c3fec35b9e8039576677ff8a5b91ee5135c76e8",
+        "source": "d604b8a7cf305bddd29ff1ddd0c42c01a108c2bb",
+        "merge": "5bbc02c6b754ed94b6fa50f5c1225d75664c2a99"
+      },
+      {
+        "id": "super-plan-ufz.23",
+        "base": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed",
+        "source": "58dc965377c6a79c6f950c709c2d69c31ffa0a1d",
+        "merge": "5bfbb92331652df67d9af367f0f81baa8267f020"
+      },
+      {
+        "id": "super-plan-ufz.24",
+        "base": "18b0b6d5fdfa772f3aa74d53706d6a4615b4ae86",
+        "source": "22634c4c57e190dea56db60710b6de4f9327bfad",
+        "merge": "18b0b6d5fdfa772f3aa74d53706d6a4615b4ae86"
+      },
+      {
+        "id": "super-plan-ufz.25",
+        "base": "18b0b6d5fdfa772f3aa74d53706d6a4615b4ae86",
+        "source": "1350e0534f4cc1b49b03f020bf1fad82318f4440",
+        "merge": "7c3fec35b9e8039576677ff8a5b91ee5135c76e8"
+      },
+      {
+        "id": "super-plan-ufz.26",
+        "base": "5bfbb92331652df67d9af367f0f81baa8267f020",
+        "source": "e4c809c9eb83719cef6c5714b1d49d6e0cd900b9",
+        "merge": "bda03eb1927f85e663fa99e7d470811f6cad811f"
+      },
+      {
+        "id": "super-plan-ufz.27",
+        "base": "5bbc02c6b754ed94b6fa50f5c1225d75664c2a99",
+        "source": "b03e84a6cedae8498866d89a4dd4a59829a62fe1",
+        "merge": "c3fac4369c7c737e2e7f9f7250fd253b21442d12"
+      },
+      {
+        "id": "super-plan-ufz.28",
+        "base": "c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+        "source": "357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e",
+        "merge": "e3749b014f6939cb82f5e79a33dc020f5b3961f0"
+      },
+      {
+        "id": "super-plan-ufz.29",
+        "base": "1d0ab308f09598c8c2826cfbca2af119a631d37a",
+        "source": "7db21aaec321ce133ad792f9ffc0e05879e4cf40",
+        "merge": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed"
+      },
+      {
+        "id": "super-plan-ufz.30",
+        "base": "bda03eb1927f85e663fa99e7d470811f6cad811f",
+        "source": "c5342b12567d9b59307efaf1df897f35e6297653",
+        "merge": "69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551"
+      },
+      {
+        "id": "super-plan-ufz.31",
+        "base": "69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551",
+        "source": "7d5abfe28d01de5153d5905e48f057869ceb2a5e",
+        "merge": "ee275436bc69c3dd77cf1753399e0f93b44f2cff"
+      },
+      {
+        "id": "super-plan-ufz.32",
+        "base": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed",
+        "source": "cd01f8e6e94c76db1104ba8911d6c4f085f444ad",
+        "merge": "586a40783832e054d54b9e9b19068ef2260a8549"
+      }
+    ],
+    "mergeFailureInterpretation": "11 successful task landings and 1 auth-refused merge attempt on super-plan-ufz.24 (exit 128, ORIG_HEAD.lock denied, no MERGE_HEAD), followed by its successful retry; per pinned Finish, the auth-refused attempt counts in Mf. The .27 tracker-close authorization rejection occurred after a successful merge and is a separate closure event.",
+    "canonicalMetrics": [
+      "Metrics: merges 11 \u00b7 merge-failed 1 \u00b7 rebase-conflicts 0 \u00b7 seam-reviews 0 (fixed 0) \u00b7 check-fails 0 (fixed 0) [invocation: 11 mapped tasks; Mf includes one .24 auth-refused attempt]",
+      "Metrics: completions \u2014 review clean 9 \u00b7 after fix pass 2 \u00b7 parked 0 \u00b7 re-entry closes 0 \u00b7 dispatched early unknown \u00b7 cancelled 0 [invocation: 11 mapped tasks]",
+      "Metrics: fix-pass \u2014 entered 2 \u00b7 FIXED 2 \u00b7 BLOCKED 0 (progress events); durable attempts unknown \u00b7 historical FIXED unknown; Recovery records unknown; repaired findings unavailable [invocation: 11 mapped tasks]",
+      "Metrics: ledger-check ok \u00b7 append-failed unknown \u00b7 append-retried unknown \u00b7 scope: invocation mapping + progress + integration first-parent merge commits; landed 11 \u00b7 completed 11 \u00b7 Git-verified 11 \u00b7 gaps: no coordinator Finish append record; readiness timing / early-dispatch source not available in this reconciliation"
+    ]
+  },
+  "entireObservedHistory": {
+    "mappedCount": 29,
+    "completedCount": 29,
+    "ids": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.2",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.20",
+      "super-plan-ufz.22",
+      "super-plan-ufz.23",
+      "super-plan-ufz.24",
+      "super-plan-ufz.25",
+      "super-plan-ufz.26",
+      "super-plan-ufz.27",
+      "super-plan-ufz.28",
+      "super-plan-ufz.29",
+      "super-plan-ufz.30",
+      "super-plan-ufz.31",
+      "super-plan-ufz.32"
+    ],
+    "prior18Source": "finish-state.json ledger/Git/tracker sets; not recounted as invocation metrics",
+    "invocation11Source": "mapping-all.json, progress.md, current bd show status, and actual integration first-parent merge parents"
+  },
+  "cleanup": {
+    "helper": "skills/super-code/scripts/remove-task-worktree",
+    "task23": {
+      "exitCode": 0,
+      "lines": [
+        "removed: task worktree .worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23",
+        "deleted: task-super-plan-ufz.23",
+        "removed: /tmp/sp-bce79baa/super-plan-ufz.23"
+      ]
+    },
+    "task32": {
+      "exitCode": 0,
+      "lines": [
+        "removed: task worktree .worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32",
+        "deleted: task-super-plan-ufz.32",
+        "removed: /tmp/sp-bce79baa/super-plan-ufz.32"
+      ]
+    },
+    "otherResources": "No remaining task worktrees under this integration .worktrees root. No run-root sweep was performed because caller-owned review agents may read the integration/raw evidence tree.",
+    "worktreesKeptCount": 0,
+    "processInspectionUnknown": 0,
+    "processCleanupScope": "helper verified only task 23 and task 32 worktree/temp roots; no broad integration or global process stop"
+  },
+  "rootAcceptance": "caller-owned; root super-plan-ufz remains open",
+  "nestedEpicClosure": "not run; no invocation-owned nested epic was identified as needing closure",
+  "historicalReviewAndProfile": "not performed by this mechanical task"
+}

@@ -1,0 +1,403 @@
+{
+  "version": 1,
+  "ordinal": 50,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+  "originalArtifact": "task-report-history-r1/raw/task-27-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-27-review.md",
+  "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+  "rawByteCount": 8933,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      8933
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/22",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/50-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/22/semanticPassages/0",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1733,
+        1750
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/22/semanticPassages/1",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1762,
+        1778
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/22/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1778,
+        1795
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/22/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1795,
+        1808
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/22/semanticPassages/4",
+      "roles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation",
+        "separate-human-gate-preserved"
+      ],
+      "span": [
+        8316,
+        8933
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "No ⚠️ items.\n",
+      "text": "No ⚠️ items.",
+      "listMarker": null,
+      "positionInSection": 6,
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1733,
+      "byteEnd": 1750,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 27 / super-plan-ufz.30 independent review",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 6,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 6,
+        "byteStart": 1733,
+        "byteEnd": 1750,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Critical: none.\n",
+      "text": "Critical: none.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1762,
+      "byteEnd": 1778,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 27 / super-plan-ufz.30 independent review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 1,
+        "rawSection": "Issues",
+        "rawPositionInSection": 1,
+        "byteStart": 1762,
+        "byteEnd": 1778,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Important: none.\n",
+      "text": "Important: none.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1778,
+      "byteEnd": 1795,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 27 / super-plan-ufz.30 independent review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 2,
+        "rawSection": "Issues",
+        "rawPositionInSection": 2,
+        "byteStart": 1778,
+        "byteEnd": 1795,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Minor: none.\n",
+      "text": "Minor: none.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 1795,
+      "byteEnd": 1808,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 27 / super-plan-ufz.30 independent review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 3,
+        "rawSection": "Issues",
+        "rawPositionInSection": 3,
+        "byteStart": 1795,
+        "byteEnd": 1808,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "failureAttribution is empty: no task-local failing product check or claimed source fix is involved. The original causal/lower-bound finding is resolved by qualification while retaining contradictory observations. No run-baseline exoneration or ownership transfer is inferred. Existing rejected measurement-classification and frozen-Git fallback findings remain outside this task. Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.\n",
+      "text": "failureAttribution is empty: no task-local failing product check or claimed source fix is involved. The original causal/lower-bound finding is resolved by qualification while retaining contradictory observations. No run-baseline exoneration or ownership transfer is inferred. Existing rejected measurement-classification and frozen-Git fallback findings remain outside this task. Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 81,
+      "lineEnd": 81,
+      "byteStart": 8316,
+      "byteEnd": 8933,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawSection": "Failure attribution and acceptance boundary",
+      "rawSectionOrdinal": 7,
+      "originalHierarchy": [
+        "Task 27 / super-plan-ufz.30 independent review",
+        "Failure attribution and acceptance boundary"
+      ],
+      "semanticRoles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation",
+        "separate-human-gate-preserved"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "section": "Failure attribution and acceptance boundary",
+        "sectionOrdinal": 7,
+        "positionInSection": 1,
+        "rawSection": "Failure attribution and acceptance boundary",
+        "rawPositionInSection": 1,
+        "byteStart": 8316,
+        "byteEnd": 8933,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 8696,
+      "byteEnd": 8933,
+      "roles": [
+        "deferred-coverage-obligation",
+        "separate-human-gate-preserved"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/22/semanticPassages/4"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "qualified-local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008696",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation",
+        "separate-human-gate-preserved"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 8696,
+      "rawByteEnd": 8933,
+      "rawLineStart": 81,
+      "rawLineEnd": 81,
+      "originalSections": [
+        {
+          "section": "Failure attribution and acceptance boundary",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Failure attribution and acceptance boundary\n",
+          "hierarchy": [
+            "Task 27 / super-plan-ufz.30 independent review",
+            "Failure attribution and acceptance boundary"
+          ],
+          "byteStart": 8268,
+          "byteEnd": 8933
+        }
+      ],
+      "rawText": "Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/22/semanticPassages/4"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/50-task-27-review.md",
+  "retainedSha256": "1d2d0fd7763ebbfda8654817e07344e166cb858db9f0d9cdb873b814b7fc2d19"
+}

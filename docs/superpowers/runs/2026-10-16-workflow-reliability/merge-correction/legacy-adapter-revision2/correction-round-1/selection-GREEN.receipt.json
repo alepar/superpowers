@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "phase": "GREEN",
+  "argv": [
+    "python3",
+    "/private/tmp/ufz-correction-legacy-adapters/selection_controls.py",
+    "/private/tmp/ufz-correction-legacy-adapters"
+  ],
+  "exitCode": 0,
+  "builderSha256": "0ffdea14344af714c591c5b32bc265a6e6d38609e90c81b47d636c17f60c9f0e",
+  "controlSha256": "8a216ddcbdaf0e715972052d1ce5141c2a5023b008e8e0a824b5d42a7a2cc997",
+  "stdoutSha256": "a891356989ed03720a7ed41c2e605e547180407f56141277d923b2be3040e02a",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

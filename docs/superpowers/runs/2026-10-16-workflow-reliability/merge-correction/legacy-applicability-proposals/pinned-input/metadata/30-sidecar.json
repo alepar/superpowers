@@ -1,0 +1,696 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-18-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-18-report.md",
+  "rawSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+  "rawByteCount": 12714,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-18-report.md",
+    "durablePath": "task-report-history-r1/raw/task-18-report.md",
+    "sha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+    "byteCount": 12714,
+    "logicalRole": "report",
+    "ordinal": 18,
+    "logicalTaskId": "super-plan-ufz.20",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-18-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": false,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 152,
+      "bodyLineStart": 1,
+      "rawText": "Status: IMPLEMENTED\nid: super-plan-ufz.20\nbase: 7a030486713f985ba8d02cc57c542f9d333756b8\nhead: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false\n\n",
+      "bodyRawText": "Status: IMPLEMENTED\nid: super-plan-ufz.20\nbase: 7a030486713f985ba8d02cc57c542f9d333756b8\nhead: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 20
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "id: super-plan-ufz.20\n",
+          "text": "id: super-plan-ufz.20",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 2,
+          "lineEnd": 2,
+          "byteStart": 20,
+          "byteEnd": 42
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "base: 7a030486713f985ba8d02cc57c542f9d333756b8\n",
+          "text": "base: 7a030486713f985ba8d02cc57c542f9d333756b8",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 42,
+          "byteEnd": 89
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "head: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false\n",
+          "text": "head: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 4,
+          "lineEnd": 5,
+          "byteStart": 89,
+          "byteEnd": 151
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Implementation"
+      ],
+      "lineStart": 7,
+      "lineEnd": 14,
+      "byteStart": 152,
+      "byteEnd": 1660,
+      "bodyLineStart": 8,
+      "rawText": "## Implementation\n\nMapped the actual read-only `resume-check:<id>` dispatch to the existing run-level `ready` stage and added `resume-check` to `RUN_KINDS` so ordinary Codex names and Claude descriptions are mapped. Production change is exactly two classifier additions. `parseLabel`, `BEAD_KINDS`, `IN_SLOT`, coordinator behavior, schemas, timing windows and bounds remain unchanged.\n\nThe ID is the observed obligation, retained as the run-level suffix. It is not an implementation attempt. The current coordinator's `resumeCheckPrompt`, including its verification-only branch, forbids implementation, review, merge, closure, cleanup and editing. A successful or held observation therefore remains pre-admission observation. Classifying its duration as readiness work does not assert the obligation became ready: `readyAt` still derives from creation/mapping/dependency evidence.\n\nChecked task17's advisory against the actual metric consumers. Adding this kind to `BEAD_KINDS` would create a per-bead attempt for the first associated event, change `at.start` and `dispatchedAt` to the observation, and extend ordinary `slotSpans` from that observation through the chain. Merely excluding `ready` from `IN_SLOT` does not avoid that ordinary-chain inflation. Run-level association preserves the obligation suffix without changing task identities, starts, attempts, readiness timestamps or slots. The regression compares complete bead JSON (including readiness) and task-slot JSON against unchanged profiles.\n\n",
+      "bodyRawText": "\nMapped the actual read-only `resume-check:<id>` dispatch to the existing run-level `ready` stage and added `resume-check` to `RUN_KINDS` so ordinary Codex names and Claude descriptions are mapped. Production change is exactly two classifier additions. `parseLabel`, `BEAD_KINDS`, `IN_SLOT`, coordinator behavior, schemas, timing windows and bounds remain unchanged.\n\nThe ID is the observed obligation, retained as the run-level suffix. It is not an implementation attempt. The current coordinator's `resumeCheckPrompt`, including its verification-only branch, forbids implementation, review, merge, closure, cleanup and editing. A successful or held observation therefore remains pre-admission observation. Classifying its duration as readiness work does not assert the obligation became ready: `readyAt` still derives from creation/mapping/dependency evidence.\n\nChecked task17's advisory against the actual metric consumers. Adding this kind to `BEAD_KINDS` would create a per-bead attempt for the first associated event, change `at.start` and `dispatchedAt` to the observation, and extend ordinary `slotSpans` from that observation through the chain. Merely excluding `ready` from `IN_SLOT` does not avoid that ordinary-chain inflation. Run-level association preserves the obligation suffix without changing task identities, starts, attempts, readiness timestamps or slots. The regression compares complete bead JSON (including readiness) and task-slot JSON against unchanged profiles.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Mapped the actual read-only `resume-check:<id>` dispatch to the existing run-level `ready` stage and added `resume-check` to `RUN_KINDS` so ordinary Codex names and Claude descriptions are mapped. Production change is exactly two classifier additions. `parseLabel`, `BEAD_KINDS`, `IN_SLOT`, coordinator behavior, schemas, timing windows and bounds remain unchanged.\n",
+          "text": "Mapped the actual read-only `resume-check:<id>` dispatch to the existing run-level `ready` stage and added `resume-check` to `RUN_KINDS` so ordinary Codex names and Claude descriptions are mapped. Production change is exactly two classifier additions. `parseLabel`, `BEAD_KINDS`, `IN_SLOT`, coordinator behavior, schemas, timing windows and bounds remain unchanged.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 171,
+          "byteEnd": 537
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The ID is the observed obligation, retained as the run-level suffix. It is not an implementation attempt. The current coordinator's `resumeCheckPrompt`, including its verification-only branch, forbids implementation, review, merge, closure, cleanup and editing. A successful or held observation therefore remains pre-admission observation. Classifying its duration as readiness work does not assert the obligation became ready: `readyAt` still derives from creation/mapping/dependency evidence.\n",
+          "text": "The ID is the observed obligation, retained as the run-level suffix. It is not an implementation attempt. The current coordinator's `resumeCheckPrompt`, including its verification-only branch, forbids implementation, review, merge, closure, cleanup and editing. A successful or held observation therefore remains pre-admission observation. Classifying its duration as readiness work does not assert the obligation became ready: `readyAt` still derives from creation/mapping/dependency evidence.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 538,
+          "byteEnd": 1033
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Checked task17's advisory against the actual metric consumers. Adding this kind to `BEAD_KINDS` would create a per-bead attempt for the first associated event, change `at.start` and `dispatchedAt` to the observation, and extend ordinary `slotSpans` from that observation through the chain. Merely excluding `ready` from `IN_SLOT` does not avoid that ordinary-chain inflation. Run-level association preserves the obligation suffix without changing task identities, starts, attempts, readiness timestamps or slots. The regression compares complete bead JSON (including readiness) and task-slot JSON against unchanged profiles.\n",
+          "text": "Checked task17's advisory against the actual metric consumers. Adding this kind to `BEAD_KINDS` would create a per-bead attempt for the first associated event, change `at.start` and `dispatchedAt` to the observation, and extend ordinary `slotSpans` from that observation through the chain. Merely excluding `ready` from `IN_SLOT` does not avoid that ordinary-chain inflation. Run-level association preserves the obligation suffix without changing task identities, starts, attempts, readiness timestamps or slots. The regression compares complete bead JSON (including readiness) and task-slot JSON against unchanged profiles.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 1034,
+          "byteEnd": 1659
+        }
+      ]
+    },
+    {
+      "section": "Requirements and assumptions",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Requirements and assumptions\n",
+      "hierarchy": [
+        "Requirements and assumptions"
+      ],
+      "lineStart": 15,
+      "lineEnd": 20,
+      "byteStart": 1660,
+      "byteEnd": 2516,
+      "bodyLineStart": 16,
+      "rawText": "## Requirements and assumptions\n\nRead the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.\n\nCreated the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.\n\n",
+      "bodyRawText": "\nRead the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.\n\nCreated the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.\n",
+          "text": "Read the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1693,
+          "byteEnd": 2121
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Created the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.\n",
+          "text": "Created the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 2122,
+          "byteEnd": 2515
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Files changed"
+      ],
+      "lineStart": 21,
+      "lineEnd": 25,
+      "byteStart": 2516,
+      "byteEnd": 2913,
+      "bodyLineStart": 22,
+      "rawText": "## Files changed\n\n- `skills/super-code/scripts/run-profile.mjs`: add the ready-stage case and run-kind entry only.\n- `tests/super-code/test-run-profile.sh`: add one focused temporary scenario group exercising Workflow, ordinary Codex and ordinary Claude profiles. Existing coverage assertion is unchanged. Fixture builders and all 34 historical JSON fixture files remain byte-for-byte unchanged.\n\n",
+      "bodyRawText": "\n- `skills/super-code/scripts/run-profile.mjs`: add the ready-stage case and run-kind entry only.\n- `tests/super-code/test-run-profile.sh`: add one focused temporary scenario group exercising Workflow, ordinary Codex and ordinary Claude profiles. Existing coverage assertion is unchanged. Fixture builders and all 34 historical JSON fixture files remain byte-for-byte unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/scripts/run-profile.mjs`: add the ready-stage case and run-kind entry only.\n",
+          "text": "`skills/super-code/scripts/run-profile.mjs`: add the ready-stage case and run-kind entry only.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2534,
+          "byteEnd": 2631
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/test-run-profile.sh`: add one focused temporary scenario group exercising Workflow, ordinary Codex and ordinary Claude profiles. Existing coverage assertion is unchanged. Fixture builders and all 34 historical JSON fixture files remain byte-for-byte unchanged.\n",
+          "text": "`tests/super-code/test-run-profile.sh`: add one focused temporary scenario group exercising Workflow, ordinary Codex and ordinary Claude profiles. Existing coverage assertion is unchanged. Fixture builders and all 34 historical JSON fixture files remain byte-for-byte unchanged.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2631,
+          "byteEnd": 2912
+        }
+      ]
+    },
+    {
+      "section": "Test commands and results",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test commands and results\n",
+      "hierarchy": [
+        "Test commands and results"
+      ],
+      "lineStart": 26,
+      "lineEnd": 83,
+      "byteStart": 2913,
+      "byteEnd": 6385,
+      "bodyLineStart": 27,
+      "rawText": "## Test commands and results\n\nAll suite invocations started with this absolute working directory and environment (the tests create their own HOME beneath TMPDIR; all XDG homes remain beneath the same task root):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.20\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile.sh > evidence/super-plan-ufz.20/profile-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile-in-flight.sh > evidence/super-plan-ufz.20/in-flight-green.log 2>&1\nnode --check skills/super-code/scripts/run-profile.mjs\ngit diff --check\n```\n\nFinal profiler exit 0: 325 PASS, zero FAIL. Relevant actual output:\n\n```text\n  [PASS] coordinator label kinds are all classified (missing: none)\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [PASS] resume observation is run-level ready time\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [PASS] ordinary resume observation is mapped (x)\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [PASS] ordinary resume observation is mapped (c)\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: all tests passed\n```\n\nFinal in-flight exit 0: 14 PASS, zero FAIL. Actual complete output:\n\n```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\n  [PASS] another session: no lines, exit 0\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\n  [PASS] unknown coordinator: no lines\nrun-profile --in-flight: unreadable roots and bad args\n  [PASS] claude: exits 0\n  [PASS] claude: unreadable root\n  [PASS] codex: exits 0\n  [PASS] codex: unreadable root\n  [PASS] missing --harness exits 2\n  [PASS] bad --harness exits 2\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 326 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n\nThe explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n\n",
+      "bodyRawText": "\nAll suite invocations started with this absolute working directory and environment (the tests create their own HOME beneath TMPDIR; all XDG homes remain beneath the same task root):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.20\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile.sh > evidence/super-plan-ufz.20/profile-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile-in-flight.sh > evidence/super-plan-ufz.20/in-flight-green.log 2>&1\nnode --check skills/super-code/scripts/run-profile.mjs\ngit diff --check\n```\n\nFinal profiler exit 0: 325 PASS, zero FAIL. Relevant actual output:\n\n```text\n  [PASS] coordinator label kinds are all classified (missing: none)\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [PASS] resume observation is run-level ready time\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [PASS] ordinary resume observation is mapped (x)\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [PASS] ordinary resume observation is mapped (c)\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: all tests passed\n```\n\nFinal in-flight exit 0: 14 PASS, zero FAIL. Actual complete output:\n\n```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\n  [PASS] another session: no lines, exit 0\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\n  [PASS] unknown coordinator: no lines\nrun-profile --in-flight: unreadable roots and bad args\n  [PASS] claude: exits 0\n  [PASS] claude: unreadable root\n  [PASS] codex: exits 0\n  [PASS] codex: unreadable root\n  [PASS] missing --harness exits 2\n  [PASS] bad --harness exits 2\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 326 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n\nThe explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All suite invocations started with this absolute working directory and environment (the tests create their own HOME beneath TMPDIR; all XDG homes remain beneath the same task root):\n",
+          "text": "All suite invocations started with this absolute working directory and environment (the tests create their own HOME beneath TMPDIR; all XDG homes remain beneath the same task root):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 2943,
+          "byteEnd": 3125
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.20\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile.sh > evidence/super-plan-ufz.20/profile-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile-in-flight.sh > evidence/super-plan-ufz.20/in-flight-green.log 2>&1\nnode --check skills/super-code/scripts/run-profile.mjs\ngit diff --check\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.20\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile.sh > evidence/super-plan-ufz.20/profile-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.20 HOME=/tmp/sp-bce79baa/super-plan-ufz.20/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.20/state bash tests/super-code/test-run-profile-in-flight.sh > evidence/super-plan-ufz.20/in-flight-green.log 2>&1\nnode --check skills/super-code/scripts/run-profile.mjs\ngit diff --check\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 30,
+          "lineEnd": 36,
+          "byteStart": 3126,
+          "byteEnd": 4172
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final profiler exit 0: 325 PASS, zero FAIL. Relevant actual output:\n",
+          "text": "Final profiler exit 0: 325 PASS, zero FAIL. Relevant actual output:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 4173,
+          "byteEnd": 4241
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [PASS] coordinator label kinds are all classified (missing: none)\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [PASS] resume observation is run-level ready time\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [PASS] ordinary resume observation is mapped (x)\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [PASS] ordinary resume observation is mapped (c)\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: all tests passed\n```\n",
+          "text": "```text\n  [PASS] coordinator label kinds are all classified (missing: none)\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [PASS] resume observation is run-level ready time\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [PASS] ordinary resume observation is mapped (x)\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [PASS] ordinary resume observation is mapped (c)\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 40,
+          "lineEnd": 56,
+          "byteStart": 4242,
+          "byteEnd": 5119
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final in-flight exit 0: 14 PASS, zero FAIL. Actual complete output:\n",
+          "text": "Final in-flight exit 0: 14 PASS, zero FAIL. Actual complete output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 58,
+          "lineEnd": 58,
+          "byteStart": 5120,
+          "byteEnd": 5188
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\n  [PASS] another session: no lines, exit 0\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\n  [PASS] unknown coordinator: no lines\nrun-profile --in-flight: unreadable roots and bad args\n  [PASS] claude: exits 0\n  [PASS] claude: unreadable root\n  [PASS] codex: exits 0\n  [PASS] codex: unreadable root\n  [PASS] missing --harness exits 2\n  [PASS] bad --harness exits 2\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 326 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n",
+          "text": "```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\n  [PASS] another session: no lines, exit 0\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\n  [PASS] unknown coordinator: no lines\nrun-profile --in-flight: unreadable roots and bad args\n  [PASS] claude: exits 0\n  [PASS] claude: unreadable root\n  [PASS] codex: exits 0\n  [PASS] codex: unreadable root\n  [PASS] missing --harness exits 2\n  [PASS] bad --harness exits 2\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 326 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 60,
+          "lineEnd": 80,
+          "byteStart": 5189,
+          "byteEnd": 6013
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n",
+          "text": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 82,
+          "lineEnd": 82,
+          "byteStart": 6014,
+          "byteEnd": 6384
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "TDD evidence"
+      ],
+      "lineStart": 84,
+      "lineEnd": 121,
+      "byteStart": 6385,
+      "byteEnd": 8707,
+      "bodyLineStart": 85,
+      "rawText": "## TDD evidence\n\nBefore modifying any test or production source, ran the exact same profiler command above with output `evidence/super-plan-ufz.20/label-red.log`. Exit 1; 312 PASS, 1 FAIL. Original valid assertion failed:\n\n```text\n  [FAIL] coordinator label kinds are all classified (missing: resume-check)\n    expected: none\n    got:       resume-check\nrun-profile: 1 failure(s)\n```\n\nAdded only the specified semantic temporary scenarios; ran the same profiler command with output `evidence/super-plan-ufz.20/semantic-red.log`, before changing the classifier. Exit 1; 321 PASS, 4 FAIL. Actual focused output:\n\n```text\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [FAIL] resume observation is run-level ready time\n    expected: [[\"ready\",null,10000]]\n    got:      [[\"other\",null,10000]]\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [FAIL] ordinary resume observation is mapped (x)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [FAIL] ordinary resume observation is mapped (c)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: 4 failure(s)\n```\n\nExpected RED: Workflow classified the 10-second observation as `other`; ordinary Codex and Claude did not map its kind. Existing coverage also remained red. Production then changed by exactly the two additions and the same full suite became GREEN. Every new assertion executed in RED and GREEN. The new readiness assertion would fail on `other` or bead-associated time; mapping assertions would fail on missing/unmapped/wrong count or duration; full bead JSON comparisons would fail on an extra attempt, population, changed start/readiness/timing/landing; slot comparisons would fail on changed cap/peak/full duration; exit assertions would fail on an unsuccessful profile. These exercise the actual CLI, not source-string semantics.\n\n",
+      "bodyRawText": "\nBefore modifying any test or production source, ran the exact same profiler command above with output `evidence/super-plan-ufz.20/label-red.log`. Exit 1; 312 PASS, 1 FAIL. Original valid assertion failed:\n\n```text\n  [FAIL] coordinator label kinds are all classified (missing: resume-check)\n    expected: none\n    got:       resume-check\nrun-profile: 1 failure(s)\n```\n\nAdded only the specified semantic temporary scenarios; ran the same profiler command with output `evidence/super-plan-ufz.20/semantic-red.log`, before changing the classifier. Exit 1; 321 PASS, 4 FAIL. Actual focused output:\n\n```text\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [FAIL] resume observation is run-level ready time\n    expected: [[\"ready\",null,10000]]\n    got:      [[\"other\",null,10000]]\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [FAIL] ordinary resume observation is mapped (x)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [FAIL] ordinary resume observation is mapped (c)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: 4 failure(s)\n```\n\nExpected RED: Workflow classified the 10-second observation as `other`; ordinary Codex and Claude did not map its kind. Existing coverage also remained red. Production then changed by exactly the two additions and the same full suite became GREEN. Every new assertion executed in RED and GREEN. The new readiness assertion would fail on `other` or bead-associated time; mapping assertions would fail on missing/unmapped/wrong count or duration; full bead JSON comparisons would fail on an extra attempt, population, changed start/readiness/timing/landing; slot comparisons would fail on changed cap/peak/full duration; exit assertions would fail on an unsuccessful profile. These exercise the actual CLI, not source-string semantics.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before modifying any test or production source, ran the exact same profiler command above with output `evidence/super-plan-ufz.20/label-red.log`. Exit 1; 312 PASS, 1 FAIL. Original valid assertion failed:\n",
+          "text": "Before modifying any test or production source, ran the exact same profiler command above with output `evidence/super-plan-ufz.20/label-red.log`. Exit 1; 312 PASS, 1 FAIL. Original valid assertion failed:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 86,
+          "lineEnd": 86,
+          "byteStart": 6402,
+          "byteEnd": 6607
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [FAIL] coordinator label kinds are all classified (missing: resume-check)\n    expected: none\n    got:       resume-check\nrun-profile: 1 failure(s)\n```\n",
+          "text": "```text\n  [FAIL] coordinator label kinds are all classified (missing: resume-check)\n    expected: none\n    got:       resume-check\nrun-profile: 1 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 88,
+          "lineEnd": 93,
+          "byteStart": 6608,
+          "byteEnd": 6769
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added only the specified semantic temporary scenarios; ran the same profiler command with output `evidence/super-plan-ufz.20/semantic-red.log`, before changing the classifier. Exit 1; 321 PASS, 4 FAIL. Actual focused output:\n",
+          "text": "Added only the specified semantic temporary scenarios; ran the same profiler command with output `evidence/super-plan-ufz.20/semantic-red.log`, before changing the classifier. Exit 1; 321 PASS, 4 FAIL. Actual focused output:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 95,
+          "lineEnd": 95,
+          "byteStart": 6770,
+          "byteEnd": 6995
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [FAIL] resume observation is run-level ready time\n    expected: [[\"ready\",null,10000]]\n    got:      [[\"other\",null,10000]]\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [FAIL] ordinary resume observation is mapped (x)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [FAIL] ordinary resume observation is mapped (c)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: 4 failure(s)\n```\n",
+          "text": "```text\nrun-profile: resume observations are run-level readiness work\n  [PASS] resume observation Workflow profile exits 0\n  [FAIL] resume observation is run-level ready time\n    expected: [[\"ready\",null,10000]]\n    got:      [[\"other\",null,10000]]\n  [PASS] resume observation creates no task attempt or task timing\n  [PASS] resume observation uses no task slot\n  [PASS] resume observation Codex profile exits 0\n  [PASS] resume observation Claude profile exits 0\n  [FAIL] ordinary resume observation is mapped (x)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (x)\n  [PASS] ordinary resume observation preserves task slots (x)\n  [FAIL] ordinary resume observation is mapped (c)\n    expected: [[true,1,10000]]\n    got:      []\n  [PASS] ordinary resume observation preserves bead population and attempts (c)\n  [PASS] ordinary resume observation preserves task slots (c)\nrun-profile: 4 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 97,
+          "lineEnd": 118,
+          "byteStart": 6996,
+          "byteEnd": 7971
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Expected RED: Workflow classified the 10-second observation as `other`; ordinary Codex and Claude did not map its kind. Existing coverage also remained red. Production then changed by exactly the two additions and the same full suite became GREEN. Every new assertion executed in RED and GREEN. The new readiness assertion would fail on `other` or bead-associated time; mapping assertions would fail on missing/unmapped/wrong count or duration; full bead JSON comparisons would fail on an extra attempt, population, changed start/readiness/timing/landing; slot comparisons would fail on changed cap/peak/full duration; exit assertions would fail on an unsuccessful profile. These exercise the actual CLI, not source-string semantics.\n",
+          "text": "Expected RED: Workflow classified the 10-second observation as `other`; ordinary Codex and Claude did not map its kind. Existing coverage also remained red. Production then changed by exactly the two additions and the same full suite became GREEN. Every new assertion executed in RED and GREEN. The new readiness assertion would fail on `other` or bead-associated time; mapping assertions would fail on missing/unmapped/wrong count or duration; full bead JSON comparisons would fail on an extra attempt, population, changed start/readiness/timing/landing; slot comparisons would fail on changed cap/peak/full duration; exit assertions would fail on an unsuccessful profile. These exercise the actual CLI, not source-string semantics.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 120,
+          "lineEnd": 120,
+          "byteStart": 7972,
+          "byteEnd": 8706
+        }
+      ]
+    },
+    {
+      "section": "Frozen evidence compatibility",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Frozen evidence compatibility\n",
+      "hierarchy": [
+        "Frozen evidence compatibility"
+      ],
+      "lineStart": 122,
+      "lineEnd": 147,
+      "byteStart": 8707,
+      "byteEnd": 11478,
+      "bodyLineStart": 123,
+      "rawText": "## Frozen evidence compatibility\n\nSHA256 checked current files against the product `0bb280edcf5fc6a60499fdfdb090d1819a432963` manifests at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-manifest.json` and `live-review-isolation/source-manifest.json`, plus final guidance expectations in `nochange-diagnostic/source-recheck-before.json`. All matched before this isolated classifier change; the committed diff touches none of those sources. No behavior result, historical fixture, protocol, scorer or frozen artifact was changed or rerun.\n\n| Behavior source | Current SHA256 (= frozen full hash) |\n|---|---|\n| `skills/super-roast/SKILL.md` | `2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60` |\n| `skills/super-code/SKILL.md` | `b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/super-roast/reporter-prompt.md` | `9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1` |\n| `skills/super-auto/SKILL.md` | `6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434` |\n| `skills/super-auto/report-prompt.md` | `d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91` |\n| `skills/upstream-feedback/SKILL.md` | `2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30` |\n\n| Live source | Current SHA256 (= frozen hash) |\n|---|---|\n| `skills/super-roast/scout-prompts-pr.md` | `485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60` |\n| `skills/super-roast/scripts/assemble-args.mjs` | `df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4` |\n| `skills/super-code/coordinator.js` | `c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c` |\n| `skills/super-code/scripts/dispatch-text.mjs` | `9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/subagent-driven-development/scripts/review-package` | `bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6` |\n| `coordinator.js:2852-2880` | `59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd` |\n\nThe three no-change final guidance files (`task-reviewer-prompt.md`, `reporter-prompt.md`, `super-auto/SKILL.md`) match the same full hashes above. The live coordinator excerpt copy also matches its declared frozen hash. Category/decoder changes are confined to reporting `resume-check`; they have no effect on the frozen agent guidance, source-isolation helpers, acceptance gates, or behavior/live evidence. Historical profiler fixture bytes were separately compared with committed HEAD: 34/34 unchanged.\n\n",
+      "bodyRawText": "\nSHA256 checked current files against the product `0bb280edcf5fc6a60499fdfdb090d1819a432963` manifests at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-manifest.json` and `live-review-isolation/source-manifest.json`, plus final guidance expectations in `nochange-diagnostic/source-recheck-before.json`. All matched before this isolated classifier change; the committed diff touches none of those sources. No behavior result, historical fixture, protocol, scorer or frozen artifact was changed or rerun.\n\n| Behavior source | Current SHA256 (= frozen full hash) |\n|---|---|\n| `skills/super-roast/SKILL.md` | `2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60` |\n| `skills/super-code/SKILL.md` | `b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/super-roast/reporter-prompt.md` | `9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1` |\n| `skills/super-auto/SKILL.md` | `6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434` |\n| `skills/super-auto/report-prompt.md` | `d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91` |\n| `skills/upstream-feedback/SKILL.md` | `2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30` |\n\n| Live source | Current SHA256 (= frozen hash) |\n|---|---|\n| `skills/super-roast/scout-prompts-pr.md` | `485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60` |\n| `skills/super-roast/scripts/assemble-args.mjs` | `df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4` |\n| `skills/super-code/coordinator.js` | `c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c` |\n| `skills/super-code/scripts/dispatch-text.mjs` | `9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/subagent-driven-development/scripts/review-package` | `bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6` |\n| `coordinator.js:2852-2880` | `59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd` |\n\nThe three no-change final guidance files (`task-reviewer-prompt.md`, `reporter-prompt.md`, `super-auto/SKILL.md`) match the same full hashes above. The live coordinator excerpt copy also matches its declared frozen hash. Category/decoder changes are confined to reporting `resume-check`; they have no effect on the frozen agent guidance, source-isolation helpers, acceptance gates, or behavior/live evidence. Historical profiler fixture bytes were separately compared with committed HEAD: 34/34 unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "SHA256 checked current files against the product `0bb280edcf5fc6a60499fdfdb090d1819a432963` manifests at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-manifest.json` and `live-review-isolation/source-manifest.json`, plus final guidance expectations in `nochange-diagnostic/source-recheck-before.json`. All matched before this isolated classifier change; the committed diff touches none of those sources. No behavior result, historical fixture, protocol, scorer or frozen artifact was changed or rerun.\n",
+          "text": "SHA256 checked current files against the product `0bb280edcf5fc6a60499fdfdb090d1819a432963` manifests at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-manifest.json` and `live-review-isolation/source-manifest.json`, plus final guidance expectations in `nochange-diagnostic/source-recheck-before.json`. All matched before this isolated classifier change; the committed diff touches none of those sources. No behavior result, historical fixture, protocol, scorer or frozen artifact was changed or rerun.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 124,
+          "lineEnd": 124,
+          "byteStart": 8741,
+          "byteEnd": 9274
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "| Behavior source | Current SHA256 (= frozen full hash) |\n|---|---|\n| `skills/super-roast/SKILL.md` | `2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60` |\n| `skills/super-code/SKILL.md` | `b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/super-roast/reporter-prompt.md` | `9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1` |\n| `skills/super-auto/SKILL.md` | `6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434` |\n| `skills/super-auto/report-prompt.md` | `d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91` |\n| `skills/upstream-feedback/SKILL.md` | `2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30` |\n",
+          "text": "| Behavior source | Current SHA256 (= frozen full hash) |\n|---|---|\n| `skills/super-roast/SKILL.md` | `2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60` |\n| `skills/super-code/SKILL.md` | `b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/super-roast/reporter-prompt.md` | `9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1` |\n| `skills/super-auto/SKILL.md` | `6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434` |\n| `skills/super-auto/report-prompt.md` | `d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91` |\n| `skills/upstream-feedback/SKILL.md` | `2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30` |",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 126,
+          "lineEnd": 134,
+          "byteStart": 9275,
+          "byteEnd": 10099
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "| Live source | Current SHA256 (= frozen hash) |\n|---|---|\n| `skills/super-roast/scout-prompts-pr.md` | `485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60` |\n| `skills/super-roast/scripts/assemble-args.mjs` | `df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4` |\n| `skills/super-code/coordinator.js` | `c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c` |\n| `skills/super-code/scripts/dispatch-text.mjs` | `9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/subagent-driven-development/scripts/review-package` | `bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6` |\n| `coordinator.js:2852-2880` | `59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd` |\n",
+          "text": "| Live source | Current SHA256 (= frozen hash) |\n|---|---|\n| `skills/super-roast/scout-prompts-pr.md` | `485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60` |\n| `skills/super-roast/scripts/assemble-args.mjs` | `df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4` |\n| `skills/super-code/coordinator.js` | `c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c` |\n| `skills/super-code/scripts/dispatch-text.mjs` | `9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda` |\n| `skills/super-code/task-reviewer-prompt.md` | `e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8` |\n| `skills/subagent-driven-development/scripts/review-package` | `bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6` |\n| `coordinator.js:2852-2880` | `59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd` |",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 136,
+          "lineEnd": 144,
+          "byteStart": 10100,
+          "byteEnd": 10970
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The three no-change final guidance files (`task-reviewer-prompt.md`, `reporter-prompt.md`, `super-auto/SKILL.md`) match the same full hashes above. The live coordinator excerpt copy also matches its declared frozen hash. Category/decoder changes are confined to reporting `resume-check`; they have no effect on the frozen agent guidance, source-isolation helpers, acceptance gates, or behavior/live evidence. Historical profiler fixture bytes were separately compared with committed HEAD: 34/34 unchanged.\n",
+          "text": "The three no-change final guidance files (`task-reviewer-prompt.md`, `reporter-prompt.md`, `super-auto/SKILL.md`) match the same full hashes above. The live coordinator excerpt copy also matches its declared frozen hash. Category/decoder changes are confined to reporting `resume-check`; they have no effect on the frozen agent guidance, source-isolation helpers, acceptance gates, or behavior/live evidence. Historical profiler fixture bytes were separately compared with committed HEAD: 34/34 unchanged.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 146,
+          "lineEnd": 146,
+          "byteStart": 10971,
+          "byteEnd": 11477
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Test hygiene"
+      ],
+      "lineStart": 148,
+      "lineEnd": 151,
+      "byteStart": 11478,
+      "byteEnd": 12327,
+      "bodyLineStart": 149,
+      "rawText": "## Test hygiene\n\nNone: no `match:` or `survived:` processes. After baseline RED, semantic RED, profiler GREEN and in-flight GREEN, ran the required `stop-run-processes --check` with the exact worktree and `/tmp/sp-bce79baa/super-plan-ufz.20` roots from `/Users/alepar/AleCode/superpowers`; each exited 0 with no output. The first baseline hygiene command was mistakenly invoked from inside the task worktree; the script safely refused its own ancestor root (exit 2); immediately rerunning from outside succeeded. No process was stopped outside task roots. Final stop sweep likewise exited 0 with no output. Suite scratch files were cleaned by their EXIT traps; raw log excerpts and actual summaries are retained in this report, and transient task-created log files were removed to leave a clean task branch. No Herdr writes or subagent dispatches.\n\n",
+      "bodyRawText": "\nNone: no `match:` or `survived:` processes. After baseline RED, semantic RED, profiler GREEN and in-flight GREEN, ran the required `stop-run-processes --check` with the exact worktree and `/tmp/sp-bce79baa/super-plan-ufz.20` roots from `/Users/alepar/AleCode/superpowers`; each exited 0 with no output. The first baseline hygiene command was mistakenly invoked from inside the task worktree; the script safely refused its own ancestor root (exit 2); immediately rerunning from outside succeeded. No process was stopped outside task roots. Final stop sweep likewise exited 0 with no output. Suite scratch files were cleaned by their EXIT traps; raw log excerpts and actual summaries are retained in this report, and transient task-created log files were removed to leave a clean task branch. No Herdr writes or subagent dispatches.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None: no `match:` or `survived:` processes. After baseline RED, semantic RED, profiler GREEN and in-flight GREEN, ran the required `stop-run-processes --check` with the exact worktree and `/tmp/sp-bce79baa/super-plan-ufz.20` roots from `/Users/alepar/AleCode/superpowers`; each exited 0 with no output. The first baseline hygiene command was mistakenly invoked from inside the task worktree; the script safely refused its own ancestor root (exit 2); immediately rerunning from outside succeeded. No process was stopped outside task roots. Final stop sweep likewise exited 0 with no output. Suite scratch files were cleaned by their EXIT traps; raw log excerpts and actual summaries are retained in this report, and transient task-created log files were removed to leave a clean task branch. No Herdr writes or subagent dispatches.\n",
+          "text": "None: no `match:` or `survived:` processes. After baseline RED, semantic RED, profiler GREEN and in-flight GREEN, ran the required `stop-run-processes --check` with the exact worktree and `/tmp/sp-bce79baa/super-plan-ufz.20` roots from `/Users/alepar/AleCode/superpowers`; each exited 0 with no output. The first baseline hygiene command was mistakenly invoked from inside the task worktree; the script safely refused its own ancestor root (exit 2); immediately rerunning from outside succeeded. No process was stopped outside task roots. Final stop sweep likewise exited 0 with no output. Suite scratch files were cleaned by their EXIT traps; raw log excerpts and actual summaries are retained in this report, and transient task-created log files were removed to leave a clean task branch. No Herdr writes or subagent dispatches.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 150,
+          "lineEnd": 150,
+          "byteStart": 11495,
+          "byteEnd": 12326
+        }
+      ]
+    },
+    {
+      "section": "Self-review and concerns",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Self-review and concerns\n",
+      "hierarchy": [
+        "Self-review and concerns"
+      ],
+      "lineStart": 152,
+      "lineEnd": 154,
+      "byteStart": 12327,
+      "byteEnd": 12714,
+      "bodyLineStart": 153,
+      "rawText": "## Self-review and concerns\n\nReviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "bodyRawText": "\nReviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+          "text": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 154,
+          "lineEnd": 154,
+          "byteStart": 12356,
+          "byteEnd": 12714
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: IMPLEMENTED",
+      "text": "Status: IMPLEMENTED",
+      "rawText": "Status: IMPLEMENTED\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 20,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "id: super-plan-ufz.20",
+      "text": "id: super-plan-ufz.20",
+      "rawText": "id: super-plan-ufz.20\n",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "byteStart": 20,
+      "byteEnd": 42,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "base: 7a030486713f985ba8d02cc57c542f9d333756b8",
+      "text": "base: 7a030486713f985ba8d02cc57c542f9d333756b8",
+      "rawText": "base: 7a030486713f985ba8d02cc57c542f9d333756b8\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 42,
+      "byteEnd": 89,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "head: e5672164d289900e29f9254741b9eed6c559b343",
+      "text": "head: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false",
+      "rawText": "head: e5672164d289900e29f9254741b9eed6c559b343\nstacked: false\n",
+      "lineStart": 4,
+      "lineEnd": 5,
+      "byteStart": 89,
+      "byteEnd": 151,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": "Requirements and assumptions",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Requirements and assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Read the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.",
+      "text": "Read the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.",
+      "rawText": "Read the current `bd show super-plan-ufz.20 --json` description and acceptance criteria, `bd comments super-plan-ufz.20` (no comments), generated task-18 brief, classifier/parser/ordinary decoder, coordinator resume dispatch and both prompt branches, fixture builders, historical fixtures and both suites. The current bead's narrow integration-fix scope and parent dispatch apply together; no conflicting amendments were found.\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1693,
+      "byteEnd": 2121,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": "Requirements and assumptions",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Requirements and assumptions"
+      ],
+      "positionInSection": 2,
+      "key": "Created the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.",
+      "text": "Created the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.",
+      "rawText": "Created the exact assigned worktree/branch from integration `7a030486713f985ba8d02cc57c542f9d333756b8`. Already-merged check returned false. Project is zero dependency and declares no setup/install step. The bash test runners and production wrapper/module resolve inside this task worktree; `/opt/homebrew/bin/node` is the shared interpreter. No harness or installed plugin source was edited.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 2122,
+      "byteEnd": 2515,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": "Test commands and results",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Test commands and results"
+      ],
+      "positionInSection": 7,
+      "key": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.",
+      "text": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.",
+      "rawText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n",
+      "lineStart": 82,
+      "lineEnd": 82,
+      "byteStart": 6014,
+      "byteEnd": 6384,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "section": "Self-review and concerns",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Self-review and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.",
+      "text": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.",
+      "rawText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "lineStart": 154,
+      "lineEnd": 154,
+      "byteStart": 12356,
+      "byteEnd": 12714,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance.",
+    "Standardized finding headings absent: full narrative and original labels retained; absence does not imply zero findings."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

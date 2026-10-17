@@ -1,0 +1,49 @@
+{
+  "artifacts": {
+    "runner.py": {
+      "bytes": 20159,
+      "sha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d"
+    },
+    "microfixtures.py": {
+      "bytes": 15712,
+      "sha256": "c3f69e2a930907a9326061617c0f43216f45bf912c09c70d795ce58562ee866a"
+    },
+    "report.md": {
+      "bytes": 12000,
+      "sha256": "9037fadba1d4cca145baae8208b01b057de5d0cea9e7041f79642aeec8b2bd0f"
+    },
+    "original-v0/runner.py": {
+      "bytes": 6228,
+      "sha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16"
+    },
+    "original-v0/review-report.md": {
+      "bytes": 14511,
+      "sha256": "2aa8f658b2f345869ceb0e3d087925264b423c4fb8b32771804014dc1a309d62"
+    },
+    "original-v0/manifest.json": {
+      "bytes": 342,
+      "sha256": "1304911a51ea42753f846ea48d32b3406e6d333d0f59183549faf1acc0cd9724"
+    },
+    "red-receipted-gcn3934x/summary.json": {
+      "bytes": 3317,
+      "sha256": "29e1bec65774a2550d64eb65d75c6daba7ebb726855f9656a46b836011f4d248"
+    },
+    "green-receipted-viffjcka/summary.json": {
+      "bytes": 1980,
+      "sha256": "19e7c8716768d1bdb7808508953d6961f3b94622f84315bcd4531f05735cd551"
+    }
+  },
+  "verification": {
+    "red": {
+      "passed": 3,
+      "failed": 19,
+      "exitCode": 1
+    },
+    "green": {
+      "passed": 22,
+      "failed": 0,
+      "exitCode": 0
+    }
+  },
+  "scope": "Only private toy fixtures; prospective product suites unexecuted; original current runner unchanged"
+}

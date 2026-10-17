@@ -1,0 +1,330 @@
+{
+  "version": 1,
+  "epic": "verify",
+  "cap": 1,
+  "earlyUnblock": false,
+  "runtimeSlots": null,
+  "invocations": [
+    {
+      "runId": "01c0ffee-0000-7000-8000-000000000000",
+      "dir": "/private/tmp/ufz-correction-coverage/metrics-probe/run/codex/sessions/2026/10/01/rollout-2026-10-01T00-00-00-01c0ffee-0000-7000-8000-000000000000.jsonl",
+      "source": "codex",
+      "start": "2026-10-01T00:00:10.000Z",
+      "end": "2026-10-01T00:00:40.000Z",
+      "agents": 2,
+      "timed": 3,
+      "journal": true
+    }
+  ],
+  "window": {
+    "start": "2026-10-01T00:00:10.000Z",
+    "lastLanding": "2026-10-01T00:00:40.000Z",
+    "end": "2026-10-01T00:00:40.000Z",
+    "graphMs": 30000,
+    "wallMs": 30000
+  },
+  "graphScope": "observed invocation/residual graph",
+  "diagnosis": {
+    "planningMs": 0,
+    "windowMs": 30000,
+    "dominant": "task graph"
+  },
+  "shape": {
+    "beads": 1,
+    "edges": 0,
+    "depth": 1,
+    "width": 1,
+    "levels": [
+      1
+    ],
+    "criticalPath": [
+      "verify.1"
+    ],
+    "fanOut": [],
+    "cycles": []
+  },
+  "cuts": [],
+  "beads": [
+    {
+      "id": "verify.1",
+      "n": null,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "createdAt": "2026-10-01T00:00:00.000Z",
+      "mappingReadyAt": null,
+      "dependencyReadyAt": null,
+      "readyAt": null,
+      "dispatchedAt": "2026-10-01T00:00:10.000Z",
+      "landedAt": "2026-10-01T00:00:40.000Z",
+      "waitMs": null,
+      "waitCause": "unknown",
+      "carriedMs": null,
+      "implMs": 20000,
+      "implByTool": {},
+      "implToolMs": 0,
+      "reviewMs": 9000,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 0,
+      "laneMs": 0,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 30000,
+      "stackParents": [],
+      "lateEdges": []
+    }
+  ],
+  "criticalPath": {
+    "ms": 30000,
+    "byCategory": {
+      "implement": 20000,
+      "dispatch": 1000,
+      "review": 9000,
+      "merge": 0
+    },
+    "laneContentionMs": 0,
+    "redo": {
+      "stack-conflict": {
+        "ms": 0,
+        "beads": []
+      },
+      "cancelled": {
+        "ms": 0,
+        "beads": []
+      },
+      "retry": {
+        "ms": 0,
+        "beads": []
+      }
+    },
+    "segments": [
+      {
+        "kind": "implement",
+        "bead": "verify.1",
+        "label": "impl:verify.1",
+        "via": null,
+        "start": "2026-10-01T00:00:10.000Z",
+        "ms": 20000
+      },
+      {
+        "kind": "dispatch",
+        "bead": "verify.1",
+        "label": "chain → review:verify.1",
+        "via": null,
+        "start": "2026-10-01T00:00:30.000Z",
+        "ms": 1000
+      },
+      {
+        "kind": "review",
+        "bead": "verify.1",
+        "label": "review:verify.1",
+        "via": "chain",
+        "start": "2026-10-01T00:00:31.000Z",
+        "ms": 9000
+      },
+      {
+        "kind": "merge",
+        "bead": "verify.1",
+        "label": "merge:verify.1",
+        "via": "chain",
+        "start": "2026-10-01T00:00:40.000Z",
+        "ms": 0
+      }
+    ]
+  },
+  "bottleneck": {
+    "bead": "verify.1",
+    "ms": 30000,
+    "share": 1,
+    "byCategory": {
+      "implement": 20000,
+      "dispatch": 1000,
+      "review": 9000,
+      "merge": 0
+    },
+    "implByTool": {},
+    "calls": []
+  },
+  "lane": {
+    "busyMs": 0,
+    "seamMs": 0,
+    "spanMs": 0,
+    "merges": 1,
+    "firstTryFailed": 0,
+    "firstTryKnown": 1,
+    "queueWaitMs": 0,
+    "stackWaitMs": 0,
+    "peakQueue": 0
+  },
+  "runtime": {
+    "scope": "all-agent concurrency",
+    "slots": null,
+    "peak": 1,
+    "fullMs": 0
+  },
+  "taskSlots": {
+    "scope": "task-slot concurrency",
+    "cap": 1,
+    "peak": 1,
+    "fullMs": 30000
+  },
+  "concurrency": {
+    "scope": "all-agent concurrency",
+    "dispatches": 2,
+    "wallMs": 30000,
+    "busyMs": 29000,
+    "byActive": {
+      "0": 1000,
+      "1": 29000
+    },
+    "peak": 1,
+    "kinds": [
+      {
+        "kind": "impl",
+        "mapped": true,
+        "ms": 20000,
+        "n": 1
+      },
+      {
+        "kind": "review",
+        "mapped": true,
+        "ms": 9000,
+        "n": 1
+      }
+    ],
+    "coordinatorMergeMs": 0
+  },
+  "tests": {
+    "busyMs": 20000,
+    "testMs": 0,
+    "pollMs": 0,
+    "cappedCalls": 0
+  },
+  "slowTests": [],
+  "conflicts": [],
+  "simulation": {
+    "estimate": true,
+    "window": "first dispatch to last landing",
+    "asRunMs": 29000,
+    "actualMs": 30000,
+    "fit": 0.97,
+    "unlimitedSlotsMs": 29000,
+    "unlimitedLanesMs": 29000,
+    "lowerBoundMs": 29000,
+    "graphChain": [
+      "verify.1"
+    ],
+    "whatIfs": [],
+    "verdict": "bead-bound"
+  },
+  "unmeasured": [
+    "availability/readiness timing unknown for 1 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary",
+    "1 landed bead(s) with no merge in the coordinator's log: lane time 0"
+  ],
+  "context": {
+    "agents": [
+      {
+        "harness": "codex",
+        "role": "coordinator",
+        "label": "coordinator",
+        "file": "/private/tmp/ufz-correction-coverage/metrics-probe/run/codex/sessions/2026/10/01/rollout-2026-10-01T00-00-00-01c0ffee-0000-7000-8000-000000000000.jsonl",
+        "model": null,
+        "requests": 0,
+        "peak": null,
+        "peakAt": null,
+        "first": null,
+        "window": null,
+        "windowSource": null,
+        "peakPct": null,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": "no usage rows"
+      },
+      {
+        "harness": "codex",
+        "role": "agent",
+        "label": "impl_verify_1",
+        "file": "/private/tmp/ufz-correction-coverage/metrics-probe/run/codex/sessions/2026/10/01/rollout-2026-10-01T00-00-00-01c0ffee-0000-7000-8000-000000000001.jsonl",
+        "model": null,
+        "requests": 0,
+        "peak": null,
+        "peakAt": null,
+        "first": null,
+        "window": null,
+        "windowSource": null,
+        "peakPct": null,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": "no usage rows"
+      },
+      {
+        "harness": "codex",
+        "role": "agent",
+        "label": "review_verify_1",
+        "file": "/private/tmp/ufz-correction-coverage/metrics-probe/run/codex/sessions/2026/10/01/rollout-2026-10-01T00-00-00-01c0ffee-0000-7000-8000-000000000002.jsonl",
+        "model": null,
+        "requests": 0,
+        "peak": null,
+        "peakAt": null,
+        "first": null,
+        "window": null,
+        "windowSource": null,
+        "peakPct": null,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": "no usage rows"
+      }
+    ],
+    "summary": {
+      "n": 3,
+      "measured": 0,
+      "high": 0,
+      "multiTask": 0,
+      "compacted": 0,
+      "compactions": 0,
+      "byCause": {
+        "cap": 0,
+        "early": 0,
+        "idle": 0,
+        "manual": 0,
+        "unknown": 0
+      },
+      "coordinator": {
+        "peak": null,
+        "window": null,
+        "peakPct": null,
+        "compactions": 0
+      },
+      "max": null,
+      "reasons": [
+        "context unmeasured for 3 agent(s): coordinator (no usage rows), impl_verify_1 (no usage rows), review_verify_1 (no usage rows)",
+        "coordinator rows counted from the session start (no invocation found)"
+      ]
+    }
+  },
+  "summary": [
+    "Profile: verify · 1 invocation · 2026-10-01T00:00Z → 2026-10-01T00:00Z · wall 30s (task graph 30s) · agents 2 (timed 2) · beads dispatched 1, landed 1, planned 1",
+    "Profile: graph scope — observed invocation/residual graph; historical topology is unknown",
+    "Profile: shape — 1 beads · 0 edges · depth 1 · width 1 · beads per level 1",
+    "Profile: bound — graph lower bound 29s (unlimited slots and merge lanes) · model of the run 29s (cap 1, one merge lane) vs actual 30s (97%) → bead-bound: verify.1 alone set the pace — split it or make it faster",
+    "Profile: critical path — 30s = implement 20s · review 9s · dispatch 1s",
+    "Profile: diagnosis — planning 0s (0% of first dispatch to last landing)",
+    "Profile: critical chain — verify.1 implement+review+merge 29s",
+    "Profile: bottleneck — verify.1 — 30s on the critical path (100%) · implement 20s · review 9s · dispatch 1s · implement on the path 20s: model 20s · dependents 0",
+    "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 0s over 0 of 1 landed beads",
+    "Profile: tests — implementers and fixers, summed: 0s running tests and 0s polling background runs, 0% of their 20s · 0 Bash call(s) ran into the 10-minute tool limit",
+    "Profile: merge lane — busy 0s of 0s (0%) · seam reviews and fixes 0s (0% of busy) · 1 merge dispatches, first try not merged for 0 of 1 · queue wait 0s total, peak 0 waiting · stack-parent wait 0s",
+    "Profile: concurrency — 2 dispatches over 30s · a dispatch running 29s (97%) · dispatches at once: 0 for 3% · 1 for 97% of the time · peak 1",
+    "Profile: dispatch time by kind, summed — impl 20s (1) · review 9s (1) · merges run by the coordinator 0s (1)",
+    "Profile: runtime — peak 1 agents at once · slot cap 1",
+    "Profile: concurrency scope — all-agent concurrency peak 1 · task-slot concurrency peak 1, cap 1 (ordinary chains retain a slot through merge)",
+    "Profile: what-if estimate — none saves more than 1% of the modelled 29s; first dispatch to last landing, planning retained",
+    "Profile: context — unavailable — no usage rows in any transcript",
+    "Profile: unmeasured — availability/readiness timing unknown for 1 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary; 1 landed bead(s) with no merge in the coordinator's log: lane time 0"
+  ]
+}

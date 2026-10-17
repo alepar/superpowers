@@ -1,0 +1,108 @@
+{
+  "guideMapping": {
+    "after": "operative-guide-1.md",
+    "baseline": "operative-guide-2.md"
+  },
+  "subjects": [
+    {
+      "blinded": "response-01.md",
+      "variant": "baseline",
+      "subject": 3,
+      "original": "/private/tmp/ufz-correction-behavior-eval/baseline_3-response.md",
+      "rawSha256": "046bb7ad8db29306d589252e6015ebdeafbbc4b8057745206b7760aa3d479234",
+      "maskedSha256": "e49427ba6320b7e43141d3086cc0cea9385a2478d656c99bc9af76d9b812b272",
+      "guide": "operative-guide-2.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-02.md",
+      "variant": "baseline",
+      "subject": 1,
+      "original": "/private/tmp/ufz-correction-behavior-eval/baseline_1-response.md",
+      "rawSha256": "2aa0cde3bd3677f2502ebf8ea3feae44c75446fd8baf174ef88f75b038f09e2d",
+      "maskedSha256": "6dc7b5d32bdf311a043a0a5725cd657846d976ef5efa9856cb3b58a1382a4e24",
+      "guide": "operative-guide-2.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-03.md",
+      "variant": "after",
+      "subject": 2,
+      "original": "/private/tmp/ufz-correction-behavior-eval/after_2-response.md",
+      "rawSha256": "2c5d4baef45734186db1cc517938ce4985380224482a4dc1d4c6336f69c005d0",
+      "maskedSha256": "eeba3f1071c5a82272ce30b104d25963324b9321e24a7961790d142e16ecd4e0",
+      "guide": "operative-guide-1.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-04.md",
+      "variant": "after",
+      "subject": 1,
+      "original": "/private/tmp/ufz-correction-behavior-eval/after_1-response.md",
+      "rawSha256": "994240d43b96afbdc93065da7d604c1c41016e93d2cd1f9b482d564727e8f39a",
+      "maskedSha256": "33867d267d2991318a2e7f8487251d91f6b121b0848d96da29dc3dce7be32edb",
+      "guide": "operative-guide-1.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-05.md",
+      "variant": "baseline",
+      "subject": 2,
+      "original": "/private/tmp/ufz-correction-behavior-eval/baseline_2-response.md",
+      "rawSha256": "33f276d33408b2715bf45c80c230addaabc2dead960648749a2c2cb937c615ed",
+      "maskedSha256": "22d87dcd0ccec221bc7b3bb79284bf2c1984eb0311bb0164fb9335a29e534158",
+      "guide": "operative-guide-2.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-06.md",
+      "variant": "after",
+      "subject": 4,
+      "original": "/private/tmp/ufz-correction-behavior-eval/after_4-response.md",
+      "rawSha256": "c128049a7fd3caf093ca1aac3851a339d3642de7e8307cc0b419f1fc7f78e13b",
+      "maskedSha256": "978cb8d5e1ca02cedac61bb5800ace635b682c0198ec5c1fa7c2eaaf415cbe50",
+      "guide": "operative-guide-1.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-07.md",
+      "variant": "after",
+      "subject": 3,
+      "original": "/private/tmp/ufz-correction-behavior-eval/after_3-response.md",
+      "rawSha256": "4c35be4975e067b49db6ad642955841d07b00b4d8fbcacc21f540e5d07866563",
+      "maskedSha256": "36d9e81983d0802ab98ecc20b52d53f367f699061a7c7dff30e6e1777ea64d8d",
+      "guide": "operative-guide-1.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-08.md",
+      "variant": "after",
+      "subject": 5,
+      "original": "/private/tmp/ufz-correction-behavior-eval/after_5-response.md",
+      "rawSha256": "ff51e395d8949cc0566e0ae9fe35921ad49d73ae7f4728a55778360dc895e20b",
+      "maskedSha256": "235530e28fa856d27d21a7c0a95f59cfa7b28ff017ba3ed12a5b8664de0506e7",
+      "guide": "operative-guide-1.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-09.md",
+      "variant": "baseline",
+      "subject": 4,
+      "original": "/private/tmp/ufz-correction-behavior-eval/baseline_4-response.md",
+      "rawSha256": "babd0d98f6d0b50eb3caa0f37b7eb83bf6e24963f6539bc26b0ae518cbb04832",
+      "maskedSha256": "fb974feaa56251db70fb79ce3a803fbc94312b881ee21c867d60d9a201fe3848",
+      "guide": "operative-guide-2.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    },
+    {
+      "blinded": "response-10.md",
+      "variant": "baseline",
+      "subject": 5,
+      "original": "/private/tmp/ufz-correction-behavior-eval/baseline_5-response.md",
+      "rawSha256": "500cc6b277b6b2c0f53187f9694983d6dec47135c2666cd52feb1a5e72b0a304",
+      "maskedSha256": "0e04f433924ef15833de2c3e123906e63745dc88382bfb745355976985f18c26",
+      "guide": "operative-guide-2.md",
+      "masking": "Only explicit variant filenames normalized; answer semantics/limitations intact. Label-blinded only; semantic wording can reveal differences."
+    }
+  ]
+}

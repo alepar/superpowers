@@ -1,0 +1,586 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-24-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-24-review.md",
+  "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+  "rawByteCount": 9804,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-24-review.md",
+    "durablePath": "task-report-history-r1/raw/task-24-review.md",
+    "sha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+    "byteCount": 9804,
+    "logicalRole": "review",
+    "ordinal": 24,
+    "logicalTaskId": "super-plan-ufz.27",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-24-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 16,
+      "rawText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed."
+    },
+    {
+      "line": 18,
+      "rawText": "Risk: a wrapper-only fix or sibling call site could leave the actual workflow unprotected. git grep at captured HEAD for report-status.*--collect located the real entrypoint in skills/super-auto/SKILL.md:458 and resume.md:29; both dispatch the changed script. The --collect branch at report-status:180-267 is the shared collector; all source-byte reads within it use the validated source path. hasBundle only checks candidate presence for null-review reconciliation and does not archive input bytes."
+    },
+    {
+      "line": 20,
+      "rawText": "Risk: regression of task .24 independent archive integrity gate. Read captured HEAD report-status:288-328 and --acceptance path. Ordinary status still hashes retained archived bytes at lines 311-316; --acceptance incorporates that read-only status. Those paths are unchanged by the diff, as are destination hash/conflict rules at lines 246-255. Retained archive-integrity evidence covers missing/corrupt final review, cluster, direct diff, manifest, slice and required bytes, plus independent human obligations."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 197,
+      "bodyLineStart": 1,
+      "rawText": "Status: CLEAN\nTask: super-plan-ufz.27 (Task 24)\nBase: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8\nHead: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a\n\n",
+      "bodyRawText": "Status: CLEAN\nTask: super-plan-ufz.27 (Task 24)\nBase: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8\nHead: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 14
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.27 (Task 24)\n",
+          "text": "Task: super-plan-ufz.27 (Task 24)",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 2,
+          "lineEnd": 2,
+          "byteStart": 14,
+          "byteEnd": 48
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8\n",
+          "text": "Base: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 48,
+          "byteEnd": 95
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a\n",
+          "text": "Head: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 4,
+          "lineEnd": 5,
+          "byteStart": 95,
+          "byteEnd": 196
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 9,
+      "byteStart": 197,
+      "byteEnd": 790,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.\n\n",
+      "bodyRawText": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.\n",
+          "text": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 216,
+          "byteEnd": 789
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Issues"
+      ],
+      "lineStart": 10,
+      "lineEnd": 14,
+      "byteStart": 790,
+      "byteEnd": 847,
+      "bodyLineStart": 11,
+      "rawText": "## Issues\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "Critical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 800,
+          "byteEnd": 816
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 816,
+          "byteEnd": 833
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 833,
+          "byteEnd": 846
+        }
+      ]
+    },
+    {
+      "section": "Focused source checks and reachability",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Focused source checks and reachability\n",
+      "hierarchy": [
+        "Focused source checks and reachability"
+      ],
+      "lineStart": 15,
+      "lineEnd": 21,
+      "byteStart": 847,
+      "byteEnd": 2656,
+      "bodyLineStart": 16,
+      "rawText": "## Focused source checks and reachability\nRisk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.\n\nRisk: a wrapper-only fix or sibling call site could leave the actual workflow unprotected. git grep at captured HEAD for report-status.*--collect located the real entrypoint in skills/super-auto/SKILL.md:458 and resume.md:29; both dispatch the changed script. The --collect branch at report-status:180-267 is the shared collector; all source-byte reads within it use the validated source path. hasBundle only checks candidate presence for null-review reconciliation and does not archive input bytes.\n\nRisk: regression of task .24 independent archive integrity gate. Read captured HEAD report-status:288-328 and --acceptance path. Ordinary status still hashes retained archived bytes at lines 311-316; --acceptance incorporates that read-only status. Those paths are unchanged by the diff, as are destination hash/conflict rules at lines 246-255. Retained archive-integrity evidence covers missing/corrupt final review, cluster, direct diff, manifest, slice and required bytes, plus independent human obligations.\n\n",
+      "bodyRawText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.\n\nRisk: a wrapper-only fix or sibling call site could leave the actual workflow unprotected. git grep at captured HEAD for report-status.*--collect located the real entrypoint in skills/super-auto/SKILL.md:458 and resume.md:29; both dispatch the changed script. The --collect branch at report-status:180-267 is the shared collector; all source-byte reads within it use the validated source path. hasBundle only checks candidate presence for null-review reconciliation and does not archive input bytes.\n\nRisk: regression of task .24 independent archive integrity gate. Read captured HEAD report-status:288-328 and --acceptance path. Ordinary status still hashes retained archived bytes at lines 311-316; --acceptance incorporates that read-only status. Those paths are unchanged by the diff, as are destination hash/conflict rules at lines 246-255. Retained archive-integrity evidence covers missing/corrupt final review, cluster, direct diff, manifest, slice and required bytes, plus independent human obligations.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.\n",
+          "text": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 889,
+          "byteEnd": 1641
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: a wrapper-only fix or sibling call site could leave the actual workflow unprotected. git grep at captured HEAD for report-status.*--collect located the real entrypoint in skills/super-auto/SKILL.md:458 and resume.md:29; both dispatch the changed script. The --collect branch at report-status:180-267 is the shared collector; all source-byte reads within it use the validated source path. hasBundle only checks candidate presence for null-review reconciliation and does not archive input bytes.\n",
+          "text": "Risk: a wrapper-only fix or sibling call site could leave the actual workflow unprotected. git grep at captured HEAD for report-status.*--collect located the real entrypoint in skills/super-auto/SKILL.md:458 and resume.md:29; both dispatch the changed script. The --collect branch at report-status:180-267 is the shared collector; all source-byte reads within it use the validated source path. hasBundle only checks candidate presence for null-review reconciliation and does not archive input bytes.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1642,
+          "byteEnd": 2142
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: regression of task .24 independent archive integrity gate. Read captured HEAD report-status:288-328 and --acceptance path. Ordinary status still hashes retained archived bytes at lines 311-316; --acceptance incorporates that read-only status. Those paths are unchanged by the diff, as are destination hash/conflict rules at lines 246-255. Retained archive-integrity evidence covers missing/corrupt final review, cluster, direct diff, manifest, slice and required bytes, plus independent human obligations.\n",
+          "text": "Risk: regression of task .24 independent archive integrity gate. Read captured HEAD report-status:288-328 and --acceptance path. Ordinary status still hashes retained archived bytes at lines 311-316; --acceptance incorporates that read-only status. Those paths are unchanged by the diff, as are destination hash/conflict rules at lines 246-255. Retained archive-integrity evidence covers missing/corrupt final review, cluster, direct diff, manifest, slice and required bytes, plus independent human obligations.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 2143,
+          "byteEnd": 2655
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Test evidence"
+      ],
+      "lineStart": 22,
+      "lineEnd": 29,
+      "byteStart": 2656,
+      "byteEnd": 4311,
+      "bodyLineStart": 23,
+      "rawText": "## Test evidence\nNo product tests run by reviewer. Read original source-capture.txt and red.log, green.log, test-scripts.log and archive-integrity.log at the measurement locations below. RED shows 10 passed / 13 failed and concretely demonstrates intermediate escape bytes archived before the fix. GREEN shows 23 passed / 0 failed. Existing suite reports 44 root acceptance assertions, integrated collection/evidence/gate/disposition/metrics pass, and All super-auto script tests passed. Archive integrity reports 15 scenarios passed. These are plausible focused live measurements for this task; no failures are glossed over or attributed away. Source capture describes temporary indexes and binds GREEN to the captured committed HEAD tree; git rev-parse HEAD identity and tree checks confirm the captured identities. Caller worktree status was empty when observed.\n\nTest changes commands (both succeeded):\n- git diff --stat 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n- git diff 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- same pathspec list\nOnly tests/super-auto/collection-symlinks-r1.sh was added (58 lines); existing tests were not edited, removed, skipped or weakened. The new tests invoke the real collector and assert exit status, explicit incomplete metadata/gaps and absence of archived sentinel bytes, with positive byte-preservation and cleanup replay controls.\n\n",
+      "bodyRawText": "No product tests run by reviewer. Read original source-capture.txt and red.log, green.log, test-scripts.log and archive-integrity.log at the measurement locations below. RED shows 10 passed / 13 failed and concretely demonstrates intermediate escape bytes archived before the fix. GREEN shows 23 passed / 0 failed. Existing suite reports 44 root acceptance assertions, integrated collection/evidence/gate/disposition/metrics pass, and All super-auto script tests passed. Archive integrity reports 15 scenarios passed. These are plausible focused live measurements for this task; no failures are glossed over or attributed away. Source capture describes temporary indexes and binds GREEN to the captured committed HEAD tree; git rev-parse HEAD identity and tree checks confirm the captured identities. Caller worktree status was empty when observed.\n\nTest changes commands (both succeeded):\n- git diff --stat 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n- git diff 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- same pathspec list\nOnly tests/super-auto/collection-symlinks-r1.sh was added (58 lines); existing tests were not edited, removed, skipped or weakened. The new tests invoke the real collector and assert exit status, explicit incomplete metadata/gaps and absence of archived sentinel bytes, with positive byte-preservation and cleanup replay controls.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No product tests run by reviewer. Read original source-capture.txt and red.log, green.log, test-scripts.log and archive-integrity.log at the measurement locations below. RED shows 10 passed / 13 failed and concretely demonstrates intermediate escape bytes archived before the fix. GREEN shows 23 passed / 0 failed. Existing suite reports 44 root acceptance assertions, integrated collection/evidence/gate/disposition/metrics pass, and All super-auto script tests passed. Archive integrity reports 15 scenarios passed. These are plausible focused live measurements for this task; no failures are glossed over or attributed away. Source capture describes temporary indexes and binds GREEN to the captured committed HEAD tree; git rev-parse HEAD identity and tree checks confirm the captured identities. Caller worktree status was empty when observed.\n",
+          "text": "No product tests run by reviewer. Read original source-capture.txt and red.log, green.log, test-scripts.log and archive-integrity.log at the measurement locations below. RED shows 10 passed / 13 failed and concretely demonstrates intermediate escape bytes archived before the fix. GREEN shows 23 passed / 0 failed. Existing suite reports 44 root acceptance assertions, integrated collection/evidence/gate/disposition/metrics pass, and All super-auto script tests passed. Archive integrity reports 15 scenarios passed. These are plausible focused live measurements for this task; no failures are glossed over or attributed away. Source capture describes temporary indexes and binds GREEN to the captured committed HEAD tree; git rev-parse HEAD identity and tree checks confirm the captured identities. Caller worktree status was empty when observed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2673,
+          "byteEnd": 3522
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands (both succeeded):\n",
+          "text": "Test changes commands (both succeeded):",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 3523,
+          "byteEnd": 3563
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- git diff --stat 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n",
+          "text": "git diff --stat 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 3563,
+          "byteEnd": 3863
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- git diff 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- same pathspec list\nOnly tests/super-auto/collection-symlinks-r1.sh was added (58 lines); existing tests were not edited, removed, skipped or weakened. The new tests invoke the real collector and assert exit status, explicit incomplete metadata/gaps and absence of archived sentinel bytes, with positive byte-preservation and cleanup replay controls.\n",
+          "text": "git diff 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0 -- same pathspec list\nOnly tests/super-auto/collection-symlinks-r1.sh was added (58 lines); existing tests were not edited, removed, skipped or weakened. The new tests invoke the real collector and assert exit status, explicit incomplete metadata/gaps and absence of archived sentinel bytes, with positive byte-preservation and cleanup replay controls.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 27,
+          "lineEnd": 28,
+          "byteStart": 3863,
+          "byteEnd": 4310
+        }
+      ]
+    },
+    {
+      "section": "Review integrity",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Review integrity\n",
+      "hierarchy": [
+        "Review integrity"
+      ],
+      "lineStart": 30,
+      "lineEnd": 32,
+      "byteStart": 4311,
+      "byteEnd": 4888,
+      "bodyLineStart": 31,
+      "rawText": "## Review integrity\nmerge-base --is-ancestor BASE HEAD exited 0. Both captured identities independently resolve with git rev-parse --verify <sha>^{commit}. Package construction succeeded (1 commit, 2 changed files); named DIFF_FILE is task-24-review-initial.diff. An initial attempt to pass both identities to one rev-parse --verify invocation returned Needed a single revision; corrected independent commands both passed. No missing-identity or skipped-check gap remains. No source, bead, branch, index or Herdr mutation; no review-owned worktree or reproduction was needed.\n\n",
+      "bodyRawText": "merge-base --is-ancestor BASE HEAD exited 0. Both captured identities independently resolve with git rev-parse --verify <sha>^{commit}. Package construction succeeded (1 commit, 2 changed files); named DIFF_FILE is task-24-review-initial.diff. An initial attempt to pass both identities to one rev-parse --verify invocation returned Needed a single revision; corrected independent commands both passed. No missing-identity or skipped-check gap remains. No source, bead, branch, index or Herdr mutation; no review-owned worktree or reproduction was needed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "merge-base --is-ancestor BASE HEAD exited 0. Both captured identities independently resolve with git rev-parse --verify <sha>^{commit}. Package construction succeeded (1 commit, 2 changed files); named DIFF_FILE is task-24-review-initial.diff. An initial attempt to pass both identities to one rev-parse --verify invocation returned Needed a single revision; corrected independent commands both passed. No missing-identity or skipped-check gap remains. No source, bead, branch, index or Herdr mutation; no review-owned worktree or reproduction was needed.\n",
+          "text": "merge-base --is-ancestor BASE HEAD exited 0. Both captured identities independently resolve with git rev-parse --verify <sha>^{commit}. Package construction succeeded (1 commit, 2 changed files); named DIFF_FILE is task-24-review-initial.diff. An initial attempt to pass both identities to one rev-parse --verify invocation returned Needed a single revision; corrected independent commands both passed. No missing-identity or skipped-check gap remains. No source, bead, branch, index or Herdr mutation; no review-owned worktree or reproduction was needed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 4331,
+          "byteEnd": 4887
+        }
+      ]
+    },
+    {
+      "section": "Check records",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Check records\n",
+      "hierarchy": [
+        "Check records"
+      ],
+      "lineStart": 33,
+      "lineEnd": 87,
+      "byteStart": 4888,
+      "byteEnd": 9224,
+      "bodyLineStart": 34,
+      "rawText": "## Check records\nOriginal records retained unchanged below; required live checks are supplied by matching live/pass GREEN and existing-suite measurements. The RED measurement is an intentional pre-fix demonstration, not a passing check. Archive-integrity evidence adds coverage of the preservation constraint.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"10f2aa827e282c7e3dba8f0b69384728ff3dfa57\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/test-scripts.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/archive-integrity.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n\n",
+      "bodyRawText": "Original records retained unchanged below; required live checks are supplied by matching live/pass GREEN and existing-suite measurements. The RED measurement is an intentional pre-fix demonstration, not a passing check. Archive-integrity evidence adds coverage of the preservation constraint.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"10f2aa827e282c7e3dba8f0b69384728ff3dfa57\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/test-scripts.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/archive-integrity.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Original records retained unchanged below; required live checks are supplied by matching live/pass GREEN and existing-suite measurements. The RED measurement is an intentional pre-fix demonstration, not a passing check. Archive-integrity evidence adds coverage of the preservation constraint.\n",
+          "text": "Original records retained unchanged below; required live checks are supplied by matching live/pass GREEN and existing-suite measurements. The RED measurement is an intentional pre-fix demonstration, not a passing check. Archive-integrity evidence adds coverage of the preservation constraint.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4905,
+          "byteEnd": 5198
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"10f2aa827e282c7e3dba8f0b69384728ff3dfa57\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/test-scripts.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/archive-integrity.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+          "text": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"10f2aa827e282c7e3dba8f0b69384728ff3dfa57\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/test-scripts.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.27/.superpowers/evidence/super-plan-ufz.27/archive-integrity.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/collection-symlinks-r1.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    },\n    {\n      \"sourceTree\": \"5263a31e4b3687b598eef5a5d490be067b0d5c2a\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.27; HOME=/tmp/sp-bce79baa/super-plan-ufz.27/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.27/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 36,
+          "lineEnd": 86,
+          "byteStart": 5199,
+          "byteEnd": 9223
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Failure attribution"
+      ],
+      "lineStart": 88,
+      "lineEnd": 90,
+      "byteStart": 9224,
+      "byteEnd": 9559,
+      "bodyLineStart": 89,
+      "rawText": "## Failure attribution\nNo recorded run failure history or relevant Recovery ownership records were present. No pre-existing-failure exoneration, run owner or discharge is inferred. RED is a source snapshot of the pre-fix collector with the new regression test, not a measured run-start baseline. No attribution associations asserted.\n\n",
+      "bodyRawText": "No recorded run failure history or relevant Recovery ownership records were present. No pre-existing-failure exoneration, run owner or discharge is inferred. RED is a source snapshot of the pre-fix collector with the new regression test, not a measured run-start baseline. No attribution associations asserted.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No recorded run failure history or relevant Recovery ownership records were present. No pre-existing-failure exoneration, run owner or discharge is inferred. RED is a source snapshot of the pre-fix collector with the new regression test, not a measured run-start baseline. No attribution associations asserted.\n",
+          "text": "No recorded run failure history or relevant Recovery ownership records were present. No pre-existing-failure exoneration, run owner or discharge is inferred. RED is a source snapshot of the pre-fix collector with the new regression test, not a measured run-start baseline. No attribution associations asserted.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 89,
+          "lineEnd": 89,
+          "byteStart": 9247,
+          "byteEnd": 9558
+        }
+      ]
+    },
+    {
+      "section": "Strengths",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Strengths\n",
+      "hierarchy": [
+        "Strengths"
+      ],
+      "lineStart": 91,
+      "lineEnd": 92,
+      "byteStart": 9559,
+      "byteEnd": 9804,
+      "bodyLineStart": 92,
+      "rawText": "## Strengths\nThe containment helper covers every existing collection source path without changing input selection or the independent archive gate. The focused fixture includes both escaped-source failures and valid-path/source-cleanup controls.\n",
+      "bodyRawText": "The containment helper covers every existing collection source path without changing input selection or the independent archive gate. The focused fixture includes both escaped-source failures and valid-path/source-cleanup controls.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The containment helper covers every existing collection source path without changing input selection or the independent archive gate. The focused fixture includes both escaped-source failures and valid-path/source-cleanup controls.\n",
+          "text": "The containment helper covers every existing collection source path without changing input selection or the independent archive gate. The focused fixture includes both escaped-source failures and valid-path/source-cleanup controls.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 92,
+          "lineEnd": 92,
+          "byteStart": 9572,
+          "byteEnd": 9804
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: CLEAN",
+      "text": "Status: CLEAN",
+      "rawText": "Status: CLEAN\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 14,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.27 (Task 24)",
+      "text": "Task: super-plan-ufz.27 (Task 24)",
+      "rawText": "Task: super-plan-ufz.27 (Task 24)\n",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "byteStart": 14,
+      "byteEnd": 48,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "Base: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8",
+      "text": "Base: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8",
+      "rawText": "Base: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 48,
+      "byteEnd": 95,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "Head: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0",
+      "text": "Head: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a",
+      "rawText": "Head: e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0\nSource tree: 5263a31e4b3687b598eef5a5d490be067b0d5c2a\n",
+      "lineStart": 4,
+      "lineEnd": 5,
+      "byteStart": 95,
+      "byteEnd": 196,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 800,
+      "byteEnd": 816,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 12,
+      "lineEnd": 12,
+      "byteStart": 816,
+      "byteEnd": 833,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 833,
+      "byteEnd": 846,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

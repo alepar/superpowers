@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+  "artifact": "legacy-report-adapters-r1/17-task-14-report-fix.md",
+  "kind": "task-report",
+  "verdict": "FIXED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000009177",
+      "position": 1,
+      "key": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "text": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+FAIL both actual replay paths share an idempotent sync boundary before filing: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   'auto: specs-committed must replay sync before filing',
++   'auto: landed amend-checked must use the same specs-committed boundary',
++   'design: specs-committed must replay sync before filing',
++   'design: landed amend-checked must use the same specs-committed boundary',
++   'producer sync missing: committed sections',
++   'producer sync missing: already completed',
++   'producer sync missing: adopt existing owners',
++   'producer sync missing: retain `specs-committed`',
++   'producer sync missing: before filing or advancing',
++   'producer: postcommit degraded/applied policy must exclude sync'
++ ]
+- []
+
+PASS literal complete contract is accepted
+PASS auto: missing-sync replay is detected
+PASS auto: sync repeated in amend-checked before the common boundary is detected
+PASS design: missing-sync replay is detected
+PASS design: sync repeated in amend-checked before the common boundary is detected
+PASS already-completed replay lost
+PASS owner adoption lost
+PASS failed sync advances state
+PASS sync covered by degraded/applied policy
+9 passed / 1 failed

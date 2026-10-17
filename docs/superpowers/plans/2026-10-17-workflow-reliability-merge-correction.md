@@ -30,18 +30,18 @@ Source authorization is main's received message mQ0VuyiMVWeP in d4xcusxkUh1: the
 **Files:** skills/super-code/coordinator.js; tests/super-code/replay-harness.mjs (or a focused harness consumer).
 **Consumes:** existing startAttempt/parentsMerged/scheduler-slot and verification completion contracts.
 **Produces:** a verification-only child awaiting a parent merge does not monopolize the slot needed by failure settlement, cancellation or triage; valid completion still waits for parents and holds/admission correctly.
-- [ ] Add a deterministic failing concurrency=1 parent-merge-failure/verification-child regression with bounded deadlock detection and ordinary-child/successful-parent controls.
-- [ ] Verify RED against c4 source, then apply the smallest lifecycle fix, keeping slot release/reacquisition/abandon semantics balanced.
-- [ ] Run focused regression plus full replay once; record exact commands/results; commit and obtain fresh spec+quality review.
+- [x] Add a deterministic failing concurrency=1 parent-merge-failure/verification-child regression with bounded deadlock detection and ordinary-child/successful-parent controls.
+- [x] Verify RED against c4 source, then apply the smallest lifecycle fix, keeping slot release/reacquisition/abandon semantics balanced.
+- [x] Run focused regression plus full replay once; record exact commands/results; commit and obtain fresh spec+quality review.
 
 ### Task 2: Review archive containment and explicit null-result reconciliation
 
 **Files:** skills/super-auto/scripts/report-status; tests/super-auto/collection-symlinks-r1.sh; focused new correction tests if needed.
 **Consumes:** settled invocation identity, collection source binding and archive ownership.
 **Produces:** destination path components cannot redirect collection outside its owned archive; a recovered report may explicitly reconcile a settled null result with immutable provenance/history rather than rewriting the original outcome.
-- [ ] Read retained round2 probes and actual collection code; reproduce both defects in private fixtures with positive controls.
-- [ ] Add failing behavioral tests before fixes; reject unsafe destination components without outside writes and support a narrowly validated recovery transition.
-- [ ] Test idempotence, mismatched identity, original null/UNAVAILABLE preservation and supported successful collection; commit/review.
+- [x] Read retained round2 probes and actual collection code; reproduce both defects in private fixtures with positive controls.
+- [x] Add failing behavioral tests before fixes; reject unsafe destination components without outside writes and support a narrowly validated recovery transition.
+- [x] Test idempotence, mismatched identity, original null/UNAVAILABLE preservation and supported successful collection; commit/review.
 
 ### Task 3: Recovery kinds, contradictory attribution and supported acceptance population
 
@@ -49,9 +49,9 @@ Source authorization is main's received message mQ0VuyiMVWeP in d4xcusxkUh1: the
 **Depends:** Task2 for report-status edits; policy review for ledger/retained-source contract.
 **Consumes:** immutable reviewSource binding, recovery obligations, runFailure attribution evidence, ledger producers and acceptance criteria.
 **Produces:** provenance metadata is not invented measurement work; contradictory same-tree attribution stays a gap even with pre-run classification; ledger-only unresolved findings cannot silently escape applicable root acceptance.
-- [ ] Trace real producer/reader/acceptance records; preserve original bindings and historical contradictions.
-- [ ] Write failing integrated controls with independently satisfied prerequisites, including missing/malformed provenance, deferred live measurements and disputed ledger-only findings.
-- [ ] Apply minimal typed consumer/contract changes after independent policy ruling; no blanket clearance of unknown evidence. Run focused checks; commit/review.
+- [x] Trace real producer/reader/acceptance records; preserve original bindings and historical contradictions.
+- [x] Write failing integrated controls with independently satisfied prerequisites, including missing/malformed provenance, deferred live measurements and disputed ledger-only findings.
+- [x] Apply minimal typed consumer/contract changes after independent policy ruling; no blanket clearance of unknown evidence. Run focused checks; commit/review.
 
 ### Task 4: Authoritative review selection with explicit incomplete direct review
 
@@ -59,17 +59,17 @@ Source authorization is main's received message mQ0VuyiMVWeP in d4xcusxkUh1: the
 **Depends:** Tasks1/3 for shared code; independent policy review.
 **Consumes:** immutable Git review source, live run archive manifests and retained historical run.md snapshots.
 **Produces:** archived fixture snapshots cannot acquire current omission authority; invalid provenance never authorizes exclusion, while independently available bounded product source can receive a source-bound explicitly incomplete review and retains all gaps.
-- [ ] Reproduce nested run.md authority failure with a valid product edit and invalid archived reference; establish authoritative producer boundary from approved spec/evidence.
-- [ ] Add failing tests proving no unsafe omission and no false clean whole-branch verdict; implement bounded correction with explicit evidence and fresh independent policy review.
-- [ ] Refresh actual selection against the branch, preserve old690gaps, and distinguish newly usable source review from validated archive evidence. Commit/review.
+- [x] Reproduce nested run.md authority failure with a valid product edit and invalid archived reference; establish authoritative producer boundary from approved spec/evidence.
+- [x] Add failing tests proving no unsafe omission and no false clean whole-branch verdict; implement bounded correction with explicit evidence and fresh independent policy review.
+- [x] Refresh actual selection against the branch, preserve old690gaps, and distinguish newly usable source review from validated archive evidence. Commit/review.
 
 ### Task 5: Idempotent Key Abstractions synchronization during resume
 
 **Files:** skills/super-auto/resume.md; matching super-design/caller contracts only if needed; tests/super-auto/test-contract-lint.sh or a focused extraction/execution regression.
 **Consumes:** persisted specs-committed state and existing Key Abstractions sync requirements.
 **Produces:** resumed path cannot advance to filing/implementation with stale abstractions after a crash between spec commit and sync.
-- [ ] Trace both amendment replay paths and prepare a failing regression for required sync before downstream advance.
-- [ ] Apply minimal idempotent sync requirement; run focused checks and fresh instruction/spec review. Do not modify scout owner identity/dissolution scope. Commit/review.
+- [x] Trace both amendment replay paths and prepare a failing regression for required sync before downstream advance.
+- [x] Apply minimal idempotent sync requirement; run focused checks and fresh instruction/spec review. Do not modify scout owner identity/dissolution scope. Commit/review.
 
 ### Task 6: Actual evidence reconciliation, final validation and merge gate
 
@@ -98,3 +98,7 @@ Source authorization is main's received message mQ0VuyiMVWeP in d4xcusxkUh1: the
 |3/6|root eligibility|gate contract remains strict; assessor supplies actual judgments|
 |4/6|review inputs|new source selection must not erase historical coverage gaps|
 |5/6|instruction evidence|fresh source-specific sync behavior check required|
+
+## Final source freeze boundary (2026-10-17)
+
+Tasks1–5 and the five Task6 source seams have independent clean scoped reviews. The separately bounded final whole-branch fix wave is committed at4911223a; its scoped re-review is pending at this entry. Task6 checkboxes above intentionally remain open for actual final evidence and root acceptance. Subsequent measurement, behavioral assessment, exact-ref disposition and merge-completion facts are recorded append-only in the run directory and corrective SDD ledger; no unchecked requirement is implied complete by this source freeze. Final execution uses a clean standalone clone of the committed source; later run-only evidence commits require an explicit outside-run equality proof. No push/release authorization is added.

@@ -1,0 +1,1018 @@
+{
+  "version": 1,
+  "ordinal": 36,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+  "originalArtifact": "task-report-history-r1/raw/task-20-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-20-report.md",
+  "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+  "rawByteCount": 214271,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      214271
+    ],
+    "method": "complete raw bytes displayed in 16 bounded overlapping chunks: [0,126000), [125963,140018), [139909,154028), [153981,168074), [167968,182004), [181938,196087), [195999,210008), [209978,214271). Initial 126000:140000 decode failed with no raw output and was re-read on newline boundaries.",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/8",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/36-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED, with a confirmed unresolved caller compatibility seam; this is not an acceptance-ready claim for both execution paths."
+    },
+    {
+      "line": 106,
+      "rawText": "  \"status\": \"IMPLEMENTED\","
+    },
+    {
+      "line": 117,
+      "rawText": "  \"completionKind\": \"implementation\","
+    },
+    {
+      "line": 178,
+      "rawText": "Status: FIXED in 633c351b1a2efc5b84dfde39ca2defd69ed2c6e8, superseding the historical unresolved caller concern above. Caller/root acceptance and changed-instruction evaluation remain pending."
+    },
+    {
+      "line": 232,
+      "rawText": "  \"status\": \"FIXED\","
+    },
+    {
+      "line": 236,
+      "rawText": "  \"completionKind\": \"implementation\","
+    },
+    {
+      "line": 2782,
+      "rawText": "  partial metrics fixture: {\"metrics\":[\"Metrics: UNAVAILABLE (merges) — the Finish ledger re-read returned null or unavailable transport (unreadable); no ledger counts derived; this invocation only: completed 1 (parked 0) · escalated 0 · pending retry 0 · append-failed 0; known historical FIXED 1 (supported records only)\",\"Metrics: UNAVAILABLE (completions) — the Finish ledger re-read returned null or unavailable transport (unreadable); no ledger counts derived; this invocation only: completed 1 (parked 0) · escalated 0 · pending retry 0 · append-failed 0; known historical FIXED 1 (supported records only)\",\"Metrics: UNAVAILABLE (fix-pass) — the Finish ledger re-read returned null or unavailable transport (unreadable); no ledger counts derived; this invocation only: completed 1 (parked 0) · escalated 0 · pending retry 0 · append-failed 0; known historical FIXED 1 (supported records only)\",\"Metrics: UNAVAILABLE (ledger-check) — the Finish ledger re-read returned null or unavailable transport (unreadable); no ledger counts derived; this invocation only: completed 1 (parked 0) · escalated 0 · pending retry 0 · append-failed 0; known historical FIXED 1 (supported records only)\"],\"evidence\":{\"ledger\":{\"status\":\"unreadable\"},\"completed\":[\"bd-101\"],\"findings\":{\"status\":\"unavailable\",\"reason\":\"finding population requires scope-dispositions --project run.md\"},\"gaps\":[\"read-ledger:finish: ledger transport unreadable\",\"read-ledger:finish:retry: ledger transport unreadable\",\"run-wide ledger totals unavailable: unreadable\"],\"git\":{\"status\":\"observed\",\"ids\":[\"bd-101\"]},\"fixHistory\":{\"scope\":\"supported known durable records (partial until Finish ledger read)\",\"attempts\":1,\"fixed\":1}}}"
+    },
+    {
+      "line": 2792,
+      "rawText": "  discrepant metrics fixture: {\"metrics\":[\"Metrics: merges 1 · merge-failed 0 · rebase-conflicts 0 · seam-reviews 0 (fixed 0) · check-fails 0 (fixed 0)\",\"Metrics: completions — review clean 1 · after fix pass 0 · parked 0 · re-entry closes 0 · dispatched early 0 · cancelled 0\",\"Metrics: fix-pass — entered 0 · FIXED 0 · BLOCKED 0 (legacy event lines); durable attempts 1 · historical FIXED 1; repaired findings unavailable (use scope-dispositions --project)\",\"Metrics: ledger-check ok · append-failed 0 · append-retried 0 · scope: observed ledger; completed after available tracker reconciliation · git-only [bd-999] · ledger-only-git [bd-101] · gaps: Finish recovery: unsupported recovery version; Recovery gap: 99 progress.md; ledger/Git identities differ\"],\"evidence\":{\"ledger\":{\"status\":\"valid\",\"kept\":10,\"total\":10,\"landings\":[\"bd-101\"]},\"completed\":[\"bd-101\"],\"findings\":{\"status\":\"unavailable\",\"reason\":\"finding population requires scope-dispositions --project run.md\"},\"gaps\":[\"Finish recovery: unsupported recovery version\",\"Recovery gap: 99 progress.md\",\"ledger/Git identities differ\"],\"git\":{\"status\":\"observed\",\"ids\":[\"bd-999\"]},\"fixHistory\":{\"scope\":\"supported durable records in observed sources\",\"attempts\":1,\"fixed\":1},\"discrepancies\":{\"ledgerOnly\":[],\"completedOnly\":[],\"gitOnly\":[\"bd-999\"],\"ledgerOnlyGit\":[\"bd-101\"]}}}"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/0",
+      "roles": [
+        "status-context",
+        "actual-defect-qualification"
+      ],
+      "span": [
+        31,
+        171
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/1",
+      "roles": [
+        "actual-defect-observation",
+        "historical-failure-evidence"
+      ],
+      "span": [
+        5188,
+        5671
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/2",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        6851,
+        7251
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/3",
+      "roles": [
+        "actual-concern-defect-assertion"
+      ],
+      "span": [
+        7865,
+        8518
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/4",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        8518,
+        8721
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/5",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        8721,
+        8925
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/6",
+      "roles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        14335,
+        14528
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/7",
+      "roles": [
+        "historical-finding-reiteration",
+        "repair-claim"
+      ],
+      "span": [
+        14561,
+        15531
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/8/semanticPassages/8",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        21491,
+        21854
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "Status: IMPLEMENTED, with a confirmed unresolved caller compatibility seam; this is not an acceptance-ready claim for both execution paths.\n",
+      "text": "Status: IMPLEMENTED, with a confirmed unresolved caller compatibility seam; this is not an acceptance-ready claim for both execution paths.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 31,
+      "byteEnd": 171,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Task 20 / super-plan-ufz.23",
+      "rawSectionOrdinal": 1,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23"
+      ],
+      "semanticRoles": [
+        "status-context",
+        "actual-defect-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Task 20 / super-plan-ufz.23",
+        "sectionOrdinal": 1,
+        "positionInSection": 1,
+        "rawSection": "Task 20 / super-plan-ufz.23",
+        "rawPositionInSection": 1,
+        "byteStart": 31,
+        "byteEnd": 171,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "FAIL, retained concern: bash tests/super-code/test-dispatch-text.sh exited 1 (0.74 seconds). Non-review builder calls fail before producing their dispatch file; the final excerpt includes \"[FAIL] exits 0\", expected 0/got 1, and cat reporting no impl-ep.2.md. This is a confirmed caller regression caused by the new fail-closed omitted-ID startup behavior, not an unrelated/pre-existing failure. The suite exits before its final summary, so later tests were unmeasured. See Concerns.\n",
+      "text": "FAIL, retained concern: bash tests/super-code/test-dispatch-text.sh exited 1 (0.74 seconds). Non-review builder calls fail before producing their dispatch file; the final excerpt includes \"[FAIL] exits 0\", expected 0/got 1, and cat reporting no impl-ep.2.md. This is a confirmed caller regression caused by the new fail-closed omitted-ID startup behavior, not an unrelated/pre-existing failure. The suite exits before its final summary, so later tests were unmeasured. See Concerns.",
+      "listMarker": null,
+      "positionInSection": 11,
+      "lineStart": 53,
+      "lineEnd": 53,
+      "byteStart": 5188,
+      "byteEnd": 5671,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Verification and TDD",
+      "rawSectionOrdinal": 4,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Verification and TDD"
+      ],
+      "semanticRoles": [
+        "actual-defect-observation",
+        "historical-failure-evidence"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Verification and TDD",
+        "sectionOrdinal": 4,
+        "positionInSection": 11,
+        "rawSection": "Verification and TDD",
+        "rawPositionInSection": 11,
+        "byteStart": 5188,
+        "byteEnd": 5671,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Combined mechanical pressure scenarios preserve selected identity while ledger transport is malformed, retry is null, or a retry returns a competing token. No pressure result from a fresh instruction-following agent is claimed. Per explicit acceptance, the enclosing coordinator still owns and must measure fresh-agent changed-instruction/interrupted-invocation evaluation. No new agent was spawned.\n",
+      "text": "Combined mechanical pressure scenarios preserve selected identity while ledger transport is malformed, retry is null, or a retry returns a competing token. No pressure result from a fresh instruction-following agent is claimed. Per explicit acceptance, the enclosing coordinator still owns and must measure fresh-agent changed-instruction/interrupted-invocation evaluation. No new agent was spawned.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 61,
+      "lineEnd": 61,
+      "byteStart": 6851,
+      "byteEnd": 7251,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Assertions and pressure limits",
+      "rawSectionOrdinal": 5,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Assertions and pressure limits"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Assertions and pressure limits",
+        "sectionOrdinal": 5,
+        "positionInSection": 2,
+        "rawSection": "Assertions and pressure limits",
+        "rawPositionInSection": 2,
+        "byteStart": 6851,
+        "byteEnd": 7251,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "list-item",
+      "rawText": "1. Confirmed ordinary-subagent caller seam remains unresolved by parent direction: dispatch-text.mjs loadBuilders executes coordinator startup with agent always returning null. Its config currently passes persisted invocationId only for reviewOutput modes. Non-review ordinary-subagent modes therefore now encounter missing identity and throw; the caller suite measures this. The existing fixtures already have persisted identities, but legacy/no-identity compatibility also needs the parent's bounded assessment. The two-path preservation obligation cannot be claimed satisfied until that seam is repaired and tested. dispatch-text.mjs was not edited.\n",
+      "text": "Confirmed ordinary-subagent caller seam remains unresolved by parent direction: dispatch-text.mjs loadBuilders executes coordinator startup with agent always returning null. Its config currently passes persisted invocationId only for reviewOutput modes. Non-review ordinary-subagent modes therefore now encounter missing identity and throw; the caller suite measures this. The existing fixtures already have persisted identities, but legacy/no-identity compatibility also needs the parent's bounded assessment. The two-path preservation obligation cannot be claimed satisfied until that seam is repaired and tested. dispatch-text.mjs was not edited.",
+      "listMarker": "1. ",
+      "positionInSection": 1,
+      "lineStart": 69,
+      "lineEnd": 69,
+      "byteStart": 7865,
+      "byteEnd": 8518,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 7,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Concerns"
+      ],
+      "semanticRoles": [
+        "actual-concern-defect-assertion"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Concerns",
+        "sectionOrdinal": 7,
+        "positionInSection": 1,
+        "rawSection": "Concerns",
+        "rawPositionInSection": 1,
+        "byteStart": 7865,
+        "byteEnd": 8518,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "list-item",
+      "rawText": "2. Fresh-agent changed-instruction evaluation is caller-owned and pending. Mechanical tests do not establish uuidgen instruction compliance by a real agent, nor real Workflow resume recording semantics.\n",
+      "text": "Fresh-agent changed-instruction evaluation is caller-owned and pending. Mechanical tests do not establish uuidgen instruction compliance by a real agent, nor real Workflow resume recording semantics.",
+      "listMarker": "2. ",
+      "positionInSection": 2,
+      "lineStart": 70,
+      "lineEnd": 70,
+      "byteStart": 8518,
+      "byteEnd": 8721,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 7,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Concerns"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Concerns",
+        "sectionOrdinal": 7,
+        "positionInSection": 2,
+        "rawSection": "Concerns",
+        "rawPositionInSection": 2,
+        "byteStart": 8518,
+        "byteEnd": 8721,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "list-item",
+      "rawText": "3. Captured-source binding is task .29-owned. Full suite, independent review, caller acceptance, root closure and human approval remain pending. No baseline exoneration is claimed for the caller failure.\n",
+      "text": "Captured-source binding is task .29-owned. Full suite, independent review, caller acceptance, root closure and human approval remain pending. No baseline exoneration is claimed for the caller failure.",
+      "listMarker": "3. ",
+      "positionInSection": 3,
+      "lineStart": 71,
+      "lineEnd": 71,
+      "byteStart": 8721,
+      "byteEnd": 8925,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 7,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Concerns"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Concerns",
+        "sectionOrdinal": 7,
+        "positionInSection": 3,
+        "rawSection": "Concerns",
+        "rawPositionInSection": 3,
+        "byteStart": 8721,
+        "byteEnd": 8925,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Status: FIXED in 633c351b1a2efc5b84dfde39ca2defd69ed2c6e8, superseding the historical unresolved caller concern above. Caller/root acceptance and changed-instruction evaluation remain pending.\n",
+      "text": "Status: FIXED in 633c351b1a2efc5b84dfde39ca2defd69ed2c6e8, superseding the historical unresolved caller concern above. Caller/root acceptance and changed-instruction evaluation remain pending.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 178,
+      "lineEnd": 178,
+      "byteStart": 14335,
+      "byteEnd": 14528,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Fix pass",
+      "rawSectionOrdinal": 11,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Fix pass"
+      ],
+      "semanticRoles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Fix pass",
+        "sectionOrdinal": 11,
+        "positionInSection": 1,
+        "rawSection": "Fix pass",
+        "rawPositionInSection": 1,
+        "byteStart": 14335,
+        "byteEnd": 14528,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "The Important finding was verified: the old pre-loop extraction executed operational Resume with a null-returning agent and passed selected Launch invocationId only for review-output kinds. The fix returns the existing real builders after declaration/state initialization and before operational Resume. lastPlanned moved before that boundary because implementPrompt reads it. Complete coordinator source remains available for hoisted function declarations. No public startup argument, synthetic identity/acknowledgment, minted rendering token, replacement engine or new dispatch was added. A throwing operational adapter catches any accidental loader dispatch. All kinds receive a safe identity from the selected last Launch unchanged when present; legacy non-review rendering leaves identity unresolved. Strict .29 review identity/equality/source-binding gates and write guards are untouched, as is strict live missing/unsafe-ID failure and awaited Launch persistence.\n",
+      "text": "The Important finding was verified: the old pre-loop extraction executed operational Resume with a null-returning agent and passed selected Launch invocationId only for review-output kinds. The fix returns the existing real builders after declaration/state initialization and before operational Resume. lastPlanned moved before that boundary because implementPrompt reads it. Complete coordinator source remains available for hoisted function declarations. No public startup argument, synthetic identity/acknowledgment, minted rendering token, replacement engine or new dispatch was added. A throwing operational adapter catches any accidental loader dispatch. All kinds receive a safe identity from the selected last Launch unchanged when present; legacy non-review rendering leaves identity unresolved. Strict .29 review identity/equality/source-binding gates and write guards are untouched, as is strict live missing/unsafe-ID failure and awaited Launch persistence.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 182,
+      "lineEnd": 182,
+      "byteStart": 14561,
+      "byteEnd": 15531,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Finding and bounded repair",
+      "rawSectionOrdinal": 12,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Fix pass",
+        "Finding and bounded repair"
+      ],
+      "semanticRoles": [
+        "historical-finding-reiteration",
+        "repair-claim"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Finding and bounded repair",
+        "sectionOrdinal": 12,
+        "positionInSection": 1,
+        "rawSection": "Finding and bounded repair",
+        "rawPositionInSection": 1,
+        "byteStart": 14561,
+        "byteEnd": 15531,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Fresh-agent changed-instruction evaluation remains caller-owned/pending; this fix changes no operative prose. Root sweep, enclosing independent review, integration/status decisions and human/root acceptance retain their owners and remain pending. No declined or evidence-only finding, root completion, live Workflow evaluation or baseline exoneration is claimed.\n",
+      "text": "Fresh-agent changed-instruction evaluation remains caller-owned/pending; this fix changes no operative prose. Root sweep, enclosing independent review, integration/status decisions and human/root acceptance retain their owners and remain pending. No declined or evidence-only finding, root completion, live Workflow evaluation or baseline exoneration is claimed.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 225,
+      "lineEnd": 225,
+      "byteStart": 21491,
+      "byteEnd": 21854,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Limits",
+      "rawSectionOrdinal": 16,
+      "originalHierarchy": [
+        "Task 20 / super-plan-ufz.23",
+        "Fix pass",
+        "Limits"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "section": "Limits",
+        "sectionOrdinal": 16,
+        "positionInSection": 1,
+        "rawSection": "Limits",
+        "rawPositionInSection": 1,
+        "byteStart": 21491,
+        "byteEnd": 21854,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawSection": "Full structured result",
+      "rawSectionOrdinal": 17,
+      "positionInSection": 1,
+      "jsonPointer": "/knownLimits",
+      "value": [
+        "Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.",
+        "Root sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.",
+        "Original caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.",
+        "Evidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport."
+      ],
+      "rawJsonValue": "[\n    \"Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.\",\n    \"Root sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.\",\n    \"Original caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.\",\n    \"Evidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport.\"\n  ]",
+      "lineStart": 390,
+      "lineEnd": 395,
+      "byteStart": 32503,
+      "byteEnd": 32982,
+      "semanticRole": "structured-pending-obligation-or-coverage-qualification-rendition",
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance."
+    }
+  ],
+  "selectedExactSpans": [
+    {
+      "byteStart": 5188,
+      "byteEnd": 5671,
+      "roles": [
+        "actual-defect-observation",
+        "historical-failure-evidence"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 6851,
+      "byteEnd": 7251,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/2"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 7865,
+      "byteEnd": 8518,
+      "roles": [
+        "actual-concern-defect-assertion"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/3"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8518,
+      "byteEnd": 8721,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8721,
+      "byteEnd": 8925,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/5"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14454,
+      "byteEnd": 14528,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/6"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 21491,
+      "byteEnd": 21854,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/8"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 32503,
+      "byteEnd": 32982,
+      "roles": [
+        "structured-pending-obligation-appearance"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/additionalStructuredObligationAppearances/0"
+      ],
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance.",
+      "jsonPointer": "/knownLimits",
+      "decodedText": "Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.\nRoot sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.\nOriginal caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.\nEvidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport."
+    }
+  ],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": false,
+    "scope": "No whole-source empty finding assertion supported; retain actual concern/finding/deferred obligations.",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [
+    "Do not use fix-pass FIXED/superseding assertion as resolution of original source-local concern or any other source occurrence."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000005188",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "actual-defect-observation",
+        "historical-failure-evidence"
+      ],
+      "rawByteStart": 5188,
+      "rawByteEnd": 5671,
+      "rawLineStart": 53,
+      "rawLineEnd": 53,
+      "originalSections": [
+        {
+          "section": "Verification and TDD",
+          "sectionOrdinal": 4,
+          "headingRaw": "## Verification and TDD\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Verification and TDD"
+          ],
+          "byteStart": 2320,
+          "byteEnd": 5923
+        }
+      ],
+      "rawText": "FAIL, retained concern: bash tests/super-code/test-dispatch-text.sh exited 1 (0.74 seconds). Non-review builder calls fail before producing their dispatch file; the final excerpt includes \"[FAIL] exits 0\", expected 0/got 1, and cat reporting no impl-ep.2.md. This is a confirmed caller regression caused by the new fail-closed omitted-ID startup behavior, not an unrelated/pre-existing failure. The suite exits before its final summary, so later tests were unmeasured. See Concerns.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "FAIL, retained concern: bash tests/super-code/test-dispatch-text.sh exited 1 (0.74 seconds). Non-review builder calls fail before producing their dispatch file; the final excerpt includes \"[FAIL] exits 0\", expected 0/got 1, and cat reporting no impl-ep.2.md. This is a confirmed caller regression caused by the new fail-closed omitted-ID startup behavior, not an unrelated/pre-existing failure. The suite exits before its final summary, so later tests were unmeasured. See Concerns.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000006851",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 6851,
+      "rawByteEnd": 7251,
+      "rawLineStart": 61,
+      "rawLineEnd": 61,
+      "originalSections": [
+        {
+          "section": "Assertions and pressure limits",
+          "sectionOrdinal": 5,
+          "headingRaw": "## Assertions and pressure limits\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Assertions and pressure limits"
+          ],
+          "byteStart": 5923,
+          "byteEnd": 7252
+        }
+      ],
+      "rawText": "Combined mechanical pressure scenarios preserve selected identity while ledger transport is malformed, retry is null, or a retry returns a competing token. No pressure result from a fresh instruction-following agent is claimed. Per explicit acceptance, the enclosing coordinator still owns and must measure fresh-agent changed-instruction/interrupted-invocation evaluation. No new agent was spawned.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Combined mechanical pressure scenarios preserve selected identity while ledger transport is malformed, retry is null, or a retry returns a competing token. No pressure result from a fresh instruction-following agent is claimed. Per explicit acceptance, the enclosing coordinator still owns and must measure fresh-agent changed-instruction/interrupted-invocation evaluation. No new agent was spawned.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/2"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-7/raw-byte-000007865",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "actual-concern-defect-assertion"
+      ],
+      "rawByteStart": 7865,
+      "rawByteEnd": 8518,
+      "rawLineStart": 69,
+      "rawLineEnd": 69,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Concerns"
+          ],
+          "byteStart": 7852,
+          "byteEnd": 8926
+        }
+      ],
+      "rawText": "1. Confirmed ordinary-subagent caller seam remains unresolved by parent direction: dispatch-text.mjs loadBuilders executes coordinator startup with agent always returning null. Its config currently passes persisted invocationId only for reviewOutput modes. Non-review ordinary-subagent modes therefore now encounter missing identity and throw; the caller suite measures this. The existing fixtures already have persisted identities, but legacy/no-identity compatibility also needs the parent's bounded assessment. The two-path preservation obligation cannot be claimed satisfied until that seam is repaired and tested. dispatch-text.mjs was not edited.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Confirmed ordinary-subagent caller seam remains unresolved by parent direction: dispatch-text.mjs loadBuilders executes coordinator startup with agent always returning null. Its config currently passes persisted invocationId only for reviewOutput modes. Non-review ordinary-subagent modes therefore now encounter missing identity and throw; the caller suite measures this. The existing fixtures already have persisted identities, but legacy/no-identity compatibility also needs the parent's bounded assessment. The two-path preservation obligation cannot be claimed satisfied until that seam is repaired and tested. dispatch-text.mjs was not edited.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/3"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008518",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 8518,
+      "rawByteEnd": 8721,
+      "rawLineStart": 70,
+      "rawLineEnd": 70,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Concerns"
+          ],
+          "byteStart": 7852,
+          "byteEnd": 8926
+        }
+      ],
+      "rawText": "2. Fresh-agent changed-instruction evaluation is caller-owned and pending. Mechanical tests do not establish uuidgen instruction compliance by a real agent, nor real Workflow resume recording semantics.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent changed-instruction evaluation is caller-owned and pending. Mechanical tests do not establish uuidgen instruction compliance by a real agent, nor real Workflow resume recording semantics.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008721",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 8721,
+      "rawByteEnd": 8925,
+      "rawLineStart": 71,
+      "rawLineEnd": 71,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Concerns"
+          ],
+          "byteStart": 7852,
+          "byteEnd": 8926
+        }
+      ],
+      "rawText": "3. Captured-source binding is task .29-owned. Full suite, independent review, caller acceptance, root closure and human approval remain pending. No baseline exoneration is claimed for the caller failure.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Captured-source binding is task .29-owned. Full suite, independent review, caller acceptance, root closure and human approval remain pending. No baseline exoneration is claimed for the caller failure.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/5"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-11/raw-byte-000014454",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 14454,
+      "rawByteEnd": 14528,
+      "rawLineStart": 178,
+      "rawLineEnd": 178,
+      "originalSections": [
+        {
+          "section": "Fix pass",
+          "sectionOrdinal": 11,
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Fix pass"
+          ],
+          "byteStart": 14322,
+          "byteEnd": 14529
+        }
+      ],
+      "rawText": "Caller/root acceptance and changed-instruction evaluation remain pending.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Caller/root acceptance and changed-instruction evaluation remain pending.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/6"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-16/raw-byte-000021491",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 21491,
+      "rawByteEnd": 21854,
+      "rawLineStart": 225,
+      "rawLineEnd": 225,
+      "originalSections": [
+        {
+          "section": "Limits",
+          "sectionOrdinal": 16,
+          "headingRaw": "### Limits\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Fix pass",
+            "Limits"
+          ],
+          "byteStart": 21479,
+          "byteEnd": 21855
+        }
+      ],
+      "rawText": "Fresh-agent changed-instruction evaluation remains caller-owned/pending; this fix changes no operative prose. Root sweep, enclosing independent review, integration/status decisions and human/root acceptance retain their owners and remain pending. No declined or evidence-only finding, root completion, live Workflow evaluation or baseline exoneration is claimed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent changed-instruction evaluation remains caller-owned/pending; this fix changes no operative prose. Root sweep, enclosing independent review, integration/status decisions and human/root acceptance retain their owners and remain pending. No declined or evidence-only finding, root completion, live Workflow evaluation or baseline exoneration is claimed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/semanticPassages/8"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/structured-pending-obligation-appearance/raw-section-17/raw-byte-000032503/json-pointer-/knownLimits",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "structured-pending-obligation-appearance",
+      "roles": [
+        "structured-pending-obligation-appearance"
+      ],
+      "rawByteStart": 32503,
+      "rawByteEnd": 32982,
+      "rawLineStart": 390,
+      "rawLineEnd": 395,
+      "originalSections": [
+        {
+          "section": "Full structured result",
+          "sectionOrdinal": 17,
+          "headingRaw": "### Full structured result\n",
+          "hierarchy": [
+            "Task 20 / super-plan-ufz.23",
+            "Fix pass",
+            "Full structured result"
+          ],
+          "byteStart": 21855,
+          "byteEnd": 33147
+        }
+      ],
+      "rawText": "[\n    \"Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.\",\n    \"Root sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.\",\n    \"Original caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.\",\n    \"Evidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport.\"\n  ]",
+      "jsonPointer": "/knownLimits",
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": "Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.\nRoot sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.\nOriginal caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.\nEvidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport.",
+      "adapterText": "Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.\nRoot sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.\nOriginal caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.\nEvidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/8/additionalStructuredObligationAppearances/0"
+      ],
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/36-task-20-report.md",
+  "retainedSha256": "0315663958107cb4f5d51e208096c8c5b02b0b408b65e810c5b66bb0c90b541b"
+}

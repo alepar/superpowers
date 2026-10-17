@@ -1,0 +1,318 @@
+{
+  "version": 1,
+  "ordinal": 27,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+  "originalArtifact": "task-report-history-r1/raw/task-16-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-16-review.md",
+  "rawSha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+  "rawByteCount": 5689,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 50,
+    "byteStart": 0,
+    "byteEnd": 5689,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/26",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/27-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/26/interpretedPassages/0",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        2466,
+        2482
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/26/interpretedPassages/1",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        2482,
+        2499
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Important:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/26/interpretedPassages/2",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        2499,
+        2512
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Minor:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/26/interpretedPassages/3",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        5070,
+        5435
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Prepared fresh-agent scenarios still need execution; final parent eval/review/full sweep coordinator-owned. Real epic remains unaccepted."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-27-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Critical:none.",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 2466,
+      "byteEnd": 2482,
+      "rawText": "Critical: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.6 review",
+            "Issues"
+          ],
+          "sectionByteStart": 2455,
+          "sectionByteEnd": 2513,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 12
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-27-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Important:none.",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2482,
+      "byteEnd": 2499,
+      "rawText": "Important: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.6 review",
+            "Issues"
+          ],
+          "sectionByteStart": 2455,
+          "sectionByteEnd": 2513,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 28
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-27-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Minor:none.",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 2499,
+      "byteEnd": 2512,
+      "rawText": "Minor: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.6 review",
+            "Issues"
+          ],
+          "sectionByteStart": 2455,
+          "sectionByteEnd": 2513,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 45
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-27-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Prepared fresh-agent scenarios still need execution; final parent eval/review/full sweep coordinator-owned. Real epic remains unaccepted.",
+      "lineStart": 48,
+      "lineEnd": 48,
+      "byteStart": 5070,
+      "byteEnd": 5435,
+      "rawText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Remaining enclosing-run obligations",
+          "headingRaw": "## Remaining enclosing-run obligations\n",
+          "hierarchy": [
+            "Task super-plan-ufz.6 review",
+            "Remaining enclosing-run obligations"
+          ],
+          "sectionByteStart": 5030,
+          "sectionByteEnd": 5689,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 41
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 5070,
+      "byteEnd": 5435,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/26/interpretedPassages/3"
+      ],
+      "interpretation": "Prepared fresh-agent scenarios still need execution; final parent eval/review/full sweep coordinator-owned. Real epic remains unaccepted.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Issues empties supported; add enclosing pending evaluation/review/sweep L48 to projected scope before declaring semantic coverage complete.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "Critical/Important/Minor task issues only; remaining enclosing obligations explicit.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-6/raw-byte-000005070",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 5070,
+      "rawByteEnd": 5435,
+      "rawLineStart": 48,
+      "rawLineEnd": 48,
+      "originalSections": [
+        {
+          "section": "Remaining enclosing-run obligations",
+          "sectionOrdinal": 6,
+          "headingRaw": "## Remaining enclosing-run obligations\n",
+          "hierarchy": [
+            "Task super-plan-ufz.6 review",
+            "Remaining enclosing-run obligations"
+          ],
+          "byteStart": 5030,
+          "byteEnd": 5689
+        }
+      ],
+      "rawText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/26/interpretedPassages/3"
+      ],
+      "interpretation": "Prepared fresh-agent scenarios still need execution; final parent eval/review/full sweep coordinator-owned. Real epic remains unaccepted."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/27-task-16-review.md",
+  "retainedSha256": "9c57e5b7c3dcacf7e7b04a4a43f0a34daa9610a073bcb5efd9fac5810638027f"
+}

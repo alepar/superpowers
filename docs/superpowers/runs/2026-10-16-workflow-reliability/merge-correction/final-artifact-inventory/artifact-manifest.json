@@ -1,0 +1,126 @@
+{
+  "createdUtc": "2026-10-17T22:20:30.267179+00:00",
+  "scope": "Temporary bounded inventory package only; no global readiness or omission authority",
+  "files": [
+    {
+      "path": "REPORT.md",
+      "bytes": 11114,
+      "sha256": "6eb190eae7bf941492712470a4ea6716bf9c0b48c8edbe3e27c586d49260e1a2"
+    },
+    {
+      "path": "exact-byte-duplicate-groups.json",
+      "bytes": 1489529,
+      "sha256": "9af537e272fdb8c9f4e2a59fdb5321c12ec2ff3b54c1b1c6754778cc86ce9bba"
+    },
+    {
+      "path": "finalize.py",
+      "bytes": 14926,
+      "sha256": "ec86468d336a69bc49b0e6ae84caac5048319383fdb389684ebda664763a7386"
+    },
+    {
+      "path": "git-blob-provenance-claims.json",
+      "bytes": 1074604,
+      "sha256": "bfce389ea35ce48c106141c6619303c0aebd4761e925d662c3fadf9653e4aed4"
+    },
+    {
+      "path": "hash-provenance-claims.json",
+      "bytes": 6711502,
+      "sha256": "9ce5b84e8c83bb0341af966fcb826907e7d1e6c5c10d1e0a412a007c10bf19a6"
+    },
+    {
+      "path": "inventory-self-check.json",
+      "bytes": 773,
+      "sha256": "3ee6ce538994bc8e816f5709b0c6dadf1842802223618287b52dd8f8395c51fd"
+    },
+    {
+      "path": "inventory.py",
+      "bytes": 19352,
+      "sha256": "6e0366cdc89d8eb8420a954357c80692739bc6ffa35b353c5934c7eaadef4a18"
+    },
+    {
+      "path": "packed-evidence-inventory.json",
+      "bytes": 126223,
+      "sha256": "87f517110b5335b470b7294380fedf13cae7517d5b7342b6f11cd28a0e7ce45d"
+    },
+    {
+      "path": "packed_inventory.py",
+      "bytes": 3882,
+      "sha256": "51571ba62bc661571138eb89857d9223b8a21b5e5659661d917c7daa3d662a3f"
+    },
+    {
+      "path": "path-references.json",
+      "bytes": 22698833,
+      "sha256": "109789a9c2e2f83411f90c82564beec32e95715ce5a540433e3f16f38746f4ca"
+    },
+    {
+      "path": "pending-adapter-provenance.json",
+      "bytes": 269275,
+      "sha256": "05356bd3c048457161a2760399d839481e6ee03136f9e92ee7c4b6dd1c561dfd"
+    },
+    {
+      "path": "pending-working-tree-inventory.json",
+      "bytes": 2035639,
+      "sha256": "cf445690d9a15b2384dd845166b64e2e9dfb671bc4426891f406dca34b37bc7e"
+    },
+    {
+      "path": "producer-claiming-record-index.json",
+      "bytes": 5610563,
+      "sha256": "6bccfe0f719806b2264cace727f8d5248bd1321f0e425a5f35388e151627483c"
+    },
+    {
+      "path": "retained-selector-evidence/corrected-product-range-review-inputs.json",
+      "bytes": 2409277,
+      "sha256": "82850a174d5166a18354721eab63a782fe734ed931c2628ba0554c1eb7415514"
+    },
+    {
+      "path": "retained-selector-evidence/original-690-review-inputs.json",
+      "bytes": 1904777,
+      "sha256": "c838e1390ca298afea5a1d8d5e4f5b2b6a74ab696ba8768d7e7780f39ff4707e"
+    },
+    {
+      "path": "retained-selector-evidence/refreshed-receipt.json",
+      "bytes": 2679,
+      "sha256": "dacda758567b03ec65ca87d043312c77f3f29a83f7e03d2cc61c97bfca6d4caa"
+    },
+    {
+      "path": "retained-selector-evidence/same-source-after-fix-review-inputs.json",
+      "bytes": 2390500,
+      "sha256": "7e0cab463e46aeda3b090b3a8a3dcded6fd8d48922b0b5d6c0c9e3d0a1274ddd"
+    },
+    {
+      "path": "selector-evidence-provenance.json",
+      "bytes": 3455,
+      "sha256": "e64b9650757ac69a1397865487827a5a46bed0ae5492a0826f0874fa0dfb8c8a"
+    },
+    {
+      "path": "source-bound-reuse-proof.json",
+      "bytes": 228954,
+      "sha256": "fe4b60e8ee5d1ac842f6d8022d7cbd1f04f3336356034bfc6f63a71ff291caa7"
+    },
+    {
+      "path": "substantive-document-review-queue.json",
+      "bytes": 307011,
+      "sha256": "2a37d786798549cb221dfa6eb77fd9f5b8e0605a2a89df8304d0bd2a0f69803c"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1929,
+      "sha256": "a347ddea50803cedd9d2bc0e07cf1eeb6072435940b2329dd20e441e30b7ef7e"
+    },
+    {
+      "path": "supplement.py",
+      "bytes": 9855,
+      "sha256": "c0f5fa01b0b7e73b7e49567534882413c2d138148c10545a72c45578732d6890"
+    },
+    {
+      "path": "tracked-path-inventory.json",
+      "bytes": 12468441,
+      "sha256": "3f7c8274e492aa98cb1f3433b7af880c53cd6c030e92b21d8bff94f5e4785588"
+    },
+    {
+      "path": "unestablished-role-review-queue.json",
+      "bytes": 6923,
+      "sha256": "8b42f5dbe8231293168f07d3063320b6a305308b80a672273cf3d54177e233c8"
+    }
+  ]
+}

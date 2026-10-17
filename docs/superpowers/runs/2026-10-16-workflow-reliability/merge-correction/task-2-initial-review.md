@@ -1,0 +1,37 @@
+# Task 2 independent spec and quality review
+
+Reviewed source: `86ce3567e365fed967d50f3f4eeca77783fccf8b` against `f8f2fee8d9209337feeb09d9888196adbb16819f`, in the existing workflow-reliability checkout. Read the Task 2 brief and exact global constraints first, then implementation report and complete review-package diff. Source inspection used pinned `git show`; all three reported SHA-256 file hashes match the pin. The changed-file set is exactly report-status COLLECTION plus the two focused tests.
+
+**Spec verdict: NEEDS CHANGES.** Destination containment and the explicit recovery producer path satisfy the reviewed requirements, but collector replay accepts a recovered history after its mandatory recovery provenance disappears. This leaves the supported-transition/history requirement incomplete.
+
+**Quality verdict: NEEDS CHANGES.** One reproducible P2 must-fix below. Existing behavioral tests and mutation controls are useful; their provenance mutations omit deletion of the provenance field itself.
+
+## T2-R1 — P2 / must-fix: absent recovery metadata bypasses transition validation
+
+Source: `skills/super-auto/scripts/report-status:224-230` at the reviewed pin. The history parser validates a recovery only inside `if(r.recovery!==undefined)`, then unconditionally promotes every otherwise-valid record into `latest`. It never compares a record without recovery metadata against its predecessor to recognize that it changes an already settled null result, or drops the established provenance from a subsequent recovered snapshot.
+
+A narrow private probe used copies of report-status and its real report-verdict dependency extracted from the pinned commit. It created an ordinary run/workspace, settled null/UNAVAILABLE through the production CLI (exit 3), wrote a valid final-review-probe.md, and performed explicit `--recover-null` (positive control: exit 0). With all original null records and actual report/archive bytes retained:
+
+1. Removing only `recovery` from the recovered collection records, then invoking `--collect RUN_MD`, returned **exit 0, `collection: complete`**.
+2. Restoring the valid history and removing `recovery` only from the final completed snapshot also returned **exit 0, `collection: complete`**. The validated initial recovery record remained present in this case.
+
+Both should remain explicit collection gaps. An absent marker must not be less restrictive than the malformed markers the implementation already rejects. The first case admits an unsupported settled-null → non-null history; the second silently loses immutable provenance from the current projection. This is a collector-local defect, independent of the known selector consumer seam. It does not claim ordinary unmodified CLI recovery drops metadata by itself; it demonstrates the incomplete replay validation promised and exercised by this change.
+
+Evidence: `/private/tmp/ufz-task2-review-wpe1vbyw/receipt.json`. The same directory retains pinned executable source, `valid-run.md`, `missing-recovery-before.md`, and `missing-recovery-after.md` for inspection. No repository source or historical run artifact was edited.
+
+Fix expectation: validate transitions against the prior record even when the new record has no recovery field. A settled-null → expected non-null transition must carry supported provenance, and later snapshots of that recovery must retain the same validated provenance and identity. Add real replay regression cases for both omission variants, preserving successful explicit recovery, idempotent replay, legacy ordinary non-null collections, and original null/UNAVAILABLE history as positive controls. Do not merely require recovery on every non-null record: ordinary collections remain legitimate.
+
+## Supported portions and test assessment
+
+- Destination validation traverses reviews/, invocation ID, intermediate relative components, and leaf before archive read/hash/copy. It rejects symlinks even when outside bytes match and rechecks after parent creation. Existing components below the owned run directory are covered; the report correctly limits this to static filesystem conditions, not an atomic defense against a concurrent actor replacing directories.
+- Explicit admission requires a previously settled invocation, unchanged workspace and ordered required array, the exact expected final-review path, regular safe source, complete real extraction, and matching supplied verdict. A previously settled ordinary non-null record cannot be relabeled through this option.
+- Produced recovery metadata consistently identifies the exact parsed predecessor using SHA-256(JSON.stringify(predecessor)), with retained property order, kind `settled-null`, and the original verdict. Original null/UNAVAILABLE records remain present. This is a parsed-object digest, not a raw-line digest; the report makes that distinction accurately.
+- Existing matching-source recovery and later replay preserve archive hashes and are byte-idempotent in the retained successful tests. Changed source bytes cannot replace an existing conflicting archive in the tested scenario.
+- Inspected retained RED/GREEN logs: destination suite 24 pass / 8 fail before, 32 / 0 after; recovery suite initially 3 / 14 and final 21 / 0; final-test baseline 7 / 14; the provenance-validation mutant 17 / 4 with exactly the four corrupted-metadata replay failures. The mutant is valuable because the baseline's unsupported flag otherwise makes negative provenance cases pass for the wrong reason. The super-auto script log ends with all tests passed, including partial-null bundles, extraction preservation, missing required inputs, and archive conflict controls.
+- These are behavior assertions through the real CLI, outside sentinels, persisted records and bytes, not merely implementation-string checks. The missing-field blind spot is specific and demonstrated above. I did not rerun suites already covered against the same source; the only executed behavior was the narrow uncovered probe and its prerequisite positive control. Syntax/whitespace success is retained implementation-report evidence, not a new independent rerun.
+
+## Exact cross-task limitation and acceptance boundaries
+
+Inspected the retained actual collector-to-selector fixture manifest at `/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/workflow-task2-selector-fixture-tvspyery/fixture-manifest.json`. Null settlement exits 3; supported explicit recovery exits 0; the captured-Git selector exits 3, selected 3, omitted 0, with the sole gap `conflicting collection identity probe`. Task 4 still needs to admit this narrowly validated historical transition in dispatch-text.mjs and cover real collection → captured-Git selection while rejecting missing/forged provenance, changed invocation/workspace/required bundle, invalid expected path, and arbitrary settled non-null replacement. This remains an integration obligation; it is not treated as a new Task 2 scope-expansion finding or as global acceptance.
+
+This review does not reset any historical cap, clear any original finding by silence, restamp prior measurements, waive live checks or human gates, or close the root. It establishes independent review results for this pin only. Original pinned 6.0 policy, rounds, failed/unavailable evidence, source identities and run.md remain untouched. No source/index/HEAD/tracker/Herdr mutation, subagent delegation, push, release, issue/PR filing or waiver occurred. Root remains open until all independently required reviews, measurements and human gates are supported.

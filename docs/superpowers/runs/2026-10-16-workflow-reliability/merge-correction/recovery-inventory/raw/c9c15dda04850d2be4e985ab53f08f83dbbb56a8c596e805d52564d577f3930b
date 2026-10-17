@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails.",
+      "location": "skills/super-code/coordinator.js:1830",
+      "category": "concurrency-async",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "The new verification-only branch awaits parentsMerged(att) at line 1830 inside the scheduler-slot try; its slot is released only by finally at 1849. A failed parent merge returns a follow-up thunk, and enqueueIntegration at 1208-1210 first awaits withSlot before failAttempt can resolve that parent's merged promise false. With supported concurrency=1, the child therefore waits for a parent promise whose resolution requires the child's occupied slot. Frozen-head full-coordinator probe /tmp/ufz-pr2-controller/evidence-concurrency-async/probe.mjs reaches parent merge and both reviews, then times out with no reopen, cancellation or triage dispatch. Exact controls finish: changing only the child to ordinary implementation allows parent cancellation/triage; changing only the parent merge to success completes both; increasing capacity to 2 allows cancellation/triage. Complete results: /tmp/ufz-pr2-controller/evidence-concurrency-async/receipt.json. The probe uses simulated mechanical agent results, not a hosted Workflow. The branch is newly introduced by this diff; preserved base-coordinator.js has no verification-only route, and ordinary chains release the slot before parentsMerged (head 1849-1855). This is distinct from all prior report claims and rejections."
+    }
+  ]
+}

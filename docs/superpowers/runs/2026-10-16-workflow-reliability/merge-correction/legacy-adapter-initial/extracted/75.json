@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+  "artifact": "task-report-history-r1/raw/task-1-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns",
+      "position": 1,
+      "key": "Fresh-agent instruction evaluation remains parent-owned and required for the behavioral acceptance item. Deterministic fixtures establish mechanical source stability and resource isolation, not autonomous agent adherence.",
+      "text": "Fresh-agent instruction evaluation remains parent-owned and required for the behavioral acceptance item. Deterministic fixtures establish mechanical source stability and resource isolation, not autonomous agent adherence."
+    },
+    {
+      "section": "Concerns",
+      "position": 2,
+      "key": "No hosted Workflow/live model execution was performed by this implementer. The ordinary shell/Node fixtures and in-process Workflow replay passed.",
+      "text": "No hosted Workflow/live model execution was performed by this implementer. The ordinary shell/Node fixtures and in-process Workflow replay passed."
+    }
+  ]
+}

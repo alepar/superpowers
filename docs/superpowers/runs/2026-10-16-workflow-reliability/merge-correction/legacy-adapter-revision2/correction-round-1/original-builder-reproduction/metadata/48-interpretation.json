@@ -1,0 +1,558 @@
+{
+  "version": 1,
+  "ordinal": 48,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+  "originalArtifact": "task-report-history-r1/raw/task-26-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-26-review.md",
+  "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+  "rawByteCount": 14808,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      14808
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/20",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/48-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 125,
+      "rawText": "  \"status\": \"CLEAN\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/20/semanticPassages/0",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        1301,
+        1615
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/20/semanticPassages/1",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1627,
+        1643
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/20/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1643,
+        1660
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/20/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1660,
+        1673
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/20/semanticPassages/4",
+      "roles": [
+        "separate-integration-seam-coverage-obligation"
+      ],
+      "span": [
+        2921,
+        3172
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n",
+      "text": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+      "listMarker": null,
+      "positionInSection": 4,
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1301,
+      "byteEnd": 1615,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 4,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 4,
+        "byteStart": 1301,
+        "byteEnd": 1615,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Critical: none.\n",
+      "text": "Critical: none.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1627,
+      "byteEnd": 1643,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 1,
+        "rawSection": "Issues",
+        "rawPositionInSection": 1,
+        "byteStart": 1627,
+        "byteEnd": 1643,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Important: none.\n",
+      "text": "Important: none.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1643,
+      "byteEnd": 1660,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 2,
+        "rawSection": "Issues",
+        "rawPositionInSection": 2,
+        "byteStart": 1643,
+        "byteEnd": 1660,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Minor: none.\n",
+      "text": "Minor: none.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1660,
+      "byteEnd": 1673,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 3,
+        "rawSection": "Issues",
+        "rawPositionInSection": 3,
+        "byteStart": 1660,
+        "byteEnd": 1673,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n",
+      "text": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.",
+      "listMarker": null,
+      "positionInSection": 4,
+      "lineStart": 31,
+      "lineEnd": 31,
+      "byteStart": 2921,
+      "byteEnd": 3172,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Reachability and focused source checks",
+      "rawSectionOrdinal": 4,
+      "originalHierarchy": [
+        "Task 26 independent review — super-plan-ufz.29",
+        "Reachability and focused source checks"
+      ],
+      "semanticRoles": [
+        "separate-integration-seam-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "section": "Reachability and focused source checks",
+        "sectionOrdinal": 4,
+        "positionInSection": 4,
+        "rawSection": "Reachability and focused source checks",
+        "rawPositionInSection": 4,
+        "byteStart": 2921,
+        "byteEnd": 3172,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "lineStart": 122,
+      "lineEnd": 180,
+      "byteStart": 11083,
+      "byteEnd": 14808,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "semanticRole": "explicit-structured-local-empty-declaration",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.29\",\n  \"status\": \"CLEAN\",\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"7db21aaec321ce133ad792f9ffc0e05879e4cf40\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.29/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n      \"outcome\": \"pass\",\n      \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n    },\n    {\n      \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n    }\n  ],\n  \"failureAttribution\": [],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md\",\n  \"instructionEvaluation\": \"caller-pending\"\n}\n```\n",
+      "lineStart": 122,
+      "lineEnd": 180,
+      "byteStart": 11083,
+      "byteEnd": 14808,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "semanticRole": "explicit-structured-local-empty-declaration",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    }
+  ],
+  "additionalStructuredObligations": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawSection": "Structured result",
+      "rawSectionOrdinal": 9,
+      "positionInSection": 1,
+      "jsonPointer": "/instructionEvaluation",
+      "value": "caller-pending",
+      "rawJsonValue": "\"caller-pending\"",
+      "lineStart": 178,
+      "lineEnd": 178,
+      "byteStart": 14785,
+      "byteEnd": 14801,
+      "semanticRole": "structured-pending-obligation-or-coverage-qualification-rendition",
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance."
+    }
+  ],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1301,
+      "byteEnd": 1615,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 2921,
+      "byteEnd": 3172,
+      "roles": [
+        "separate-integration-seam-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14785,
+      "byteEnd": 14801,
+      "roles": [
+        "structured-pending-obligation-appearance"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/additionalStructuredObligationAppearances/0"
+      ],
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance.",
+      "jsonPointer": "/instructionEvaluation",
+      "decodedText": "caller-pending"
+    }
+  ],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "qualified-local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001301",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 1301,
+      "rawByteEnd": 1615,
+      "rawLineStart": 15,
+      "rawLineEnd": 15,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task 26 independent review — super-plan-ufz.29",
+            "Spec compliance"
+          ],
+          "byteStart": 161,
+          "byteEnd": 1616
+        }
+      ],
+      "rawText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000002921",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "separate-integration-seam-coverage-obligation"
+      ],
+      "rawByteStart": 2921,
+      "rawByteEnd": 3172,
+      "rawLineStart": 31,
+      "rawLineEnd": 31,
+      "originalSections": [
+        {
+          "section": "Reachability and focused source checks",
+          "sectionOrdinal": 4,
+          "headingRaw": "## Reachability and focused source checks\n",
+          "hierarchy": [
+            "Task 26 independent review — super-plan-ufz.29",
+            "Reachability and focused source checks"
+          ],
+          "byteStart": 1674,
+          "byteEnd": 3173
+        }
+      ],
+      "rawText": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/structured-pending-obligation-appearance/raw-section-9/raw-byte-000014785/json-pointer-/instructionEvaluation",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "structured-pending-obligation-appearance",
+      "roles": [
+        "structured-pending-obligation-appearance"
+      ],
+      "rawByteStart": 14785,
+      "rawByteEnd": 14801,
+      "rawLineStart": 178,
+      "rawLineEnd": 178,
+      "originalSections": [
+        {
+          "section": "Structured result",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Structured result\n",
+          "hierarchy": [
+            "Task 26 independent review — super-plan-ufz.29",
+            "Structured result"
+          ],
+          "byteStart": 11061,
+          "byteEnd": 14808
+        }
+      ],
+      "rawText": "\"caller-pending\"",
+      "jsonPointer": "/instructionEvaluation",
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": "caller-pending",
+      "adapterText": "caller-pending",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/20/additionalStructuredObligationAppearances/0"
+      ],
+      "interpretation": "Actual report result metadata, not an illustrative synthetic finding. Retain separately from matching prose, with no inferred semantic identity link, resolution or acceptance."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/48-task-26-review.md",
+  "retainedSha256": "97e493796b43014174673b6756d008ccafc2e315f6976fc966937e42c4ff8bcf"
+}

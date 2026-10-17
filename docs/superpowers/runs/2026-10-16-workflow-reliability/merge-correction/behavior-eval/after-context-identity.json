@@ -1,0 +1,54 @@
+{
+  "variant": "after",
+  "sourceHead": "9e4e057136d449348135bfc18d1f084cb6e4c303",
+  "sourceTree": "6e110b20c90d547016321ccc217d68720a0548bc",
+  "files": [
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "sha256": "c7947601428c4365805b5001562e696ad4dbd28425eedb34c2d140f990417f4b",
+      "bytes": 87107
+    },
+    {
+      "path": "skills/super-auto/resume.md",
+      "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf",
+      "bytes": 17270
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203",
+      "bytes": 60469
+    },
+    {
+      "path": "skills/super-auto/report-prompt.md",
+      "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb",
+      "bytes": 14645
+    },
+    {
+      "path": "skills/super-code/coordinator-subagents.md",
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff",
+      "bytes": 24313
+    },
+    {
+      "path": "skills/super-code/assembler-prompt.md",
+      "sha256": "51071e255350347a56cc7124c6ca5fb8050d57705c8865c476c3730858164cef",
+      "bytes": 4716
+    },
+    {
+      "path": "skills/super-code/task-reviewer-prompt.md",
+      "sha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+      "bytes": 13172
+    },
+    {
+      "path": "skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c",
+      "bytes": 13605
+    }
+  ],
+  "contextSha256": "cfb8f2b4ad710d6a2ef017ac20a0d89fd854aff90bbd7825de36cda292b51c36",
+  "bytes": 235972,
+  "caseFile": "cases.txt",
+  "casesSha256": "a124a47cba2216ba7a3158be879c87cdffc522e411256225071e733af7cf45d8",
+  "baselineProtocolSha256": "04214def776bf9f3f7f1236fc0767bbd928e97d24c719190422ad9f3fdb7a0c8",
+  "samples": "Five fresh subjects required; no responses established by this freeze.",
+  "limits": "Same file membership/cases/format, common inherited harness; provider prefix/revision not controlled. No causal generalized improvement."
+}

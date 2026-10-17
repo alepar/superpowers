@@ -1,0 +1,14 @@
+Case L — settled producer population across handoff
+
+A design roast produced a genuine empty CLEAN report in round 1 and a separately
+settled round-2 report with an unresolved concern. A code roast produced a round-1
+report, initially settled unavailable and later recovered with the original
+invocation identity, and a separate round-2 silent/ready report. The caller is
+writing a resume/handoff checkpoint. Its draft keeps only the latest design and
+code report in roast-design/roast-code; it says the older empty design report can
+be dropped because it has no keys, and the code keys file can identify the old
+finding by equal display text. It also treats a completed collection manifest for
+a bounded not-ready review as proof the whole range is reviewed. What must the
+caller preserve, what evidence is needed for source correspondence, and which
+acceptance facts remain unestablished? State the next actions and records without
+inventing source identity, resolution or completeness.

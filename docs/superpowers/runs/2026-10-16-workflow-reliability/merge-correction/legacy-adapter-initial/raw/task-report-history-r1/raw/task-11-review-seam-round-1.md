@@ -1,0 +1,17 @@
+id: super-plan-ufz.12
+Status: NEEDS_FIX
+base: 14444f0c6396a132250741eb45e5bab1cf934184
+head: 28a722c5b68c431cde222cae4ee0dc01c8d6c826
+
+finding: The new diagnostic-deferral fixture in tests/super-code/replay-harness.mjs:1722 uses the old unconstrained data.runFailure shape. Sibling 97ee30a1 added readRecovery's validRunFailure check: nonempty configuration is required, and every history event needs dispatch, an identity-matching claim and an evidence array. This fixture lacks all of those. It is therefore retained as an invalid-run-failure gap, never inserted into recovery.obligations; the exact-obligation assertion at line 1732 necessarily fails for both hold/deferred variants. This also leaves the claimed compatibility coverage without a valid diagnostic history. Smallest reconciliation: replace only that diagnostic fixture with a schema-valid unscoped deferred runFailure (matching failure/command/configuration, complete task/dispatch/claim/evidence history, preferably an actual baseline pass and failing observation linked to an introducing owner). Keep the existing exact-preservation and unrelated-admission assertions; assert the returned runFailures owner/history state if needed to establish the intended diagnostic compatibility. Do not weaken readRecovery validation or turn the malformed record into an admission hold. Malformed history belongs in gaps under the sibling contract.
+
+Composition otherwise: pending-closure and reconciler hold clears are keyed independently from deferred run-failure IDs. Admission consults only explicit taskId/affectedIds scopes (or hold IDs), so valid unscoped diagnostic histories do not block unrelated work. The durable partial-close correction remains present: confirmClosure defers the restored record clear; closeAlreadyMerged awaits the serialized clear/completion append before readRecovery and settle, retaining the original record and a task hold on null or appended:false. The all-closed resume path follows the same confirmed-write ordering. No contradictory doc edits found.
+
+Evidence: read sibling log and full diffs for caf187cef8d1769da6184de42332a31bc7e30dcb..14444f0c6396a132250741eb45e5bab1cf934184 and task diff 14444f0c6396a132250741eb45e5bab1cf934184..28a722c5b68c431cde222cae4ee0dc01c8d6c826 in all four scoped files; read task-11-report-fix.md. Recorded task diff in task-11-review-seam.diff. HEAD matches requested head and working tree was clean.
+
+Test changes: inspected both mandatory commands, each exit 0:
+  git diff --stat 14444f0c6396a132250741eb45e5bab1cf934184..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'
+  git diff 14444f0c6396a132250741eb45e5bab1cf934184..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'
+Result: one test file, 106 insertions and one deletion. Existing fixture gains explicit recovery observation/closure stubs consistent with the new resume behavior, without weakening assertions; new recovery scenarios are additive. No existing test deleted, skipped or loosened. Incompatible new fixture described above.
+
+No tests run, source edits, commits, branch changes, subagents or Herdr writes.

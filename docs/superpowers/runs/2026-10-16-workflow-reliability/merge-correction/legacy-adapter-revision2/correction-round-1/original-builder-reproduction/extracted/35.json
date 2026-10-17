@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+  "artifact": "legacy-report-adapters-r1/35-task-2-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000000708",
+      "position": 1,
+      "key": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+      "text": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000915",
+      "position": 1,
+      "key": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+      "text": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed."
+    },
+    {
+      "section": "Findings — adapter/review-finding/raw-section-3/raw-byte-000001223",
+      "position": 1,
+      "key": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+      "text": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested."
+    }
+  ]
+}

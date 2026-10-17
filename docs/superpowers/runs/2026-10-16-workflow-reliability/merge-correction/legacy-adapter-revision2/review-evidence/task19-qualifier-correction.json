@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Correct an unsupported Task 19 byte-mismatch qualifier in temporary intake artifacts. No source/ledger writes or semantic finding links.",
+  "mistake": "HANDOFF.md and generated explanatory metadata claimed canonical and retained Task 19 report/review bytes differed. That claim was incorrect. The original mechanical coverage.json already recorded sameAsCanonicalBytes:true for both pairs.",
+  "canonicalCompared": "Only task-report-history-r1/raw/task-19-report.md and task-report-history-r1/raw/task-19-review.md were compared with fix-r1-handoff/source equivalents. No other canonical source was compared.",
+  "correctedConclusion": "Both report and review pairs are byte-identical in the current raw corpus and at frozen 86ce3567. No differing Task 19 revision is established by this comparison. Byte equality is not a semantic finding identity or disposition decision.",
+  "evidence": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "canonicalPath": "task-report-history-r1/raw/task-19-report.md",
+      "retainedPath": "fix-r1-handoff/source/task-19-report.md",
+      "current": [
+        {
+          "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+          "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+          "byteCount": 47192
+        },
+        {
+          "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+          "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+          "byteCount": 47192
+        }
+      ],
+      "frozen": [
+        {
+          "revision": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+          "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+          "byteCount": 47192
+        },
+        {
+          "revision": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+          "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+          "byteCount": 47192
+        }
+      ],
+      "allFourObservationsByteIdentical": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "canonicalPath": "task-report-history-r1/raw/task-19-review.md",
+      "retainedPath": "fix-r1-handoff/source/task-19-review.md",
+      "current": [
+        {
+          "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+          "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+          "byteCount": 20313
+        },
+        {
+          "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-review.md",
+          "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+          "byteCount": 20313
+        }
+      ],
+      "frozen": [
+        {
+          "revision": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+          "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+          "byteCount": 20313
+        },
+        {
+          "revision": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-review.md",
+          "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+          "byteCount": 20313
+        }
+      ],
+      "allFourObservationsByteIdentical": true
+    }
+  ],
+  "changedTemporaryArtifactsComparedAgainstOriginalDurableCopy": [
+    {
+      "relativePath": "HANDOFF.md",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/HANDOFF.md",
+      "previousSha256": "7cbbe9764d31089b0a63e56ca2e7095ceb0feb6ad376c32da1a394ad5e189ec6",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "correctedSha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "relativePath": "adapt_history.py",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/adapt_history.py",
+      "previousSha256": "d68af12c6fd7cc8f276ff6a3ddfe2c94bee5acc2a5a104efc3b4127698b429a7",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/adapt_history.py",
+      "correctedSha256": "d341cb1451838789939cce02f0181bf86370878fe0ff0665b556ecf2062096cd"
+    },
+    {
+      "relativePath": "coverage.json",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/coverage.json",
+      "previousSha256": "af961468469968253a2d0bb4f37ce3e34ca9f5b3c88fff3d823ed55a10226862",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/coverage.json",
+      "correctedSha256": "1dce2a0ac3ccad0cc1c44c7af4cbb3d47cdc9166c76754000cf9fb1cdd125986"
+    },
+    {
+      "relativePath": "coverage.md",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/coverage.md",
+      "previousSha256": "89d3fb43f1a636a7479ad3065dbb7a9c9175f2dc712b8cab6228a2f1a12ec73b",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/coverage.md",
+      "correctedSha256": "4d6222f3aeb4027cf2c38e3ec31f7bfb646a147e508a383444cdf6238cb85a53"
+    },
+    {
+      "relativePath": "finalize.py",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/finalize.py",
+      "previousSha256": "8025215335aade219db51124b6e4f9b0991b48f3a10f5502310eff287ce5b8b6",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/finalize.py",
+      "correctedSha256": "7fe32d3d927f04a7a999ea4b847d4192f67f482bbb66f0e4d369ea396380c173"
+    },
+    {
+      "relativePath": "occurrence-projection.md",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/occurrence-projection.md",
+      "previousSha256": "c8f70f226c1bf15f9e7873b8211e709f1d40b1c0120350976a2b6a9147b2a5cf",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/occurrence-projection.md",
+      "correctedSha256": "36a9f47e3974bff9dfbf5e7c6c0a3a25ad87d08a44f79d85adc31f2b935813b5"
+    },
+    {
+      "relativePath": "project_occurrences.py",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/project_occurrences.py",
+      "previousSha256": "dbabf44938292c3063705b1579ca73b0323361a00cadad7179b2fd4d08a57300",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/project_occurrences.py",
+      "correctedSha256": "e2cad84e64ae389d73b6dcae5b9339e29dafb6ad49abce4380109f566bde2612"
+    },
+    {
+      "relativePath": "task19-variant-projection.json",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/task19-variant-projection.json",
+      "previousSha256": "69e3b2321eb2b3904dfaa8b8df3a1a0ef79a24ca643d8a5620ae2cad1a8d4a4c",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/task19-variant-projection.json",
+      "correctedSha256": "c91f2f036461197737bd72796cced5b3261421fcc7b6c9125e4052a3ae4df92f"
+    },
+    {
+      "relativePath": "variants/variant-1-task-19-report.md.sidecar.json",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/variants/variant-1-task-19-report.md.sidecar.json",
+      "previousSha256": "529b18056eaaff879f663e96bb30263d7615a8bef5e90df59056308593164da8",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/variants/variant-1-task-19-report.md.sidecar.json",
+      "correctedSha256": "cd7ce5ae13f13d176cbb625003469ebf369d76b1405578e1e8efead43ace4e06"
+    },
+    {
+      "relativePath": "variants/variant-2-task-19-review.md.sidecar.json",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/variants/variant-2-task-19-review.md.sidecar.json",
+      "previousSha256": "03a5365754e80ba9e90a1ff1a4dc462d0e9c5c6a71ea5d39fc0a343e30171f3b",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/variants/variant-2-task-19-review.md.sidecar.json",
+      "correctedSha256": "0def20b5c72c7a4281b9cbdbf1056270f191004a784fc668182ab15c81b88d5d"
+    },
+    {
+      "relativePath": "variants/variant-3-task-19-review-initial.diff.sidecar.json",
+      "previousDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-intake/variants/variant-3-task-19-review-initial.diff.sidecar.json",
+      "previousSha256": "e810138f50aa565cfeb3ca835dc1160141682133f18f2a98c78d0e8e79d1f2e7",
+      "correctedTemporaryPath": "/private/tmp/ufz-correction-history-intake/variants/variant-3-task-19-review-initial.diff.sidecar.json",
+      "correctedSha256": "9850d489beb0ede110bf8c23db6dd7dcf1633a995f79cb4ad30b5a2f1ce1f80e"
+    }
+  ],
+  "newTemporaryArtifacts": [
+    "task19-qualifier-correction.json",
+    "task19-qualifier-correction.md"
+  ],
+  "unchangedFacts": {
+    "sources": 79,
+    "originalStrictOccurrences": 24,
+    "newHistoricalFindingAppearances": 26,
+    "separateStructuredRenditions": 4,
+    "sourceCodeWrites": 0,
+    "rawSourceWrites": 0,
+    "canonicalLedgerWrites": 0,
+    "semanticIdentityMerges": 0
+  },
+  "verification": "Re-ran all three temporary extraction/verification scripts: 79-source accounting, 24 unchanged strict occurrences, 265 byte-span checks and original raw hashes still pass. All 79 main source sidecars and all five original parsed JSON copies remain byte-identical to the original durable intake copy."
+}

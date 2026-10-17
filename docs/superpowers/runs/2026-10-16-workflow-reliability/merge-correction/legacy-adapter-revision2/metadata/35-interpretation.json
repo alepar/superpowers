@@ -1,0 +1,511 @@
+{
+  "version": 1,
+  "ordinal": 35,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+  "originalArtifact": "task-report-history-r1/raw/task-2-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-2-review.md",
+  "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+  "rawByteCount": 3681,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      3681
+    ],
+    "method": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/7",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/35-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 5,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/7/semanticPassages/0",
+      "roles": [
+        "coverage-qualification"
+      ],
+      "span": [
+        708,
+        914
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/7/semanticPassages/1",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        915,
+        1178
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/7/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1190,
+        1206
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/7/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1206,
+        1223
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/7/semanticPassages/4",
+      "roles": [
+        "actual-finding"
+      ],
+      "span": [
+        1223,
+        1585
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n",
+      "text": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 708,
+      "byteEnd": 914,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "coverage-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 2,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 2,
+        "byteStart": 708,
+        "byteEnd": 914,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n",
+      "text": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 915,
+      "byteEnd": 1178,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 3,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 3,
+        "byteStart": 915,
+        "byteEnd": 1178,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Critical: none.\n",
+      "text": "Critical: none.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1190,
+      "byteEnd": 1206,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 1,
+        "rawSection": "Issues",
+        "rawPositionInSection": 1,
+        "byteStart": 1190,
+        "byteEnd": 1206,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Important: none.\n",
+      "text": "Important: none.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1206,
+      "byteEnd": 1223,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 2,
+        "rawSection": "Issues",
+        "rawPositionInSection": 2,
+        "byteStart": 1206,
+        "byteEnd": 1223,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n",
+      "text": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1223,
+      "byteEnd": 1585,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "actual-finding"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 3,
+        "rawSection": "Issues",
+        "rawPositionInSection": 3,
+        "byteStart": 1223,
+        "byteEnd": 1585,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 708,
+      "byteEnd": 914,
+      "roles": [
+        "coverage-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 915,
+      "byteEnd": 1178,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1223,
+      "byteEnd": 1585,
+      "roles": [
+        "actual-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": false,
+    "scope": "No whole-source empty finding assertion supported; retain actual concern/finding/deferred obligations.",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000000708",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage-qualification"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 708,
+      "rawByteEnd": 914,
+      "rawLineStart": 11,
+      "rawLineEnd": 11,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task super-plan-ufz.2 review",
+            "Spec compliance"
+          ],
+          "byteStart": 141,
+          "byteEnd": 1179
+        }
+      ],
+      "rawText": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000915",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 915,
+      "rawByteEnd": 1178,
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task super-plan-ufz.2 review",
+            "Spec compliance"
+          ],
+          "byteStart": 141,
+          "byteEnd": 1179
+        }
+      ],
+      "rawText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-3/raw-byte-000001223",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "actual-finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 1223,
+      "rawByteEnd": 1585,
+      "rawLineStart": 19,
+      "rawLineEnd": 19,
+      "originalSections": [
+        {
+          "section": "Issues",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.2 review",
+            "Issues"
+          ],
+          "byteStart": 1179,
+          "byteEnd": 1586
+        }
+      ],
+      "rawText": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/7/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/35-task-2-review.md",
+  "retainedSha256": "48354201d23c7bf95cc17d7f8c5c00546f6d2242831191f20dbedae573b72e4d"
+}

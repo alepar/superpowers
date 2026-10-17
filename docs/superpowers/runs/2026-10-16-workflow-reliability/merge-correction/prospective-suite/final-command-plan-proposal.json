@@ -1,0 +1,1100 @@
+{
+  "schemaVersion": 1,
+  "proposalStatus": "PROVISIONAL INPUT ONLY; not runnable until parent final freeze and path/configuration completion",
+  "sourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "sourceTree": "61a8b70d795acd816d348934bd55293264ed5587",
+  "sourceIdentityStatus": "Parent-supplied candidate independently resolved by read-only Git object reads; source may change before freeze",
+  "checkout": null,
+  "output": null,
+  "historicalRoots": [
+    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers",
+    "/Users/alepar/AleCode/superpowers"
+  ],
+  "reviewReference": null,
+  "timeoutPerCommandSeconds": 600,
+  "commands": [
+    "node tests/super-code/replay-harness.mjs",
+    "bash tests/super-code/test-run-profile.sh",
+    "bash tests/super-code/test-dispatch-text.sh",
+    "bash tests/super-design/test-scripts.sh",
+    "bash tests/super-design/test-findings-ledger.sh",
+    "bash tests/super-design/test-step-back-check.sh",
+    "bash tests/super-design/test-amend-check.sh",
+    "bash tests/super-design/test-redesign-chain.sh",
+    "bash tests/super-design/test-redesign-cycle-filing.sh",
+    "bash tests/super-roast/test-assemble-args.sh",
+    "bash tests/super-auto/test-scripts.sh",
+    "bash tests/super-auto/test-contract-lint.sh",
+    "bash tests/skill-scripts/test-bash-invocation.sh",
+    "bash tests/codex/test-marketplace-manifest.sh",
+    "bash tests/super-code/test-run-marker.sh",
+    "bash tests/super-code/test-run-profile-in-flight.sh",
+    "bash tests/super-code/test-report-verdict.sh",
+    "bash tests/super-code/test-run-digest.sh",
+    "bash tests/super-code/test-task-surface.sh",
+    "bash tests/super-code/test-split-oversized.sh",
+    "bash tests/super-code/test-context-preflight.sh",
+    "bash tests/super-code/test-assembled-size.sh",
+    "bash tests/hooks/test-session-start.sh",
+    "bash tests/hooks/test-run-block.sh",
+    "bash tests/hooks/test-reinject-smoke.sh",
+    "bash tests/codex/test-package-codex-plugin.sh",
+    "bash tests/codex-plugin-sync/test-sync-to-codex-plugin.sh",
+    "bash tests/skill-scripts/test-prompt-text-fresh-rounds.sh",
+    "bash tests/super-auto/archive-integrity-r1.sh",
+    "bash tests/super-auto/collection-symlinks-r1.sh",
+    "bash tests/super-auto/generated-review-inputs-r1.sh",
+    "bash tests/super-auto/outer-cleanup-r1.sh",
+    "bash tests/super-auto/projection-output-r1.sh",
+    "node tests/super-code/invocation-source-binding-r1.mjs",
+    "node tests/super-code/invocation-start-r1.mjs",
+    "node tests/super-code/recovery-hold-scope-r1.mjs",
+    "node tests/super-code/startup-builder-seam-r1.mjs",
+    "bash tests/super-auto/collection-recovery-correction.sh",
+    "node tests/super-auto/acceptance-population-correction.mjs",
+    "node tests/super-auto/selection-recovery-correction.mjs",
+    "node tests/super-auto/resume-sync-contract.mjs",
+    "bash tests/super-code/test-setup-cleanup.sh",
+    "bash tests/super-code/test-stop-run-processes-inventory.sh",
+    "bash tests/super-code/test-verification-completion-metrics.sh"
+  ],
+  "entrypoints": [
+    {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "sha256": "8e540e28b28a2b7a80f8921940e871408464c3d0c0936555a3075ac29a04e06f",
+      "requirementIds": [
+        "combined-suite-case-01"
+      ],
+      "caseId": "01",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/replay-harness.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "ccdbacae6b7ed7eeb8ee4d44928fc6bd29c0821c",
+      "bytes": 438072,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-run-profile.sh",
+      "sha256": "127a5aa66a3bc8956228867732a82a0b3d94b9a13e902250fc9001a2cc7f35b1",
+      "requirementIds": [
+        "combined-suite-case-02"
+      ],
+      "caseId": "02",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-run-profile.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "7c46b1c8ca6218f287fe50344fb31f16ae18f51a",
+      "bytes": 60698,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "sha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+      "requirementIds": [
+        "combined-suite-case-03"
+      ],
+      "caseId": "03",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-dispatch-text.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "725f8e300038d15bb319471267b7c4ccc54f1985",
+      "bytes": 38194,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-scripts.sh",
+      "sha256": "bdc00605267a07966a49aa1e0adf7094773e9a0bde237205b119179ea5ae8b34",
+      "requirementIds": [
+        "combined-suite-case-04"
+      ],
+      "caseId": "04",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-scripts.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "2e2be2d5ad1057a4ada05cad86ed4633fee5553d",
+      "bytes": 12359,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-findings-ledger.sh",
+      "sha256": "adc438054c325a5d12addcda054083751cab475b93a87b3219622c27446bbc37",
+      "requirementIds": [
+        "combined-suite-case-05"
+      ],
+      "caseId": "05",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-findings-ledger.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "de1989dde7e4bc9e8145f98d99ff50973f66eb74",
+      "bytes": 22700,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-step-back-check.sh",
+      "sha256": "42c7b1cc1f00bbb0c6c87ac13f2a41d18d082f0ff32d5e880690ca01d60efdc0",
+      "requirementIds": [
+        "combined-suite-case-06"
+      ],
+      "caseId": "06",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-step-back-check.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "cb4f99228bfe11ae22dc41b452920818bc5e1fac",
+      "bytes": 8398,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-amend-check.sh",
+      "sha256": "38229bed4bd4aa1b0a100447a509329d4e9ded756bb0c085be53f7d0a8d6761a",
+      "requirementIds": [
+        "combined-suite-case-07"
+      ],
+      "caseId": "07",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-amend-check.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "4dd0f27923d029e519ca1dd97b76f4fcf0ac9f7c",
+      "bytes": 8482,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-redesign-chain.sh",
+      "sha256": "de98d95a580341f32d83c1347285b3bd39d92d860404858867fbba2f53f43401",
+      "requirementIds": [
+        "combined-suite-case-08"
+      ],
+      "caseId": "08",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-redesign-chain.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "a18657b30919d598c8f370ef1689e920bdb441d3",
+      "bytes": 11885,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-design/test-redesign-cycle-filing.sh",
+      "sha256": "7c8fe4ca1415d1ca110285a826031192286a8eb165a7b2d2f2bb23787196b891",
+      "requirementIds": [
+        "combined-suite-case-09"
+      ],
+      "caseId": "09",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-design/test-redesign-cycle-filing.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "7a366a388b125ba8b378bd97c1bcd428efc322b1",
+      "bytes": 13612,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-roast/test-assemble-args.sh",
+      "sha256": "39046913137a6202d12cfc8ab1e333229c5d73c218d4171fd8ec1dce17e53454",
+      "requirementIds": [
+        "combined-suite-case-10"
+      ],
+      "caseId": "10",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-roast/test-assemble-args.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "57f7affc578709ec1c89a97ddecd3ffb48a866d6",
+      "bytes": 13180,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/test-scripts.sh",
+      "sha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+      "requirementIds": [
+        "combined-suite-case-11"
+      ],
+      "caseId": "11",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-auto/test-scripts.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "c2a51fe5cdac974182161362ce36d6e015ca97e3",
+      "bytes": 51041,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/test-contract-lint.sh",
+      "sha256": "d0bc031e5be20049f3f6dd45bf32d4c44762e6f2fb3d95f96100ac52f0304e95",
+      "requirementIds": [
+        "combined-suite-case-12"
+      ],
+      "caseId": "12",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-auto/test-contract-lint.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "9cf1b17d945f8d731a8603df1aa9912101246436",
+      "bytes": 31891,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/skill-scripts/test-bash-invocation.sh",
+      "sha256": "faf3ef8e7df14236be0e2c8f40ae1d2c04b5405b62c0c24c5e204a200038afa4",
+      "requirementIds": [
+        "combined-suite-case-13"
+      ],
+      "caseId": "13",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/skill-scripts/test-bash-invocation.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "210d3ad864d790561313cb64a3b1c16484471a0a",
+      "bytes": 1238,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/codex/test-marketplace-manifest.sh",
+      "sha256": "da5877bc966dd3192de769c5557f23252048b5eae6a86845b4989e0491729b15",
+      "requirementIds": [
+        "combined-suite-case-14"
+      ],
+      "caseId": "14",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/codex/test-marketplace-manifest.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "752c218e8d5e34a2ca4857be7b28a6ca60755108",
+      "bytes": 3229,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-run-marker.sh",
+      "sha256": "4282f9bede10c088b88bf1f6c13ca63b2832515bbfbdc0fb25570e02e095cdde",
+      "requirementIds": [
+        "combined-suite-case-15"
+      ],
+      "caseId": "15",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-run-marker.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "61ec993c18d96890c96cf9f344360916afcd5055",
+      "bytes": 15498,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-run-profile-in-flight.sh",
+      "sha256": "028fc0f4d8193ce71b1ce3513cb99b581998dc15d5404589503cd18ab78a283d",
+      "requirementIds": [
+        "combined-suite-case-16"
+      ],
+      "caseId": "16",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-run-profile-in-flight.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "dd45ab1a59c017b6df6ca77dbc2330add96a1e11",
+      "bytes": 6940,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-report-verdict.sh",
+      "sha256": "d5a8118819f7097d08be1736af18793ad83ba70d54f9f37d3aefb43500e4797c",
+      "requirementIds": [
+        "combined-suite-case-17"
+      ],
+      "caseId": "17",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-report-verdict.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "dc1e43eaeb551c8bf1b1c08468e81502307d4abd",
+      "bytes": 23348,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-run-digest.sh",
+      "sha256": "ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa",
+      "requirementIds": [
+        "combined-suite-case-18"
+      ],
+      "caseId": "18",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-run-digest.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "60796d9970299543bbf7d49d0209c5007aae218c",
+      "bytes": 13406,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-task-surface.sh",
+      "sha256": "ae01b0e5e3595d576866bc44e1fc27a859e587735898d3da49a7a7919bcf974b",
+      "requirementIds": [
+        "combined-suite-case-19"
+      ],
+      "caseId": "19",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-task-surface.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "a73e387d57c059556d725449fbd5e56aa4b5a524",
+      "bytes": 1904,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-split-oversized.sh",
+      "sha256": "33fc26eae80667348ae408535b5d0176e8f97d9236e2330c440b0076e9e3abb5",
+      "requirementIds": [
+        "combined-suite-case-20"
+      ],
+      "caseId": "20",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-split-oversized.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "070925b14cdc74ff128eac626dfbea40a5c4ccd8",
+      "bytes": 7708,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-context-preflight.sh",
+      "sha256": "2b587f475b0df50bb4f2428b7a6e9484229a04f68581bfbb821e31d95d0c8bf1",
+      "requirementIds": [
+        "combined-suite-case-21"
+      ],
+      "caseId": "21",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-context-preflight.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "936f729d9b5d1af47b995d7700eb005340cfb995",
+      "bytes": 7803,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-assembled-size.sh",
+      "sha256": "3d2ccaec537d09fbbdb5936e26d40c5a15d84a806493da36aad2babbeeb75cc3",
+      "requirementIds": [
+        "combined-suite-case-22"
+      ],
+      "caseId": "22",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/super-code/test-assembled-size.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "cee05f0cd92b2bbeb6ca98d7f95191bfebf7e16d",
+      "bytes": 7298,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/hooks/test-session-start.sh",
+      "sha256": "3267341676ad09ca998a6ecc0a58e0c6a90b55729d42960bf2abbe5989753a4e",
+      "requirementIds": [
+        "combined-suite-case-23"
+      ],
+      "caseId": "23",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/hooks/test-session-start.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "2e871941c7c9483c4715901f8ca47271c62e4648",
+      "bytes": 6683,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/hooks/test-run-block.sh",
+      "sha256": "4af69bfe823bf945f5f52736d249322701917b92d09488f33070d5ec765d5f68",
+      "requirementIds": [
+        "combined-suite-case-24"
+      ],
+      "caseId": "24",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/hooks/test-run-block.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "9fa7ad8322c445c065bc1fa4c970612ec7125045",
+      "bytes": 14425,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/hooks/test-reinject-smoke.sh",
+      "sha256": "7d61bf6af7e4b46f4c9b97d41a577ddbcd5491e64a5f57e4caed7bb0c4a5be92",
+      "requirementIds": [
+        "combined-suite-case-25"
+      ],
+      "caseId": "25",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/hooks/test-reinject-smoke.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "388c7b2ee8fb3e00b4a21499a143cf79b481fdd7",
+      "bytes": 14584,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/codex/test-package-codex-plugin.sh",
+      "sha256": "01b0ea28197a38e2142125b199e67637bfb5ec123f03af0918a2a86a316cbab9",
+      "requirementIds": [
+        "combined-suite-case-26"
+      ],
+      "caseId": "26",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/codex/test-package-codex-plugin.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "9a20b8ac9a6f1b259e03735a86bc27fbf5576d7b",
+      "bytes": 10357,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/codex-plugin-sync/test-sync-to-codex-plugin.sh",
+      "sha256": "f13e38b0a0fcb955bd362c1c91868b47e29c0e7717017e2d145f4069e5096e2c",
+      "requirementIds": [
+        "combined-suite-case-27"
+      ],
+      "caseId": "27",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/codex-plugin-sync/test-sync-to-codex-plugin.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "01de3948477d6fa213130562ef0da3517be9e2b5",
+      "bytes": 24022,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/skill-scripts/test-prompt-text-fresh-rounds.sh",
+      "sha256": "e13fce67e8b23ac85212e2446beb17cb42b4c46547205fc13cc5262424da8f0b",
+      "requirementIds": [
+        "combined-suite-case-28"
+      ],
+      "caseId": "28",
+      "existingRequirement": true,
+      "coverage": "current AGENTS envelope",
+      "path": "tests/skill-scripts/test-prompt-text-fresh-rounds.sh",
+      "gitMode": "100755",
+      "gitObjectType": "blob",
+      "gitBlobOid": "577f370392e9322caad72b2c15eb7e7df3288a25",
+      "bytes": 2326,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/archive-integrity-r1.sh",
+      "sha256": "21285fda3051e7dd001ca757310c128d55d29fdd630cd4b38ec19f56d828085c",
+      "requirementIds": [
+        "combined-suite-case-29"
+      ],
+      "caseId": "29",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-auto/archive-integrity-r1.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "b1daa3247a30e87502a1759364b0d82379bd76b7",
+      "bytes": 5698,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/collection-symlinks-r1.sh",
+      "sha256": "3e7eff204bbeb8502d41ea3cb4d3fce94240da278f573a3971457b10d6d39754",
+      "requirementIds": [
+        "combined-suite-case-30"
+      ],
+      "caseId": "30",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-auto/collection-symlinks-r1.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "8dcce506debad0437f740a91d80e8b02ebf4c3b4",
+      "bytes": 8064,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/generated-review-inputs-r1.sh",
+      "sha256": "a7da9f3718adf97186d277859164ae6dda6675ff463a448a91ff1d7192129b0c",
+      "requirementIds": [
+        "combined-suite-case-31"
+      ],
+      "caseId": "31",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-auto/generated-review-inputs-r1.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "67e19ef3de84f234ca13d46004579dedd19ef9d0",
+      "bytes": 12650,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/outer-cleanup-r1.sh",
+      "sha256": "41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4",
+      "requirementIds": [
+        "combined-suite-case-32"
+      ],
+      "caseId": "32",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-auto/outer-cleanup-r1.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "1c26a0c4f7642f31fc9c145f3ec7c18b7cf4abbb",
+      "bytes": 8688,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/projection-output-r1.sh",
+      "sha256": "514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff",
+      "requirementIds": [
+        "combined-suite-case-33"
+      ],
+      "caseId": "33",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-auto/projection-output-r1.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "1a5eda1691f7a615eb835d9d3efed5a68fa97d19",
+      "bytes": 10822,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "sha256": "96bc655d4e7fbe6375f21285bcefd15769a9f15b01de96620d581e1391e37ff7",
+      "requirementIds": [
+        "combined-suite-case-34"
+      ],
+      "caseId": "34",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-code/invocation-source-binding-r1.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "18e0f223a7cae5f54102a4ac100841a09402a6d5",
+      "bytes": 11467,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "sha256": "8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2",
+      "requirementIds": [
+        "combined-suite-case-35"
+      ],
+      "caseId": "35",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-code/invocation-start-r1.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "c6ef3166f299e305b5a096b104327ad076a68fbd",
+      "bytes": 9326,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+      "sha256": "45aca60f8cba478195e0a7113ff1c9595249822c0b4bc2776188a7d481bee77b",
+      "requirementIds": [
+        "combined-suite-case-36"
+      ],
+      "caseId": "36",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-code/recovery-hold-scope-r1.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "46d106c5166ee45c0fffeeae2f3ae816d90463ab",
+      "bytes": 8788,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+      "sha256": "29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013",
+      "requirementIds": [
+        "combined-suite-case-37"
+      ],
+      "caseId": "37",
+      "existingRequirement": true,
+      "coverage": "retained focused repair command",
+      "path": "tests/super-code/startup-builder-seam-r1.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "ab299d878a67db82fb83646297af6c5b1497cbed",
+      "bytes": 7807,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-auto/collection-recovery-correction.sh",
+      "sha256": "12b343f3c63151718f57ed6bd5ed863fb635770cc542d919976399153040879c",
+      "requirementIds": [
+        "combined-suite-case-38"
+      ],
+      "caseId": "38",
+      "existingRequirement": false,
+      "coverage": "Explicit settled-null recovery and immutable unavailable predecessor",
+      "path": "tests/super-auto/collection-recovery-correction.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "b4ec62502ad26fb80b98e34eab8355958f1c6d86",
+      "bytes": 8184,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-auto/acceptance-population-correction.mjs",
+      "sha256": "16f46da7a5abd18f8463a0a0dd9026b647d8b001b257dc284349efd986b2e0c0",
+      "requirementIds": [
+        "combined-suite-case-39"
+      ],
+      "caseId": "39",
+      "existingRequirement": false,
+      "coverage": "Acceptance population, source continuity, attribution and recovery identity",
+      "path": "tests/super-auto/acceptance-population-correction.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "443d79b2d03f69bc10594f61022452c07698226f",
+      "bytes": 21138,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-auto/selection-recovery-correction.mjs",
+      "sha256": "d46d2814f4c332d7d25bac5393738f7fc6b52244c74bfe04d36593408cb10e7d",
+      "requirementIds": [
+        "combined-suite-case-40"
+      ],
+      "caseId": "40",
+      "existingRequirement": false,
+      "coverage": "Captured-source recovery selection and bounded incomplete review",
+      "path": "tests/super-auto/selection-recovery-correction.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "3c847eda22d0e8775cc826ec28835acc8bf128f8",
+      "bytes": 12882,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "node tests/super-auto/resume-sync-contract.mjs",
+      "sha256": "acdf27fed2346f2793b19abd2e9ed27c9ca87007494a508ad90a0a0915cab051",
+      "requirementIds": [
+        "combined-suite-case-41"
+      ],
+      "caseId": "41",
+      "existingRequirement": false,
+      "coverage": "Mechanical Key Abstractions sync/resume instruction contract; behavior evaluation separate",
+      "path": "tests/super-auto/resume-sync-contract.mjs",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "3e16fdb66ecf7c4219412c333822db68a5566915",
+      "bytes": 4468,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-setup-cleanup.sh",
+      "sha256": "85dbbeab6b281e3240607de672aa2fd4c591ec6e0277d68a8dbf2c945e398e12",
+      "requirementIds": [
+        "combined-suite-case-42"
+      ],
+      "caseId": "42",
+      "existingRequirement": false,
+      "coverage": "Generated setup cleanup and scoped real removal helper",
+      "path": "tests/super-code/test-setup-cleanup.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "88aac8449705b38a033ef106a0d01d7b6f98405e",
+      "bytes": 7222,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-stop-run-processes-inventory.sh",
+      "sha256": "4b7b5f17f8bef2af08f991e26a7759d3d8f1a9e63a15db164cc070b882e6ea7a",
+      "requirementIds": [
+        "combined-suite-case-43"
+      ],
+      "caseId": "43",
+      "existingRequirement": false,
+      "coverage": "Git inventory failure before process matching/signalling in owned fixture",
+      "path": "tests/super-code/test-stop-run-processes-inventory.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "eeeae4e4054269b16c3e0e57f6de38c089d7705c",
+      "bytes": 4174,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    },
+    {
+      "command": "bash tests/super-code/test-verification-completion-metrics.sh",
+      "sha256": "b9962101de239173f7bc412ad82e14c980a6d4fb0dc21f75fb8d140dce98ce5f",
+      "requirementIds": [
+        "combined-suite-case-44"
+      ],
+      "caseId": "44",
+      "existingRequirement": false,
+      "coverage": "Ordinary transcript and metric producers distinguish verification from Git landing",
+      "path": "tests/super-code/test-verification-completion-metrics.sh",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "b6019685d161d6f2b19ce21da82f94d69f3ecd0b",
+      "bytes": 6920,
+      "trackedAtSourceHead": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "worktreeBytesMatchProvisionalSource": true
+    }
+  ],
+  "commandCount": 44,
+  "envelopeCounts": {
+    "currentAGENTS": 28,
+    "retainedFocusedRepair": 9,
+    "newCorrection": 7
+  },
+  "originalPlan": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/final-sweep-combined-1/command-plan.json",
+    "sha256": "1e85d8f3caae47b30e046895a74aa5b7d4437c04b1c7fc88bcef09007875a780",
+    "sourceHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+    "sourceTree": "35e91189f7c31b48a933381641197e21056e00bf",
+    "commandsPreservedExactlyInOrder": true,
+    "existingCaseRequirementIdsPreserved": true
+  },
+  "requirementAmendmentProposal": {
+    "owner": "super-auto",
+    "state": "not enacted; owner records unchanged",
+    "rootMeasurementRequirementId": "final-suite",
+    "originalFinalSuiteRequirement": {
+      "id": "final-suite",
+      "kind": "measurement",
+      "owner": "super-auto",
+      "command": "node evidence/super-plan-ufz.14/run-required-suites.mjs",
+      "configuration": "historical aggregate entry point retained; current final plan executes 37 separate commands in a standalone checkout; exact aggregate command/configuration reconciliation pending",
+      "requiredLive": true
+    },
+    "existingCaseRequirementIds": [
+      "combined-suite-case-01",
+      "combined-suite-case-02",
+      "combined-suite-case-03",
+      "combined-suite-case-04",
+      "combined-suite-case-05",
+      "combined-suite-case-06",
+      "combined-suite-case-07",
+      "combined-suite-case-08",
+      "combined-suite-case-09",
+      "combined-suite-case-10",
+      "combined-suite-case-11",
+      "combined-suite-case-12",
+      "combined-suite-case-13",
+      "combined-suite-case-14",
+      "combined-suite-case-15",
+      "combined-suite-case-16",
+      "combined-suite-case-17",
+      "combined-suite-case-18",
+      "combined-suite-case-19",
+      "combined-suite-case-20",
+      "combined-suite-case-21",
+      "combined-suite-case-22",
+      "combined-suite-case-23",
+      "combined-suite-case-24",
+      "combined-suite-case-25",
+      "combined-suite-case-26",
+      "combined-suite-case-27",
+      "combined-suite-case-28",
+      "combined-suite-case-29",
+      "combined-suite-case-30",
+      "combined-suite-case-31",
+      "combined-suite-case-32",
+      "combined-suite-case-33",
+      "combined-suite-case-34",
+      "combined-suite-case-35",
+      "combined-suite-case-36",
+      "combined-suite-case-37"
+    ],
+    "newCaseRequirementIds": [
+      "combined-suite-case-38",
+      "combined-suite-case-39",
+      "combined-suite-case-40",
+      "combined-suite-case-41",
+      "combined-suite-case-42",
+      "combined-suite-case-43",
+      "combined-suite-case-44"
+    ],
+    "originalSnapshotSourceTree": "35e91189f7c31b48a933381641197e21056e00bf",
+    "amendExistingBySameId": true,
+    "newActualConfiguration": null,
+    "outerFinalSuiteMeasurementIdentity": null,
+    "retainOriginalSnapshotsAndRawObservations": true,
+    "historicalOld37SuccessIsNotNewSourcePass": true,
+    "historicalAggregateMismatchIsNotResolvedByThisProposal": true,
+    "noRequirementRemovalByOmission": true,
+    "declaredRecoveryCommandsNotSubstituted": true,
+    "authority": {
+      "scopeAsSuppliedByParent": "User authorized bounded repair/acceptance and conditional local merge, no waiver. Owner may amend known outdated measurement intent with honest versioned source/command evidence, not retroactive pass.",
+      "evidenceBasis": "Parent task dispatch and source policy; original user approval message was not supplied verbatim to this review seat",
+      "exactUserApprovalReceipt": null,
+      "ownerAmendmentRecord": null,
+      "policyBasis": [
+        "Pinned6.0 super-auto/SKILL.md phase6 sweep rule: declared config.sweep else AGENTS project full command; actual Launch has no config.sweep",
+        "Current skills/super-auto/run-state.md Caller-owned root acceptance: requirements retained across omission; same-ID amendment with authority/evidence retained"
+      ],
+      "boundaries": [
+        "Prospective command/configuration/source amendment only",
+        "No historical pass fabrication, Recovery requirement substitution, waiver, root closure or human decision inference",
+        "Sweep success supplies measurement evidence; independent review, evaluation, historical obligations and human gates remain separate"
+      ]
+    }
+  },
+  "approvedPrivateExecutionTools": {
+    "runner": {
+      "path": "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+      "sha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d"
+    },
+    "outerLauncher": {
+      "path": "/private/tmp/ufz-correction-suite-outer-launcher.py",
+      "sha256": "89b2316cdd4773d49fa5db379dabdac55ed7d34c3fbb85d3046ac15faa49c87e"
+    },
+    "changedByThisTask": false
+  },
+  "executionConfiguration": {
+    "serial": true,
+    "runnerBaseEnvironment": {
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "CI": "1",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "caseOwnedRootFolders": {
+      "TMPDIR": "tmp",
+      "HOME": "home",
+      "XDG_CONFIG_HOME": "xdg-config",
+      "XDG_CACHE_HOME": "xdg-cache",
+      "XDG_DATA_HOME": "xdg-data",
+      "XDG_STATE_HOME": "xdg-state",
+      "CODEX_HOME": "codex-home"
+    },
+    "ambientEnvironmentInheritedByCases": false,
+    "outerInvocationTemplate": [
+      "<ABSOLUTE_VERIFIED_PYTHON>",
+      "-I",
+      "/private/tmp/ufz-correction-suite-outer-launcher.py",
+      "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+      "<FROZEN_CANONICAL_ABSOLUTE_PLAN_PATH>",
+      "<NEW_CANONICAL_OWNED_OUTER_ROOT>",
+      "<FRESH_CANONICAL_QUIET_HOST_FACTS_JSON>"
+    ],
+    "outerCwd": "runner will use final canonical standalone checkout from plan.checkout",
+    "caseCwd": "plan.checkout",
+    "innerOutput": "plan.output: new canonical outside checkout/inputs/protected historical roots",
+    "outerEnvironment": "Approved launcher builds exact minimal PATH/CI/LANG/LC_ALL/TZ/__CF_USER_TEXT_ENCODING/HOME/TMPDIR; no ambient selectors/injections",
+    "configurationIdentity": "PENDING actual tools, paths, owned env roots, launcher receipt and configuration hash at execution",
+    "quietHostFacts": null,
+    "ownedResourceInspection": "Separate scoped read-only inspection after execution; retain unknowns/resources; no global absence inference"
+  },
+  "workflowRequirements": {
+    "applicability": "AGENTS conditional: run documented dryRun scenarios if coordinator.js or roast workflow engine changed. Coordinator is covered by case01 exact replay entrypoint. If roast engine changed, separately verify its exact documented cases in existing assemble-args/mock coverage; do not infer its counts from coordinator.",
+    "coordinator": {
+      "entrypointCaseId": "01",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "implementation": {
+        "path": "skills/super-code/coordinator.js",
+        "gitMode": "100644",
+        "gitObjectType": "blob",
+        "gitBlobOid": "bcfbdba64f6fe1f4d5c4669fc323023f6560b94f",
+        "sha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+        "bytes": 305003
+      },
+      "doc": {
+        "path": "skills/super-code/coordinator-workflow.md",
+        "gitMode": "100644",
+        "gitObjectType": "blob",
+        "gitBlobOid": "ecd6dde9945f73486feca49f4eb3180685b3dc0e",
+        "sha256": "5b11bc9f00d5e94fbf3a5229d7e40472d6c6793006037f2481d0253080e604bc",
+        "bytes": 224354
+      },
+      "harness": {
+        "path": "tests/super-code/replay-harness.mjs",
+        "gitMode": "100644",
+        "gitObjectType": "blob",
+        "gitBlobOid": "ccdbacae6b7ed7eeb8ee4d44928fc6bd29c0821c",
+        "sha256": "8e540e28b28a2b7a80f8921940e871408464c3d0c0936555a3075ac29a04e06f",
+        "bytes": 438072
+      },
+      "scenarioReceiptsRequired": [
+        {
+          "name": "canonical four-task",
+          "expectedAgentDispatches": 48,
+          "expectedErrors": 0,
+          "docArgsBytesSha256": "4aa08e0df559b108035042e3a1df4f8ffd6fbba86e6325cc16165bfe14cee4c6",
+          "dryRun": true,
+          "evidenceRequired": [
+            "Named scenario heading",
+            "[PASS] run completes without throwing",
+            "[PASS] 48 agent dispatches (got 48)",
+            "Scenario terminal/bucket assertions pass"
+          ]
+        },
+        {
+          "name": "fix-pass-blocked",
+          "expectedAgentDispatches": 19,
+          "expectedErrors": 0,
+          "docArgsBytesSha256": "6333a8d4b6fe67ec2b0e0344df6ea572bad9c3aa67a38935daabca8036c4c0e8",
+          "dryRun": true,
+          "evidenceRequired": [
+            "Named scenario heading",
+            "[PASS] run completes without throwing",
+            "[PASS] 19 agent dispatches (got 19)",
+            "Scenario terminal/bucket assertions pass"
+          ]
+        },
+        {
+          "name": "parked",
+          "expectedAgentDispatches": 23,
+          "expectedErrors": 0,
+          "docArgsBytesSha256": "30913f3dd0f6d0056b58be7215c7d1dfc9a3a7f6025c95eff91af7396a8f3d59",
+          "dryRun": true,
+          "evidenceRequired": [
+            "Named scenario heading",
+            "[PASS] run completes without throwing",
+            "[PASS] 23 agent dispatches (got 23)",
+            "Scenario terminal/bucket assertions pass"
+          ]
+        }
+      ],
+      "finalEvidenceRequired": [
+        "Fresh case01 source-bound command receipt and exitCode0",
+        "All three named scenario counts and terminal assertions",
+        "Final harness summary has zero failures",
+        "Source/doc/harness hashes match frozen source",
+        "If individual assertions not printed, retain scenario machine receipts/traces showing executed assertions and actual48/19/23; aggregate pass count alone insufficient"
+      ],
+      "scopeLimit": "Offline deterministic replay; canned agent runtime and doc args; not hosted Workflow or live-agent behavior"
+    },
+    "roastIfEngineChanged": {
+      "canonicalExpectedAgents": 22,
+      "deadReporterExpectedAgents": 23,
+      "unsettledPanelExpectedAgents": 22,
+      "doc": {
+        "path": "skills/super-roast/super-roast-workflow.md",
+        "gitMode": "100644",
+        "gitObjectType": "blob",
+        "gitBlobOid": "c3b87c8d7857e6b7e5072aea87504e58f8d4a8c5",
+        "sha256": "c5c9bfaa4a12ba336d728ae4da27dc6d817e1c04df7f6c73bdf7d15cbe0ef956",
+        "bytes": 77490
+      }
+    }
+  },
+  "policySources": {
+    "AGENTS": {
+      "path": "AGENTS.md",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "d1511d8b6547358d51b660b0eb7220b130c6aebc",
+      "sha256": "738a6a947ad56c42561b3eb33cb43f0ef0a06d829879d67910294094a9a9d4a4",
+      "bytes": 13613
+    },
+    "CLAUDE": {
+      "trackedSymlinkTarget": "AGENTS.md",
+      "gitRecord": {
+        "path": "CLAUDE.md",
+        "gitMode": "120000",
+        "gitObjectType": "blob",
+        "gitBlobOid": "47dc3e3d863cfb5727b87d785d09abf9743c0a72",
+        "sha256": "a54ff182c7e8acf56acfd6e4b9c3ff41e2c41a31c9b211b2deb9df75d9a478f9",
+        "bytes": 9
+      },
+      "effectiveEnvelope": "AGENTS.md (tracked symlink), same28commands"
+    },
+    "runState": {
+      "path": "skills/super-auto/run-state.md",
+      "gitMode": "100644",
+      "gitObjectType": "blob",
+      "gitBlobOid": "1580f4d32e8e754828c8c03b818b9bb0869b1680",
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203",
+      "bytes": 60469
+    },
+    "launchLedgerPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/progress.md",
+    "pinnedSweepPolicyPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/pinned-policy-6.0/skills/super-auto/SKILL.md",
+    "rootRecordReadOnlyReference": {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+      "sha256": "b466fd6810673fce663552bed897b68b8f40f4d81ca58014b658f6d5f6099380"
+    }
+  },
+  "pendingFinalFreeze": [
+    "Finish independent source review and source changes; parent names finalHead/finalTree",
+    "Recompute all entrypoint/doc/implementation hashes against final commit and repeat tracked nonsymlink/CLI checks",
+    "Supply canonical standalone clone checkout and distinct new inner/outer evidence roots; preserve protected historical roots",
+    "Supply immutable reviewed plan path/reviewReference and exact approval/owner-amendment receipt",
+    "Record explicit versioned same-ID amendment with exact source/command/configuration while preserving original snapshots and Recovery requirements",
+    "Capture fresh quiet-host facts (no roast/coordinator Workflow in flight on host), actual executable/environment/configuration identities",
+    "Only then run approved launcher and runner; retain all receipts, errors, timeouts, raw logs and scoped resource follow-up"
+  ],
+  "measurementsPerformed": false
+}

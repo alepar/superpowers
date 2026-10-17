@@ -1,0 +1,17 @@
+{
+  "historicalBaseline": "c4c9bf712a0010346bbea0c020f8070d121d597c",
+  "notAnAcceptanceDecision": true,
+  "boundedScope": "Canonical task/reviewer/coordinator records, final-review/historical-part outputs, named reports and exact output references; recursively archived cloned product/test fixtures, dispatch inputs and generated finding projections omitted with pinned path/blob/size accounting.",
+  "missingOrUnknown": [
+    "Original enclosing complete Workflow return with reduced Recovery/checkEvidence/requiredLiveChecks/runFailures is not retained in canonical inspected sources. Root proposal empty arrays explicitly preserve this gap.",
+    "Original standalone RESULT callbacks for the first 18 mapped tasks are not retained as typed envelope objects here; complete prose report/reviewer bytes remain. No [] synthesized.",
+    "No measured run-start baseline established for the retained actual .22/.23 introducing claims; full historical temporal attribution not reconstructed.",
+    "18 original evidence locations lack an exact/canonical committed path binding; retained candidate paths remain unverified aliases with original pointers preserved.",
+    "Raw log bodies and report excerpts may contain additional RED/aborted/intermediate failures; typed fail23 and legacy runner fail4 are explicitly bounded populations, not a complete count of all failed shell commands.",
+    "Parse success and keyword absence are never semantic acceptance or complete population proof. No actual required obligation removed.",
+    "Local untracked plan snapshots are time-qualified; pinned committed copies are primary historical evidence. Current instructions document is a task-input snapshot, not historical authority.",
+    "No report anchors were semantically verified merely by copying their containing source; reference-manifest says so.",
+    "Prose statement extraction preserves complete selected paragraphs; classification of mandatory versus limitation/applicability remains with owner review."
+  ],
+  "performed": "Read-only Git/blob/local reads and temporary artifact construction only; no tests, source/run/index/HEAD/tracker/Herdr/process mutations."
+}

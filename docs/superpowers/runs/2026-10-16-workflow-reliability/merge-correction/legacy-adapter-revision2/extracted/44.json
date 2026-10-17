@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+  "artifact": "legacy-report-adapters-r1/44-task-24-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-1/raw-byte-000000216",
+      "position": 1,
+      "key": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.",
+      "text": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-3/raw-byte-000000889",
+      "position": 1,
+      "key": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.",
+      "text": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed."
+    }
+  ]
+}

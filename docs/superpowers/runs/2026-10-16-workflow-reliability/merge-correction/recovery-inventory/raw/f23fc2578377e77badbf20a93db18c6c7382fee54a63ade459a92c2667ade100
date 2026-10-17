@@ -1,0 +1,24 @@
+{
+  "scope": "entire observed run history, not only current invocation",
+  "historyCount": 29,
+  "invocationCount": 11,
+  "sources": [
+    "finish-state.json",
+    "finish-fix-r1.json"
+  ],
+  "observedLegacyFixEvents": 6,
+  "durableAttemptHistory": "unknown; absent records do not prove zero",
+  "dispatchedEarly": "unknown total;4observedprior",
+  "runWideLines": [
+    "Metrics: merges 29 \u00b7 merge-failed 1 \u00b7 rebase-conflicts 4 \u00b7 seam-reviews 10 (fixed 5) \u00b7 check-fails 0 (fixed 0)",
+    "Metrics: completions \u2014 review clean 23 \u00b7 after fix pass 6 \u00b7 parked 0 \u00b7 re-entry closes 0 \u00b7 dispatched early unknown (4 observed in prior invocation) \u00b7 cancelled 0",
+    "Metrics: fix-pass \u2014 entered 6 \u00b7 FIXED 6 \u00b7 BLOCKED 0 (observed progress events); durable attempts unknown \u00b7 historical FIXED unknown \u00b7 repaired finding groups unavailable until explicit disposition reconciliation",
+    "Metrics: ledger-check ok \u00b7 append-failed unknown \u00b7 append-retried unknown \u00b7 scope: prior18 and current11 disjoint tracker/ledger/Git identity sets agree (29); readiness/topology and append-history gaps retained"
+  ],
+  "invocationLines": [
+    "Metrics: merges 11 \u00b7 merge-failed 1 \u00b7 rebase-conflicts 0 \u00b7 seam-reviews 0 (fixed 0) \u00b7 check-fails 0 (fixed 0) [invocation: 11 mapped tasks; Mf includes one .24 auth-refused attempt]",
+    "Metrics: completions \u2014 review clean 9 \u00b7 after fix pass 2 \u00b7 parked 0 \u00b7 re-entry closes 0 \u00b7 dispatched early unknown \u00b7 cancelled 0 [invocation: 11 mapped tasks]",
+    "Metrics: fix-pass \u2014 entered 2 \u00b7 FIXED 2 \u00b7 BLOCKED 0 (progress events); durable attempts unknown \u00b7 historical FIXED unknown; Recovery records unknown; repaired findings unavailable [invocation: 11 mapped tasks]",
+    "Metrics: ledger-check ok \u00b7 append-failed unknown \u00b7 append-retried unknown \u00b7 scope: invocation mapping + progress + integration first-parent merge commits; landed 11 \u00b7 completed 11 \u00b7 Git-verified 11 \u00b7 gaps: no coordinator Finish append record; readiness timing / early-dispatch source not available in this reconciliation"
+  ]
+}

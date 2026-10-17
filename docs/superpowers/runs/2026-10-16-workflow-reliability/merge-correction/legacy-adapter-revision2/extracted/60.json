@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+  "artifact": "legacy-report-adapters-r1/60-task-4-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-5/raw-byte-000002569",
+      "position": 1,
+      "key": "No tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:",
+      "text": "No tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:"
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000003009",
+      "position": 1,
+      "key": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.",
+      "text": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf."
+    }
+  ]
+}

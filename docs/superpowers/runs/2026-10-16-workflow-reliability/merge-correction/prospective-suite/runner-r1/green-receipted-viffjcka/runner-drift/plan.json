@@ -1,0 +1,21 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/runner-drift/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/runner-drift/evidence",
+  "sourceHead": "037bd8b19d25e958a2411fdd7e6a7cedf5c3bd69",
+  "sourceTree": "1cfe17f27316f8ec1369f26e341e1d6975e4cadd",
+  "commands": [
+    "bash tests/check.sh"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/check.sh",
+      "sha256": "4d7eabaabcc79efbd86fbe8e37b9e592de8376d14d7e639ffe863d20ea9e8d82",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    }
+  ]
+}

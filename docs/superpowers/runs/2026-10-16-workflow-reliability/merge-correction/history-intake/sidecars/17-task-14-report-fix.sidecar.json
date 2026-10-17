@@ -1,0 +1,649 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-report-fix.md",
+  "rawArtifact": "task-report-history-r1/raw/task-14-report-fix.md",
+  "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+  "rawByteCount": 9461,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-report-fix.md",
+    "durablePath": "task-report-history-r1/raw/task-14-report-fix.md",
+    "sha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+    "byteCount": 9461,
+    "logicalRole": "report-fix",
+    "ordinal": 14,
+    "logicalTaskId": "super-plan-ufz.8.3",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-14-report-fix.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+    "error": "report-verdict: --complete: finding text without a list marker in Finding and narrow correction"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Fix pass\n",
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "lineStart": 1,
+      "lineEnd": 11,
+      "byteStart": 0,
+      "byteEnd": 504,
+      "bodyLineStart": 2,
+      "rawText": "## Fix pass\n\nStatus: FIXED\n\n- Task: super-plan-ufz.8.3\n- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n- Commit: fix(super-auto): preserve producer direct review packages\n- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n\n",
+      "bodyRawText": "\nStatus: FIXED\n\n- Task: super-plan-ufz.8.3\n- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n- Commit: fix(super-auto): preserve producer direct review packages\n- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED\n",
+          "text": "Status: FIXED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 13,
+          "byteEnd": 27
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Task: super-plan-ufz.8.3\n",
+          "text": "Task: super-plan-ufz.8.3",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 28,
+          "byteEnd": 55
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+          "text": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 55,
+          "byteEnd": 155
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n",
+          "text": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 155,
+          "byteEnd": 238
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n",
+          "text": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 238,
+          "byteEnd": 293
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Commit: fix(super-auto): preserve producer direct review packages\n",
+          "text": "Commit: fix(super-auto): preserve producer direct review packages",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 293,
+          "byteEnd": 361
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n",
+          "text": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 361,
+          "byteEnd": 503
+        }
+      ]
+    },
+    {
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 2,
+      "headingLevel": 3,
+      "headingRaw": "### Finding and narrow correction\n",
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "lineStart": 12,
+      "lineEnd": 19,
+      "byteStart": 504,
+      "byteEnd": 1994,
+      "bodyLineStart": 13,
+      "rawText": "### Finding and narrow correction\n\nVerified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n\nThe fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n\nFiles changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n\n",
+      "bodyRawText": "\nVerified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n\nThe fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n\nFiles changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+          "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 539,
+          "byteEnd": 986
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+          "text": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 987,
+          "byteEnd": 1812
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n",
+          "text": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1813,
+          "byteEnd": 1993
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN evidence",
+      "sectionOrdinal": 3,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN evidence\n",
+      "hierarchy": [
+        "Fix pass",
+        "RED/GREEN evidence"
+      ],
+      "lineStart": 20,
+      "lineEnd": 116,
+      "byteStart": 1994,
+      "byteEnd": 8395,
+      "bodyLineStart": 21,
+      "rawText": "### RED/GREEN evidence\n\nUsed systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n\nExact test commands, run in the owned task worktree with isolated HOME/XDG state:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n\nRED exited 1 before either production edit, with seven expected assertion failures:\n\n```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n\nGREEN script run exited 0; relevant output:\n\n```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nContract lint exited 0:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n\n",
+      "bodyRawText": "\nUsed systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n\nExact test commands, run in the owned task worktree with isolated HOME/XDG state:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n\nRED exited 1 before either production edit, with seven expected assertion failures:\n\n```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n\nGREEN script run exited 0; relevant output:\n\n```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nContract lint exited 0:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n",
+          "text": "Used systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2018,
+          "byteEnd": 2280
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact test commands, run in the owned task worktree with isolated HOME/XDG state:\n",
+          "text": "Exact test commands, run in the owned task worktree with isolated HOME/XDG state:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2281,
+          "byteEnd": 2363
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 26,
+          "lineEnd": 30,
+          "byteStart": 2364,
+          "byteEnd": 4424
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED exited 1 before either production edit, with seven expected assertion failures:\n",
+          "text": "RED exited 1 before either production edit, with seven expected assertion failures:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 4425,
+          "byteEnd": 4509
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n",
+          "text": "```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 34,
+          "lineEnd": 49,
+          "byteStart": 4510,
+          "byteEnd": 5105
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "GREEN script run exited 0; relevant output:\n",
+          "text": "GREEN script run exited 0; relevant output:",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 51,
+          "lineEnd": 51,
+          "byteStart": 5106,
+          "byteEnd": 5150
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n",
+          "text": "```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 53,
+          "lineEnd": 90,
+          "byteStart": 5151,
+          "byteEnd": 7404
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Contract lint exited 0:\n",
+          "text": "Contract lint exited 0:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 92,
+          "lineEnd": 92,
+          "byteStart": 7405,
+          "byteEnd": 7429
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n",
+          "text": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 94,
+          "lineEnd": 113,
+          "byteStart": 7430,
+          "byteEnd": 8164
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n",
+          "text": "`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 115,
+          "lineEnd": 115,
+          "byteStart": 8165,
+          "byteEnd": 8394
+        }
+      ]
+    },
+    {
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "lineStart": 117,
+      "lineEnd": 121,
+      "byteStart": 8395,
+      "byteEnd": 9461,
+      "bodyLineStart": 118,
+      "rawText": "### Fix-pass test hygiene and remaining evaluation\n\nNo leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n\nThe Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "bodyRawText": "\nNo leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n\nThe Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n",
+          "text": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 119,
+          "lineEnd": 119,
+          "byteStart": 8447,
+          "byteEnd": 9176
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+          "text": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 121,
+          "lineEnd": 121,
+          "byteStart": 9177,
+          "byteEnd": 9461
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED",
+      "text": "Status: FIXED",
+      "rawText": "Status: FIXED\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 13,
+      "byteEnd": 27,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.8.3",
+      "text": "Task: super-plan-ufz.8.3",
+      "rawText": "- Task: super-plan-ufz.8.3\n",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 28,
+      "byteEnd": 55,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 3,
+      "key": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "text": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "rawText": "- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 55,
+      "byteEnd": 155,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 4,
+      "key": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+      "text": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+      "rawText": "- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 155,
+      "byteEnd": 238,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 5,
+      "key": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+      "text": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+      "rawText": "- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n",
+      "lineStart": 8,
+      "lineEnd": 8,
+      "byteStart": 238,
+      "byteEnd": 293,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 6,
+      "key": "Commit: fix(super-auto): preserve producer direct review packages",
+      "text": "Commit: fix(super-auto): preserve producer direct review packages",
+      "rawText": "- Commit: fix(super-auto): preserve producer direct review packages\n",
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 293,
+      "byteEnd": 361,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 7,
+      "key": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+      "text": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+      "rawText": "- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n",
+      "lineStart": 10,
+      "lineEnd": 10,
+      "byteStart": 361,
+      "byteEnd": 503,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 1,
+      "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+      "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+      "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 539,
+      "byteEnd": 986,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 2,
+      "key": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+      "text": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+      "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 987,
+      "byteEnd": 1812,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 3,
+      "key": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+      "text": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+      "rawText": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1813,
+      "byteEnd": 1993,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+      "text": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+      "rawText": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n",
+      "lineStart": 119,
+      "lineEnd": 119,
+      "byteStart": 8447,
+      "byteEnd": 9176,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "positionInSection": 2,
+      "key": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "text": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "lineStart": 121,
+      "lineEnd": 121,
+      "byteStart": 9177,
+      "byteEnd": 9461,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

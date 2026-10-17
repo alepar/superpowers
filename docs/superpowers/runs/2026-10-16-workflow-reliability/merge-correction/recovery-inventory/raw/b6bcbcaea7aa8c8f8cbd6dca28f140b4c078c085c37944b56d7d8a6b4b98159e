@@ -1,0 +1,168 @@
+{
+  "id": "super-plan-ufz.23",
+  "status": "FIXED",
+  "head": "633c351b1a2efc5b84dfde39ca2defd69ed2c6e8",
+  "base": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed",
+  "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+  "completionKind": "implementation",
+  "reportPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+  "files": [
+    "skills/super-code/coordinator.js",
+    "skills/super-code/coordinator-workflow.md",
+    "skills/super-code/coordinator-subagents.md",
+    "skills/super-code/scripts/dispatch-text.mjs",
+    "tests/super-code/invocation-start-r1.mjs",
+    "tests/super-code/replay-harness.mjs",
+    "tests/super-code/startup-builder-seam-r1.mjs"
+  ],
+  "evidence": [
+    {
+      "sourceTree": "e1810a117ad08c4617bdd077797b8532656484ca",
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+      "command": "bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23",
+      "configuration": "run from integration worktree outside inspected task roots; check-only",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "c92128ece982276c2b4f87186821dd16d191cd83",
+      "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+      "configuration": "Node v26.9.0; real dispatch CLI; fs-read boundary instrumentation checks genuine selected Launch identity and forbids operational Resume; forbidden Date.now/Math.random; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "fail",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-seam-red-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-startup-final-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-replay-final-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "configuration": "Node v26.9.0; real ordinary CLI plus mechanical Workflow replay; immutable source guard and partial-artifact/null preservation; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-source-binding-final-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+      "configuration": "Node v26.9.0; 126 real dispatch CLI checks; both Launch forms; all ordinary modes; selected-ID boundary instrumentation; forbidden Date.now/Math.random; strict review gates; unchanged ledger and retained artifact bytes; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-seam-final-log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23",
+      "configuration": "post-completion check from /Users/alepar/AleCode/superpowers outside inspected task roots; process-list visibility escalated",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-hygiene-final-log",
+      "kind": "live"
+    }
+  ],
+  "requiredLiveChecks": [
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "configuration": "Node v26.9.0; real ordinary CLI plus mechanical Workflow replay; immutable source guard and partial-artifact/null preservation; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+    },
+    {
+      "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+      "configuration": "Node v26.9.0; 126 real dispatch CLI checks; both Launch forms; all ordinary modes; selected-ID boundary instrumentation; forbidden Date.now/Math.random; strict review gates; unchanged ledger and retained artifact bytes; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+    }
+  ],
+  "failureAttribution": [
+    {
+      "failure": "ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "observed": 3,
+      "verification": 8,
+      "introducedBy": "super-plan-ufz.23"
+    }
+  ],
+  "sourceBinding": {
+    "integrationBase": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed",
+    "preservedBindingCommit": "7db21aae",
+    "testedTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+    "committedTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+    "guardPreserved": true,
+    "sourceBindingScenarios": 11
+  },
+  "knownLimits": [
+    "Fresh-agent changed-instruction evaluation remains caller-owned and pending; no live Workflow evaluation claimed.",
+    "Root sweep, independent enclosing review and human/root acceptance remain caller-owned and pending.",
+    "Original caller failure remains .23-attributed; no measured run-start or task-base caller baseline supplied.",
+    "Evidence kind live describes executed local commands; VM/mechanical replay fixtures simulate agents and Workflow transport."
+  ],
+  "durableArchive": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass"
+}

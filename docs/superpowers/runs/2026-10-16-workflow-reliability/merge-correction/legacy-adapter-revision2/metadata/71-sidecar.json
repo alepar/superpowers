@@ -1,0 +1,604 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-8-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-8-review.md",
+  "rawSha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+  "rawByteCount": 4482,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-8-review.md",
+    "durablePath": "task-report-history-r1/raw/task-8-review.md",
+    "sha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+    "byteCount": 4482,
+    "logicalRole": "review",
+    "ordinal": 8,
+    "logicalTaskId": "super-plan-ufz.8.1",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-8-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 5,
+      "byteStart": 0,
+      "byteEnd": 167,
+      "bodyLineStart": 1,
+      "rawText": "Status: CLEAN\nTask: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)\nBase: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: e794628a03fac3fbd8cb9619de76cb48cc8380cf\n\n",
+      "bodyRawText": "Status: CLEAN\nTask: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)\nBase: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: e794628a03fac3fbd8cb9619de76cb48cc8380cf\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 14
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)\n",
+          "text": "Task: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 2,
+          "lineEnd": 2,
+          "byteStart": 14,
+          "byteEnd": 72
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b\n",
+          "text": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 72,
+          "byteEnd": 119
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf\n",
+          "text": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 119,
+          "byteEnd": 166
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "lineStart": 6,
+      "lineEnd": 17,
+      "byteStart": 167,
+      "byteEnd": 1389,
+      "bodyLineStart": 7,
+      "rawText": "## Spec compliance\n\n✅ Current bead description and acceptance criteria, frozen Task 8 brief and nested continuity design are compatible. bd comments reported no comments; no amendments were applied.\n\n✅ invocationId is separate from runTag, validated before dispatch, persisted in Launch args, and its structured appended:true acknowledgment is awaited before final assembly or review writers. Missing/unconfirmed persistence yields an explicit unavailable review and null reviewPath.\n\n✅ The caller contract reuses the recorded identity only on explicit unsettled resume and mints a fresh identity after a settled return. Workflow fallback minting does not infer identity from runTag or an earlier Launch.\n\n✅ Single, cluster, seam, stub, direct-input .diff, assembly and ordinary dispatch artifact producers carry invocation identity. The .cluster delimiter cannot alias a legal invocation token. Both execution references explain ownership and retention.\n\n✅ reviewPath retains its written-final-review meaning. No landed work, missing source commits, identity persistence failure, null review and unsuccessful stub writing keep it null. Captured source base/head and caller-checkout preservation remain intact.\n\n",
+      "bodyRawText": "\n✅ Current bead description and acceptance criteria, frozen Task 8 brief and nested continuity design are compatible. bd comments reported no comments; no amendments were applied.\n\n✅ invocationId is separate from runTag, validated before dispatch, persisted in Launch args, and its structured appended:true acknowledgment is awaited before final assembly or review writers. Missing/unconfirmed persistence yields an explicit unavailable review and null reviewPath.\n\n✅ The caller contract reuses the recorded identity only on explicit unsettled resume and mints a fresh identity after a settled return. Workflow fallback minting does not infer identity from runTag or an earlier Launch.\n\n✅ Single, cluster, seam, stub, direct-input .diff, assembly and ordinary dispatch artifact producers carry invocation identity. The .cluster delimiter cannot alias a legal invocation token. Both execution references explain ownership and retention.\n\n✅ reviewPath retains its written-final-review meaning. No landed work, missing source commits, identity persistence failure, null review and unsuccessful stub writing keep it null. Captured source base/head and caller-checkout preservation remain intact.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead description and acceptance criteria, frozen Task 8 brief and nested continuity design are compatible. bd comments reported no comments; no amendments were applied.\n",
+          "text": "✅ Current bead description and acceptance criteria, frozen Task 8 brief and nested continuity design are compatible. bd comments reported no comments; no amendments were applied.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 187,
+          "byteEnd": 368
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ invocationId is separate from runTag, validated before dispatch, persisted in Launch args, and its structured appended:true acknowledgment is awaited before final assembly or review writers. Missing/unconfirmed persistence yields an explicit unavailable review and null reviewPath.\n",
+          "text": "✅ invocationId is separate from runTag, validated before dispatch, persisted in Launch args, and its structured appended:true acknowledgment is awaited before final assembly or review writers. Missing/unconfirmed persistence yields an explicit unavailable review and null reviewPath.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 369,
+          "byteEnd": 655
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The caller contract reuses the recorded identity only on explicit unsettled resume and mints a fresh identity after a settled return. Workflow fallback minting does not infer identity from runTag or an earlier Launch.\n",
+          "text": "✅ The caller contract reuses the recorded identity only on explicit unsettled resume and mints a fresh identity after a settled return. Workflow fallback minting does not infer identity from runTag or an earlier Launch.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 656,
+          "byteEnd": 878
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Single, cluster, seam, stub, direct-input .diff, assembly and ordinary dispatch artifact producers carry invocation identity. The .cluster delimiter cannot alias a legal invocation token. Both execution references explain ownership and retention.\n",
+          "text": "✅ Single, cluster, seam, stub, direct-input .diff, assembly and ordinary dispatch artifact producers carry invocation identity. The .cluster delimiter cannot alias a legal invocation token. Both execution references explain ownership and retention.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 879,
+          "byteEnd": 1130
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ reviewPath retains its written-final-review meaning. No landed work, missing source commits, identity persistence failure, null review and unsuccessful stub writing keep it null. Captured source base/head and caller-checkout preservation remain intact.\n",
+          "text": "✅ reviewPath retains its written-final-review meaning. No landed work, missing source commits, identity persistence failure, null review and unsuccessful stub writing keep it null. Captured source base/head and caller-checkout preservation remain intact.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1131,
+          "byteEnd": 1388
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Issues"
+      ],
+      "lineStart": 18,
+      "lineEnd": 23,
+      "byteStart": 1389,
+      "byteEnd": 1447,
+      "bodyLineStart": 19,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1400,
+          "byteEnd": 1416
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1416,
+          "byteEnd": 1433
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1433,
+          "byteEnd": 1446
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Test evidence"
+      ],
+      "lineStart": 24,
+      "lineEnd": 39,
+      "byteStart": 1447,
+      "byteEnd": 3135,
+      "bodyLineStart": 25,
+      "rawText": "## Test evidence\n\nThe implementation report records final rebased runs of:\n- bash tests/super-code/test-dispatch-text.sh\n- node tests/super-code/replay-harness.mjs\n\nBoth ran in the assigned worktree with task-scoped TMPDIR and HOME/XDG roots. Reported output: dispatch-text: all tests passed; 1916 passed, 0 failed. I read the retained final log tails and confirmed those summaries. Tests were not rerun.\n\nEvidence plausibly covers both execution paths: actual synthetic bundle contents retained across distinct identities sharing runTag, suffix-like identity collision, explicit replay, fresh minting, unsafe identity rejection, persisted override mismatch, structured acknowledgment, persistence gaps, failed stub writing and inherited no-work/source-capture fixtures. Existing documented dispatch counts remain checked. Test hygiene reports no leaked processes.\n\nTest changes reviewed using:\ngit diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n\nResult: two test files, 151 insertions and 20 deletions. Existing expected path changes implement the requested identity contract; no skipped/deleted behavioral coverage or unjustified loosening found.\n\n",
+      "bodyRawText": "\nThe implementation report records final rebased runs of:\n- bash tests/super-code/test-dispatch-text.sh\n- node tests/super-code/replay-harness.mjs\n\nBoth ran in the assigned worktree with task-scoped TMPDIR and HOME/XDG roots. Reported output: dispatch-text: all tests passed; 1916 passed, 0 failed. I read the retained final log tails and confirmed those summaries. Tests were not rerun.\n\nEvidence plausibly covers both execution paths: actual synthetic bundle contents retained across distinct identities sharing runTag, suffix-like identity collision, explicit replay, fresh minting, unsafe identity rejection, persisted override mismatch, structured acknowledgment, persistence gaps, failed stub writing and inherited no-work/source-capture fixtures. Existing documented dispatch counts remain checked. Test hygiene reports no leaked processes.\n\nTest changes reviewed using:\ngit diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n\nResult: two test files, 151 insertions and 20 deletions. Existing expected path changes implement the requested identity contract; no skipped/deleted behavioral coverage or unjustified loosening found.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The implementation report records final rebased runs of:\n",
+          "text": "The implementation report records final rebased runs of:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 1465,
+          "byteEnd": 1522
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- bash tests/super-code/test-dispatch-text.sh\n",
+          "text": "bash tests/super-code/test-dispatch-text.sh",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 1522,
+          "byteEnd": 1568
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- node tests/super-code/replay-harness.mjs\n",
+          "text": "node tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 1568,
+          "byteEnd": 1611
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both ran in the assigned worktree with task-scoped TMPDIR and HOME/XDG roots. Reported output: dispatch-text: all tests passed; 1916 passed, 0 failed. I read the retained final log tails and confirmed those summaries. Tests were not rerun.\n",
+          "text": "Both ran in the assigned worktree with task-scoped TMPDIR and HOME/XDG roots. Reported output: dispatch-text: all tests passed; 1916 passed, 0 failed. I read the retained final log tails and confirmed those summaries. Tests were not rerun.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 1612,
+          "byteEnd": 1852
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Evidence plausibly covers both execution paths: actual synthetic bundle contents retained across distinct identities sharing runTag, suffix-like identity collision, explicit replay, fresh minting, unsafe identity rejection, persisted override mismatch, structured acknowledgment, persistence gaps, failed stub writing and inherited no-work/source-capture fixtures. Existing documented dispatch counts remain checked. Test hygiene reports no leaked processes.\n",
+          "text": "Evidence plausibly covers both execution paths: actual synthetic bundle contents retained across distinct identities sharing runTag, suffix-like identity collision, explicit replay, fresh minting, unsafe identity rejection, persisted override mismatch, structured acknowledgment, persistence gaps, failed stub writing and inherited no-work/source-capture fixtures. Existing documented dispatch counts remain checked. Test hygiene reports no leaked processes.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 1853,
+          "byteEnd": 2312
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes reviewed using:\ngit diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n",
+          "text": "Test changes reviewed using:\ngit diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff b635541015f4bc0e037ef8621f8d01135ca2b22b..e794628a03fac3fbd8cb9619de76cb48cc8380cf -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 34,
+          "lineEnd": 36,
+          "byteStart": 2313,
+          "byteEnd": 2931
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Result: two test files, 151 insertions and 20 deletions. Existing expected path changes implement the requested identity contract; no skipped/deleted behavioral coverage or unjustified loosening found.\n",
+          "text": "Result: two test files, 151 insertions and 20 deletions. Existing expected path changes implement the requested identity contract; no skipped/deleted behavioral coverage or unjustified loosening found.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 2932,
+          "byteEnd": 3134
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability checks\n",
+      "hierarchy": [
+        "Focused reachability checks"
+      ],
+      "lineStart": 40,
+      "lineEnd": 47,
+      "byteStart": 3135,
+      "byteEnd": 3983,
+      "bodyLineStart": 41,
+      "rawText": "## Focused reachability checks\n\nRisk: acknowledgment schema could be dropped before reaching the runtime. Read coordinator dispatch/queueLedger/appendLedger chain: opts.schema reaches agent and Launch prompt requests structured output.\n\nRisk: sibling producers could retain runTag-derived final paths. Traced Workflow Finish through assemblePrompt and single/cluster/seam/stub builders; traced ordinary bash dispatch-text entrypoint through dispatch-text.mjs to shared builders. Searched sibling super-code call sites for old final-review runTag forms; none remain in producer paths.\n\nRisk: captured source identity or reviewPath semantics could regress. Read finalSource gate, reviewWritten assignment and final return; ordinary Launch parsing and source forwarding retain reviewBase/reviewHead. Artifact identity is the only source-path change.\n\n",
+      "bodyRawText": "\nRisk: acknowledgment schema could be dropped before reaching the runtime. Read coordinator dispatch/queueLedger/appendLedger chain: opts.schema reaches agent and Launch prompt requests structured output.\n\nRisk: sibling producers could retain runTag-derived final paths. Traced Workflow Finish through assemblePrompt and single/cluster/seam/stub builders; traced ordinary bash dispatch-text entrypoint through dispatch-text.mjs to shared builders. Searched sibling super-code call sites for old final-review runTag forms; none remain in producer paths.\n\nRisk: captured source identity or reviewPath semantics could regress. Read finalSource gate, reviewWritten assignment and final return; ordinary Launch parsing and source forwarding retain reviewBase/reviewHead. Artifact identity is the only source-path change.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: acknowledgment schema could be dropped before reaching the runtime. Read coordinator dispatch/queueLedger/appendLedger chain: opts.schema reaches agent and Launch prompt requests structured output.\n",
+          "text": "Risk: acknowledgment schema could be dropped before reaching the runtime. Read coordinator dispatch/queueLedger/appendLedger chain: opts.schema reaches agent and Launch prompt requests structured output.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 3167,
+          "byteEnd": 3371
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: sibling producers could retain runTag-derived final paths. Traced Workflow Finish through assemblePrompt and single/cluster/seam/stub builders; traced ordinary bash dispatch-text entrypoint through dispatch-text.mjs to shared builders. Searched sibling super-code call sites for old final-review runTag forms; none remain in producer paths.\n",
+          "text": "Risk: sibling producers could retain runTag-derived final paths. Traced Workflow Finish through assemblePrompt and single/cluster/seam/stub builders; traced ordinary bash dispatch-text entrypoint through dispatch-text.mjs to shared builders. Searched sibling super-code call sites for old final-review runTag forms; none remain in producer paths.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 3372,
+          "byteEnd": 3719
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: captured source identity or reviewPath semantics could regress. Read finalSource gate, reviewWritten assignment and final return; ordinary Launch parsing and source forwarding retain reviewBase/reviewHead. Artifact identity is the only source-path change.\n",
+          "text": "Risk: captured source identity or reviewPath semantics could regress. Read finalSource gate, reviewWritten assignment and final return; ordinary Launch parsing and source forwarding retain reviewBase/reviewHead. Artifact identity is the only source-path change.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 3720,
+          "byteEnd": 3982
+        }
+      ]
+    },
+    {
+      "section": "Scope limits",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Scope limits\n",
+      "hierarchy": [
+        "Scope limits"
+      ],
+      "lineStart": 48,
+      "lineEnd": 51,
+      "byteStart": 3983,
+      "byteEnd": 4263,
+      "bodyLineStart": 49,
+      "rawText": "## Scope limits\n\nFresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.\n\n",
+      "bodyRawText": "\nFresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.\n",
+          "text": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 4000,
+          "byteEnd": 4262
+        }
+      ]
+    },
+    {
+      "section": "Strengths",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Strengths\n",
+      "hierarchy": [
+        "Strengths"
+      ],
+      "lineStart": 52,
+      "lineEnd": 54,
+      "byteStart": 4263,
+      "byteEnd": 4482,
+      "bodyLineStart": 53,
+      "rawText": "## Strengths\n\nThe persistence acknowledgment is required by both prompt and runtime schema. Retention fixtures materialize emitted paths and verify earlier contents, so path separation is tested beyond string matching.\n",
+      "bodyRawText": "\nThe persistence acknowledgment is required by both prompt and runtime schema. Retention fixtures materialize emitted paths and verify earlier contents, so path separation is tested beyond string matching.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The persistence acknowledgment is required by both prompt and runtime schema. Retention fixtures materialize emitted paths and verify earlier contents, so path separation is tested beyond string matching.\n",
+          "text": "The persistence acknowledgment is required by both prompt and runtime schema. Retention fixtures materialize emitted paths and verify earlier contents, so path separation is tested beyond string matching.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 54,
+          "lineEnd": 54,
+          "byteStart": 4277,
+          "byteEnd": 4482
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: CLEAN",
+      "text": "Status: CLEAN",
+      "rawText": "Status: CLEAN\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 14,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)",
+      "text": "Task: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)",
+      "rawText": "Task: super-plan-ufz.8.1 (review bead super-plan-ufz.8.6)\n",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "byteStart": 14,
+      "byteEnd": 72,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b",
+      "text": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b",
+      "rawText": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 72,
+      "byteEnd": 119,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf",
+      "text": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf",
+      "rawText": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 119,
+      "byteEnd": 166,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1400,
+      "byteEnd": 1416,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1416,
+      "byteEnd": 1433,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1433,
+      "byteEnd": 1446,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "section": "Scope limits",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Scope limits"
+      ],
+      "positionInSection": 1,
+      "key": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.",
+      "text": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.",
+      "rawText": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.\n",
+      "lineStart": 50,
+      "lineEnd": 50,
+      "byteStart": 4000,
+      "byteEnd": 4262,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "claim": "Large finding projections are truncated on piped stdout while exiting successfully, so status and root acceptance cannot consume otherwise valid retained findings.",
+    "location": "skills/super-auto/scripts/scope-dispositions:194",
+    "category": "correctness",
+    "external": false,
+    "kind": "ISSUE",
+    "evidence": "The new projection branch writes its full JSON with console.log at line 192 and immediately calls process.exit at line 194; pending pipe writes are cut off. Independently reproduced using the frozen ff2f79f62cc34084c8df20edc5c2e4f201a5d630 helper in /tmp/ufz-pr1/evidence-correctness/probe-helpers.py: an owned valid run containing 80 findings produces 167036 bytes and 80 findings when stdout is a regular file, but subprocess capture receives exactly 65536 bytes ending inside a finding string, exit 0, empty stderr. The real report-status consumer at lines 298\u2013299 therefore emits finding projection unavailable instead of the outstanding count. Root acceptance uses the same piped projection at report-status:150\u2013167 and cannot establish eligibility. Independently checked the supplied run too: spawnSync returned exit 0 with only 65528 characters ending mid-string, and ordinary status reproduced the named unavailable qualifier. Results retained at /tmp/ufz-pr1/evidence-correctness/helper-probe-result.json. Let stdout finish flushing while retaining the intended exit code."
+  },
+  {
+    "claim": "The root acceptance gate accepts corrupted archived review inputs because its collection check trusts persisted completion metadata without verifying the saved files and hashes.",
+    "location": "skills/super-auto/scripts/report-status:168",
+    "category": "correctness",
+    "external": false,
+    "kind": "ISSUE",
+    "evidence": "Independently verified the candidate attributed to cluster 56 in .superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.md. The gate at lines 168\u2013171 invokes ordinary status; status at lines 283\u2013296 validates record syntax and sums saved complete/gaps fields, but never checks archive bytes. The projection only checks that each source artifact is a regular file (scope-dispositions:101\u2013103), and never checks the archived direct package. Owned fixture /tmp/ufz-pr1/evidence-correctness/probe-helpers.py first collects final-review-inv-small.md and its .md.diff with the actual frozen helper, records otherwise complete review/live-measurement/human acceptance, and gets exit 0 eligible:true. Replacing only reviews/inv-small/final-review-inv-small.md.diff with corrupted bytes leaves --acceptance at exit 0 eligible:true, pending:[], gaps:[], although --collect on the exact same state returns exit 3 and archive conflict for that file. This contradicts run-state.md:270\u2013272, which says the root gate checks collection integrity. Evidence: /tmp/ufz-pr1/evidence-correctness/helper-probe-result.json; all mutations were limited to owned /tmp fixtures."
+  }
+]

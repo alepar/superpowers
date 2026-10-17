@@ -1,0 +1,839 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "gaps": [
+    {
+      "id": "interpretation-01-1",
+      "originalGap": {
+        "id": "interpretation-01-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Historical fresh-agent acceptance status beyond this source is unknown; Issues:none has explicitly narrower scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "behavior"
+      ],
+      "basis": "Historical later evaluation outcome unknown here. Actual changed-instruction assessment is required; scoped Issues:none never clears it.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "unknown-original-outcome-01",
+      "originalGap": {
+        "id": "unknown-original-outcome-01",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+        "kind": "original-format-kind-verdict-unrecognized",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Original historical kind/verdict genuinely unrecognized; adapter NEEDS_CONTEXT is new interpretation only. Keep this historical outcome unknown without inventing wrappers or demanding a retrospective status. Actual current source registration/correspondence must be supported or retain the explicit coverage gap.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-02-1",
+      "originalGap": {
+        "id": "interpretation-02-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Whether repeat measurements can be semantically reconciled is intentionally not inferred; no actual agent/live acceptance established.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R5",
+        "R8"
+      ],
+      "pendingRoutes": [
+        "semantic-evidence"
+      ],
+      "basis": "Repeat-measurement reconciliation is semantic judgment, not automatic latest-pass precedence. The exact old contradiction has repair evidence; current evidence coverage remains required without invented historical measurements.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-03-1",
+      "originalGap": {
+        "id": "interpretation-03-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Source chronology and same-failure semantic correspondence remain reviewer judgments; live-labelled fixture inputs are synthetic.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R5",
+        "R8"
+      ],
+      "pendingRoutes": [
+        "semantic-evidence",
+        "behavior"
+      ],
+      "basis": "Synthetic history cannot establish real introduction chronology. Assess actual source roles and same-failure evidence; preserve absent baseline and live-evaluation limits.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-05-1",
+      "originalGap": {
+        "id": "interpretation-05-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Source does not itself establish completion of the parent-owned behavioral evaluation.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R8",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "behavior"
+      ],
+      "basis": "This source alone does not establish completion of the caller attribution behavior evaluation. Keep the representative merged-source assessment pending.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-06-1",
+      "originalGap": {
+        "id": "interpretation-06-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+        "kind": "semantic-interpretation-gap",
+        "basis": "The exact current applicability/disposition of the partial-close defect is outside this reading; FIXED is an author claim.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4"
+      ],
+      "pendingRoutes": [
+        "resume",
+        "review"
+      ],
+      "basis": "The exact partial-close defect has concrete closure repair/RED-GREEN evidence and unchanged current code spans. Current interruption repairs/final review are distinct pending obligations.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-07-1",
+      "originalGap": {
+        "id": "interpretation-07-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "No current resolution follows from embedded FIXED statuses; separate seam fixture history and pending live eval remain distinct.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "resume",
+        "behavior",
+        "review"
+      ],
+      "basis": "Partial-close and diagnostic-schema cases have distinct bounded closure/diagnostic evidence. Embedded FIXED does not merge appearances or satisfy parent fresh-agent evaluation; mixed intermediate histories may need versioned additional adapter records.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-09-1",
+      "originalGap": {
+        "id": "interpretation-09-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Resolution claim concerns one earlier artifact; this reading does not validate the repair against current code or create an occurrence identity link.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "The same-source sole fixture repair is supported by diagnostic schema history and recorded2124/0 replay, with exact current fixture. Parent may judge that bounded repair; no automatic identity link follows from a seam review claim.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-11-1",
+      "originalGap": {
+        "id": "interpretation-11-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Supplied baseline trial counts are historical author attribution, not independently checked eval artifacts; absent seam diff was replaced by quoted dispatch and this limitation must remain.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R6",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "review"
+      ],
+      "basis": "Actual baseline report/claim-summary/scores substantiate B4 baseline3/5 versus0/5. Strict AFTER remains0/2/3. Missing old seam-diff wrapper stays a historical retention limitation; quoted exact conflict and source-bound repair are separate evidence.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-15-1",
+      "originalGap": {
+        "id": "interpretation-15-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Semantic sufficiency of evidence remains agent-owned; exact-looking complete JSON examples are not actual retained run records.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R9",
+        "R10"
+      ],
+      "pendingRoutes": [
+        "semantic-evidence",
+        "source-accounting"
+      ],
+      "basis": "Worked JSON is illustrative; structural evidence text cannot establish fix/rejection sufficiency. Parent must support individual semantic dispositions against original sources.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-18-1",
+      "originalGap": {
+        "id": "interpretation-18-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Absence of optional direct input cannot itself distinguish missing versus unnecessary; callers must declare known requirements. Baseline does not establish collector post behavior.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting",
+        "review"
+      ],
+      "basis": "Known required direct inputs must be declared by actual caller inventory; absent optional input cannot itself distinguish unnecessary from missing. Do not invent a retrospective required-input list or claim the baseline establishes post-collector behavior.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-20-1",
+      "originalGap": {
+        "id": "interpretation-20-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+        "kind": "semantic-interpretation-gap",
+        "basis": "No future rebased source was tested in this historical fix report; its test claims cannot silently transfer to another tree.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R12",
+        "R13",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "suite",
+        "review"
+      ],
+      "basis": "Historical stacked-source pass is not evidence for a future rebase. Current final suite is required; do not demand or invent a retrospective test at an unspecified future tree.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-21-1",
+      "originalGap": {
+        "id": "interpretation-21-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Generated projection populations exclude task reports and cannot establish run-wide totals; named seam artifact absent, quoted dispatch used.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R12",
+        "R13"
+      ],
+      "pendingRoutes": [
+        "cleanup-metrics",
+        "source-accounting"
+      ],
+      "basis": "Fixture/projected populations lacking task reports cannot establish run-wide totals. Preserve absent seam artifact as history and use explicit quoted conflict/verification separately; current metrics require supported population accounting.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-25-1",
+      "originalGap": {
+        "id": "interpretation-25-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Earlier report sections describe different original source; named seam file absent. Preserve exact separate revisions and quoted-dispatch qualification.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R7",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "review",
+        "suite"
+      ],
+      "basis": "Original stacked and rebased sources stay separate. Specific seam resolution has recorded verification, while the missing named seam file is not reconstructed or treated as empty.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-26-1",
+      "originalGap": {
+        "id": "interpretation-26-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+        "kind": "semantic-interpretation-gap",
+        "basis": "finding:null is semantically empty only in this complete CLEAN scoped report; a generic null response elsewhere could be unknown/unavailable.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [],
+      "basis": "The complete CLEAN seam object plus substantive scope/evidence supports only local finding:null interpretation. Generic null elsewhere remains unknown; no universal parser rule or new retrospective check is required.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "nonblocking retained historical/scope interpretation only",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-32-1",
+      "originalGap": {
+        "id": "interpretation-32-1",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+        "kind": "semantic-interpretation-gap",
+        "basis": "JSON/prose same-source appearances remain separately located; no cross-source identity merge.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R9",
+        "R10"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Keep exact Task19 prose and JSON finding refs independent. Same original report and scenario provide a candidate rendition relationship; parent must review original raw block and full remediation list before any link.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-36-1",
+      "originalGap": {
+        "id": "interpretation-36-1",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Do not use fix-pass FIXED/superseding assertion as resolution of original source-local concern or any other source occurrence.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4",
+        "R9",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "review",
+        "suite",
+        "behavior"
+      ],
+      "basis": "Actual builder repair and dispatch/startup/CLI verification support the concrete old caller regression. Original exit1 and superseding/FIXED status remain historical; current suite/agent behavior are still pending.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "unknown-original-outcome-47",
+      "originalGap": {
+        "id": "unknown-original-outcome-47",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+        "kind": "original-format-kind-verdict-unrecognized",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Original historical kind/verdict genuinely unrecognized; adapter NEEDS_CONTEXT is new interpretation only. Keep this historical outcome unknown without inventing wrappers or demanding a retrospective status. Actual current source registration/correspondence must be supported or retain the explicit coverage gap.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "unknown-original-outcome-49",
+      "originalGap": {
+        "id": "unknown-original-outcome-49",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+        "kind": "original-format-kind-verdict-unrecognized",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Original historical kind/verdict genuinely unrecognized; adapter NEEDS_CONTEXT is new interpretation only. Keep this historical outcome unknown without inventing wrappers or demanding a retrospective status. Actual current source registration/correspondence must be supported or retain the explicit coverage gap.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "unknown-original-outcome-53",
+      "originalGap": {
+        "id": "unknown-original-outcome-53",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+        "kind": "original-format-kind-verdict-unrecognized",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Original historical kind/verdict genuinely unrecognized; adapter NEEDS_CONTEXT is new interpretation only. Keep this historical outcome unknown without inventing wrappers or demanding a retrospective status. Actual current source registration/correspondence must be supported or retain the explicit coverage gap.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-58-1",
+      "originalGap": {
+        "id": "interpretation-58-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "review",
+        "suite"
+      ],
+      "basis": "Specific recovery seam conflict has exact source/target/repair/check evidence. Other historical repair/reproduction narratives remain unadjudicated; no context passage is silently promoted, cleared or made a current defect.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-62-1",
+      "originalGap": {
+        "id": "interpretation-62-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R2",
+        "R5"
+      ],
+      "pendingRoutes": [
+        "process",
+        "review",
+        "behavior"
+      ],
+      "basis": "Keep initial detached fixture leak report separate from Task5 review occurrence and from later teardown repair evidence. Current final cleanup and behavior remain required; no old surviving-daemon assertion is invented.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "unknown-original-outcome-73",
+      "originalGap": {
+        "id": "unknown-original-outcome-73",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+        "kind": "original-format-kind-verdict-unrecognized",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [
+        "source-accounting"
+      ],
+      "basis": "Original historical kind/verdict genuinely unrecognized; adapter NEEDS_CONTEXT is new interpretation only. Keep this historical outcome unknown without inventing wrappers or demanding a retrospective status. Actual current source registration/correspondence must be supported or retain the explicit coverage gap.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-75-1",
+      "originalGap": {
+        "id": "interpretation-75-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "review",
+        "suite"
+      ],
+      "basis": "Original pinning/resource mechanics history is bounded; actual representative source-isolation behavior and final suite/review remain pending. No hosted-runtime requirement follows from absent hosted evidence.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "strict-supplemental-75",
+      "originalGap": {
+        "id": "strict-supplemental-75",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+        "kind": "supplemental-qualification-owner-mapping",
+        "count": 4,
+        "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R15",
+        "R9"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "review"
+      ],
+      "basis": "Every exact supplemental span is separately mapped in supplemental-proposals.json: strict-supplement-75-1, strict-supplement-75-2, strict-supplement-75-3, strict-supplement-75-4. No source-wide clearance or replacement strict extraction is proposed.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-76-1",
+      "originalGap": {
+        "id": "interpretation-76-1",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R2",
+        "R6",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "suite",
+        "review",
+        "process"
+      ],
+      "basis": "Retain packaging failure/standalone pass, strictB4 and native/global-process limitations separately. Final suite and behavior assessment remain required; retrospective Linux/hosted/global baseline reconstruction is not prescribed.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "strict-supplemental-76",
+      "originalGap": {
+        "id": "strict-supplemental-76",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+        "kind": "supplemental-qualification-owner-mapping",
+        "count": 4,
+        "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+        "status": "open"
+      },
+      "criteria": [
+        "R15",
+        "R2",
+        "R5",
+        "R7"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "human",
+        "review",
+        "suite"
+      ],
+      "basis": "Every exact supplemental span is separately mapped in supplemental-proposals.json: strict-supplement-76-1, strict-supplement-76-2, strict-supplement-76-3, strict-supplement-76-4. No source-wide clearance or replacement strict extraction is proposed.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-77-1",
+      "originalGap": {
+        "id": "interpretation-77-1",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R4",
+        "R6",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "resume",
+        "suite",
+        "review"
+      ],
+      "basis": "Task19 concrete bounded amendment has2329/0 and preserved negative guards; original2294/1 remains a failed historical result. This does not verify current resume interruption fixes or final tree.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-77-2",
+      "originalGap": {
+        "id": "interpretation-77-2",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Structured acceptancePending:false is a task-fix assertion while caller/root acceptance remains expressly pending; neither overwrites the other.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R7"
+      ],
+      "pendingRoutes": [
+        "review",
+        "human"
+      ],
+      "basis": "Structured task-fix acceptancePending:false applies to that task fix; explicit caller/root pending survives. Do not reinterpret it as actual root/human acceptance.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-77-3",
+      "originalGap": {
+        "id": "interpretation-77-3",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "The same-byte Task19 retained/canonical pairs establish byte equality only, not finding identity or disposition.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R9"
+      ],
+      "pendingRoutes": [],
+      "basis": "Byte-identical Task19 retained/canonical pairs establish byte equality only. Retain identities; no finding merge, repair disposition or current requirement follows from byte equality.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "nonblocking retained historical/scope interpretation only",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "strict-supplemental-77",
+      "originalGap": {
+        "id": "strict-supplemental-77",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+        "kind": "supplemental-qualification-owner-mapping",
+        "count": 14,
+        "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+        "status": "open"
+      },
+      "criteria": [
+        "R15",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "human",
+        "resume",
+        "review",
+        "suite"
+      ],
+      "basis": "Every exact supplemental span is separately mapped in supplemental-proposals.json: strict-supplement-77-1, strict-supplement-77-2, strict-supplement-77-3, strict-supplement-77-4, strict-supplement-77-5, strict-supplement-77-6, strict-supplement-77-7, strict-supplement-77-8, strict-supplement-77-9, strict-supplement-77-10, strict-supplement-77-11, strict-supplement-77-12, strict-supplement-77-13, strict-supplement-77-14. No source-wide clearance or replacement strict extraction is proposed.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-78-1",
+      "originalGap": {
+        "id": "interpretation-78-1",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R9",
+        "R15"
+      ],
+      "pendingRoutes": [
+        "selector",
+        "review",
+        "suite"
+      ],
+      "basis": "Concrete earlier recursion repair/continuation evidence is bounded. Current selector/provenance repairs remain required and original held RED/current implementation layers are preserved.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-78-2",
+      "originalGap": {
+        "id": "interpretation-78-2",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Historical stopped PID29238 command was unavailable and concurrent read-only Git capture may overlap; no supported test-leak attribution.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R2"
+      ],
+      "pendingRoutes": [
+        "process"
+      ],
+      "basis": "Old PID29238 command and cause remain unknown, with possible concurrent Git capture. Do not infer test leak or retrospective global absence. Current final owned-root process inspection/retention is a separate required check.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "interpretation-78-3",
+      "originalGap": {
+        "id": "interpretation-78-3",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+        "kind": "semantic-interpretation-gap",
+        "basis": "Prior BLOCKED scope-hold and latest IMPLEMENTED status are temporal layers in one source; retain both without semantic clearing.",
+        "owner": "parent/fresh semantic reviewer",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R9"
+      ],
+      "pendingRoutes": [
+        "selector",
+        "review"
+      ],
+      "basis": "Retain old BLOCKED scopeHeld and later amended IMPLEMENTED as temporal facts; actual new amendment selected existing dispatch-text. Neither status clears source findings or certifies current selector.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    },
+    {
+      "id": "strict-supplemental-78",
+      "originalGap": {
+        "id": "strict-supplemental-78",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+        "kind": "supplemental-qualification-owner-mapping",
+        "count": 7,
+        "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+        "status": "open"
+      },
+      "criteria": [
+        "R1",
+        "R15",
+        "R2",
+        "R7",
+        "R9"
+      ],
+      "pendingRoutes": [
+        "behavior",
+        "human",
+        "review",
+        "selector",
+        "suite"
+      ],
+      "basis": "Every exact supplemental span is separately mapped in supplemental-proposals.json: strict-supplement-78-1, strict-supplement-78-2, strict-supplement-78-3, strict-supplement-78-4, strict-supplement-78-5, strict-supplement-78-6, strict-supplement-78-7. No source-wide clearance or replacement strict extraction is proposed.",
+      "historicalInterpretationStatus": "retained; no erased historical unknown or missing wrapper",
+      "currentAcceptanceEffect": "named required routes remain blocking",
+      "canonicalApplied": false,
+      "proposalOnly": true
+    }
+  ]
+}

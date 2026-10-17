@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Resuming a valid Recovery hold larger than 4096 bytes admits and merges its held task because the compact digest drops its identity and the coordinator records only an informational gap.",
+      "location": "skills/super-code/coordinator.js:752",
+      "category": "data-migrations",
+      "external": false,
+      "evidence": "New in this diff: base d84541ae has neither Recovery records nor recoveryAdmissionReason; head ff2f79f6 adds the persisted hold contract and the lossy transport. At head, skills/super-code/scripts/ledger-digest:56-58 replaces every Recovery line over 4096 bytes with only `Recovery gap: <line> <path>`. coordinator.js:752-756 appends that pointer to recoveryGaps then continues without reading the source record or recovering its task scope. Admission at :876-885 checks only resumeHolds/recoveryObligations, so the omitted hold never constrains work. A focused frozen-source reproduction uses the actual head ledger-digest and actual coordinator via the unchanged first 344 lines of the repository replay harness; command: `node /tmp/ufz-pr1/evidence-data-migrations/tests/super-code/probe.mjs`. Both cases contain a valid version-1 hold for bd-101 with data.taskId=bd-101; only the length of additive data.context changes. The 179-byte record produces 0 implementation dispatches, 0 merges, obligations containing the hold, and stopReason recovery-held. The 5179-byte record produces 1 implementation dispatch, 1 merge, completed=[bd-101], obligations=[], and stopReason ready-drained, retaining only the diagnostic gap. Full receipt: /tmp/ufz-pr1/evidence-data-migrations/receipt.json; frozen source, ledger fixtures and probe are in the same evidence directory. The original source record remains on disk, but its persisted admission constraint is bypassed until a separate actor reconciles it. The existing oversized-record test in tests/super-code/replay-harness.mjs:1717 supplies an empty ready set and checks gap reporting, so it does not exercise this admission failure.",
+      "kind": "ISSUE"
+    }
+  ]
+}

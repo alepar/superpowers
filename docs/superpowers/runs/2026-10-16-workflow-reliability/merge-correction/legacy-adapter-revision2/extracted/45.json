@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+  "artifact": "legacy-report-adapters-r1/45-task-25-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000006646",
+      "position": 1,
+      "key": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.",
+      "text": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer."
+    }
+  ]
+}

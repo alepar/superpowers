@@ -1,0 +1,29 @@
+{
+  "variant": "after",
+  "sourceHead": "9e4e057136d449348135bfc18d1f084cb6e4c303",
+  "sourceTree": "6e110b20c90d547016321ccc217d68720a0548bc",
+  "files": [
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+      "bytes": 10316
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375",
+      "bytes": 4374
+    },
+    {
+      "path": "skills/upstream-feedback/analyst-prompt.md",
+      "sha256": "b9a5d6fb0b92f1bae8155291cb74e58712258b4f815adddcd169dd3cfea72cd2",
+      "bytes": 3790
+    }
+  ],
+  "contextSha256": "95bb86cefdcb6c47b96c30612b443d1e1ff4cc6d56923a69392584c55b75b811",
+  "bytes": 18621,
+  "caseFile": "case.txt",
+  "casesSha256": "a1e8c4e11ba486c6c978146c07406b883c50bec19131759ee1272e635c1ea1d2",
+  "baselineProtocolSha256": "ffb67b59b5d692bd1f4868ba704cb39b4226a30752fc03c7f459596dfb51e674",
+  "samples": "Five fresh subjects required; no responses established by this freeze.",
+  "limits": "Same file membership/cases/format, common inherited harness; provider prefix/revision not controlled. No causal generalized improvement."
+}

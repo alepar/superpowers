@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+  "artifact": "legacy-report-adapters-r1/51-task-28-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014506",
+      "position": 1,
+      "key": "No remaining retention gaps: 81/81 original entries match captured Git blobs, including each of the five recovered identities. This repairs archival completeness; original single-run source limits, assembler-transition coverage limits, no task-review policy coverage, global historical process-inspection uncertainty, caller-owned sweeps, behavioral assessment, independent review and root/human acceptance remain pending. No historical observation was rerun or certified for current product source.",
+      "text": "No remaining retention gaps: 81/81 original entries match captured Git blobs, including each of the five recovered identities. This repairs archival completeness; original single-run source limits, assembler-transition coverage limits, no task-review policy coverage, global historical process-inspection uncertainty, caller-owned sweeps, behavioral assessment, independent review and root/human acceptance remain pending. No historical observation was rerun or certified for current product source."
+    }
+  ]
+}

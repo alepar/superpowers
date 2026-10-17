@@ -1,0 +1,496 @@
+{
+  "version": 1,
+  "status": "representation checks pass; semantic proposal remains unapproved",
+  "sourceCount": 79,
+  "parserReextractionsPassed": 79,
+  "strictSourceCount": 5,
+  "originalStrictOccurrencesExactlyPreserved": 24,
+  "adapterOccurrenceMappingsChecked": 175,
+  "totalOccurrenceCount": 199,
+  "occurrenceCountLimit": "Representation appearances and obligations, not a current outstanding-defect total.",
+  "supportedStatusPreservingCorrespondenceProposals": 69,
+  "unsupportedUnknownOriginalOutcomeAssociations": 5,
+  "reviewedObligationPassagesAccounted": 105,
+  "unrepresentedReviewedObligationPassages": 0,
+  "canonicalSourceHashesUnchanged": true,
+  "canonicalWrites": 0,
+  "identityLinksApplied": 0,
+  "dispositionsApplied": 0,
+  "semanticAcceptance": null,
+  "sources": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "retainedSha256": "989f75807a05894709bdfd451a8c7a831ccda05d4cfb10aaa7a54b2d2fa8f5f9",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "retainedSha256": "41c876e1e449614c0617b3eef1aed755bb64caf2d51c837229580e3aee7694e3",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "retainedSha256": "13ffb3307818da6cdb8347659656ba4643bf550517c2c82264ae566b2dff29d7",
+      "parserExitCode": 0,
+      "occurrences": 8
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "retainedSha256": "daf13aa02c1da59e70d695ed8cc37904733777183d01f1c1884df394d8ae6668",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "retainedSha256": "f818ac23c11d3f5757423ee99bd3cb7fce22e49f8cddb7017b8ee4aa6b912af8",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "retainedSha256": "25e59934d4a4ed1efe52c8b7ffc151ba9edabe9f3fb70129cdc77fe0b260eb58",
+      "parserExitCode": 0,
+      "occurrences": 8
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam-round-1",
+      "retainedSha256": "e74c72e0bb3c2cdf8598cb231c2e2374ff0f9be16bba828c1baf7680b9e57bbb",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "retainedSha256": "73a82244a6bf044ce6bdb6cd78305d787eb55bd11a9f6cd910a57590f1bf4d72",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "retainedSha256": "820d04e9bfd0285a3a4b809d6181857e57002f747f1ac07dabb34dff074b6721",
+      "parserExitCode": 0,
+      "occurrences": 6
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "retainedSha256": "2a85de1a45b5ed50739ad63e8c065f1ee31fd862857febe98d5517984ea4b204",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+      "retainedSha256": "82362c16d463b299eff754164b446101b9c58ea27fbbb302be618f37b82a2794",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "retainedSha256": "59598cd7522301252056e875b1c6d2e96ba66d433f6dd53f4edd63fd39641c51",
+      "parserExitCode": 0,
+      "occurrences": 6
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "retainedSha256": "ea8cd0b0b7bee40a350da737daa353ffca7b28c03d9db7eb6eaf41c34f573314",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "retainedSha256": "fcf8c3aa9d5940cca5046765875b64c3a7233c890f3715d5652b8335d723aa32",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "retainedSha256": "82aeb2d5447f0730d8eff2ebd9fa096d3c6a03ac74518572e8b6604cd080f6fb",
+      "parserExitCode": 0,
+      "occurrences": 5
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "retainedSha256": "89fdaf52f7cc4a6678a1c866f4aab855a5cd79b000bf5b115a4d7df1bea415e5",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "retainedSha256": "c29e807a3c50935becfff0d8dc5f62fe18943fbf031ae98b20202a2d308bfa93",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "retainedSha256": "ffc346f7d4eb604986d78ef52d7aeb8fb36b23e161759c53b635f07842332ccb",
+      "parserExitCode": 0,
+      "occurrences": 7
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "retainedSha256": "9a796e37068dfa0f868a8249f4154dff45fd3d3f432eb2932eae9f8a34109e60",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-seam-findings",
+      "retainedSha256": "7f89e49cb835cb1367c270074519b60eb3041037cd918bce2c9edf998b9023e7",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "retainedSha256": "15e08a57d1df326e146e00d85bbe06d356964733f4f115919880af80f66f72fc",
+      "parserExitCode": 0,
+      "occurrences": 6
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "retainedSha256": "9c57e5b7c3dcacf7e7b04a4a43f0a34daa9610a073bcb5efd9fac5810638027f",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-seam-findings",
+      "retainedSha256": "d876c11bb1653dcb7690320cb1e311d5c3dba33d0eca09ccd6da80523915496b",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "retainedSha256": "56154e06d2074a6b6a223b803fc2e7f269f48dcf3e53247ee2f584526753266d",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "retainedSha256": "0a1e568a1987994f2148884991e97cd5337c19c1392002f9fe53746951a80c39",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-review",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "retainedSha256": "07ea87f10606ce776b13fd962ac03b5e048ce316a6b613823309e60484933b1d",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "retainedSha256": "6d713bd7663c80dd7bff74eb34824662a5825ded049da100f26198241623286e",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review-seam",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "parserExitCode": 0,
+      "occurrences": 0
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "retainedSha256": "48354201d23c7bf95cc17d7f8c5c00546f6d2242831191f20dbedae573b72e4d",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "retainedSha256": "0315663958107cb4f5d51e208096c8c5b02b0b408b65e810c5b66bb0c90b541b",
+      "parserExitCode": 0,
+      "occurrences": 8
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "retainedSha256": "c30a46ef381b3517a07bbb23d7128b2d54e3227c437dd5cec7f3576926c20fe5",
+      "parserExitCode": 0,
+      "occurrences": 5
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+      "retainedSha256": "8da2415b83833f00815d8eaba054927b29d7648e07d6dc1ff4da3bad5169b967",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "retainedSha256": "d0a077e5b9be60a0ff951319a65b7bc2952b19ecc13c97bb1c053aa720a20145",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+      "retainedSha256": "c4d7f51ffe3357b02ebef804f40d3e2c77145f1a61b4f1eda528af76117991e8",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "retainedSha256": "461f69d203fd686cb587acfe13ff3d872021b91c5e2424905a26abccc959c158",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "retainedSha256": "6b946def5f12994e9fb18aadaaf8e00741d33b23a9f5fbc9343a88bd8ffbc95a",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "retainedSha256": "52c908b46cd4f76c2267bc594d56bf659ebf4fbe1ab08df8c3df141b2a30a00e",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "retainedSha256": "eef00620623ed96283bd07f7b46d1c3a30bdcaae4ff08122d23a76e3bb84af49",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+      "retainedSha256": "e932b255f192cf95b022c6b374da036cfa25de45df50ffc05a1b44039e62e3ff",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "retainedSha256": "0a7f06f192d8c294cb5dc4667e9b26102d222d939a9c4a1c496abef64c5df283",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "retainedSha256": "b4a1f322a1ce96cb87c26a220bbc57533922aaecad3418778b6109df0ad7ab54",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "retainedSha256": "97e493796b43014174673b6756d008ccafc2e315f6976fc966937e42c4ff8bcf",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "retainedSha256": "c11cafd1b07314b1e844965d977dd0cefb771caa3898d30dce65e2e32fd0aa63",
+      "parserExitCode": 0,
+      "occurrences": 6
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "retainedSha256": "1d2d0fd7763ebbfda8654817e07344e166cb858db9f0d9cdb873b814b7fc2d19",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+      "retainedSha256": "947ae792010f92177d5be6b6b00b593c4abc77143d9ed369eb849964026cf43a",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "retainedSha256": "a5f17e524a724c16b83cc32a1d8dddc9e12498d6befbb95d5f00cb3892966a90",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "retainedSha256": "7e35aae7c85ee65f28851d6dddafc14cf21d8ff0f03847ab5fdd985ef226b3d6",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "retainedSha256": "7ffbd5878c1e640a1790fbb053c2ed3c59d7c7fedd2f6c46f20baabef053e5ed",
+      "parserExitCode": 0,
+      "occurrences": 4
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+      "retainedSha256": "b910b3139e52fde641b3a3a6f37a13399b3100bfb803f245193126168a31cf21",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review-seam",
+      "retainedSha256": "34a0b498c85ab91a353715710e235527990d2a9db12acefe28c5aefbbcb853ff",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "retainedSha256": "183e6d0968d6bee0fffdd65b08a6c9234a61e24696f266ca878720b6309f4ea4",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "retainedSha256": "5784f5a045d3d5df606a84924ff1307e8e88f5ff92149bb51321152ea1dbc965",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+      "retainedSha256": "b3ea113b7217cf95eef25affb84d1e4d39a521d5b980daf628b32afb4911fc86",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "retainedSha256": "a21d50a56407156d475608852f415884934837bfb7a1749bc9255d82622445d5",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-seam-findings",
+      "retainedSha256": "eb8d17d0540af547675c377d0e2fd27f3bb78a003ab7cfc01fedf9712b647c24",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "retainedSha256": "43819b058fc8b32a799917050a1e3061b3adbd6c1cc1f92d7f5d0284ab745fe4",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review-seam",
+      "retainedSha256": "8216115edbfb9b16a653d50e51273557946f5bf354a72a039391764b6b737182",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+      "retainedSha256": "74d187dc7868f30518d9d98744a960bb5c1ea68dd258d6dc08bb7f5cbc606440",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "retainedSha256": "9eba458c966142a47644aea43d7fd5372af14c633279e7d4ca6358f6ab4bf2f1",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+      "retainedSha256": "28ab2854867b38c013c7fd44d56dea72be6acdca3eb2c9d3f7404ad566fd0849",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "retainedSha256": "c3ade7fb531749eb88987f4b3c2f3b6d31ce232e3394ba274931671211532e48",
+      "parserExitCode": 0,
+      "occurrences": 3
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review-seam",
+      "retainedSha256": "25164ca2e8c9f666613cd033b3ef695c9fb553b58b867849d37eb65aa8d9b2bd",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+      "retainedSha256": "4feb29cd7d29589dfd3396ebd8cb10f9c5759e658f92e830b56e9668a2e42f71",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "retainedSha256": "7933f12ebd88d63cd0d3406db6b2db42350e9970d2360a35320d723a59c21cb1",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "retainedSha256": "ce8c77090bf701bdaadde2956d2ae1570a6b57c540e67e081d6799f14eb859d2",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-report",
+      "retainedSha256": "d9d22e2e8a44f52cefaaa108de3b3dc7185472c444e9a9ba0ee0b369b95fe058",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+      "retainedSha256": "49b63f88e7d6275461bddfd6516c90a7f045815fcfda115632833703307312a7",
+      "parserExitCode": 0,
+      "occurrences": 1
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+      "retainedSha256": "820f1185bc6dd01411b4f0f99674e1c087495f355c1df393d7267d2384f55c7c",
+      "parserExitCode": 0,
+      "occurrences": 9
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "retainedSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "parserExitCode": 0,
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "retainedSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "parserExitCode": 0,
+      "occurrences": 7
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "retainedSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "parserExitCode": 0,
+      "occurrences": 4
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "retainedSha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "parserExitCode": 0,
+      "occurrences": 7
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "retainedSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+      "parserExitCode": 0,
+      "occurrences": 4
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+  "artifact": "legacy-report-adapters-r1/58-task-4-report.md",
+  "kind": "task-report",
+  "verdict": "FIXED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000009577",
+      "position": 1,
+      "key": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.",
+      "text": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000009941",
+      "position": 1,
+      "key": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.",
+      "text": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017428",
+      "position": 1,
+      "key": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.",
+      "text": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here."
+    }
+  ]
+}

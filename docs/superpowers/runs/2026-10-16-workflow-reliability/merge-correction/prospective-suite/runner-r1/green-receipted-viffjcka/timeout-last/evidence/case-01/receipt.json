@@ -1,0 +1,218 @@
+{
+  "actualArgv": [
+    "/bin/bash",
+    "tests/check.sh"
+  ],
+  "afterSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-state"
+    },
+    "head": "e47e4e9b321283249923b90c26bfaeec86352855",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTQ3ZTRlOWIzMjEyODMyNDk5MjNiOTBjMjZiZmFlZWM4NjM1Mjg1NQo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "YTE1ZWZhMzJjMDVkNWUxMDBkNTlmNTI1MGE4YTg4YTAzM2M5ZDI1OAo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "a15efa32c05d5e100d59f5250a8a88a033c9d258"
+  },
+  "beforeSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/control/xdg-state"
+    },
+    "head": "e47e4e9b321283249923b90c26bfaeec86352855",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTQ3ZTRlOWIzMjEyODMyNDk5MjNiOTBjMjZiZmFlZWM4NjM1Mjg1NQo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "YTE1ZWZhMzJjMDVkNWUxMDBkNTlmNTI1MGE4YTg4YTAzM2M5ZDI1OAo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "a15efa32c05d5e100d59f5250a8a88a033c9d258"
+  },
+  "cause": "Direct child timed out; subprocess killed only that child. Descendants unverified; resources retained.",
+  "configurationSha256": "221abde9259e9fedefff8ff7e99c18bff391e18b8678ef7f0dfd334b43d57c21",
+  "cwd": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/clone",
+  "durationSeconds": 0.147,
+  "endUtc": "2026-10-17T21:40:02Z",
+  "entrypointSha256": "384f4e05aa76e1e3d817f754d969000db3821eb0e23be784c14ade0a7f0882c0",
+  "environment": {
+    "CI": "1",
+    "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/codex-home",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/home",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/tmp",
+    "TZ": "UTC",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/xdg-config",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/xdg-state"
+  },
+  "executable": {
+    "bytes": 1290128,
+    "name": "bash",
+    "path": "/bin/bash",
+    "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+    "versionArgv": [
+      "/bin/bash",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc.\n"
+  },
+  "exitCode": null,
+  "id": "01",
+  "planCommand": "bash tests/check.sh",
+  "planSha256": "d2f0b44bf06fc07b6f5af776fc25ea52b2ed6971e93ccc5913dc887a093bea8b",
+  "requirementIds": [
+    "fixture-0"
+  ],
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "sourceHead": "e47e4e9b321283249923b90c26bfaeec86352855",
+  "sourceTree": "a15efa32c05d5e100d59f5250a8a88a033c9d258",
+  "startUtc": "2026-10-17T21:40:02Z",
+  "status": "error",
+  "stderrBytes": 0,
+  "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/stderr.log",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdoutBytes": 0,
+  "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/timeout-last/evidence/case-01/stdout.log",
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "timeout": true
+}

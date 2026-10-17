@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+  "artifact": "legacy-report-adapters-r1/52-task-28-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000002008",
+      "position": 1,
+      "key": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.",
+      "text": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched."
+    }
+  ]
+}

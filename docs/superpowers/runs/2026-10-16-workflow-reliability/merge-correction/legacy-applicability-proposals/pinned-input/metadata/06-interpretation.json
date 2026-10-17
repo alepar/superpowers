@@ -1,0 +1,416 @@
+{
+  "version": 1,
+  "ordinal": 6,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+  "originalArtifact": "task-report-history-r1/raw/task-11-report-fix.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-11-report-fix.md",
+  "rawSha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+  "rawByteCount": 5266,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 60,
+    "byteStart": 0,
+    "byteEnd": 5266,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/5",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/06-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed."
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/5/interpretedPassages/0",
+      "roles": [
+        "historical-finding"
+      ],
+      "span": [
+        298,
+        707
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Partial-close resumed recovery reduced obligation before confirmed ledger append; failed append could return completed without original record."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/5/interpretedPassages/1",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        708,
+        1318
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Durable partial-close confirmation and recovery-held fallback claimed, no resolution adjudication."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/5/interpretedPassages/2",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "span": [
+        1431,
+        2158
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Targeted fixture description and failure values; fixture consequences are not additional observed production incidents."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/5/interpretedPassages/3",
+      "roles": [
+        "execution-context"
+      ],
+      "span": [
+        4143,
+        4798
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Guard refusal and sandbox setup denial are explicitly not test verdicts; completed runs claim no leaks."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/5/interpretedPassages/4",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "span": [
+        4799,
+        5266
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Parent fresh-agent evaluation pending; no declined/evidence-only findings asserted."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-06-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "roles": [
+        "historical-finding"
+      ],
+      "interpretation": "Partial-close resumed recovery reduced obligation before confirmed ledger append; failed append could return completed without original record.",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 298,
+      "byteEnd": 707,
+      "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 2159,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 299
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-06-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Durable partial-close confirmation and recovery-held fallback claimed, no resolution adjudication.",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 708,
+      "byteEnd": 1318,
+      "rawText": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 2159,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 709
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-06-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "interpretation": "Targeted fixture description and failure values; fixture consequences are not additional observed production incidents.",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 1431,
+      "byteEnd": 2158,
+      "rawText": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 2159,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 1432
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-06-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "roles": [
+        "execution-context"
+      ],
+      "interpretation": "Guard refusal and sandbox setup denial are explicitly not test verdicts; completed runs claim no leaks.",
+      "lineStart": 58,
+      "lineEnd": 58,
+      "byteStart": 4143,
+      "byteEnd": 4798,
+      "rawText": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Test hygiene, assumptions and concerns",
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "sectionByteStart": 4099,
+          "sectionByteEnd": 5266,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 45
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-06-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "interpretation": "Parent fresh-agent evaluation pending; no declined/evidence-only findings asserted.",
+      "lineStart": 60,
+      "lineEnd": 60,
+      "byteStart": 4799,
+      "byteEnd": 5266,
+      "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Test hygiene, assumptions and concerns",
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "sectionByteStart": 4099,
+          "sectionByteEnd": 5266,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 701
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 298,
+      "byteEnd": 707,
+      "roles": [
+        "historical-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/5/interpretedPassages/0"
+      ],
+      "interpretation": "Partial-close resumed recovery reduced obligation before confirmed ledger append; failed append could return completed without original record.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 4799,
+      "byteEnd": 5266,
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/5/interpretedPassages/4"
+      ],
+      "interpretation": "Parent fresh-agent evaluation pending; no declined/evidence-only findings asserted.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Central defect, claimed repair and parent pending evaluation supported by full read. Historical repair category should retain L5–7 together; validity acknowledgment is not disposition.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "The exact current applicability/disposition of the partial-close defect is outside this reading; FIXED is an author claim."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-1/raw-byte-000000298",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding"
+      ],
+      "rawByteStart": 298,
+      "rawByteEnd": 707,
+      "rawLineStart": 5,
+      "rawLineEnd": 5,
+      "originalSections": [
+        {
+          "section": "Fix pass",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "byteStart": 0,
+          "byteEnd": 2159
+        }
+      ],
+      "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/5/interpretedPassages/0"
+      ],
+      "interpretation": "Partial-close resumed recovery reduced obligation before confirmed ledger append; failed append could return completed without original record."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000004799",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "rawByteStart": 4799,
+      "rawByteEnd": 5266,
+      "rawLineStart": 60,
+      "rawLineEnd": 60,
+      "originalSections": [
+        {
+          "section": "Test hygiene, assumptions and concerns",
+          "sectionOrdinal": 3,
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "byteStart": 4099,
+          "byteEnd": 5266
+        }
+      ],
+      "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/5/interpretedPassages/4"
+      ],
+      "interpretation": "Parent fresh-agent evaluation pending; no declined/evidence-only findings asserted."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/06-task-11-report-fix.md",
+  "retainedSha256": "f818ac23c11d3f5757423ee99bd3cb7fce22e49f8cddb7017b8ee4aa6b912af8"
+}

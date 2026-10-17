@@ -1,0 +1,1 @@
+{"status": "preflight-rejected", "measurementValid": false, "cause": "ValueError: launcher environment must contain exactly documented minimal keys"}

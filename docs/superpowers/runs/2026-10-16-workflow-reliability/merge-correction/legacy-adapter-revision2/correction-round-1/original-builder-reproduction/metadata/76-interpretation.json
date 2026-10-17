@@ -1,0 +1,902 @@
+{
+  "version": 1,
+  "ordinal": 76,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+  "originalArtifact": "task-report-history-r1/raw/task-17-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-17-report.md",
+  "rawSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+  "rawByteCount": 18094,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        195
+      ]
+    ],
+    "byteScope": [
+      0,
+      18094
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/21",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/76-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status:IMPLEMENTED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/0",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        417,
+        435
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No blocker bead stated; not no findings."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/1",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        435,
+        453
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No humanAction stated; not human acceptance granted."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/2",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        617,
+        1262
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Claims task2/task5 fixture-minor repair; original finding identities must remain separate."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/3",
+      "roles": [
+        "illustrative_contract_example"
+      ],
+      "span": [
+        1531,
+        2306
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Integration fixture's synthetic live-kind measurements/dispositions/human decisions are explicit fixture data, not actual smoke/approval."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/4",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        2307,
+        3467
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Invocation fixture and run-profile classification integration gap claimed repaired elsewhere; advisory explicitly withdrawn, no extra per-bead requirement."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/5",
+      "roles": [
+        "historical_defect_context"
+      ],
+      "span": [
+        5342,
+        5912
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "20/23 required-suite result, profiler/verdict/package failures; preserved measured history, not clean final suite."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/6",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        6685,
+        8171
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Linked-worktree packaging exit9 retained; exact-source standalone pass is qualified; no single fresh23-suite linked-worktree success; parent owns final sweep."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/7",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        8172,
+        12349
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Actual fixture-leak RED/GREEN, failed-run attribution and intermediate assertion correction; no new review finding or exoneration beyond task scope."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/8",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        14486,
+        15145
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Parent behavioral evaluation/final sweep/roast/review/acceptance ownership."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/9",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        15146,
+        15715
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "TMP validator layout approval, native mktemp behavior and no global process-absence claim."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/10",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        15716,
+        16092
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No actual root closure/acceptance mutation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/11",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        16134,
+        16292
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict1: native Linux /proc not tested."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/12",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        16292,
+        16564
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict2: hosted Workflow/live ordinary not tested; synthetic smoke not live."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/13",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        16564,
+        17134
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict3: strictB4 0pass/2fail/3ambiguous, diagnostic limitations and installed guidance0/5 remain visible."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/14",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        17134,
+        17463
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict4: DONE_WITH_CONCERNS limits global ps, detached descendants, controlled assembler failure and unexercised task no-test policy."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/15",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        17463,
+        17704
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict5: selected17 hashes match; profiler delta separately recorded, not blanket equivalence."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/16",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        17704,
+        17883
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict6: standalone packaging evidence distinct from linked-worktree limitation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/21/passages/17",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        17883,
+        18094
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict7: phase6/review/roast/semantic/human acceptance still parent-owned."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No blocker bead stated; not no findings.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 417,
+      "byteEnd": 435,
+      "rawText": "blockerBead: none\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No humanAction stated; not human acceptance granted.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 435,
+      "byteEnd": 453,
+      "rawText": "humanAction: none\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Claims task2/task5 fixture-minor repair; original finding identities must remain separate.",
+      "rawSection": "Implemented",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Implemented\n",
+      "rawSectionHierarchy": [
+        "Implemented"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 617,
+      "byteEnd": 1262,
+      "rawText": "The two real-process replay fixtures now immediately register their positive owned child/orphan PIDs and use independent finally teardown. Teardown signals only those recorded PIDs, skips already observed exited children, waits for child exit events and removes fixture state after process cleanup. Missing ps stdout or another explicit inspection error gives an inspection-unavailable exception instead of a null.trim crash. The implementation preserves every existing ownership, no-kinship-expansion, stop/no-stop, dirty/unmerged and retention assertion. This addresses the task 2 [test-process-leak] and task 5 [test-process-cleanup] minors.\n",
+      "canonicalAdapterSection": "Implemented",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "illustrative_contract_example",
+      "interpretation": "Integration fixture's synthetic live-kind measurements/dispositions/human decisions are explicit fixture data, not actual smoke/approval.",
+      "rawSection": "Implemented",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Implemented\n",
+      "rawSectionHierarchy": [
+        "Implemented"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 1531,
+      "byteEnd": 2306,
+      "rawText": "Added a real CLI integration fixture consuming settled original/ready-retry collection history through ordinary dispatch-text check-evidence, report-status --acceptance, scope-dispositions --project/--keys, and repeat report-status --collect. Simulated success retains the required live measurement; matching live-kind fixture evidence clears only that obligation; the historical finding still blocks acceptance until an explicit supported elsewhere-fixed disposition. Its key then leaves the punch list, repaired/rejected/outstanding counts become 1/1/2, original occurrence count is preserved and collection replay leaves bytes unchanged. Smoke measurements, support judgments and human decisions are explicit fixture data, not an actual smoke execution or human approval.\n",
+      "canonicalAdapterSection": "Implemented",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Invocation fixture and run-profile classification integration gap claimed repaired elsewhere; advisory explicitly withdrawn, no extra per-bead requirement.",
+      "rawSection": "Implemented",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Implemented\n",
+      "rawSectionHierarchy": [
+        "Implemented"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 25,
+      "lineEnd": 29,
+      "byteStart": 2307,
+      "byteEnd": 3467,
+      "rawText": "Fixed the existing report-verdict producer/parser fixture by adding its required persisted Launch invocationId. No assertion or production missing-ID guard was weakened.\n\nAdded verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.\n\nThe required suite found a real earlier integration gap: the new resume-check dispatch was unclassified by run-profile. The parent routed it to super-plan-ufz.20, reviewed CLEAN and landed e5672164 via c7cdaf40. After committing this task's verified changes, I rebased cleanly onto integration 566f0a63 and reran affected checks. The exact refresh source delta is only run-profile.mjs plus test-run-profile.sh. The fix correctly treats this as run-level readiness observation, preserving label/suffix without inventing a task attempt or occupied slot; my earlier per-bead-association advisory was investigated and is not an additional requirement.\n",
+      "canonicalAdapterSection": "Implemented",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "historical_defect_context",
+      "interpretation": "20/23 required-suite result, profiler/verdict/package failures; preserved measured history, not clean final suite.",
+      "rawSection": "Exact tests and output",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Exact tests and output\n",
+      "rawSectionHierarchy": [
+        "Exact tests and output"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 73,
+      "lineEnd": 73,
+      "byteStart": 5342,
+      "byteEnd": 5912,
+      "rawText": "This executed all 23 required repository commands sequentially, retaining exact commands and complete outputs in evidence/super-plan-ufz.14/required-results.json and its log pointers. Result: 20/23 suites passed; 23/23 post-suite hygiene checks verified empty. Failures were profiler(1 assertion), verdict producer fixture(5 assertions) and packaging exit 9 described below. The Bash helper invocation audit passed after 559.911s; it was the only command taking several minutes and was not interrupted or replaced. Historical 1770 evidence was not relabeled as current.\n",
+      "canonicalAdapterSection": "Exact tests and output",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Linked-worktree packaging exit9 retained; exact-source standalone pass is qualified; no single fresh23-suite linked-worktree success; parent owns final sweep.",
+      "rawSection": "Packaging qualification",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "### Packaging qualification\n",
+      "rawSectionHierarchy": [
+        "Exact tests and output",
+        "Packaging qualification"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 91,
+      "lineEnd": 104,
+      "byteStart": 6685,
+      "byteEnd": 8171,
+      "rawText": "### Packaging qualification\n\nThe unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.\n\nCreated a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:\n\n```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```\n\nExit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.\n\nCombined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.\n",
+      "canonicalAdapterSection": "Packaging qualification",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Actual fixture-leak RED/GREEN, failed-run attribution and intermediate assertion correction; no new review finding or exoneration beyond task scope.",
+      "rawSection": "RED/GREEN and baseline reproduction",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## RED/GREEN and baseline reproduction\n",
+      "rawSectionHierarchy": [
+        "RED/GREEN and baseline reproduction"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 106,
+      "lineEnd": 156,
+      "byteStart": 8172,
+      "byteEnd": 12349,
+      "rawText": "## RED/GREEN and baseline reproduction\n\nDefinitive RED used a detached throwaway checkout at 3968cd7bd703518023cdafc618cc65faa7a94cd7 under assigned temp/base, then removed it after checks. The final probe extracts the actual old fixture bodies, injects a helper exception or ps stdout unavailability, records owned PIDs independently, verifies an unregistered sentinel survives, and independently stops its own processes.\n\nWith the environment above, from the task worktree:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs /tmp/sp-bce79baa/super-plan-ufz.14/base > evidence/super-plan-ufz.14/fixture-base-red.log 2>&1\n```\n\nExit 1, expected:\n\n```text\nFAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nFAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nfixture failure probe: 0 passed, 4 failed\n```\n\nThis is the real fixture failure being fixed, not a fabricated cleanup-helper failure claim. An earlier pre-fix RED observed the same 1/1/6/6 leaks and is retained in fixture-red.log. The first prototype probe had an invalid Function parameter from spreading the fs namespace; it created no fixture-body processes, was corrected before the retained RED, and is not counted as defect evidence.\n\nFinal GREEN against committed changed fixture bodies at 68a1e742:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs > evidence/super-plan-ufz.14/fixture-final-green.log 2>&1\n```\n\nExit 0:\n\n```text\nPASS worktree/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS worktree/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12202\nPASS processes/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS processes/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12429\nfixture failure probe: 4 passed, 0 failed\n```\n\nRaw logs contain exact PID spacing and assertions-before-error counts. Each assertion can fail on a concrete defect: an owned sleeper still alive, a fixture directory retained, a sentinel killed, an unexpected/missing exception, a dropped/changed unknown fact or resource path, lost deferred obligation, a silent retry clearing history, simulated evidence discharging live requirements, unsupported disposition clearing a key, wrong repaired/rejected counts, or non-idempotent collection bytes.\n\nThe three required-run failures were each repeated at exact task base with these commands (same environment, cwd temp/base):\n\n```sh\nbash tests/super-code/test-run-profile.sh\nbash tests/super-code/test-report-verdict.sh\nbash tests/codex/test-package-codex-plugin.sh\n```\n\nOutputs retained as base-profile.log(exit 1,1 failure), base-verdict.log(exit 1,5 failures) and base-package.log(exit 9,.git-directory guard). Reproducing the profiler issue at this task base exonerates only this task; the earlier run introduction remained owned and was repaired by parent task 20. The verdict fixture's first required failure is its RED evidence; final 153/0 is GREEN after adding invocation identity. No original assertion was deleted or loosened.\n\nAn intermediate new helper-output-to-Finish assertion expected the `unknown:` prefix in the already-classified result array and failed 2276/1. Source tracing showed the existing classifier strips only that prefix. The new assertion now compares the exact fact after that documented normalization; corrected pre-rebase replay passed 2277/0, then passed again after refresh. The intermediate output is preserved in pre-rebase-super-code--replay-harness.mjs.log.\n",
+      "canonicalAdapterSection": "RED/GREEN and baseline reproduction",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Parent behavioral evaluation/final sweep/roast/review/acceptance ownership.",
+      "rawSection": "Assumptions and amendments used",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments used\n",
+      "rawSectionHierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 181,
+      "lineEnd": 181,
+      "byteStart": 14486,
+      "byteEnd": 15145,
+      "rawText": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n",
+      "canonicalAdapterSection": "Assumptions and amendments used",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "TMP validator layout approval, native mktemp behavior and no global process-absence claim.",
+      "rawSection": "Assumptions and amendments used",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments used\n",
+      "rawSectionHierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 183,
+      "lineEnd": 183,
+      "byteStart": 15146,
+      "byteEnd": 15715,
+      "rawText": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n",
+      "canonicalAdapterSection": "Assumptions and amendments used",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "No actual root closure/acceptance mutation.",
+      "rawSection": "Assumptions and amendments used",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments used\n",
+      "rawSectionHierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 185,
+      "lineEnd": 185,
+      "byteStart": 15716,
+      "byteEnd": 16092,
+      "rawText": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n",
+      "canonicalAdapterSection": "Assumptions and amendments used",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Original strict1: native Linux /proc not tested.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 189,
+      "lineEnd": 189,
+      "byteStart": 16134,
+      "byteEnd": 16292,
+      "rawText": "- Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Original strict2: hosted Workflow/live ordinary not tested; synthetic smoke not live.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 190,
+      "lineEnd": 190,
+      "byteStart": 16292,
+      "byteEnd": 16564,
+      "rawText": "- Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original strict3: strictB4 0pass/2fail/3ambiguous, diagnostic limitations and installed guidance0/5 remain visible.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 191,
+      "lineEnd": 191,
+      "byteStart": 16564,
+      "byteEnd": 17134,
+      "rawText": "- Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original strict4: DONE_WITH_CONCERNS limits global ps, detached descendants, controlled assembler failure and unexercised task no-test policy.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 192,
+      "lineEnd": 192,
+      "byteStart": 17134,
+      "byteEnd": 17463,
+      "rawText": "- Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Original strict5: selected17 hashes match; profiler delta separately recorded, not blanket equivalence.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 193,
+      "lineEnd": 193,
+      "byteStart": 17463,
+      "byteEnd": 17704,
+      "rawText": "- Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 5
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original strict6: standalone packaging evidence distinct from linked-worktree limitation.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 194,
+      "lineEnd": 194,
+      "byteStart": 17704,
+      "byteEnd": 17883,
+      "rawText": "- Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 6
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Original strict7: phase6/review/roast/semantic/human acceptance still parent-owned.",
+      "rawSection": "Concerns and parent-owned acceptance",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and parent-owned acceptance\n",
+      "rawSectionHierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 195,
+      "lineEnd": 195,
+      "byteStart": 17883,
+      "byteEnd": 18094,
+      "rawText": "- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+      "canonicalAdapterSection": "Concerns and parent-owned acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 7
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 6685,
+      "byteEnd": 8171,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/6"
+      ],
+      "interpretation": "Linked-worktree packaging exit9 retained; exact-source standalone pass is qualified; no single fresh23-suite linked-worktree success; parent owns final sweep.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14486,
+      "byteEnd": 15145,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/8"
+      ],
+      "interpretation": "Parent behavioral evaluation/final sweep/roast/review/acceptance ownership.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 15146,
+      "byteEnd": 15715,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/9"
+      ],
+      "interpretation": "TMP validator layout approval, native mktemp behavior and no global process-absence claim.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 15716,
+      "byteEnd": 16092,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/10"
+      ],
+      "interpretation": "No actual root closure/acceptance mutation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 16134,
+      "byteEnd": 16292,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/11"
+      ],
+      "interpretation": "Original strict1: native Linux /proc not tested.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 16292,
+      "byteEnd": 16564,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/12"
+      ],
+      "interpretation": "Original strict2: hosted Workflow/live ordinary not tested; synthetic smoke not live.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 16564,
+      "byteEnd": 17134,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/13"
+      ],
+      "interpretation": "Original strict3: strictB4 0pass/2fail/3ambiguous, diagnostic limitations and installed guidance0/5 remain visible.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17134,
+      "byteEnd": 17463,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/14"
+      ],
+      "interpretation": "Original strict4: DONE_WITH_CONCERNS limits global ps, detached descendants, controlled assembler failure and unexercised task no-test policy.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17463,
+      "byteEnd": 17704,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/15"
+      ],
+      "interpretation": "Original strict5: selected17 hashes match; profiler delta separately recorded, not blanket equivalence.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17704,
+      "byteEnd": 17883,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/16"
+      ],
+      "interpretation": "Original strict6: standalone packaging evidence distinct from linked-worktree limitation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17883,
+      "byteEnd": 18094,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/17"
+      ],
+      "interpretation": "Original strict7: phase6/review/roast/semantic/human acceptance still parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [
+    "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "supplementalQualifications": [
+    {
+      "byteStart": 6685,
+      "byteEnd": 8171,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/6"
+      ],
+      "interpretation": "Linked-worktree packaging exit9 retained; exact-source standalone pass is qualified; no single fresh23-suite linked-worktree success; parent owns final sweep.",
+      "jsonPointer": null,
+      "rawText": "### Packaging qualification\n\nThe unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.\n\nCreated a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:\n\n```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```\n\nExit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.\n\nCombined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.\n",
+      "lineStart": 91,
+      "lineEnd": 104
+    },
+    {
+      "byteStart": 14486,
+      "byteEnd": 15145,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/8"
+      ],
+      "interpretation": "Parent behavioral evaluation/final sweep/roast/review/acceptance ownership.",
+      "jsonPointer": null,
+      "rawText": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n",
+      "lineStart": 181,
+      "lineEnd": 181
+    },
+    {
+      "byteStart": 15146,
+      "byteEnd": 15715,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/9"
+      ],
+      "interpretation": "TMP validator layout approval, native mktemp behavior and no global process-absence claim.",
+      "jsonPointer": null,
+      "rawText": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n",
+      "lineStart": 183,
+      "lineEnd": 183
+    },
+    {
+      "byteStart": 15716,
+      "byteEnd": 16092,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/21/passages/10"
+      ],
+      "interpretation": "No actual root closure/acceptance mutation.",
+      "jsonPointer": null,
+      "rawText": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n",
+      "lineStart": 185,
+      "lineEnd": 185
+    }
+  ],
+  "retainedArtifact": "task-report-history-r1/raw/task-17-report.md",
+  "retainedSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684"
+}

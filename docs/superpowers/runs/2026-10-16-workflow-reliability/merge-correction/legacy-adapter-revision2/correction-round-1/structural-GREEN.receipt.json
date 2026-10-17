@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "python3",
+    "/private/tmp/ufz-correction-legacy-adapters/verify_proposal.py"
+  ],
+  "exitCode": 0,
+  "auditScriptSha256": "b9ba839cbebc69e3fa7a1457be67b33cbf5a794080232460b6dbff945fd4f12b",
+  "stdoutSha256": "170b0b20e6e977707b23ba923df95a02a80d8d6c4a1720089834a713f41d0f02",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

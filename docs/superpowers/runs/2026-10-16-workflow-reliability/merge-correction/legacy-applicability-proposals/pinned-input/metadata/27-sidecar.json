@@ -1,0 +1,510 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-16-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-16-review.md",
+  "rawSha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+  "rawByteCount": 5689,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-review.md",
+    "durablePath": "task-report-history-r1/raw/task-16-review.md",
+    "sha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+    "byteCount": 5689,
+    "logicalRole": "review",
+    "ordinal": 16,
+    "logicalTaskId": "super-plan-ufz.6",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-16-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.6 review",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.6 review\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review"
+      ],
+      "lineStart": 1,
+      "lineEnd": 7,
+      "byteStart": 0,
+      "byteEnd": 172,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.6 review\n\nStatus: CLEAN\nBase: bee2526cd249be60632281f092ab48e1667b8747\nHead: 232d3ca4adefafd4d757e8930fc10260159bafae\nReview bead: super-plan-ufz.19\n\n",
+      "bodyRawText": "\nStatus: CLEAN\nBase: bee2526cd249be60632281f092ab48e1667b8747\nHead: 232d3ca4adefafd4d757e8930fc10260159bafae\nReview bead: super-plan-ufz.19\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 32,
+          "byteEnd": 46
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: bee2526cd249be60632281f092ab48e1667b8747\n",
+          "text": "Base: bee2526cd249be60632281f092ab48e1667b8747",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 46,
+          "byteEnd": 93
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 232d3ca4adefafd4d757e8930fc10260159bafae\nReview bead: super-plan-ufz.19\n",
+          "text": "Head: 232d3ca4adefafd4d757e8930fc10260159bafae\nReview bead: super-plan-ufz.19",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 6,
+          "byteStart": 93,
+          "byteEnd": 171
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Spec compliance"
+      ],
+      "lineStart": 8,
+      "lineEnd": 19,
+      "byteStart": 172,
+      "byteEnd": 2455,
+      "bodyLineStart": 9,
+      "rawText": "## Spec compliance\n\n✅ Current `bd show super-plan-ufz.6 --json` and `bd comments super-plan-ufz.6` read before the brief. No task amendments or comments. Applied compatible frozen requirements and the parent clarification: supported caller assessment may classify a disclosed finding/group as nonblocking without resolving it or requiring extra human ceremony. Actual stacked Ready/recheck queries are read-only; checked every actual closure helper rather than imposing the older brief's assumption that Ready mutates.\n\n✅ Explicit `rootAcceptance: \"caller\"` is separate from deferSweep, persisted in Launch, and passed through the existing Workflow and ordinary-subagent instructions, initial launches, all re-entry paths and resume. Both actual coordinator helper callers (`closeEpicsPrompt`, `topUpPrompt`) append `--exclude-root`. The helper excludes only the root and preserves fixpoint inner-epic closure, including manual no-jq instructions. Default ownership and no-option standalone behavior remain intact.\n\n✅ Caller mode cannot stop on rootClosed; the existing empty-frontier path returns ready-drained normally. Leaves can finish independently of caller acceptance. Super-auto retains root closure until the existing final human choice and specified requirements are supported.\n\n✅ Required review, exact-source/command/configuration measurement, live-check kind, Recovery holds/pending closures/deferred obligations, run-owned repair and retained attribution gaps, pending collections, and validated outstanding findings are consumed independently. A matched passing sweep does not resolve a requirement-linked code defect. Missing supported relevance judgments remain gaps. Explicitly linked occurrences can share one supported judgment; nonblocking acceptance effects preserve outstanding original refs and the punch list. No blanket extra human gate was introduced.\n\n✅ Pending acceptance survives resume/status, including keep/cancel versus accepted finish. Historical requirements omitted later remain required. Historical run-state fixture files have an empty diff; only approved additive fields/formats changed. The inherited contract lint already checks the historical-plus-additions union and mutations, so no duplicate lint implementation was required.\n\n",
+      "bodyRawText": "\n✅ Current `bd show super-plan-ufz.6 --json` and `bd comments super-plan-ufz.6` read before the brief. No task amendments or comments. Applied compatible frozen requirements and the parent clarification: supported caller assessment may classify a disclosed finding/group as nonblocking without resolving it or requiring extra human ceremony. Actual stacked Ready/recheck queries are read-only; checked every actual closure helper rather than imposing the older brief's assumption that Ready mutates.\n\n✅ Explicit `rootAcceptance: \"caller\"` is separate from deferSweep, persisted in Launch, and passed through the existing Workflow and ordinary-subagent instructions, initial launches, all re-entry paths and resume. Both actual coordinator helper callers (`closeEpicsPrompt`, `topUpPrompt`) append `--exclude-root`. The helper excludes only the root and preserves fixpoint inner-epic closure, including manual no-jq instructions. Default ownership and no-option standalone behavior remain intact.\n\n✅ Caller mode cannot stop on rootClosed; the existing empty-frontier path returns ready-drained normally. Leaves can finish independently of caller acceptance. Super-auto retains root closure until the existing final human choice and specified requirements are supported.\n\n✅ Required review, exact-source/command/configuration measurement, live-check kind, Recovery holds/pending closures/deferred obligations, run-owned repair and retained attribution gaps, pending collections, and validated outstanding findings are consumed independently. A matched passing sweep does not resolve a requirement-linked code defect. Missing supported relevance judgments remain gaps. Explicitly linked occurrences can share one supported judgment; nonblocking acceptance effects preserve outstanding original refs and the punch list. No blanket extra human gate was introduced.\n\n✅ Pending acceptance survives resume/status, including keep/cancel versus accepted finish. Historical requirements omitted later remain required. Historical run-state fixture files have an empty diff; only approved additive fields/formats changed. The inherited contract lint already checks the historical-plus-additions union and mutations, so no duplicate lint implementation was required.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current `bd show super-plan-ufz.6 --json` and `bd comments super-plan-ufz.6` read before the brief. No task amendments or comments. Applied compatible frozen requirements and the parent clarification: supported caller assessment may classify a disclosed finding/group as nonblocking without resolving it or requiring extra human ceremony. Actual stacked Ready/recheck queries are read-only; checked every actual closure helper rather than imposing the older brief's assumption that Ready mutates.\n",
+          "text": "✅ Current `bd show super-plan-ufz.6 --json` and `bd comments super-plan-ufz.6` read before the brief. No task amendments or comments. Applied compatible frozen requirements and the parent clarification: supported caller assessment may classify a disclosed finding/group as nonblocking without resolving it or requiring extra human ceremony. Actual stacked Ready/recheck queries are read-only; checked every actual closure helper rather than imposing the older brief's assumption that Ready mutates.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 192,
+          "byteEnd": 693
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Explicit `rootAcceptance: \"caller\"` is separate from deferSweep, persisted in Launch, and passed through the existing Workflow and ordinary-subagent instructions, initial launches, all re-entry paths and resume. Both actual coordinator helper callers (`closeEpicsPrompt`, `topUpPrompt`) append `--exclude-root`. The helper excludes only the root and preserves fixpoint inner-epic closure, including manual no-jq instructions. Default ownership and no-option standalone behavior remain intact.\n",
+          "text": "✅ Explicit `rootAcceptance: \"caller\"` is separate from deferSweep, persisted in Launch, and passed through the existing Workflow and ordinary-subagent instructions, initial launches, all re-entry paths and resume. Both actual coordinator helper callers (`closeEpicsPrompt`, `topUpPrompt`) append `--exclude-root`. The helper excludes only the root and preserves fixpoint inner-epic closure, including manual no-jq instructions. Default ownership and no-option standalone behavior remain intact.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 694,
+          "byteEnd": 1191
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Caller mode cannot stop on rootClosed; the existing empty-frontier path returns ready-drained normally. Leaves can finish independently of caller acceptance. Super-auto retains root closure until the existing final human choice and specified requirements are supported.\n",
+          "text": "✅ Caller mode cannot stop on rootClosed; the existing empty-frontier path returns ready-drained normally. Leaves can finish independently of caller acceptance. Super-auto retains root closure until the existing final human choice and specified requirements are supported.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 1192,
+          "byteEnd": 1466
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Required review, exact-source/command/configuration measurement, live-check kind, Recovery holds/pending closures/deferred obligations, run-owned repair and retained attribution gaps, pending collections, and validated outstanding findings are consumed independently. A matched passing sweep does not resolve a requirement-linked code defect. Missing supported relevance judgments remain gaps. Explicitly linked occurrences can share one supported judgment; nonblocking acceptance effects preserve outstanding original refs and the punch list. No blanket extra human gate was introduced.\n",
+          "text": "✅ Required review, exact-source/command/configuration measurement, live-check kind, Recovery holds/pending closures/deferred obligations, run-owned repair and retained attribution gaps, pending collections, and validated outstanding findings are consumed independently. A matched passing sweep does not resolve a requirement-linked code defect. Missing supported relevance judgments remain gaps. Explicitly linked occurrences can share one supported judgment; nonblocking acceptance effects preserve outstanding original refs and the punch list. No blanket extra human gate was introduced.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1467,
+          "byteEnd": 2059
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Pending acceptance survives resume/status, including keep/cancel versus accepted finish. Historical requirements omitted later remain required. Historical run-state fixture files have an empty diff; only approved additive fields/formats changed. The inherited contract lint already checks the historical-plus-additions union and mutations, so no duplicate lint implementation was required.\n",
+          "text": "✅ Pending acceptance survives resume/status, including keep/cancel versus accepted finish. Historical requirements omitted later remain required. Historical run-state fixture files have an empty diff; only approved additive fields/formats changed. The inherited contract lint already checks the historical-plus-additions union and mutations, so no duplicate lint implementation was required.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 2060,
+          "byteEnd": 2454
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Issues"
+      ],
+      "lineStart": 20,
+      "lineEnd": 25,
+      "byteStart": 2455,
+      "byteEnd": 2513,
+      "bodyLineStart": 21,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2466,
+          "byteEnd": 2482
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2482,
+          "byteEnd": 2499
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2499,
+          "byteEnd": 2512
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Test evidence"
+      ],
+      "lineStart": 26,
+      "lineEnd": 37,
+      "byteStart": 2513,
+      "byteEnd": 4054,
+      "bodyLineStart": 27,
+      "rawText": "## Test evidence\n\nNo tests run by this reviewer, as required. Implementer report supplies targeted commands and relevant output:\n\n- `node tests/super-code/replay-harness.mjs`: 2202 passed, 0 failed. Includes fake-bd root exclusion, normal standalone root closure, no-jq fallback, all actual closure callers, Launch persistence and open-root ready-drained.\n- `bash tests/super-auto/test-scripts.sh`: 44 root acceptance assertions passed; all super-auto script tests passed. Covers independent gates, exact measurement matching, finding relevance/group assessment, run attribution gaps and status qualification.\n- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, including unapproved additions, changed legacy formats, omitted approved fields and changed approved formats.\n\nThe report identifies source/worktree/toolchain and exact environment prefix, distinguishes deterministic evidence from live behavior evaluation, and records a settled empty process check. Evidence is plausible and relevant; no failed final test is glossed over.\n\nTest changes inspected with both `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, using the full dispatch TEST_PATHSPECS and immutable identities above. Result: four test/fixture files, 106 additions, no deletions or weakened historical expectations. Both historical 2bf1d53 fixture paths separately have an empty range diff. The existing lint implementation was inspected specifically to verify reuse of additive union and mutation checks.\n\n",
+      "bodyRawText": "\nNo tests run by this reviewer, as required. Implementer report supplies targeted commands and relevant output:\n\n- `node tests/super-code/replay-harness.mjs`: 2202 passed, 0 failed. Includes fake-bd root exclusion, normal standalone root closure, no-jq fallback, all actual closure callers, Launch persistence and open-root ready-drained.\n- `bash tests/super-auto/test-scripts.sh`: 44 root acceptance assertions passed; all super-auto script tests passed. Covers independent gates, exact measurement matching, finding relevance/group assessment, run attribution gaps and status qualification.\n- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, including unapproved additions, changed legacy formats, omitted approved fields and changed approved formats.\n\nThe report identifies source/worktree/toolchain and exact environment prefix, distinguishes deterministic evidence from live behavior evaluation, and records a settled empty process check. Evidence is plausible and relevant; no failed final test is glossed over.\n\nTest changes inspected with both `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, using the full dispatch TEST_PATHSPECS and immutable identities above. Result: four test/fixture files, 106 additions, no deletions or weakened historical expectations. Both historical 2bf1d53 fixture paths separately have an empty range diff. The existing lint implementation was inspected specifically to verify reuse of additive union and mutation checks.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests run by this reviewer, as required. Implementer report supplies targeted commands and relevant output:\n",
+          "text": "No tests run by this reviewer, as required. Implementer report supplies targeted commands and relevant output:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 2531,
+          "byteEnd": 2642
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/replay-harness.mjs`: 2202 passed, 0 failed. Includes fake-bd root exclusion, normal standalone root closure, no-jq fallback, all actual closure callers, Launch persistence and open-root ready-drained.\n",
+          "text": "`node tests/super-code/replay-harness.mjs`: 2202 passed, 0 failed. Includes fake-bd root exclusion, normal standalone root closure, no-jq fallback, all actual closure callers, Launch persistence and open-root ready-drained.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 2643,
+          "byteEnd": 2869
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-auto/test-scripts.sh`: 44 root acceptance assertions passed; all super-auto script tests passed. Covers independent gates, exact measurement matching, finding relevance/group assessment, run attribution gaps and status qualification.\n",
+          "text": "`bash tests/super-auto/test-scripts.sh`: 44 root acceptance assertions passed; all super-auto script tests passed. Covers independent gates, exact measurement matching, finding relevance/group assessment, run attribution gaps and status qualification.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2869,
+          "byteEnd": 3123
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, including unapproved additions, changed legacy formats, omitted approved fields and changed approved formats.\n",
+          "text": "`bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, including unapproved additions, changed legacy formats, omitted approved fields and changed approved formats.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 3123,
+          "byteEnd": 3314
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The report identifies source/worktree/toolchain and exact environment prefix, distinguishes deterministic evidence from live behavior evaluation, and records a settled empty process check. Evidence is plausible and relevant; no failed final test is glossed over.\n",
+          "text": "The report identifies source/worktree/toolchain and exact environment prefix, distinguishes deterministic evidence from live behavior evaluation, and records a settled empty process check. Evidence is plausible and relevant; no failed final test is glossed over.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 3315,
+          "byteEnd": 3578
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes inspected with both `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, using the full dispatch TEST_PATHSPECS and immutable identities above. Result: four test/fixture files, 106 additions, no deletions or weakened historical expectations. Both historical 2bf1d53 fixture paths separately have an empty range diff. The existing lint implementation was inspected specifically to verify reuse of additive union and mutation checks.\n",
+          "text": "Test changes inspected with both `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, using the full dispatch TEST_PATHSPECS and immutable identities above. Result: four test/fixture files, 106 additions, no deletions or weakened historical expectations. Both historical 2bf1d53 fixture paths separately have an empty range diff. The existing lint implementation was inspected specifically to verify reuse of additive union and mutation checks.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 3579,
+          "byteEnd": 4053
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability checks",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability checks\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Focused reachability checks"
+      ],
+      "lineStart": 38,
+      "lineEnd": 45,
+      "byteStart": 4054,
+      "byteEnd": 5030,
+      "bodyLineStart": 39,
+      "rawText": "## Focused reachability checks\n\nRisk: missed closure caller or standalone regression. Searched coordinator.js for close-in-tree-epics/rootClosed/rootAcceptance and inspected the loop and both prompt builders in the task worktree. Close and refill/top-up are the only helper callers; Ready/recheck are read-only. Default coordinator ownership retains the previous rootClosed exit.\n\nRisk: prerequisite evidence contract mismatch. Inspected the existing checkEvidence producer/classification and Recovery/runFailures projections. The gate consumes the returned IDs, full tree/command/configuration identities, kind/outcome records and retained failure gaps rather than treating a latest-ready verdict as acceptance.\n\nRisk: collection qualifiers lost across the acceptance boundary. Inspected ordinary status qualifier production and the acceptance-mode recursive read-only call with RS_SKIP_ACCEPTANCE. Pending collection and finding coverage qualifiers become acceptance gaps.\n\n",
+      "bodyRawText": "\nRisk: missed closure caller or standalone regression. Searched coordinator.js for close-in-tree-epics/rootClosed/rootAcceptance and inspected the loop and both prompt builders in the task worktree. Close and refill/top-up are the only helper callers; Ready/recheck are read-only. Default coordinator ownership retains the previous rootClosed exit.\n\nRisk: prerequisite evidence contract mismatch. Inspected the existing checkEvidence producer/classification and Recovery/runFailures projections. The gate consumes the returned IDs, full tree/command/configuration identities, kind/outcome records and retained failure gaps rather than treating a latest-ready verdict as acceptance.\n\nRisk: collection qualifiers lost across the acceptance boundary. Inspected ordinary status qualifier production and the acceptance-mode recursive read-only call with RS_SKIP_ACCEPTANCE. Pending collection and finding coverage qualifiers become acceptance gaps.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: missed closure caller or standalone regression. Searched coordinator.js for close-in-tree-epics/rootClosed/rootAcceptance and inspected the loop and both prompt builders in the task worktree. Close and refill/top-up are the only helper callers; Ready/recheck are read-only. Default coordinator ownership retains the previous rootClosed exit.\n",
+          "text": "Risk: missed closure caller or standalone regression. Searched coordinator.js for close-in-tree-epics/rootClosed/rootAcceptance and inspected the loop and both prompt builders in the task worktree. Close and refill/top-up are the only helper callers; Ready/recheck are read-only. Default coordinator ownership retains the previous rootClosed exit.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 4086,
+          "byteEnd": 4434
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: prerequisite evidence contract mismatch. Inspected the existing checkEvidence producer/classification and Recovery/runFailures projections. The gate consumes the returned IDs, full tree/command/configuration identities, kind/outcome records and retained failure gaps rather than treating a latest-ready verdict as acceptance.\n",
+          "text": "Risk: prerequisite evidence contract mismatch. Inspected the existing checkEvidence producer/classification and Recovery/runFailures projections. The gate consumes the returned IDs, full tree/command/configuration identities, kind/outcome records and retained failure gaps rather than treating a latest-ready verdict as acceptance.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 4435,
+          "byteEnd": 4767
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: collection qualifiers lost across the acceptance boundary. Inspected ordinary status qualifier production and the acceptance-mode recursive read-only call with RS_SKIP_ACCEPTANCE. Pending collection and finding coverage qualifiers become acceptance gaps.\n",
+          "text": "Risk: collection qualifiers lost across the acceptance boundary. Inspected ordinary status qualifier production and the acceptance-mode recursive read-only call with RS_SKIP_ACCEPTANCE. Pending collection and finding coverage qualifiers become acceptance gaps.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 4768,
+          "byteEnd": 5029
+        }
+      ]
+    },
+    {
+      "section": "Remaining enclosing-run obligations",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Remaining enclosing-run obligations\n",
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Remaining enclosing-run obligations"
+      ],
+      "lineStart": 46,
+      "lineEnd": 50,
+      "byteStart": 5030,
+      "byteEnd": 5689,
+      "bodyLineStart": 47,
+      "rawText": "## Remaining enclosing-run obligations\n\nFresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n\nThe initial package write was denied by the sandbox; repeating the same authorized artifact generation with escalation succeeded (2 commits, 98793 bytes). The package is nonempty and HEAD matches the captured immutable head. Base ancestry check passed.\n",
+      "bodyRawText": "\nFresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n\nThe initial package write was denied by the sandbox; repeating the same authorized artifact generation with escalation succeeded (2 commits, 98793 bytes). The package is nonempty and HEAD matches the captured immutable head. Base ancestry check passed.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n",
+          "text": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 48,
+          "lineEnd": 48,
+          "byteStart": 5070,
+          "byteEnd": 5435
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The initial package write was denied by the sandbox; repeating the same authorized artifact generation with escalation succeeded (2 commits, 98793 bytes). The package is nonempty and HEAD matches the captured immutable head. Base ancestry check passed.\n",
+          "text": "The initial package write was denied by the sandbox; repeating the same authorized artifact generation with escalation succeeded (2 commits, 98793 bytes). The package is nonempty and HEAD matches the captured immutable head. Base ancestry check passed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 5436,
+          "byteEnd": 5689
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 2466,
+      "byteEnd": 2482,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2482,
+      "byteEnd": 2499,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 2499,
+      "byteEnd": 2512,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "section": "Remaining enclosing-run obligations",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task super-plan-ufz.6 review",
+        "Remaining enclosing-run obligations"
+      ],
+      "positionInSection": 1,
+      "key": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.",
+      "text": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.",
+      "rawText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n",
+      "lineStart": 48,
+      "lineEnd": 48,
+      "byteStart": 5070,
+      "byteEnd": 5435,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

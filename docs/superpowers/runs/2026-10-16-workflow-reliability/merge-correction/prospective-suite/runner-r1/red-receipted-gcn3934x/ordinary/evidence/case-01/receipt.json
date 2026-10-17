@@ -1,0 +1,36 @@
+{
+  "id": "01",
+  "planCommand": "bash tests/one.sh",
+  "actualArgv": [
+    "/bin/bash",
+    "tests/one.sh"
+  ],
+  "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/clone",
+  "environment": {
+    "CI": "1",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/tmp",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/home",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-config",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-cache",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-state",
+    "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/codex-home"
+  },
+  "startUtc": "2026-10-17T21:39:54Z",
+  "endUtc": "2026-10-17T21:39:54Z",
+  "durationSeconds": 0.005,
+  "exitCode": 0,
+  "status": "passed",
+  "timeout": false,
+  "cause": null,
+  "sourceHead": "6cbd2fc03d5f25f2c9895539b44aa3ed40cd8588",
+  "sourceTree": "45ee088f7906f3a0bf93bb9dc98c2cb80d64d9b4",
+  "runner": "/bin/bash",
+  "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+  "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/stdout.log",
+  "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/stderr.log",
+  "stdoutBytes": 12,
+  "stdoutSha256": "a90164e8b468b6393e10305b307e851fb2ebcdcc199978db9cd19cb95a574b79",
+  "stderrBytes": 0,
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "ordinal": 72,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-9-report",
+  "originalArtifact": "task-report-history-r1/raw/task-9-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-9-report.md",
+  "rawSha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+  "rawByteCount": 10165,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        122
+      ]
+    ],
+    "byteScope": [
+      0,
+      10165
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/17",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/72-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/17/passages/0",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        2698,
+        3489
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Opaque immutable identity, explicit failures/unsupported formats and consumer evidence-retention requirements; absence of finding headings is not empty success."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/17/passages/1",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        6493,
+        7680
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Missing complete-mode RED and subsequent claimed GREEN; fixture failure examples are test data, not historical report findings."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/17/passages/2",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        8913,
+        9371
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Source identity opaque; strict failures expose evidence gaps."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/17/passages/3",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        9385,
+        9913
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No implementation blocker is a scoped declaration; unsupported/truncated input rejection and unreadable-fixture limit; parent owns integration, closure, sweep and fresh-agent evaluation."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Opaque immutable identity, explicit failures/unsupported formats and consumer evidence-retention requirements; absence of finding headings is not empty success.",
+      "rawSection": "Interface for super-plan-ufz.8.4",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Interface for super-plan-ufz.8.4\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.8.2 implementation evidence",
+        "Interface for super-plan-ufz.8.4"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 25,
+      "lineEnd": 27,
+      "byteStart": 2698,
+      "byteEnd": 3489,
+      "rawText": "- The occurrence identity is `(source,section,position)`, not `(artifact,section,position)`. An archive copied byte for byte and parsed with the same source has exactly the same occurrences.\n\nMissing/non-file/unreadable paths, unknown/unsupported source formats, invalid UTF-8, missing verdict/sections, empty finding sections, and unmarked leading finding text fail explicitly. A recognized review with explicit `none` sections succeeds with an empty occurrences array. Bare success task reports with no finding sections are not accepted as an explicit empty finding review. Step-back and assembled digest formats have no finding extraction contract and are refused in complete mode; their old modes remain unchanged. Consumers must retain existing evidence when complete extraction fails.\n",
+      "canonicalAdapterSection": "Interface for super-plan-ufz.8.4",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Missing complete-mode RED and subsequent claimed GREEN; fixture failure examples are test data, not historical report findings.",
+      "rawSection": "TDD evidence",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## TDD evidence\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.8.2 implementation evidence",
+        "TDD evidence"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 79,
+      "lineEnd": 95,
+      "byteStart": 6493,
+      "byteEnd": 7680,
+      "rawText": "## TDD evidence\n\nRED: ran the exact suite command above before changing the helper. Existing assertions passed; six new valid complete-mode invocations failed because the helper did not recognize `--complete --source`, returning 2 instead of 0:\n\n```text\n  [FAIL] complete mode accepts a caller-supplied immutable source\n    expected: 0\n    got:      2\n  [FAIL] roast complete mode exits 0\n  [FAIL] large final review accepted\n  [FAIL] long roast accepted\n  [FAIL] task report with successful status can retain concerns\n  [FAIL] recognized explicitly empty review succeeds\nreport-verdict: 6 failure(s)\n```\n\nAssertions dependent on successful JSON extraction were guarded and unmeasured during RED; they were exercised and passed during GREEN. GREEN: same command after implementation passed; it passed again after rebase. Tests catch dropped sections/severities, deduplication, reset positions at repeated labels, path-derived identities, capped or normalized-away text, loss of continuations, invalid JSON escaping, status precedence, and malformed sources returning success/empty output. Expectations are hand-written source values, with actual CLI execution and built-in JSON parsing.\n",
+      "canonicalAdapterSection": "TDD evidence",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Source identity opaque; strict failures expose evidence gaps.",
+      "rawSection": "Assumptions",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Assumptions\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.8.2 implementation evidence",
+        "Assumptions"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 110,
+      "lineEnd": 110,
+      "byteStart": 8913,
+      "byteEnd": 9371,
+      "rawText": "Current bead and comments were read before the brief. No amendments or conflicts were present. Source identity is an opaque caller-supplied immutable reference and is not a content hash or disposition judgment. Markdown item text means item content without the outer list marker, retaining all inner formatting/continuations; exact full source bytes remain at the artifact. Strict failures expose an evidence gap rather than inventing an empty clean review.\n",
+      "canonicalAdapterSection": "Assumptions",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "No implementation blocker is a scoped declaration; unsupported/truncated input rejection and unreadable-fixture limit; parent owns integration, closure, sweep and fresh-agent evaluation.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 9,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.8.2 implementation evidence",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        9
+      ],
+      "lineStart": 114,
+      "lineEnd": 114,
+      "byteStart": 9385,
+      "byteEnd": 9913,
+      "rawText": "No implementation blocker. Complete mode intentionally rejects unsupported/non-finding reports and empty/truncated finding sections even where the legacy compact summary remains permissive. Permission-denied regular-file reads are handled by filesystem exceptions, while the portable deterministic unreadable-input fixture uses a directory; no permission changes were made. The parent owns integration, tracker closure, full sweep and fresh-agent behavior evaluations; these were not run for this deterministic extraction task.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 9385,
+      "byteEnd": 9913,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/17/passages/3"
+      ],
+      "interpretation": "No implementation blocker is a scoped declaration; unsupported/truncated input rejection and unreadable-fixture limit; parent owns integration, closure, sweep and fresh-agent evaluation.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": false,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000009385",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope_concern"
+      ],
+      "rawByteStart": 9385,
+      "rawByteEnd": 9913,
+      "rawLineStart": 114,
+      "rawLineEnd": 114,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.8.2 implementation evidence",
+            "Concerns"
+          ],
+          "byteStart": 9372,
+          "byteEnd": 9914
+        }
+      ],
+      "rawText": "No implementation blocker. Complete mode intentionally rejects unsupported/non-finding reports and empty/truncated finding sections even where the legacy compact summary remains permissive. Permission-denied regular-file reads are handled by filesystem exceptions, while the portable deterministic unreadable-input fixture uses a directory; no permission changes were made. The parent owns integration, tracker closure, full sweep and fresh-agent behavior evaluations; these were not run for this deterministic extraction task.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No implementation blocker. Complete mode intentionally rejects unsupported/non-finding reports and empty/truncated finding sections even where the legacy compact summary remains permissive. Permission-denied regular-file reads are handled by filesystem exceptions, while the portable deterministic unreadable-input fixture uses a directory; no permission changes were made. The parent owns integration, tracker closure, full sweep and fresh-agent behavior evaluations; these were not run for this deterministic extraction task.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/17/passages/3"
+      ],
+      "interpretation": "No implementation blocker is a scoped declaration; unsupported/truncated input rejection and unreadable-fixture limit; parent owns integration, closure, sweep and fresh-agent evaluation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/72-task-9-report.md",
+  "retainedSha256": "d9d22e2e8a44f52cefaaa108de3b3dc7185472c444e9a9ba0ee0b369b95fe058"
+}

@@ -1,0 +1,29 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/partial-timeout/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/partial-timeout/evidence",
+  "sourceHead": "64fe71566d8cdca3e11a4b5372e067912dff743b",
+  "sourceTree": "a6c4919fe481bef74d4a0ababdab3c1615073971",
+  "commands": [
+    "bash tests/one.sh",
+    "bash tests/two.sh"
+  ],
+  "timeoutPerCommandSeconds": 0.1,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/one.sh",
+      "sha256": "384f4e05aa76e1e3d817f754d969000db3821eb0e23be784c14ade0a7f0882c0",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    },
+    {
+      "command": "bash tests/two.sh",
+      "sha256": "4964ba1d84feb20d12790aeae88065d271b73fdbd6eb068747027e2711e1620f",
+      "requirementIds": [
+        "fixture-1"
+      ]
+    }
+  ]
+}

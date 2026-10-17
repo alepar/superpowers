@@ -1,0 +1,18 @@
+contract lint: live tree
+  [PASS] skills/super-auto has no contract problems
+
+contract lint: mutations are caught
+  [PASS] a broken § pointer fails
+  [PASS] a mislabelled run-state item pointer fails
+  [PASS] an unknown worked-example field fails
+  [PASS] a worked example missing a codeBuckets bucket fails
+  [PASS] a numeric list count fails
+  [PASS] a renamed field-table field fails the baseline
+  [PASS] I8 without projection fails
+  [PASS] report-prompt without the null reviewPath rule fails
+  [PASS] unapproved added field still fails
+  [PASS] changed legacy line format fails
+  [PASS] dropping an approved added field fails
+  [PASS] changed approved added format fails
+
+All super-auto contract lint tests passed

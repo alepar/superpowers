@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+  "artifact": "legacy-report-adapters-r1/69-task-7-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000002595",
+      "position": 1,
+      "key": "Results: 2007 passed, 0 failed; run-digest: all tests passed; dispatch-text: all tests passed. Retained evidence files confirm these pass summaries. Coverage is plausible and directly exercises the changed boundaries. No tests were run by this reviewer.",
+      "text": "Results: 2007 passed, 0 failed; run-digest: all tests passed; dispatch-text: all tests passed. Retained evidence files confirm these pass summaries. Coverage is plausible and directly exercises the changed boundaries. No tests were run by this reviewer."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-0/raw-byte-000003747",
+      "position": 1,
+      "key": "Fresh-agent semantic tagging evaluation remains explicitly owned by the enclosing coordinator under this task's acceptance; this deterministic review does not claim that evaluation ran.",
+      "text": "Fresh-agent semantic tagging evaluation remains explicitly owned by the enclosing coordinator under this task's acceptance; this deterministic review does not claim that evaluation ran."
+    }
+  ]
+}

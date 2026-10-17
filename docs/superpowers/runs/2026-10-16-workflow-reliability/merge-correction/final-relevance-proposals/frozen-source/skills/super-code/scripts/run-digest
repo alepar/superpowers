@@ -1,0 +1,248 @@
+#!/usr/bin/env bash
+# run-digest — the run block a coordinator re-reads after compaction: the coordinator card, then a
+# bounded "Run state" section (header, ledger counts and tail, open beads, in-flight dispatches).
+#
+# Usage: <run-marker get output> | bash run-digest --part card|state|all --budget <chars>
+#   card   the coordinator card verbatim, whatever the budget (the card is never cut)
+#   state  the Run state section, trimmed to --budget (in-flight lines, then bead ids, then the
+#          oldest ledger-tail lines go first)
+#   all    the card, one blank line, then the state trimmed to what the budget leaves
+# Marker fields (key, skill, harness, run_md, ledger, epic, session, worktree, runTag) come from
+# stdin only; no marker file is resolved or read. The ledger, open-bead and in-flight sources run
+# concurrently under one shared 4 s deadline (3 s each); a failed or late source prints `unknown`
+# for its section and the rest still print.
+# Exit 0 always, except 2 for a bad or missing --part/--budget (usage on stderr).
+set -euo pipefail
+export LC_ALL=C
+
+usage() { echo "usage: <run-marker get output> | run-digest --part card|state|all --budget <chars>" >&2; exit 2; }
+
+part=
+budget=
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --part) [ $# -ge 2 ] || usage; part=$2; shift 2 ;;
+    --budget) [ $# -ge 2 ] || usage; budget=$2; shift 2 ;;
+    *) usage ;;
+  esac
+done
+case "$part" in card|state|all) ;; *) usage ;; esac
+case "$budget" in ''|*[!0-9]*) usage ;; esac
+
+D=$(cd "$(dirname "$0")" && pwd)
+card_file="$D/../coordinator-card.md"
+
+print_card() {
+  if [ -f "$card_file" ]; then cat "$card_file"; else echo "Coordinator card: unavailable ($card_file)"; fi
+}
+
+if [ "$part" = card ]; then print_card; exit 0; fi
+
+marker=$(cat)
+field() { printf '%s\n' "$marker" | awk -v k="$1" '{ i = index($0, ": "); if (i > 0 && substr($0, 1, i - 1) == k) { print substr($0, i + 2); exit } }'; }
+
+T=$(mktemp -d)
+pids=
+trap 'rm -rf "$T"' EXIT
+
+# Print the state part (already trimmed) for the given character budget (newline not counted).
+build_state() {
+  local sbudget=$1
+  if [ -z "$(printf '%s' "$marker" | tr -d ' \t\r\n')" ]; then
+    echo "Run state: no marker on stdin"
+    return
+  fi
+  local skill harness run_md ledger epic session worktree runtag phase
+  skill=$(field skill); harness=$(field harness); run_md=$(field run_md); ledger=$(field ledger)
+  epic=$(field epic); session=$(field session); worktree=$(field worktree); runtag=$(field runTag)
+  phase=
+  if [ -n "$run_md" ] && [ -r "$run_md" ]; then
+    phase=$(awk '/^phase:/ { sub(/^phase:[ \t]*/, ""); print; exit }' "$run_md" 2>/dev/null || true)
+  fi
+  if [ -z "$phase" ]; then
+    if [ "$skill" = super-code ]; then phase=super-code; else phase=unknown; fi
+  fi
+
+  # Sources, started together; each writes its own file under $T and exit status to $T/<n>.rc.
+  src_ledger() { bash "$D/ledger-digest" "$ledger"; }
+  src_beads() {
+    cd "${worktree:-.}" || exit 1
+    bd list --all --json --limit 0 >"$T/dump" || exit 1
+    command -v jq >/dev/null 2>&1 || exit 1
+    bash "$D/epic-tree" --from "$T/dump" "$epic" >"$T/tree" || exit 1
+    jq -r '.[] | select(.status != "closed") | .id' "$T/dump" >"$T/open" || exit 1
+    awk -v epic="$epic" 'NR == FNR { t[$0] = 1; next } ($0 in t) && $0 != epic' "$T/tree" "$T/open"
+  }
+  src_inflight() { bash "$D/run-profile" --in-flight --epic "$epic" --session "$session" --harness "$harness"; }
+
+  local started=
+  if [ -n "$ledger" ]; then start_src ledger src_ledger; started="$started ledger"; fi
+  local want_beads=0 want_flight=0
+  if [ -n "$epic" ]; then want_beads=1; start_src beads src_beads; started="$started beads"; fi
+  if [ -n "$epic" ] && [ -n "$session" ] && [ -n "$harness" ]; then want_flight=1; start_src inflight src_inflight; started="$started inflight"; fi
+  wait_srcs
+
+  local ok_ledger=0 ok_beads=0 ok_flight=0
+  [ -n "$ledger" ] && src_ok ledger && ok_ledger=1
+  [ "$want_beads" = 1 ] && src_ok beads && ok_beads=1
+  [ "$want_flight" = 1 ] && src_ok inflight && ok_flight=1
+
+  local ledger_unavailable=
+  if [ "$ok_ledger" = 1 ]; then
+    ledger_unavailable=$(awk '/^# ledger-status: (missing|unreadable)$/ { sub(/^# ledger-status: /, ""); print; exit }' "$T/ledger")
+    if [ -z "$ledger_unavailable" ] && ! awk '
+      NR == 1 { if ($0 !~ /^# ledger-digest: [0-9]+ of [0-9]+ lines$/ || $3 > $5) exit 1; kept = $3; next }
+      END { if (NR == 0 || NR - 1 != kept) exit 1 }
+    ' "$T/ledger"; then ledger_unavailable="invalid transport"; fi
+    if [ -n "$ledger_unavailable" ]; then ok_ledger=0; fi
+  fi
+
+  # Ledger: counts and the tail.
+  local ledger_counts tail_lines=() ntail=0 line
+  if [ -z "$ledger" ]; then
+    ledger_counts="ledger: none yet"
+  elif [ "$ok_ledger" = 1 ]; then
+    ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
+      /^Merge: [^ ]+ — / && $0 !~ / → / { merged[$2] = 1 }
+      match($0, /^Task [^ ]+ \([^)]+\): /) {
+        id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
+        st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
+        if (st ~ /^complete/ && st ~ /verification-only/) s = "V"
+        else if (st ~ /^(complete|landed)/) { s = "L"; merged[id] = 1 }
+        else if (st ~ /^BLOCKED/) s = "B"
+        else if (st ~ /^pending retry/) s = "P"; else if (st ~ /^cancelled/) s = "C"; else next
+        state[id] = s
+      }
+      END { for (i in state) { c[state[i]]++; if (state[i] == "V" && merged[i]) c["L"]++ }
+        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"]
+        if (c["V"]) printf " · verification-only %d", c["V"] }')
+    while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
+    ntail=${#tail_lines[@]}
+  elif [ -n "$ledger_unavailable" ]; then
+    ledger_counts="ledger: unknown — $ledger_unavailable"
+  else
+    ledger_counts="ledger: unknown"
+  fi
+
+  # Open beads.
+  local beads_line_kind beads_total=0 ids=() nids=0
+  if [ -z "$epic" ]; then beads_line_kind=none
+  elif [ "$ok_beads" = 1 ]; then
+    beads_line_kind=ok
+    while IFS= read -r line; do [ -n "$line" ] && ids[${#ids[@]}]=$line; done <"$T/beads"
+    beads_total=${#ids[@]}
+    nids=$beads_total; [ "$nids" -gt 40 ] && nids=40
+  else beads_line_kind=unknown; fi
+
+  # In-flight.
+  local flight_kind flights=() nfl=0 nflight_total=0
+  if [ "$want_flight" = 0 ]; then flight_kind=lacks
+  elif [ "$ok_flight" = 1 ]; then
+    while IFS= read -r line; do
+      case "$line" in
+        *" · unknown") line="${line% · unknown} · age unknown" ;;
+      esac
+      [ -n "$line" ] && flights[${#flights[@]}]=$line
+    done <"$T/inflight"
+    if [ "${#flights[@]}" -gt 0 ] && [ "${flights[0]#in-flight: unknown}" != "${flights[0]}" ]; then
+      flight_kind=unknown_line
+    else
+      flight_kind=ok
+      nflight_total=${#flights[@]}; nfl=$nflight_total
+    fi
+  else flight_kind=unknown; fi
+
+  render() {
+    printf '%s\n' "## Run state"
+    printf '%s\n' "skill ${skill:-unknown} · epic ${epic:-none} · phase $phase · runTag ${runtag:-none}"
+    printf '%s\n' "scripts: $D"
+    printf '%s\n' "$ledger_counts"
+    if [ "$ledger_counts" != "ledger: none yet" ] && [ "$ledger_counts" != "ledger: unknown" ] && [ "$ntail" -gt 0 ]; then
+      printf '%s\n' "ledger tail (last $ntail of ledger-digest):"
+      local i
+      for ((i = ${#tail_lines[@]} - ntail; i < ${#tail_lines[@]}; i++)); do printf '%s\n' "${tail_lines[$i]}"; done
+    fi
+    case "$beads_line_kind" in
+      none) printf '%s\n' "open beads: none yet" ;;
+      unknown) printf '%s\n' "open beads: unknown" ;;
+      ok)
+        local j list="" more=$((beads_total - nids))
+        for ((j = 0; j < nids; j++)); do list="$list${list:+, }${ids[$j]}"; done
+        if [ "$more" -gt 0 ]; then list="$list${list:+ }+$more more"; fi
+        if [ "$beads_total" -eq 0 ]; then printf '%s\n' "open beads: 0"; else printf '%s\n' "open beads: $beads_total — $list"; fi ;;
+    esac
+    case "$flight_kind" in
+      lacks) printf '%s\n' "in-flight: unknown — marker lacks epic/session/harness" ;;
+      unknown) printf '%s\n' "in-flight: unknown" ;;
+      unknown_line) printf '%s\n' "${flights[0]}" ;;
+      ok)
+        printf '%s\n' "in-flight: $nflight_total"
+        local k
+        for ((k = 0; k < nfl; k++)); do printf '%s\n' "${flights[$k]}"; done
+        if [ "$nfl" -lt "$nflight_total" ]; then printf '%s\n' "+$((nflight_total - nfl)) more, see ledger-digest"; fi ;;
+    esac
+  }
+
+  local out
+  out=$(render)
+  while [ "${#out}" -gt "$sbudget" ]; do
+    if [ "$nfl" -gt 0 ]; then nfl=$((nfl - 1))
+    elif [ "$nids" -gt 0 ]; then nids=$((nids - 1))
+    elif [ "$ntail" -gt 0 ]; then ntail=$((ntail - 1))
+    else
+      # Cannot happen at budgets of 2000 or more: cut at a line boundary.
+      case "$out" in
+        *$'\n'*) out=${out%$'\n'*} ;;
+        *) out=${out:0:$sbudget} ;;
+      esac
+      continue
+    fi
+    out=$(render)
+  done
+  printf '%s\n' "$out"
+}
+
+# --- concurrent sources ---------------------------------------------------------------------
+start_src() { # name function
+  ( "$2" ) </dev/null >"$T/$1" 2>/dev/null &
+  local p=$!
+  echo "$p" >"$T/$1.pid"
+  pids="$pids $p"
+}
+killtree() {
+  local c
+  for c in $(pgrep -P "$1" 2>/dev/null || true); do killtree "$c"; done
+  kill -TERM "$1" 2>/dev/null || true
+}
+wait_srcs() {
+  local tick=0 p alive start=$SECONDS
+  while [ "$tick" -lt 30 ] && [ $((SECONDS - start)) -lt 3 ]; do
+    alive=0
+    for p in $pids; do kill -0 "$p" 2>/dev/null && alive=1; done
+    [ "$alive" = 0 ] && break
+    sleep 0.1
+    tick=$((tick + 1))
+  done
+  local f n
+  for f in "$T"/*.pid; do
+    [ -e "$f" ] || continue
+    n=$(basename "$f" .pid); p=$(cat "$f")
+    if kill -0 "$p" 2>/dev/null; then
+      killtree "$p"; echo late >"$T/$n.state"
+    else
+      if wait "$p" 2>/dev/null; then echo 0 >"$T/$n.state"; else echo fail >"$T/$n.state"; fi
+    fi
+  done
+}
+src_ok() { [ "$(cat "$T/$1.state" 2>/dev/null)" = 0 ]; }
+
+# --- output ---------------------------------------------------------------------------------
+case "$part" in
+  state) build_state $((budget - 1)) ;;
+  all)
+    print_card
+    echo
+    cardlen=$( [ -f "$card_file" ] && wc -c <"$card_file" || echo 0 )
+    sb=$((budget - cardlen - 2)); [ "$sb" -lt 0 ] && sb=0
+    build_state "$sb" ;;
+esac

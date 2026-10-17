@@ -1,0 +1,454 @@
+{
+  "version": 1,
+  "ordinal": 29,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+  "originalArtifact": "task-report-history-r1/raw/task-17-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-17-review.md",
+  "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+  "rawByteCount": 6122,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      6122
+    ],
+    "method": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/1",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/29-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/1/semanticPassages/0",
+      "roles": [
+        "coverage-qualification"
+      ],
+      "span": [
+        1836,
+        2371
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/1/semanticPassages/1",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        2383,
+        2399
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/1/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        2399,
+        2416
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/1/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        2416,
+        2429
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/1/semanticPassages/4",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        2430,
+        2659
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "✅ verification.md preserves initial 20/23 outcomes, explicit base reproductions, separately landed profiler correction and focused six-suite reruns, linked-worktree packaging failure and exact-source standalone-clone pass. Its aggregate coverage is expressly qualified and does not claim final phase-6 completion. Frozen B4 results remain 0 pass / 2 fail / 3 ambiguous, distinct from the new diagnostic 5/5 comparisons. Native Linux /proc remains untested, and live-isolation ps/descendant/stage-routing limitations remain explicit.\n",
+      "text": "✅ verification.md preserves initial 20/23 outcomes, explicit base reproductions, separately landed profiler correction and focused six-suite reruns, linked-worktree packaging failure and exact-source standalone-clone pass. Its aggregate coverage is expressly qualified and does not claim final phase-6 completion. Frozen B4 results remain 0 pass / 2 fail / 3 ambiguous, distinct from the new diagnostic 5/5 comparisons. Native Linux /proc remains untested, and live-isolation ps/descendant/stage-routing limitations remain explicit.",
+      "listMarker": null,
+      "positionInSection": 6,
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1836,
+      "byteEnd": 2371,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 17 review — super-plan-ufz.14",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "coverage-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 6,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 6,
+        "byteStart": 1836,
+        "byteEnd": 2371,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Critical: none.\n",
+      "text": "Critical: none.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2383,
+      "byteEnd": 2399,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 17 review — super-plan-ufz.14",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 1,
+        "rawSection": "Issues",
+        "rawPositionInSection": 1,
+        "byteStart": 2383,
+        "byteEnd": 2399,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Important: none.\n",
+      "text": "Important: none.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 2399,
+      "byteEnd": 2416,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 17 review — super-plan-ufz.14",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 2,
+        "rawSection": "Issues",
+        "rawPositionInSection": 2,
+        "byteStart": 2399,
+        "byteEnd": 2416,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Minor: none.\n",
+      "text": "Minor: none.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 2416,
+      "byteEnd": 2429,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 17 review — super-plan-ufz.14",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 3,
+        "rawSection": "Issues",
+        "rawPositionInSection": 3,
+        "byteStart": 2416,
+        "byteEnd": 2429,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Parent-owned final phase-6 measurement, behavioral assessment, whole-epic reviews and human acceptance remain outstanding obligations explicitly documented by this task; they are not represented as completed task-local evidence.\n",
+      "text": "Parent-owned final phase-6 measurement, behavioral assessment, whole-epic reviews and human acceptance remain outstanding obligations explicitly documented by this task; they are not represented as completed task-local evidence.",
+      "listMarker": null,
+      "positionInSection": 4,
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 2430,
+      "byteEnd": 2659,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 17 review — super-plan-ufz.14",
+        "Issues"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "section": "Issues",
+        "sectionOrdinal": 3,
+        "positionInSection": 4,
+        "rawSection": "Issues",
+        "rawPositionInSection": 4,
+        "byteStart": 2430,
+        "byteEnd": 2659,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1836,
+      "byteEnd": 2371,
+      "roles": [
+        "coverage-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/1/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 2430,
+      "byteEnd": 2659,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/1/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "qualified-local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000001836",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage-qualification"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 1836,
+      "rawByteEnd": 2371,
+      "rawLineStart": 19,
+      "rawLineEnd": 19,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task 17 review — super-plan-ufz.14",
+            "Spec compliance"
+          ],
+          "byteStart": 149,
+          "byteEnd": 2372
+        }
+      ],
+      "rawText": "✅ verification.md preserves initial 20/23 outcomes, explicit base reproductions, separately landed profiler correction and focused six-suite reruns, linked-worktree packaging failure and exact-source standalone-clone pass. Its aggregate coverage is expressly qualified and does not claim final phase-6 completion. Frozen B4 results remain 0 pass / 2 fail / 3 ambiguous, distinct from the new diagnostic 5/5 comparisons. Native Linux /proc remains untested, and live-isolation ps/descendant/stage-routing limitations remain explicit.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "✅ verification.md preserves initial 20/23 outcomes, explicit base reproductions, separately landed profiler correction and focused six-suite reruns, linked-worktree packaging failure and exact-source standalone-clone pass. Its aggregate coverage is expressly qualified and does not claim final phase-6 completion. Frozen B4 results remain 0 pass / 2 fail / 3 ambiguous, distinct from the new diagnostic 5/5 comparisons. Native Linux /proc remains untested, and live-isolation ps/descendant/stage-routing limitations remain explicit.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/1/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000002430",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 2430,
+      "rawByteEnd": 2659,
+      "rawLineStart": 27,
+      "rawLineEnd": 27,
+      "originalSections": [
+        {
+          "section": "Issues",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task 17 review — super-plan-ufz.14",
+            "Issues"
+          ],
+          "byteStart": 2372,
+          "byteEnd": 2660
+        }
+      ],
+      "rawText": "Parent-owned final phase-6 measurement, behavioral assessment, whole-epic reviews and human acceptance remain outstanding obligations explicitly documented by this task; they are not represented as completed task-local evidence.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Parent-owned final phase-6 measurement, behavioral assessment, whole-epic reviews and human acceptance remain outstanding obligations explicitly documented by this task; they are not represented as completed task-local evidence.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/1/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/29-task-17-review.md",
+  "retainedSha256": "56154e06d2074a6b6a223b803fc2e7f269f48dcf3e53247ee2f584526753266d"
+}

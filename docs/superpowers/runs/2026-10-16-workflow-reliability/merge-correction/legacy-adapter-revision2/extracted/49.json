@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+  "artifact": "legacy-report-adapters-r1/49-task-27-report.md",
+  "kind": "task-report",
+  "verdict": "NEEDS_CONTEXT",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000000687",
+      "position": 1,
+      "key": "The task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.",
+      "text": "The task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched."
+    },
+    {
+      "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000004152",
+      "position": 1,
+      "key": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.",
+      "text": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000014979",
+      "position": 1,
+      "key": "Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.",
+      "text": "Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000015223",
+      "position": 1,
+      "key": "The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.",
+      "text": "The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-11/raw-byte-000017542",
+      "position": 1,
+      "key": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.",
+      "text": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017935",
+      "position": 1,
+      "key": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.",
+      "text": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed."
+    },
+    {
+      "section": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+      "position": 1,
+      "key": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+      "text": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed."
+    }
+  ]
+}

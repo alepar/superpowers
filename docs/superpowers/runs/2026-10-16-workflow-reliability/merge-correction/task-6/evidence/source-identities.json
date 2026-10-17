@@ -1,0 +1,55 @@
+{
+  "base": "7fc5a4ddb2d0913b769484935f79e6daccff966b",
+  "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "tree": "61a8b70d795acd816d348934bd55293264ed5587",
+  "files": {
+    "skills/super-auto/scripts/report-status": {
+      "gitBlob": "35fc188273b5ee7a3e9f71edd93da95d77e6c46f",
+      "sha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4"
+    },
+    "skills/super-code/coordinator.js": {
+      "gitBlob": "bcfbdba64f6fe1f4d5c4669fc323023f6560b94f",
+      "sha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b"
+    },
+    "skills/super-code/scripts/remove-task-worktree": {
+      "gitBlob": "57e75d495df760c172adeef7c84398e5936e3fd7",
+      "sha256": "05b4813af07ee1e0658457273cfaf2322bcf6c9ea8ad666c5a36ff97acab85dc"
+    },
+    "skills/super-code/scripts/run-digest": {
+      "gitBlob": "ce2d0bfd46accd3efae3fbb05d346476b8e1ed34",
+      "sha256": "18c1288eb46313bb1366dfd7d909daf193118d39082a9c98767e7d75d3336a2f"
+    },
+    "skills/super-code/scripts/run-profile.mjs": {
+      "gitBlob": "f477972798337732610255b73fc761b9ceb3a5d6",
+      "sha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a"
+    },
+    "skills/super-code/scripts/stop-run-processes": {
+      "gitBlob": "afb9d1ecd4c666207c3baebfec114b53debb9398",
+      "sha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499"
+    },
+    "skills/upstream-feedback/report-template.md": {
+      "gitBlob": "4a75fcdb6d7668ce7219a673b028174922123fd0",
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375"
+    },
+    "tests/super-auto/projection-output-r1.sh": {
+      "gitBlob": "1a5eda1691f7a615eb835d9d3efed5a68fa97d19",
+      "sha256": "514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff"
+    },
+    "tests/super-code/replay-harness.mjs": {
+      "gitBlob": "ccdbacae6b7ed7eeb8ee4d44928fc6bd29c0821c",
+      "sha256": "8e540e28b28a2b7a80f8921940e871408464c3d0c0936555a3075ac29a04e06f"
+    },
+    "tests/super-code/test-setup-cleanup.sh": {
+      "gitBlob": "88aac8449705b38a033ef106a0d01d7b6f98405e",
+      "sha256": "85dbbeab6b281e3240607de672aa2fd4c591ec6e0277d68a8dbf2c945e398e12"
+    },
+    "tests/super-code/test-stop-run-processes-inventory.sh": {
+      "gitBlob": "eeeae4e4054269b16c3e0e57f6de38c089d7705c",
+      "sha256": "4b7b5f17f8bef2af08f991e26a7759d3d8f1a9e63a15db164cc070b882e6ea7a"
+    },
+    "tests/super-code/test-verification-completion-metrics.sh": {
+      "gitBlob": "b6019685d161d6f2b19ce21da82f94d69f3ecd0b",
+      "sha256": "b9962101de239173f7bc412ad82e14c980a6d4fb0dc21f75fb8d140dce98ce5f"
+    }
+  }
+}

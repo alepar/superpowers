@@ -1,0 +1,7 @@
+## Metadata
+
+Plugin: not established. Run: 2 task landings (bead-X and bead-Y); first-parent range contains 3 merge commits; date and duration not established.
+
+Evidence qualification: The ledger has successful `Merge:` lines for bead-X and bead-Y and a `baseAbsorbed` record for the updated-main absorption at commit 3333333. The first-parent range's three commits therefore reconcile: two task landings plus one base absorption. The complete task-ID reconciliation independently identifies bead-X and bead-Y as the only task landings. No ledger completeness finding is supported; the raw count of 3 first-parent merge commits versus 2 successful task `Merge:` lines is explained by the separately recorded `baseAbsorbed` commit, which contributes zero task landings. All retained ledger bytes and Git identities were verified, and no missing task or unknown source remains. This is a hand-authored evidence packet for a textual decision test, not evidence of actual run performance. No profiling was requested, so no performance or timing claim is established.
+
+Read scope and limits: Read the complete supplied `baseline-context.md` (feedback skill, report template, and analyst prompt) and `case.txt` only. Did not read protocol, rubric, or other responses; inspect repositories or external sources; or perform development, Git, tracker, Herdr, process, network, or other mutations. This response is limited to the supplied evidence and does not grade the case or propose guidance edits.

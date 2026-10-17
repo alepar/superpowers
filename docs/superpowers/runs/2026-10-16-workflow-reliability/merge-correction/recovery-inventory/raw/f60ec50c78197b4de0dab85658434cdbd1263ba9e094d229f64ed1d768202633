@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending.",
+      "location": "skills/super-auto/scripts/report-status:206",
+      "category": "api-contract",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "This is a new internal CLI contract. SKILL.md:390 assigns recovery of null/unavailable whole-epic reviews to the orchestrator, while SKILL.md:465 and run-state.md:214 require collection success before later invocation or cleanup. report-status:226 requests \"recover whole-epic review\" for a settled null/unavailable result, but line 206 rejects any null-to-file reviewPath update when old.settled is true; no-argument replay retains null and line 229 emits \"null review has recoverable bundle artifacts; reconcile returned result\" even after extracting/archiving the recovered report. Independent frozen-source probe /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery.py first settles contract-probe with --review none --verdict UNAVAILABLE (exit 3), creates a valid final-review-contract-probe.md, then retries --collect with that actual path (exit 3 identity-change rejection); replay still exits 3 with the null reconciliation gap. Collecting identical valid report bytes directly on a fresh run is the positive control (exit 0). Receipts: /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery-receipt.json. A subsequent fresh invocation with a valid ready report also leaves the original collection pending (fresh-recovery.py and fresh-recovery-receipt.json). Thus neither documented CLI reconciliation/replay nor a later report settles the earlier gap; a supported explicit recovery/association path is missing, without any need to erase the original unavailable-result history."
+    }
+  ]
+}

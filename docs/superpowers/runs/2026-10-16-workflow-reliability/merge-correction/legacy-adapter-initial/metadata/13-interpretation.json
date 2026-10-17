@@ -1,0 +1,400 @@
+{
+  "version": 1,
+  "ordinal": 13,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+  "originalArtifact": "task-report-history-r1/raw/task-12-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-12-review.md",
+  "rawSha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+  "rawByteCount": 4332,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 39,
+    "byteStart": 0,
+    "byteEnd": 4332,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/12",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/13-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/0",
+      "roles": [
+        "review-scope"
+      ],
+      "span": [
+        158,
+        535
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Separate task .12 recovery-consumer integration is outside this review."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/1",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        1698,
+        1953
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Same-pack fresh-agent after-evaluation pending, deterministic success not live evidence."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/2",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        1965,
+        1981
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/3",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        1981,
+        1998
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Important:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/4",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        1998,
+        2011
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Minor:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/12/interpretedPassages/5",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        2030,
+        2599
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Reviewer read reported logs and ran no tests."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-13-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "review-scope"
+      ],
+      "interpretation": "Separate task .12 recovery-consumer integration is outside this review.",
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 158,
+      "byteEnd": 535,
+      "rawText": "✅ Current bead and comments read before the frozen brief; no comments or amendments. The frozen Task 12 scope and current bead requirements are compatible. Parent explicitly authorizes the minimal ledger-digest discriminator extension. Task .5 evidence and task .4 Recovery interfaces are consumed; the separate task .12 recovery-consumer integration is outside this review.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Spec compliance",
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Spec compliance"
+          ],
+          "sectionByteStart": 138,
+          "sectionByteEnd": 1954,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 21
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-13-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Same-pack fresh-agent after-evaluation pending, deterministic success not live evidence.",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1698,
+      "byteEnd": 1953,
+      "rawText": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Spec compliance",
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Spec compliance"
+          ],
+          "sectionByteStart": 138,
+          "sectionByteEnd": 1954,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 1561
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-13-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Critical:none.",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1965,
+      "byteEnd": 1981,
+      "rawText": "Critical: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Issues"
+          ],
+          "sectionByteStart": 1954,
+          "sectionByteEnd": 2012,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 12
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-13-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Important:none.",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1981,
+      "byteEnd": 1998,
+      "rawText": "Important: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Issues"
+          ],
+          "sectionByteStart": 1954,
+          "sectionByteEnd": 2012,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 28
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-13-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Minor:none.",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 1998,
+      "byteEnd": 2011,
+      "rawText": "Minor: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Issues"
+          ],
+          "sectionByteStart": 1954,
+          "sectionByteEnd": 2012,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 45
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-13-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "Reviewer read reported logs and ran no tests.",
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 2030,
+      "byteEnd": 2599,
+      "rawText": "The report provides exact isolated-environment commands for node tests/super-code/replay-harness.mjs, bash tests/super-code/test-dispatch-text.sh and bash tests/super-code/test-run-digest.sh, final exit 0 and useful RED/GREEN output. Retained final logs were read: replay ends with 2062 passed, 0 failed; dispatch and digest end with all tests passed. These plausibly cover routing, rejection, persistence, closure/resume and ordinary-dispatch transport. No tests were run by this reviewer. The report records no leaked processes and an ownership-scoped process check.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Test evidence",
+          "headingRaw": "## Test evidence\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Test evidence"
+          ],
+          "sectionByteStart": 2012,
+          "sectionByteEnd": 2948,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 19
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1698,
+      "byteEnd": 1953,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/12/interpretedPassages/1"
+      ],
+      "interpretation": "Same-pack fresh-agent after-evaluation pending, deterministic success not live evidence.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Issues:none and pending fresh-agent after-evaluation are both represented; complete for asserted finding/concern declarations in this review, with scoped .12 integration exclusion.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "Critical/Important/Minor implementation review issues only; parent after-evaluation still pending.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001698",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 1698,
+      "rawByteEnd": 1953,
+      "rawLineStart": 17,
+      "rawLineEnd": 17,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.13",
+            "Spec compliance"
+          ],
+          "byteStart": 138,
+          "byteEnd": 1954
+        }
+      ],
+      "rawText": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/12/interpretedPassages/1"
+      ],
+      "interpretation": "Same-pack fresh-agent after-evaluation pending, deterministic success not live evidence."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/13-task-12-review.md",
+  "retainedSha256": "2a85de1a45b5ed50739ad63e8c065f1ee31fd862857febe98d5517984ea4b204"
+}

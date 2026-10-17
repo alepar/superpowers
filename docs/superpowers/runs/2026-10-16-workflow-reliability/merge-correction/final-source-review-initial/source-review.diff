@@ -1,0 +1,2034 @@
+# Source review source-review
+Base 832b051c870ae5c69adfa7f14d770292ab6c1a81
+Head 7b18b0c26b9f19d531c558e112d490743901a13b
+
+ skills/super-code/assembler-prompt.md              |  31 +-
+ skills/super-code/scripts/dispatch-text.mjs        | 389 +++++++++++++++++++--
+ skills/super-code/scripts/report-verdict           | 115 ++++++
+ skills/super-roast/SKILL.md                        |   9 +-
+ skills/super-roast/judge-seat-prompts.md           |   6 +
+ skills/super-roast/scout-prompts-pr.md             |   6 +
+ skills/super-roast/scripts/assemble-args.mjs       |  24 +-
+ tests/super-auto/generated-review-inputs-r1.sh     | 120 +++++++
+ tests/super-auto/selection-recovery-correction.mjs |  84 +++++
+ tests/super-code/test-dispatch-text.sh             | 214 ++++++++++--
+ tests/super-code/test-report-verdict.sh            | 201 ++++++++++-
+ tests/super-roast/test-assemble-args.sh            |  40 +++
+ 12 files changed, 1169 insertions(+), 70 deletions(-)
+
+diff --git a/skills/super-code/assembler-prompt.md b/skills/super-code/assembler-prompt.md
+index 28d5638c..82837459 100644
+--- a/skills/super-code/assembler-prompt.md
++++ b/skills/super-code/assembler-prompt.md
+@@ -5,35 +5,56 @@ the bracketed parameters (the `assemblePrompt` builder in coordinator.js). Model
+ Everything below the line is addressed to the dispatched agent.
+ 
+ ---
+ 
+ The assembler gathers inputs into one directory with tool calls and judges nothing: no verdicts, no
+ severity, no summaries beyond the extraction each section defines. Write only inside [OUT_DIR];
+ never edit another file, never commit, and don't spawn subagents.
+ 
+ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECTIONS] (one
+ `name: definition` line per digest section), [CLUSTERS] (yes or no), [THRESHOLD] (tokens),
+-[ASSEMBLED_SIZE] (the size script's command), [LEDGER], [WORKSPACE], [SPEC_PATHS].
++[ASSEMBLED_SIZE] (the size script's command), [REVIEW_INPUTS] (the selection command), [LEDGER], [WORKSPACE], [SPEC_PATHS].
+ 
+-1. `cd [WORKTREE]`. Resolve [BASE] if it is a command. Empty the instance directory first:
++1. `cd [WORKTREE]`. Review consumers (`final-review`, `roast-code`) receive captured commit
++   identities as [BASE] and [HEAD]; verify both with `git rev-parse --verify <sha>^{commit}`.
++   Other consumers resolve command-valued inputs once before collecting their data.
++   Empty the instance directory first:
+    `rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices`.
+-2. `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
++2. For `final-review` and `roast-code`, run `[REVIEW_INPUTS]` exactly once. It reads collection
++   claims and payload hashes from captured Git, writes selected `diffstat.txt`, `slices/`,
++   `review-inputs.json` (changed paths and path-to-slice mapping) and
++   `generated-input-provenance.md`. These are the authoritative selected inputs for steps 3–5.
++   On any nonzero exit, preserve those outputs and relay `exit: 2`, `fits: unavailable`,
++   `clusterFits: []`, `clusters: 0`, `dir: [OUT_DIR]`, with `cause` prefixed
++   `review input selection:` and the command's explicit evidence gap. If the sidecar has
++   `status:unavailable`, `sourceAvailable:true`, `wholeRangeReady:false`, zero omissions and
++   the matching full base/head, start the cause exactly `review input selection: provenance
++   unavailable; captured source available` (one line), then append its gaps. This permits a
++   separately written bounded review; the assembly and omission authority remain unavailable.
++   Other selection failures keep the generic prefix and prohibit fallback. Stop here; preserve
++   every failed output. A directory name or copied historical run record grants no authority.
++   For other consumers, run `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
+ 3. Write `[OUT_DIR]/digest.md` with one `## <name>` heading per [SECTIONS] line, in that order, each
+    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has
+    nothing gets the line `none`.
+-4. Slices: one file per changed source file, `git diff [BASE]..[HEAD] -- <file>` written to
++4. Review consumers use only the helper's `review-inputs.json` changed list and slices mapping;
++   selection excludes only exact hash-verified manifest payloads, retaining collection metadata,
++   final/cluster reports, findings and unclaimed files. Do not reslice or re-enumerate the full range.
++   For other consumers, slices are one file per changed source file, `git diff [BASE]..[HEAD] -- <file>` written to
+    `[OUT_DIR]/slices/<path with each / replaced by __>.diff`.
++   Open source with `git show [HEAD]:<path>` so a concurrent caller advance cannot change it.
+ 5. When [CLUSTERS] is yes, group the changed files by import and call edges between them (an edge
+    when one changed file imports or calls a symbol another defines), else by top-level directory,
+    never by a count of files. Write `[OUT_DIR]/clusters.json`:
+    `{"changed": ["<repo path>", …], "clusters": [{"name": "<name>", "files": ["<repo path>", …], "slices": ["slices/<file>", …]}]}`
+-   with every changed file in exactly one cluster and each cluster's slices the ones for its files.
++   with every selected changed file in exactly one cluster and each cluster's slices taken from its
++   `review-inputs.json` mapping for review consumers (step 4 for other consumers).
+    Each `name` is a slug: lowercase letters, digits and `-` only (e.g. `run-marker`, `hooks`), unique in the file.
+ 6. Run `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD]`. When [CLUSTERS] is yes and it prints
+    `fits: no`, re-cluster once by subdirectory each cluster printed as `cluster-fits: <name> no`
+    (update `clusters.json`), then run
+    `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD] --clusters-required`.
+ 7. Relay the LAST run of the size script unchanged: `exit` is its exit code (any exit code, including
+    3 and 4, is relayed, not fixed), `fits` its `fits:` line verbatim, `clusterFits` its
+    `cluster-fits:` lines verbatim (an empty list when it printed none), `clusters` the number of
+    clusters in `clusters.json` (0 when none), `dir` is [OUT_DIR]. Set `cause` only when you could not
+    finish a step, naming it.
+diff --git a/skills/super-code/scripts/dispatch-text.mjs b/skills/super-code/scripts/dispatch-text.mjs
+index 7683faed..1ade3ae0 100644
+--- a/skills/super-code/scripts/dispatch-text.mjs
++++ b/skills/super-code/scripts/dispatch-text.mjs
+@@ -3,61 +3,76 @@
+ // coordinator.js; this loads that script with stubbed runtime hooks and calls them, so the two
+ // paths never drift.
+ // Invoked through ./dispatch-text (bash wrapper, checks for node). Usage: --help.
+ // Exit codes: 0 ok, 2 bad input, 3 coordinator.js could not be loaded.
+ //
+ // Loading: coordinator.js is a Workflow script body (top-level await, no exports). Its prompt
+ // builders are function declarations, hoisted over the whole body, and the state they read is
+ // declared before the round loop. So a `return` of the builders goes just before the first top-level
+ // `while (true) {`; the rest of the body stays in place, unreachable. Everything before the return runs
+ // against an `agent` stub that returns null (the Resume ledger read degrades as on a null dispatch).
+-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+-import { dirname, join, resolve } from 'node:path'
++import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync } from 'node:fs'
++import { dirname, join, resolve, posix } from 'node:path'
++import { execFileSync } from 'node:child_process'
++import { createHash } from 'node:crypto'
+ import { fileURLToPath } from 'node:url'
+ 
+ const here = dirname(fileURLToPath(import.meta.url))
+ const codeSkill = resolve(here, '..')
+ const skillsRoot = resolve(codeSkill, '..')
+ 
+ const USAGE = `usage: dispatch-text --ledger <progress.md> [--stdout | --out <file>] <kind> [options]
+ 
+ Writes the dispatch text for one agent to <ledger dir>/dispatch/<label>.md (or --out) and prints
+ its path; spawn the agent with "Read <path> and follow it exactly." --stdout prints the text.
+ Run, epic, branch, integration worktree and mergeCheck come from the ledger's last Launch: line.
+ 
+ kinds and options:
+   implement         --id ID --n N [--parents P1,P2] [--reentry] [--recut]
+-  review            --id ID --n N --base SHA
++  review            --id ID --n N --base SHA --head SHA [--result-file F]
++                    (verification-only: the implementer JSON RESULT supplies completionKind,
++                    sourceTree, evidence and requiredLiveChecks)
++  verification-close --id ID --result-file F (the accepted verification basis)
+   fix               --id ID --n N --base SHA --kind review|seam|check --finding-file F
+   seam-review       --id ID --n N --base SHA --merge-base SHA --head SHA --overlap F1,F2
+                     (an overlap entry "consumes <id>" names a consumed blocker, not a file)
+-  check-fix-review  --id ID --n N --pre-fix-head SHA --errors-file F
++  check-fix-review  --id ID --n N --pre-fix-head SHA --head SHA --errors-file F
+   merge             --id ID --n N --base SHA [--stacked] [--seam-cleared] [--review-bead ID]
+                     [--resolved-bead ID] [--consumes ID1,ID2]
+   plan              --ids ID1,ID2 [--mode ready|rest|refill] [--reentry-ids ID1,ID2]
+   triage            --id ID --blocker BEAD
++  check-evidence    --results-file F
++                    (JSON array of {dispatch, result} replies; outputs the shared Workflow
++                    classification, retaining source/check provenance and evidence gaps)
+   assemble          --consumer final-review|roast-code|history|assess --instance I
+-                    [--threshold N] [--base SHA] [--head REF] [--spec P1,P2]
+-  final-review      --mode single|cluster|seam|stub [--dir D] [--capped] [--sweep F|deferred]
++                    [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
++  review-inputs     --base SHA --head SHA --out-dir DIR
++                    (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
++  bounded-review   --base SHA --head SHA --selection FILE --draft FILE --coverage FILE --out FILE
++                    (preserve bounded draft and coverage; write a forced incomplete final report)
++  bind-review-source --read | --base SHA --head SHA [--artifact PATH]
++                    (persist immutable invocation source; refuse existing artifact writes)
++  final-review      --mode single|cluster|seam|stub --base SHA --head SHA [--dir D] [--capped] [--sweep F|deferred]
+                     [--metrics F] [--cluster N --name NAME] [--reviewed N1,N2|none] [--unreviewed F]
+                     (single: --sweep/--metrics default to the ledger's last Sweep: line and last four
+                     Metrics: lines; cluster needs --dir --cluster --name; seam needs --dir --reviewed,
+                     the clusters whose review returned a verdict; stub needs --reviewed --unreviewed;
+                     --unreviewed F holds one unreviewed entry per line)
+ 
+ common options:
+   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
+   --test-paths P1,P2   config.testPaths, when the run set one
+-  --run-tag T          names the assembled-input directories (default: the Launch: line's runTag, else the epic)
++  --run-tag T          groups the enclosing run (default: the Launch: line's runTag, else the epic)
++  --invocation-id I     must match the persisted Launch invocationId for review output
+   --epic, --branch, --worktree, --merge-check   override the Launch: line`
+ 
+-const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help'])
++const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help', 'read'])
+ function fail(msg) { process.stderr.write(`dispatch-text: ${msg}\n`); process.exit(2) }
+ function parse(argv) {
+   const o = { _: [] }
+   for (let i = 0; i < argv.length; i++) {
+     const a = argv[i]
+     if (!a.startsWith('--')) { o._.push(a); continue }
+     const k = a.slice(2)
+     if (FLAGS.has(k)) { o[k] = true; continue }
+     if (i + 1 >= argv.length) fail(`${a} needs a value`)
+     o[k] = argv[++i]
+@@ -68,107 +83,406 @@ const list = s => (s ? String(s).split(',').map(x => x.trim()).filter(Boolean) :
+ 
+ // `Launch: mechanism ordinary-subagents · epic <id> · branch <b> · integrationWorktree <p> · … ·
+ // mergeCheck <cmd or none>`; the Workflow form `Launch: args {json}` is read too.
+ function launchFrom(ledgerText) {
+   const lines = ledgerText.split('\n').filter(l => l.trim().startsWith('Launch:'))
+   if (!lines.length) return {}
+   const line = lines[lines.length - 1].trim().replace(/^Launch:\s*/, '')
+   if (line.startsWith('args ')) {
+     try {
+       const a = JSON.parse(line.slice(5))
+-      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths }
++      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, invocationId: a.invocationId, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths, reviewBase: a.reviewBase, reviewHead: a.reviewHead }
+     } catch { return {} }
+   }
+   const f = {}
+   for (const part of line.split(' · ')) {
+     const m = part.match(/^(\S+)\s+(.*)$/)
+     if (m) f[m[1]] = m[2].trim()
+   }
+-  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, mergeCheck: f.mergeCheck, sweep: f.sweep }
++  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, invocationId: f.invocationId, mergeCheck: f.mergeCheck, sweep: f.sweep, reviewBase: f.reviewBase, reviewHead: f.reviewHead }
+ }
+ 
+ // The ledger's last `Sweep: ` line (text after the prefix) and the last four `Metrics: ` lines (the
+ // Workflow appends exactly four, in one batch), as Finish passes them to the final-review builder.
+ const lastSweep = t => { const m = t.split('\n').filter(l => l.startsWith('Sweep: ')); return m.length ? m[m.length - 1].slice(7).trim() : null }
+ const lastMetrics = t => t.split('\n').filter(l => l.startsWith('Metrics: ')).slice(-4)
+ 
+ function loadBuilders(cfg) {
+   let src
+   try { src = readFileSync(join(codeSkill, 'coordinator.js'), 'utf8') } catch (e) { console.error(`dispatch-text: cannot read coordinator.js: ${e.message}`); process.exit(3) }
+-  const cut = src.search(/^while \(true\) \{$/m)
+-  if (cut < 0) { console.error('dispatch-text: coordinator.js has no top-level `while (true) {` round loop to cut at'); process.exit(3) }
+-  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand }\n`
++  // Rendering uses initialized declarations, then returns before operational Resume/Launch.
++  // Keep the whole source for hoisted real builders; no public startup bypass or fake identity.
++  const cut = src.search(/^\/\/ Resume from the ledger, read once before the round loop:/m)
++  if (cut < 0) { console.error('dispatch-text: coordinator.js has no operational Resume boundary'); process.exit(3) }
++  const ret = `return { SWEEP_DEFERRED, planPrompt, implementPrompt, taskReviewPrompt, fixPrompt, seamReviewPrompt, checkFixReviewPrompt, finalReviewPrompt, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt, mergePrompt, triagePrompt, assemblePrompt, reviewBeadOf, mergeCheckCommand, recordCheckEvidence, classifyCheckEvidence, verificationClosePrompt, verificationProblem }\n`
+   const body = (src.slice(0, cut) + ret + src.slice(cut)).replace(/^export const meta/m, 'const meta')
+   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor
+   const fn = new AsyncFunction('args', 'agent', 'log', 'phase', 'pipeline', 'parallel', 'budget', 'workflow', body)
+   const noop = () => {}
+-  return fn(cfg, async () => null, noop, noop, async () => [], async () => [], undefined, undefined)
++  const operational = () => { throw new Error('dispatch-text: builder rendering attempted an operational dispatch') }
++  return fn(cfg, operational, noop, operational, operational, operational, undefined, undefined)
++}
++
++// Mechanical captured-Git selection only. This path exits before loading Workflow builders.
++// Collection metadata remains the authority; directory names alone never grant an exemption.
++function reviewInputs(repo, base, head, out) {
++  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: repo, maxBuffer: 64 * 1024 * 1024 })
++  const hash = bytes => createHash('sha256').update(bytes).digest('hex')
++  const safe = p => typeof p === 'string' && p !== '' && !p.includes('\\') && !p.includes('\0') && !posix.isAbsolute(p) && p.split('/').every(s => s && s !== '.' && s !== '..')
++  const idOK = id => typeof id === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id)
++  const gaps = [], gap = text => { if (!gaps.includes(text)) gaps.push(text) }
++  for (const sha of [base, head]) {
++    if (!/^[0-9a-f]{40,64}$/.test(String(sha))) fail('review-inputs needs full captured --base and --head commits')
++    try { if (git('rev-parse', '--verify', sha + '^{commit}').toString().trim() !== sha) throw Error() }
++    catch { fail('review-inputs cannot verify captured commit ' + sha) }
++  }
++  try {
++    const entries = readdirSync(out)
++    const emptySlices = entries.length === 1 && entries[0] === 'slices' && lstatSync(join(out, 'slices')).isDirectory() && !lstatSync(join(out, 'slices')).isSymbolicLink() && readdirSync(join(out, 'slices')).length === 0
++    if (lstatSync(out).isSymbolicLink() || (entries.length && !emptySlices)) fail('review-inputs refuses existing partial output; preserve it: ' + out)
++  } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
++  mkdirSync(out, { recursive: true })
++  const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).toString().split('\0').filter(Boolean)
++  function snapshot(revision) {
++    const tree = new Map(git('ls-tree', '-r', '-z', revision).toString().split('\0').filter(Boolean).map(entry => {
++      const tab = entry.indexOf('\t'), [mode, type, oid] = entry.slice(0, tab).split(' ')
++      return [entry.slice(tab + 1), { mode, type, oid }]
++    }))
++    const blob = p => {
++      const entry = tree.get(p)
++      if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
++      return git('cat-file', 'blob', entry.oid)
++    }
++    const archives = [], claims = new Map()
++    for (const run of tree.keys()) {
++      if (posix.basename(run) !== 'run.md') continue
++      let text
++      try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
++      const latest = new Map(), identities = new Map(), savedHashes = new Map(), history = new Map()
++      let approvals = false
++      for (const [lineNumber, line] of text.split('\n').entries()) {
++        if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
++        if (!line.startsWith('- review-collection')) continue
++        try {
++          if (!approvals || !line.startsWith('- review-collection · ')) throw Error('record outside approvals or invalid prefix')
++          const r = JSON.parse(line.slice('- review-collection · '.length))
++          if (!r || !idOK(r.invocationId) || typeof r.workspace !== 'string' || !posix.isAbsolute(r.workspace) ||
++              !(r.reviewPath === null || (typeof r.reviewPath === 'string' && posix.isAbsolute(r.reviewPath))) ||
++              typeof r.review !== 'string' || !r.review.trim() || typeof r.settled !== 'boolean' ||
++              !Array.isArray(r.required) || !r.required.every(safe) ||
++              !(r.complete === undefined || typeof r.complete === 'boolean') ||
++              !(r.gaps === undefined || (Array.isArray(r.gaps) && r.gaps.every(g => typeof g === 'string' && g))) ||
++              !(r.files === undefined || (Array.isArray(r.files) && r.files.every(f => f && safe(f.path) && /^[a-f0-9]{64}$/.test(f.sha256))))) throw Error('invalid collection fields')
++          if (r.complete && (!r.settled || !Array.isArray(r.gaps) || r.gaps.length ||
++              (r.reviewPath === null ? r.review !== 'no work landed' : !r.files?.some(f => f.path === 'final-review-' + r.invocationId + '.md')))) throw Error('invalid complete collection fields')
++          const identity = JSON.stringify([r.workspace, r.required])
++          const old = identities.get(r.invocationId), previous = latest.get(r.invocationId)?.record
++          let recovered = false
++          // Match the collector's preserved settled-null transition, including mandatory
++          // markers on every subsequent snapshot. Hash the exact parsed object, not line metadata.
++          if (r.recovery !== undefined || previous?.recovery !== undefined || (previous?.settled && previous.reviewPath === null && r.reviewPath !== null)) {
++            const recovery = r.recovery, original = history.get(recovery?.recordSha256)
++            recovered = !!(recovery && recovery.kind === 'settled-null' && original?.settled && original.reviewPath === null &&
++              original.review === recovery.review && original.invocationId === r.invocationId &&
++              original.workspace === r.workspace && JSON.stringify(original.required) === JSON.stringify(r.required) &&
++              r.settled && r.reviewPath === posix.join(r.workspace, 'final-review-' + r.invocationId + '.md') &&
++              (hash(JSON.stringify(previous)) === recovery.recordSha256 || (previous?.reviewPath === r.reviewPath && previous.review === r.review && JSON.stringify(previous.recovery) === JSON.stringify(recovery))))
++            if (!recovered) throw Error('invalid settled-null recovery provenance')
++          }
++          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath && !recovered))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
++          identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
++          for (const f of r.files || []) {
++            const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
++            if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
++            savedHashes.set(key, f.sha256)
++          }
++          latest.set(r.invocationId, { ...r, line: lineNumber + 1, record: r })
++          history.set(hash(JSON.stringify(r)), r)
++        } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
++      }
++      for (const r of latest.values()) {
++        const prefix = 'final-review-' + r.invocationId, assembled = 'assembled/' + prefix + '-final/'
++        const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
++        const files = new Map((r.files || []).map(f => [f.path, f.sha256]))
++        const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
++        if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
++        if (r.reviewPath === null) {
++          if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
++        } else {
++          if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) gap(context + ': incomplete claimed final report')
++          for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
++        }
++        if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
++        const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
++        if (inputs.length) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
++        const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
++        if (clusters.length || files.has(assembled + 'clusters.json')) {
++          try {
++            const m = JSON.parse(blob(posix.join(archive, assembled + 'clusters.json')).toString())
++            if (!files.has(assembled + 'clusters.json') || !Array.isArray(m.clusters) || (clusters.length && !m.clusters.length)) throw Error('missing manifest')
++            for (const [n, c] of m.clusters.entries()) {
++              if ((clusters.length && !files.has(prefix + '.cluster-' + (n + 1) + '.md')) || !Array.isArray(c.slices)) throw Error('missing cluster report or slices')
++              for (const slice of c.slices) if (!safe(slice) || !files.has(assembled + slice)) throw Error('missing claimed cluster slice')
++            }
++          } catch (e) { gap(context + ': incomplete split bundle: ' + e.message) }
++        }
++        for (const [relative, sha256] of files) {
++          const p = posix.join(archive, relative)
++          try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
++          catch (e) { gap(context + ': ' + e.message) }
++          if (relative.startsWith(assembled) || relative === prefix + '.md.diff') {
++            const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
++            if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
++            claims.set(p, claim)
++          }
++        }
++        archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
++      }
++    }
++    return { tree, blob, archives, claims }
++  }
++  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
++  try {
++    const before = snapshot(base), after = snapshot(head)
++    archives = after.archives
++    // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
++    for (const [p, claim] of before.claims) {
++      try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
++      catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }
++    }
++    if (!gaps.length) {
++      omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
++      selected = changed.filter(p => !after.claims.has(p))
++    }
++    sourceAvailable = true
++    // With zero omissions selected is the full captured range; a redundant long
++    // path argv can exceed ARG_MAX even though the Git source is readable.
++    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, ...(omitted.length ? ['--', ...selected] : [])) : '')
++    if (!gaps.length) {
++      mkdirSync(join(out, 'slices'), { recursive: true })
++      for (const [n, p] of selected.entries()) {
++        // Ordinals avoid collisions and platform filename limits for arbitrary Git paths.
++        const slice = 'slices/' + String(n + 1).padStart(6, '0') + '.diff'
++        writeFileSync(join(out, slice), git('diff', '--no-renames', base + '..' + head, '--', p))
++        slices.push({ path: p, slice })
++      }
++    }
++  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
++  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
++  writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
++  writeFileSync(join(out, 'generated-input-provenance.md'), [
++    '## Generated-input provenance',
++    'Captured range: ' + base + '..' + head,
++    'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',
++    'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
++    ...omitted.map(o => '- ' + JSON.stringify(o)),
++    ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
++    'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
++  ].join('\n') + '\n')
++  console.log(JSON.stringify({ status: result.status, sourceAvailable, wholeRangeReady: false, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
++  process.exit(gaps.length ? 3 : 0)
+ }
+ 
+ const o = parse(process.argv.slice(2))
+ if (o.help || !o._.length) { console.log(USAGE); process.exit(o.help ? 0 : 2) }
+ const kind = o._[0]
+ if (!o.ledger) fail('--ledger is required')
+ let ledgerText = ''
+ try { ledgerText = readFileSync(o.ledger, 'utf8') } catch (e) { fail(`cannot read ledger ${o.ledger}: ${e.message}`) }
+ const L = launchFrom(ledgerText)
+ const epic = o.epic || L.epic, branch = o.branch || L.branch, worktree = o.worktree || L.worktree
+ if (!epic || !branch || !worktree) fail('epic, branch and integration worktree are needed: no Launch: line names them, and no --epic/--branch/--worktree was given')
+ const mergeCheck = o['merge-check'] ?? L.mergeCheck
+ const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
+ const ws = dirname(resolve(o.ledger))
+ const runTag = o['run-tag'] || L.runTag || epic
++const invocationId = L.invocationId
++const reviewOutput = kind === 'bounded-review' || kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
++if (reviewOutput && (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId))) fail('review output needs a persisted filesystem-safe Launch invocationId')
++if (o['invocation-id'] !== undefined && o['invocation-id'] !== invocationId) fail('--invocation-id must match the persisted Launch invocationId')
++// Source facts use the existing compact Recovery transport (Launch lines are elided by digest).
++const fullCommit = v => typeof v === 'string' && /^[0-9a-f]{40,64}$/.test(v)
++let boundSource = null
++if (reviewOutput) for (const line of ledgerText.split('\n')) {
++  if (line.startsWith('Launch:')) {
++    const launch = launchFrom(line)
++    if (launch.invocationId !== invocationId || (!launch.reviewBase && !launch.reviewHead)) continue
++    if (!fullCommit(launch.reviewBase) || !fullCommit(launch.reviewHead)) fail('invalid captured source in persisted Launch')
++    if (boundSource && (boundSource.base !== launch.reviewBase || boundSource.head !== launch.reviewHead)) fail('conflicting persisted invocation source bindings; preserve bundle')
++    boundSource = { invocationId, base: launch.reviewBase, head: launch.reviewHead }
++    continue
++  }
++  if (!line.startsWith('Recovery:')) continue
++  let r
++  try { r = JSON.parse(line.slice(9)) } catch { continue }
++  const source = r.data?.reviewSource
++  if (source?.invocationId !== invocationId && r.id !== 'review-source:' + invocationId) continue
++  if (r.version !== 1 || r.kind !== 'deferred' || r.operation !== 'record' || !source || source.invocationId !== invocationId || !fullCommit(source.base) || !fullCommit(source.head)) fail('invalid persisted invocation source binding; preserve bundle as an evidence gap')
++  if (boundSource && (boundSource.base !== source.base || boundSource.head !== source.head)) fail('conflicting persisted invocation source bindings; preserve bundle')
++  boundSource = source
++}
++if (reviewOutput) {
++  if (boundSource && ((o.base && o.base !== boundSource.base) || (o.head && o.head !== boundSource.head))) fail('invocation source mismatch; preserve existing partial bundle and use a fresh invocation identity for new source')
++  if (kind === 'bind-review-source') {
++    if (o.read) {
++      if (!boundSource) fail('missing persisted invocation source binding')
++      console.log(JSON.stringify(boundSource))
++      process.exit(0)
++    }
++    if (!fullCommit(o.base) || !fullCommit(o.head)) fail('bind-review-source needs --base and --head as full captured commits (or --read)')
++    if (!boundSource) {
++      const prefix = 'final-review-' + invocationId
++      const artifacts = readdirSync(ws).some(n => n === prefix + '.md' || n.startsWith(prefix + '.md.') || n.startsWith(prefix + '.cluster-'))
++      let assembled = false
++      try { assembled = readdirSync(join(ws, 'assembled')).some(n => n.startsWith(prefix + '-')) } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
++      if (artifacts || assembled) fail('missing invocation source binding for existing partial bundle; preserve evidence gap')
++      boundSource = { invocationId, base: o.base, head: o.head }
++      const record = { version: 1, id: 'review-source:' + invocationId, kind: 'deferred', operation: 'record', reason: 'immutable invocation review source', evidence: [resolve(o.ledger)], data: { reviewSource: boundSource } }
++      try { writeFileSync(o.ledger, '\nRecovery: ' + JSON.stringify(record) + '\n', { flag: 'a' }) } catch (e) { fail('source binding persistence unavailable: ' + e.message) }
++    }
++    if (o.artifact) {
++      for (const path of [o.artifact, o.artifact + '.diff']) {
++        try { lstatSync(path); fail('partial artifact already exists; preserve it without rewriting: ' + path) } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
++      }
++    }
++    console.log(JSON.stringify(boundSource))
++    process.exit(0)
++  }
++  if (!boundSource && (!fullCommit(o.base) || !fullCommit(o.head))) fail('missing invocation source binding or full captured --base and --head; bind before artifact writes')
++}
++if (kind === 'review-inputs') {
++  if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
++  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))
++}
++// A bounded artifact is a new report, never a rewrite of an unavailable invocation.
++// The writer rechecks captured source and inventory; sidecar claims alone grant no authority.
++if (kind === 'bounded-review') {
++  if (!boundSource || !['selection', 'draft', 'coverage', 'out'].every(k => o[k])) fail('bounded-review needs --selection, --draft, --coverage and --out plus persisted source')
++  const { base, head } = boundSource
++  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: worktree, maxBuffer: 64 * 1024 * 1024 }).toString()
++  try {
++    for (const sha of [base, head]) if (git('rev-parse', '--verify', sha + '^{commit}').trim() !== sha) throw Error('captured commit unavailable')
++    const bytes = readFileSync(o.selection), selection = JSON.parse(bytes), coverage = JSON.parse(readFileSync(o.coverage, 'utf8'))
++    const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).split('\0').filter(Boolean)
++    if (selection.base !== base || selection.head !== head || selection.status !== 'unavailable' || selection.sourceAvailable !== true ||
++        selection.wholeRangeReady !== false || !Array.isArray(selection.omitted) || selection.omitted.length ||
++        !Array.isArray(selection.gaps) || !selection.gaps.length || !selection.gaps.every(g => typeof g === 'string' && g.trim()) ||
++        JSON.stringify(selection.changed) !== JSON.stringify(changed)) throw Error('bounded selection/source inventory mismatch')
++    if (!Array.isArray(coverage.inspected) || !coverage.inspected.length) throw Error('actual inspected paths/hunks required')
++    const seen = new Set()
++    for (const item of coverage.inspected) {
++      if (!item || !changed.includes(item.path) || seen.has(item.path) || !Array.isArray(item.hunks) || !item.hunks.length || !item.hunks.every(h => typeof h === 'string' && h.trim())) throw Error('invalid inspected coverage')
++      // Exact captured hunk headers bind coverage to source rather than mutable checkout text.
++      const diff = git('diff', '--no-renames', base + '..' + head, '--', item.path)
++      for (const hunk of item.hunks) if (!diff.split('\n').includes(hunk) || !hunk.startsWith('@@ ')) throw Error('inspected hunk absent from captured source')
++      seen.add(item.path)
++    }
++    const output = resolve(o.out)
++    if (output !== join(ws, 'final-review-' + invocationId + '.md')) throw Error('output must be this invocation expected final report')
++    if ([o.selection, o.draft, o.coverage].some(p => resolve(p) === output)) throw Error('preserve original bounded evidence')
++    for (const p of [output, output + '.diff']) {
++      try { lstatSync(p); throw Error('partial artifact already exists; preserve it: ' + p) } catch (e) { if (e.code !== 'ENOENT') throw e }
++    }
++    const draft = readFileSync(o.draft, 'utf8')
++    const extraction = JSON.parse(execFileSync('bash', [join(here, 'report-verdict'), '--complete', '--source', invocationId + '/bounded-draft', resolve(o.draft)], { encoding: 'utf8' }))
++    if (extraction.kind !== 'final-review' || !/^## Verdict\r?$/m.test(draft) || !/^## Untested scope\r?$/m.test(draft)) throw Error('bounded draft must use strict final-review headings')
++    const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'
++    const hash = b => createHash('sha256').update(b).digest('hex')
++    const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
++    // Preserve every draft finding/section verbatim. Only the verdict changes; coverage
++    // becomes an explicit untested occurrence that existing extraction/collection retains.
++    const body = draft.replace(/(^## Verdict\r?\n)([\s\S]*?)(?=^## |$(?![\s\S]))/m, '$1' + verdict + '\n')
++      .replace(/^## Untested scope\r?$/m, '## Untested scope\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed')
++    const result = '# Bounded captured-source review\n\nCoverage record: ' + JSON.stringify(evidence) + '\n\n' + body
++    writeFileSync(output, result, { flag: 'wx' })
++    console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))
++  } catch (e) { fail('bounded review unavailable: ' + e.message) }
++  process.exit(0)
++}
+ const planPath = o.plan || join(ws, `${epic}-plan.md`)
+ 
+ const B = await loadBuilders({
+-  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, dryRun: false,
++  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, ...(typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId) ? { invocationId } : {}), dryRun: false,
+   config: { mergeCheck: mergeCheck && !/^none\b/.test(mergeCheck) ? mergeCheck : 'none', ...(testPaths ? { testPaths } : {}) },
+ })
+ 
+ const need = (...ks) => { for (const k of ks) if (!o[k]) fail(`${kind} needs --${k}`) }
++const commitId = value => {
++  if (!/^[0-9a-f]{7,64}$/.test(String(value))) fail(`captured commit id required, got ${value}`)
++  return value
++}
+ const art = n => ({
+   brief: `${ws}/task-${n}-brief.md`,
+   report: `${ws}/task-${n}-report.md`,
+   review: `${ws}/task-${n}-review.md`,
+   diff: tag => `${ws}/task-${n}-review-${tag}.diff`,
+ })
+ const taskWorktree = id => `${worktree}/.worktrees/${String(branch).replace(/\//g, '-')}--task-${id}`
+-const task = () => ({ id: o.id, n: Number(o.n), branch: taskWorktree(o.id), base: o.base })
++const task = () => ({ id: o.id, n: Number(o.n), branch: taskWorktree(o.id), base: o.base, head: o.head })
+ const readLines = k => readArg(k).split('\n').map(l => l.trim()).filter(Boolean)
+ const readArg = k => { try { return readFileSync(o[k], 'utf8').trim() } catch (e) { fail(`cannot read --${k} ${o[k]}: ${e.message}`) } }
+ 
+ let text, label
+ switch (kind) {
++  case 'check-evidence': {
++    need('results-file')
++    let replies
++    try { replies = JSON.parse(readArg('results-file')) } catch (e) { fail(`invalid --results-file JSON: ${e.message}`) }
++    if (!Array.isArray(replies) || !replies.every(r => r && typeof r.dispatch === 'string' && /^[^:]+:[^:]+/.test(r.dispatch) && r.result && typeof r.result === 'object' && !Array.isArray(r.result))) fail('--results-file must be an array of {dispatch, result} replies')
++    for (const r of replies) B.recordCheckEvidence(r.result, r.dispatch)
++    text = JSON.stringify(B.classifyCheckEvidence(), null, 2)
++    label = 'check-evidence'
++    break
++  }
+   case 'implement':
+     need('id', 'n')
+     text = B.implementPrompt(planPath, o.id, Number(o.n), branch, art(o.n), { parents: list(o.parents), reentry: !!o.reentry, recut: !!o.recut })
+     label = `impl-${o.id}`
+     break
+-  case 'review':
+-    need('id', 'n', 'base')
+-    text = B.taskReviewPrompt(task(), planPath, art(o.n))
++  case 'verification-close': {
++    need('id', 'result-file')
++    let basis
++    try { basis = JSON.parse(readArg('result-file')) } catch (e) { fail('invalid --result-file JSON: ' + e.message) }
++    const problem = B.verificationProblem(basis, basis)
++    if (problem || basis.reviewStatus !== 'CLEAN' || !basis.reportPath?.trim() || !basis.reviewPath?.trim()) fail(problem || 'independent verification report and review paths required')
++    text = B.verificationClosePrompt(o.id, basis)
++    label = 'close-only-' + o.id
++    break
++  }
++  case 'review': {
++    need('id', 'n', 'base', 'head')
++    commitId(o.base); commitId(o.head)
++    let outcome = {}
++    if (o['result-file']) {
++      try { outcome = JSON.parse(readArg('result-file')) } catch (e) { fail('invalid --result-file JSON: ' + e.message) }
++      if (!outcome || typeof outcome !== 'object' || Array.isArray(outcome)) fail('--result-file must hold a RESULT object')
++    }
++    text = B.taskReviewPrompt({ ...outcome, ...task() }, planPath, art(o.n))
+     label = `review-${o.id}`
+     break
++  }
+   case 'fix': {
+     need('id', 'n', 'base', 'kind', 'finding-file')
+     if (!['review', 'seam', 'check'].includes(o.kind)) fail('--kind is review, seam or check')
+     text = B.fixPrompt(task(), readArg('finding-file'), art(o.n), o.kind)
+     label = o.kind === 'review' ? `fix-${o.id}` : `fix-${o.id}-${o.kind}`
+     break
+   }
+   case 'seam-review':
+     need('id', 'n', 'base', 'merge-base', 'head', 'overlap')
++    commitId(o.base); commitId(o['merge-base']); commitId(o.head)
+     text = B.seamReviewPrompt(task(), { seamOverlap: list(o.overlap), mergeBase: o['merge-base'], head: o.head }, branch, art(o.n))
+     label = `seam-review-${o.id}`
+     break
+   case 'check-fix-review':
+-    need('id', 'n', 'pre-fix-head', 'errors-file')
++    need('id', 'n', 'pre-fix-head', 'head', 'errors-file')
++    commitId(o['pre-fix-head']); commitId(o.head)
+     text = B.checkFixReviewPrompt(task(), o['pre-fix-head'], readArg('errors-file'), art(o.n))
+     label = `check-fix-review-${o.id}`
+     break
+   case 'merge': {
+     need('id', 'n', 'base')
+     if (o['review-bead']) B.reviewBeadOf.set(o.id, o['review-bead'])
+     const r = { ...task(), stacked: !!o.stacked, seamCleared: !!o['seam-cleared'], composedWith: list(o.consumes) }
+     text = B.mergePrompt(r, branch, worktree, o['resolved-bead'] || null, B.mergeCheckCommand, null)
+     label = `merge-${o.id}`
+     break
+@@ -182,64 +496,69 @@ switch (kind) {
+     break
+   }
+   case 'triage':
+     need('id', 'blocker')
+     text = B.triagePrompt(o.id, o.blocker, planPath)
+     label = `triage-${o.id}`
+     break
+   case 'assemble': {
+     need('consumer', 'instance')
+     if (!['final-review', 'roast-code', 'history', 'assess'].includes(o.consumer)) fail('--consumer is final-review, roast-code, history or assess')
+-    const opts = { specPaths: list(o.spec) }
++    const opts = { specPaths: list(o.spec), base: o.base || (reviewOutput ? boundSource?.base : L.reviewBase), head: o.head || (reviewOutput ? boundSource?.head : L.reviewHead) }
+     if (o.threshold !== undefined) { if (!/^\d+$/.test(o.threshold)) fail('--threshold is a non-negative integer'); opts.threshold = Number(o.threshold) }
+-    if (o.base) opts.base = o.base
+-    if (o.head) opts.head = o.head
++    if (['final-review', 'roast-code'].includes(o.consumer) && (!opts.base || !opts.head)) fail('assemble needs captured --base and --head (or Launch reviewBase/reviewHead)')
++    if (['final-review', 'roast-code'].includes(o.consumer)) { commitId(opts.base); commitId(opts.head) }
+     text = B.assemblePrompt(o.consumer, o.instance, opts)
+-    label = `assemble-${o.consumer}-${o.instance}`
++    label = `assemble-${o.consumer}-${o.consumer === 'final-review' ? invocationId + '-' : ''}${o.instance}`
+     break
+   }
+   case 'final-review': {
+     need('mode')
+     if (!['single', 'cluster', 'seam', 'stub'].includes(o.mode)) fail('--mode is single, cluster, seam or stub')
+-    const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}.md`
+-    const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}-cluster-${n}.md`
++    const source = { base: o.base || (reviewOutput ? boundSource?.base : L.reviewBase), head: o.head || (reviewOutput ? boundSource?.head : L.reviewHead) }
++    if (o.mode !== 'stub' && source.base && source.head) { commitId(source.base); commitId(source.head) }
++    const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${invocationId}.md`
++    const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${invocationId}.cluster-${n}.md`
+     const posInt = k => { if (!/^[1-9]\d*$/.test(String(o[k]))) fail(`--${k} is a positive integer`); return Number(o[k]) }
+     // --reviewed N1,N2|none: the cluster ordinals whose review returned a verdict, in the order given.
+     const reviewedPaths = () => {
+       need('reviewed')
+       if (o.reviewed === 'none') return []
+       const ns = list(o.reviewed)
+       if (!ns.length || !ns.every(n => /^[1-9]\d*$/.test(n))) fail('--reviewed is positive cluster numbers, comma-separated, or none')
+       return ns.map(n => clusterPath(Number(n)))
+     }
+     if (o.mode === 'single') {
++      if (!source.base || !source.head) fail('final-review needs captured --base and --head (or Launch reviewBase/reviewHead)')
+       const sweep = o.sweep === 'deferred' ? B.SWEEP_DEFERRED : o.sweep ? readArg('sweep')
+         : lastSweep(ledgerText) ?? (L.sweep === 'deferred' ? B.SWEEP_DEFERRED : null)
+       const metrics = o.metrics ? readLines('metrics') : lastMetrics(ledgerText)
+-      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, reviewPath })
+-      label = 'final-review-single'
++      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, provenanceGap: null, selectionPath: o.dir ? o.dir + '/review-inputs.json' : null, reviewPath, base: source.base, head: source.head })
++      label = `final-review-${invocationId}-single`
+     } else if (o.mode === 'cluster') {
+       need('dir', 'cluster', 'name')
++      if (!source.base || !source.head) fail('final-review needs captured --base and --head (or Launch reviewBase/reviewHead)')
+       const n = posInt('cluster')
+-      text = B.finalClusterReviewPrompt(n, o.name, o.dir, clusterPath(n), epic, branch, worktree)
+-      label = `final-review-cluster-${n}`
++      text = B.finalClusterReviewPrompt(n, o.name, o.dir, clusterPath(n), epic, branch, worktree, source)
++      label = `final-review-${invocationId}-cluster-${n}`
+     } else if (o.mode === 'seam') {
+       need('dir')
+       const paths = reviewedPaths()
+-      text = B.finalSeamReviewPrompt(o.dir, paths, reviewPath, epic, branch, worktree, o.unreviewed ? readLines('unreviewed') : [])
+-      label = 'final-review-seam'
++      if (!source.base || !source.head) fail('final-review needs captured --base and --head (or Launch reviewBase/reviewHead)')
++      text = B.finalSeamReviewPrompt(o.dir, paths, reviewPath, epic, branch, worktree, o.unreviewed ? readLines('unreviewed') : [], source)
++      label = `final-review-${invocationId}-seam`
+     } else {
+       need('unreviewed')
+-      text = B.finalReviewStubPrompt(reviewedPaths(), readLines('unreviewed'), reviewPath)
+-      label = 'final-review-stub'
++      text = B.finalReviewStubPrompt(reviewedPaths(), readLines('unreviewed'), reviewPath, source)
++      label = `final-review-${invocationId}-stub`
+     }
+     break
+   }
+   default:
+     fail(`unknown kind ${kind}\n${USAGE}`)
+ }
+ 
+ if (o.stdout) { process.stdout.write(text + '\n'); process.exit(0) }
+-const out = o.out || join(ws, 'dispatch', `${label}.md`)
++const out = o.out || join(ws, 'dispatch', `${label}.${kind === 'check-evidence' ? 'json' : 'md'}`)
+ mkdirSync(dirname(out), { recursive: true })
+ writeFileSync(out, text + '\n')
+ console.log(out)
+diff --git a/skills/super-code/scripts/report-verdict b/skills/super-code/scripts/report-verdict
+index e34211c1..65d56cd9 100755
+--- a/skills/super-code/scripts/report-verdict
++++ b/skills/super-code/scripts/report-verdict
+@@ -32,20 +32,135 @@
+ # but only key lines are printed, uncapped and uncut, so the output can be redirected into a keys
+ # file: roast `[SEV] <location>` (every severity under `## Confirmed findings`, the text before the
+ # first ` — `); final-review `[Must-fix] <item>` then `[Must-fix] untested: <item>`. Any other kind
+ # prints nothing and exits 3.
+ #
+ # Usage: bash report-verdict [--keys] FILE
+ # Exits 0 on any readable file; 2 on a missing or unreadable file or a wrong argument count;
+ # 3 for --keys on a kind that has no keys.
+ set -euo pipefail
+ 
++# Complete extraction is deliberately separate from the compact legacy summary/keys parsers.
++# Usage: report-verdict --complete --source IMMUTABLE_SOURCE_ID FILE
++# JSON: {version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}.
++# Identity is (source, section, position), never artifact: an archive copy keeps the caller's source.
++# Positions are 1-based within each exact section label (including repeated section headings).
++# key is the original first item line without its list marker; roast keys stop before " — ".
++# text keeps that first line and its continuations verbatim, excluding separator blank lines.
++# Node is already used by the coordinator and dispatch helpers; only built-in modules are needed.
++if [ "${1:-}" = "--complete" ]; then
++  if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
++    echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
++    exit 2
++  fi
++  node --input-type=module - "$4" "$3" <<'NODE'
++import fs from 'node:fs';
++
++const [artifact, source] = process.argv.slice(2);
++function invalid(message) { throw new Error(message); }
++try {
++  if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) invalid('invalid immutable source identity');
++  if (!fs.statSync(artifact).isFile()) invalid(`cannot read ${artifact}: not a file`);
++  const raw = new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(artifact));
++  const lines = raw.replace(/\r\n?/g, '\n').split('\n');
++  const status = lines.map(l => l.match(/^[ \t]*(?:\*\*)?[Ss]tatus(?::\*\*|\*\*:|:)[ \t]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b/)).find(Boolean);
++  const roast = lines.find(l => /^super-roast verdict: /.test(l));
++  const exactVerdict = lines.some(l => /^##[ \t]+Verdict[ \t]*$/.test(l));
++  const verdictMarker = /^(?:#+[ \t]*)?\**Verdict\**[ \t]*:?/;
++  let kind, verdict;
++  if (exactVerdict) kind = 'final-review';
++  else if (status) { kind = 'task-report'; verdict = status[1]; }
++  else if (roast !== undefined) { kind = 'roast'; verdict = roast.slice('super-roast verdict: '.length).trim(); }
++  else if (lines.some(l => verdictMarker.test(l))) kind = 'final-review';
++  else invalid('unrecognized finding source');
++
++  if (kind === 'final-review') {
++    let index = lines.findIndex(l => /^#+[ \t]*\**Verdict\**[ \t]*:?/.test(l));
++    if (index < 0) index = lines.findIndex(l => verdictMarker.test(l));
++    verdict = lines[index].replace(/^(?:#+[ \t]*)?\**Verdict/, '')
++      .replace(/^[ \t]*\**[ \t]*:?[ \t]*\**[ \t]*/, '').split('**')[0]
++      .replace(/^[ \t*:]+|[ \t*:]+$/g, '');
++    if (!verdict) {
++      const following = lines.slice(index + 1).find(l => l.trim());
++      if (!following || /^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(following)) invalid('missing verdict value');
++      verdict = following.replace(/^[ \t*:]+|[ \t*:]+$/g, '');
++    }
++  }
++  if (!verdict) invalid('missing verdict value');
++
++  function heading(line) {
++    const match = line.match(/^#+[ \t]+(.*)$/) || line.match(/^\*\*([^*]+)\*\*/);
++    return match ? match[1] : null;
++  }
++  function relevant(section) {
++    if (/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b)/i.test(section)) return true;
++    if (kind === 'final-review') return /^must[- ]fix\b/i.test(section);
++    if (kind === 'roast') return /^(?:confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i.test(section);
++    return false;
++  }
++  function none(text) { return text.toLowerCase().replace(/[ \t.*_`]+/g, '') === 'none'; }
++  const occurrences = [], positions = new Map();
++  let section = null, active = false, sectionSeen = false, hasContent = false, item = null;
++  function flushItem() {
++    if (!item) return;
++    while (item.lines.length > 1 && !item.lines.at(-1).trim()) item.lines.pop();
++    const first = item.lines[0];
++    if (none(first)) {
++      if (item.lines.length > 1) invalid(`none marker has finding text in ${section}`);
++    } else {
++      const position = (positions.get(section) || 0) + 1;
++      positions.set(section, position);
++      const key = kind === 'roast' ? first.split(' — ')[0] : first;
++      occurrences.push({section, position, key, text:item.lines.join('\n')});
++    }
++    item = null;
++  }
++  function closeSection() {
++    flushItem();
++    if (active && !hasContent) invalid(`empty finding section: ${section}`);
++  }
++  for (const line of lines) {
++    const label = heading(line);
++    if (label !== null) {
++      closeSection();
++      section = label;
++      active = relevant(section);
++      if (active) sectionSeen = true;
++      hasContent = false;
++      continue;
++    }
++    if (!active) continue;
++    const bullet = line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
++    if (bullet) {
++      flushItem();
++      if (!bullet[1].trim()) invalid(`empty finding item in ${section}`);
++      item = {lines:[bullet[1]]};
++      hasContent = true;
++    } else if (item) {
++      item.lines.push(line);
++    } else if (none(line)) {
++      hasContent = true;
++    } else if (line.trim()) {
++      invalid(`finding text without a list marker in ${section}`);
++    }
++  }
++  closeSection();
++  if (!sectionSeen) invalid('missing finding sections');
++  console.log(JSON.stringify({version:1, source, artifact, kind, verdict, occurrences}));
++} catch (error) {
++  console.error(`report-verdict: --complete: ${error.message}`);
++  process.exitCode = 2;
++}
++NODE
++  exit $?
++fi
++
+ keys=0
+ if [ $# -eq 2 ] && [ "$1" = "--keys" ]; then
+   keys=1
+   f=$2
+ elif [ $# -eq 1 ] && [ "$1" != "--keys" ]; then
+   f=$1
+ else
+   echo "usage: report-verdict [--keys] FILE" >&2
+   exit 2
+ fi
+diff --git a/skills/super-roast/SKILL.md b/skills/super-roast/SKILL.md
+index 7bd1a226..ce3656f9 100644
+--- a/skills/super-roast/SKILL.md
++++ b/skills/super-roast/SKILL.md
+@@ -65,22 +65,27 @@ Run via the `Workflow` tool when available: `Workflow` is in your own loaded fun
+ otherwise; inline as last resort — see the capability ladder in `./super-roast-workflow.md`.
+ The report's `independence:` line ends with the rung actually used (` · rung: Workflow`,
+ ` · rung: manual fan-out`, ` · rung: inline`); inside a caller's run, also append that rung to
+ the run's friction log. Full procedure, schemas, and the engine script:
+ **`./super-roast-workflow.md`**. Assemble the engine's `args` with `bash <this skill's
+ dir>/scripts/assemble-args` rather than by hand — it applies the round's stance, recall policy
+ and `regression` lane from the prompt files below.
+ In PR mode with a stated intent (Inputs), pass `--artifact "<branch@sha> vs <base@sha> — stated intent: <stated intent>"`, the default naming with the stated intent appended; without one, leave `--artifact` off and it defaults to `--inputs`.
+ 
+ 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
+-   prototype / internal / production / regulated). PR inputs are the branch diff + working
+-   tree, or a PR number resolved via `gh` when `gh` is available and a number was supplied.
++   prototype / internal / production / regulated). For PR source, pass `--repo`, `--base` and
++   `--head` together: the assembler resolves both refs once to verified commit identities and
++   renders all diff/source commands from them. A PR number is resolved via `gh` when available.
++   Supplied `--diff-stat` patch data remains supported; repository reads require captured commits.
++   Filesystem views and mutable reproductions use unique review-owned detached worktrees at the
++   captured head plus separate output/temp directories. Record caller commit/status differences
++   with evidence, without assigning cause from differences alone; never switch or restore it.
+    Profile is auto-detected and stated in the report header — never asked.
+ 2. **Triage (sonnet, 1)** — design mode: name 1–3 domains for domain-expert scouts. PR mode:
+    activate conditional lanes on top of the always-on core lanes. It runs alongside the core
+    scouts, which need nothing from it. See `./triage-prompt.md`.
+ 3. **Scouts (opus, parallel)** — design: core lenses (+ domain experts, + widened lenses if
+    triage found no domain — see below). PR: core lanes + activated lanes. **Rounds ≥ 2** (a
+    prior report was supplied): scouts run under the late-round stance and the `regression`
+    lens/lane joins the roster — both assembled by the orchestrator, per the "Iteration stance"
+    sections of the scout prompt files. Adversarial, may use
+    WebSearch/WebFetch, return structured findings. See `./scout-prompts-design.md` /
+diff --git a/skills/super-roast/judge-seat-prompts.md b/skills/super-roast/judge-seat-prompts.md
+index 6db31490..6618d09e 100644
+--- a/skills/super-roast/judge-seat-prompts.md
++++ b/skills/super-roast/judge-seat-prompts.md
+@@ -139,20 +139,26 @@ Verify the finding's premises — the facts it stands on — before its conclusi
+ If a load-bearing premise fails, REJECT and name the premise. If an external premise
+ cannot be grounded either way, return UNVERIFIED. If all premises hold, CONFIRM only if
+ the finding is also material against the spec's stated requirements and scope.
+ ```
+ 
+ ## PR mode adjustments (append to the shared core when mode = pr)
+ 
+ In PR mode, "the spec" means the change under review: the diff, its stated intent
+ (PR description / commit messages), and the surrounding repository. "Stated
+ requirements" include the repository's own conventions and the change's stated intent.
++
++Use the supplied captured base/head for diffs and `git show <head>:<path>` for source. When
++filesystem access is needed, create a unique review-owned detached worktree at that head. A
++mutable reproduction writes only there and in its own output/temp directory. Record caller
++commit/status changes with evidence, without assigning cause from a before/after difference
++alone; never switch or restore the caller checkout.
+ You have repo read access — ground internal claims by reading the actual files, not
+ just the diff hunk.
+ 
+ Additional REFUTE checks (e) and (f):
+ (e) **Pre-existing** — does the defect exist on the base branch rather than being
+     introduced or materially worsened by this change? Check the base version of the
+     file. If the defect is real but already present on the base branch, CONFIRM with
+     severity FYI, cite the base-branch location in `evidence`, and add
+     `"preExisting": true` to your output object — it is reported, but it is not this
+     change's gap. (This is the one CONFIRM that does not require surviving every check.)
+diff --git a/skills/super-roast/scout-prompts-pr.md b/skills/super-roast/scout-prompts-pr.md
+index 675b2b15..9e455d51 100644
+--- a/skills/super-roast/scout-prompts-pr.md
++++ b/skills/super-roast/scout-prompts-pr.md
+@@ -15,20 +15,26 @@ by that lane's `## Lane: <name>` block (Scope + Hunt list + Pragmatism filter),
+ that produces the distinct per-lane strings living at `args.prompts.scouts['<lane>']`; this file
+ documents how each is assembled and stays the source of truth if a lane block needs to change.
+ 
+ ## Shared preamble
+ 
+ ```
+ You are an adversarial PR reviewer. Your stance: **assume this diff has a problem and prove
+ it.** Find the strongest objections, not the polite ones. [ITERATION_STANCE]
+ 
+ ## Inputs
++
++The supplied captured base/head commits define all diff and source reads. Use the rendered
++`git diff` and `git show` commands. A filesystem view belongs in a unique review-owned detached
++worktree at the captured head; mutable reproductions also get their own output/temp directory.
++Report observed caller commit/status changes with evidence; differences alone do not identify
++their cause. Never switch or restore the caller checkout.
+ - The diff (patch/hunks) under review.
+ - Full repo access.
+ - The PR description and its comments, when present.
+ - A prior review report, when supplied — see "Prior report" below.
+ 
+ ## Your lane
+ [LANE]
+ 
+ ## Scope (review only the named diff)
+ Review **only** the diff/branch/PR named as the artifact under review — not a different
+diff --git a/skills/super-roast/scripts/assemble-args.mjs b/skills/super-roast/scripts/assemble-args.mjs
+index 9a1e9b1c..48806c8c 100644
+--- a/skills/super-roast/scripts/assemble-args.mjs
++++ b/skills/super-roast/scripts/assemble-args.mjs
+@@ -12,21 +12,22 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
+   --iteration <N|post-cap audit>  round number (default 1); rounds >= 2 require --prior-report
+   --prior-report <path>           previous round's report; switches scouts to the late-round
+                                   stance and adds the regression lane/lens
+   --punch-listed <file>           prior round's punch-listed keys, one \`[SEV] <location>\` per
+                                   line: findings the caller left unfixed on purpose (needs
+                                   --prior-report; sub-Blocking only)
+   --profile <text>                environment profile for the reporter (default: infer)
+   --spec <path>                   design mode: the spec under review (required)
+   --context <text|@file>          design mode: caller context the spec must satisfy
+   --repo <dir> --base <ref> --head <ref>
+-                                  PR mode: names the diff command and computes triage's stat
++                                  PR mode: captures verified commits for diff/source commands
++                                  and computes triage's stat
+   --diff-stat <text|@file>        PR mode: triage input instead of computing it with git
+   --artifact <text>               PR mode: how scouts/judges name the change (default: --inputs)
+   --independence <text>           independence label (default: derived from config.models.judge,
+                                   ending \` · rung: Workflow\` with --script, else
+                                   \` · rung: manual fan-out\`)
+   --config <json|@file>           merged over the defaults (models merged per key)
+   --seats-safe                    add prompts.seatsSafe (static-review wording for seat retries)
+   --report-dir <dir> --topic <slug> [--date YYYY-MM-DD]
+                                   print the report path the orchestrator writes to
+   --out <file>                    write args JSON here (default: stdout)
+@@ -126,28 +127,40 @@ function assertClean(text, where) {
+ // ---- iteration stance ----
+ function stanceBlocks(secs, file) {
+   const sec = section(secs, h => h.startsWith('Iteration stance'), file)
+   const [s1, r1, s2, r2] = [0, 1, 2, 3].map(i => fence(sec, i, file))
+   if (!s1.startsWith('A rubber-stamp') || !s2.startsWith('A rubber-stamp')) drift(`${file}: iteration stance blocks out of order`)
+   if (!r1.startsWith('## High recall') || !r2.startsWith('## Materiality')) drift(`${file}: recall-policy blocks out of order`)
+   return late ? { stance: s2, recall: r2 } : { stance: s1, recall: r1 }
+ }
+ 
+ // ---- inputs for the artifact under review ----
+-const diffCmd = opt.repo && opt.base && opt.head ? `git -C ${resolve(opt.repo)} diff ${opt.base}...${opt.head}` : null
++const shell = s => "'" + String(s).replaceAll("'", "'\\''") + "'"
++let source = null
++if (mode === 'pr' && (opt.repo || opt.base || opt.head)) {
++  if (!(opt.repo && opt.base && opt.head)) die(2, '--repo, --base and --head go together')
++  try {
++    const commit = ref => execFileSync('git', ['-C', opt.repo, 'rev-parse', '--verify', '--end-of-options', `${ref}^{commit}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
++    source = { repo: resolve(opt.repo), base: commit(opt.base), head: commit(opt.head) }
++  } catch (e) { die(2, `cannot resolve PR source commits: ${e.message.split('\n')[0]}`) }
++}
++const diffCmd = source ? `git -C ${shell(source.repo)} diff ${source.base}...${source.head}` : null
++const sourceInput = source
++  ? `Captured source: base ${source.base}, head ${source.head}. Read source with \`git -C ${shell(source.repo)} show ${source.head}:<path>\`; all diffs use \`${diffCmd}\`.`
++  : 'The caller supplied patch data without a repository source pair. Review that data; obtain captured base/head commit identities before opening repository source or running a reproduction.'
+ const artifact = opt.artifact ?? opt.inputs
+ function triageInput() {
+   if (mode === 'design') return `Spec file: ${opt.spec} — read it.`
+   if (opt.diffStat) return textArg(opt.diffStat).trim()
+   if (!diffCmd) die(2, 'PR mode needs --diff-stat, or --repo/--base/--head to compute it')
+   try {
+-    const range = `${opt.base}...${opt.head}`
++    const range = `${source.base}...${source.head}`
+     const names = execFileSync('git', ['-C', opt.repo, 'diff', '--name-status', range], { encoding: 'utf8' }).trim()
+     const stat = execFileSync('git', ['-C', opt.repo, 'diff', '--shortstat', range], { encoding: 'utf8' }).trim()
+     return `Diff ${range}:\n${names}\n${stat}`
+   } catch (e) { die(2, `git diff failed: ${e.message.split('\n')[0]}`) }
+ }
+ 
+ // ---- config defaults (rosters read from the skill's own files) ----
+ const skillMd = read('SKILL.md')
+ const triageMd = read('triage-prompt.md')
+ const listFrom = (text, re, what) => {
+@@ -179,21 +192,21 @@ if (mode === 'pr') {
+   base = replaceLine(base, '[RECALL_POLICY]', recall, file)
+   const diffLine = '- The diff (patch/hunks) under review.'
+   if (!base.includes(diffLine)) drift(`${file}: inputs diff line not found`)
+   base = base.replace(diffLine, () => `- The diff under review: ${artifact}${diffCmd ? ` (\`${diffCmd}\`)` : ''}.`)
+   for (const sec of secs.filter(s => s.heading.startsWith('Lane: '))) {
+     const name = sec.heading.slice('Lane: '.length).split(/[\s(]/)[0]
+     if (name === 'regression' && !late) continue
+     let p = replaceLine(base, '[LANE]', fence(sec, 0, file), `${file} lane ${name}`)
+     p = fillCategory(p, name, 'lane', `${file} lane ${name}`)
+     assertClean(p, `scout ${name}`)
+-    prompts.scouts[name] = p
++    prompts.scouts[name] = p + '\n\n' + sourceInput
+   }
+   for (const n of config.coreLanes) if (!prompts.scouts[n]) drift(`${file}: core lane '${n}' has no Lane block`)
+ } else {
+   const file = 'scout-prompts-design.md', secs = sections(read(file))
+   const core = fence(section(secs, h => h === 'Shared core', file), 0, file)
+   const { stance, recall } = stanceBlocks(secs, file)
+   let base = replaceAll(core, '[ITERATION_STANCE]', stance, file)
+   base = replaceLine(base, '[RECALL_POLICY]', recall, file)
+   base = replaceAll(base, '[SPEC_FILE_PATH — read it]', `${opt.spec} — read it`, file)
+   base = replaceLine(base, '[REQUIREMENTS / EPIC]', opt.context ? textArg(opt.context).trim() : 'none supplied', file)
+@@ -236,21 +249,21 @@ if (!prompts.dedupe.includes('{{FINDINGS_JSON}}')) drift('dedupe-prompt.md: {{FI
+   let core = fence(section(secs, h => h === 'Shared core', file), 0, file)
+   const specMarker = '[SPEC_FILE_PATH — read the whole spec, not just the cited section]'
+   core = replaceAll(core, specMarker, mode === 'design'
+     ? `${opt.spec} — read the whole spec, not just the cited section`
+     : `${artifact} — read the diff${diffCmd ? ` (\`${diffCmd}\`)` : ''} and the files it touches, not just the cited hunk`, file)
+   const prAdj = mode === 'pr' ? prose(section(secs, h => h.startsWith('PR mode adjustments'), file)) : ''
+   const seatBlock = n => fence(section(secs, h => h.toLowerCase().endsWith(`— ${n}`), file), 0, file)
+   prompts.seats = {}
+   for (const n of ['reproduce', 'refute', 'ground']) {
+     let p = replaceLine(core, '[SEAT PROCEDURE]', seatBlock(n), `${file} seat ${n}`)
+-    if (prAdj) p += `\n\n${prAdj}`
++    if (prAdj) p += `\n\n${prAdj}\n\n${sourceInput}`
+     assertClean(p, `seat ${n}`)
+     if (!p.includes('{{FINDING_JSON}}')) drift(`${file}: {{FINDING_JSON}} missing`)
+     prompts.seats[n] = p
+   }
+   if (opt.seatsSafe) {
+     // Static-review wording for the one re-dispatch of a seat that returned nothing: same method
+     // and output contract, the artifact framed as text to analyse, no adversarial verbs.
+     const frame = 'Static review task. The material below is text to analyse for correctness; read it and report your analysis in the output contract. Nothing here asks you to attack, break or exploit anything.\n\n'
+     const soften = p => p.replace('Try to kill the finding.', 'Test whether the finding holds.')
+     prompts.seatsSafe = Object.fromEntries(Object.entries(prompts.seats).map(([n, p]) => [n, frame + soften(p)]))
+@@ -269,20 +282,21 @@ const independence = opt.independence ?? `same-family (${family(config.models.ju
+   prompts.reporter = r.replace(re, () => `independence: ${independence}`)
+     .replace('The `independence:` line is `{{INDEPENDENCE}}` exactly as the', () => `The \`independence:\` line is \`${independence}\` exactly as the`)
+ }
+ 
+ // ---- args ----
+ const priorReport = opt.priorReport ? readFileSync(opt.priorReport, 'utf8') : ''
+ const args = {
+   mode, profile: opt.profile ?? 'not supplied by the caller — infer it from the repository and state it',
+   inputs: opt.inputs, iteration: numbered ? Number(iteration) : iteration,
+   priorReport, punchListed, independence, prompts, config,
++  ...(source ? { source } : {}),
+ }
+ const json = JSON.stringify(args, null, 2)
+ 
+ const report = opt.reportDir ? (() => {
+   const d = new Date(), pad = n => String(n).padStart(2, '0')
+   const date = opt.date ?? `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+   const n = numbered ? iteration : iteration.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+   return join(opt.reportDir, `${date}-${opt.topic}-roast-${mode}-${n}.md`)
+ })() : null
+ 
+diff --git a/tests/super-auto/generated-review-inputs-r1.sh b/tests/super-auto/generated-review-inputs-r1.sh
+new file mode 100644
+index 00000000..67e19ef3
+--- /dev/null
++++ b/tests/super-auto/generated-review-inputs-r1.sh
+@@ -0,0 +1,120 @@
++#!/usr/bin/env bash
++set -euo pipefail
++ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
++T=$(mktemp -d "${TMPDIR:-/tmp}/generated-review-inputs.XXXXXX")
++trap 'rm -rf "$T"' EXIT
++node - "$ROOT" "$T" <<'JS'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict'),crypto=require('node:crypto');
++const [root,tmp]=process.argv.slice(2),repo=path.join(tmp,'repo'),work=path.join(tmp,'work'),run='docs/run/run.md',ledger=path.join(tmp,'progress.md');
++fs.mkdirSync(repo,{recursive:true});fs.mkdirSync(work);
++const env={...process.env,HOME:path.join(tmp,'home'),XDG_CONFIG_HOME:path.join(tmp,'config'),XDG_CACHE_HOME:path.join(tmp,'cache'),XDG_DATA_HOME:path.join(tmp,'data'),XDG_STATE_HOME:path.join(tmp,'state'),GIT_CONFIG_NOSYSTEM:'1'};
++for(const k of ['HOME','XDG_CONFIG_HOME','XDG_CACHE_HOME','XDG_DATA_HOME','XDG_STATE_HOME'])fs.mkdirSync(env[k],{recursive:true});
++const exec=(cmd,args,cwd=repo)=>cp.execFileSync(cmd,args,{cwd,env,encoding:'utf8',stdio:['ignore','pipe','pipe']});
++const git=(...a)=>exec('git',a).trim();
++const write=(p,t)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,t)};
++const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
++const rs=path.join(root,'skills/super-auto/scripts/report-status'),dt=path.join(root,'skills/super-code/scripts/dispatch-text');
++write(ledger,'Launch: args '+JSON.stringify({epicId:'fixture',integrationBranch:'fixture',integrationWorktree:repo,invocationId:'fixture'})+'\n');
++git('init','-q');git('config','user.email','fixture@example.test');git('config','user.name','Fixture');
++write(path.join(repo,run),'flags: skipPlanRoast false, skipCodeRoast false\nphase: code\napprovals:\n');
++write(path.join(repo,'product.txt'),'before\n');git('add','.');git('commit','-qm','base');const base=git('rev-parse','HEAD');
++const ordinary=['reviews/user-evidence.txt','reviews/space name.txt','reviews/line\nbreak.txt','reviews/[wildcard]*.txt'];
++write(path.join(repo,'product.txt'),'after\n');for(const f of ordinary)write(path.join(repo,f),'ordinary product evidence '+JSON.stringify(f)+'\n');
++git('add','.');git('commit','-qm','product change');
++const saved=new Map(),stats=[];
++const payload=f=>/\/assembled\/final-review-[^/]+-final\//.test(f)||/\/final-review-[^/]+\.md\.diff$/.test(f);
++function assemble(head,out,from=base,unavailable=false){
++ if(process.env.GENERATED_REVIEW_INPUTS_BASELINE==='1'){
++  // Retain the original pre-fix assembler recipe for the historical RED reproduction.
++  fs.mkdirSync(path.join(out,'slices'),{recursive:true});
++  const changed=exec('git',['diff','--name-only','-z',from+'..'+head]).split('\0').filter(Boolean);
++  write(path.join(out,'diffstat.txt'),exec('git',['diff','--stat',from+'..'+head]));
++  for(const f of changed)write(path.join(out,'slices',f.replaceAll('/','__')+'.diff'),exec('git',['--literal-pathspecs','diff',from+'..'+head,'--',f]));
++  return {base:from,head,changed,archives:[]};
++ }
++ const args=[dt,'review-inputs','--ledger',ledger,'--base',from,'--head',head,'--out-dir',out];
++ const r=cp.spawnSync('bash',args,{cwd:repo,env,encoding:'utf8'});
++ assert.equal(r.status,unavailable?3:0,r.stderr+'\n'+r.stdout);
++ const result=JSON.parse(fs.readFileSync(path.join(out,'review-inputs.json'),'utf8'));
++ if(unavailable){assert(result.gaps.length>0,'invalid provenance exposes its gap');assert.equal(result.omitted.length,0,'a refusal supplies no omission authority');assert.match(fs.readFileSync(path.join(out,'generated-input-provenance.md'),'utf8'),/unavailable/)}
++ return result;
++}
++for(let n=1;n<=6;n++){
++ if(n===6){write(path.join(repo,'new-product.txt'),'new product edit after repeated collection\n');git('add','.');git('commit','-qm','new product change')}
++ const id='inv-'+n,head=git('rev-parse','HEAD'),workspace=path.join(work,id),out=path.join(workspace,'assembled','final-review-'+id+'-final');
++ fs.mkdirSync(path.join(out,'slices'),{recursive:true}); // Match the real assembler's empty slices initialization.
++ const input=assemble(head,out),slices=fs.readdirSync(path.join(out,'slices'));
++ const texts=slices.map(f=>fs.readFileSync(path.join(out,'slices',f),'utf8')),bytes=texts.reduce((sum,t)=>sum+Buffer.byteLength(t),0);
++ stats.push({invocation:id,files:input.changed.length,bytes,maxBasename:Math.max(...slices.map(f=>Buffer.byteLength(f)))});console.log(JSON.stringify(stats.at(-1)));
++ assert.equal(input.base,base,'keep the original product base');assert.equal(input.head,head,'keep the captured head');
++ assert(input.changed.includes('product.txt'),'original product range survives every re-entry');
++ for(const f of ordinary)assert(input.changed.includes(f),'ordinary evidence, including unusual names, stays reviewed');
++ if(n===6)assert(input.changed.includes('new-product.txt'),'a later product edit enters captured-range review');
++ assert(!input.changed.some(payload),'prior generated payloads must not become fresh slices');
++ assert.equal(texts.join('\n').split('+after\n').length-1,1,'original product hunk appears once, without recursive copies');
++ assert(!texts.some(t=>/^\+diff --git .*\.diff/m.test(t)),'no generated diff copied inside a new slice');
++ if(n>1){
++  assert.equal(input.archives.length,n-1,'every prior invocation has explicit provenance');
++  for(const a of input.archives){
++   assert.equal(a.run,run);assert.equal(a.archive,'docs/run/reviews/'+a.invocationId);
++   assert(a.files.some(f=>f.path==='final-review-'+a.invocationId+'.md'),'provenance locates original finding report');
++   assert(a.files.some(f=>f.path.endsWith('.md.diff')),'direct input provenance stays discoverable');
++   assert(input.changed.includes(a.archive+'/final-review-'+a.invocationId+'.md'),'historical findings remain ordinary reviewed content');
++   for(const f of a.files)assert.equal(sha(path.join(repo,a.archive,f.path)),f.sha256,'historical hashes remain exact');
++  }
++  for(const o of input.omitted){assert(payload(o.path));assert(o.run&&o.invocationId&&o.sha256&&o.revision===head);assert.equal(sha(path.join(repo,o.path)),o.sha256)}
++ }
++ assert.deepEqual(input.slices?.map(s=>s.path)||input.changed,input.changed,'changed membership and slice coverage agree');
++ write(path.join(out,'digest.md'),'fixture digest\n');
++ if(input.slices)write(path.join(out,'clusters.json'),JSON.stringify({changed:input.changed,clusters:[{name:'fixture',files:input.changed,slices:input.slices.map(s=>s.slice)}]})+'\n');
++ const review=path.join(workspace,'final-review-'+id+'.md');
++ write(review,'# Final review\n## Verdict\nnot ready\n\n## Must-fix\n- [Must-fix] product.txt:1 — retained historical finding '+id+'\n\n## Should-fix\nnone\n\n## Untested scope\nnone\n');
++ write(review+'.diff',input.changed.map(f=>exec('git',['--literal-pathspecs','diff',base+'..'+head,'--',f])).join(''));
++ assert.match(exec('bash',[rs,'--collect',path.join(repo,run),'--invocation',id,'--workspace',workspace,'--review',review,'--verdict','not ready']),/collection: complete/);
++ const records=fs.readFileSync(path.join(repo,run),'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.split(' · ')[1]));
++ const latest=records.filter(r=>r.invocationId===id).at(-1);assert.equal(latest.complete,true);
++ const sources=fs.readFileSync(path.join(repo,run),'utf8').split('\n').filter(l=>l.startsWith('- finding-source · ')).map(l=>JSON.parse(l.split(' · ')[1]));
++ assert(JSON.stringify(sources).includes('retained historical finding '+id),'collector retains complete historical finding text');
++ for(const f of latest.files){const p=path.join(repo,'docs/run/reviews',id,f.path);saved.set(p,sha(p))}
++ git('add','.');git('commit','-qm','collect '+id);
++}
++// Replay remains possible after producer cleanup; no historical archive is rewritten.
++fs.rmSync(work,{recursive:true});assert.match(exec('bash',[rs,'--collect',path.join(repo,run)]),/collection: complete/);
++for(const [p,h] of saved)assert.equal(sha(p),h,'collection/re-entry preserves every prior archive byte');
++const captured=git('rev-parse','HEAD'),capturedOut=path.join(tmp,'captured');
++write(path.join(repo,'advanced.txt'),'not captured\n');write(path.join(repo,run),'mutated checkout without provenance\n');
++write(path.join(repo,'docs/run/reviews/untracked/assembled/input.diff'),'untracked archive\n');
++const frozen=assemble(captured,capturedOut);
++const partial=path.join(tmp,'partial');write(path.join(partial,'retain.txt'),'partial evidence\n');
++const partialResult=cp.spawnSync('bash',[dt,'review-inputs','--ledger',ledger,'--base',base,'--head',captured,'--out-dir',partial],{cwd:repo,env,encoding:'utf8'});
++assert.equal(partialResult.status,2);assert.equal(fs.readFileSync(path.join(partial,'retain.txt'),'utf8'),'partial evidence\n');
++const invalid=cp.spawnSync('bash',[dt,'review-inputs','--ledger',ledger,'--base','f'.repeat(40),'--head',captured,'--out-dir',path.join(tmp,'invalid')],{cwd:repo,env,encoding:'utf8'});
++assert.equal(invalid.status,2,'unknown commit objects are refused');
++assert.equal(frozen.archives.length,6,'records come from captured Git, not mutated run.md');assert(!frozen.changed.includes('advanced.txt'));assert(!frozen.changed.some(f=>f.includes('/untracked/')));
++// Adding ordinary content inside a recognized archive does not grant it an exemption.
++git('restore',run);const unclaimed='docs/run/reviews/inv-1/assembled/final-review-inv-1-final/legitimate.txt';
++write(path.join(repo,unclaimed),'legitimate new evidence\n');git('add',unclaimed,'advanced.txt');git('commit','-qm','advance checkout');
++const advanced=git('rev-parse','HEAD');const selected=assemble(advanced,path.join(tmp,'advanced'));
++assert(selected.changed.includes(unclaimed));assert(selected.changed.includes('advanced.txt'));
++assert.deepEqual(assemble(captured,path.join(tmp,'frozen-again')),frozen,'advanced branch tip cannot change frozen selection');
++const victim=[...saved.keys()].find(p=>p.endsWith('.md.diff')),victimRel=path.relative(repo,victim),original=fs.readFileSync(victim);
++write(victim,'corrupted archive\n');git('add',victimRel);git('commit','-qm','corrupt claimed payload');
++const bad=assemble(git('rev-parse','HEAD'),path.join(tmp,'corrupt'),base,true);assert(bad.changed.includes(victimRel));assert.match(bad.gaps.join('\n'),/hash|integrity/i);
++fs.unlinkSync(victim);git('add',victimRel);git('commit','-qm','remove claimed payload');
++const missingHead=git('rev-parse','HEAD');assert(assemble(missingHead,path.join(tmp,'missing'),advanced,true).changed.includes(victimRel),'removed claimed input remains in reviewed range');
++write(victim,original);git('add',victimRel);git('commit','-qm','restore archive');
++const cleanRun=fs.readFileSync(path.join(repo,run),'utf8');
++function recordCase(name,edit,pattern){write(path.join(repo,run),edit(cleanRun));git('add',run);git('commit','-qm',name);const r=assemble(git('rev-parse','HEAD'),path.join(tmp,name),base,true);assert.match(r.gaps.join('\n'),pattern);write(path.join(repo,run),cleanRun);git('add',run);git('commit','-qm','restore run record')}
++recordCase('incomplete',t=>t+'- review-collection · '+JSON.stringify({...JSON.parse(t.split('\n').filter(l=>l.startsWith('- review-collection · ')).at(-1).split(' · ')[1]),complete:false,gaps:['incomplete fixture']})+'\n',/incomplete|complete/);
++recordCase('malformed',t=>t+'- review-collection · {broken\n',/malformed/);
++recordCase('conflicting',t=>t+'- review-collection · '+JSON.stringify({...JSON.parse(t.split('\n').filter(l=>l.startsWith('- review-collection · ')).at(-1).split(' · ')[1]),workspace:'/different-producer'})+'\n',/conflict/);
++// A deleted record does not make a removed formerly claimed payload disappear.
++write(path.join(repo,run),'approvals:\n');fs.unlinkSync(victim);git('add',run,victimRel);git('commit','-qm','remove provenance and input');
++assert(assemble(git('rev-parse','HEAD'),path.join(tmp,'removed-record'),advanced,true).changed.includes(victimRel));
++// With no claims at either endpoint ordinary tracked archive-shaped content is still reviewed.
++const noClaims=git('rev-parse','HEAD'),ordinaryArchive='docs/unclaimed/reviews/inv-raw/assembled/final-review-inv-raw-final/raw.diff';
++write(path.join(repo,ordinaryArchive),'ordinary archive-shaped tracked evidence\n');git('add',ordinaryArchive);git('commit','-qm','unclaimed content');
++assert(assemble(git('rev-parse','HEAD'),path.join(tmp,'absent-record'),noClaims).changed.includes(ordinaryArchive));
++assert(stats.every(s=>s.maxBasename<200),'no recursive basename amplification');
++console.log('PASS: four unchanged-product collection/re-entry cycles, new product, immutable archives, captured source, exact claims, unusual paths and explicit provenance gaps');
++JS
+diff --git a/tests/super-auto/selection-recovery-correction.mjs b/tests/super-auto/selection-recovery-correction.mjs
+new file mode 100644
+index 00000000..3c847eda
+--- /dev/null
++++ b/tests/super-auto/selection-recovery-correction.mjs
+@@ -0,0 +1,84 @@
++import fs from 'node:fs';
++import path from 'node:path';
++import os from 'node:os';
++import cp from 'node:child_process';
++import {createHash} from 'node:crypto';
++import assert from 'node:assert/strict';
++const root=process.cwd(),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'selection-correction-')),repo=path.join(tmp,'repo'),ws=path.join(tmp,'workspace');
++fs.mkdirSync(repo);fs.mkdirSync(ws);
++const run=path.join(repo,'runs/current/run.md'),ledger=path.join(ws,'progress.md'),dt=path.join(root,'skills/super-code/scripts/dispatch-text'),rs=path.join(root,'skills/super-auto/scripts/report-status');
++const write=(p,t)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,t)};
++const exec=(c,a,cwd=repo)=>cp.execFileSync(c,a,{cwd,encoding:'utf8'}).trim();
++const git=(...a)=>exec('git',['-c','maintenance.auto=false','-c','gc.auto=0',...a]),cli=(...a)=>cp.spawnSync('bash',[dt,...a],{cwd:repo,encoding:'utf8'});
++let failed=0,passed=0,n=0;
++function check(name,f){if(process.env.TEST_FILTER&&!name.includes(process.env.TEST_FILTER))return;try{f();passed++;console.log('PASS '+name)}catch(e){failed++;console.error('FAIL '+name+': '+e.stack)}}
++function commit(){git('add','.');git('commit','-qm','snapshot '+n++);return git('rev-parse','HEAD')}
++function selection(head,out=path.join(tmp,'selection-'+n++)){const r=cli('review-inputs','--ledger',ledger,'--base',base,'--head',head,'--out-dir',out);return {...r,out,data:JSON.parse(fs.readFileSync(path.join(out,'review-inputs.json')))}}
++function collect(...a){return cp.spawnSync('bash',[rs,'--collect',run,...a],{encoding:'utf8'})}
++console.log('implementation identities: '+JSON.stringify({head:exec('git',['rev-parse','HEAD'],root),dispatchSha256:createHash('sha256').update(fs.readFileSync(path.join(root,'skills/super-code/scripts/dispatch-text.mjs'))).digest('hex'),coordinatorSha256:createHash('sha256').update(fs.readFileSync(path.join(root,'skills/super-code/coordinator.js'))).digest('hex')}));
++const report='## Verdict\nready\n## Must fix before landing\n- product.txt:1 — retained concrete finding\n## Untested scope\n- none\n## Deferred OK\n- none\n';
++git('init','-q');git('config','user.email','fixture@example.test');git('config','user.name','Fixture');
++write(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');write(path.join(repo,'product.txt'),'before\n');const base=commit();
++write(ledger,'Launch: args '+JSON.stringify({epicId:'fixture',integrationBranch:'fixture',integrationWorktree:repo,invocationId:'bounded'})+'\n');
++const args=['--invocation','probe','--workspace',ws,'--review','none','--verdict','UNAVAILABLE'];assert.equal(collect(...args).status,3);
++const old=fs.readFileSync(run,'utf8');const source=path.join(ws,'final-review-probe.md');write(source,report);
++assert.equal(collect('--invocation','probe','--workspace',ws,'--review',source,'--verdict','ready','--recover-null').status,0);
++assert(fs.readFileSync(run,'utf8').includes(old.trimEnd()));write(path.join(repo,'product.txt'),'after\n');const recovered=fs.readFileSync(run,'utf8'),head=commit();
++check('real recovered collector history grants only validated omission authority',()=>{const s=selection(head);assert.equal(s.status,0,s.stdout+s.stderr);assert.deepEqual(s.data.gaps,[])});
++for(const mode of ['all markers','last marker','forged predecessor','changed recovered verdict','changed required','changed path'])check('reject '+mode,()=>{
++ const lines=recovered.split('\n'),indices=lines.flatMap((l,i)=>l.startsWith('- review-collection · ')?[i]:[]),last=indices.at(-1);
++ for(const i of indices){const r=JSON.parse(lines[i].split(' · ')[1]);if(r.recovery){if(mode==='all markers'||(mode==='last marker'&&i===last))delete r.recovery;else if(mode==='forged predecessor')r.recovery.recordSha256='0'.repeat(64);else if(mode==='changed recovered verdict'&&i===last)r.review='not ready';else if(mode==='changed required')r.required=['different'];else if(mode==='changed path')r.reviewPath=path.join(ws,'other.md')};lines[i]='- review-collection · '+JSON.stringify(r)}
++ write(run,lines.join('\n'));const s=selection(commit());assert.equal(s.status,3);assert.equal(s.data.omitted.length,0);assert(s.data.gaps.length);write(run,recovered);
++});
++check('reject hash-linked but invalid complete null predecessor',()=>{
++ const lines=recovered.split('\n'),records=lines.flatMap((line,i)=>line.startsWith('- review-collection · ')?[{i,r:JSON.parse(line.split(' · ')[1])}]:[]);
++ const predecessor=records.filter(({r})=>r.reviewPath===null).at(-1);predecessor.r.complete=true;predecessor.r.gaps=[];
++ const digest=createHash('sha256').update(JSON.stringify(predecessor.r)).digest('hex');
++ for(const record of records){if(record.r.recovery)record.r.recovery.recordSha256=digest;lines[record.i]='- review-collection · '+JSON.stringify(record.r)}
++ write(run,lines.join('\n'));const invalid=selection(commit());assert.equal(invalid.status,3);assert.equal(invalid.data.omitted.length,0);write(run,recovered);
++});
++write(run,recovered);
++// This actual copied run record has no sibling archive. Its name cannot authorize omission,
++// but the captured independent product hunk is still available for a bounded review.
++write(path.join(repo,'fixtures/captured/run.md'),recovered);const nestedHead=commit();
++assert.equal(cli('bind-review-source','--ledger',ledger,'--base',base,'--head',nestedHead).status,0);
++const s=selection(nestedHead,path.join(ws,'assembled/final-review-bounded-final'));
++fs.appendFileSync(run,'- review-collection · '+JSON.stringify({invocationId:'bounded',workspace:ws,reviewPath:path.join(ws,'final-review-bounded.md'),review:'pending',required:[],settled:false})+'\n');
++check('nested historical provenance retains source availability without omission or whole-range readiness',()=>{assert.equal(s.status,3);assert.equal(s.data.sourceAvailable,true);assert.equal(s.data.wholeRangeReady,false);assert(s.data.changed.includes('product.txt'));assert.equal(s.data.omitted.length,0);assert(s.data.gaps.some(g=>g.includes('fixtures/captured/run.md')))});
++const draft=path.join(s.out,'bounded-draft.md'),coverage=path.join(s.out,'bounded-coverage.json'),output=path.join(ws,'final-review-bounded.md');write(draft,report);write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -1 +1 @@']}]}));
++const finalize=(extra=[])=>cli('bounded-review','--ledger',ledger,'--base',base,'--head',nestedHead,'--selection',path.join(s.out,'review-inputs.json'),'--draft',draft,'--coverage',coverage,'--out',output,...extra);
++check('bounded report forces incomplete verdict and survives extraction and collection',()=>{
++ const r=finalize();assert.equal(r.status,0,r.stdout+r.stderr);const text=fs.readFileSync(output,'utf8');assert.match(text,/not ready/);assert.match(text,/retained concrete finding/);assert.match(text,/fixtures\/captured\/run.md/);assert.equal(fs.readFileSync(draft,'utf8'),report);
++ const extracted=JSON.parse(exec('bash',[path.join(root,'skills/super-code/scripts/report-verdict'),'--complete','--source','bounded/final',output]));assert.match(extracted.verdict,/not ready/);assert(extracted.occurrences.some(o=>JSON.stringify(o).includes('retained concrete finding')));assert(extracted.occurrences.some(o=>JSON.stringify(o).includes('whole-epic')));
++ const result=collect('--invocation','bounded','--workspace',ws,'--review',output,'--verdict',extracted.verdict);assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(fs.readFileSync(path.join(repo,'runs/current/reviews/bounded/assembled/final-review-bounded-final/bounded-draft.md'),'utf8'),report);assert.deepEqual(fs.readFileSync(path.join(repo,'runs/current/reviews/bounded/assembled/final-review-bounded-final/bounded-coverage.json')),fs.readFileSync(coverage));assert.match(exec('bash',[rs,run]),/whole-epic|outstanding|unresolved|pending|not ready/);
++ const tree=git('rev-parse',nestedHead+'^{tree}'), snapshot={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'whole-review',kind:'review',owner:'caller'},{id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'fixture',requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'fixture',kind:'live',outcome:'pass',location:'fixture.log'}],reviews:[{id:'whole-review',sourceTree:tree,outcome:'unavailable',location:output}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['fixture human decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[],findingAcceptance:[]};
++ const sources=fs.readFileSync(run,'utf8').split('\n').filter(l=>l.startsWith('- finding-source · ')).map(l=>JSON.parse(l.split(' · ')[1]));
++ for(const source of sources)for(const occurrence of source.occurrences)snapshot.findingAcceptance.push({ref:{source:source.source,section:occurrence.section,position:occurrence.position},judgment:'supported',effect:occurrence.section==='Untested scope'?'required':'nonblocking',requirement:'whole-review',basis:'fixture exact scope judgment',evidence:[source.artifact]});
++ fs.appendFileSync(run,'- root-acceptance · '+JSON.stringify(snapshot)+'\n');const gate=cp.spawnSync('bash',[rs,'--acceptance',run,'--tree',tree],{encoding:'utf8'});assert.equal(gate.status,3,gate.stdout+gate.stderr);assert.equal(JSON.parse(gate.stdout).eligible,false);assert.match(gate.stdout,/whole-review/);assert.match(gate.stdout,/pending|remains required/);assert.doesNotMatch(gate.stdout,/missing measurement|missing human|relevance unproven/);
++});
++check('bounded writer preserves existing report',()=>{const before=fs.existsSync(output)?fs.readFileSync(output):null;const r=finalize();assert.equal(r.status,2);if(before)assert.deepEqual(fs.readFileSync(output),before)});
++check('bounded writer rejects source mismatch',()=>assert.equal(finalize(['--head',head]).status,2));
++// Remove only the fresh fixture output after the preservation check so negative writer
++// controls cannot pass merely because the existing-output guard fires first.
++if(fs.existsSync(output))fs.renameSync(output,output+'.saved');
++const selectionFile=path.join(s.out,'review-inputs.json'),selectionBytes=fs.readFileSync(selectionFile);
++for(const [name,edit] of [
++ ['claimed omission',v=>v.omitted.push({path:'product.txt'})],
++ ['incomplete inventory',v=>v.changed=v.changed.filter(p=>p!=='product.txt')],
++ ['source unavailable',v=>v.sourceAvailable=false],
++ ['missing gaps',v=>v.gaps=[]],
++ ['wrong captured source',v=>v.head=head]
++])check('bounded writer rejects '+name,()=>{const value=JSON.parse(selectionBytes);edit(value);write(selectionFile,JSON.stringify(value));const r=finalize();assert.equal(r.status,2,r.stdout+r.stderr);assert(!fs.existsSync(output));write(selectionFile,selectionBytes)});
++check('bounded writer rejects invented inspected hunk',()=>{write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -99 +99 @@']}]}));assert.equal(finalize().status,2);assert(!fs.existsSync(output));write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -1 +1 @@']}]}))});
++check('bounded writer refuses missing captured commit object',()=>{const saved=fs.readFileSync(ledger,'utf8');write(ledger,saved.replaceAll(nestedHead,'f'.repeat(40)));assert.equal(finalize(['--head','f'.repeat(40)]).status,2);assert(!fs.existsSync(output));write(ledger,saved)});
++check('ordinary prompt exposes bounded source route',()=>{const r=cli('final-review','--ledger',ledger,'--base',base,'--head',nestedHead,'--mode','single','--stdout');assert.equal(r.status,0,r.stderr);assert.match(r.stdout,/bounded-review/);assert.match(r.stdout,/inspected/);assert.doesNotMatch(r.stdout,/carrying selection\/evidence gaps, preserve that explicit gap and return unavailable/)});
++check('large captured range does not lose source to redundant diffstat argv',()=>{
++ // Enough real long Git paths to exceed this host's argument limit. Selection must
++ // ask Git for the whole range directly when no path has omission authority.
++ const prefix=Array.from({length:4},(_,i)=>('segment'+i+'-').padEnd(180,'x')).join('/');
++ const limit=Number(exec('getconf',['ARG_MAX'])),count=Math.ceil(limit/(prefix.length+12))+80;
++ console.log('large range fixture: '+JSON.stringify({argMax:limit,files:count,pathPrefixBytes:prefix.length}));
++ for(let i=0;i<count;i++)write(path.join(repo,prefix,'file-'+i+'.txt'),'captured source '+i+'\n');
++ const wide=selection(commit());assert.equal(wide.status,3,wide.stderr);assert.equal(wide.data.sourceAvailable,true,wide.data.gaps.at(-1));assert.equal(wide.data.omitted.length,0);assert(wide.data.changed.length>=count);assert(!wide.data.gaps.some(g=>g.includes('E2BIG')));
++});
++console.log(JSON.stringify({passed,failed,tmp,base,head:nestedHead,sourceHead:git('rev-parse','HEAD')}));if(!process.env.KEEP_FIXTURES&&!failed)fs.rmSync(tmp,{recursive:true,force:true});process.exitCode=failed?1:0;
+diff --git a/tests/super-code/test-dispatch-text.sh b/tests/super-code/test-dispatch-text.sh
+index d721edcd..725f8e30 100644
+--- a/tests/super-code/test-dispatch-text.sh
++++ b/tests/super-code/test-dispatch-text.sh
+@@ -1,77 +1,150 @@
+ #!/usr/bin/env bash
+ # Tests for skills/super-code/scripts/dispatch-text: the ordinary-subagent coordinator's dispatch
+ # text comes from coordinator.js's own prompt builders, with run facts read from the ledger's
+ # Launch: line.
+ set -euo pipefail
+ 
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ D="$REPO_ROOT/skills/super-code/scripts/dispatch-text"
+-T=$(mktemp -d)
++T=$(mktemp -d "${TMPDIR:-/tmp}/dispatch-text.XXXXXX")
++# Match the dispatcher's path.resolve spelling before deriving artifact expectations.
++T=$(node -p 'require("node:path").resolve(process.argv[1])' "$T")
+ trap 'rm -rf "$T"' EXIT
+ FAILURES=0
+ 
+ pass() { echo "  [PASS] $1"; }
+ fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
+ assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
+ assert_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fail "$3"; echo "    missing: $2"; fi; }
+ assert_lacks() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+ run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
+ 
++PIN_BASE=1111111111111111111111111111111111111111
++PIN_HEAD=2222222222222222222222222222222222222222
+ W=/r/wt
+ mkdir -p "$T/ws"
+ L="$T/ws/progress.md"
+ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+-  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · mergeCheck cargo check --all-targets" > "$L"
++  "Launch: mechanism ordinary-subagents · epic ep · invocationId ep · branch feat/x · integrationWorktree $W · concurrency 4 · earlyUnblock on · sweep deferred · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck cargo check --all-targets" > "$L"
+ TW="$W/.worktrees/feat-x--task-ep.2"
+ 
++echo "dispatch-text: evidence classification shares the Workflow record contract"
++node - "$T/results.json" <<'NODE'
++const fs = require('fs')
++const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
++fs.writeFileSync(process.argv[2], JSON.stringify([
++  { dispatch:'impl:ep.2', result:{ id:'ep.2', evidence:['live','simulated','fallback'].map(kind => ({...identity, kind, outcome:'pass', location:`evidence/${kind}.log`})) } },
++  { dispatch:'review:ep.2', result:{ id:'ep.2', requiredLiveChecks:[identity, {...identity, configuration:'target=production'}] } },
++  { dispatch:'impl:ep.3', result:{ id:'ep.3', evidence:[{...identity, kind:'live', outcome:'fail', location:'failed.log'}, {...identity, kind:'live', outcome:'unavailable', location:'unavailable.log'}] } },
++  { dispatch:'review:ep.3', result:{ id:'ep.3', status:'CLEAN'} },
++]))
++NODE
++run bash "$D" --ledger "$L" --stdout check-evidence --results-file "$T/results.json"
++assert_eq "$code" 0 "ordinary record classification exits 0"
++printf '%s\n' "$out" > "$T/classified.json"
++run node - "$T/classified.json" <<'NODE'
++const r = JSON.parse(require('fs').readFileSync(process.argv[2]))
++if (r.records.length !== 5 || r.records[0].sourceTree !== 'd'.repeat(40) || r.records[0].dispatch !== 'impl:ep.2' || r.records[0].location !== 'evidence/live.log' || r.records[3].outcome !== 'fail' || r.records[4].outcome !== 'unavailable' || r.requiredLiveChecks[0].outcome !== 'pass' || r.requiredLiveChecks[1].outcome !== 'unavailable' || r.gaps.length) process.exit(1)
++NODE
++assert_eq "$code" 0 "ordinary results preserve provenance, failed/unavailable and required-live gaps"
++
++echo "dispatch-text: verification-only evidence review"
++node - "$T/verification.json" <<'NODE'
++const fs = require('fs')
++const identity = { sourceTree:'d'.repeat(40), command:'node smoke.mjs', configuration:'target=staging' }
++fs.writeFileSync(process.argv[2], JSON.stringify({ completionKind:'verification-only', sourceTree:identity.sourceTree, evidence:[{...identity, kind:'live', outcome:'pass', location:'evidence/live.log'}], requiredLiveChecks:[identity] }))
++NODE
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_BASE" --result-file "$T/verification.json"
++assert_eq "$code" 0 "verification review dispatch exits 0"
++assert_has "$out" "[COMPLETION_KIND] = verification-only" "ordinary review transports explicit verification intent"
++assert_has "$out" '"sourceTree":"dddddddddddddddddddddddddddddddddddddddd"' "ordinary review transports the fixed tree"
++assert_has "$out" "evidence/live.log" "ordinary review transports retained measurement references"
++assert_has "$out" "[REPORT_FILE] = $T/ws/task-2-report.md" "evidence review reads the existing report"
++assert_has "$out" "EVIDENCE REVIEW" "evidence review branches before nonempty-diff packaging"
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
++assert_has "$out" "[COMPLETION_KIND] = implementation" "legacy review keeps implementation intent"
++
++node - "$T/verification.json" "$T/accepted.json" <<'NODE'
++const fs = require('fs')
++const r = JSON.parse(fs.readFileSync(process.argv[2]))
++fs.writeFileSync(process.argv[3], JSON.stringify({...r, status:'CLEAN', reviewStatus:'CLEAN', files:[], base:'1'.repeat(40), head:'1'.repeat(40), reportPath:'task-report.md', reviewPath:'task-review.md'}))
++NODE
++run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/accepted.json"
++assert_eq "$code" 0 "reviewed verification produces ordinary closure dispatch"
++assert_has "$out" "STATUS CHECK FIRST" "closure observes tracker status first"
++assert_has "$out" "task-review.md" "closure carries independent review identity"
++assert_lacks "$out" "scripts/already-merged" "verification closure claims no Git landing"
++assert_has "$out" "Cleanup exits are data" "verification closure retains cleanup outcomes"
++run bash "$D" --ledger "$L" --stdout verification-close --id ep.2 --result-file "$T/verification.json"
++assert_eq "$code" 2 "unreviewed verification cannot dispatch closure"
++
+ echo "dispatch-text: implement"
+ run bash "$D" --ledger "$L" implement --id ep.2 --n 2
+ assert_eq "$code" 0 "exits 0"
+ assert_eq "$out" "$T/ws/dispatch/impl-ep.2.md" "writes <ledger dir>/dispatch/<label>.md and prints only its path"
+ txt=$(cat "$T/ws/dispatch/impl-ep.2.md")
+ assert_has "$txt" "You are the implementer for task ep.2." "the implementer dispatch"
+ assert_has "$txt" "[WORKTREE] = $TW" "task worktree under the Launch: line's integration worktree"
+ assert_has "$txt" "[BRIEF_FILE] = $T/ws/task-2-brief.md" "artifacts in the ledger's directory, by ordinal"
+ assert_has "$txt" "git worktree add $TW -b task-ep.2 feat/x" "workspace setup cuts from the integration branch"
+ assert_has "$txt" "PROCESSES AND TEMP STATE" "process hygiene the implementer template points at"
+ assert_has "$txt" "CURRENT REQUIREMENTS" "current requirements"
++assert_has "$txt" "evidence" "implementer RESULT carries optional evidence"
++assert_has "$txt" "sourceTree, command, configuration, outcome, location, kind" "implementer dispatch names the complete provenance contract"
+ assert_lacks "$txt" "stack: ep.1" "no stacking without --parents"
+ run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
+ assert_has "$out" 'git merge --no-ff -m "stack: ep.1" task-ep.1' "--parents stacks on the parent's branch"
+ assert_has "$out" "STACK_CONFLICT" "and names the stack-conflict return"
+ run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --reentry
+ assert_has "$out" "This is a review re-entry" "--reentry: the review re-entry setup"
+ 
+ echo "dispatch-text: review, fix, seam review, check-fix review"
+-run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
++assert_has "$out" "[HEAD] = $PIN_HEAD" "task review receives captured implementation head"
++assert_has "$out" "--is-ancestor $PIN_BASE $PIN_HEAD" "base check uses captured head"
++for mode in single cluster seam; do
++  extra=(--dir /review/inputs)
++  case "$mode" in cluster) extra=(--dir /review/inputs --cluster 1 --name source);; seam) extra=(--dir /review/inputs --reviewed none);; esac
++  run bash "$D" --ledger "$L" --stdout final-review --mode "$mode" --base "$PIN_BASE" --head "$PIN_HEAD" "${extra[@]}"
++  assert_eq "$code" 0 "pinned final $mode exits 0"
++  assert_has "$out" "diff $PIN_BASE..$PIN_HEAD" "final $mode diff is captured"
++  assert_has "$out" "show $PIN_HEAD:<path>" "final $mode source is captured"
++done
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head moving-branch
++assert_eq "$code" 2 "task review rejects a moving source ref"
++run bash "$D" --ledger "$L" --stdout final-review --mode single --base "$PIN_BASE" --head moving-branch
++assert_eq "$code" 2 "final review rejects a moving source ref"
++run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base abc1234 --head "$PIN_HEAD"
+ assert_has "$out" "BASE CHECK" "review carries the base check"
++assert_has "$out" "requiredLiveChecks" "review dispatch carries explicit live-check identities"
++assert_has "$out" "sourceTree, command, configuration, outcome, location, kind" "review dispatch carries the shared evidence contract"
+ assert_has "$out" "[BASE] = abc1234" "and the reported base"
+ printf 'error[E0061]: this function takes 2 arguments\n' > "$T/err.txt"
+ run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+ assert_has "$out" "This is the merge-check fix" "fix --kind check: the merge-check fix scope"
+ assert_has "$out" "cargo check --all-targets" "with the Launch: line's mergeCheck"
+ assert_has "$out" "error[E0061]" "and the build errors as data"
+ for k in check seam review; do
+   printf 'finding text\n' > "$T/f-$k.txt"
+   run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind "$k" --finding-file "$T/f-$k.txt"
+   assert_has "$out" "no memory of the earlier round" "fix --kind $k: fresh-agent handoff"
+   assert_has "$out" "task-2-brief.md" "fix --kind $k: brief path"
+   assert_has "$out" "task-2-report.md" "fix --kind $k: previous report path"
+   assert_has "$out" "abc1234..HEAD" "fix --kind $k: base..HEAD range"
+ done
+ assert_has "$out" "task-2-review.md" "fix --kind review: the review file path"
+ run bash "$D" --ledger "$L" --stdout seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs,"consumes ep.1"
+ assert_has "$out" "READ-ONLY post-rebase seam review for task ep.2" "seam review"
+ assert_has "$out" "A \`consumes <id>\` entry" "a consumes entry gets the composed-review text"
+-run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
++run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --head "$PIN_HEAD" --pre-fix-head abc1234 --errors-file "$T/err.txt"
+ assert_has "$out" "READ-ONLY review of a merge-check fix" "check-fix review"
+ 
+ echo "dispatch-text: merge"
+ run bash "$D" --ledger "$L" --stdout merge --id ep.2 --n 2 --base abc1234
+ assert_has "$out" "rebase \`task-ep.2\` onto feat/x" "an unstacked merge rebases the whole branch"
+ assert_has "$out" "BRANCH CHECK" "fail-closed branch and clean checks"
+ assert_has "$out" "\`cargo check --all-targets\`" "the merge check"
+ assert_lacks "$out" "LEDGER, last" "the merge leaves the ledger lines to the coordinator"
+ assert_lacks "$out" "--keep-branch" "an unsplit task's branch is removed"
+ run bash "$D" --ledger "$L" --stdout merge --id ep.2 --n 2 --base abc1234 --stacked --review-bead ep.9
+@@ -94,27 +167,27 @@ SCHEMA_RULE='FINAL ANSWER: your structured result is the whole answer. Return ev
+ VERDICT_RULE='FINAL ANSWER: your final message is exactly one line: your verdict, then " — " and the absolute path of the file that holds your full report (" — none" when this job writes no report). Never paste a report body into your final message.'
+ ends_with_rule() {  # $1 = label, rest = dispatch-text args; the last non-empty line must end with the schema rule
+   local label="$1"; shift
+   run bash "$D" --ledger "$L" --stdout "$@"
+   local last; last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+   case "$last" in *"$SCHEMA_RULE") pass "$label ends with the final-answer rule" ;; *) fail "$label ends with the final-answer rule"; echo "    last line ends: ${last: -120}" ;; esac
+ }
+ ends_with_rule implement implement --id ep.2 --n 2
+ ends_with_rule "implement (stacked)" implement --id ep.2 --n 2 --parents ep.1
+ ends_with_rule "implement (reentry)" implement --id ep.2 --n 2 --reentry
+-ends_with_rule review review --id ep.2 --n 2 --base abc1234
++ends_with_rule review review --id ep.2 --n 2 --base abc1234 --head "$PIN_HEAD"
+ ends_with_rule "fix (check)" fix --id ep.2 --n 2 --base abc1234 --kind check --finding-file "$T/err.txt"
+ printf 'a finding\n' > "$T/finding.txt"
+ ends_with_rule "fix (review)" fix --id ep.2 --n 2 --base abc1234 --kind review --finding-file "$T/finding.txt"
+ ends_with_rule "fix (seam)" fix --id ep.2 --n 2 --base abc1234 --kind seam --finding-file "$T/finding.txt"
+ ends_with_rule seam-review seam-review --id ep.2 --n 2 --base abc1234 --merge-base def5678 --head 9999999 --overlap src/a.rs
+-ends_with_rule check-fix-review check-fix-review --id ep.2 --n 2 --pre-fix-head abc1234 --errors-file "$T/err.txt"
++ends_with_rule check-fix-review check-fix-review --id ep.2 --n 2 --head "$PIN_HEAD" --pre-fix-head abc1234 --errors-file "$T/err.txt"
+ ends_with_rule merge merge --id ep.2 --n 2 --base abc1234
+ ends_with_rule "merge (stacked)" merge --id ep.2 --n 2 --base abc1234 --stacked --review-bead ep.9
+ ends_with_rule "plan (ready)" plan --ids ep.1,ep.2 --mode ready
+ ends_with_rule "plan (rest)" plan --ids ep.1 --mode rest
+ ends_with_rule "plan (refill)" plan --ids ep.1 --mode refill
+ ends_with_rule triage triage --id ep.2 --blocker ep.7
+ CJS="$REPO_ROOT/skills/super-code/coordinator.js"
+ STEP="$REPO_ROOT/skills/super-design/step-back-prompt.md"
+ SCOPE="$REPO_ROOT/skills/super-auto/scope-filter-prompt.md"
+ REPORT="$REPO_ROOT/skills/super-auto/report-prompt.md"
+@@ -128,29 +201,29 @@ has_f "report-prompt.md copies the verdict form" "$VERDICT_RULE" "$REPORT"
+ lacks_f "report-prompt.md has no schema form" "$SCHEMA_RULE" "$REPORT"
+ lacks_f "step-back-prompt.md has no verdict form" "$VERDICT_RULE" "$STEP"
+ lacks_f "scope-filter-prompt.md has no verdict form" "$VERDICT_RULE" "$SCOPE"
+ has_f "report-prompt.md describes the draft handoff" "report.draft.md" "$REPORT"
+ has_f "report-prompt.md names the status placeholder" "{{STATUS_BLOCK}}" "$REPORT"
+ row=$(grep '^| report drafter' "$REPO_ROOT/skills/super-auto/SKILL.md" || true)
+ assert_has "$row" "report.draft.md" "SKILL.md's report drafter row names report.draft.md"
+ 
+ echo "dispatch-text: assemble"
+ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+-  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" > "$T/ws/rt.md"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","skillsRoot":"/s","runTag":"rt-2","config":{"mergeCheck":"none"}}' > "$T/ws/rtargs.md"
++  "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/rt.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","skillsRoot":"/s","runTag":"rt-2","invocationId":"rt-2","reviewBase":"1111111111111111111111111111111111111111","reviewHead":"2222222222222222222222222222222222222222","config":{"mergeCheck":"none"}}' > "$T/ws/rtargs.md"
+ AW="$W/.superpowers/sdd/ep-plan/assembled"
+ asm() {  # $1 = consumer, $2 = instance
+   run bash "$D" --ledger "$T/ws/rt.md" --stdout assemble --consumer "$1" --instance "$2"
+ }
+ asm final-review final
+ assert_eq "$code" 0 "assemble final-review exits 0"
+-assert_has "$out" "[OUT_DIR] = $AW/final-review-rt-1-final" "OUT_DIR is <workspace>/assembled/<consumer>-<runTag>-<instance>"
++assert_has "$out" "[OUT_DIR] = $AW/final-review-rt-1-final" "final-review OUT_DIR includes persisted invocation identity"
+ assert_has "$out" "assembler-prompt.md" "points at the assembler template"
+ assert_has "$out" "[CONSUMER] = final-review" "names the consumer"
+ assert_has "$out" "[CLUSTERS] = yes" "final-review asks for clusters"
+ for sec in "diffstat" "report summaries" "interfaces and seams" "deferred minors" "amendments"; do
+   assert_has "$out" "$sec" "final-review section: $sec"
+ done
+ assert_has "$out" "[ASSEMBLED_SIZE] = bash " "assembled-size is named by absolute script path"
+ assert_has "$out" "scripts/assembled-size" "and it is the script, not a re-implementation"
+ assert_has "$out" "[LEDGER] = $W/.superpowers/sdd/ep-plan/progress.md" "the ledger path"
+ assert_has "$out" "[THRESHOLD] = 80000" "default threshold"
+@@ -181,105 +254,105 @@ asm assess audit
+ assert_has "$out" "ledger state counts" "assess section: ledger state counts"
+ assert_has "$out" "deferred minors" "assess section: deferred minors"
+ assert_has "$out" "[CLUSTERS] = no" "assess asks for no clusters"
+ last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
+ case "$last" in *"$SCHEMA_RULE") pass "assemble assess ends with the final-answer rule" ;; *) fail "assemble assess ends with the final-answer rule" ;; esac
+ run bash "$D" --ledger "$T/ws/rt.md" --stdout --run-tag x assemble --consumer assess --instance audit
+ assert_has "$out" "[OUT_DIR] = $AW/assess-x-audit" "--run-tag overrides the Launch: line"
+ run bash "$D" --ledger "$T/ws/rtargs.md" --stdout assemble --consumer assess --instance audit
+ assert_has "$out" "[OUT_DIR] = /r/wy/.superpowers/sdd/ep-plan/assembled/assess-rt-2-audit" "the Launch: args form carries runTag"
+ run bash "$D" --ledger "$L" --stdout assemble --consumer final-review --instance final
+-assert_has "$out" "assembled/final-review-ep-final" "a Launch line without runTag falls back to the epic"
++assert_has "$out" "assembled/final-review-ep-final" "final-review assembly uses the persisted identity without runTag"
+ ASMT="$REPO_ROOT/skills/super-code/assembler-prompt.md"
+ has_f "assembler-prompt.md states it judges nothing" "judges nothing" "$ASMT"
+ has_f "assembler-prompt.md empties the instance dir first" 'rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices' "$ASMT"
+ has_f "assembler-prompt.md relays the exit code and the fits: line" 'its `fits:` line verbatim' "$ASMT"
+ for m in opus sonnet haiku gpt; do lacks_f "assembler-prompt.md names no model ($m)" "$m" "$ASMT"; done
+ run bash "$D" --ledger "$L" --stdout assemble --consumer bogus --instance final
+ assert_eq "$code" 2 "--consumer bogus: exit 2"
+ run bash "$D" --ledger "$L" --stdout assemble --consumer assess
+ assert_eq "$code" 2 "assemble without --instance: exit 2"
+ 
+ echo "dispatch-text: final-review"
+ fr() { run bash "$D" --ledger "$T/ws/rt.md" --stdout final-review "$@"; }
+ last_is_schema() { [ "$(printf '%s\n' "$out" | tail -n 1 | grep -o 'FINAL ANSWER:.*')" = "$SCHEMA_RULE" ]; }
+ FD="$AW/final-review-rt-1-final"
+ fr --mode single
+ assert_eq "$code" 0 "final-review --mode single exits 0"
+ assert_has "$out" "review-package" "single without --dir reviews direct inputs through the review package"
+-assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "single writes the handoff file final-review-<runTag>.md"
++assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "single writes the invocation handoff file"
+ assert_lacks "$out" "no usable clusters" "an uncapped single review is not told its inputs overflow"
+ if last_is_schema; then pass "single ends with the final-answer line"; else fail "single ends with the final-answer line"; fi
+ fr --mode single --dir "$FD"
+ assert_has "$out" "$FD/digest.md" "single --dir reads the assembled digest"
+ assert_lacks "$out" "review-package" "single --dir does not rebuild the review package"
+ fr --mode single --capped
+ assert_has "$out" "no usable clusters" "--capped tells the reviewer its inputs exceed the window"
+ fr --mode cluster --dir "$FD" --cluster 2 --name hooks
+-assert_has "$out" "final-review-rt-1-cluster-2.md" "cluster writes final-review-<runTag>-cluster-<n>.md"
++assert_has "$out" "final-review-rt-1.cluster-2.md" "cluster writes the invocation cluster file"
+ assert_has "$out" "cluster named hooks" "cluster names the cluster it reviews"
+ if last_is_schema; then pass "cluster ends with the final-answer line"; else fail "cluster ends with the final-answer line"; fi
+ printf 'cluster 2 (hooks): over the window\n' > "$T/unrev.txt"
+ fr --mode seam --dir "$FD" --reviewed 1,3 --unreviewed "$T/unrev.txt"
+ assert_eq "$code" 0 "seam --reviewed exits 0"
+-assert_has "$out" "final-review-rt-1-cluster-1.md" "seam is given reviewed cluster file 1"
+-assert_has "$out" "final-review-rt-1-cluster-3.md" "seam is given reviewed cluster file 3"
+-assert_lacks "$out" "final-review-rt-1-cluster-2.md" "seam is not given the unreviewed cluster's file"
++assert_has "$out" "final-review-rt-1.cluster-1.md" "seam is given reviewed cluster file 1"
++assert_has "$out" "final-review-rt-1.cluster-3.md" "seam is given reviewed cluster file 3"
++assert_lacks "$out" "final-review-rt-1.cluster-2.md" "seam is not given the unreviewed cluster's file"
+ assert_has "$out" "cluster 2 (hooks): over the window" "seam names the unreviewed entry verbatim"
+ assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "seam writes the handoff file"
+ if last_is_schema; then pass "seam ends with the final-answer line"; else fail "seam ends with the final-answer line"; fi
+ fr --mode seam --dir "$FD" --reviewed none
+ assert_has "$out" "none — no cluster review completed" "--reviewed none: the empty list"
+ fr --mode stub --reviewed 1 --unreviewed <(printf 'seam\n')
+ assert_eq "$code" 0 "stub exits 0"
+ assert_has "$out" "$W/.superpowers/sdd/ep-plan/final-review-rt-1.md" "stub writes the handoff file"
+ assert_has "$out" "unreviewed: seam" "stub names the unreviewed entries"
+-assert_has "$out" "final-review-rt-1-cluster-1.md" "stub lists the reviewed cluster file"
++assert_has "$out" "final-review-rt-1.cluster-1.md" "stub lists the reviewed cluster file"
+ if last_is_schema; then pass "stub ends with the final-answer line"; else fail "stub ends with the final-answer line"; fi
+ run bash "$D" --ledger "$T/ws/rt.md" final-review --mode stub --reviewed none --unreviewed "$T/unrev.txt"
+-assert_eq "$out" "$T/ws/dispatch/final-review-stub.md" "stub's default label is final-review-stub"
++assert_eq "$out" "$T/ws/dispatch/final-review-rt-1-stub.md" "stub dispatch name includes its invocation identity"
+ fr --mode bogus
+ assert_eq "$code" 2 "final-review --mode bogus: exit 2"
+ fr --mode cluster --dir "$FD" --cluster 2
+ assert_eq "$code" 2 "cluster without --name: exit 2"
+ fr --mode stub --reviewed 1
+ assert_eq "$code" 2 "stub without --unreviewed: exit 2"
+ fr --mode seam --dir "$FD" --reviewed 0
+ assert_eq "$code" 2 "seam --reviewed 0: exit 2"
+ fr --mode seam --dir "$FD" --reviewed a,b
+ assert_eq "$code" 2 "seam --reviewed a,b: exit 2"
+ fr --mode seam --dir "$FD"
+ assert_eq "$code" 2 "seam without --reviewed: exit 2"
+ assert_has "$(cat "$T/err")" "needs --reviewed" "and says what is missing"
+ 
+ # Single: sweep and Metrics come from the ledger, as Finish passes them.
+-printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · mergeCheck none" \
++printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" \
+   'Sweep: abc1234 — 120 passed, 0 failed; failing: none; command: npm test' \
+   'Metrics: m1' 'Metrics: m2' 'Metrics: m3' 'Metrics: m4' > "$T/ws/sw.md"
+ frl() { run bash "$D" --ledger "$T/ws/sw.md" --stdout final-review "$@"; }
+ frl --mode single
+ assert_has "$out" "<sweep>" "single reads the ledger's Sweep: line into the prompt"
+ assert_has "$out" "120 passed" "and its text"
+ assert_has "$out" "Metrics: m1 | Metrics: m2 | Metrics: m3 | Metrics: m4" "single reads the four Metrics: lines"
+ assert_lacks "$out" "No sweep result is available" "a recorded sweep is not reported absent"
+ frl --mode single --sweep deferred
+ assert_has "$out" "deferred to the caller" "--sweep deferred passes the deferred marker"
+ printf 'sweep from file\n' > "$T/sweepf.txt"; printf 'Metrics: f1\nMetrics: f2\n' > "$T/metf.txt"
+ frl --mode single --sweep "$T/sweepf.txt" --metrics "$T/metf.txt"
+ assert_has "$out" "sweep from file" "--sweep F overrides the ledger"
+ assert_lacks "$out" "120 passed" "and the ledger's sweep is not used"
+ assert_has "$out" "Metrics: f1 | Metrics: f2" "--metrics F overrides the ledger"
+ assert_lacks "$out" "Metrics: m1" "and the ledger's metrics are not used"
+-printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · sweep deferred · mergeCheck none" > "$T/ws/df.md"
++printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag rt-1 · invocationId rt-1 · sweep deferred · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/df.md"
+ run bash "$D" --ledger "$T/ws/df.md" --stdout final-review --mode single
+ assert_has "$out" "deferred to the caller" "a Launch line with sweep deferred and no Sweep: line defers the sweep"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/x","integrationWorktree":"/r/wt","runTag":"rt-1","deferSweep":true}' > "$T/ws/dfa.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","invocationId":"ep","integrationBranch":"feat/x","integrationWorktree":"/r/wt","runTag":"rt-1","deferSweep":true,"reviewBase":"1111111111111111111111111111111111111111","reviewHead":"2222222222222222222222222222222222222222"}' > "$T/ws/dfa.md"
+ run bash "$D" --ledger "$T/ws/dfa.md" --stdout final-review --mode single
+ assert_has "$out" "deferred to the caller" "the Workflow Launch form's deferSweep defers the sweep"
+ fr --mode single
+ assert_has "$out" "No sweep result is available" "no Sweep: line and no deferral: still no sweep result"
+ 
+ # Argument parity: every final-review builder call in coordinator.js and dispatch-text.mjs passes as
+ # many arguments as the builder declares, with the same option-object keys.
+ parity=$(cd "$REPO_ROOT" && node - <<'NODE'
+ const { readFileSync } = require('node:fs')
+ const co = readFileSync('skills/super-code/coordinator.js', 'utf8')
+@@ -314,22 +387,121 @@ for (const name of ['finalReviewPrompt', 'finalClusterReviewPrompt', 'finalSeamR
+   }
+   console.log(bad.length ? `bad ${name}: ${bad.join('; ')}` : `ok ${name}`)
+ }
+ NODE
+ )
+ while IFS= read -r line; do
+   case "$line" in ok\ *) pass "argument parity: ${line#ok }" ;; *) fail "argument parity: ${line#bad }" ;; esac
+ done <<< "$parity"
+ [ -n "$parity" ] || fail "argument parity block printed nothing"
+ 
++echo "dispatch-text: advancing caller fixture"
++node --input-type=module - "$D" "$T" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
++import { execFileSync } from 'node:child_process'
++const [dispatch, dir] = process.argv.slice(2)
++const repo = `${dir}/advancing-caller`
++mkdirSync(repo)
++const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
++git('init', '-q'); git('config', 'user.name', 'Test'); git('config', 'user.email', 'test@example.com')
++writeFileSync(`${repo}/source.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
++const base = git('rev-parse', 'HEAD')
++writeFileSync(`${repo}/source.txt`, 'captured source\n'); git('commit', '-qam', 'reviewed')
++const head = git('rev-parse', 'HEAD')
++git('branch', '-m', 'integration')
++const ledger = `${dir}/advancing-progress.md`
++writeFileSync(ledger, `Launch: epic ep · invocationId pinned-invocation · branch integration · integrationWorktree ${repo}\n`)
++for (const callerText of ['advanced once\n', 'advanced twice\n']) {
++  writeFileSync(`${repo}/source.txt`, callerText); git('commit', '-qam', 'advance caller')
++  for (const args of [
++    ['review', '--id', 'ep.2', '--n', '2'],
++    ['assemble', '--consumer', 'final-review', '--instance', 'final'],
++    ['final-review', '--mode', 'single'],
++    ['final-review', '--mode', 'cluster', '--dir', '/review/input', '--cluster', '1', '--name', 'source'],
++    ['final-review', '--mode', 'seam', '--dir', '/review/input', '--reviewed', 'none'],
++  ]) {
++    const prompt = execFileSync('bash', [dispatch, '--ledger', ledger, '--stdout', ...args, '--base', base, '--head', head], { encoding: 'utf8' })
++    assert.ok(prompt.includes(base) && prompt.includes(head), 'every dispatch retains captured pair')
++    assert.ok(!prompt.includes(git('rev-parse', 'HEAD')), 'caller advance does not enter review inputs')
++    if (args[0] === 'final-review') {
++      const diff = prompt.match(/`git diff ([a-f0-9]+)\.\.([a-f0-9]+)`/)
++      assert.ok(diff, 'rendered pinned diff command')
++      const patch = git('diff', `${diff[1]}..${diff[2]}`)
++      assert.ok(patch.includes('+captured source') && !patch.includes('advanced'))
++      const source = prompt.match(/`git show ([a-f0-9]+):<path>`/)
++      assert.ok(source, 'rendered pinned source command')
++      assert.equal(git('show', `${source[1]}:source.txt`), 'captured source')
++    }
++  }
++  assert.equal(readFileSync(`${repo}/source.txt`, 'utf8'), callerText)
++  assert.equal(git('status', '--porcelain=v1'), '')
++}
++console.log('  [PASS] regenerated task/assembly/single/cluster/seam prompts preserve captured source across two caller advances')
++NODE
++
++echo "dispatch-text: invocation bundle identity and resume"
++for identity in inv-a inv-b; do
++  printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · runTag shared-run · invocationId $identity · reviewBase $PIN_BASE · reviewHead $PIN_HEAD · mergeCheck none" > "$T/ws/inv-$identity.md"
++  for mode in single cluster seam stub; do
++    extra=(--base "$PIN_BASE" --head "$PIN_HEAD")
++    case "$mode" in cluster) extra=(--dir /inputs --cluster 1 --name source);; seam) extra=(--dir /inputs --reviewed 1);; stub) extra=(--reviewed 1 --unreviewed "$T/unrev.txt");; esac
++    run bash "$D" --ledger "$T/ws/inv-$identity.md" --stdout final-review --mode "$mode" "${extra[@]}"
++    assert_eq "$code" 0 "$identity/$mode builds from persisted identity"
++    assert_has "$out" "final-review-$identity" "$identity/$mode bundle includes invocation identity"
++    assert_lacks "$out" 'final-review-shared-run' "$identity/$mode never uses the enclosing runTag for review files"
++    printf '%s\n' "$out" > "$T/ws/$identity-$mode.txt"
++  done
++  run bash "$D" --ledger "$T/ws/inv-$identity.md" --stdout assemble --consumer final-review --instance final
++  assert_has "$out" "assembled/final-review-$identity-final" "$identity assembly is invocation scoped"
++done
++run bash "$D" --ledger "$T/ws/inv-inv-a.md" --stdout final-review --mode single
++assert_eq "$out" "$(cat "$T/ws/inv-a-single.txt")" "resume replay uses the identical persisted source and artifact path"
++printf '%s\n' "Launch: args {\"epicId\":\"ep\",\"integrationBranch\":\"feat/x\",\"integrationWorktree\":\"$W\",\"runTag\":\"shared-run\",\"invocationId\":\"inv-json\",\"reviewBase\":\"$PIN_BASE\",\"reviewHead\":\"$PIN_HEAD\"}" > "$T/ws/inv-json.md"
++run bash "$D" --ledger "$T/ws/inv-json.md" --stdout final-review --mode single
++assert_has "$out" 'final-review-inv-json.md' 'Workflow Launch args also replay invocation identity'
++for bad in '../escape' 'a/b' 'a b' ''; do
++  printf '%s\n' "Launch: mechanism ordinary-subagents · epic ep · branch feat/x · integrationWorktree $W · invocationId $bad · reviewBase $PIN_BASE · reviewHead $PIN_HEAD" > "$T/ws/bad-inv.md"
++  run bash "$D" --ledger "$T/ws/bad-inv.md" --stdout final-review --mode single
++  assert_eq "$code" 2 "unsafe or missing invocation identity [$bad] refuses review output"
++done
++run bash "$D" --ledger "$T/ws/inv-inv-a.md" --invocation-id inv-b --stdout final-review --mode single
++assert_eq "$code" 2 'an unpersisted identity override cannot replace the launch identity'
++
++echo "dispatch-text: emitted bundle paths retain prior contents, including suffix-like identities"
++node --input-type=module - "$D" "$T" "$PIN_BASE" "$PIN_HEAD" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
++import { dirname } from 'node:path'
++import { execFileSync } from 'node:child_process'
++const [dispatch, dir, base, head] = process.argv.slice(2)
++const ledger = `${dir}/bundle-progress.md`
++const worktree = `${dir}/bundle-worktree`
++const saved = new Map()
++for (const identity of ['inv-a', 'inv-b', 'inv-a-cluster-1']) {
++  writeFileSync(ledger, `Launch: epic ep · branch feat/x · integrationWorktree ${worktree} · runTag shared · invocationId ${identity} · reviewBase ${base} · reviewHead ${head}\n`)
++  const build = (...args) => execFileSync('bash', [dispatch, '--ledger', ledger, '--stdout', ...args], { encoding: 'utf8' })
++  const final = build('final-review', '--mode', 'single').match(/declared review artifact is (\S+?\.md)/)?.[1]
++  const cluster = build('final-review', '--mode', 'cluster', '--dir', '/inputs', '--cluster', '1', '--name', 'source').match(/declared review artifact is (\S+?\.md)/)?.[1]
++  const assembly = build('assemble', '--consumer', 'final-review', '--instance', 'final').match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
++  assert.ok(final && cluster && assembly, 'real builders declare all bundle paths')
++  for (const file of [final, cluster, `${assembly}/digest.md`]) {
++    mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, identity)
++  }
++  for (const [file, contents] of saved) assert.equal(readFileSync(file, 'utf8'), contents, 'a later invocation preserves every earlier artifact')
++  for (const file of [final, cluster, `${assembly}/digest.md`]) saved.set(file, identity)
++}
++console.log('  [PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs')
++NODE
++
+ echo "dispatch-text: run facts and bad input"
+-printf '%s\n' 'Launch: args {"epicId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
++printf '%s\n' 'Launch: args {"epicId":"ep","invocationId":"ep","integrationBranch":"feat/y","integrationWorktree":"/r/wy","config":{"mergeCheck":"none"}}' > "$T/ws/wf.md"
+ run bash "$D" --ledger "$T/ws/wf.md" --stdout merge --id ep.2 --n 2 --base abc1234
+ assert_has "$out" "the integration branch feat/y is checked out in /r/wy" "a Workflow Launch: args line is read too"
+ assert_has "$out" "No merge check is declared" "mergeCheck none: no check step"
+ run bash "$D" --ledger "$T/ws/wf.md" --stdout --branch feat/z merge --id ep.2 --n 2 --base abc1234
+ assert_has "$out" "the integration branch feat/z" "--branch overrides the Launch: line"
+ printf '# SDD ledger\n' > "$T/ws/empty.md"
+ run bash "$D" --ledger "$T/ws/empty.md" implement --id ep.2 --n 2
+ assert_eq "$code" 2 "no Launch: line and no overrides: exit 2"
+ run bash "$D" --ledger "$L" review --id ep.2 --n 2
+ assert_eq "$code" 2 "a missing required option: exit 2"
+diff --git a/tests/super-code/test-report-verdict.sh b/tests/super-code/test-report-verdict.sh
+index 1360d39f..dc1e43ea 100644
+--- a/tests/super-code/test-report-verdict.sh
++++ b/tests/super-code/test-report-verdict.sh
+@@ -107,22 +107,23 @@ path: $FX/final-review-format.md" "exact output"
+ 
+ echo "report-verdict: untested lines are capped at 10"
+ { printf '## Verdict\nready\n\n## Must fix before landing\n- none\n\n## Untested scope\n'; for i in 1 2 3 4 5 6 7 8 9 10 11 12; do echo "- area $i"; done; } > "$T/many-untested.md"
+ run bash "$R" "$T/many-untested.md"
+ assert_eq "$(printf '%s\n' "$out" | grep -c '^untested: ')" 11 "ten items plus the overflow line"
+ assert_has "$out" "untested: +2 more" "overflow counted"
+ assert_eq "$(lines "$out")" 14 "verdict, kind, 11 untested, path"
+ 
+ echo "report-verdict: producer/parser contract"
+ printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
+-  'Launch: mechanism ordinary-subagents · epic ep · branch b · integrationWorktree /r/w · mergeCheck none' > "$T/ledger.md"
+-run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode single
++  'Launch: mechanism ordinary-subagents · epic ep · invocationId ep-parser-contract · branch b · integrationWorktree /r/w · mergeCheck none' > "$T/ledger.md"
++run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode single \
++  --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222
+ assert_eq "$code" 0 "dispatch-text builds the single-mode final-review prompt"
+ for needle in '"## Verdict"' '"## Must fix before landing"' '"## Untested scope"' 'no numbered lists'; do
+   if printf '%s\n' "$out" | grep -qF -- "$needle"; then pass "prompt fixes $needle"; else fail "prompt fixes $needle"; fi
+ done
+ 
+ echo "report-verdict: step-back"
+ run bash "$R" "$FX/step-back.md"
+ assert_eq "$code" 0 "exits 0"
+ assert_eq "$out" "verdict: decision: patch
+ kind: step-back
+@@ -243,12 +244,208 @@ assert_eq "$code" 2 "--keys with two files exits 2"
+ 
+ echo "report-verdict: bad input"
+ run bash "$R" "$T/nope.md"
+ assert_eq "$code" 2 "missing file exits 2"
+ assert_has "$(cat "$T/err")" "report-verdict: cannot read $T/nope.md" "missing file message on stderr"
+ run bash "$R"
+ assert_eq "$code" 2 "no argument exits 2"
+ run bash "$R" a b
+ assert_eq "$code" 2 "two arguments exit 2"
+ 
++echo "report-verdict --complete: complete final-review occurrences and stable archive identity"
++cat > "$T/complete-final.md" <<'EOF'
++Status: DONE
++## Verdict
++not ready (findings retained)
++## Must fix before landing
++- **Keep \"quoted\" café text.**
++  Evidence: src/one:7 — Ω
++  - nested detail stays with this occurrence
++- same finding
++- same finding
++## Untested scope
++1. Run the live check.
++## Deferred OK
++* **Deferred finding** with a \\ backslash.
++  Continuation preserves **formatting**.
++## Deferred OK
++- Another deferred occurrence.
++EOF
++run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/complete-final.md"
++assert_eq "$code" 0 "complete mode accepts a caller-supplied immutable source"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/complete-final.json"
++  run node --input-type=module - "$T/complete-final.json" "$T/complete-final.md" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const value = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
++assert.deepEqual(value, {
++  version: 1, source: 'run/invocation-1/final-review', artifact: process.argv[3],
++  kind: 'final-review', verdict: 'not ready (findings retained)',
++  occurrences: [
++    {section:'Must fix before landing', position:1, key:'**Keep \\"quoted\\" café text.**',
++     text:'**Keep \\"quoted\\" café text.**\n  Evidence: src/one:7 — Ω\n  - nested detail stays with this occurrence'},
++    {section:'Must fix before landing', position:2, key:'same finding', text:'same finding'},
++    {section:'Must fix before landing', position:3, key:'same finding', text:'same finding'},
++    {section:'Untested scope', position:1, key:'Run the live check.', text:'Run the live check.'},
++    {section:'Deferred OK', position:1, key:'**Deferred finding** with a \\\\ backslash.',
++     text:'**Deferred finding** with a \\\\ backslash.\n  Continuation preserves **formatting**.'},
++    {section:'Deferred OK', position:2, key:'Another deferred occurrence.', text:'Another deferred occurrence.'},
++  ],
++});
++NODE
++  assert_eq "$code" 0 "all relevant sections, repeated occurrences and original text survive JSON encoding"
++  run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/complete-final.md"
++  assert_eq "$out" "$(cat "$T/complete-final.json")" "repeat parsing is deterministic"
++  cp "$T/complete-final.md" "$T/archive-final.md"
++  run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/archive-final.md"
++  printf '%s\n' "$out" > "$T/archive-final.json"
++  run node --input-type=module - "$T/complete-final.json" "$T/archive-final.json" "$T/archive-final.md" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const original = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
++const archive = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
++assert.equal(archive.artifact, process.argv[4]);
++assert.equal(archive.source, original.source);
++assert.deepEqual(archive.occurrences, original.occurrences);
++NODE
++  assert_eq "$code" 0 "archiving changes artifact path but preserves source and occurrence identities"
++fi
++
++echo "report-verdict --complete: every roast finding section and severity"
++cat > "$T/complete-roast.md" <<'EOF'
++super-roast verdict: Blocking (4 confirmed)
++## Confirmed findings
++- [Blocking] a:1 — broken
++  evidence: actual proof
++- [Should-fix] b:2 — smaller
++- [Nit] c:3 — nit
++- [FYI] d:4 — context
++## Not verified (beyond panel cap)
++- [suggested Blocking] e:5 — unjudged
++## Not verified (dedupe failed or judge lost)
++- [unrated] f:6 — judge lost
++## Beyond remainder cap (count only)
++- 2 candidates dropped by the remainder cap
++## Rejected (with reason)
++- [Blocking] g:7 — rejected claim
++  evidence: retained reason
++## Unverified nits (spot-checked)
++- [Nit] h:8 — uncertain
++## Escalations (need human)
++- [Blocking] i:9 — unsettled panel
++## Deferred findings
++- [Should-fix] j:10 — deferred
++EOF
++run bash "$R" --complete --source 'invocation/roast' "$T/complete-roast.md"
++assert_eq "$code" 0 "roast complete mode exits 0"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/complete-roast.json"
++  run node --input-type=module - "$T/complete-roast.json" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const {kind, verdict, occurrences:o} = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
++assert.equal(kind, 'roast');
++assert.equal(verdict, 'Blocking (4 confirmed)');
++assert.deepEqual(o.map(x => x.section), [
++  'Confirmed findings', 'Confirmed findings', 'Confirmed findings', 'Confirmed findings',
++  'Not verified (beyond panel cap)', 'Not verified (dedupe failed or judge lost)',
++  'Beyond remainder cap (count only)', 'Rejected (with reason)', 'Unverified nits (spot-checked)',
++  'Escalations (need human)', 'Deferred findings',
++]);
++assert.deepEqual(o.map(x => x.position), [1,2,3,4,1,1,1,1,1,1,1]);
++assert.deepEqual(o.map(x => x.key), ['[Blocking] a:1','[Should-fix] b:2','[Nit] c:3','[FYI] d:4',
++  '[suggested Blocking] e:5','[unrated] f:6','2 candidates dropped by the remainder cap',
++  '[Blocking] g:7','[Nit] h:8','[Blocking] i:9','[Should-fix] j:10']);
++assert.equal(o[0].text, '[Blocking] a:1 — broken\n  evidence: actual proof');
++assert.equal(o[7].text, '[Blocking] g:7 — rejected claim\n  evidence: retained reason');
++NODE
++  assert_eq "$code" 0 "all roast routes, severities, reason text and section-local positions are retained"
++fi
++
++echo "report-verdict --complete: uncapped extraction"
++run bash "$R" --complete --source 'invocation/many' "$T/many-mustfix.md"
++assert_eq "$code" 0 "large final review accepted"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/many.json"
++  run node --input-type=module - "$T/many.json" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const o = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences;
++assert.equal(o.length, 32);
++assert.deepEqual(o[31], {section:'Untested scope',position:12,key:'area 12',text:'area 12'});
++NODE
++  assert_eq "$code" 0 "complete extraction has no default item caps"
++fi
++run bash "$R" --complete --source 'invocation/long' "$T/long.md"
++assert_eq "$code" 0 "long roast accepted"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/long.json"
++  run node --input-type=module - "$T/long.json" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const {key,text} = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences[0];
++assert.equal(text, '[Blocking] ' + '0'.repeat(300));
++assert.equal(key, text);
++NODE
++  assert_eq "$code" 0 "complete extraction does not truncate keys or text"
++fi
++
++echo "report-verdict --complete: task concerns, bold labels and valid explicit empty reviews"
++cat > "$T/complete-task.md" <<'EOF'
++Status: IMPLEMENTED
++**Concerns:**
++- Still has an unmeasured path.
++**Deferred:**
++- Retain this even after a success status.
++EOF
++run bash "$R" --complete --source 'invocation/task' "$T/complete-task.md"
++assert_eq "$code" 0 "task report with successful status can retain concerns"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/task.json"
++  run node --input-type=module - "$T/task.json" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++const value = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
++assert.equal(value.kind, 'task-report');
++assert.equal(value.verdict, 'IMPLEMENTED');
++assert.deepEqual(value.occurrences.map(x=>x.text), ['Still has an unmeasured path.', 'Retain this even after a success status.']);
++NODE
++  assert_eq "$code" 0 "successful task status does not erase concern/deferred occurrences"
++fi
++printf '## Verdict\nready\n## Must fix before landing\n- none\n## Untested scope\n- none\n## Deferred OK\n- none\n' > "$T/explicit-empty.md"
++run bash "$R" --complete --source 'invocation/empty' "$T/explicit-empty.md"
++assert_eq "$code" 0 "recognized explicitly empty review succeeds"
++if [ "$code" = 0 ]; then
++  printf '%s\n' "$out" > "$T/empty.json"
++  run node --input-type=module - "$T/empty.json" <<'NODE'
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++assert.deepEqual(JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences, []);
++NODE
++  assert_eq "$code" 0 "explicit none markers are not findings"
++fi
++
++echo "report-verdict --complete: invalid or incomplete input cannot look clean"
++printf '## Verdict\n\n## Must fix before landing\n- none\n' > "$T/no-verdict.md"
++printf '## Verdict\nready\n' > "$T/no-sections.md"
++printf '## Verdict\nready\n## Must fix before landing\nunfinished prose without a finding marker\n' > "$T/malformed-section.md"
++printf 'super-roast verdict: \n## Confirmed findings\n- none\n' > "$T/empty-roast-verdict.md"
++printf '## Verdict\nready\n## Must fix before landing\n' > "$T/truncated-section.md"
++for invalid in "$T/nope.md" "$T" "$FX/unknown.md" "$T/no-verdict.md" "$T/no-sections.md" "$T/malformed-section.md" "$T/empty-roast-verdict.md" "$T/truncated-section.md"; do
++  run bash "$R" --complete --source 'invocation/invalid' "$invalid"
++  if [ "$code" -ne 0 ]; then pass "$(basename "$invalid"): explicit failure"; else fail "$(basename "$invalid"): explicit failure"; fi
++  assert_eq "$out" "" "$(basename "$invalid"): no success JSON"
++  if [ -s "$T/err" ]; then pass "$(basename "$invalid"): diagnostic on stderr"; else fail "$(basename "$invalid"): diagnostic on stderr"; fi
++done
++for source in '' '   '; do
++  run bash "$R" --complete --source "$source" "$T/explicit-empty.md"
++  assert_eq "$code" 2 "empty source identity exits 2"
++  assert_eq "$out" "" "empty source identity has no success output"
++done
++run bash "$R" --complete "$T/explicit-empty.md"
++assert_eq "$code" 2 "missing --source exits 2"
++run bash "$R" --complete --source identity
++assert_eq "$code" 2 "missing artifact exits 2"
++
+ if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
+ echo "report-verdict: all tests passed"
+diff --git a/tests/super-roast/test-assemble-args.sh b/tests/super-roast/test-assemble-args.sh
+index 49037125..57f7affc 100644
+--- a/tests/super-roast/test-assemble-args.sh
++++ b/tests/super-roast/test-assemble-args.sh
+@@ -104,20 +104,60 @@ for (const scenario of ['prior', 'inputs', 'independence']) {
+     const execution = spawnSync(process.execPath, [mock, `${stem}.js`, 'pr-r2'], { encoding: 'utf8' })
+     assert.equal(execution.status, 0, execution.stdout + execution.stderr)
+   })
+ }
+ process.exit(failures ? 1 : 0)
+ NODE
+ rc=$?
+ set -e
+ [ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
+ 
++echo "assemble-args: pinned PR sources and isolated reproductions"
++node --input-type=module - "$A" "$T" <<'NODE'
++import assert from 'node:assert/strict'
++import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
++import { execFileSync, spawnSync } from 'node:child_process'
++const [assembler, dir] = process.argv.slice(2)
++const repo = `${dir}/caller`
++mkdirSync(repo)
++const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
++git('init', '-q'); git('config', 'user.email', 'test@example.com'); git('config', 'user.name', 'Test')
++writeFileSync(`${repo}/source.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
++const base = git('rev-parse', 'HEAD')
++writeFileSync(`${repo}/source.txt`, 'reviewed\n'); git('commit', '-qam', 'reviewed')
++const head = git('rev-parse', 'HEAD')
++git('branch', 'reviewed')
++writeFileSync(`${repo}/source.txt`, 'advanced caller\n'); git('commit', '-qam', 'advance caller')
++const result = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'reviewed vs base', '--repo', repo, '--base', base, '--head', 'reviewed'], { encoding: 'utf8' })
++assert.equal(result.status, 0, result.stderr)
++const args = JSON.parse(result.stdout)
++assert.deepEqual(args.source, { repo, base, head })
++for (const prompt of [...Object.values(args.prompts.scouts), ...Object.values(args.prompts.seats)]) {
++  assert.ok(prompt.includes(`diff ${base}...${head}`), 'diff uses captured commits')
++  assert.ok(prompt.includes(`show ${head}:<path>`), 'source uses captured head')
++  assert.match(prompt, /detached\s+worktree/, 'filesystem access is review-owned')
++}
++assert.ok(args.prompts.triage.includes(`Diff ${base}...${head}`))
++const status = git('status', '--porcelain=v1'), caller = readFileSync(`${repo}/source.txt`, 'utf8')
++for (const name of ['review-one', 'review-two']) git('worktree', 'add', '--detach', `${dir}/${name}`, head)
++writeFileSync(`${dir}/review-two/output.txt`, 'other review\n')
++writeFileSync(`${dir}/review-one/source.txt`, 'mutation\n')
++writeFileSync(`${dir}/review-one/output.txt`, 'reproduction\n')
++assert.equal(readFileSync(`${repo}/source.txt`, 'utf8'), caller)
++assert.equal(git('status', '--porcelain=v1'), status)
++assert.equal(readFileSync(`${dir}/review-two/source.txt`, 'utf8'), 'reviewed\n')
++assert.equal(readFileSync(`${dir}/review-two/output.txt`, 'utf8'), 'other review\n')
++const bad = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', 'missing-ref', '--diff-stat', 'M source.txt'], { encoding: 'utf8' })
++assert.equal(bad.status, 2, 'unresolved source is rejected even with a supplied stat')
++console.log('  [PASS] captured PR inputs survive caller advancement; independent mutable reproductions preserve caller and sibling')
++NODE
++
+ echo "assemble-args: validation"
+ run bash "$A" --mode pr --inputs x --iteration 2 --diff-stat x
+ assert_eq "$code" 2 "round 2 without a prior report exits 2"
+ run bash "$A" --mode pr --inputs x --prior-report "$T/prior.md" --diff-stat x
+ assert_eq "$code" 2 "round 1 with a prior report exits 2"
+ run bash "$A" --mode design --inputs x
+ assert_eq "$code" 2 "design without --spec exits 2"
+ run bash "$A" --mode pr --inputs x
+ assert_eq "$code" 2 "pr without a diff source exits 2"
+ run bash "$A" --mode pr --inputs x --diff-stat x --bogus 1

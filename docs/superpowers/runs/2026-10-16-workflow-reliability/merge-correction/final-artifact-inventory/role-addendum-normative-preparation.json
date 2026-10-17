@@ -1,0 +1,1360 @@
+[
+  {
+    "sha256": "e8641aa47a25da83df08e46b65222db5e587812d077dfad42566611bfae031cf",
+    "paths": [
+      "docs/superpowers/plans/2026-10-17-workflow-reliability-merge-correction.md"
+    ],
+    "bytes": 10660,
+    "blob": "170b6c0e100068a82ed2a84818dc57b5094e39bf",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [],
+    "firstLines": [
+      "# Workflow reliability merge correction implementation plan",
+      "",
+      "> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.",
+      "",
+      "**Goal:** Repair verified merge blockers and reconcile actual acceptance evidence before the authorized local merge of workflow-reliability.",
+      "",
+      "**Architecture:** Extend the existing scheduler, review collection/recovery and acceptance consumers; preserve existing source identities and finding history. This is a separately authorized correction pass from c4c9bf712a0010346bbea0c020f8070d121d597c, not a reset of the ended normal super-auto loop."
+    ]
+  },
+  {
+    "sha256": "da7ce6c5a71bea994847d06128b9e1200ea9966c03a7eedb6c5f638b3176bfaa",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/brainstorming/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/brainstorming/SKILL.md"
+    ],
+    "bytes": 25346,
+    "blob": "19d6280b4882a621668b492751538ee61753061e",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/brainstorming/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/brainstorming/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/dispatching-parallel-agents/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/dispatching-parallel-agents/SKILL.md"
+    ],
+    "bytes": 6078,
+    "blob": "3fa091b348bbe0a18eaa0e17e9092c97f7005cbe",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/dispatching-parallel-agents/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/dispatching-parallel-agents/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "ca0f5b4718a9a415e047ce64a7341931eb561d0a47728cdf9105ba4d9dfbea49",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/executing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/executing-plans/SKILL.md"
+    ],
+    "bytes": 2386,
+    "blob": "be7064e28f045f38ae0b4e7da0089d4b36ebd685",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/executing-plans/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/executing-plans/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "980a8ee5cbe7b9ec0ff36bfd2ef760b2302c7fe669722cdfd1b62ffc61f06f25",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/outer-cleanup/baseline/skills/finishing-a-development-branch/SKILL.md"
+    ],
+    "bytes": 11259,
+    "blob": "3ac10d5063d937cb35a02742d40559d427ea5691",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/finishing-a-development-branch/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/receiving-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/receiving-code-review/SKILL.md"
+    ],
+    "bytes": 6203,
+    "blob": "950da7b74bf6dbed6b8726d12ddadd65a9f5fda7",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/receiving-code-review/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/receiving-code-review/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/requesting-code-review/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/requesting-code-review/SKILL.md"
+    ],
+    "bytes": 2956,
+    "blob": "fa4f2f9965591d6d8a7ef4ad47e6ba4d5ac344d0",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/requesting-code-review/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/requesting-code-review/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "8dde5589ee083fb4999106d116f01c8fdaf3116a8a9813fdedeb80329de49046",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/subagent-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/subagent-driven-development/SKILL.md"
+    ],
+    "bytes": 32577,
+    "blob": "f7bbf6a01b519807ec00baf5e98522bed33f8834",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/subagent-driven-development/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/subagent-driven-development/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "21a4fd4c24a891d5dd354bc07d9cd13a0f03da08731bc0f0cdd32715cf5f852a",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-auto/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/skills/super-auto/MAINTENANCE.md"
+    ],
+    "bytes": 12129,
+    "blob": "46c7b4be690807db4ab327e9a0c55319e8787bda",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "c6cb5ee72e65b3deef59b3b58ecf4b444895179b",
+        "path": "skills/super-auto/MAINTENANCE.md",
+        "gitBlob": "46c7b4be690807db4ab327e9a0c55319e8787bda"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/MAINTENANCE.md"
+    ],
+    "firstLines": [
+      "# super-auto maintenance notes",
+      "",
+      "Maintenance-only: history, provenance and notes to editors for super-auto's runtime files, one heading per file; never loaded at runtime.",
+      "",
+      "## Pointer syntax",
+      "",
+      "A runtime file points at a rule's canonical home instead of restating it, copying the heading text exactly so the pointer can be checked by search:"
+    ]
+  },
+  {
+    "sha256": "39d68f8ec80ca60639403b9a13a3684cdfaf3ddeb33165ae02967a24faa65d29",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-refute/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/source-installed6.0/super-auto/SKILL.md"
+    ],
+    "bytes": 59033,
+    "blob": "655a3ecf0b8ad827cb6e04169903a31edbc81561",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "37b6ad2196cb185b9cd48e7e1d0a6071b1425ddd",
+        "path": "skills/super-auto/SKILL.md",
+        "gitBlob": "655a3ecf0b8ad827cb6e04169903a31edbc81561"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-auto",
+      "description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).",
+      "---",
+      "",
+      "# super-auto",
+      ""
+    ]
+  },
+  {
+    "sha256": "9418904dc1e4b73dec9301707417c5e024ada73157351b31abecec20ec295a3d",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-code/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-code/MAINTENANCE.md"
+    ],
+    "bytes": 118229,
+    "blob": "9dc29f1a04e0a23d51b1e24fdc84930f9a62327b",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/super-code/MAINTENANCE.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/super-code/MAINTENANCE.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "053dfab7002139ef81dc4d42a99a613f26ff16ebc6e40eacfdfdce1d7a5aa7e5",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/base/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-code/SKILL.md"
+    ],
+    "bytes": 45769,
+    "blob": "b658a524594f7ace9c35893e6b8af49a8b55b00f",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/super-code/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "74a34d4d49ff1d8a56153d6d6c94b3b2182e78a142901d96babc229415e56c05",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-design/MAINTENANCE.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/skills/super-design/MAINTENANCE.md"
+    ],
+    "bytes": 2493,
+    "blob": "dc3db1e7aa90cefe5527119592861ae6b31c3ae8",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "db11cadb534437cb6ea183ddf8f810bdd3e848b3",
+        "path": "skills/super-design/MAINTENANCE.md",
+        "gitBlob": "dc3db1e7aa90cefe5527119592861ae6b31c3ae8"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-design/MAINTENANCE.md"
+    ],
+    "firstLines": [
+      "# super-design maintenance notes",
+      "",
+      "History and evidence behind super-design's design choices. Maintenance-only; not read at run time.",
+      "",
+      "## Key abstractions step",
+      "",
+      "Added 2026-10-11 (super-auto run `2026-10-10-key-abstractions-design-step`, design: `docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md`). It revisits option D-a in `TODO-OOP-RECOMMENDATIONS.md`, which rejected a separate super-auto phase after the design roast; this step runs inside super-design, before decomposition, so the design roast reviews it."
+    ]
+  },
+  {
+    "sha256": "0529dbc5ca392f0fbe4d8a22f9aa8ca3c8008978e2a22507443a6bd340b4d61b",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/probe-panel1-ground/base/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/skills/super-design/SKILL.md"
+    ],
+    "bytes": 80623,
+    "blob": "36d3ebbc4581f61d5390e0488523165de5afe610",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "db11cadb534437cb6ea183ddf8f810bdd3e848b3",
+        "path": "skills/super-design/SKILL.md",
+        "gitBlob": "36d3ebbc4581f61d5390e0488523165de5afe610"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-design/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-design",
+      "description: Use when there's a goal or idea to design out, before execution starts.",
+      "---",
+      "",
+      "# super-design",
+      ""
+    ]
+  },
+  {
+    "sha256": "795650c73dfe6f9d59099f188507e3ae91878b1d4fd8b30ff04412d72b0f185d",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/super-roast/SKILL.md"
+    ],
+    "bytes": 23202,
+    "blob": "ef2b8d185c47f3c50fa3c96f885a11b243d6b9b1",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "04d13b8ec050e36be2fe524117034e93d1337a85",
+        "path": "skills/super-roast/SKILL.md",
+        "gitBlob": "ef2b8d185c47f3c50fa3c96f885a11b243d6b9b1"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-roast/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-roast",
+      "description: Use when adversarially reviewing a design doc, spec, or RFC before implementation, or a PR, branch, or diff before merge. Not for reviewing prose style, and not for answering questions about what code does.",
+      "---",
+      "",
+      "# super-roast",
+      ""
+    ]
+  },
+  {
+    "sha256": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/systematic-debugging/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/systematic-debugging/SKILL.md"
+    ],
+    "bytes": 9465,
+    "blob": "095d194ac041502905f15b01d22d294fb94db8b2",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/systematic-debugging/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/systematic-debugging/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/test-driven-development/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/test-driven-development/SKILL.md"
+    ],
+    "bytes": 9015,
+    "blob": "4320d8879a639d0536c2239bb80c9d7257ad8947",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/test-driven-development/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/test-driven-development/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "01f7d2a3b733203407e6a1cf64b6b2008da08781f27b59b81e1a6687d56acd32",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/upstream-feedback/SKILL.md"
+    ],
+    "bytes": 9320,
+    "blob": "fce8fe5aeeda8c2eab14be806470645392cd8628",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/upstream-feedback/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/using-git-worktrees/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/using-git-worktrees/SKILL.md"
+    ],
+    "bytes": 6813,
+    "blob": "1381dacb3516b94382dd6ec736ede21ee8ede2b3",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/using-git-worktrees/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/using-git-worktrees/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "e5e26320e6dc58e475d0c876ce8721c4b15ffcffe9632c2f3b7e1e09df751139",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/using-superpowers/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/using-superpowers/SKILL.md"
+    ],
+    "bytes": 2496,
+    "blob": "12cc39d4b62be3a65da9ffa29d41dfc3cb1d7386",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/using-superpowers/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/using-superpowers/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/verification-before-completion/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/verification-before-completion/SKILL.md"
+    ],
+    "bytes": 3646,
+    "blob": "7d45333cc4a49c57a80df6c1fe2fa777a207afbc",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/verification-before-completion/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/verification-before-completion/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "934f8ce5e0748a991fcfbc288802e2f648aca41ca6f55aeb6841ee89c1f38ba7",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/writing-plans/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/writing-plans/SKILL.md"
+    ],
+    "bytes": 7092,
+    "blob": "09bf91e65d8ec2b42077a4b03be35c4c5b2da828",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/writing-plans/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/writing-plans/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/base/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/writing-skills/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/methodology/SKILL.md"
+    ],
+    "bytes": 26360,
+    "blob": "f33f39f523c8a3ae2ec0eaf365a524571df8ff3d",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/writing-skills/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/writing-skills/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "df8cc7a1709b5fd881f41f6e7afc180f1b686c14b97624c27e4957a174c09911",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/tests/claude-code/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/tests/claude-code/README.md"
+    ],
+    "bytes": 4724,
+    "blob": "90f1fe1aef3a4fc2ad623a51dcc48e0e2ecd24a9",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "tests/claude-code/README.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "tests/claude-code/README.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "72782e2d462e80a5befac930ff6f965b03853c8c206268cdcfbdaf1f0dc08a85",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/base/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/base/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/base/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/tests/super-design/key-abstractions-eval/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/tests/super-design/key-abstractions-eval/README.md"
+    ],
+    "bytes": 4685,
+    "blob": "706ec4b22328502851122720bd98134a55ecef5f",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "tests/super-design/key-abstractions-eval/README.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "tests/super-design/key-abstractions-eval/README.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-correctness/source/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-security/source/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-refute/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-snapshot/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/outer-cleanup/baseline/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/source-snapshot/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/source-snapshot/super-auto/SKILL.md"
+    ],
+    "bytes": 68423,
+    "blob": "8d18dc38aad87c0c04b836a1edf73f0608307ea3",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed",
+        "path": "skills/super-auto/SKILL.md",
+        "gitBlob": "8d18dc38aad87c0c04b836a1edf73f0608307ea3"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-auto",
+      "description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).",
+      "---",
+      "",
+      "# super-auto",
+      ""
+    ]
+  },
+  {
+    "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-correctness/source/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-deploy-safety/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-security/source/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-snapshot/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/source-binding/after/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/source-snapshot/super-code/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/source-snapshot/super-code/SKILL.md"
+    ],
+    "bytes": 46583,
+    "blob": "8e1ebde53df97ce6016ceada0241765898d30662",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/super-code/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-correctness/source/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-security/source/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/skills/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-snapshot/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/source-snapshot/super-roast/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/source-snapshot/super-roast/SKILL.md"
+    ],
+    "bytes": 23688,
+    "blob": "c5df41890e472108a9a2a06668f2a9f948c646c4",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "f2058a544790e4986f749228847d58b4519c4ec5",
+        "path": "skills/super-roast/SKILL.md",
+        "gitBlob": "c5df41890e472108a9a2a06668f2a9f948c646c4"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-roast/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-roast",
+      "description: Use when adversarially reviewing a design doc, spec, or RFC before implementation, or a PR, branch, or diff before merge. Not for reviewing prose style, and not for answering questions about what code does.",
+      "---",
+      "",
+      "# super-roast",
+      ""
+    ]
+  },
+  {
+    "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-api-contract/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-correctness/source/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-security/source/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-testing/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-ground/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-snapshot/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/source-snapshot/upstream-feedback/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/source-snapshot/upstream-feedback/SKILL.md"
+    ],
+    "bytes": 10316,
+    "blob": "541a1e02cedf2c97f8c902206afd8b2a55281c3c",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/upstream-feedback/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "5db808c6a1e314d71f0ec22060ce3a80551fd6f81222af152dfbe4a13cc442f2",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-auto/SKILL.md"
+    ],
+    "bytes": 37532,
+    "blob": "36ff8acbfa6c07a2e8e8fa510dceee069e514026",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "diff --git a/skills/super-auto/SKILL.md b/skills/super-auto/SKILL.md",
+      "index 655a3ecf..8d18dc38 100644",
+      "--- a/skills/super-auto/SKILL.md",
+      "+++ b/skills/super-auto/SKILL.md",
+      "@@ -25,7 +25,7 @@ These hold for the whole run. Other sections and files point here.",
+      " - I5 (human-owned merge): **merging the run branch into `base` is the human's choice in every mode**; `autonomous` buys an unattended run, never an unattended merge, because that merge is the one step a human cannot cheaply undo. Merges into the run's own branch, which `super-code` performs serially, need no confirmation.",
+      " - I6 (run.md field names): write `run.md` only with the names and line formats in run-state.md \u00a7Field table; every later phase, the report and a resume read them literally."
+    ]
+  },
+  {
+    "sha256": "a79b6432abe3d71bbe989679f7fdc1e44dc242290fe0b08032ece0549d08b0b9",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-code/SKILL.md"
+    ],
+    "bytes": 10004,
+    "blob": "27fe5de238c28e270da20f8243934dcc6181084f",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [
+      "skills/super-code/SKILL.md"
+    ],
+    "firstLines": [
+      "diff --git a/skills/super-code/SKILL.md b/skills/super-code/SKILL.md",
+      "index b658a524..8e1ebde5 100644",
+      "--- a/skills/super-code/SKILL.md",
+      "+++ b/skills/super-code/SKILL.md",
+      "@@ -39,7 +39,9 @@ stop (`ready-unavailable`, `plan-unavailable`, `dispatch-unavailable`), relaunch",
+      " '<copy>/coordinator.js', args})` \u2014 the scratchpad copy you launched, since the Workflow tool refuses",
+      " the plugin-cache path (`./coordinator-workflow.md` Pre-flight step 4) \u2014 with `resumeFromRunId` and the ledger's `Launch:`"
+    ]
+  },
+  {
+    "sha256": "fad46484a45fc23e63b2fff94ce07a9572b1a569559527af383ff2405b131a16",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-roast/SKILL.md"
+    ],
+    "bytes": 1717,
+    "blob": "c45baece6a88e729b07ab11030c599ae16190b2c",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [
+      "skills/super-roast/SKILL.md"
+    ],
+    "firstLines": [
+      "diff --git a/skills/super-roast/SKILL.md b/skills/super-roast/SKILL.md",
+      "index ef2b8d18..c5df4189 100644",
+      "--- a/skills/super-roast/SKILL.md",
+      "+++ b/skills/super-roast/SKILL.md",
+      "@@ -72,8 +72,13 @@ and `regression` lane from the prompt files below.",
+      " In PR mode with a stated intent (Inputs), pass `--artifact \"<branch@sha> vs <base@sha> \u2014 stated intent: <stated intent>\"`, the default naming with the stated intent appended; without one, leave `--artifact` off and it defaults to `--inputs`.",
+      " "
+    ]
+  },
+  {
+    "sha256": "649eb6f89664f15cb59384ec4bda475f67d7b6e958a6811afb547128a56748b5",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/upstream-feedback/SKILL.md"
+    ],
+    "bytes": 2735,
+    "blob": "dd0ae727188b63a43dd5772a18aaa4cfc917dbd6",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [
+      "skills/upstream-feedback/SKILL.md"
+    ],
+    "firstLines": [
+      "diff --git a/skills/upstream-feedback/SKILL.md b/skills/upstream-feedback/SKILL.md",
+      "index fce8fe5a..541a1e02 100644",
+      "--- a/skills/upstream-feedback/SKILL.md",
+      "+++ b/skills/upstream-feedback/SKILL.md",
+      "@@ -57,9 +57,15 @@ append. A standalone run is its own outermost.",
+      "      the four-line `Metrics:` block;",
+      "    - the ledger's `Profile:` lines, one block per coordinator invocation (`super-code`'s run"
+    ]
+  },
+  {
+    "sha256": "a809c833159584999d2b39a5827255f8e9888036365f78753ec7be6d46d8baf2",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-refute/head/docs/superpowers/specs/INDEX.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/docs/superpowers/specs/INDEX.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/docs/superpowers/specs/INDEX.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/docs/superpowers/specs/INDEX.md"
+    ],
+    "bytes": 17079,
+    "blob": "8a95143c803b183a3fb3b9de4d59e25645e8a663",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "aa46c40a477e5a0e965aba3f712af14a0543523a",
+        "path": "docs/superpowers/specs/INDEX.md",
+        "gitBlob": "8a95143c803b183a3fb3b9de4d59e25645e8a663"
+      }
+    ],
+    "candidateSourcePaths": [
+      "docs/superpowers/specs/INDEX.md"
+    ],
+    "firstLines": [
+      "# Superpowers Design Specs \u2014 Index",
+      "",
+      "Catalog of the design specs in this directory, newest first. The brainstorming look-around reads this to find adjacent prior designs and resurface past decisions, so keep summaries and tags meaningful.",
+      "",
+      "**Status vocabulary:** `draft` (written, not yet implemented) \u00b7 `implemented` (built and integrated) \u00b7 `superseded-by: <file>` (replaced by a later design).",
+      "",
+      "**Maintenance:** brainstorming adds a row with status `draft` when it writes a spec; finishing-a-development-branch flips the status to `implemented` (or `superseded-by`) when the work completes."
+    ]
+  },
+  {
+    "sha256": "715a3ea11385241f72639cf0ee9ab424a09ca2114105d9b8bca5f15f88d42d9b",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base/AGENTS.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head/AGENTS.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/AGENTS.md"
+    ],
+    "bytes": 12009,
+    "blob": "8f95eb7b039e640548495a5e0c10446229a8265a",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "c6cb5ee72e65b3deef59b3b58ecf4b444895179b",
+        "path": "AGENTS.md",
+        "gitBlob": "8f95eb7b039e640548495a5e0c10446229a8265a"
+      }
+    ],
+    "candidateSourcePaths": [
+      "AGENTS.md"
+    ],
+    "firstLines": [
+      "# Superpowers \u2014 Contributor Guidelines",
+      "",
+      "## If You Are an AI Agent",
+      "",
+      "Stop. Read this section before doing anything.",
+      "",
+      "This repo has a 94% PR rejection rate. Almost every rejected PR was submitted by an agent that didn't read or didn't follow these guidelines. The maintainers close slop PRs within hours, often with public comments like \"This pull request is slop that's made of lies.\""
+    ]
+  },
+  {
+    "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/finishing-a-development-branch/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/outer-cleanup/after/skills/finishing-a-development-branch/SKILL.md"
+    ],
+    "bytes": 13605,
+    "blob": "44a2aae37a55eba5042473e85f6f9b92c68c87f7",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/finishing-a-development-branch/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "0b7d0058c9dc44cd6acef874acab923ff80af4189ee77105d72af8b7a7df3945",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-testing/checkout/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/source/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/probe-panel1-ground/base/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/base/skills/super-auto/SKILL.md"
+    ],
+    "bytes": 74012,
+    "blob": "af1a02ffebfece9ebb9d80050758f54653085afb",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "e4c809c9eb83719cef6c5714b1d49d6e0cd900b9",
+        "path": "skills/super-auto/SKILL.md",
+        "gitBlob": "af1a02ffebfece9ebb9d80050758f54653085afb"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-auto",
+      "description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).",
+      "---",
+      "",
+      "# super-auto",
+      ""
+    ]
+  },
+  {
+    "sha256": "7e2e225cbc6d3453847fa5a92645e1fe9aaf01b40645866db81682c9def9c399",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/probe-panel1-ground/head/skills/super-auto/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/skills/super-auto/SKILL.md"
+    ],
+    "bytes": 85533,
+    "blob": "ca2090a06c61ac75fa4d82959f4222ec025cb72d",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+        "path": "skills/super-auto/SKILL.md",
+        "gitBlob": "ca2090a06c61ac75fa4d82959f4222ec025cb72d"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-auto",
+      "description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).",
+      "---",
+      "",
+      "# super-auto",
+      ""
+    ]
+  },
+  {
+    "sha256": "e697e045705c5259e666fbb753d5478b1d1c4e30b8713eccc06426fdad8a4797",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/probe-panel1-ground/head/skills/super-design/SKILL.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/skills/super-design/SKILL.md"
+    ],
+    "bytes": 104561,
+    "blob": "cd6cea8dae06608e5b45752730eab147288e71e4",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/super-design/SKILL.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "738a6a947ad56c42561b3eb33cb43f0ef0a06d829879d67910294094a9a9d4a4",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/AGENTS.md"
+    ],
+    "bytes": 13613,
+    "blob": "d1511d8b6547358d51b660b0eb7220b130c6aebc",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "AGENTS.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "AGENTS.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "2aef72e725fff6ff0c30ccfdd4eec3e3e8000a8983c01855b237da3b7a966572",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/docs/superpowers/specs/INDEX.md"
+    ],
+    "bytes": 18744,
+    "blob": "c4f1f7629d0b2ca612059df4c870f0239dfd933f",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "c8dc624f96ec09c85d3b47b515ba7118cef13746",
+        "path": "docs/superpowers/specs/INDEX.md",
+        "gitBlob": "c4f1f7629d0b2ca612059df4c870f0239dfd933f"
+      }
+    ],
+    "candidateSourcePaths": [
+      "docs/superpowers/specs/INDEX.md"
+    ],
+    "firstLines": [
+      "# Superpowers Design Specs \u2014 Index",
+      "",
+      "Catalog of the design specs in this directory, newest first. The brainstorming look-around reads this to find adjacent prior designs and resurface past decisions, so keep summaries and tags meaningful.",
+      "",
+      "**Status vocabulary:** `draft` (written, not yet implemented) \u00b7 `implemented` (built and integrated) \u00b7 `superseded-by: <file>` (replaced by a later design).",
+      "",
+      "**Maintenance:** brainstorming adds a row with status `draft` when it writes a spec; finishing-a-development-branch flips the status to `implemented` (or `superseded-by`) when the work completes."
+    ]
+  },
+  {
+    "sha256": "e8b7342cdd5450d23ef8e47636ea2d1ba88cafd63edd6602d071647fa1b825ca",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/skills/super-auto/MAINTENANCE.md"
+    ],
+    "bytes": 12168,
+    "blob": "265f4f15ced3ef506fefe5455b87043db26a0186",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/super-auto/MAINTENANCE.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/super-auto/MAINTENANCE.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "d3bafb34af5d8ae49c5c9676a029c84c1119913ab60b75888f181a78eab0fa1d",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/skills/super-design/MAINTENANCE.md"
+    ],
+    "bytes": 4136,
+    "blob": "b8af78b10723b50c6509d6ee7924fc3f2b985766",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [
+        "skills/super-design/MAINTENANCE.md"
+      ],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/super-design/MAINTENANCE.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "ab427479e2549ccd2445bd23f9db12121a3effd07c1eb90b5e72636cff4a5df0",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages/source/head/skills/super-roast/SKILL.md"
+    ],
+    "bytes": 23957,
+    "blob": "ce3656f90fcde822fd1c40eeee41d9e74aac2621",
+    "existingGitSourceIdentity": {
+      "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "basePaths": [],
+      "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "headPaths": [
+        "skills/super-roast/SKILL.md"
+      ],
+      "meaning": "byte identity only; not producer lineage, current review coverage or omission authorization"
+    }
+  },
+  {
+    "sha256": "1ce9d525588eff3a42a0392047da922ab2fed9d0f8d71ee441d9ef4568d39d68",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/baseline-reference/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/README.md",
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/nochange-diagnostic/historical-reference/baseline-reference/README.md"
+    ],
+    "bytes": 1715,
+    "blob": "99fe377a299b9c833a5dc93c7ad3311e69b60f98",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [],
+    "firstLines": [
+      "# Workflow reliability behavior baseline",
+      "",
+      "This pack tests judgment through bounded text decisions, not live tool execution or mechanical helpers. It has three composite cases; five fresh runs per case and variant, one active test agent at a time. `control` has no tested workflow guidance; `baseline` receives verbatim installed 6.0 excerpts, recorded by full and excerpt SHA-256 in `source-manifest.json`. Excerpt applicability is limited to the role being simulated.",
+      "",
+      "Common harness system/developer context and catalog are present in both arms. These are fresh-context instruction-ablation trials, not blank-system model trials. Case facts are deliberately concrete and pressure combines deadline, sunk-cost/team expectations, and authority. No rubric is shown to children.",
+      "",
+      "Run messages are preserved in `*-prompt.txt` (exact spawn payload); scenario and guidance file contents form its referenced prompt input. Raw final responses go in `*-response.txt`. Agent IDs/model/effort and manual scores are recorded separately. No claims about process safety or schema/helper behavior can be inferred from these responses."
+    ]
+  },
+  {
+    "sha256": "aaa1149f71664a9a7604635d90bba79ad751170dbab77993ca4638dd33738638",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/guidance-eval-r1/raw/outer-cleanup/after/skills/super-auto/SKILL.md"
+    ],
+    "bytes": 73010,
+    "blob": "8a4df047fa2514d8daf2353e0bfe6060956512df",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [
+      {
+        "commit": "f2aea33167a12637a28f874eca59f8b8a4acf2c6",
+        "path": "skills/super-auto/SKILL.md",
+        "gitBlob": "8a4df047fa2514d8daf2353e0bfe6060956512df"
+      }
+    ],
+    "candidateSourcePaths": [
+      "skills/super-auto/SKILL.md"
+    ],
+    "firstLines": [
+      "---",
+      "name: super-auto",
+      "description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).",
+      "---",
+      "",
+      "# super-auto",
+      ""
+    ]
+  },
+  {
+    "sha256": "0f56ce29dfc14e2af8e13dfbadcafa892d09d13b146fee3f65f6b8381b08711b",
+    "paths": [
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/README.md"
+    ],
+    "bytes": 255,
+    "blob": "cacb43bb888bc81df1fc0f320879e1a22419e8fc",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [],
+    "firstLines": [
+      "Format integer cents as dollars with two decimal places; retain negative signs including amounts between -99 and -1 cents. reproduce.mjs generates source and build output in its working tree. OUT_DIR chooses build output; TMPDIR chooses temporary output."
+    ]
+  },
+  {
+    "sha256": "0b5978634bc02643869006afcd9b270153c94d9f141a31757fbf106acef16ffe",
+    "paths": [
+      "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md"
+    ],
+    "bytes": 12495,
+    "blob": "4aa399cd6537fb5d43e407e0c47f4962d96b792a",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [],
+    "firstLines": [
+      "# Workflow reliability across interruptions and retries",
+      "",
+      "## Goal",
+      "",
+      "Runs preserve work and evidence across interruptions, denied operations, and retries, and accurately report what remains before acceptance. Repairs address the confirmed failure mechanisms without adding a new workflow engine or expanding routine agent ceremony.",
+      "",
+      "## Scope and approach"
+    ]
+  },
+  {
+    "sha256": "d6f5531b0f77e36a518aeb97e870001a8db7ff28613d846e9edd702f39a75fe1",
+    "paths": [
+      "docs/superpowers/specs/INDEX.md"
+    ],
+    "bytes": 18750,
+    "blob": "2e60a914d116cc4bc96f918d5ce483c5aac6d592",
+    "existingGitSourceIdentity": null,
+    "newHistoricalGitIdentity": [],
+    "candidateSourcePaths": [],
+    "firstLines": [
+      "# Superpowers Design Specs \u2014 Index",
+      "",
+      "Catalog of the design specs in this directory, newest first. The brainstorming look-around reads this to find adjacent prior designs and resurface past decisions, so keep summaries and tags meaningful.",
+      "",
+      "**Status vocabulary:** `draft` (written, not yet implemented) \u00b7 `implemented` (built and integrated) \u00b7 `superseded-by: <file>` (replaced by a later design).",
+      "",
+      "**Maintenance:** brainstorming adds a row with status `draft` when it writes a spec; finishing-a-development-branch flips the status to `implemented` (or `superseded-by`) when the work completes."
+    ]
+  }
+]

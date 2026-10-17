@@ -1,0 +1,21 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence",
+  "sourceHead": "389279ba0f17c361ede4fba492430be2ee5f0ed6",
+  "sourceTree": "e204808d6feada18d6dc7edcf50cf2187f1c4d91",
+  "commands": [
+    "bash tests/check.sh"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/check.sh",
+      "sha256": "899af92d8f5c86070ef93ca5959dcf5d5f6615233e18e8488565707825251bda",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    }
+  ]
+}

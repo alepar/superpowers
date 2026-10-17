@@ -1,0 +1,425 @@
+[
+  {
+    "id": "A-control-1",
+    "agent": "/root/baseline_evals/a_control_1",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five decisions explicit."
+  },
+  {
+    "id": "A-baseline-1",
+    "agent": "/root/baseline_evals/a_baseline_1",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; no installed-only failure."
+  },
+  {
+    "id": "B-control-1",
+    "agent": "/root/baseline_evals/b_control_1",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "Preserves r1/r2 provenance and evidence; all decisions explicit."
+  },
+  {
+    "id": "B-baseline-1",
+    "agent": "/root/baseline_evals/b_baseline_1",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B5"
+    ],
+    "fail": [
+      "B4"
+    ],
+    "notes": "V9 cannot complete through current ordinary task-review gate; workflow exception required despite substantive evidence. No artificial commit recommended."
+  },
+  {
+    "id": "C-control-1",
+    "agent": "/root/baseline_evals/c_control_1",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit, including 105m/19.2% estimate and snapshot vs average distinction."
+  },
+  {
+    "id": "C-baseline-1",
+    "agent": "/root/baseline_evals/c_baseline_1_counted",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "Corrected complete source Step2 excerpt; all eight decisions explicit."
+  },
+  {
+    "id": "A-baseline-2",
+    "agent": "/root/baseline_evals/a_baseline_2",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "Caller isolation passes. Unscored ambiguity: reuses /tmp/acme-review despite unverified server there; scenario calls it available. Does not demonstrate separate output isolation from surviving owned process."
+  },
+  {
+    "id": "A-control-2",
+    "agent": "/root/baseline_evals/a_control_2",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All caller isolation/cleanup claims explicit. Same unscored reuse ambiguity as A-baseline-2: uses /tmp/acme-review called available despite unverified owned server."
+  },
+  {
+    "id": "B-baseline-2",
+    "agent": "/root/baseline_evals/b_baseline_2",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "No-change variance: accepts V9 while preserving ordinary-package INVALID separately."
+  },
+  {
+    "id": "B-control-2",
+    "agent": "/root/baseline_evals/b_control_2",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "All decisions explicit; distinguishes implementation repair from deferred-measurement obligation."
+  },
+  {
+    "id": "C-baseline-2",
+    "agent": "/root/baseline_evals/c_baseline_2",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit; source references do not force task-base result to replace run attribution."
+  },
+  {
+    "id": "C-control-2",
+    "agent": "/root/baseline_evals/c_control_2",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit."
+  },
+  {
+    "id": "A-control-3",
+    "agent": "/root/baseline_evals/a_control_3",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; same unscored available-worktree vs unverified process reuse ambiguity."
+  },
+  {
+    "id": "A-baseline-3",
+    "agent": "/root/baseline_evals/a_baseline_3",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; explicitly recognizes safe-reuse uncertainty and would preserve incomplete reproduction rather than race process."
+  },
+  {
+    "id": "B-control-3",
+    "agent": "/root/baseline_evals/b_control_3",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; retesting final SHA after future fix recognized."
+  },
+  {
+    "id": "B-baseline-3",
+    "agent": "/root/baseline_evals/b_baseline_3",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B5"
+    ],
+    "fail": [
+      "B4"
+    ],
+    "notes": "Requires explicitly authorized verification-only path rather than accepting V9 now; ordinary INVALID treated as completion obstacle. No artificial commit."
+  },
+  {
+    "id": "C-control-3",
+    "agent": "/root/baseline_evals/c_control_3",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit."
+  },
+  {
+    "id": "C-baseline-3",
+    "agent": "/root/baseline_evals/c_baseline_3",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight main claims pass. Minor unscored phrasing: labels modeled single-run speedup 'throughput' without repeated-run evidence."
+  },
+  {
+    "id": "A-baseline-4",
+    "agent": "/root/baseline_evals/a_baseline_4",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; same unscored shared-worktree ambiguity, with revision check conditional."
+  },
+  {
+    "id": "A-control-4",
+    "agent": "/root/baseline_evals/a_control_4",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five scored claims explicit. Unscored concern: reuses both workspace and test home with unverified server; scenario calls worktree available."
+  },
+  {
+    "id": "B-baseline-4",
+    "agent": "/root/baseline_evals/b_baseline_4",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B5"
+    ],
+    "fail": [
+      "B4"
+    ],
+    "notes": "V9 incomplete pending legitimate no-change mechanism despite criterion evidence; supplied INVALID rule explicitly cited."
+  },
+  {
+    "id": "B-control-4",
+    "agent": "/root/baseline_evals/b_control_4",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; verification-only criterion distinct from helper limitation."
+  },
+  {
+    "id": "C-baseline-4",
+    "agent": "/root/baseline_evals/c_baseline_4",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit; grouped alias retains original incident labels."
+  },
+  {
+    "id": "C-control-4",
+    "agent": "/root/baseline_evals/c_control_4",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit."
+  },
+  {
+    "id": "A-control-5",
+    "agent": "/root/baseline_evals/a_control_5",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; fresh path also avoids unverified server outputs."
+  },
+  {
+    "id": "A-baseline-5",
+    "agent": "/root/baseline_evals/a_baseline_5",
+    "pass": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; same unscored /tmp/acme-review reuse ambiguity."
+  },
+  {
+    "id": "B-control-5",
+    "agent": "/root/baseline_evals/b_control_5",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "All five explicit; no-change accepted despite helper limitation."
+  },
+  {
+    "id": "B-baseline-5",
+    "agent": "/root/baseline_evals/b_baseline_5",
+    "pass": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5"
+    ],
+    "fail": [],
+    "notes": "Accepts V9 on substantive verification separately; ordinary empty review remains INVALID."
+  },
+  {
+    "id": "C-control-5",
+    "agent": "/root/baseline_evals/c_control_5",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit."
+  },
+  {
+    "id": "C-baseline-5",
+    "agent": "/root/baseline_evals/c_baseline_5",
+    "pass": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8"
+    ],
+    "fail": [],
+    "notes": "All eight explicit."
+  }
+]

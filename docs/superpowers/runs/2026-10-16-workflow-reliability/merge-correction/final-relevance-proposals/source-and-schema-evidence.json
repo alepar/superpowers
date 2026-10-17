@@ -1,0 +1,678 @@
+{
+  "inspectionFreeze": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "profiles": {
+    "R1": {
+      "behavior": "Reviews use captured Git bounds and independent mutable output ownership. Provenance gaps now permit a separately bound incomplete review, while omission authority and whole-range readiness remain refused.",
+      "evidence": [
+        "captured-bounded-writer",
+        "captured-selector-availability",
+        "stable-final-source"
+      ],
+      "receipts": [
+        "task4-report",
+        "task4-review"
+      ]
+    },
+    "R2": {
+      "behavior": "Owned cleanup distinguishes unavailable inventory, retained processes/resources, failed removal and successful deletion; setup/recut consumes nonzero helper exits without forced deletion. Task 6 changes are static inspected and independently under review.",
+      "evidence": [
+        "cleanup-inventory",
+        "cleanup-retention",
+        "cleanup-setup-consumer"
+      ],
+      "receipts": []
+    },
+    "R3": {
+      "behavior": "Initial dispatch and verification reacquisition share fresh post-capacity admission, including authoritative external/opaque observations, failed-lookup invalidation and bounded query budgets.",
+      "evidence": [
+        "fresh-capacity-admission"
+      ],
+      "receipts": [
+        "task1-report",
+        "task1-review"
+      ]
+    },
+    "R4": {
+      "behavior": "Resume preserves exact pending closures, guards unavailable tracker arrays, waits for durable confirmation and distinguishes verification source from landing. Amendment replay now repeats committed abstraction sync before filing/advance and holds sync failure.",
+      "evidence": [
+        "durable-resume",
+        "amendment-resume"
+      ],
+      "receipts": [
+        "task5-report",
+        "task5-review"
+      ]
+    },
+    "R5": {
+      "behavior": "Evidence validates exact source/command/configuration/outcome/kind and independent reviewer basis; failed/unavailable or fallback-for-live remain distinct. The caller gate retains matching obligations and contradictory outcomes.",
+      "evidence": [
+        "source-evidence-validation",
+        "schema-current-gates"
+      ],
+      "receipts": [
+        "task3-report",
+        "task3-review"
+      ]
+    },
+    "R6": {
+      "behavior": "Reviewed unchanged verification completion has a typed evidence basis, releases the slot before parent settlement, reacquires with fresh admission and avoids invented Git landings. Current metrics separately classify verification closures.",
+      "evidence": [
+        "source-evidence-validation",
+        "verification-parent-settlement",
+        "typed-completion-profile"
+      ],
+      "receipts": [
+        "task1-report",
+        "task1-review"
+      ]
+    },
+    "R7": {
+      "behavior": "The caller gate independently checks source-bound review, measurements, producer Recovery facts, exact source population and reserved human decisions. Collection or leaf success does not establish root acceptance; output must drain without a false successful partial JSON result.",
+      "evidence": [
+        "acceptance-producer-facts",
+        "acceptance-declared-population",
+        "schema-current-gates",
+        "gate-output"
+      ],
+      "receipts": [
+        "task3-report",
+        "task3-review",
+        "task4-report",
+        "task4-review"
+      ]
+    },
+    "R8": {
+      "behavior": "Run attribution retains introducing ownership and earlier contradictory history independently from task-base exoneration; the gate imports gaps before diagnostic/pre-run classification. Missing real baseline is not fabricated.",
+      "evidence": [
+        "run-failure-history",
+        "acceptance-producer-facts"
+      ],
+      "receipts": [
+        "task3-report",
+        "task3-review"
+      ]
+    },
+    "R9": {
+      "behavior": "Immutable occurrence refs remain individually retained; current caller declarations and complete registered extractions reconcile actual design/code ledger populations. Transport keys never establish semantic identity; bounded collected reviews remain incomplete.",
+      "evidence": [
+        "acceptance-declared-population",
+        "finding-transport-projection",
+        "captured-bounded-writer"
+      ],
+      "receipts": [
+        "task3-report",
+        "task3-review",
+        "task4-report",
+        "task4-review",
+        "history-registration"
+      ]
+    },
+    "R10": {
+      "behavior": "Supported fix/rejection requires explicit original references, semantic owner judgment and concrete evidence; uncertain appearances remain separate and later silence supplies no disposition. Nonblocking relevance leaves the original group outstanding.",
+      "evidence": [
+        "finding-semantic-support",
+        "finding-transport-projection",
+        "schema-findingAcceptance"
+      ],
+      "receipts": [
+        "history-registration"
+      ]
+    },
+    "R11": {
+      "behavior": "Exact process aliases group classes while retaining raw text/provenance and separate defect identity, severity and scope. Recurrence is an observation, not automatic shared defect/fix.",
+      "evidence": [
+        "process-aliases"
+      ],
+      "receipts": []
+    },
+    "R12": {
+      "behavior": "Finish retains supported independent observations and explicit transport/discrepancy gaps, while digest and profiler distinguish verified completion from actual landing. Task 6 output and metrics changes still need independent final verification.",
+      "evidence": [
+        "independent-metrics",
+        "typed-completion-digest",
+        "typed-completion-profile"
+      ],
+      "receipts": []
+    },
+    "R13": {
+      "behavior": "Latest attempt and run history remain distinct; typed verification completions do not invent landings or timed merge events. Historical ledger landings remain facts with unknown timing rather than being moved to the verification chain end.",
+      "evidence": [
+        "typed-completion-digest",
+        "typed-completion-profile",
+        "independent-metrics"
+      ],
+      "receipts": []
+    },
+    "R14": {
+      "behavior": "Readiness uses evidenced creation/mapping/dependency timestamps and preserves nulls; profile scope is observed residual graph, planning remains included and modeling is distinct from historical cause.",
+      "evidence": [
+        "readiness-profile",
+        "planning-profile"
+      ],
+      "receipts": []
+    },
+    "R15": {
+      "behavior": "Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+      "evidence": [
+        "schema-caller-semantics",
+        "schema-current-gates"
+      ],
+      "receipts": []
+    }
+  },
+  "evidence": {
+    "schema-findingAcceptance": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 319,
+      "lineEnd": 347,
+      "byteStart": 24488,
+      "byteEnd": 27132,
+      "text": "// Use the same validated projection as Remaining and resume. Valid empty is distinct\n// from a missing extraction or an empty --keys stream carrying gaps.\nconst projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});\ntry{\n if(![0,3].includes(projection.status))throw Error('unavailable');\n const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');\n for(const g of p.gaps)gap('finding evidence: '+JSON.stringify(g));\n const sameRef=(a,b)=>a&&b&&a.source===b.source&&a.section===b.section&&a.position===b.position;\n for(const f of p.findings.filter(f=>f.outstanding)){\n  const refs=f.occurrences.map(o=>({source:o.source,section:o.section,position:o.position}));\n  // Explicit projection links establish one finding group. Assess it once through\n  // any exact member ref, retaining every original source occurrence in the result.\n  const judgment=(current?.findingAcceptance||[]).filter(j=>refs.some(ref=>sameRef(j?.ref,ref))).at(-1);\n  if(!judgment||judgment.judgment!=='supported'||!text(judgment.basis)||!Array.isArray(judgment.evidence)||!judgment.evidence.length||!judgment.evidence.every(text)||!['required','nonblocking'].includes(judgment.effect))gap('finding acceptance relevance unproven: '+JSON.stringify(refs));\n  else if(judgment.effect==='required'){\n   if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));\n   wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));\n  }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection\n }\n}catch{gap('finding projection unavailable')}\n// Reuse ordinary status collection validation without recursively running this gate.\nconst status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});\nif(status.status!==0)gap('run status unavailable');\nelse for(const line of status.stdout.split('\\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));\nconst result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};\n// Keep the event loop alive until stdout drains; failed output is not acceptance.\nprocess.exitCode=result.eligible?0:3;\nprocess.stdout.on('error',error=>{\n console.error('acceptance output failed: '+error.message);\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "schema-records-and-requirements": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 84,
+      "lineEnd": 101,
+      "byteStart": 6327,
+      "byteEnd": 7865,
+      "text": "for(const line of input.split(/\\r?\\n/)){\n if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';\n if(!line.startsWith('- root-acceptance'))continue;\n try{\n  if(!approvals||!line.startsWith('- root-acceptance · '))throw Error('outside approvals or malformed record');\n  const r=JSON.parse(line.slice('- root-acceptance · '.length));\n  if(!object(r)||r.version!==1||r.owner!=='super-auto'||!hash(r.sourceTree))throw Error('invalid source/owner/version');\n  if(!Array.isArray(r.requirements)||!r.requirements.length)throw Error('missing acceptance requirements');\n  for(const q of r.requirements){\n   if(!object(q)||!text(q.id)||!text(q.owner)||!['review','measurement','human'].includes(q.kind))throw Error('invalid acceptance requirements');\n   if(q.kind==='measurement'&&(!text(q.command)||!text(q.configuration)||typeof q.requiredLive!=='boolean'))throw Error('invalid measurement requirements');\n   requirements.set(q.id,q);\n  }\n  for(const k of ['evidence','reviews','decisions','runFailures'])if(!Array.isArray(r[k]))throw Error('missing '+k);\n  if(r.findingAcceptance!==undefined&&!Array.isArray(r.findingAcceptance))throw Error('invalid finding acceptance judgments');\n  if(!object(r.recovery)||!Array.isArray(r.recovery.obligations)||!Array.isArray(r.recovery.gaps)||!object(r.checkEvidence)||!['records','gaps','requiredLiveChecks'].every(k=>Array.isArray(r.checkEvidence[k])))throw Error('missing producer obligations/check evidence');\n  snapshots.push(r);\n }catch(e){gap('root acceptance record: '+e.message)}\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "schema-current-gates": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 119,
+      "lineEnd": 168,
+      "byteStart": 9096,
+      "byteEnd": 13581,
+      "text": "if(!current)gap('caller acceptance requirements unavailable');\nelse{\n if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}\n if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');\n const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);\n const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);\n const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);\n for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');\n function measure(q,label){\n  if(!identity(q)){gap(label+': measurement identity unavailable');return false}\n  const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));\n  // Contradictory outcomes at an immutable source do not silently turn into a pass.\n  if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;\n  const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');\n  wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;\n }\n for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');\n for(const q of requirements.values()){\n  if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);\n  else if(q.kind==='review'){\n   const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);\n   if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);\n  }else{\n   const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);\n   if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);\n  }\n }\n for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));\n for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));\n const failures=new Map();\n for(const f of current.runFailures){\n  if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}\n  failures.set(f.id,f);\n  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));\n  if(f.classification==='pre-run')continue; // diagnostic repair status cannot erase attribution gaps\n  if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));\n }\n for(const r of current.recovery.obligations){\n  if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}\n  if(isReviewSource(r))continue; // validated above, never invent command/configuration work\n  if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}\n  if(r.kind==='deferred'){\n   const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));\n   // Deferred final-suite records predate any tested tree. The caller explicitly binds\n   // their exact IDs to the final measurement; a pass cannot clear another obligation.\n   if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);\n   else measure({...r.data,requiredLive:true},r.id);\n  }\n  else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));\n }\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "schema-caller-semantics": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/run-state.md",
+      "fileSha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203",
+      "lineStart": 255,
+      "lineEnd": 315,
+      "byteStart": 35675,
+      "byteEnd": 40859,
+      "text": "## Caller-owned root acceptance\n\nEvery super-auto launch and re-entry supplies `rootAcceptance: \"caller\"` independently of\n`deferSweep`. All helper closures use `close-in-tree-epics EPIC --exclude-root`. Completed leaves,\nGit landing, an empty ready set, and a ready review each establish their own facts; the root stays\nopen while caller acceptance is pending. Standalone super-code keeps its default root ownership.\n\nThe existing `approvals:` block carries `root-acceptance` JSON snapshots, version 1, owner\n`super-auto`. Each has `sourceTree` (the full Git tree of the reviewed/measured code), `requirements`,\n`evidence`, `reviews`, `decisions`, `recovery`, `checkEvidence`, and `runFailures`. Write the initial\nsnapshot before code, with pending requirements and empty evidence/decisions. After each settled\ninvocation, preserve its returned Recovery obligations/gaps, source-bound checkEvidence records,\nrequiredLiveChecks/gaps, and runFailures classification/state, using the exact prerequisite\ncontracts. Carry still-open facts forward on bucket replacement; reconcile them from their durable\nledger before removing them from a later snapshot. Earlier snapshots stay as evidence history.\n\nEach requirement has `id`, `kind` (`review`, `measurement`, `human`), and `owner`. Include the final\nwhole-epic review, final full-suite measurement, existing phase-7 human choice, and every additional\nacceptance criterion or reserved human gate the run actually requires. This record describes those\nexisting obligations; it introduces no additional approval ceremony. Measurement requirements add\n`command`, `configuration`, `requiredLive` (boolean), and optionally `sourceTree` for a check tied\nto a particular earlier tree. Without that override they measure the snapshot's final tree.\nOptional `obligations: [<exact Recovery ids>]` binds deferred final-suite records to that final\nmeasurement. Preserve a declared Recovery command; a different command cannot discharge it.\nOther deferred measurements need their own command/configuration/source binding. Requirements\nomitted in a later snapshot remain required; an amendment changes the existing requirement by ID\nwith its authority/evidence retained in approvals. Never erase a required check by omission.\n\n`evidence` uses the existing sourceTree/command/configuration/outcome/location/kind records.\n`reviews` entries are `{id, sourceTree, outcome, location}`: `pass` means the required review's\ncoverage and supported dispositions were verified, rather than copying a ready verdict over\nunresolved findings. `decisions` entries are `{id, authority:\"human\", decision, evidence:[...]}`.\nOnly an actual human's `accept` decision satisfies a human requirement. `keep` and `cancel` preserve\nthose outcomes and leave acceptance open, even when the run phase is `done`. Never invent an agent\ndecision or infer acceptance from child closure. Retain every reserved human gate separately.\n\nOptional `findingAcceptance` entries carry `{ref, judgment:\"supported\", effect, basis, evidence}`.\nThe existing caller assessment judges `effect:\"required\"` with the named `requirement` it blocks,\nor `effect:\"nonblocking\"` with evidence supporting its exclusion from required acceptance. Judge\neach outstanding projected finding/group once using an exact original source ref; explicit links\nmake duplicate occurrences one group, while all their original refs remain available. A deferred\nor explicitly non-actionable source item is not automatically a required code defect. Missing or\nunsupported relevance is an acceptance gap. This judgment changes only its acceptance effect:\nnonblocking findings remain outstanding in the shared projection and punch list. It never invents\na resolution or demands new human approval for every minor; human authority is required only for\nthe human decisions already reserved by the task/spec and phase-7 menu.\n\n`report-status --acceptance RUN_MD --tree FULL_GIT_TREE` is a read-only root-close gate: exit 0 and\n`eligible:true` establish that recorded obligations are satisfied; exit 3 returns `pending`/`gaps`;\n2/4 establish no acceptance. Resolve the reviewed/measured source identity and confirm it still\nmatches the final code (run-directory-only commits may be excluded per\nreport-prompt.md §The status block) before passing that tree. Ordinary status also qualifies pending root acceptance when the\nrecord is present, using its recorded tree. Legacy status without the record is unchanged.\n\nThe gate independently checks required reviews, matching measurements (live when required),\nRecovery holds/pending closures/deferred obligations, source-bound required live checks, run-owned\nfailures, collection integrity and supported requirement relevance in the shared outstanding finding projection. A passing measurement\ndischarges only its matching obligation. Failed and unavailable outcomes stay distinct; simulated\nor fallback evidence cannot satisfy live requirements. A contradictory pass/fail at the same tree\nrequires reconciliation. An open run-introduced failure retains its owner; a missing attribution\nremains a gap. Evidenced pre-run failures are diagnostic unless a requirement separately calls for\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "captured-bounded-writer": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/dispatch-text.mjs",
+      "fileSha256": "f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087",
+      "lineStart": 354,
+      "lineEnd": 401,
+      "byteStart": 26106,
+      "byteEnd": 30779,
+      "text": "  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))\n}\n// A bounded artifact is a new report, never a rewrite of an unavailable invocation.\n// The writer rechecks captured source and inventory; sidecar claims alone grant no authority.\nif (kind === 'bounded-review') {\n  if (!boundSource || !['selection', 'draft', 'coverage', 'out'].every(k => o[k])) fail('bounded-review needs --selection, --draft, --coverage and --out plus persisted source')\n  const { base, head } = boundSource\n  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: worktree, maxBuffer: 64 * 1024 * 1024 }).toString()\n  try {\n    for (const sha of [base, head]) if (git('rev-parse', '--verify', sha + '^{commit}').trim() !== sha) throw Error('captured commit unavailable')\n    const bytes = readFileSync(o.selection), selection = JSON.parse(bytes), coverage = JSON.parse(readFileSync(o.coverage, 'utf8'))\n    const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).split('\\0').filter(Boolean)\n    if (selection.base !== base || selection.head !== head || selection.status !== 'unavailable' || selection.sourceAvailable !== true ||\n        selection.wholeRangeReady !== false || !Array.isArray(selection.omitted) || selection.omitted.length ||\n        !Array.isArray(selection.gaps) || !selection.gaps.length || !selection.gaps.every(g => typeof g === 'string' && g.trim()) ||\n        JSON.stringify(selection.changed) !== JSON.stringify(changed)) throw Error('bounded selection/source inventory mismatch')\n    if (!Array.isArray(coverage.inspected) || !coverage.inspected.length) throw Error('actual inspected paths/hunks required')\n    const seen = new Set()\n    for (const item of coverage.inspected) {\n      if (!item || !changed.includes(item.path) || seen.has(item.path) || !Array.isArray(item.hunks) || !item.hunks.length || !item.hunks.every(h => typeof h === 'string' && h.trim())) throw Error('invalid inspected coverage')\n      // Exact captured hunk headers bind coverage to source rather than mutable checkout text.\n      const diff = git('diff', '--no-renames', base + '..' + head, '--', item.path)\n      for (const hunk of item.hunks) if (!diff.split('\\n').includes(hunk) || !hunk.startsWith('@@ ')) throw Error('inspected hunk absent from captured source')\n      seen.add(item.path)\n    }\n    const output = resolve(o.out)\n    if (output !== join(ws, 'final-review-' + invocationId + '.md')) throw Error('output must be this invocation expected final report')\n    if ([o.selection, o.draft, o.coverage].some(p => resolve(p) === output)) throw Error('preserve original bounded evidence')\n    for (const p of [output, output + '.diff']) {\n      try { lstatSync(p); throw Error('partial artifact already exists; preserve it: ' + p) } catch (e) { if (e.code !== 'ENOENT') throw e }\n    }\n    const draft = readFileSync(o.draft, 'utf8')\n    const extraction = JSON.parse(execFileSync('bash', [join(here, 'report-verdict'), '--complete', '--source', invocationId + '/bounded-draft', resolve(o.draft)], { encoding: 'utf8' }))\n    if (extraction.kind !== 'final-review' || !/^## Verdict\\r?$/m.test(draft) || !/^## Untested scope\\r?$/m.test(draft)) throw Error('bounded draft must use strict final-review headings')\n    const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'\n    const hash = b => createHash('sha256').update(b).digest('hex')\n    const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }\n    // Preserve every draft finding/section verbatim. Only the verdict changes; coverage\n    // becomes an explicit untested occurrence that existing extraction/collection retains.\n    const body = draft.replace(/(^## Verdict\\r?\\n)([\\s\\S]*?)(?=^## |$(?![\\s\\S]))/m, '$1' + verdict + '\\n')\n      .replace(/^## Untested scope\\r?$/m, '## Untested scope\\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed')\n    const result = '# Bounded captured-source review\\n\\nCoverage record: ' + JSON.stringify(evidence) + '\\n\\n' + body\n    writeFileSync(output, result, { flag: 'wx' })\n    console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))\n  } catch (e) { fail('bounded review unavailable: ' + e.message) }\n  process.exit(0)\n}\nconst planPath = o.plan || join(ws, `${epic}-plan.md`)\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "captured-selector-availability": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/dispatch-text.mjs",
+      "fileSha256": "f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087",
+      "lineStart": 243,
+      "lineEnd": 281,
+      "byteStart": 18134,
+      "byteEnd": 20907,
+      "text": "  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false\n  try {\n    const before = snapshot(base), after = snapshot(head)\n    archives = after.archives\n    // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.\n    for (const [p, claim] of before.claims) {\n      try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }\n      catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }\n    }\n    if (!gaps.length) {\n      omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))\n      selected = changed.filter(p => !after.claims.has(p))\n    }\n    sourceAvailable = true\n    // With zero omissions selected is the full captured range; a redundant long\n    // path argv can exceed ARG_MAX even though the Git source is readable.\n    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, ...(omitted.length ? ['--', ...selected] : [])) : '')\n    if (!gaps.length) {\n      mkdirSync(join(out, 'slices'), { recursive: true })\n      for (const [n, p] of selected.entries()) {\n        // Ordinals avoid collisions and platform filename limits for arbitrary Git paths.\n        const slice = 'slices/' + String(n + 1).padStart(6, '0') + '.diff'\n        writeFileSync(join(out, slice), git('diff', '--no-renames', base + '..' + head, '--', p))\n        slices.push({ path: p, slice })\n      }\n    }\n  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }\n  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }\n  writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\\n')\n  writeFileSync(join(out, 'generated-input-provenance.md'), [\n    '## Generated-input provenance',\n    'Captured range: ' + base + '..' + head,\n    'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',\n    'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',\n    ...omitted.map(o => '- ' + JSON.stringify(o)),\n    ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),\n    'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',\n  ].join('\\n') + '\\n')\n  console.log(JSON.stringify({ status: result.status, sourceAvailable, wholeRangeReady: false, dir: out, selected: selected.length, omitted: omitted.length, gaps }))\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "stable-final-source": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 2324,
+      "lineEnd": 2356,
+      "byteStart": 178142,
+      "byteEnd": 181328,
+      "text": "  if (recoveryProblem(r) || r.kind !== 'deferred' || r.operation !== 'record' || source?.invocationId !== invocationId || !/^[0-9a-f]{40,64}$/.test(source.base || '') || !/^[0-9a-f]{40,64}$/.test(source.head || '')) { reviewSourceGap = true; continue }\n  if (persistedReviewSource && (persistedReviewSource.base !== source.base || persistedReviewSource.head !== source.head)) reviewSourceGap = true\n  persistedReviewSource = source\n}\nif (persistedReviewSource) finalSource = { base: persistedReviewSource.base, head: persistedReviewSource.head }\nif (reviewSourceGap) finalSource = null\nconst reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`\nconst clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`\nconst CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'\nlet frSourceRefusal = null, frProvenanceGap = null\nlet frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null\nif (landedWork && invocationPersisted && finalSource) {\n  const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow\n  const reviewThreshold = Math.floor(reviewWindow * 0.4)\n  const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',\n    { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })\n  if (asm?.exit === 2 && /^review input selection: provenance unavailable; captured source available/.test(String(asm.cause || ''))) frProvenanceGap = asm.cause\n  else if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause\n  const fm = /^fits: (yes|no) \\((\\d+) of (\\d+)\\)/.exec(String(asm?.fits ?? '').trim())\n  frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \\(/.exec(String(l).trim())).filter(Boolean)\n    .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))\n  frDir = asm?.dir ?? null\n  frAsmClusters = asm?.clusters ?? null\n  // Exit 3 (bad clusters.json coverage) caps only when the inputs also do not fit; `fits: yes` means a\n  // single review on direct inputs, uncapped.\n  const exit3Fits = !!(asm && asm.exit === 3 && fm && fm[1] === 'yes')\n  if (asm && asm.exit === 3 && !exit3Fits) frMode = 'capped'\n  else if (asm && asm.exit === 0 && fm && frDir) frMode = fm[1] === 'yes' ? 'single' : (frClusters.length ? 'split' : 'capped')\n  const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)\n  const k = asm?.clusters ?? frClusters.length\n  frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'\n    : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'\n    : frProvenanceGap ? 'Final review: bounded (captured source available; omission provenance unavailable)'\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "cleanup-inventory": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "fileSha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499",
+      "lineStart": 42,
+      "lineEnd": 91,
+      "byteStart": 2292,
+      "byteEnd": 4567,
+      "text": "contains() {  # $1 root, $2 path: true when path is the root or inside it\n  case \"$2\" in \"$1\"|\"$1\"/*) return 0 ;; esac; return 1\n}\n# Refuse a root holding a parent worktree (one with other worktrees nested under it).\nfor r in \"${roots[@]}\"; do\n  [ -d \"$r\" ] || continue\n  if inventory=$(git -C \"$r\" worktree list --porcelain 2>/dev/null); then\n    wts=$(sed -n 's/^worktree //p' <<<\"$inventory\")\n  else\n    # Git's normal nonrepository diagnostic is the only failed lookup that permits a\n    # temp root. Corrupt metadata can produce that same diagnostic, so exclude it.\n    discovery=0\n    detail=$(LC_ALL=C git -C \"$r\" rev-parse --git-dir 2>&1) || discovery=$?\n    metadata=0\n    parent=$(cd \"$r\" && pwd -P)\n    while :; do\n      if [ ! -r \"$parent\" ] || [ ! -x \"$parent\" ] || [ -e \"$parent/.git\" ] || [ -L \"$parent/.git\" ] || { [ -d \"$parent/objects\" ] && { [ -e \"$parent/HEAD\" ] || [ -d \"$parent/refs\" ]; }; }; then metadata=1; break; fi\n      [ \"$parent\" != / ] || break\n      parent=$(dirname \"$parent\")\n    done\n    nonrepository=0\n    case \"$detail\" in\n      'fatal: not a git repository (or any of the parent directories): .git') nonrepository=1 ;;\n      'fatal: not a git repository (or any parent up to mount point '*)\n        first=${detail%%$'\\n'*}\n        if [ \"$detail\" = \"$first\"$'\\n''Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).' ]; then nonrepository=1; fi ;;\n    esac\n    if [ \"$discovery\" = 128 ] && [ \"$metadata\" = 0 ] && [ \"$nonrepository\" = 1 ]; then continue; fi\n    echo \"unknown: $r — git worktree inventory failed\"\n    exit 4\n  fi\n  [ -n \"$wts\" ] || { echo \"unknown: $r — git worktree inventory empty\"; exit 4; }\n  while IFS= read -r w; do\n    [ -n \"$w\" ] || continue\n    contains \"$r\" \"$w\" || continue\n    nested=$(grep -c \"^$w/\" <<<\"$wts\" || true)\n    if [ \"$nested\" -gt 0 ]; then\n      echo \"refusing root $r: it holds worktree $w, which has worktrees nested under it (an epic/integration or main checkout); pass task worktrees, the task-worktree directory or run temp dirs instead\" >&2\n      exit 2\n    fi\n  done <<<\"$wts\"\ndone\n\nunder() {  # $1 = a path; true when it is a root or inside one\n  local root\n  for root in \"${roots[@]}\"; do\n    case \"$1\" in \"$root\"|\"$root\"/*) return 0 ;; esac\n  done\n  return 1\n}\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/stop-run-processes",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "cleanup-retention": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/remove-task-worktree",
+      "fileSha256": "05b4813af07ee1e0658457273cfaf2322bcf6c9ea8ad666c5a36ff97acab85dc",
+      "lineStart": 45,
+      "lineEnd": 118,
+      "byteStart": 2585,
+      "byteEnd": 5458,
+      "text": "\ninteg_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges merged-ness against it\n  git worktree list --porcelain | awk -v b=\"branch refs/heads/$1\" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'\n}\n\ndiscard_branch() {\n  local branch=$1 listed\n  if ! listed=$(git branch --list \"$branch\" 2>/dev/null); then\n    echo \"unknown: $branch — git branch inspection failed\"\n    echo \"kept: $branch — branch cleanup unverified\"\n    return 4\n  fi\n  [ -n \"$listed\" ] || return 0  # Successful inspection proved it already absent.\n  if git branch -D \"$branch\" >/dev/null 2>&1; then echo \"deleted: $branch\"; return 0; fi\n  echo \"kept: $branch — git branch -D refused\"\n  return 3\n}\n\nremove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration\n  local mode=$1 wt=$2 br=$3 integ=${4:-}\n  if [ ! -d \"$wt\" ]; then\n    if [ \"$mode\" = discard ]; then\n      local status=0\n      if [ -n \"$tmp\" ]; then stop_processes \"$wt\" \"$tmp\" || status=$?\n      else stop_processes \"$wt\" || status=$?; fi\n      [ \"$status\" = 0 ] || return \"$status\"\n      if ! git worktree prune; then\n        echo \"unknown: $wt — git worktree prune failed\"\n        echo \"kept: $br — worktree cleanup unverified\"\n        return 4\n      fi\n      discard_branch \"$br\"\n      return $?\n    fi\n    echo \"kept: $wt — not a directory (already removed?)\"; return 3\n  fi\n  wt=$(cd \"$wt\" && pwd -P)\n  case \"$(pwd -P)/\" in \"$wt\"/*) cd \"$(git -C \"$wt\" rev-parse --git-common-dir)/..\" ;; esac\n  exclude_tmp \"$wt\"\n  if [ \"$mode\" != discard ]; then\n    if [ -n \"$(git -C \"$wt\" status --porcelain 2>/dev/null)\" ]; then\n      echo \"kept: $wt — uncommitted or untracked changes\"; return 3\n    fi\n    if ! git -C \"$wt\" merge-base --is-ancestor \"$br\" \"$integ\" 2>/dev/null; then\n      echo \"kept: $wt — $br is not merged into $integ\"; return 3\n    fi\n  fi\n  if [ -z \"$sweep_verified\" ]; then\n    local status=0\n    if [ -n \"$tmp\" ]; then stop_processes \"$wt\" \"$tmp\" || status=$?\n    else stop_processes \"$wt\" || status=$?; fi\n    [ \"$status\" = 0 ] || return \"$status\"\n  fi\n  if [ \"$mode\" = discard ]; then\n    if ! git worktree remove --force \"$wt\"; then\n      echo \"kept: $wt — git worktree remove refused\"\n      echo \"kept: $br — worktree removal incomplete\"\n      return 3\n    fi\n    echo \"removed: $wt\"\n    discard_branch \"$br\"\n    return $?\n  fi\n  if ! git worktree remove \"$wt\" 2>/dev/null; then\n    echo \"kept: $wt — git worktree remove refused\"; return 3\n  fi\n  echo \"removed: $wt\"\n  [ \"$mode\" = keep-branch ] && return 0\n  local idir; idir=$(integ_dir \"$integ\")\n  if [ -n \"$idir\" ] && git -C \"$idir\" branch -d \"$br\" >/dev/null 2>&1; then echo \"deleted: $br\"; else echo \"kept: $br — git branch -d refused\"; return 3; fi\n}\n\nclean_tmp() {  # $1 = the --tmp DIR (validated); stop what runs under it, then delete it\n  [ -n \"$1\" ] && [ -e \"$1\" ] || return 0\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/remove-task-worktree",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "cleanup-setup-consumer": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 2580,
+      "lineEnd": 2609,
+      "byteStart": 210181,
+      "byteEnd": 217351,
+      "text": "  const reason = `Split partial: ${id} — filed ${kids.join(', ')}`\n  return `Working directory: ${integrationWorktree}. A split of ${id} failed part-way and left these child beads filed: ${kids.join(', ')}. Close each with \\`bd close <child> --reason \"${reason}\"\\`; do not touch ${id} or any other bead. Report id ${id} and status CLOSED once every child is closed. ${finalAnswerRule(true)}`\n}\n\nfunction workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch, briefFile, { parents = [], reentry = false, recut = false } = {}) {\n  // The implementer's workspace setup, run before it implements: create or reuse exactly this worktree\n  // and branch (idempotent). `base` is the pre-implementer commit on a fresh cut; on a re-entry, the\n  // newest first-parent `stack: ` merge or the merge-base with the integration branch. Never HEAD~1.\n  // `parents`: stack parents whose branches a fresh cut merges in. `reentry`: the implementation is\n  // already on the branch. `recut`: remove a cancelled attempt's worktree first. task-brief gets an\n  // explicit OUTFILE in the integration workspace.\n  const stackStep = parents.length\n    ? ` Then, still in ${worktree}, merge each stack parent's branch in this order, one commit per parent: ${parents.map(p => `\\`git merge --no-ff -m \"stack: ${p}\" ${taskBranch(p)}\\``).join(', then ')}. These tasks are implemented but not merged yet; their code is what this task builds on. If any of these merges conflicts, run \\`git merge --abort\\`, leave ${worktree} (cd to the repository root), run \\`bash ${codeSkill}/scripts/remove-task-worktree --discard --tmp ${taskTmp(id)} ${worktree} ${branchName}\\` and capture its exit code and output. Exit 0 permits returning status STACK_CONFLICT with \\`finding\\` naming the parent and conflicting files plus cleanup output. On any nonzero exit, retain every remaining resource, stop setup and return SETUP_FAILED with the parent, conflicting files, helper exit code and all output in \\`finding\\`; do not recut or force removal. Otherwise \\`git rev-parse HEAD\\` after the last merge is base; report stacked true.`\n    : ` Then \\`git rev-parse HEAD\\` in ${worktree} is base.`\n  const recutStep = recut\n    ? ` An earlier attempt of this task was cancelled and its worktree may not have been removed: if ${worktree} or the branch \\`${branchName}\\` exists, run \\`bash ${codeSkill}/scripts/remove-task-worktree --discard --tmp ${taskTmp(id)} ${worktree} ${branchName}\\` and capture its exit code and output. Only exit 0 permits treating this as the NEITHER case. On any nonzero exit, retain every remaining resource, stop setup and return SETUP_FAILED with the helper exit code and all output in \\`finding\\`; do not recut or force removal.`\n    : ''\n  const neither = reentry\n    ? `If NEITHER exists, run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and reopen or create nothing. Otherwise this task's implementation is gone: run \\`bd reopen ${id} --reason \"review re-entry found no task branch\"\\`, then \\`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\\`; \\`git rev-parse HEAD\\` in ${worktree} is base; report reopened true, and implement the task as usual.`\n    : `If NEITHER exists: run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and create nothing. Otherwise \\`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\\`.${stackStep}`\n  const both = reentry\n    ? `If BOTH exist (the expected case for this review re-entry): reuse them as they are; find the base (\\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\\` — if it prints a commit, that is base and report stacked true; otherwise base is \\`git merge-base ${integrationBranch} ${branchName}\\`, run in ${worktree}) and report head as \\`git rev-parse ${branchName}\\`. Do NOT implement anything: the implementation is already on the branch. If base came from the merge-base and equals head, the branch has no commits of its own past ${integrationBranch} — it either landed (by a merge or a hand fast-forward) or its implementation was lost (the branch reset or recreated): never return IMPLEMENTED with an empty range. Run the already-merged check below; if it prints true, return ALREADY_MERGED. If it prints false, return status SETUP_FAILED with base and \\`finding\\` \"review re-entry: ${branchName} has no commits past ${integrationBranch} and is not merged into it — landed by a fast-forward, or the implementation is gone; nothing was closed\". Otherwise run the already-merged check below, then return status IMPLEMENTED with base and head (or ALREADY_MERGED).`\n    : `If BOTH exist (a restart re-dispatching this task): reuse them as they are (do not delete, recreate, or re-run \\`git worktree add\\`), and read \\`git status\\` and \\`git log\\` there: an earlier attempt's committed or uncommitted work is where you continue from, not something to redo; find the base: \\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\\` — if it prints a commit, that is base and report stacked true; otherwise base is \\`git merge-base ${integrationBranch} ${branchName}\\` (run in ${worktree}).`\n  const reentryNote = reentry ? ` This is a review re-entry: the task was implemented in an earlier attempt and its review bead is open, so the worktree and branch are expected to exist.` : ''\n  return `The task worktree is ${worktree} and the task branch is \\`${branchName}\\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory.${reentryNote}${recutStep} Check whether ${worktree} and the branch \\`${branchName}\\` already exist (\\`git worktree list\\`, \\`git branch --list ${branchName}\\`). ${neither} ${both} ALREADY-MERGED CHECK, on a reused branch and before a fresh cut: run \\`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\\`; if it prints true, return status ALREADY_MERGED with base and nothing else. BRIEF: run \\`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\\` in ${worktree} (the third argument is the output file; keep it); if it reports \"task not found\", return status SETUP_FAILED with that as \\`finding\\`. TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \\`which <runner>\\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment; if it still resolves elsewhere, return status SETUP_FAILED with \\`finding\\` naming what resolved where. Report base on every return.`\n}\n\nfunction implementPrompt(planPath, id, n, integrationBranch, art, { parents = [], reentry = false, recut = false } = {}) {\n  // implementer-prompt.md holds the contract; this supplies its parameters, including the workspace\n  // setup the template's first step runs.\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "fresh-capacity-admission": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 1719,
+      "lineEnd": 1752,
+      "byteStart": 132634,
+      "byteEnd": 134444,
+      "text": "  }\n\n  // Initial dispatch and verification completion both refresh tracker facts after\n  // a capacity wait; cached readiness alone cannot authorize either admission.\n  const admitAfterCapacity = async (id, waited) => {\n    const external = (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d))\n    if (!integrationBlocked && ((waited && rowOf(id)?.opaque === true) || (external && (waited || (rowOf(id) ? effDeps(rowOf(id)) : []).some(d => !localDependency(d) && !externalStatus.has(d)))))) {\n      const before = observationSeq\n      await runTopUp()\n      if (observationSeq === before) { holdAdmission(id, 'fresh tracker observation unavailable (query budget or start gate)'); return false }\n    }\n    const held = admissionReason(id)\n    if (held) { holdAdmission(id, held); return false }\n    admissionHolds.delete(id)\n    return true\n  }\n\n  const runTask = async (id, { reentry = false } = {}) => {\n    if (integrationBlocked) { log(`${id}: not started — the merge lane is held (${integrationBlocked})`); return }\n    let att = null\n    let r = null\n    let integrate = false\n    let slotHeld = false\n    try {\n      const waited = await sched.acquire(id)\n      slotHeld = true\n      try {\n        // Waiting is a reservation, not an attempt; every entry path refreshes admission.\n        if (!await admitAfterCapacity(id, waited)) { dispatched.delete(id); return }\n        att = startAttempt(id, reentry)\n        if (att.cancelledBy) return await abandon(att, true)\n        if (verificationCompletions.has(id)) { await completeVerification({ id, n: ordinalFor(id), att }); return }\n        if (landed.has(id)) { await closeAlreadyMerged({ id, n: ordinalFor(id), att }); return }\n        // One dispatch sets the workspace up and implements: it cuts or reuses the worktree, merges any\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "verification-parent-settlement": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 1833,
+      "lineEnd": 1860,
+      "byteStart": 141656,
+      "byteEnd": 144078,
+      "text": "        else if (r?.status === 'BLOCKED_AUTH') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleAuthRefusal(r, r.finding) }\n        else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)\n        else if (r?.status === 'CLEAN' && r.completionKind === 'verification-only') {\n          if (att.parentAttempts.length) {\n            // Parent failure settlement needs a task slot too. Wait outside the window,\n            // then reacquire before recording evidence or closing the verification task.\n            sched.release(id); slotHeld = false\n            if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)\n            const waited = await sched.acquire(id); slotHeld = true\n            if (att.cancelledBy) return await abandon(att, true)\n            if (!await admitAfterCapacity(id, waited)) return null\n          }\n          const basis = { completionKind: 'verification-only', status: 'CLEAN', files: [], base: r.base, head: r.head, sourceTree: r.sourceTree, evidence: r.evidence, requiredLiveChecks: r.requiredLiveChecks, reportPath: artifacts(id).report, reviewPath: artifacts(id).review, reviewStatus: 'CLEAN', ...(reviewBeadOf.has(id) ? { reviewBead: reviewBeadOf.get(id) } : {}), ...(blockerBeadOf.has(id) ? { blockerBead: blockerBeadOf.get(id) } : {}) }\n          for (const mn of r.minors || []) {\n            noteLedger(id, ledgerLine(r.n, id, 'minor (deferred): ' + mn), ledgerLine(r.n, id, 'minor (deferred): ' + (rawClassTag(mn) ? '[' + rawClassTag(mn) + '] ' : '') + 'text elided — see ' + basis.reviewPath + ' [recurrence-id: ' + recurrenceId(mn) + ']'))\n            noteRecurrence('minor', id, mn, 'Integrate')\n            deferredMinors.push({ id, text: String(mn).replace(/\\s+/g, ' ').trim() })\n          }\n          verificationCompletions.set(id, basis)\n          const persisted = await noteRecovery(id, 'pending-closure', 'record', 'reviewed verification-only task awaits tracker closure', [basis.reportPath, basis.reviewPath], { verification: basis }, null, 'Implement')\n          if (persisted?.appended !== true) {\n            verificationCompletions.delete(id)\n            recoveryObligations.delete('pending-closure:' + id)\n            log('verification basis persistence unavailable for ' + id + ' — tracker closure withheld')\n            return null\n          }\n          await completeVerification(r)\n        }\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "durable-resume": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 874,
+      "lineEnd": 920,
+      "byteStart": 69419,
+      "byteEnd": 72959,
+      "text": "for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'pending-closure')) {\n  const id = record.id, data = record.data\n  const verification = verificationCompletions.get(id)\n  const source = verification || data\n  const required = [...new Set([id, source.reviewBead, source.blockerBead].filter(Boolean))]\n  const observed = typeof source.head === 'string' && /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(source.head)\n    ? await dispatch(() => resumeCheckPrompt(record, required), 'resume-check:' + id,\n      { label: 'resume-check:' + id, phase: 'Resume', ...tier('mechanical'), schema: RESUME_CHECK })\n    : null\n  const known = observed && !observed.error && Array.isArray(observed.closed) && Array.isArray(observed.open)\n    && required.every(bead => observed.closed.includes(bead) !== observed.open.includes(bead))\n  const reason = !observed ? 'Git/tracker observation unavailable or exact source head missing'\n    : observed.error || ((verification ? observed.sourceVerified !== true : observed.landed !== true) ? 'persisted source disagrees with Git' : !known ? 'tracker status unavailable or contradictory' : null)\n  if (reason) {\n    completed.delete(id); parked.delete(id)\n    resumeHolds.set(id, reason)\n    log(id + ': recovery held — ' + reason + '; original evidence retained: ' + record.evidence.join(', '))\n    noteRecovery('resume:' + id, 'hold', 'record', reason, record.evidence,\n      { taskId: id, recoveryId: id, ...(observed ? { observation: observed } : {}) }, null, 'Resume')\n    continue\n  }\n  // Only this reconciler's own hold can clear on a successful observation. Caller holds and\n  // deferred evidence obligations require their owner's explicit matching clear record.\n  if (!verification) landed.set(id, data.head)\n  if (data.range) landedRanges.set(id, 'commits ' + data.range)\n  if (data.reviewBead) reviewBeadOf.set(id, data.reviewBead)\n  if (data.blockerBead) blockerBeadOf.set(id, data.blockerBead)\n  completed.delete(id); parked.delete(id)\n  const allClosed = required.every(bead => observed.closed.includes(bead))\n  const ownHold = recoveryObligations.get('hold:resume:' + id)\n  const clears = [...(ownHold ? [ownHold] : []), ...(allClosed ? [record] : [])].map(r =>\n    'Recovery: ' + JSON.stringify({ ...r, operation: 'clear', reason: allClosed ? 'tracker closure confirmed' : 'exact landing and tracker observations available',\n      evidence: ['git:' + source.head, ...required.map(bead => 'bead:' + bead)], data: {} }))\n  const lines = [...clears, ...(allClosed ? [ledgerLine('?', id, verification ? 'complete (verification-only, reviewed acceptance evidence; tracker closure reconciled on resume)' : 'complete (' + (data.range ? 'commits ' + data.range + ', ' : '') + 'already merged into ' + integrationBranch + ' — tracker closure reconciled on resume)')] : [])]\n  if (lines.length) {\n    // Append completion and its clears together; only confirmed writes update in-memory\n    // obligations. An unavailable append retains recovery for the next restart.\n    const written = await queueLedger(lines, 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines).catch(() => null)\n    if (!written || written.appended === false) {\n      resumeHolds.set(id, 'recovery reconciliation append unavailable')\n      log(id + ': recovery held — reconciliation append unavailable; original obligation retained')\n      continue\n    }\n    for (const clear of clears) readRecovery(clear)\n  }\n  if (allClosed) { settle(id, completed); if (landedParked.has(id)) parked.add(id) }\n}\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "amendment-resume": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/resume.md",
+      "fileSha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf",
+      "lineStart": 68,
+      "lineEnd": 85,
+      "byteStart": 10512,
+      "byteEnd": 15210,
+      "text": "\nA resume at `phase: design` re-enters `super-design` at step 1: the recorded state is durable, but re-entry is not idempotent, and knowing that `spec:` and `epic:` already exist is not the same as `super-design` skipping the work that produced them, since that guard lives in `super-design`, not here. The recorded pointers plus the tracker (the epic, its children, their `sp:needs-design` labels) say where the tree actually is, and `super-design`'s cursor is a query over that rather than session memory.\n\n## Redesign cycle replay\n\nA `redesign-<loop>-<K>` record (run-state.md item 7 (Design decisions)) whose `state` is not final means a redesign cycle was interrupted. Dispatch it only from `state`: a durable output (an amend file, a spec diff, a bead, a report) is checked within a state to decide how to carry it out, and is never used to infer which state the cycle is in. Counters (`redesignCycles-code`, `redesignCycles-design`) are never reset, and a replay never starts a cycle of its own: the cycle that was started is the one that finishes.\n\n- `started`: with an `amend-<loop>-<K>.md` file and a spec diff, run `amend-check` on them (`bash <skills-root>/super-design/scripts/amend-check --loop <loop> --amend <record> --ledger <ledger> --specs <paths>`); exit 0 (`ok`) continues at the commit; exit 3 (`reject:`) restores the `--specs` files to HEAD (`git checkout HEAD -- <paths>`) and re-runs super-design's Amend Mode section from its dispatch; exit 2 is a bad invocation or a git failure: fix it and run `amend-check` again, never restoring (as Amend Mode step 2). With no amend file, restore and re-run the same way.\n- `amend-checked`: first check whether Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood`, the pre-amendment HEAD both loops record. Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet, including step 3's sync. Not landed: re-run `amend-check` before committing anything. exit 0 goes on to the commit; exit 3 restores the specs and rewrites the state to `aborted — amend rejected on resume`, then finishes the abort as the `aborted — <reason>` bullet does: remove from the loop's overrides file the `dissolved@r<N>` lines Step 1 wrote for this round's record, rebuild the ledger with the loop's `findings-ledger` invocation, and park the `degraded-verdict` (`redesign aborted — amend rejected on resume`) (the round then runs `local`); exit 2: fix and re-run, no restore.\n- `specs-committed`: first replay Amend Mode step 3's Key Abstractions sync, then file only the `work:` items whose titles are missing from the beads labelled `sp:redesign-<loop>-<K>`; that label is the dedupe key, so a resume never files a bead twice.\n- `beads-filed`: write any dispute line missing from the overrides file, run the coverage-amend round unless the `coverage-amend-<loop>-<K>` approvals line exists, then the calling loop's remaining steps. In the code loop they depend on `designRoast`:\n  - `-`: run the amend-roast step, with its design-cap gate;\n  - `r<M>` and no round-M design roast report: run roast round M without incrementing `roastDesignRound` again;\n  - `r<M>` and its report: finish the fix step (spec fixes; tasks from the work-list file `<run-dir>/amend-code-<K>-roast.md`, written first when absent, filed only for its titles missing from the beads labelled `sp:redesign-code-<K>-roast`; commit) and write `r<M> fixed`;\n  - `r<M> fixed`, `skipped — design cap spent` or `none`: go on.\n\n  `applied` is written only after these remaining steps (for the code loop, the `designRoast` sub-states), so a record still at `beads-filed` always replays the amend roast steps; Amend Mode's return never wrote it early. Then write state `applied`, re-enter `super-code`, and run the next numbered round. The design loop's `redesign-design-<K>` has no `designRoast` step: after the coverage round it writes `applied`, and its next round is the post-amendment design roast.\n- `aborted — <reason>`: the round runs `local`; before it does, finish the abort (the live abort writes this state first and then runs these same steps, so a crash anywhere in them replays here): park the `degraded-verdict` (`redesign aborted — <reason>`) unless `parked:` already holds it, and remove any `dissolved@r<N>` line for this round's record still in the overrides file and rebuild the ledger with the loop's `findings-ledger` invocation. Both writes are idempotent: with the park present and no such line, nothing is written.\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/resume.md",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "source-evidence-validation": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 2638,
+      "lineEnd": 2677,
+      "byteStart": 221266,
+      "byteEnd": 230327,
+      "text": "  const specs = testPathspecs.map(p => `'${p}'`).join(' ')\n  return checkEvidenceContract() + 'RECORDED RUN FAILURE HISTORY (data for source comparison): ' + JSON.stringify(runFailures().map(({ id, owner, classification, state }) => ({ id, owner, classification, state }))).slice(0, 2000) + '; complete Recovery/source/fix history: ' + ledgerPath + '. Read relevant records before attribution; this preview may be incomplete. ' + `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}; [COMPLETION_KIND] = ${im.completionKind || 'implementation'}. ${im.completionKind === 'verification-only' ? 'EVIDENCE REVIEW: use the template verification-only branch before review-package. Captured outcome (data): ' + JSON.stringify({ completionKind: im.completionKind, sourceTree: im.sourceTree, evidence: im.evidence, requiredLiveChecks: im.requiredLiveChecks }) : ''} ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \\`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \\`stack: \\` merge (\\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\\`), else \\`git merge-base ${im.base} ${im.head || 'MISSING'}\\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`\n}\n\nfunction verificationProblem(im, review) {\n  const hash = v => typeof v === 'string' && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v)\n  const text = v => typeof v === 'string' && v.trim().length > 0\n  const identity = r => r && hash(r.sourceTree) && text(r.command) && text(r.configuration)\n  const record = r => identity(r) && text(r.location) && ['live','simulated','fallback'].includes(r.kind) && r.outcome === 'pass'\n  if (im.completionKind !== 'verification-only' || !hash(im.head) || im.head !== im.base || !hash(im.sourceTree) || !Array.isArray(im.files) || im.files.length) return 'verification-only requires unchanged captured commits, a tested source tree and no delivered file changes'\n  if (review.status !== 'CLEAN' || review.completionKind !== 'verification-only' || review.sourceTree !== im.sourceTree || review.base !== im.base || review.head !== im.head) return 'verification-only acceptance was not independently confirmed CLEAN against the captured source and task intent'\n  if (!Array.isArray(im.evidence) || !im.evidence.length || !im.evidence.every(record) || !Array.isArray(review.evidence) || !review.evidence.length || !review.evidence.every(record)) return 'verification-only acceptance lacks passing source-bound evidence'\n  const fields = ['sourceTree','command','configuration','outcome','location','kind']\n  if (review.evidence.some(r => r.sourceTree !== im.sourceTree || !im.evidence.some(e => fields.every(k => e[k] === r[k])))) return 'verification-only review evidence is stale or differs from the retained measurement'\n  for (const producer of [im, review]) {\n    if (producer.requiredLiveChecks !== undefined && !Array.isArray(producer.requiredLiveChecks)) return 'verification-only required live checks are malformed'\n    for (const check of producer.requiredLiveChecks || []) {\n      if (!identity(check) || check.sourceTree !== im.sourceTree || !review.evidence.some(r => r.kind === 'live' && r.sourceTree === check.sourceTree && r.command === check.command && r.configuration === check.configuration)) return 'verification-only required live check is missing, stale, failed or unavailable'\n    }\n  }\n  return null\n}\n\nfunction verificationClosePrompt(id, basis) {\n  const required = [id, basis.reviewBead || reviewBeadOf.get(id), basis.blockerBead || blockerBeadOf.get(id)].filter(Boolean)\n  return 'In ' + integrationWorktree + ': close the independently reviewed verification-only task ' + id + '. Review basis (data): ' + JSON.stringify(basis) + '. STATUS CHECK FIRST: bd show <id> --json for every required bead: ' + required.join(', ') + '. A missing status or failed lookup returns BLOCKED with closure status unavailable; write nothing. If all are closed return CLOSED. Otherwise resolve the captured commit with git rev-parse --verify ' + basis.head + '^{commit} and its tree with git rev-parse ' + basis.head + '^{tree}; the tree must equal ' + basis.sourceTree + '. If unavailable or different return BLOCKED and close nothing. Stop task processes with bash ' + codeSkill + '/scripts/stop-run-processes ' + taskWorktree(id) + ' ' + taskTmp(id) + '. Close only the required beads observed open using bd close <id>; return CLOSED only after all closes succeed. Then run bash ' + codeSkill + '/scripts/remove-task-worktree --tmp ' + taskTmp(id) + ' ' + taskWorktree(id) + ' ' + taskBranch(id) + ' ' + integrationBranch + '. Preserve cleanup lines verbatim in finding. ' + cleanupOutcomeRule() + ' No commit or merge is required. ' + authRefusalRule() + ' ' + finalAnswerRule(true)\n}\n\nfunction checkEvidenceContract() {\n  return 'EVIDENCE CONTRACT: optional evidence records carry sourceTree, command, configuration, outcome, location, kind; kind is live|simulated|fallback and outcome is pass|fail|unavailable. sourceTree is the full tested Git tree hash: HEAD^{tree} for clean committed source, or a temporary-index snapshot including tested changes. Keep the complete records and capture commands in the report and return the records as evidence. For explicitly required live checks, return requiredLiveChecks with sourceTree, command, configuration selected against the task acceptance. Only matching live/pass evidence supplies that check; semantic coverage belongs to the reviewer. These check facts do not replace implementation, review or run acceptance. Optional failureAttribution entries carry failure, command, configuration and zero-based indices into THIS reply evidence array: observed (live failing source), runBaseline (measured run-start source), taskBase (measured task-base source), verification (live passing fix source); introducedBy names the task established by source/fix history. Include only supported associations and preserve exact evidence kind/outcome; omitted or uncertain baseline is an attribution gap. Task-base exoneration does not release a known run owner. Retain the arrays/associations in the report. '\n}\n\nfunction fixPrompt(r, finding, art, kind) {\n  // The one fix pass ('review'), the seam fix ('seam') or the merge-check fix ('check'). A fresh\n  // implementer-tier agent, so the dispatch hands it every path; the finding is wrapped as data.\n  const which = kind === 'check'\n    ? `This is the merge-check fix: the branch has been rebased onto ${integrationBranch}, and the build-only merge check \\`${mergeCheckCommand}\\` failed on the merged tree. The findings below are its compile/typecheck errors — usually a file this task did not touch (another task's code, test or fixture) still using a signature, API or schema this task changed. FIRST, in ${r.branch}: if \\`git merge-base --is-ancestor ${integrationBranch} HEAD\\` fails, ${integrationBranch} moved after the check ran (a hand merge, a relaunch): rebase onto it (\\`git rebase ${integrationBranch}\\`) and run the check there before anything else. Fix only the errors that still occur on the current tip — an error a sibling already fixed there is not yours to fix again; if none remain, commit nothing and return FIXED with head. Fix ONLY those errors, with the smallest change: you may edit whatever files the errors name, and adapting a call site, test call or fixture to the new signature is the intended case; do not delete, skip, or loosen any test assertion, and change no behavior beyond the adaptation. Run \\`${mergeCheckCommand}\\` once in ${r.branch} (rebased onto ${integrationBranch}, so it sees the sibling changes), then the tests covering each call site you adapted, and record both outputs. Head your report section \"## Merge-check fix\".`\n    : kind === 'seam'\n    ? `This is the post-rebase seam fix: the branch has been rebased onto ${integrationBranch}, and a seam review found an incompatibility with sibling changes that landed there meanwhile. Head your report section \"## Seam fix\". Run the tests covering the overlapping files, and those covering the callers of any function whose behavior or signature you changed, and record them.`\n    : `This is the task's one fix pass, after its task review returned NEEDS_FIX.`\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "run-failure-history": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 471,
+      "lineEnd": 516,
+      "byteStart": 41093,
+      "byteEnd": 45006,
+      "text": "function classifyRunFailure(data) {\n  const result = { failure:data.failure, command:data.command, configuration:data.configuration, classification:'gap', owner:null, state:'open', taskExonerations:[], gaps:[], comparisons:[] }\n  const gap = (event, reason) => result.gaps.push(event.dispatch + ': ' + reason)\n  const failedSources = new Set()\n  const verifications = []\n  for (const event of data.history || []) {\n    const claim = event.claim || {}\n    const record = index => {\n      const r = Number.isInteger(index) && index >= 0 && Array.isArray(event.evidence) ? event.evidence[index] : null\n      return r && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(r.sourceTree) && r.command === data.command && r.configuration === data.configuration\n        && typeof r.location === 'string' && r.location.trim() && r.kind === 'live' && ['pass','fail','unavailable'].includes(r.outcome) ? r : null\n    }\n    const observed = record(claim.observed), baseline = record(claim.runBaseline), taskBase = record(claim.taskBase), verified = record(claim.verification)\n    result.comparisons.push({ task:event.task, dispatch:event.dispatch, observed, runBaseline:baseline, taskBase, verification:verified })\n    for (const r of [observed, baseline, taskBase, verified]) if (r?.outcome === 'fail') failedSources.add(r.sourceTree)\n    if (claim.observed !== undefined || claim.verification === undefined) {\n      if (observed?.outcome !== 'fail') gap(event, 'failing observation missing, unavailable, non-live or command/configuration association uncertain')\n      else {\n        result.state = 'open'\n        if (taskBase?.outcome === 'fail') { if (!result.taskExonerations.includes(event.task)) result.taskExonerations.push(event.task) }\n        else if (claim.taskBase !== undefined) gap(event, 'task base does not establish local exoneration')\n        if (!baseline || baseline.outcome === 'unavailable') gap(event, 'run baseline missing, unavailable, non-live or command/configuration association uncertain')\n        else if (baseline.outcome === 'fail') {\n          if (result.owner) gap(event, 'pre-run claim conflicts with retained introducing owner; reconcile source history')\n          else result.classification = 'pre-run'\n        } else if (baseline.sourceTree === observed.sourceTree) gap(event, 'opposite outcomes at the same source tree do not establish an introducing task')\n        else if (typeof claim.introducedBy === 'string' && claim.introducedBy.trim()) {\n          if (result.owner && result.owner !== claim.introducedBy) gap(event, 'introducing owner conflicts with retained source history')\n          else if (result.classification === 'pre-run') gap(event, 'run-introduced claim conflicts with evidenced pre-run failure')\n          else { result.owner = claim.introducedBy; result.classification = 'run-introduced' }\n        } else gap(event, 'run baseline passes but introducing task/source association is missing')\n      }\n    }\n    if (claim.verification !== undefined) {\n      if (verified?.outcome === 'pass' && result.owner) { result.state = 'verified'; verifications.push({ event, record:verified }) }\n      else gap(event, 'fix verification missing, unavailable, non-live or unassociated with a known run owner')\n    }\n  }\n  // Reconcile every verification against linked outcomes, including durable history and later\n  // associations. Retain earlier contradictions even when a different fixed source resolves the\n  // repair; a pass at the same immutable failing source cannot silently close it.\n  for (const verification of verifications) if (failedSources.has(verification.record.sourceTree)) {\n    if (result.state === 'verified' && verification === verifications[verifications.length - 1]) result.state = 'open'\n    gap(verification.event, 'contradictory outcomes at source tree ' + verification.record.sourceTree + '; reconcile source history before fix verification')\n  }\n  return result\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "acceptance-producer-facts": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 104,
+      "lineEnd": 168,
+      "byteStart": 7899,
+      "byteEnd": 13581,
+      "text": "// Review source is immutable provenance carried by Recovery's deferred transport,\n// not a deferred measurement. Validate history as well as the current snapshot.\nconst reviewSources=new Map();\nconst isReviewSource=r=>object(r)&&(typeof r.id==='string'&&r.id.startsWith('review-source:')||object(r.data)&&Object.hasOwn(r.data,'reviewSource'));\nfor(const snapshot of snapshots)for(const r of snapshot.recovery.obligations.filter(isReviewSource)){\n const source=r.data?.reviewSource;\n if(r.version!==1||r.kind!=='deferred'||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||\n    !object(r.data)||Object.keys(r.data).length!==1||!object(source)||!text(source.invocationId)||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(source.invocationId)||\n    r.id!=='review-source:'+source.invocationId||!hash(source.base)||!hash(source.head)){\n  gap('invalid review-source provenance: '+(r.id||'unknown'));continue;\n }\n const old=reviewSources.get(source.invocationId);\n if(old&&(old.base!==source.base||old.head!==source.head))gap('conflicting review-source provenance: '+source.invocationId);\n else reviewSources.set(source.invocationId,source);\n}\nif(!current)gap('caller acceptance requirements unavailable');\nelse{\n if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}\n if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');\n const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);\n const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);\n const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);\n for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');\n function measure(q,label){\n  if(!identity(q)){gap(label+': measurement identity unavailable');return false}\n  const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));\n  // Contradictory outcomes at an immutable source do not silently turn into a pass.\n  if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;\n  const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');\n  wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;\n }\n for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');\n for(const q of requirements.values()){\n  if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);\n  else if(q.kind==='review'){\n   const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);\n   if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);\n  }else{\n   const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);\n   if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);\n  }\n }\n for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));\n for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));\n const failures=new Map();\n for(const f of current.runFailures){\n  if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}\n  failures.set(f.id,f);\n  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));\n  if(f.classification==='pre-run')continue; // diagnostic repair status cannot erase attribution gaps\n  if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));\n }\n for(const r of current.recovery.obligations){\n  if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}\n  if(isReviewSource(r))continue; // validated above, never invent command/configuration work\n  if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}\n  if(r.kind==='deferred'){\n   const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));\n   // Deferred final-suite records predate any tested tree. The caller explicitly binds\n   // their exact IDs to the final measurement; a pass cannot clear another obligation.\n   if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);\n   else measure({...r.data,requiredLive:true},r.id);\n  }\n  else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));\n }\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "acceptance-declared-population": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 170,
+      "lineEnd": 247,
+      "byteStart": 13583,
+      "byteEnd": 19228,
+      "text": "// The outer caller collects settled reports. The read-only gate reconciles known\n// producer pointers with complete retained extraction, never ledger display keys.\nconst runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];\nconst roastInputs={design:new Set(),code:new Set()};\nconst artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};\nlet inApprovals=false,fenced=false;\nfor(const line of input.split(/\\r?\\n/)){\n if(/^\\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;\n if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))inApprovals=line==='approvals:';\n if(inApprovals&&line.startsWith('- finding-source · ')){\n  try{const s=JSON.parse(line.slice('- finding-source · '.length));if(object(s)&&text(s.source)&&text(s.artifact))sources.push(s)}catch{}\n }\n if(line.startsWith('- source-correspondence')){\n  try{\n   if(!inApprovals||!line.startsWith('- source-correspondence · '))throw Error();\n   correspondences.push(JSON.parse(line.slice('- source-correspondence · '.length)));\n  }catch{gap('source coverage: malformed source-correspondence record')}\n }\n const report=line.match(/^(roast-design|roast-code):\\s*(.*)$/);\n if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){\n  if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');\n  else{const original=artifactPath(artifact);declared.set(original,'roast');roastInputs[report[1].slice(6)].add(original)}\n }\n const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\\s*(.*)$/);\n if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});\n}\nconst repo=cp.spawnSync('git',['-C',runDir,'rev-parse','--show-toplevel'],{encoding:'utf8'});\nconst repoDir=repo.status===0?repo.stdout.trim():null;\nconst ledgerKeys=new Map();\nfor(const {artifact,loop} of ledgers){\n try{\n  if(!artifact)throw Error('empty ledger pointer');\n  const lines=fs.readFileSync(path.resolve(runDir,artifact),'utf8').trimEnd().split(/\\r?\\n/);\n  if(!new RegExp('^# findings ledger — '+loop+' — through r[0-9]+$').test(lines[0])||!/^triggers: .+/.test(lines[1]||'')||\n     !/^blocking: .+/.test(lines[2]||'')||!/^ignored-overrides: [0-9]+$/.test(lines[3]||''))throw Error('malformed ledger header');\n  // Headers contain no total finding count/input manifest: zero rows can mean\n  // truncation even with zero Blocking. Only the caller declares the input set.\n  if(!roastInputs[loop].size)gap('source coverage: ledger input population unavailable: '+artifact+'; declare all roast-'+loop+' producer inputs');\n  if(!lines.slice(4).some(line=>line.trim())&&/\\br[0-9]+=[1-9][0-9]*(?:\\s|$)/.test(lines[2]))gap('source coverage: ledger header contradicts missing finding rows: '+artifact);\n  const rowKeys=new Set();\n  for(const [index,line] of lines.slice(4).entries()){\n   if(!line.trim())continue;\n   const row=line.match(/^- (\\[[^\\]]+\\] .+) · raised r[0-9]+@(?:[a-f0-9]+|-) · .+ · source (roast|final-review) · text (.+)$/);\n   if(!row){gap('source coverage: malformed ledger row '+artifact+':'+(index+5));continue}\n   rowKeys.add(row[1]);\n   // The producer preserves its input path. Accept a run-relative or repo-relative\n   // path only when it selects one unambiguous original file, never by basename/key.\n   const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));\n   if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}\n   const kind=row[2]==='final-review'?'keys':'roast';\n   const cacheKey=JSON.stringify([candidates[0],kind]);\n   if(!ledgerKeys.has(cacheKey)){\n    if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\\r?\\n/).map(k=>k.trim().replace(/^r[0-9]+\\s+/,'')));\n    else{\n     const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});\n     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\\r?\\n/):null);\n    }\n   }\n   // Key membership checks the ledger producer's pointer transport only. It never\n   // identifies, links or resolves occurrences; complete source/ref checks follow.\n   if(!ledgerKeys.get(cacheKey)?.includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));\n   if(declared.has(candidates[0])&&declared.get(candidates[0])!==kind)gap('source coverage: conflicting report kind '+candidates[0]);\n   else declared.set(candidates[0],kind);\n  }\n  // Reverse transport check catches missing rows of every severity. Equal keys\n  // still do not identify occurrences: all declared original reports are separately\n  // extracted and their immutable refs retain independent relevance/dispositions.\n  for(const original of roastInputs[loop]){\n   const cacheKey=JSON.stringify([original,'roast']);\n   if(!ledgerKeys.has(cacheKey)){\n    const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});\n    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\\r?\\n/):null);\n   }\n   const keys=ledgerKeys.get(cacheKey);\n   if(keys===null)gap('source coverage: ledger declared input population unavailable: '+artifact+'; '+original);\n   else if(keys.some(key=>key.trim()&&!rowKeys.has(key)))gap('source coverage: ledger population incomplete for declared report: '+artifact+'; '+original);\n  }\n }catch(e){gap('source coverage: declared ledger '+artifact+': '+e.message)}\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "finding-semantic-support": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/run-state.md",
+      "fileSha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203",
+      "lineStart": 394,
+      "lineEnd": 427,
+      "byteStart": 46880,
+      "byteEnd": 49555,
+      "text": "`- finding-link · {\"refs\":[<ref>,<other-ref>],\"basis\":\"why these appearances are the same obligation\"}`\nonly after judging the explicit match. Links combine referenced occurrences transitively.\nAmbiguous matches remain separate. Archive copies with identical source/section/position and\ntext deduplicate; conflicting extractions retain text variants, expose a gap and keep affected\nfindings outstanding even if a disposition claims resolution.\n\n**Routing.** Append `- finding-route · {\"ref\":<ref>,\"owner\":\"<bead>\",\"fix\":\"<fix bead>\",\n\"deferred\":\"<reason>\"}` as one JSON line, with any nonempty subset of owner/fix/deferred.\nDeferral is explicit routing, not inferred from a section name. A fix-task assignment, closed\nbead, success claim or a later silent/ready review leaves the finding outstanding.\n\n**Supported disposition.** Append\n`- finding-disposition · {\"ref\":<ref>,\"disposition\":\"resolved\",\"judgment\":\"supported\",\n\"basis\":\"why the fix addresses this finding\",\"evidence\":[\"verification.log @ <sha>\"],\n\"verification\":\"exact relevant check and observed repaired behavior\"}` as one JSON line.\nA rejection uses `\"disposition\":\"rejected\"`, keeps its reasoning in `basis` and supporting\nreferences in the nonempty `evidence` array, and does not require `verification`. Helpers validate\nreferences and required fields. The owning agent first judges whether the evidence semantically\nsupports this particular fix or rejection, then records `judgment:\"supported\"`; a nonempty\nfile name or a successful task is insufficient. Verification of a fix supplied by another task\nuses the same contract. A passing sweep settles only the measurement obligation it establishes;\nit cannot stand in for verification of unrelated actionable findings. Unsupported disposition\nrecords remain visible with a gap and do not resolve findings. A supported disposition applies\nto the explicitly linked group; other appearances remain independent.\n\n**CLI and output.** Run `bash skills/super-auto/scripts/scope-dispositions --project RUN_MD`\nfor JSON `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding holds its first retained\n`ref`, original `occurrences` (including source/artifact/section/position/key/text), all archive\n`artifacts`, conflicting `variants`, explicit `links`, `routes`, `dispositions` with mechanically\nvalidated `supported`, and booleans `outstanding`/`deferred`. Source order is deterministic.\nNo source/disposition is removed from run.md by projection. Append-only history stays available\neven after a supported disposition makes a finding no longer outstanding.\n\nAdd `--keys` for the legacy punch-list transport: one exact original key per line, from only\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "finding-transport-projection": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/scope-dispositions",
+      "fileSha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0",
+      "lineStart": 70,
+      "lineEnd": 115,
+      "byteStart": 3714,
+      "byteEnd": 6460,
+      "text": "  try {\n    const input = JSON.parse(fs.readFileSync(external, 'utf8'));\n    if (!object(input) || input.version !== 1 || !Array.isArray(input.records)) throw Error('expected version 1 records array');\n    input.records.forEach((data, i) => {\n      const origin = `${external}:records[${i}]`;\n      if (!object(data) || !['finding-link', 'finding-disposition'].includes(data.type)) gap(origin, 'unsupported external record');\n      else entries.push({type:data.type, data, origin, external:true});\n    });\n  } catch (e) { gap(external, 'external projection unavailable or malformed: ' + e.message); }\n}\nif (!entries.some(e => e.type === 'finding-source')) gap(run, 'no retained source extraction; finding coverage is unknown');\nconst occurrences = new Map(), fingerprints = new Map(), conflictedSources = new Set();\nfor (const entry of entries.filter(e => e.type === 'finding-source')) {\n  const {data:s, origin} = entry;\n  if (!object(s) || s.version !== 1 || !sourceId(s.source) || !string(s.artifact) ||\n      !['final-review','roast','task-report'].includes(s.kind) || !string(s.verdict) || !Array.isArray(s.occurrences)) {\n    gap(origin, 'invalid complete source extraction'); continue;\n  }\n  const fingerprint = JSON.stringify([s.kind, s.verdict, s.occurrences]);\n  if (fingerprints.has(s.source) && fingerprints.get(s.source) !== fingerprint) {\n    gap(origin, 'immutable source has conflicting extraction; retained occurrences stay open');\n    conflictedSources.add(s.source);\n  }\n  fingerprints.set(s.source, fingerprint);\n  try {\n    if (!fs.statSync(path.resolve(path.dirname(run), s.artifact)).isFile()) throw Error('not a file');\n  } catch { gap(origin, 'source artifact unavailable: ' + s.artifact); }\n  const seen = new Set();\n  for (const o of s.occurrences) {\n    const r = object(o) ? {source:s.source, ...o} : null;\n    if (!validRef(r) || !string(o.key) || !string(o.text) || Object.hasOwn(o, 'source')) {\n      gap(origin, 'invalid source occurrence'); conflictedSources.add(s.source); continue;\n    }\n    const k = id(r);\n    if (seen.has(k)) { gap(origin, 'duplicate occurrence position within source'); conflictedSources.add(s.source); }\n    seen.add(k);\n    const value = {source:s.source, artifact:s.artifact, section:o.section, position:o.position, key:o.key, text:o.text};\n    if (!occurrences.has(k)) occurrences.set(k, {ref:ref(r), value, artifacts:[s.artifact], variants:[]});\n    else {\n      const old = occurrences.get(k);\n      if (!old.artifacts.includes(s.artifact)) old.artifacts.push(s.artifact);\n      if (old.value.key !== o.key || old.value.text !== o.text) {\n        gap(origin, 'conflicting immutable occurrence text'); conflictedSources.add(s.source);\n        old.variants.push(value);\n      }\n    }\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/scope-dispositions",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "process-aliases": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 602,
+      "lineEnd": 656,
+      "byteStart": 50765,
+      "byteEnd": 54914,
+      "text": "  return { id, parents: [], parentAttempts: [], cancelledBy: null, ended: false, split: null, cut: false, merged, resolveMerged, startedAt: landSeq }\n}\n// Run-wide clustering of recurring deferred minors (and blocker causes, via noteRecurrence).\n// Signature = an explicit process class, else the exact-text fingerprint. Threshold: >=5\n// occurrences or >=3 tasks, reported once per signature as a `Recurring <kind>:` ledger line; the\n// Finish reviewer triages those first.\nconst minorClusters = new Map()   // `<kind>:<signature>` -> { count, tasks:Set, sample, reported }\nlet recurringReported = 0\n// Feeds a minor or a blocker cause into the clusters, namespaced by kind. The stub key uses the\n// report ordinal, since the signature text is agent-produced.\n// A reviewer's `[class]` tag (minors) or triage's cause keys the cluster when present; paraphrases of\n// one class never matched as free text. Resume seeds the counts from the ledger (seedRecurrence).\nconst rawClassTag = s => { const m = /^\\s*\\[([a-z0-9][a-z0-9 -]{1,40})\\]/i.exec(String(s)); return m ? m[1] : null }\nconst classTag = s => rawClassTag(s)?.trim().toLowerCase() ?? null\n// Exact process tags only. \"cleanup-denied\" can mean termination denial, so is not an alias.\n// suite-not-run retains the established process class; no generic test-failure class is pooled.\nconst processAliases = new Map([\n  ['cleanup-inspection', 'cleanup-inspection'],\n  ['cleanup-inspection-denied', 'cleanup-inspection'],\n  ['process-inspection-refused', 'cleanup-inspection'],\n  ['missing-evidence', 'missing-evidence'],\n  ['evidence-missing', 'missing-evidence'],\n  ['test-evidence-missing', 'missing-evidence'],\n  ['suite-not-run', 'suite-not-run'],\n])\nconst processClass = (kind, text) => processAliases.get(classTag(text) ?? (kind === 'blocker' ? String(text).trim().toLowerCase() : null)) ?? null\n// Compact transport identity, not defect identity. Keep in sync with ledger-digest's byte hash.\nfunction recurrenceId(text) {\n  const carried = /(?:^| )\\[recurrence-id: (v1-[0-9]+-[0-9]+-[0-9]+)\\](?: \\[source-line: [0-9]+\\])?$/.exec(String(text))\n  if (carried) return carried[1]\n  const bytes = encodeURIComponent(String(text).replace(/^[ \\t\\r]+|[ \\t\\r]+$/g, '')).replace(/%([0-9A-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))\n  let a = 0, b = 0\n  for (let i = 0; i < bytes.length; i++) { const c = bytes.charCodeAt(i); a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }\n  return 'v1-' + bytes.length + '-' + a + '-' + b\n}\nconst recurrenceSig = (kind, text) => `${kind}:${processClass(kind, text) ?? (/^review-package resolved HEAD in \\S+ \\(\\d+ bytes\\)$/i.test(String(text)) ? minorSignature(text) : recurrenceId(text))}`\nfunction seedRecurrence(kind, id, text, sourceLine = null) {\n  const sig = recurrenceSig(kind, text)\n  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text + (sourceLine ? \" [source-line: \" + sourceLine + \"]\" : \"\"), reported: false }\n  cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)\n}\nfunction noteRecurrence(kind, id, text, phase) {\n  const sig = recurrenceSig(kind, text)\n  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text, reported: false }\n  cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)\n  if (cl.reported || !(cl.count >= 5 || cl.tasks.size >= 3)) return\n  cl.reported = true; recurringReported++\n  const sample = String(cl.sample).replace(/\\s+/g, ' ').trim()\n  const spread = `×${cl.count} across ${cl.tasks.size} task(s)`\n  log(`RECURRING ${kind.toUpperCase()} ${spread} — grouped observation for reassessment: ${sample}`)\n  if (kind === 'blocker') noteSlowness(`recurring blocker ${spread} (${[...cl.tasks].join(', ')}): ${sample} — each instance costs a triage cycle; reassess the grouped evidence`)\n  const grouping = processClass(kind, text) ? ' [process-class: ' + processClass(kind, text) + ']' : ''\n  queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — ${sample}`,\n    `ledger-recurring:${recurringReported}`, phase,\n    `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — sample elided`)\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "independent-metrics": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/coordinator.js",
+      "fileSha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b",
+      "lineStart": 2190,
+      "lineEnd": 2221,
+      "byteStart": 168073,
+      "byteEnd": 170654,
+      "text": "// Metrics: re-read the ledger (this run's appends postdate Resume's read), compute the four lines\n// in JS, append them in one dispatch. Written before the final review.\nconst metricsLedger = await readLedger('read-ledger:finish', 'Finish', true)\nconst metricsEvidence = {\n  ledger:metricsLedger?.ledgerTransport || {status:'unavailable'},\n  completed:[...completed].sort(),\n  findings:{status:'unavailable', reason:'finding population requires scope-dispositions --project run.md'},\n  gaps:[...(ledger?.sourceGaps || []), ...(metricsLedger?.sourceGaps || []), ...(trackerReconciliationGap ? [trackerReconciliationGap] : []), ...recoveryGaps.map(g => 'recovery: ' + g.reason)],\n}\nif (ledgerAppendFailed.length) metricsEvidence.gaps.push('ledger appends unavailable: ' + ledgerAppendFailed.join(', '))\nconst metricsGit = new Set()\nif (Array.isArray(metricsLedger?.landed) && !metricsLedger.landedError) {\n  for (const line of metricsLedger.landed) {\n    const match = /^task-(\\S+) [0-9a-f]{7,64} [0-9a-f]{7,64}$/.exec(String(line))\n    if (match) metricsGit.add(match[1])\n    else metricsEvidence.gaps.push('invalid Git landing identity: ' + line)\n  }\n  metricsEvidence.git = {status:'observed', ids:[...metricsGit].sort()}\n} else {\n  metricsEvidence.git = {status:'unavailable', ids:[...confirmedLandings].sort()}\n  metricsEvidence.gaps.push('Git task-landing lookup unavailable: ' + (metricsLedger?.landedError || 'not returned'))\n}\nconst knownHistory = [...new Map(fixHistory.map(r => [JSON.stringify(r), r])).values()]\nmetricsEvidence.fixHistory = {scope:'supported known durable records (partial until Finish ledger read)',\n  attempts:knownHistory.length, fixed:knownHistory.filter(r => r.data.outcome === 'FIXED').length}\nlet metrics\nif (!metricsLedger || !['valid', 'valid-empty'].includes(metricsEvidence.ledger.status)) {\n  // No ledger counts, but this invocation's own buckets are known: say so, labelled, never as run totals.\n  const mem = `this invocation only: completed ${completed.size} (parked ${parked.size}) · escalated ${escalated.size} · pending retry ${pendingRetry.size} · append-failed ${ledgerAppendFailed.length}; known historical FIXED ${metricsEvidence.fixHistory.fixed} (supported records only)`\n  metricsEvidence.gaps.push('run-wide ledger totals unavailable: ' + metricsEvidence.ledger.status)\n  metrics = ['merges', 'completions', 'fix-pass', 'ledger-check'].map(k => `Metrics: UNAVAILABLE (${k}) — the Finish ledger re-read returned null or unavailable transport (${metricsEvidence.ledger.status}); no ledger counts derived; ${mem}`)\n} else {\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "typed-completion-digest": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/run-digest",
+      "fileSha256": "18c1288eb46313bb1366dfd7d909daf193118d39082a9c98767e7d75d3336a2f",
+      "lineStart": 104,
+      "lineEnd": 120,
+      "byteStart": 4697,
+      "byteEnd": 5805,
+      "text": "  elif [ \"$ok_ledger\" = 1 ]; then\n    ledger_counts=$({ grep -v '^# ledger-digest:' \"$T/ledger\" || true; } | awk '\n      /^Merge: [^ ]+ — / && $0 !~ / → / { merged[$2] = 1 }\n      match($0, /^Task [^ ]+ \\([^)]+\\): /) {\n        id = $0; sub(/^Task [^ ]+ \\(/, \"\", id); sub(/\\).*$/, \"\", id)\n        st = $0; sub(/^Task [^ ]+ \\([^)]+\\): /, \"\", st)\n        if (st ~ /^complete/ && st ~ /verification-only/) s = \"V\"\n        else if (st ~ /^(complete|landed)/) { s = \"L\"; merged[id] = 1 }\n        else if (st ~ /^BLOCKED/) s = \"B\"\n        else if (st ~ /^pending retry/) s = \"P\"; else if (st ~ /^cancelled/) s = \"C\"; else next\n        state[id] = s\n      }\n      END { for (i in state) { c[state[i]]++; if (state[i] == \"V\" && merged[i]) c[\"L\"]++ }\n        printf \"ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d\", c[\"L\"], c[\"B\"], c[\"P\"], c[\"C\"]\n        if (c[\"V\"]) printf \" · verification-only %d\", c[\"V\"] }')\n    while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' \"$T/ledger\" || true; } | tail -n 15)\n    ntail=${#tail_lines[@]}\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/run-digest",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "typed-completion-profile": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "fileSha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a",
+      "lineStart": 1166,
+      "lineEnd": 1208,
+      "byteStart": 74077,
+      "byteEnd": 77599,
+      "text": "    const implHead = at.agents.find(a => a.kind === 'impl')\n    at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null\n    at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))\n    // Workflow verification uses the existing close-only label. Its CLOSED result\n    // settles tracker bookkeeping, not a previously merged branch.\n    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'\n      || at.agents.some(a => a.result?.completionKind === 'verification-only')\n    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly\n      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')\n      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))\n    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'\n    at.split = by('split')[0] ?? null\n    at.blocker = by('blocker')\n    // The slot is held to the chain's end before integration; a failed merge's blocker path takes one\n    // again after the lane turn.\n    const laneStart = at.lane.length ? at.lane[0].start : Infinity\n    const inSlot = at.agents.filter(a => IN_SLOT.has(a.stage))\n    at.chainEndAgent = latest(inSlot.filter(a => a.end <= laneStart + EPS))\n    at.afterLane = inSlot.filter(a => a.start >= laneStart)\n    // Usable by dependents (early unblock): the end of an implementation that committed.\n    at.implEndAgent = at.status === 'IMPLEMENTED' || (!hasJournal(head.run) && at.impl.length) ? latest(at.impl) : null\n    // The landing: the last merge that reported merged (no journal: the last merge), or a close-only\n    // step that confirmed the branch had already merged.\n    const merges = at.agents.filter(a => a.kind === 'merge')\n    at.landing = merges.filter(a => a.result?.merged === true).at(-1)\n      ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)\n      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null\n  }\n  // The landing is the real merge. A later close-only of an already-merged branch (its bead close was\n  // lost) is bookkeeping, counted apart as a re-entry close.\n  b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)\n  b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')\n  // A prior ledger landing remains a fact even when this invocation only verifies it.\n  // Without a timed merge, do not place that old landing at the verification chain end.\n  b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)\n  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id) || b.attempts.some(at => at.verificationCompleted)\n}\nconst landingOf = id => beads.get(id)?.final?.landing ?? null\nconst landedBy = (d, t) => beads.get(d)?.attempts.map(at => at.landing).filter(x => x && x.end <= t + EPS).at(-1) ?? null\nconst implementedBy = (d, t) => beads.get(d)?.attempts.map(at => at.implEndAgent).filter(x => x && x.end <= t + EPS).at(-1) ?? null\n// The earliest event that let dependents use bead d, as of time t: its implementation under early\n// unblock, else its merge.\nconst usableBy = (d, t) => (earlyUnblock && implementedBy(d, t)) || landedBy(d, t)\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/run-profile.mjs",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "readiness-profile": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "fileSha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a",
+      "lineStart": 1240,
+      "lineEnd": 1269,
+      "byteStart": 79669,
+      "byteEnd": 81577,
+      "text": "  const S = at.start\n  const invStart = invStartOf(at.run)\n  const dur = as => sum(as.map(a => a.dur))\n  const deps = depsAt(b.id, S)\n  b.deps = deps\n  b.createdAt = creation.get(b.id) ?? rows.get(b.id)?.createdAt ?? null\n  b.mappingReadyAt = mappingFor(b.id, S)?.at ?? null\n  // Include external/unobserved blockers too: dropping them from the modeled in-tree graph cannot\n  // establish when they became usable. An empty, known mapping needs no dependency release.\n  const required = [...new Set([...(rows.get(b.id)?.deps ?? []),\n    ...(rows.get(b.id)?.residual ? trackerDeps.get(b.id) ?? [] : [])])].filter(d => d !== b.id && cutAt(b.id, d) > S)\n  const releases = required.map(d => usableBy(d, S)?.end ?? null)\n  b.dependencyReadyAt = !rows.get(b.id)?.graph || releases.some(t => t === null) ? null\n    : required.length ? Math.max(...releases) : b.mappingReadyAt\n  const known = b.mappingReadyAt !== null && b.dependencyReadyAt !== null\n  const ready = known ? Math.max(b.createdAt ?? -Infinity, b.mappingReadyAt, b.dependencyReadyAt) : null\n  // Ready before this invocation began (a relaunch, or the caller's next round): not a wait inside it.\n  b.carriedMs = ready === null ? null : Math.max(0, invStart - ready)\n  b.readyAt = ready === null ? null : Math.max(ready, invStart)\n  b.dispatchedAt = S\n  b.waitMs = ready === null ? null : Math.max(0, S - b.readyAt)\n  const earlier = b.attempts.filter(x => x !== at && x.start < S)\n  const earlierHere = earlier.filter(x => x.start >= invStart - EPS)\n  const bounced = earlierHere.filter(x => x.status === 'STACK_CONFLICT')\n  if (b.waitMs === null) b.waitCause = 'unknown'\n  else if (b.waitMs <= DISPATCH_GAP) b.waitCause = 'none'\n  else if (bounced.length) b.waitCause = 'stack-conflict'\n  else if (earlierHere.some(x => x.agents.some(a => a.stage === 'cancel'))) b.waitCause = 'cancelled'\n  else if (earlierHere.length) b.waitCause = 'retry'\n  else {\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/run-profile.mjs",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "planning-profile": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "fileSha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a",
+      "lineStart": 1648,
+      "lineEnd": 1675,
+      "byteStart": 104959,
+      "byteEnd": 108996,
+      "text": "let testTotals = null, slowTests = []\nconst afterMs = Math.max(0, runEnd - graphEnd)\nconst diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,\n  dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }\nconst catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')\nlines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${verificationCompleted.size ? ` · verification-only ${verificationCompleted.size}` : ''}`)\nconst fan = shape.fanOut[0]\nlines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')\nlines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)\nif (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)\nelse if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? (ordinary.length ? 'no dependency graph' : 'no planner rows, so the graph is unknown') : 'nothing landed'}`)\nelse {\n  const above = sim.asRunMs - sim.lowerBoundMs\n  const lanesGain = sim.asRunMs - sim.unlimitedLanesMs, slotsGain = sim.asRunMs - sim.unlimitedSlotsMs\n  const ch = sim.graphChain\n  sim.verdict = diagnosis.dominant === 'planning' ? 'planning-bound' : above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'\n  const verdict = diagnosis.dominant === 'planning' ? 'planning-bound: planning dominates the measured task window; task parallelism retains this planning time' : above <= Math.max(60000, 0.1 * sim.asRunMs)\n    ? (ch.length <= 1 ? `bead-bound: ${ch[0] ?? 'one bead'} alone set the pace — split it or make it faster` : `graph-bound: the ${ch.length}-bead dependency chain set the pace — reshaping it is the lever`)\n    : lanesGain >= slotsGain ? `merge-lane-bound: ${fmtDur(lanesGain)} of the ${fmtDur(above)} above the graph's bound is the serial merge lane`\n    : `slot-bound: ${fmtDur(slotsGain)} of the ${fmtDur(above)} above the graph's bound is the slot cap`\n  const chainText = ch.length > 1 ? ` along ${ch.length > 8 ? [...ch.slice(0, 3), '…', ...ch.slice(-3)].join(' → ') : ch.join(' → ')}` : ''\n  lines.push(`Profile: bound — graph lower bound ${fmtDur(sim.lowerBoundMs)}${chainText} (unlimited slots and merge lanes) · model of the run ${fmtDur(sim.asRunMs)} (cap ${Number.isFinite(cap) ? cap : '∞'}, one merge lane) vs actual ${fmtDur(actualGraphMs)} (${sim.fit ? `${Math.round(100 * sim.fit)}%` : '?'}) → ${verdict}`)\n}\nlines.push(`Profile: critical path — ${fmtDur(pathMs)} = ${catText(byCat)}${laneContentionMs ? ` · of which other beads' merge-lane turns ${fmtDur(laneContentionMs)}` : ''}`)\nlines.push(`Profile: diagnosis — planning ${fmtDur(diagnosis.planningMs)} (${pct(diagnosis.planningMs, actualGraphMs)}% of ${modelWindow})${diagnosis.dominant === 'planning' ? ' · planning dominates; bead bottleneck below covers task work only' : ''}`)\n{\n  // A bead's consecutive steps collapse into one entry; consecutive lane turns of different beads\n  // into one `merge lane ×N` entry.\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/run-profile.mjs",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "gate-output": {
+      "kind": "static-current-source",
+      "revision": "7b18b0c26b9f19d531c558e112d490743901a13b",
+      "path": "skills/super-auto/scripts/report-status",
+      "fileSha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "lineStart": 339,
+      "lineEnd": 351,
+      "byteStart": 26276,
+      "byteEnd": 27205,
+      "text": "// Reuse ordinary status collection validation without recursively running this gate.\nconst status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});\nif(status.status!==0)gap('run status unavailable');\nelse for(const line of status.stdout.split('\\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));\nconst result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};\n// Keep the event loop alive until stdout drains; failed output is not acceptance.\nprocess.exitCode=result.eligible?0:3;\nprocess.stdout.on('error',error=>{\n console.error('acceptance output failed: '+error.message);\n process.exitCode=1;\n});\nconsole.log(JSON.stringify(result));\nACCEPTANCE\n",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+      "limits": "Static inspection at this freeze; no fresh suite/behavior/cleanup/acceptance result."
+    },
+    "task1-report": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/2026-10-17-workflow-reliability-merge-correction/task-1-report.md",
+      "sha256": "8a0d97175329b71acfee256191de4aea19586d70d8033aab83ef1c5074aa6a0d",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task1-report.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task1-review": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/task-1-fix-round-1-review.md",
+      "sha256": "a18ea48f4548d02b90b156bcf3a38ca78658a90f33b9d77c095c5685d0c94b8f",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task1-review.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task2-report": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/2026-10-17-workflow-reliability-merge-correction/task-2-report.md",
+      "sha256": "7d6073f0246b7ce1f2290b84f4cd295f1469a3eb62e55eff8eaaac9ec5389b34",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-report.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task2-review": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/task-2-fix-round-1-review.md",
+      "sha256": "e9941926c9a2208a23a729c6d4fdc3e40ef3dd43f309138701f1eb1661eabdce",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-review.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task3-report": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/2026-10-17-workflow-reliability-merge-correction/task-3-report.md",
+      "sha256": "dc2a8bdfc0984a694e94202abdaa77d4455090c3bccd1e99e2239de04d1f7c2f",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task3-review": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/task-3-fix-round-1-review.md",
+      "sha256": "6001a652bd3f269becf9384ecd16924172d5c82d88d2172e67188531dcea2f11",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task4-report": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/2026-10-17-workflow-reliability-merge-correction/task-4-report.md",
+      "sha256": "d95b6568c84fb84e31d83ddf15bcff0bde4c9798a191a14a4ddc7eed7a6bdb04",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task4-review": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/task-4-independent-review.md",
+      "sha256": "d4a33d986a07ba2bea710934011969116d0da3a7498ee205e74dd50d9bd68c39",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task5-report": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/2026-10-17-workflow-reliability-merge-correction/task-5-report.md",
+      "sha256": "c366d4a3311c65105bab7c801047079f2eebd4e9a35a548e9da2441d004bbc57",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task5-report.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "task5-review": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/task-5-independent-review.md",
+      "sha256": "1ed102ded61cf48e5489dfff59be7298a186a763adca84db7150a8c046519091",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task5-review.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "history-registration": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-registration-receipt.json",
+      "sha256": "5456d1401f1c280cf728f6dc62cf48a7b5983271974a63b53fa47656758b1299",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/history-registration.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "actual-roast-correspondence": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/roast-round1-correspondence-adoption.json",
+      "sha256": "98a6aac386e1d9c5e180765c10b425d24a5c6a2ceef5e9f3935696818e6632b9",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/actual-roast-correspondence.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "projection": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-registration-projection.json",
+      "sha256": "95dca328905aa127067f464243637a54622c7822af03bbc4da4f43ae1fe0384c",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/projection.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "blocker-observation": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/super-plan-8fn-observation.json",
+      "sha256": "f3d258a305a3cc41d3aa32d6eaa54d94b7ff4812be5c8089ac8e243d7323759b",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/blocker-observation.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "blocker-status": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/super-plan-8fn-status.json",
+      "sha256": "17c13806596186eb0838458f7a7366d89c57be2107f09122913925bfffe221c6",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/blocker-status.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "policy": {
+      "kind": "retained-scope-and-execution-receipt",
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/policy-review.md",
+      "sha256": "56d075abcbfcc111723f79316d39a6b02111b8f91f5699e3db0d5a69798f28de",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/policy.md",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-initial": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/exact-ref-proposals.json",
+      "sha256": "267ab370f24b3589b2896ae30039ffe579b83ed84e0a22875839d08f03b0654d",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-initial.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-delta": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/revision2-delta/exact-ref-delta-proposals.json",
+      "sha256": "e02b6fe960302420bb286c27af4eba18315e64c72cb7de4affb4344dd095c1af",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-delta.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-historical-support": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/historical-evidence-rebinding.json",
+      "sha256": "7a654740ba568d032784dc82c1fc4e5432e48621fd6ef833184a52f6bfaea6c8",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-historical-support.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-delta-support": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/revision2-delta/source-bound-evidence.json",
+      "sha256": "4c80e48b2122ffcbf55d734c63b1cbc32ab10d1002b320c4cd6dcd0ebd2b7958",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-delta-support.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-additional-support": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/additional-evidence.json",
+      "sha256": "b561375f8654c866965b3142c3f306e8c91d781eab03ebe06195545d962b8c73",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-additional-support.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-supplements": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/supplemental-proposals.json",
+      "sha256": "d91668bc1bf502b8e6f7765b89f0883b9e5d7ecdb8eb06e84beab8a936d29ffa",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-supplements.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    },
+    "prior-gap-map": {
+      "kind": "attributed-prior-judgment-not-entire-raw-reread",
+      "path": "/private/tmp/ufz-correction-legacy-relevance/source-gap-proposals.json",
+      "sha256": "8960c9c8793d5ed27199779fe8dc3120347e042681bb967a30d3f8505b8e4afa",
+      "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/prior-gap-map.json",
+      "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+    }
+  },
+  "schemaMapping": "User-facing does-not-affect is encoded only as helper effect nonblocking; literal does-not-affect is not a valid helper enum. Nonblocking changes acceptance effect and leaves outstanding occurrences untouched."
+}

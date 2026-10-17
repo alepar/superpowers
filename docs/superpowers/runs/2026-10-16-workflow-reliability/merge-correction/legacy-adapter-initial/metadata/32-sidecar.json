@@ -1,0 +1,841 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-19-review.md",
+  "rawSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+  "rawByteCount": 20313,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+    "durablePath": "task-report-history-r1/raw/task-19-review.md",
+    "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+    "byteCount": 20313,
+    "logicalRole": "review",
+    "ordinal": 19,
+    "logicalTaskId": "super-plan-ufz.22",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-19-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+    "error": "report-verdict: --complete: finding text without a list marker in Findings"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: NEEDS_FIX"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 19 / super-plan-ufz.22 independent review",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 19 / super-plan-ufz.22 independent review\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review"
+      ],
+      "lineStart": 1,
+      "lineEnd": 4,
+      "byteStart": 0,
+      "byteEnd": 69,
+      "bodyLineStart": 2,
+      "rawText": "# Task 19 / super-plan-ufz.22 independent review\n\nStatus: NEEDS_FIX\n\n",
+      "bodyRawText": "\nStatus: NEEDS_FIX\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: NEEDS_FIX\n",
+          "text": "Status: NEEDS_FIX",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 50,
+          "byteEnd": 68
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Spec compliance"
+      ],
+      "lineStart": 5,
+      "lineEnd": 12,
+      "byteStart": 69,
+      "byteEnd": 1481,
+      "bodyLineStart": 6,
+      "rawText": "## Spec compliance\n\n❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.\n\n✅ The delivered product repair preserves complete Recovery records through the existing read-ledger response, validates exact owned source/line associations and counted payloads, reuses the existing Recovery schema and ordered readRecovery path, and holds admission when opaque transport cannot be recovered. The focused regression checks the 173-byte / 5173-byte pair, additive fields, matching release, affectedIds, unrelated eligible work after scoped recovery, and several unavailable/malformed retrieval forms. This bounded source review found no additional must-fix product defect.\n\nAmendment used: current `bd show super-plan-ufz.22 --json`, current comments (none), the amended Task 19 plan/brief, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded fixture exception supersedes the old unchanged-replay requirement. There is no unresolved requirements conflict. It authorizes only the named fixture and adjacent focused cases; it does not authorize admission from a foreign opaque pointer.\n\n",
+      "bodyRawText": "\n❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.\n\n✅ The delivered product repair preserves complete Recovery records through the existing read-ledger response, validates exact owned source/line associations and counted payloads, reuses the existing Recovery schema and ordered readRecovery path, and holds admission when opaque transport cannot be recovered. The focused regression checks the 173-byte / 5173-byte pair, additive fields, matching release, affectedIds, unrelated eligible work after scoped recovery, and several unavailable/malformed retrieval forms. This bounded source review found no additional must-fix product defect.\n\nAmendment used: current `bd show super-plan-ufz.22 --json`, current comments (none), the amended Task 19 plan/brief, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded fixture exception supersedes the old unchanged-replay requirement. There is no unresolved requirements conflict. It authorizes only the named fixture and adjacent focused cases; it does not authorize admission from a foreign opaque pointer.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.\n",
+          "text": "❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 89,
+          "byteEnd": 435
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The delivered product repair preserves complete Recovery records through the existing read-ledger response, validates exact owned source/line associations and counted payloads, reuses the existing Recovery schema and ordered readRecovery path, and holds admission when opaque transport cannot be recovered. The focused regression checks the 173-byte / 5173-byte pair, additive fields, matching release, affectedIds, unrelated eligible work after scoped recovery, and several unavailable/malformed retrieval forms. This bounded source review found no additional must-fix product defect.\n",
+          "text": "✅ The delivered product repair preserves complete Recovery records through the existing read-ledger response, validates exact owned source/line associations and counted payloads, reuses the existing Recovery schema and ordered readRecovery path, and holds admission when opaque transport cannot be recovered. The focused regression checks the 173-byte / 5173-byte pair, additive fields, matching release, affectedIds, unrelated eligible work after scoped recovery, and several unavailable/malformed retrieval forms. This bounded source review found no additional must-fix product defect.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 436,
+          "byteEnd": 1026
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Amendment used: current `bd show super-plan-ufz.22 --json`, current comments (none), the amended Task 19 plan/brief, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded fixture exception supersedes the old unchanged-replay requirement. There is no unresolved requirements conflict. It authorizes only the named fixture and adjacent focused cases; it does not authorize admission from a foreign opaque pointer.\n",
+          "text": "Amendment used: current `bd show super-plan-ufz.22 --json`, current comments (none), the amended Task 19 plan/brief, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded fixture exception supersedes the old unchanged-replay requirement. There is no unresolved requirements conflict. It authorizes only the named fixture and adjacent focused cases; it does not authorize admission from a foreign opaque pointer.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 1027,
+          "byteEnd": 1480
+        }
+      ]
+    },
+    {
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Findings\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "lineStart": 13,
+      "lineEnd": 28,
+      "byteStart": 1481,
+      "byteEnd": 4459,
+      "bodyLineStart": 14,
+      "rawText": "## Findings\n\nCritical: none.\n\nImportant / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.\n\nRequired bounded fix:\n\n- Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.\n- Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.\n- Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.\n- Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.\n- Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.\n\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\n\nImportant / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.\n\nRequired bounded fix:\n\n- Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.\n- Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.\n- Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.\n- Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.\n- Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.\n\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1494,
+          "byteEnd": 1510
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.\n",
+          "text": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1511,
+          "byteEnd": 2130
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Required bounded fix:\n",
+          "text": "Required bounded fix:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 2131,
+          "byteEnd": 2153
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.\n",
+          "text": "Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 2154,
+          "byteEnd": 2318
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.\n",
+          "text": "Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2318,
+          "byteEnd": 3206
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.\n",
+          "text": "Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 3206,
+          "byteEnd": 3698
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.\n",
+          "text": "Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 3698,
+          "byteEnd": 4148
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.\n",
+          "text": "Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 4148,
+          "byteEnd": 4444
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 4445,
+          "byteEnd": 4458
+        }
+      ]
+    },
+    {
+      "section": "Pinned review and source checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Pinned review and source checks\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Pinned review and source checks"
+      ],
+      "lineStart": 29,
+      "lineEnd": 43,
+      "byteStart": 4459,
+      "byteEnd": 7390,
+      "bodyLineStart": 30,
+      "rawText": "## Pinned review and source checks\n\nReview worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22.\n\n`git merge-base --is-ancestor 5bfbb92331652df67d9af367f0f81baa8267f020 c79e41c260b5958cd50b9ed923435cb041de3bae` exited 0. Separate `git rev-parse --verify <sha>^{commit}` calls resolved both captured commits. `git rev-parse c79e41c260b5958cd50b9ed923435cb041de3bae^{tree}` returned dba2b60460893a3ffa6658ab79d8419e3e58f73f, matching final evidence. Caller status was clean; no observed caller identity/source differences are attributed.\n\nThe authorized review-package command with the absolute plan path succeeded, producing task-19-review-initial.diff, one commit, three changed files and 33,655 bytes. An initial relative-plan invocation failed because the git-ignored plan is not in the task checkout; it was corrected with the dispatch's absolute path before reviewing. An initial combined --verify invocation was invalid Git syntax; both identities were then resolved separately successfully. Neither error left a required check unperformed.\n\nRead the diff once. Focused outside-diff checks were made with `git show c79e41c2:<path>` and source-line selection:\n\n- Risk: targeted retrieval might accept incomplete transport or a foreign payload. Checked coordinator.js:233–254 and 773–804. checkDigest strips unavailable text; the new decoder requires one counted Recovery record, exact source/line equality, an owned relative/absolute ledger path, safe positive line and one payload; unresolved pointers keep a gap and admission hold. There is no narrowed inferred task scope.\n- Risk: recovered records might bypass normal schema/order/clear rules or manufacture a verification landing. Checked coordinator.js:417–449 and 823–919. The new path invokes the existing validated readRecovery in ledger order, reconstructs verification basis, and uses the existing source/tracker reconciler before closure reuse.\n- Reachability: the real Resume reader goes through readLedger at 194–230, the same readLedgerPrompt supplies targeted helper instructions, decoding at 773–804 feeds recoveryObligations/recoveryTransportHeld, and admissionReason at 1524–1535 consults recoveryAdmissionReason before task admission. The sibling retained-pointer forms are handled as valid pointers or explicit malformed-pointer holds. The added helper mode does not replace the capped normal helper path.\n- Risk: composition could discard .23 invocation identity or .29 captured review binding. Checked readLedger:194–230 and the changed readLedgerPrompt. The identity step and recovery step coexist in the existing call; retry identity retention and complete review base/head selection are preserved. The report also retains passing invocation-start and startup-builder seam evidence. No extra recovery-reader role or dispatch was introduced.\n\n",
+      "bodyRawText": "\nReview worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22.\n\n`git merge-base --is-ancestor 5bfbb92331652df67d9af367f0f81baa8267f020 c79e41c260b5958cd50b9ed923435cb041de3bae` exited 0. Separate `git rev-parse --verify <sha>^{commit}` calls resolved both captured commits. `git rev-parse c79e41c260b5958cd50b9ed923435cb041de3bae^{tree}` returned dba2b60460893a3ffa6658ab79d8419e3e58f73f, matching final evidence. Caller status was clean; no observed caller identity/source differences are attributed.\n\nThe authorized review-package command with the absolute plan path succeeded, producing task-19-review-initial.diff, one commit, three changed files and 33,655 bytes. An initial relative-plan invocation failed because the git-ignored plan is not in the task checkout; it was corrected with the dispatch's absolute path before reviewing. An initial combined --verify invocation was invalid Git syntax; both identities were then resolved separately successfully. Neither error left a required check unperformed.\n\nRead the diff once. Focused outside-diff checks were made with `git show c79e41c2:<path>` and source-line selection:\n\n- Risk: targeted retrieval might accept incomplete transport or a foreign payload. Checked coordinator.js:233–254 and 773–804. checkDigest strips unavailable text; the new decoder requires one counted Recovery record, exact source/line equality, an owned relative/absolute ledger path, safe positive line and one payload; unresolved pointers keep a gap and admission hold. There is no narrowed inferred task scope.\n- Risk: recovered records might bypass normal schema/order/clear rules or manufacture a verification landing. Checked coordinator.js:417–449 and 823–919. The new path invokes the existing validated readRecovery in ledger order, reconstructs verification basis, and uses the existing source/tracker reconciler before closure reuse.\n- Reachability: the real Resume reader goes through readLedger at 194–230, the same readLedgerPrompt supplies targeted helper instructions, decoding at 773–804 feeds recoveryObligations/recoveryTransportHeld, and admissionReason at 1524–1535 consults recoveryAdmissionReason before task admission. The sibling retained-pointer forms are handled as valid pointers or explicit malformed-pointer holds. The added helper mode does not replace the capped normal helper path.\n- Risk: composition could discard .23 invocation identity or .29 captured review binding. Checked readLedger:194–230 and the changed readLedgerPrompt. The identity step and recovery step coexist in the existing call; retry identity retention and complete review base/head selection are preserved. The report also retains passing invocation-start and startup-builder seam evidence. No extra recovery-reader role or dispatch was introduced.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Review worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22.\n",
+          "text": "Review worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 4495,
+          "byteEnd": 4650
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git merge-base --is-ancestor 5bfbb92331652df67d9af367f0f81baa8267f020 c79e41c260b5958cd50b9ed923435cb041de3bae` exited 0. Separate `git rev-parse --verify <sha>^{commit}` calls resolved both captured commits. `git rev-parse c79e41c260b5958cd50b9ed923435cb041de3bae^{tree}` returned dba2b60460893a3ffa6658ab79d8419e3e58f73f, matching final evidence. Caller status was clean; no observed caller identity/source differences are attributed.\n",
+          "text": "`git merge-base --is-ancestor 5bfbb92331652df67d9af367f0f81baa8267f020 c79e41c260b5958cd50b9ed923435cb041de3bae` exited 0. Separate `git rev-parse --verify <sha>^{commit}` calls resolved both captured commits. `git rev-parse c79e41c260b5958cd50b9ed923435cb041de3bae^{tree}` returned dba2b60460893a3ffa6658ab79d8419e3e58f73f, matching final evidence. Caller status was clean; no observed caller identity/source differences are attributed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 4651,
+          "byteEnd": 5089
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The authorized review-package command with the absolute plan path succeeded, producing task-19-review-initial.diff, one commit, three changed files and 33,655 bytes. An initial relative-plan invocation failed because the git-ignored plan is not in the task checkout; it was corrected with the dispatch's absolute path before reviewing. An initial combined --verify invocation was invalid Git syntax; both identities were then resolved separately successfully. Neither error left a required check unperformed.\n",
+          "text": "The authorized review-package command with the absolute plan path succeeded, producing task-19-review-initial.diff, one commit, three changed files and 33,655 bytes. An initial relative-plan invocation failed because the git-ignored plan is not in the task checkout; it was corrected with the dispatch's absolute path before reviewing. An initial combined --verify invocation was invalid Git syntax; both identities were then resolved separately successfully. Neither error left a required check unperformed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 5090,
+          "byteEnd": 5599
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read the diff once. Focused outside-diff checks were made with `git show c79e41c2:<path>` and source-line selection:\n",
+          "text": "Read the diff once. Focused outside-diff checks were made with `git show c79e41c2:<path>` and source-line selection:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 5600,
+          "byteEnd": 5717
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: targeted retrieval might accept incomplete transport or a foreign payload. Checked coordinator.js:233–254 and 773–804. checkDigest strips unavailable text; the new decoder requires one counted Recovery record, exact source/line equality, an owned relative/absolute ledger path, safe positive line and one payload; unresolved pointers keep a gap and admission hold. There is no narrowed inferred task scope.\n",
+          "text": "Risk: targeted retrieval might accept incomplete transport or a foreign payload. Checked coordinator.js:233–254 and 773–804. checkDigest strips unavailable text; the new decoder requires one counted Recovery record, exact source/line equality, an owned relative/absolute ledger path, safe positive line and one payload; unresolved pointers keep a gap and admission hold. There is no narrowed inferred task scope.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 5718,
+          "byteEnd": 6137
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: recovered records might bypass normal schema/order/clear rules or manufacture a verification landing. Checked coordinator.js:417–449 and 823–919. The new path invokes the existing validated readRecovery in ledger order, reconstructs verification basis, and uses the existing source/tracker reconciler before closure reuse.\n",
+          "text": "Risk: recovered records might bypass normal schema/order/clear rules or manufacture a verification landing. Checked coordinator.js:417–449 and 823–919. The new path invokes the existing validated readRecovery in ledger order, reconstructs verification basis, and uses the existing source/tracker reconciler before closure reuse.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 6137,
+          "byteEnd": 6472
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Reachability: the real Resume reader goes through readLedger at 194–230, the same readLedgerPrompt supplies targeted helper instructions, decoding at 773–804 feeds recoveryObligations/recoveryTransportHeld, and admissionReason at 1524–1535 consults recoveryAdmissionReason before task admission. The sibling retained-pointer forms are handled as valid pointers or explicit malformed-pointer holds. The added helper mode does not replace the capped normal helper path.\n",
+          "text": "Reachability: the real Resume reader goes through readLedger at 194–230, the same readLedgerPrompt supplies targeted helper instructions, decoding at 773–804 feeds recoveryObligations/recoveryTransportHeld, and admissionReason at 1524–1535 consults recoveryAdmissionReason before task admission. The sibling retained-pointer forms are handled as valid pointers or explicit malformed-pointer holds. The added helper mode does not replace the capped normal helper path.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 41,
+          "lineEnd": 41,
+          "byteStart": 6472,
+          "byteEnd": 6948
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: composition could discard .23 invocation identity or .29 captured review binding. Checked readLedger:194–230 and the changed readLedgerPrompt. The identity step and recovery step coexist in the existing call; retry identity retention and complete review base/head selection are preserved. The report also retains passing invocation-start and startup-builder seam evidence. No extra recovery-reader role or dispatch was introduced.\n",
+          "text": "Risk: composition could discard .23 invocation identity or .29 captured review binding. Checked readLedger:194–230 and the changed readLedgerPrompt. The identity step and recovery step coexist in the existing call; retry identity retention and complete review base/head selection are preserved. The report also retains passing invocation-start and startup-builder seam evidence. No extra recovery-reader role or dispatch was introduced.",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 6948,
+          "byteEnd": 7389
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Test evidence"
+      ],
+      "lineStart": 44,
+      "lineEnd": 64,
+      "byteStart": 7390,
+      "byteEnd": 9372,
+      "bodyLineStart": 45,
+      "rawText": "## Test evidence\n\nNo tests or probes were run by this reviewer, as required by the task reviewer policy. All following execution facts are retained implementer measurements, not independent test runs:\n\n- `node tests/super-code/recovery-hold-scope-r1.mjs`: final pinned tree, exit 0, 16 scenarios passed. Relevant to the core hold transport repair.\n- `node tests/super-code/replay-harness.mjs`: final pinned tree, exit 1, 2294 passed / 1 failed, specifically the unchanged ready missing-basis fixture. Required acceptance is unsatisfied. The report does not gloss over this failure or claim completion.\n- `bash tests/super-code/test-run-digest.sh`: final pinned tree, exit 0, all tests passed.\n- `node tests/super-code/invocation-start-r1.mjs`: final pinned tree, exit 0, 16 startups passed; simulated mechanical agent with real helpers.\n- `node tests/super-code/startup-builder-seam-r1.mjs`: final pinned tree, exit 0, 126 startup/builder seam checks passed.\n\nThe focused hold scenarios do not substitute for missing oversized verification-basis recovery/closure coverage. The required command identities match records below, but the replay record remains live/fail. Semantic amended coverage is also missing.\n\nTest changes commands run successfully in the task worktree:\n\n```\ngit diff --stat 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\nResult: only the new recovery-hold-scope-r1.mjs, 134 added lines. No existing test was deleted, skipped, loosened, or rebaselined. replay-harness.mjs and digest tests are unchanged; the former's specifically required amendment is absent.\n\n",
+      "bodyRawText": "\nNo tests or probes were run by this reviewer, as required by the task reviewer policy. All following execution facts are retained implementer measurements, not independent test runs:\n\n- `node tests/super-code/recovery-hold-scope-r1.mjs`: final pinned tree, exit 0, 16 scenarios passed. Relevant to the core hold transport repair.\n- `node tests/super-code/replay-harness.mjs`: final pinned tree, exit 1, 2294 passed / 1 failed, specifically the unchanged ready missing-basis fixture. Required acceptance is unsatisfied. The report does not gloss over this failure or claim completion.\n- `bash tests/super-code/test-run-digest.sh`: final pinned tree, exit 0, all tests passed.\n- `node tests/super-code/invocation-start-r1.mjs`: final pinned tree, exit 0, 16 startups passed; simulated mechanical agent with real helpers.\n- `node tests/super-code/startup-builder-seam-r1.mjs`: final pinned tree, exit 0, 126 startup/builder seam checks passed.\n\nThe focused hold scenarios do not substitute for missing oversized verification-basis recovery/closure coverage. The required command identities match records below, but the replay record remains live/fail. Semantic amended coverage is also missing.\n\nTest changes commands run successfully in the task worktree:\n\n```\ngit diff --stat 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\nResult: only the new recovery-hold-scope-r1.mjs, 134 added lines. No existing test was deleted, skipped, loosened, or rebaselined. replay-harness.mjs and digest tests are unchanged; the former's specifically required amendment is absent.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests or probes were run by this reviewer, as required by the task reviewer policy. All following execution facts are retained implementer measurements, not independent test runs:\n",
+          "text": "No tests or probes were run by this reviewer, as required by the task reviewer policy. All following execution facts are retained implementer measurements, not independent test runs:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 7408,
+          "byteEnd": 7591
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/recovery-hold-scope-r1.mjs`: final pinned tree, exit 0, 16 scenarios passed. Relevant to the core hold transport repair.\n",
+          "text": "`node tests/super-code/recovery-hold-scope-r1.mjs`: final pinned tree, exit 0, 16 scenarios passed. Relevant to the core hold transport repair.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 48,
+          "lineEnd": 48,
+          "byteStart": 7592,
+          "byteEnd": 7738
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/replay-harness.mjs`: final pinned tree, exit 1, 2294 passed / 1 failed, specifically the unchanged ready missing-basis fixture. Required acceptance is unsatisfied. The report does not gloss over this failure or claim completion.\n",
+          "text": "`node tests/super-code/replay-harness.mjs`: final pinned tree, exit 1, 2294 passed / 1 failed, specifically the unchanged ready missing-basis fixture. Required acceptance is unsatisfied. The report does not gloss over this failure or claim completion.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 49,
+          "lineEnd": 49,
+          "byteStart": 7738,
+          "byteEnd": 7992
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-code/test-run-digest.sh`: final pinned tree, exit 0, all tests passed.\n",
+          "text": "`bash tests/super-code/test-run-digest.sh`: final pinned tree, exit 0, all tests passed.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 7992,
+          "byteEnd": 8083
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/invocation-start-r1.mjs`: final pinned tree, exit 0, 16 startups passed; simulated mechanical agent with real helpers.\n",
+          "text": "`node tests/super-code/invocation-start-r1.mjs`: final pinned tree, exit 0, 16 startups passed; simulated mechanical agent with real helpers.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 51,
+          "lineEnd": 51,
+          "byteStart": 8083,
+          "byteEnd": 8227
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/startup-builder-seam-r1.mjs`: final pinned tree, exit 0, 126 startup/builder seam checks passed.\n",
+          "text": "`node tests/super-code/startup-builder-seam-r1.mjs`: final pinned tree, exit 0, 126 startup/builder seam checks passed.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 52,
+          "lineEnd": 52,
+          "byteStart": 8227,
+          "byteEnd": 8349
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The focused hold scenarios do not substitute for missing oversized verification-basis recovery/closure coverage. The required command identities match records below, but the replay record remains live/fail. Semantic amended coverage is also missing.\n",
+          "text": "The focused hold scenarios do not substitute for missing oversized verification-basis recovery/closure coverage. The required command identities match records below, but the replay record remains live/fail. Semantic amended coverage is also missing.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 54,
+          "lineEnd": 54,
+          "byteStart": 8350,
+          "byteEnd": 8600
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands run successfully in the task worktree:\n",
+          "text": "Test changes commands run successfully in the task worktree:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 56,
+          "lineEnd": 56,
+          "byteStart": 8601,
+          "byteEnd": 8662
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```\ngit diff --stat 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n",
+          "text": "```\ngit diff --stat 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 5bfbb923..c79e41c2 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 58,
+          "lineEnd": 61,
+          "byteStart": 8663,
+          "byteEnd": 9132
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Result: only the new recovery-hold-scope-r1.mjs, 134 added lines. No existing test was deleted, skipped, loosened, or rebaselined. replay-harness.mjs and digest tests are unchanged; the former's specifically required amendment is absent.\n",
+          "text": "Result: only the new recovery-hold-scope-r1.mjs, 134 added lines. No existing test was deleted, skipped, loosened, or rebaselined. replay-harness.mjs and digest tests are unchanged; the former's specifically required amendment is absent.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 63,
+          "lineEnd": 63,
+          "byteStart": 9133,
+          "byteEnd": 9371
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Failure attribution"
+      ],
+      "lineStart": 65,
+      "lineEnd": 70,
+      "byteStart": 9372,
+      "byteEnd": 10903,
+      "bodyLineStart": 66,
+      "rawText": "## Failure attribution\n\nRead relevant progress.md records, especially current Task 19 implementation/fixture-fix reservation and the .23/.29 composition history. No Recovery runFailure records establish a run-start baseline for this failure. The retained narrow probe passed on the original pre-rebase task base tree 90e37bbfed5bfa419d9708d83c73c048aaf3924b and failed on task tree 7941bd301896a6e28d6bc0909563cfd315a3d0eb; this is evidence of the conservative .22 repair changing the legacy fixture behavior, not a claim of a pre-run failure. The full final replay shows the same unchanged assertion failing at final tree dba2b60460893a3ffa6658ab79d8419e3e58f73f. The report explicitly assigns same-bead amendment repair to the fresh fix pass. Thus .22 retains the repair obligation; this is an authorized fixture correction, not an instruction to weaken product admission.\n\nThe retained probe's original task-base pass is evidence index 1 below, but it is not a measurement of the current pinned base 5bfbb923, nor a run-start baseline. No taskBase or runBaseline index is assigned to either failure association. The probe and full replay remain separate exact command identities; their associations are supported by the unchanged fixture/source history, not merged as identical commands. No verification index exists: neither final full replay nor the missing replacement coverage has passed. Earlier digest transient output lacked a captured full tree and is not assigned a cause or blanket flaky/pre-existing classification.\n\n",
+      "bodyRawText": "\nRead relevant progress.md records, especially current Task 19 implementation/fixture-fix reservation and the .23/.29 composition history. No Recovery runFailure records establish a run-start baseline for this failure. The retained narrow probe passed on the original pre-rebase task base tree 90e37bbfed5bfa419d9708d83c73c048aaf3924b and failed on task tree 7941bd301896a6e28d6bc0909563cfd315a3d0eb; this is evidence of the conservative .22 repair changing the legacy fixture behavior, not a claim of a pre-run failure. The full final replay shows the same unchanged assertion failing at final tree dba2b60460893a3ffa6658ab79d8419e3e58f73f. The report explicitly assigns same-bead amendment repair to the fresh fix pass. Thus .22 retains the repair obligation; this is an authorized fixture correction, not an instruction to weaken product admission.\n\nThe retained probe's original task-base pass is evidence index 1 below, but it is not a measurement of the current pinned base 5bfbb923, nor a run-start baseline. No taskBase or runBaseline index is assigned to either failure association. The probe and full replay remain separate exact command identities; their associations are supported by the unchanged fixture/source history, not merged as identical commands. No verification index exists: neither final full replay nor the missing replacement coverage has passed. Earlier digest transient output lacked a captured full tree and is not assigned a cause or blanket flaky/pre-existing classification.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read relevant progress.md records, especially current Task 19 implementation/fixture-fix reservation and the .23/.29 composition history. No Recovery runFailure records establish a run-start baseline for this failure. The retained narrow probe passed on the original pre-rebase task base tree 90e37bbfed5bfa419d9708d83c73c048aaf3924b and failed on task tree 7941bd301896a6e28d6bc0909563cfd315a3d0eb; this is evidence of the conservative .22 repair changing the legacy fixture behavior, not a claim of a pre-run failure. The full final replay shows the same unchanged assertion failing at final tree dba2b60460893a3ffa6658ab79d8419e3e58f73f. The report explicitly assigns same-bead amendment repair to the fresh fix pass. Thus .22 retains the repair obligation; this is an authorized fixture correction, not an instruction to weaken product admission.\n",
+          "text": "Read relevant progress.md records, especially current Task 19 implementation/fixture-fix reservation and the .23/.29 composition history. No Recovery runFailure records establish a run-start baseline for this failure. The retained narrow probe passed on the original pre-rebase task base tree 90e37bbfed5bfa419d9708d83c73c048aaf3924b and failed on task tree 7941bd301896a6e28d6bc0909563cfd315a3d0eb; this is evidence of the conservative .22 repair changing the legacy fixture behavior, not a claim of a pre-run failure. The full final replay shows the same unchanged assertion failing at final tree dba2b60460893a3ffa6658ab79d8419e3e58f73f. The report explicitly assigns same-bead amendment repair to the fresh fix pass. Thus .22 retains the repair obligation; this is an authorized fixture correction, not an instruction to weaken product admission.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 67,
+          "lineEnd": 67,
+          "byteStart": 9396,
+          "byteEnd": 10247
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The retained probe's original task-base pass is evidence index 1 below, but it is not a measurement of the current pinned base 5bfbb923, nor a run-start baseline. No taskBase or runBaseline index is assigned to either failure association. The probe and full replay remain separate exact command identities; their associations are supported by the unchanged fixture/source history, not merged as identical commands. No verification index exists: neither final full replay nor the missing replacement coverage has passed. Earlier digest transient output lacked a captured full tree and is not assigned a cause or blanket flaky/pre-existing classification.\n",
+          "text": "The retained probe's original task-base pass is evidence index 1 below, but it is not a measurement of the current pinned base 5bfbb923, nor a run-start baseline. No taskBase or runBaseline index is assigned to either failure association. The probe and full replay remain separate exact command identities; their associations are supported by the unchanged fixture/source history, not merged as identical commands. No verification index exists: neither final full replay nor the missing replacement coverage has passed. Earlier digest transient output lacked a captured full tree and is not assigned a cause or blanket flaky/pre-existing classification.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 69,
+          "lineEnd": 69,
+          "byteStart": 10248,
+          "byteEnd": 10902
+        }
+      ]
+    },
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Check records and structured result\n",
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Check records and structured result"
+      ],
+      "lineStart": 71,
+      "lineEnd": 185,
+      "byteStart": 10903,
+      "byteEnd": 20313,
+      "bodyLineStart": 72,
+      "rawText": "## Check records and structured result\n\nThe evidence array below copies all original source-bound records unchanged, including original measurement locations, kinds and outcomes. The requiredLiveChecks are selected from the amended task's three required commands. Two have live/pass evidence; replay has live/fail. Passing invocation/startup seams are supplementary and do not release the replay obligation. The final check capture command is `git rev-parse HEAD^{tree}` on clean source; the report retains the alternate-index RED snapshot capture commands and exact environment.\n\n```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```\n",
+      "bodyRawText": "\nThe evidence array below copies all original source-bound records unchanged, including original measurement locations, kinds and outcomes. The requiredLiveChecks are selected from the amended task's three required commands. Two have live/pass evidence; replay has live/fail. Passing invocation/startup seams are supplementary and do not release the replay obligation. The final check capture command is `git rev-parse HEAD^{tree}` on clean source; the report retains the alternate-index RED snapshot capture commands and exact environment.\n\n```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The evidence array below copies all original source-bound records unchanged, including original measurement locations, kinds and outcomes. The requiredLiveChecks are selected from the amended task's three required commands. Two have live/pass evidence; replay has live/fail. Passing invocation/startup seams are supplementary and do not release the replay obligation. The final check capture command is `git rev-parse HEAD^{tree}` on clean source; the report retains the alternate-index RED snapshot capture commands and exact environment.\n",
+          "text": "The evidence array below copies all original source-bound records unchanged, including original measurement locations, kinds and outcomes. The requiredLiveChecks are selected from the amended task's three required commands. Two have live/pass evidence; replay has live/fail. Passing invocation/startup seams are supplementary and do not release the replay obligation. The final check capture command is `git rev-parse HEAD^{tree}` on clean source; the report retains the alternate-index RED snapshot capture commands and exact environment.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 73,
+          "lineEnd": 73,
+          "byteStart": 10943,
+          "byteEnd": 11483
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 75,
+          "lineEnd": 185,
+          "byteStart": 11484,
+          "byteEnd": 20313
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.",
+      "text": "❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.",
+      "rawText": "❌ The current amended acceptance is incomplete at tests/super-code/replay-harness.mjs:594. The specifically permitted replay-fixture amendment and replacement semantic coverage have not been delivered. The implementer explicitly says this is implementation with acceptance pending; that qualification is accurate but does not satisfy the task.\n",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 89,
+      "byteEnd": 435,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1494,
+      "byteEnd": 1510,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 2,
+      "key": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.",
+      "text": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.",
+      "rawText": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1511,
+      "byteEnd": 2130,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 3,
+      "key": "Required bounded fix:",
+      "text": "Required bounded fix:",
+      "rawText": "Required bounded fix:\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 2131,
+      "byteEnd": 2153,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 4,
+      "key": "Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.",
+      "text": "Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.",
+      "rawText": "- Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 2154,
+      "byteEnd": 2318,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 5,
+      "key": "Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.",
+      "text": "Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.",
+      "rawText": "- Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 2318,
+      "byteEnd": 3206,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 6,
+      "key": "Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.",
+      "text": "Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.",
+      "rawText": "- Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 3206,
+      "byteEnd": 3698,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 7,
+      "key": "Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.",
+      "text": "Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.",
+      "rawText": "- Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.\n",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 3698,
+      "byteEnd": 4148,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 8,
+      "key": "Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.",
+      "text": "Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.",
+      "rawText": "- Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch.\n",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 4148,
+      "byteEnd": 4444,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "section": "Findings",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 19 / super-plan-ufz.22 independent review",
+        "Findings"
+      ],
+      "positionInSection": 9,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 4445,
+      "byteEnd": 4458,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 7,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "tests/super-code/replay-harness.mjs:594: Important / Missing — Implement the recorded bounded fixture amendment. The pinned range leaves lines 594–610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.",
+      "text": "tests/super-code/replay-harness.mjs:594: Important / Missing — Implement the recorded bounded fixture amendment. The pinned range leaves lines 594–610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```\n",
+      "lineStart": 75,
+      "lineEnd": 185,
+      "byteStart": 11484,
+      "byteEnd": 20313,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 7,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.22\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"tests/super-code/replay-harness.mjs:594: Important / Missing \\u2014 Implement the recorded bounded fixture amendment. The pinned range leaves lines 594\\u2013610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.\",\n  \"minors\": [],\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"c79e41c260b5958cd50b9ed923435cb041de3bae\",\n  \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n  \"reviewFile\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md\"\n}\n```\n",
+      "lineStart": 75,
+      "lineEnd": 185,
+      "byteStart": 11484,
+      "byteEnd": 20313,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

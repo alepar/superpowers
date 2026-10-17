@@ -1,0 +1,145 @@
+{
+  "epic": "super-plan-ufz",
+  "phase": "finish",
+  "mappingPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/mapping-all.json",
+  "plannerRest": "complete",
+  "inflight": [],
+  "mergeInFlight": null,
+  "concurrency": 3,
+  "hotFileCap": 3,
+  "baselinePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md",
+  "completed": [
+    "super-plan-ufz.8.2",
+    "super-plan-ufz.1",
+    "super-plan-ufz.2",
+    "super-plan-ufz.4",
+    "super-plan-ufz.8.1",
+    "super-plan-ufz.3",
+    "super-plan-ufz.5",
+    "super-plan-ufz.10",
+    "super-plan-ufz.11",
+    "super-plan-ufz.7",
+    "super-plan-ufz.12",
+    "super-plan-ufz.13",
+    "super-plan-ufz.8.4",
+    "super-plan-ufz.8.3",
+    "super-plan-ufz.9",
+    "super-plan-ufz.6",
+    "super-plan-ufz.20",
+    "super-plan-ufz.14",
+    "super-plan-ufz.29",
+    "super-plan-ufz.32",
+    "super-plan-ufz.23",
+    "super-plan-ufz.24",
+    "super-plan-ufz.25",
+    "super-plan-ufz.22",
+    "super-plan-ufz.28",
+    "super-plan-ufz.26",
+    "super-plan-ufz.30",
+    "super-plan-ufz.27",
+    "super-plan-ufz.31"
+  ],
+  "mergeQueue": [],
+  "retainedWorktrees": [],
+  "stage": "awaiting-human-finish-choice",
+  "review": "not ready (two supported cross-component/product findings; incomplete source and historical evidence coverage; caller sweep and acceptance pending)",
+  "reviewPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+  "collection": {
+    "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "complete": true,
+    "commit": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+    "gaps": [],
+    "coverageGapsUnresolved": 690
+  },
+  "roastAgent": null,
+  "roastHead": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "roastControllerRecovery": {
+    "previous": "/root/roast_pr_r2_controller",
+    "cause": "provider content filter interruption",
+    "completed": "13scouts,8raw,6deduped,first3-seatpanel",
+    "runningPreviousChildren": 0,
+    "recovery": "fresh static-review wording controller per pinned skill; completed judgments preserved"
+  },
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "startingHead": "1d0ab308f09598c8c2826cfbca2af119a631d37a",
+  "activeTasks": [],
+  "closurePending": [],
+  "policyPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/pinned-policy-6.0/skills",
+  "policySha": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "reviewBase": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "reviewHead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "assemblerAgent": "/root/assemble_roast_pr_r2",
+  "assemblerResultPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/assemble-post-cap-audit-result.json",
+  "finalReviewAgent": "/root/final_review_fix_ufz_r1_pinned",
+  "finalReviewCompletePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/final-review-fix-r1.complete.json",
+  "sourceWorkComplete": true,
+  "historicalSupplementaryReviewsPending": false,
+  "historicalAggregatePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-review-aggregate-r1.md",
+  "historicalCoverage": "three old coverage obligations satisfied; whole-epic/currentlive/rootacceptance unassessed",
+  "roastCodeExit": "thrash",
+  "roastCodeCapped": [
+    "[Blocking] skills/super-code/coordinator.js:1830"
+  ],
+  "normalFixLoopEnded": true,
+  "regressionPassEligible": false,
+  "postLoopPending": [
+    "human-owned finish choice; root acceptance remains pending"
+  ],
+  "baseAbsorbed": {
+    "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+    "merge": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+    "conflicts": 6
+  },
+  "sweepHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "sweep": {
+    "sourceHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+    "passed": 37,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "37commandgroups",
+    "measurementValid": true
+  },
+  "sweepFixSpent": false,
+  "auditBase": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "auditHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "auditAgent": "/root/post_cap_audit_controller",
+  "retainedWorktreesReconciliation": {
+    "prior": [
+      {
+        "task": "super-plan-ufz.32",
+        "reason": "process cleanup incomplete exit4 ps ancestry discovery failed; preserve ownworktree andtasktemp"
+      },
+      {
+        "task": "super-plan-ufz.23",
+        "reason": "process cleanup incomplete exit4 ps ancestry discovery failed; ownworktree/temp retained, raw evidence backedup"
+      }
+    ],
+    "source": "finish-fix-r1.json#/cleanup",
+    "currentTaskRootEntries": 0,
+    "scope": "Owned task worktrees only; caller integration and review fixtures retained; no global process absence claim"
+  },
+  "postCapAudit": {
+    "resultPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/post-cap-audit-result.json",
+    "reportPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+    "newBlocking": 0,
+    "newShouldFix": 1,
+    "newFYI": 1,
+    "escalations": 2,
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+    "archiveEntriesCallerVerified": 621
+  },
+  "acceptance": {
+    "eligible": false,
+    "pending": 46,
+    "gaps": 9,
+    "snapshotRecorded": true,
+    "rootClosed": false
+  },
+  "reportPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/report.md",
+  "feedback": {
+    "analysis": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/analysis.md",
+    "survivors": 0,
+    "filed": false
+  }
+}

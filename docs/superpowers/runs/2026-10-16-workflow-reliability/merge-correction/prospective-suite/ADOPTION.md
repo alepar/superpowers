@@ -1,0 +1,7 @@
+# Prospective controlled suite execution
+
+No final project suite has executed. The reviewed candidate is `runner-r1/runner.py`, SHA-256 `7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d`; its independent scoped review is `runner-r1-independent-review.md`. The caller boundary is `outer-launcher-r1.py`, SHA-256 `89b2316cdd4773d49fa5db379dabdac55ed7d34c3fbb85d3046ac15faa49c87e`, with the initial failed review and clean fix-round-1 review retained beside it. Exact initial wrapper bytes were recovered with a matching original hash after editing; the recovery qualifier is explicit.
+
+The older top-level `runner.py` is the initial unexecuted prototype with known review findings, retained as history. Do not select it for final execution. The corrected runner needs an independently reviewed frozen final plan, exact reviewed source in a clean standalone clone, a controlled outer Python -I launcher and current scoped quiet-host observation. Actual argv/environment, source checks, tools/input archives, full logs and outcomes are still required.
+
+`runner-r1/archive-retention.json` identifies copied final identical-source RED/GREEN text/code/receipts. Earlier development attempts, toy Git object stores and exact executable-byte archives remain retained at `/private/tmp/ufz-correction-suite-runner-r1`; binary payloads are not added to this product repository. No cleanup or global process-absence claim follows from the copies or runner review.

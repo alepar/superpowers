@@ -1,0 +1,27 @@
+{
+  "pin": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+  "scriptSha256": "fa4d68570f93fa59ba91f98952c71e6d9d7c4869da58b1b1a6fae4cb1f2f34f7",
+  "command": [
+    "bash",
+    "/private/tmp/ufz-acceptance-output-probe-lcf_jte0/current-pinned/skills/super-auto/scripts/report-status",
+    "--acceptance",
+    "/private/tmp/ufz-acceptance-output-probe-lcf_jte0/run.md"
+  ],
+  "results": {
+    "current-regular": {
+      "exitCode": 0,
+      "stdoutBytes": 84284,
+      "validJson": true,
+      "eligible": true,
+      "nonblockingCount": 250,
+      "gaps": []
+    },
+    "current-pipe": {
+      "exitCode": 0,
+      "stdoutBytes": 65536,
+      "validJson": false,
+      "parseError": "Unterminated string starting at: line 1 column 65530 (char 65529)"
+    }
+  },
+  "limits": "Synthetic real-helper output transport probe; no actual run gate or source mutation."
+}

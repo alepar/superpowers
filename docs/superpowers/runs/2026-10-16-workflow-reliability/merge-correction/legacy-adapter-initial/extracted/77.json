@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+  "artifact": "task-report-history-r1/raw/task-19-report.md",
+  "kind": "task-report",
+  "verdict": "FIXED",
+  "occurrences": [
+    {
+      "section": "Concerns",
+      "position": 1,
+      "key": "The unchanged rebased replay suite reports 2294 passed, 1 failed: ready reentry with missing basis obtains independent verification review before closure. This is not clean completion evidence.",
+      "text": "The unchanged rebased replay suite reports 2294 passed, 1 failed: ready reentry with missing basis obtains independent verification review before closure. This is not clean completion evidence."
+    },
+    {
+      "section": "Concerns",
+      "position": 2,
+      "key": "The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs.",
+      "text": "The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs."
+    },
+    {
+      "section": "Concerns",
+      "position": 3,
+      "key": "Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending.",
+      "text": "Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending."
+    },
+    {
+      "section": "Concerns",
+      "position": 4,
+      "key": "Targeted Recovery payloads preserve complete unknown/additive fields and may remain large. If their existing-reader transport fails, admission remains conservatively held; no extra reader agent dispatch is added.",
+      "text": "Targeted Recovery payloads preserve complete unknown/additive fields and may remain large. If their existing-reader transport fails, admission remains conservatively held; no extra reader agent dispatch is added."
+    }
+  ]
+}

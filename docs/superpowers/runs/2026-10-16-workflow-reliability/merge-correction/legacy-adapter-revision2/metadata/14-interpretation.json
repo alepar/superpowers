@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "ordinal": 14,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+  "originalArtifact": "task-report-history-r1/raw/task-12-seam-findings.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-12-seam-findings.md",
+  "rawSha256": "d63d25b32fe1deb6ee8a2725884152a74e58ab2d6838f37ece45e3db03e4f520",
+  "rawByteCount": 633,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 4,
+    "byteStart": 0,
+    "byteEnd": 633,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/13",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/14-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "NEEDS_FIX",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: NEEDS_FIX"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/13/interpretedPassages/0",
+      "roles": [
+        "review-finding"
+      ],
+      "span": [
+        32,
+        633
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Important rebase conflict in coordinator.js and replay harness; exact refs and preservation/combined-check obligations stated."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-14-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+      "roles": [
+        "review-finding"
+      ],
+      "interpretation": "Important rebase conflict in coordinator.js and replay harness; exact refs and preservation/combined-check obligations stated.",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 32,
+      "byteEnd": 633,
+      "rawText": "- [rebase-conflict] No-change source9610071921c440aa1debff4b873525b42cf3f217 at basecaf187cef8d1769da6184de42332a31bc7e30dcb conflicts rebasing onto integration43f18740e270d4d5a2730d4194e47f4eac04be39 in skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs. Rebase aborted cleanly; task/integration clean. Resolve in own task worktree preserving independently reviewed verification-only evidence/typed digest closure, landed regression owner/contradiction history, and landed durable recovery/confirmed append ordering. Run meaningful combined checks; no broader changes or merge.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Important",
+          "headingRaw": "## Important\n",
+          "hierarchy": [
+            "Important"
+          ],
+          "sectionByteStart": 19,
+          "sectionByteEnd": 633,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 14
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 32,
+      "byteEnd": 633,
+      "roles": [
+        "review-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/13/interpretedPassages/0"
+      ],
+      "interpretation": "Important rebase conflict in coordinator.js and replay harness; exact refs and preservation/combined-check obligations stated.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Single Important rebase-conflict occurrence supported, preserving entire original first finding line and exact identities.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000000032",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review-finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 32,
+      "rawByteEnd": 633,
+      "rawLineStart": 4,
+      "rawLineEnd": 4,
+      "originalSections": [
+        {
+          "section": "Important",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Important\n",
+          "hierarchy": [
+            "Important"
+          ],
+          "byteStart": 19,
+          "byteEnd": 633
+        }
+      ],
+      "rawText": "- [rebase-conflict] No-change source9610071921c440aa1debff4b873525b42cf3f217 at basecaf187cef8d1769da6184de42332a31bc7e30dcb conflicts rebasing onto integration43f18740e270d4d5a2730d4194e47f4eac04be39 in skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs. Rebase aborted cleanly; task/integration clean. Resolve in own task worktree preserving independently reviewed verification-only evidence/typed digest closure, landed regression owner/contradiction history, and landed durable recovery/confirmed append ordering. Run meaningful combined checks; no broader changes or merge.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[rebase-conflict] No-change source9610071921c440aa1debff4b873525b42cf3f217 at basecaf187cef8d1769da6184de42332a31bc7e30dcb conflicts rebasing onto integration43f18740e270d4d5a2730d4194e47f4eac04be39 in skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs. Rebase aborted cleanly; task/integration clean. Resolve in own task worktree preserving independently reviewed verification-only evidence/typed digest closure, landed regression owner/contradiction history, and landed durable recovery/confirmed append ordering. Run meaningful combined checks; no broader changes or merge.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/13/interpretedPassages/0"
+      ],
+      "interpretation": "Important rebase conflict in coordinator.js and replay harness; exact refs and preservation/combined-check obligations stated."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/14-task-12-seam-findings.md",
+  "retainedSha256": "82362c16d463b299eff754164b446101b9c58ea27fbbb302be618f37b82a2794"
+}

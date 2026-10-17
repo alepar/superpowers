@@ -1,0 +1,703 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-26-report.md",
+  "rawSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+  "rawByteCount": 12757,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+    "durablePath": "task-report-history-r1/raw/task-26-report.md",
+    "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+    "byteCount": 12757,
+    "logicalRole": "report",
+    "ordinal": 26,
+    "logicalTaskId": "super-plan-ufz.29",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-26-report.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+    "error": "report-verdict: --complete: unrecognized finding source"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 26 — immutable invocation source binding",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 26 — immutable invocation source binding\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding"
+      ],
+      "lineStart": 1,
+      "lineEnd": 4,
+      "byteStart": 0,
+      "byteEnd": 414,
+      "bodyLineStart": 2,
+      "rawText": "# Task 26 — immutable invocation source binding\n\nImplemented `super-plan-ufz.29` on `task-super-plan-ufz.29` in the existing task worktree. Reused the interrupted worktree without discarding its original regression or RED log. Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a. Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40. Integration was unchanged; the required rebase was a no-op. The task worktree is clean.\n\n",
+      "bodyRawText": "\nImplemented `super-plan-ufz.29` on `task-super-plan-ufz.29` in the existing task worktree. Reused the interrupted worktree without discarding its original regression or RED log. Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a. Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40. Integration was unchanged; the required rebase was a no-op. The task worktree is clean.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Implemented `super-plan-ufz.29` on `task-super-plan-ufz.29` in the existing task worktree. Reused the interrupted worktree without discarding its original regression or RED log. Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a. Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40. Integration was unchanged; the required rebase was a no-op. The task worktree is clean.\n",
+          "text": "Implemented `super-plan-ufz.29` on `task-super-plan-ufz.29` in the existing task worktree. Reused the interrupted worktree without discarding its original regression or RED log. Base: 1d0ab308f09598c8c2826cfbca2af119a631d37a. Head: 7db21aaec321ce133ad792f9ffc0e05879e4cf40. Integration was unchanged; the required rebase was a no-op. The task worktree is clean.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 51,
+          "byteEnd": 413
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Implementation"
+      ],
+      "lineStart": 5,
+      "lineEnd": 12,
+      "byteStart": 414,
+      "byteEnd": 2062,
+      "bodyLineStart": 6,
+      "rawText": "## Implementation\n\nThe prior real-builder fixture reproduced the root cause: a persisted invocation ID owned fixed assembly/review paths, but Finish captured a newer integration head on resume and neither Launch nor compact Recovery facts bound the ID to its reviewed source.\n\nThe existing `dispatch-text.mjs` now provides `bind-review-source`: it persists a compact existing Recovery deferred record carrying `data.reviewSource` with invocationId/base/head, or reads/verifies the existing binding. It accepts captured Launch facts too. Same-ID source mismatch, invalid/conflicting facts, an existing unbound bundle, and attempts to write existing outputs or direct `.diff` packages are refused without replacing partial bytes. `--read` retrieves an existing binding without capturing a new tip. Rendering dispatch text alone is not represented as persistence.\n\nWorkflow Finish reads the original compact binding from its existing Resume/Finish digest observations before selecting review inputs. Every existing final assembly, single, cluster, seam and stub producer runs the shared binding guard before writing artifacts. No dispatch was added. A source-guard refusal keeps final review unavailable with `reviewPath: null`, preserving the partial bundle rather than bypassing its findings through direct review. Ordinary assembler unavailability retains the existing direct-input fallback. New invocation IDs can capture newer source independently. Both coordinator instruction paths explain this contract. Existing finding lifecycle and identity/cause handling were not changed. The omitted-ID startup repair owned by task .23 was not touched.\n\n",
+      "bodyRawText": "\nThe prior real-builder fixture reproduced the root cause: a persisted invocation ID owned fixed assembly/review paths, but Finish captured a newer integration head on resume and neither Launch nor compact Recovery facts bound the ID to its reviewed source.\n\nThe existing `dispatch-text.mjs` now provides `bind-review-source`: it persists a compact existing Recovery deferred record carrying `data.reviewSource` with invocationId/base/head, or reads/verifies the existing binding. It accepts captured Launch facts too. Same-ID source mismatch, invalid/conflicting facts, an existing unbound bundle, and attempts to write existing outputs or direct `.diff` packages are refused without replacing partial bytes. `--read` retrieves an existing binding without capturing a new tip. Rendering dispatch text alone is not represented as persistence.\n\nWorkflow Finish reads the original compact binding from its existing Resume/Finish digest observations before selecting review inputs. Every existing final assembly, single, cluster, seam and stub producer runs the shared binding guard before writing artifacts. No dispatch was added. A source-guard refusal keeps final review unavailable with `reviewPath: null`, preserving the partial bundle rather than bypassing its findings through direct review. Ordinary assembler unavailability retains the existing direct-input fallback. New invocation IDs can capture newer source independently. Both coordinator instruction paths explain this contract. Existing finding lifecycle and identity/cause handling were not changed. The omitted-ID startup repair owned by task .23 was not touched.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The prior real-builder fixture reproduced the root cause: a persisted invocation ID owned fixed assembly/review paths, but Finish captured a newer integration head on resume and neither Launch nor compact Recovery facts bound the ID to its reviewed source.\n",
+          "text": "The prior real-builder fixture reproduced the root cause: a persisted invocation ID owned fixed assembly/review paths, but Finish captured a newer integration head on resume and neither Launch nor compact Recovery facts bound the ID to its reviewed source.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 433,
+          "byteEnd": 690
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The existing `dispatch-text.mjs` now provides `bind-review-source`: it persists a compact existing Recovery deferred record carrying `data.reviewSource` with invocationId/base/head, or reads/verifies the existing binding. It accepts captured Launch facts too. Same-ID source mismatch, invalid/conflicting facts, an existing unbound bundle, and attempts to write existing outputs or direct `.diff` packages are refused without replacing partial bytes. `--read` retrieves an existing binding without capturing a new tip. Rendering dispatch text alone is not represented as persistence.\n",
+          "text": "The existing `dispatch-text.mjs` now provides `bind-review-source`: it persists a compact existing Recovery deferred record carrying `data.reviewSource` with invocationId/base/head, or reads/verifies the existing binding. It accepts captured Launch facts too. Same-ID source mismatch, invalid/conflicting facts, an existing unbound bundle, and attempts to write existing outputs or direct `.diff` packages are refused without replacing partial bytes. `--read` retrieves an existing binding without capturing a new tip. Rendering dispatch text alone is not represented as persistence.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 691,
+          "byteEnd": 1275
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Workflow Finish reads the original compact binding from its existing Resume/Finish digest observations before selecting review inputs. Every existing final assembly, single, cluster, seam and stub producer runs the shared binding guard before writing artifacts. No dispatch was added. A source-guard refusal keeps final review unavailable with `reviewPath: null`, preserving the partial bundle rather than bypassing its findings through direct review. Ordinary assembler unavailability retains the existing direct-input fallback. New invocation IDs can capture newer source independently. Both coordinator instruction paths explain this contract. Existing finding lifecycle and identity/cause handling were not changed. The omitted-ID startup repair owned by task .23 was not touched.\n",
+          "text": "Workflow Finish reads the original compact binding from its existing Resume/Finish digest observations before selecting review inputs. Every existing final assembly, single, cluster, seam and stub producer runs the shared binding guard before writing artifacts. No dispatch was added. A source-guard refusal keeps final review unavailable with `reviewPath: null`, preserving the partial bundle rather than bypassing its findings through direct review. Ordinary assembler unavailability retains the existing direct-input fallback. New invocation IDs can capture newer source independently. Both coordinator instruction paths explain this contract. Existing finding lifecycle and identity/cause handling were not changed. The omitted-ID startup repair owned by task .23 was not touched.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 1276,
+          "byteEnd": 2061
+        }
+      ]
+    },
+    {
+      "section": "Acceptance coverage",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Acceptance coverage\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Acceptance coverage"
+      ],
+      "lineStart": 13,
+      "lineEnd": 20,
+      "byteStart": 2062,
+      "byteEnd": 3210,
+      "bodyLineStart": 14,
+      "rawText": "## Acceptance coverage\n\n- Finding-bearing cluster, assembly digest and direct package bytes survive a same-ID resume after head advances from bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb to cccccccccccccccccccccccccccccccccccccccc. The compact fact and resumed prompt retain the original base/head.\n- The fixture executes the real binding CLI emitted by the real prompt builders before simulated destructive writer steps, then inspects the authoritative ledger. Binding exists before each write; mismatched source is refused without ledger or bundle replacement.\n- Workflow single, split/seam, split/stub and direct fallback paths exercise the guard, source facts, actual fixture artifacts and confirmed/nonconfirmed reviewPath semantics. Ordinary and Workflow Launch forms produce bound source/path arguments across all review modes. Missing Launch persistence produces no review artifact writes.\n- Fresh IDs, source retrieval, same-source output refusal and an unbound finding-bearing partial bundle have explicit assertions.\n- Unchanged coordinator replay and unchanged ordinary-dispatch caller tests pass. No existing test was edited or loosened.\n\n",
+      "bodyRawText": "\n- Finding-bearing cluster, assembly digest and direct package bytes survive a same-ID resume after head advances from bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb to cccccccccccccccccccccccccccccccccccccccc. The compact fact and resumed prompt retain the original base/head.\n- The fixture executes the real binding CLI emitted by the real prompt builders before simulated destructive writer steps, then inspects the authoritative ledger. Binding exists before each write; mismatched source is refused without ledger or bundle replacement.\n- Workflow single, split/seam, split/stub and direct fallback paths exercise the guard, source facts, actual fixture artifacts and confirmed/nonconfirmed reviewPath semantics. Ordinary and Workflow Launch forms produce bound source/path arguments across all review modes. Missing Launch persistence produces no review artifact writes.\n- Fresh IDs, source retrieval, same-source output refusal and an unbound finding-bearing partial bundle have explicit assertions.\n- Unchanged coordinator replay and unchanged ordinary-dispatch caller tests pass. No existing test was edited or loosened.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Finding-bearing cluster, assembly digest and direct package bytes survive a same-ID resume after head advances from bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb to cccccccccccccccccccccccccccccccccccccccc. The compact fact and resumed prompt retain the original base/head.\n",
+          "text": "Finding-bearing cluster, assembly digest and direct package bytes survive a same-ID resume after head advances from bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb to cccccccccccccccccccccccccccccccccccccccc. The compact fact and resumed prompt retain the original base/head.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 2086,
+          "byteEnd": 2357
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- The fixture executes the real binding CLI emitted by the real prompt builders before simulated destructive writer steps, then inspects the authoritative ledger. Binding exists before each write; mismatched source is refused without ledger or bundle replacement.\n",
+          "text": "The fixture executes the real binding CLI emitted by the real prompt builders before simulated destructive writer steps, then inspects the authoritative ledger. Binding exists before each write; mismatched source is refused without ledger or bundle replacement.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 2357,
+          "byteEnd": 2621
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Workflow single, split/seam, split/stub and direct fallback paths exercise the guard, source facts, actual fixture artifacts and confirmed/nonconfirmed reviewPath semantics. Ordinary and Workflow Launch forms produce bound source/path arguments across all review modes. Missing Launch persistence produces no review artifact writes.\n",
+          "text": "Workflow single, split/seam, split/stub and direct fallback paths exercise the guard, source facts, actual fixture artifacts and confirmed/nonconfirmed reviewPath semantics. Ordinary and Workflow Launch forms produce bound source/path arguments across all review modes. Missing Launch persistence produces no review artifact writes.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 2621,
+          "byteEnd": 2956
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Fresh IDs, source retrieval, same-source output refusal and an unbound finding-bearing partial bundle have explicit assertions.\n",
+          "text": "Fresh IDs, source retrieval, same-source output refusal and an unbound finding-bearing partial bundle have explicit assertions.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 2956,
+          "byteEnd": 3086
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Unchanged coordinator replay and unchanged ordinary-dispatch caller tests pass. No existing test was edited or loosened.\n",
+          "text": "Unchanged coordinator replay and unchanged ordinary-dispatch caller tests pass. No existing test was edited or loosened.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 3086,
+          "byteEnd": 3209
+        }
+      ]
+    },
+    {
+      "section": "Tests and TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests and TDD evidence\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Tests and TDD evidence"
+      ],
+      "lineStart": 21,
+      "lineEnd": 56,
+      "byteStart": 3210,
+      "byteEnd": 4965,
+      "bodyLineStart": 22,
+      "rawText": "## Tests and TDD evidence\n\nAll commands ran from the absolute task worktree above with this exact environment prefix:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\n```\n\nRED command: `node tests/super-code/invocation-source-binding-r1.mjs` on source tree `9e544a4b64d593c254cef710d0fb55ff862cff38`. It exited 1 at the intended first invariant:\n\n```text\nAssertionError [ERR_ASSERTION]: captured source must be durable before each artifact writer\nactual: false\nexpected: true\n```\n\nThe recovered original log is retained unchanged at `evidence/super-plan-ufz.29/red.log`; its original fixture is preserved as `red-fixture.mjs`. This RED observes the missing durable fact, not the assertions after that failure. Later coverage was strengthened to model destructive writes rather than conditionally preserving files inside the fixture.\n\nFinal GREEN commands on source tree `b92dfaf4bbf2e897fe1b190a435e0a872564916e`:\n\n```text\nnode tests/super-code/invocation-source-binding-r1.mjs\n11 invocation source-binding scenarios passed\nexit 0\n\nnode tests/super-code/replay-harness.mjs\n2277 passed, 0 failed\nexit 0\n\nbash tests/super-code/test-dispatch-text.sh\ndispatch-text: all tests passed\nexit 0\n```\n\nFull outputs are retained at the evidence locations below. `git diff --check` passed. The three documented dryRun scenarios are covered by the unchanged replay. No full suite was run. The final code, instruction and test source was unchanged after source capture and these final checks; the commit additionally includes the retained evidence files generated after capture.\n\n",
+      "bodyRawText": "\nAll commands ran from the absolute task worktree above with this exact environment prefix:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\n```\n\nRED command: `node tests/super-code/invocation-source-binding-r1.mjs` on source tree `9e544a4b64d593c254cef710d0fb55ff862cff38`. It exited 1 at the intended first invariant:\n\n```text\nAssertionError [ERR_ASSERTION]: captured source must be durable before each artifact writer\nactual: false\nexpected: true\n```\n\nThe recovered original log is retained unchanged at `evidence/super-plan-ufz.29/red.log`; its original fixture is preserved as `red-fixture.mjs`. This RED observes the missing durable fact, not the assertions after that failure. Later coverage was strengthened to model destructive writes rather than conditionally preserving files inside the fixture.\n\nFinal GREEN commands on source tree `b92dfaf4bbf2e897fe1b190a435e0a872564916e`:\n\n```text\nnode tests/super-code/invocation-source-binding-r1.mjs\n11 invocation source-binding scenarios passed\nexit 0\n\nnode tests/super-code/replay-harness.mjs\n2277 passed, 0 failed\nexit 0\n\nbash tests/super-code/test-dispatch-text.sh\ndispatch-text: all tests passed\nexit 0\n```\n\nFull outputs are retained at the evidence locations below. `git diff --check` passed. The three documented dryRun scenarios are covered by the unchanged replay. No full suite was run. The final code, instruction and test source was unchanged after source capture and these final checks; the commit additionally includes the retained evidence files generated after capture.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands ran from the absolute task worktree above with this exact environment prefix:\n",
+          "text": "All commands ran from the absolute task worktree above with this exact environment prefix:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 3237,
+          "byteEnd": 3328
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 25,
+          "lineEnd": 27,
+          "byteStart": 3329,
+          "byteEnd": 3571
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED command: `node tests/super-code/invocation-source-binding-r1.mjs` on source tree `9e544a4b64d593c254cef710d0fb55ff862cff38`. It exited 1 at the intended first invariant:\n",
+          "text": "RED command: `node tests/super-code/invocation-source-binding-r1.mjs` on source tree `9e544a4b64d593c254cef710d0fb55ff862cff38`. It exited 1 at the intended first invariant:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3572,
+          "byteEnd": 3746
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nAssertionError [ERR_ASSERTION]: captured source must be durable before each artifact writer\nactual: false\nexpected: true\n```\n",
+          "text": "```text\nAssertionError [ERR_ASSERTION]: captured source must be durable before each artifact writer\nactual: false\nexpected: true\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 31,
+          "lineEnd": 35,
+          "byteStart": 3747,
+          "byteEnd": 3880
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The recovered original log is retained unchanged at `evidence/super-plan-ufz.29/red.log`; its original fixture is preserved as `red-fixture.mjs`. This RED observes the missing durable fact, not the assertions after that failure. Later coverage was strengthened to model destructive writes rather than conditionally preserving files inside the fixture.\n",
+          "text": "The recovered original log is retained unchanged at `evidence/super-plan-ufz.29/red.log`; its original fixture is preserved as `red-fixture.mjs`. This RED observes the missing durable fact, not the assertions after that failure. Later coverage was strengthened to model destructive writes rather than conditionally preserving files inside the fixture.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3881,
+          "byteEnd": 4233
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final GREEN commands on source tree `b92dfaf4bbf2e897fe1b190a435e0a872564916e`:\n",
+          "text": "Final GREEN commands on source tree `b92dfaf4bbf2e897fe1b190a435e0a872564916e`:",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 4234,
+          "byteEnd": 4314
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nnode tests/super-code/invocation-source-binding-r1.mjs\n11 invocation source-binding scenarios passed\nexit 0\n\nnode tests/super-code/replay-harness.mjs\n2277 passed, 0 failed\nexit 0\n\nbash tests/super-code/test-dispatch-text.sh\ndispatch-text: all tests passed\nexit 0\n```\n",
+          "text": "```text\nnode tests/super-code/invocation-source-binding-r1.mjs\n11 invocation source-binding scenarios passed\nexit 0\n\nnode tests/super-code/replay-harness.mjs\n2277 passed, 0 failed\nexit 0\n\nbash tests/super-code/test-dispatch-text.sh\ndispatch-text: all tests passed\nexit 0\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 41,
+          "lineEnd": 53,
+          "byteStart": 4315,
+          "byteEnd": 4590
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Full outputs are retained at the evidence locations below. `git diff --check` passed. The three documented dryRun scenarios are covered by the unchanged replay. No full suite was run. The final code, instruction and test source was unchanged after source capture and these final checks; the commit additionally includes the retained evidence files generated after capture.\n",
+          "text": "Full outputs are retained at the evidence locations below. `git diff --check` passed. The three documented dryRun scenarios are covered by the unchanged replay. No full suite was run. The final code, instruction and test source was unchanged after source capture and these final checks; the commit additionally includes the retained evidence files generated after capture.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 55,
+          "lineEnd": 55,
+          "byteStart": 4591,
+          "byteEnd": 4964
+        }
+      ]
+    },
+    {
+      "section": "Evidence and capture commands",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Evidence and capture commands\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Evidence and capture commands"
+      ],
+      "lineStart": 57,
+      "lineEnd": 127,
+      "byteStart": 4965,
+      "byteEnd": 9618,
+      "bodyLineStart": 58,
+      "rawText": "## Evidence and capture commands\n\nThese are live executions of local test commands, with injected/canned Workflow agent replies where explicitly identified in configuration. They do not constitute fresh live-agent Workflow or instruction-behavior evaluations. The temporary-index snapshots include all tracked baseline inputs plus the changed source/docs and relevant untracked regression, while preserving the real index.\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\nmkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\n```\n\n`evidence`:\n\n```json\n[\n  {\n    \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n    \"outcome\": \"fail\",\n    \"location\": \"evidence/super-plan-ufz.29/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n\n`requiredLiveChecks`:\n\n```json\n[\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n  }\n]\n```\n\n",
+      "bodyRawText": "\nThese are live executions of local test commands, with injected/canned Workflow agent replies where explicitly identified in configuration. They do not constitute fresh live-agent Workflow or instruction-behavior evaluations. The temporary-index snapshots include all tracked baseline inputs plus the changed source/docs and relevant untracked regression, while preserving the real index.\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\nmkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\n```\n\n`evidence`:\n\n```json\n[\n  {\n    \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n    \"outcome\": \"fail\",\n    \"location\": \"evidence/super-plan-ufz.29/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n\n`requiredLiveChecks`:\n\n```json\n[\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n  }\n]\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "These are live executions of local test commands, with injected/canned Workflow agent replies where explicitly identified in configuration. They do not constitute fresh live-agent Workflow or instruction-behavior evaluations. The temporary-index snapshots include all tracked baseline inputs plus the changed source/docs and relevant untracked regression, while preserving the real index.\n",
+          "text": "These are live executions of local test commands, with injected/canned Workflow agent replies where explicitly identified in configuration. They do not constitute fresh live-agent Workflow or instruction-behavior evaluations. The temporary-index snapshots include all tracked baseline inputs plus the changed source/docs and relevant untracked regression, while preserving the real index.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 59,
+          "lineEnd": 59,
+          "byteStart": 4999,
+          "byteEnd": 5388
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\nmkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29\nmkdir -p /tmp/sp-bce79baa/super-plan-ufz.29\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git add tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/red.index git write-tree # 9e544a4b64d593c254cef710d0fb55ff862cff38\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git add skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md skills/super-code/scripts/dispatch-text.mjs tests/super-code/invocation-source-binding-r1.mjs\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.29/final.index git write-tree # b92dfaf4bbf2e897fe1b190a435e0a872564916e\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 61,
+          "lineEnd": 70,
+          "byteStart": 5389,
+          "byteEnd": 6381
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`evidence`:\n",
+          "text": "`evidence`:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 72,
+          "lineEnd": 72,
+          "byteStart": 6382,
+          "byteEnd": 6394
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n[\n  {\n    \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n    \"outcome\": \"fail\",\n    \"location\": \"evidence/super-plan-ufz.29/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n",
+          "text": "```json\n[\n  {\n    \"sourceTree\": \"9e544a4b64d593c254cef710d0fb55ff862cff38\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture\",\n    \"outcome\": \"fail\",\n    \"location\": \"evidence/super-plan-ufz.29/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/focused-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/replay-final.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders\",\n    \"outcome\": \"pass\",\n    \"location\": \"evidence/super-plan-ufz.29/dispatch-final.log\",\n    \"kind\": \"live\"\n  }\n]\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 74,
+          "lineEnd": 109,
+          "byteStart": 6395,
+          "byteEnd": 8670
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`requiredLiveChecks`:\n",
+          "text": "`requiredLiveChecks`:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 8671,
+          "byteEnd": 8693
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n[\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n  }\n]\n```\n",
+          "text": "```json\n[\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies\"\n  },\n  {\n    \"sourceTree\": \"b92dfaf4bbf2e897fe1b190a435e0a872564916e\",\n    \"command\": \"node tests/super-code/replay-harness.mjs\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures\"\n  }\n]\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 113,
+          "lineEnd": 126,
+          "byteStart": 8694,
+          "byteEnd": 9617
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Files changed"
+      ],
+      "lineStart": 128,
+      "lineEnd": 141,
+      "byteStart": 9618,
+      "byteEnd": 10145,
+      "bodyLineStart": 129,
+      "rawText": "## Files changed\n\n- `evidence/super-plan-ufz.29/checks.json`\n- `evidence/super-plan-ufz.29/dispatch-final.log`\n- `evidence/super-plan-ufz.29/focused-final.log`\n- `evidence/super-plan-ufz.29/red-fixture.mjs`\n- `evidence/super-plan-ufz.29/red.log`\n- `evidence/super-plan-ufz.29/replay-final.log`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator.js`\n- `skills/super-code/scripts/dispatch-text.mjs`\n- `tests/super-code/invocation-source-binding-r1.mjs`\n\n",
+      "bodyRawText": "\n- `evidence/super-plan-ufz.29/checks.json`\n- `evidence/super-plan-ufz.29/dispatch-final.log`\n- `evidence/super-plan-ufz.29/focused-final.log`\n- `evidence/super-plan-ufz.29/red-fixture.mjs`\n- `evidence/super-plan-ufz.29/red.log`\n- `evidence/super-plan-ufz.29/replay-final.log`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator.js`\n- `skills/super-code/scripts/dispatch-text.mjs`\n- `tests/super-code/invocation-source-binding-r1.mjs`\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/checks.json`\n",
+          "text": "`evidence/super-plan-ufz.29/checks.json`",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 130,
+          "lineEnd": 130,
+          "byteStart": 9636,
+          "byteEnd": 9679
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/dispatch-final.log`\n",
+          "text": "`evidence/super-plan-ufz.29/dispatch-final.log`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 131,
+          "lineEnd": 131,
+          "byteStart": 9679,
+          "byteEnd": 9729
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/focused-final.log`\n",
+          "text": "`evidence/super-plan-ufz.29/focused-final.log`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 132,
+          "lineEnd": 132,
+          "byteStart": 9729,
+          "byteEnd": 9778
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/red-fixture.mjs`\n",
+          "text": "`evidence/super-plan-ufz.29/red-fixture.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 9778,
+          "byteEnd": 9825
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/red.log`\n",
+          "text": "`evidence/super-plan-ufz.29/red.log`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 134,
+          "lineEnd": 134,
+          "byteStart": 9825,
+          "byteEnd": 9864
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `evidence/super-plan-ufz.29/replay-final.log`\n",
+          "text": "`evidence/super-plan-ufz.29/replay-final.log`",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 135,
+          "lineEnd": 135,
+          "byteStart": 9864,
+          "byteEnd": 9912
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-subagents.md`\n",
+          "text": "`skills/super-code/coordinator-subagents.md`",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 136,
+          "lineEnd": 136,
+          "byteStart": 9912,
+          "byteEnd": 9959
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-workflow.md`\n",
+          "text": "`skills/super-code/coordinator-workflow.md`",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 137,
+          "lineEnd": 137,
+          "byteStart": 9959,
+          "byteEnd": 10005
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js`\n",
+          "text": "`skills/super-code/coordinator.js`",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 138,
+          "lineEnd": 138,
+          "byteStart": 10005,
+          "byteEnd": 10042
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/scripts/dispatch-text.mjs`\n",
+          "text": "`skills/super-code/scripts/dispatch-text.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 10,
+          "lineStart": 139,
+          "lineEnd": 139,
+          "byteStart": 10042,
+          "byteEnd": 10090
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/invocation-source-binding-r1.mjs`\n",
+          "text": "`tests/super-code/invocation-source-binding-r1.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 11,
+          "lineStart": 140,
+          "lineEnd": 140,
+          "byteStart": 10090,
+          "byteEnd": 10144
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Test hygiene"
+      ],
+      "lineStart": 142,
+      "lineEnd": 152,
+      "byteStart": 10145,
+      "byteEnd": 11300,
+      "bodyLineStart": 143,
+      "rawText": "## Test hygiene\n\nAll tests used `/tmp/sp-bce79baa/super-plan-ufz.29` for TMPDIR, HOME and XDG homes. After test runs, the existing integration-owned stop helper checked only this task worktree and temp root. One initial check was invoked from inside the task worktree and exited 2 with its deliberate self/ancestor-root protection; the corrected checks ran from the integration worktree, which was otherwise read-only. No `match:` lines were reported and no test leak was identified. Final `--check` and stop commands both exited 0 with empty output. No `survived:` lines, unknown cleanup results or background processes remain.\n\nExact final hygiene commands, from the integration worktree:\n\n```sh\nbash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\nbash skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\n```\n\n",
+      "bodyRawText": "\nAll tests used `/tmp/sp-bce79baa/super-plan-ufz.29` for TMPDIR, HOME and XDG homes. After test runs, the existing integration-owned stop helper checked only this task worktree and temp root. One initial check was invoked from inside the task worktree and exited 2 with its deliberate self/ancestor-root protection; the corrected checks ran from the integration worktree, which was otherwise read-only. No `match:` lines were reported and no test leak was identified. Final `--check` and stop commands both exited 0 with empty output. No `survived:` lines, unknown cleanup results or background processes remain.\n\nExact final hygiene commands, from the integration worktree:\n\n```sh\nbash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\nbash skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All tests used `/tmp/sp-bce79baa/super-plan-ufz.29` for TMPDIR, HOME and XDG homes. After test runs, the existing integration-owned stop helper checked only this task worktree and temp root. One initial check was invoked from inside the task worktree and exited 2 with its deliberate self/ancestor-root protection; the corrected checks ran from the integration worktree, which was otherwise read-only. No `match:` lines were reported and no test leak was identified. Final `--check` and stop commands both exited 0 with empty output. No `survived:` lines, unknown cleanup results or background processes remain.\n",
+          "text": "All tests used `/tmp/sp-bce79baa/super-plan-ufz.29` for TMPDIR, HOME and XDG homes. After test runs, the existing integration-owned stop helper checked only this task worktree and temp root. One initial check was invoked from inside the task worktree and exited 2 with its deliberate self/ancestor-root protection; the corrected checks ran from the integration worktree, which was otherwise read-only. No `match:` lines were reported and no test leak was identified. Final `--check` and stop commands both exited 0 with empty output. No `survived:` lines, unknown cleanup results or background processes remain.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 144,
+          "lineEnd": 144,
+          "byteStart": 10162,
+          "byteEnd": 10774
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact final hygiene commands, from the integration worktree:\n",
+          "text": "Exact final hygiene commands, from the integration worktree:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 146,
+          "lineEnd": 146,
+          "byteStart": 10775,
+          "byteEnd": 10836
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\nbash skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\n```\n",
+          "text": "```sh\nbash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\nbash skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.29 /tmp/sp-bce79baa/super-plan-ufz.29\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 148,
+          "lineEnd": 151,
+          "byteStart": 10837,
+          "byteEnd": 11299
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Assumptions and amendments"
+      ],
+      "lineStart": 153,
+      "lineEnd": 156,
+      "byteStart": 11300,
+      "byteEnd": 12020,
+      "bodyLineStart": 154,
+      "rawText": "## Assumptions and amendments\n\nRead current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.\n\n",
+      "bodyRawText": "\nRead current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.\n",
+          "text": "Read current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 155,
+          "lineEnd": 155,
+          "byteStart": 11331,
+          "byteEnd": 12019
+        }
+      ]
+    },
+    {
+      "section": "Concerns and pending caller work",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and pending caller work\n",
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Concerns and pending caller work"
+      ],
+      "lineStart": 157,
+      "lineEnd": 159,
+      "byteStart": 12020,
+      "byteEnd": 12757,
+      "bodyLineStart": 158,
+      "rawText": "## Concerns and pending caller work\n\nThe brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "bodyRawText": "\nThe brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+          "text": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 159,
+          "lineEnd": 159,
+          "byteStart": 12057,
+          "byteEnd": 12757
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 1,
+      "key": "Read current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.",
+      "text": "Read current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.",
+      "rawText": "Read current bead description/acceptance and comments before implementation: there were no comments or task amendments. Applied the frozen task 26 scope together with the current bead. Recovery ownership override explicitly authorized reuse of the existing dirty task worktree; original baseline evidence was inspected and preserved. Reused the existing brief without mutating integration source. Did not modify either authoritative spec or historical review/step-back evidence. The rejected measurement-classification and direct frozen-Git fallback materiality findings remain outside scope. No tracker, Herdr, main, remote, root-acceptance or integration-source mutation was performed.\n",
+      "lineStart": 155,
+      "lineEnd": 155,
+      "byteStart": 11331,
+      "byteEnd": 12019,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "section": "Concerns and pending caller work",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Concerns and pending caller work"
+      ],
+      "positionInSection": 1,
+      "key": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.",
+      "text": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.",
+      "rawText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "lineStart": 159,
+      "lineEnd": 159,
+      "byteStart": 12057,
+      "byteEnd": 12757,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

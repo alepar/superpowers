@@ -1,0 +1,55 @@
+amend-check: ok and parsing
+  [PASS] ok record under --loop code
+  [PASS] exit 0
+  [PASS] the same record under --loop design
+  [PASS] covers: key containing ', ' and key containing ' | ' parsed whole, rN prefix stripped
+  [PASS] comma/pipe record exit 0
+amend-check: owners both ways
+  [PASS] missing open key: exit 3
+  [PASS] missing open key named
+  [PASS] missing 'open (returned rN)' key: exit 3
+  [PASS] returned key named
+  [PASS] missing final-review row: exit 3
+  [PASS] final-review key named
+  [PASS] owners: key that is not open: exit 3
+  [PASS] disputed-in-ledger key is not open
+amend-check: work lines and the reverse rule
+  [PASS] work: line without covers: exit 3
+  [PASS] orphan work line named
+  [PASS] open local key with no work: covers: exit 3
+  [PASS] local key named
+  [PASS] owner key whose section is not in amended:, no work: covers: exit 3 (design)
+  [PASS] owner key named
+  [PASS] --loop code: key covered only by an amended owner section: exit 3
+  [PASS] code loop needs a work: line
+  [PASS] the same record passes under --loop design
+  [PASS] --loop design: owner ./docs/spec.md matches amended: docs/spec.md for the reverse rule
+amend-check: spec diff
+  [PASS] amended: section the diff does not touch: exit 3
+  [PASS] untouched section named
+  [PASS] ## Goal diff: exit 3
+  [PASS] goal change named
+  [PASS] missing ## Unchanged behavior: exit 3
+  [PASS] missing section named
+amend-check: normalised content
+  [PASS] heading inserted right after ## Goal: exit 3
+  [PASS] moved Goal body named
+  [PASS] edit inside a fenced '## Goal' example is not a Goal change
+  [PASS] duplicate owners: key: exit 3
+  [PASS] duplicate key named
+  [PASS] ./docs/spec.md in amended: matches --specs docs/spec.md
+  [PASS] docs/spec.md in amended: matches --specs ./docs/spec.md
+  [PASS] design loop: local key with no work: line: exit 3
+  [PASS] uncovered local key named
+  [PASS] untracked new nested spec: its amended section counts as changed
+  [PASS] multi --specs: first spec is the root
+  [PASS] root choice follows --specs order
+  [PASS] ## Goal change in the second spec: exit 3
+  [PASS] nested Goal change named
+amend-check: bad input and git failure
+  [PASS] unknown --base: exit 2, never a reject
+  [PASS] missing amend file: exit 2
+  [PASS] bad --loop: exit 2
+  [PASS] not in a git repository: exit 2
+
+All amend-check tests passed

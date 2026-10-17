@@ -1,0 +1,157 @@
+[
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/dispatch-final.log",
+    "sha256": "be0ece65ab319ee8850828a994f8c53c1a248f15f538d07606654ab2cb92cc68",
+    "bytes": 1977
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/dispatch-observed.log",
+    "sha256": "472b1524612f1fa853641bbc3951546c3ac439a7ee6e7942c7f6bdeb6b49b266",
+    "bytes": 1948
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/final-tree.txt",
+    "sha256": "eee99baddacbf9e20854b952271e17ae141c43a01038776fe81f582f420d65b8",
+    "bytes": 41
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/archive/dispatch-original-fail.log",
+    "sha256": "be0ece65ab319ee8850828a994f8c53c1a248f15f538d07606654ab2cb92cc68",
+    "bytes": 1977
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-report-before-fix.md",
+    "sha256": "417474cab3275a954e60d5b25aa7057b5edc63ca86b718bdf9e1e36bb3ed4754",
+    "bytes": 14320
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-review-before-fix.md",
+    "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+    "bytes": 15003
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/cleanup-final.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/dispatch-final.log",
+    "sha256": "b1e9b3f4976fd23c6753615fc2e393e4663cde446beaf617096cfbdac98f8e07",
+    "bytes": 12900
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/final-tree.txt",
+    "sha256": "17e3180b999c63aaaa62d1ff3ccdfc974529752e7654338218c1a8689cca54f3",
+    "bytes": 41
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/hygiene-dispatch-source.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/hygiene-final.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/hygiene-replay-seam.log",
+    "sha256": "33a0e890eeb63eb59698995384444e2b574abac54baeb2d70ce75e24385d45f2",
+    "bytes": 804
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/hygiene-startup-dispatch.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/red-tree.txt",
+    "sha256": "8619e42716ea88212caff25d97d3c88a04c13dd8128d53d902b963c37702362f",
+    "bytes": 41
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/replay-final.log",
+    "sha256": "336fec52954aa482a750131e4b9416208cef989591b2c0ec1619ee06f24496ef",
+    "bytes": 159416
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/seam-final.log",
+    "sha256": "442dce78494f44379be5737f506566e5ebeee5429f515ab8ea717315ebcf0701",
+    "bytes": 148
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/seam-first-green.log",
+    "sha256": "773cda3da984776f10752dbc5030bfaf7abc1d47798c4c58f0bc8b6d6ea0a81a",
+    "bytes": 824
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/seam-green.log",
+    "sha256": "442dce78494f44379be5737f506566e5ebeee5429f515ab8ea717315ebcf0701",
+    "bytes": 148
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/seam-red.log",
+    "sha256": "8debf806883b8df94ec79a843730a728ed7504bf6e11616697f0f17d37ee2170",
+    "bytes": 1852
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/source-binding-final.log",
+    "sha256": "7dab2fe90f0ce2e100f9471f63c343b53f25e60d2c992d9b8dc7bd282b97d16e",
+    "bytes": 46
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/fix-r1/startup-final.log",
+    "sha256": "009402613d89fe879151f2f78d521e5856b1e6de519fddd0d7139ded2aba8802",
+    "bytes": 214
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/hygiene-final.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/red-tree.txt",
+    "sha256": "733ceddf5a1b05c54ab95bc1f5c46ee13fb4c94c6d0641f9b1e3dab7b56518ed",
+    "bytes": 41
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/replay-baseline.log",
+    "sha256": "a3b299cdf73d700665a4096c37f7135fd10583e0a3608f25b4bbe3b01db9fad5",
+    "bytes": 158150
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/replay-first.log",
+    "sha256": "a75ca28fc5a236dc2ccc772483fdef97ac7a1c12dd77466e4b5c374a24bf3686",
+    "bytes": 46979
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/replay-green.log",
+    "sha256": "ecdf8a9c896c5be7db6c3fa613ca1e7888c04846f80eff5fca3e71d6878aaae0",
+    "bytes": 159447
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/replay-second.log",
+    "sha256": "336fec52954aa482a750131e4b9416208cef989591b2c0ec1619ee06f24496ef",
+    "bytes": 159416
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/startup-green-first.log",
+    "sha256": "cc6185bb521f6b1758f0390bb2dd140509cd86a339aff902fb4206bcea8d6255",
+    "bytes": 177
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/startup-green.log",
+    "sha256": "4b088a2334ec20d318a2c85368d06f466ee6666513a65c25fc08690266d45090",
+    "bytes": 243
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/startup-red-resume.log",
+    "sha256": "7cd34b338f6102d15f4590ef9e7f7c69c3c5e661d1d19b8acfd28243dcff1c7d",
+    "bytes": 2291
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.23/startup-red.log",
+    "sha256": "07e7d143eb33af13b1fed0b2f3c3fa86ff86bfa8cd502427d4d11d8c7541cbeb",
+    "bytes": 2291
+  }
+]

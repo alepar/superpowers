@@ -1,0 +1,730 @@
+{
+  "version": 1,
+  "ordinal": 37,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+  "originalArtifact": "task-report-history-r1/raw/task-20-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-20-review.md",
+  "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+  "rawByteCount": 15003,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      15003
+    ],
+    "method": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/9",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/37-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "NEEDS_FIX",
+    "kind": "final-review"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Verdict: NEEDS_FIX"
+    },
+    {
+      "line": 71,
+      "rawText": "  \"status\": \"NEEDS_FIX\","
+    },
+    {
+      "line": 79,
+      "rawText": "  \"completionKind\": \"implementation\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/0",
+      "roles": [
+        "actual-finding-reiteration"
+      ],
+      "span": [
+        80,
+        246
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/1",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        1343,
+        1563
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        1589,
+        1595
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/3",
+      "roles": [
+        "actual-finding"
+      ],
+      "span": [
+        1611,
+        2511
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/4",
+      "roles": [
+        "finding-qualification-and-required-remediation"
+      ],
+      "span": [
+        2512,
+        3166
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/9/semanticPassages/5",
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        3198,
+        3549
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).\n",
+      "text": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 80,
+      "byteEnd": 246,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "actual-finding-reiteration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 1,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 1,
+        "byteStart": 80,
+        "byteEnd": 246,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n",
+      "text": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.",
+      "listMarker": null,
+      "positionInSection": 4,
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 1343,
+      "byteEnd": 1563,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 2,
+        "positionInSection": 4,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 4,
+        "byteStart": 1343,
+        "byteEnd": 1563,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "None.\n",
+      "text": "None.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1589,
+      "byteEnd": 1595,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Critical",
+      "rawSectionOrdinal": 4,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Critical"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Critical",
+        "sectionOrdinal": 4,
+        "positionInSection": 1,
+        "rawSection": "Critical",
+        "rawPositionInSection": 1,
+        "byteStart": 1589,
+        "byteEnd": 1595,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n",
+      "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 1611,
+      "byteEnd": 2511,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Important",
+      "rawSectionOrdinal": 5,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Important"
+      ],
+      "semanticRoles": [
+        "actual-finding"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Important",
+        "sectionOrdinal": 5,
+        "positionInSection": 1,
+        "rawSection": "Important",
+        "rawPositionInSection": 1,
+        "byteStart": 1611,
+        "byteEnd": 2511,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n",
+      "text": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 2512,
+      "byteEnd": 3166,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Important",
+      "rawSectionOrdinal": 5,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Important"
+      ],
+      "semanticRoles": [
+        "finding-qualification-and-required-remediation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Important",
+        "sectionOrdinal": 5,
+        "positionInSection": 2,
+        "rawSection": "Important",
+        "rawPositionInSection": 2,
+        "byteStart": 2512,
+        "byteEnd": 3166,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n",
+      "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 29,
+      "lineEnd": 29,
+      "byteStart": 3198,
+      "byteEnd": 3549,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawSection": "Minor / deferred coverage",
+      "rawSectionOrdinal": 6,
+      "originalHierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Minor / deferred coverage"
+      ],
+      "semanticRoles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Minor / deferred coverage",
+        "sectionOrdinal": 6,
+        "positionInSection": 1,
+        "rawSection": "Minor / deferred coverage",
+        "rawPositionInSection": 1,
+        "byteStart": 3198,
+        "byteEnd": 3549,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 10,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "lineStart": 68,
+      "lineEnd": 151,
+      "byteStart": 9056,
+      "byteEnd": 15003,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "semanticRole": "structured-same-source-finding-rendition",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    },
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 10,
+      "field": "minors",
+      "jsonPointer": "/minors/0",
+      "fieldValue": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "lineStart": 68,
+      "lineEnd": 151,
+      "byteStart": 9056,
+      "byteEnd": 15003,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "semanticRole": "structured-same-source-finding-rendition",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    }
+  ],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1343,
+      "byteEnd": 1563,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1611,
+      "byteEnd": 3166,
+      "roles": [
+        "actual-finding",
+        "finding-qualification-and-required-remediation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/canonicalItemGroupingRecommendation"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3198,
+      "byteEnd": 3549,
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/semanticPassages/5"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9133,
+      "byteEnd": 10034,
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/structuredAppearances/0"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count.",
+      "jsonPointer": "/finding",
+      "originalReviewedJsonBlockSpan": [
+        9056,
+        15003
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix."
+    },
+    {
+      "byteStart": 10054,
+      "byteEnd": 10406,
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/structuredAppearances/1"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count.",
+      "jsonPointer": "/minors/0",
+      "originalReviewedJsonBlockSpan": [
+        9056,
+        15003
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker."
+    }
+  ],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": false,
+    "scope": "No whole-source empty finding assertion supported; retain actual concern/finding/deferred obligations.",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized final-review verdict; not acceptance.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001343",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 1343,
+      "rawByteEnd": 1563,
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task 20 review — super-plan-ufz.23",
+            "Spec compliance"
+          ],
+          "byteStart": 60,
+          "byteEnd": 1564
+        }
+      ],
+      "rawText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-5/raw-byte-000001611",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "actual-finding",
+        "finding-qualification-and-required-remediation"
+      ],
+      "rawByteStart": 1611,
+      "rawByteEnd": 3166,
+      "rawLineStart": 23,
+      "rawLineEnd": 25,
+      "originalSections": [
+        {
+          "section": "Important",
+          "sectionOrdinal": 5,
+          "headingRaw": "### Important\n",
+          "hierarchy": [
+            "Task 20 review — super-plan-ufz.23",
+            "Issues",
+            "Important"
+          ],
+          "byteStart": 1596,
+          "byteEnd": 3167
+        }
+      ],
+      "rawText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n\nThe report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n\nThe report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/canonicalItemGroupingRecommendation"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-6/raw-byte-000003198",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 3198,
+      "rawByteEnd": 3549,
+      "rawLineStart": 29,
+      "rawLineEnd": 29,
+      "originalSections": [
+        {
+          "section": "Minor / deferred coverage",
+          "sectionOrdinal": 6,
+          "headingRaw": "### Minor / deferred coverage\n",
+          "hierarchy": [
+            "Task 20 review — super-plan-ufz.23",
+            "Issues",
+            "Minor / deferred coverage"
+          ],
+          "byteStart": 3167,
+          "byteEnd": 3550
+        }
+      ],
+      "rawText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/semanticPassages/5"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/structured-finding-appearance/raw-section-10/raw-byte-000009133/json-pointer-/finding",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "structured-finding-appearance",
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "rawByteStart": 9133,
+      "rawByteEnd": 10034,
+      "rawLineStart": 72,
+      "rawLineEnd": 72,
+      "originalSections": [
+        {
+          "section": "Check records and structured result",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Check records and structured result\n",
+          "hierarchy": [
+            "Task 20 review — super-plan-ufz.23",
+            "Check records and structured result"
+          ],
+          "byteStart": 8372,
+          "byteEnd": 15003
+        }
+      ],
+      "rawText": "\"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\"",
+      "jsonPointer": "/finding",
+      "originalReviewedJsonBlockSpan": [
+        9056,
+        15003
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedFieldText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "adapterText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/structuredAppearances/0"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count."
+    },
+    {
+      "adapterSection": "Findings — adapter/structured-finding-appearance/raw-section-10/raw-byte-000010054/json-pointer-/minors/0",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "structured-finding-appearance",
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "rawByteStart": 10054,
+      "rawByteEnd": 10406,
+      "rawLineStart": 74,
+      "rawLineEnd": 74,
+      "originalSections": [
+        {
+          "section": "Check records and structured result",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Check records and structured result\n",
+          "hierarchy": [
+            "Task 20 review — super-plan-ufz.23",
+            "Check records and structured result"
+          ],
+          "byteStart": 8372,
+          "byteEnd": 15003
+        }
+      ],
+      "rawText": "\"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"",
+      "jsonPointer": "/minors/0",
+      "originalReviewedJsonBlockSpan": [
+        9056,
+        15003
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedFieldText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "adapterText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/9/structuredAppearances/1"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/37-task-20-review.md",
+  "retainedSha256": "c30a46ef381b3517a07bbb23d7128b2d54e3227c437dd5cec7f3576926c20fe5"
+}

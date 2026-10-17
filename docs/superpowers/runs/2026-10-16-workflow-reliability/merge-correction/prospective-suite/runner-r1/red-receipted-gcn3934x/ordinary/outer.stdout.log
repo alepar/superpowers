@@ -1,0 +1,3 @@
+01/2 passed: bash tests/one.sh
+02/2 passed: node tests/two.mjs
+{"measurementValid": true, "commandGroupsPassed": 2, "commandGroupsFailed": 0, "commandGroupsErrors": 0, "commandGroupsSkipped": 0}

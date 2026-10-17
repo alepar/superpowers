@@ -1,0 +1,173 @@
+{
+  "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "baseFullReview": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "scope": "Exact attribution/byte proof for composed metrics-cleanup15path finalreview; NOT finalapproval or waiver. Old fullreads plusTask6 netdiffcover all member bodies/changes when finaltaskreviewclean; finalcomposer judgescrosspart risks.",
+  "paths": [
+    {
+      "path": "skills/super-code/scripts/ledger-digest",
+      "currentSha256": "58f5ea07216c78d68bb98a248d6f1850873f0df51864174d517645f8b0c6a8cf",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/super-code/scripts/remove-task-worktree",
+      "currentSha256": "05b4813af07ee1e0658457273cfaf2322bcf6c9ea8ad666c5a36ff97acab85dc",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": true,
+      "priorReadSource": "product-coverage/cleanup-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/super-code/scripts/run-digest",
+      "currentSha256": "18c1288eb46313bb1366dfd7d909daf193118d39082a9c98767e7d75d3336a2f",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": true,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "currentSha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": true,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "currentSha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": true,
+      "priorReadSource": "product-coverage/cleanup-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "currentSha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "currentSha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375",
+      "hasPriorFullReview": false,
+      "priorSourceHead": null,
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": false,
+      "task6Changed": true,
+      "priorReadSource": null,
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/run-profile-fixture.mjs",
+      "currentSha256": "5acf81f83edf49e2437e1926038cb441182045159a8aa822000f0b4f43fe393d",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/run-profile-ordinary-fixture.mjs",
+      "currentSha256": "b734eef4f097ecba86bbeaae8e6c3529feb6a8c37a76a9c94c30b418d257a3c9",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-run-digest.sh",
+      "currentSha256": "ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-run-profile-in-flight.sh",
+      "currentSha256": "028fc0f4d8193ce71b1ce3513cb99b581998dc15d5404589503cd18ab78a283d",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-run-profile.sh",
+      "currentSha256": "127a5aa66a3bc8956228867732a82a0b3d94b9a13e902250fc9001a2cc7f35b1",
+      "hasPriorFullReview": true,
+      "priorSourceHead": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+      "unchangedFromPriorFullReview": true,
+      "preTask6EqualsPriorFullRead": true,
+      "task6Changed": false,
+      "priorReadSource": "product-coverage/metrics-review.md",
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-setup-cleanup.sh",
+      "currentSha256": "85dbbeab6b281e3240607de672aa2fd4c591ec6e0277d68a8dbf2c945e398e12",
+      "hasPriorFullReview": false,
+      "priorSourceHead": null,
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": false,
+      "task6Changed": true,
+      "priorReadSource": null,
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-stop-run-processes-inventory.sh",
+      "currentSha256": "4b7b5f17f8bef2af08f991e26a7759d3d8f1a9e63a15db164cc070b882e6ea7a",
+      "hasPriorFullReview": false,
+      "priorSourceHead": null,
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": false,
+      "task6Changed": true,
+      "priorReadSource": null,
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    },
+    {
+      "path": "tests/super-code/test-verification-completion-metrics.sh",
+      "currentSha256": "b9962101de239173f7bc412ad82e14c980a6d4fb0dc21f75fb8d140dce98ce5f",
+      "hasPriorFullReview": false,
+      "priorSourceHead": null,
+      "unchangedFromPriorFullReview": false,
+      "preTask6EqualsPriorFullRead": false,
+      "task6Changed": true,
+      "priorReadSource": null,
+      "scopeLimit": "Task6initialreviewfailedR1R2; no finalcleanreuse yet. Finalhead and fixdiff must be bound."
+    }
+  ],
+  "allCoveredByPriorOrTask6": true
+}

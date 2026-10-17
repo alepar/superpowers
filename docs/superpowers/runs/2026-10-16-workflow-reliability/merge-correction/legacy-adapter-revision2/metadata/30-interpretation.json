@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "ordinal": 30,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+  "originalArtifact": "task-report-history-r1/raw/task-18-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-18-report.md",
+  "rawSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+  "rawByteCount": 12714,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      12714
+    ],
+    "method": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/2",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/30-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/2/semanticPassages/0",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        6014,
+        6384
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/2/semanticPassages/1",
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        12356,
+        12714
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n",
+      "text": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.",
+      "listMarker": null,
+      "positionInSection": 7,
+      "lineStart": 82,
+      "lineEnd": 82,
+      "byteStart": 6014,
+      "byteEnd": 6384,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "rawSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "rawSection": "Test commands and results",
+      "rawSectionOrdinal": 4,
+      "originalHierarchy": [
+        "Test commands and results"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+        "section": "Test commands and results",
+        "sectionOrdinal": 4,
+        "positionInSection": 7,
+        "rawSection": "Test commands and results",
+        "rawPositionInSection": 7,
+        "byteStart": 6014,
+        "byteEnd": 6384,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "text": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 154,
+      "lineEnd": 154,
+      "byteStart": 12356,
+      "byteEnd": 12714,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "rawSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "rawSection": "Self-review and concerns",
+      "rawSectionOrdinal": 8,
+      "originalHierarchy": [
+        "Self-review and concerns"
+      ],
+      "semanticRoles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+        "section": "Self-review and concerns",
+        "sectionOrdinal": 8,
+        "positionInSection": 1,
+        "rawSection": "Self-review and concerns",
+        "rawPositionInSection": 1,
+        "byteStart": 12356,
+        "byteEnd": 12714,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 6014,
+      "byteEnd": 6384,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/2/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 12356,
+      "byteEnd": 12714,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/2/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "qualified-local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000006014",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 6014,
+      "rawByteEnd": 6384,
+      "rawLineStart": 82,
+      "rawLineEnd": 82,
+      "originalSections": [
+        {
+          "section": "Test commands and results",
+          "sectionOrdinal": 4,
+          "headingRaw": "## Test commands and results\n",
+          "hierarchy": [
+            "Test commands and results"
+          ],
+          "byteStart": 2913,
+          "byteEnd": 6385
+        }
+      ],
+      "rawText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/2/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000012356",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 12356,
+      "rawByteEnd": 12714,
+      "rawLineStart": 154,
+      "rawLineEnd": 154,
+      "originalSections": [
+        {
+          "section": "Self-review and concerns",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Self-review and concerns\n",
+          "hierarchy": [
+            "Self-review and concerns"
+          ],
+          "byteStart": 12327,
+          "byteEnd": 12714
+        }
+      ],
+      "rawText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/2/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/30-task-18-report.md",
+  "retainedSha256": "0a1e568a1987994f2148884991e97cd5337c19c1392002f9fe53746951a80c39"
+}

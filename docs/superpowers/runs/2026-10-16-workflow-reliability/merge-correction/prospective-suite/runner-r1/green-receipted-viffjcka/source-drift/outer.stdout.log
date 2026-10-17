@@ -1,0 +1,2 @@
+01/2 passed: bash tests/one.sh
+{"status": "invalid", "measurementValid": false, "completed": false, "commandGroupsPassed": 1, "commandGroupsFailed": 0, "commandGroupsErrors": 0, "commandGroupsSkipped": 1}

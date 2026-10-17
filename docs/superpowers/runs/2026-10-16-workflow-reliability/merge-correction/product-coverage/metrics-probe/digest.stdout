@@ -1,0 +1,8 @@
+## Run state
+skill super-code · epic none · phase super-code · runTag none
+scripts: /private/tmp/ufz-correction-coverage/metrics-source/skills/super-code/scripts
+ledger: landed 1 · failed/BLOCKED 0 · pending retry 0 · cancelled 0
+ledger tail (last 1 of ledger-digest):
+Task 1 (verify.1): complete, verification-only, review clean
+open beads: none yet
+in-flight: unknown — marker lacks epic/session/harness

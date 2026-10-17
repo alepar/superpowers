@@ -1,0 +1,1662 @@
+{
+  "version": 1,
+  "proposalRevision": 2,
+  "correctionRound": 1,
+  "failedInitialSnapshot": "/private/tmp/ufz-correction-legacy-adapters-initial",
+  "failedReview": "review-evidence/adapter-initial-failed-review.md",
+  "proposalOnly": true,
+  "scope": "79 bounded historical sources; no original/canonical run writes",
+  "originalRun": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability",
+  "originalRunMdSha256": "146ecea08d9164d1f0d62db48eb52fa58c6deb3fccdb18a0325cf9ea43333ffd",
+  "inputs": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "parser": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/report-verdict",
+  "parserSha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661",
+  "namespace": "legacy-report-adapters-r1; synthetic section roles + original raw section ordinal + original byte start; JSON pointers separately attributed",
+  "offsetConvention": "Raw UTF-8 byte offsets zero-based half-open; raw lines 1-based inclusive. Raw spans may begin/end within a line, explicitly byte-bound. Each selected item has one synthetic adapter section and adapter position1; this position is not an original heading/unit position.",
+  "reversal": "Read each rawCopy and verify rawSha256/rawByteCount; these are exact complete original reports. Metadata preserves exact original section hierarchy and all interpreted raw spans. Adapter text transformation maps are explicit; never reverse by discarding provenance or inferring missing raw content.",
+  "sources": [
+    {
+      "ordinal": 1,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "rawArtifact": "task-report-history-r1/raw/task-1-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-1-review.md",
+      "rawSha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+      "rawByteCount": 4560,
+      "retainedArtifact": "legacy-report-adapters-r1/01-task-1-review.md",
+      "retainedSha256": "989f75807a05894709bdfd451a8c7a831ccda05d4cfb10aaa7a54b2d2fa8f5f9",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/01-interpretation.json",
+      "metadataSha256": "8405d48cc4b5be1c9d8e13e88cc5b72e1b4fc1c3a63703d46f42befd90494cd0",
+      "parserExtraction": "extracted/01.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      }
+    },
+    {
+      "ordinal": 2,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "rawArtifact": "task-report-history-r1/raw/task-10-report-fix.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-10-report-fix.md",
+      "rawSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+      "rawByteCount": 7526,
+      "retainedArtifact": "legacy-report-adapters-r1/02-task-10-report-fix.md",
+      "retainedSha256": "00dd09e9b9c2b94e56ceffb02702caee223de0782be0d8c15bd0cfabb5951058",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/02-interpretation.json",
+      "metadataSha256": "1cfc70de972d0a0a07be2643fe2902c13d1aea26370c3d8d018840dc7d011e8b",
+      "parserExtraction": "extracted/02.json",
+      "parsedOccurrenceCount": 4,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 3,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "rawArtifact": "task-report-history-r1/raw/task-10-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-10-report.md",
+      "rawSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+      "rawByteCount": 24964,
+      "retainedArtifact": "legacy-report-adapters-r1/03-task-10-report.md",
+      "retainedSha256": "74e6936a43f2d4f74317649fe93ba7ccb8d3a7bdf31bcf5a6e8405d3b114ffb8",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/03-interpretation.json",
+      "metadataSha256": "88f554cbd7f92992ffcced697ed514261a3b074d8e13a9b8dd335982c6403044",
+      "parserExtraction": "extracted/03.json",
+      "parsedOccurrenceCount": 9,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 4,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-10-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-10-review-seam.md",
+      "rawSha256": "0207f7ebb7bd0c49f2aba519a6837addbf5598f359f7683a43bd2e216c816257",
+      "rawByteCount": 3892,
+      "retainedArtifact": "legacy-report-adapters-r1/04-task-10-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/04-interpretation.json",
+      "metadataSha256": "2d9b4d8d4efe966abc917bd87c8fd021c7a3125831fcd48f503221d74a4202ab",
+      "parserExtraction": "extracted/04.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 5,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "rawArtifact": "task-report-history-r1/raw/task-10-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-10-review.md",
+      "rawSha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+      "rawByteCount": 4327,
+      "retainedArtifact": "legacy-report-adapters-r1/05-task-10-review.md",
+      "retainedSha256": "daf13aa02c1da59e70d695ed8cc37904733777183d01f1c1884df394d8ae6668",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/05-interpretation.json",
+      "metadataSha256": "091393aaef0e3c7eec304555395e94781a18339ca8330f30a91d69689794052b",
+      "parserExtraction": "extracted/05.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 6,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "rawArtifact": "task-report-history-r1/raw/task-11-report-fix.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-11-report-fix.md",
+      "rawSha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+      "rawByteCount": 5266,
+      "retainedArtifact": "legacy-report-adapters-r1/06-task-11-report-fix.md",
+      "retainedSha256": "f818ac23c11d3f5757423ee99bd3cb7fce22e49f8cddb7017b8ee4aa6b912af8",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/06-interpretation.json",
+      "metadataSha256": "77d460628034f7a40eeed0a0f5c783144bda12e87530d59388f0d52d8983b4c6",
+      "parserExtraction": "extracted/06.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 7,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "rawArtifact": "task-report-history-r1/raw/task-11-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-11-report.md",
+      "rawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "rawByteCount": 23500,
+      "retainedArtifact": "legacy-report-adapters-r1/07-task-11-report.md",
+      "retainedSha256": "50137e01f489d372ff5be480e934e038cb103b8d4ef0a8806edf17f93d5770f0",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/07-interpretation.json",
+      "metadataSha256": "2576e25cb22b12d1d7c52108e98b8e061a326002f7ac8b6716d388a85567ee8f",
+      "parserExtraction": "extracted/07.json",
+      "parsedOccurrenceCount": 10,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 8,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam-round-1",
+      "rawArtifact": "task-report-history-r1/raw/task-11-review-seam-round-1.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-11-review-seam-round-1.md",
+      "rawSha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+      "rawByteCount": 3417,
+      "retainedArtifact": "legacy-report-adapters-r1/08-task-11-review-seam-round-1.md",
+      "retainedSha256": "e74c72e0bb3c2cdf8598cb231c2e2374ff0f9be16bba828c1baf7680b9e57bbb",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/08-interpretation.json",
+      "metadataSha256": "97a8c2d31f7188c799a8e007cdca74d1667dca969697cc039e65d490f1bc8174",
+      "parserExtraction": "extracted/08.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 9,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-11-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-11-review-seam.md",
+      "rawSha256": "4557d37e47897380f2d615e380d9c7ef4c04cb5b946c59fc26e6cf55f890f324",
+      "rawByteCount": 3119,
+      "retainedArtifact": "legacy-report-adapters-r1/09-task-11-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/09-interpretation.json",
+      "metadataSha256": "bf66df8babe29c63cd88c312b6a5c5745d394fff32b98bfac1165d1b9d25a9d2",
+      "parserExtraction": "extracted/09.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 10,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "rawArtifact": "task-report-history-r1/raw/task-11-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-11-review.md",
+      "rawSha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+      "rawByteCount": 4441,
+      "retainedArtifact": "legacy-report-adapters-r1/10-task-11-review.md",
+      "retainedSha256": "73a82244a6bf044ce6bdb6cd78305d787eb55bd11a9f6cd910a57590f1bf4d72",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/10-interpretation.json",
+      "metadataSha256": "ab2dee934fcd96f745e4e79fd5e7a051d76c014c10ae5520d36fb95499973966",
+      "parserExtraction": "extracted/10.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 11,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "rawArtifact": "task-report-history-r1/raw/task-12-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-12-report.md",
+      "rawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "rawByteCount": 22639,
+      "retainedArtifact": "legacy-report-adapters-r1/11-task-12-report.md",
+      "retainedSha256": "8e639d24bcf12b854fdb4d890a6d9b9b968126199604bbcd0e0f698dfc3fe8a6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/11-interpretation.json",
+      "metadataSha256": "644ba5cec454cd991a61d826f8a6c3f206e218d24af39d0d7a2bb91cb28020b8",
+      "parserExtraction": "extracted/11.json",
+      "parsedOccurrenceCount": 8,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 12,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-12-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-12-review-seam.md",
+      "rawSha256": "9d4696f8a994235bcf3b38b12a334e6b9d4ea12884c101b3ff79f55f3291026b",
+      "rawByteCount": 3283,
+      "retainedArtifact": "legacy-report-adapters-r1/12-task-12-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/12-interpretation.json",
+      "metadataSha256": "1ad6e041a72475ef5849c6618319238696c7d6b10bcea5635f6f884ec2715b86",
+      "parserExtraction": "extracted/12.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 13,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "rawArtifact": "task-report-history-r1/raw/task-12-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-12-review.md",
+      "rawSha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+      "rawByteCount": 4332,
+      "retainedArtifact": "legacy-report-adapters-r1/13-task-12-review.md",
+      "retainedSha256": "2a85de1a45b5ed50739ad63e8c065f1ee31fd862857febe98d5517984ea4b204",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/13-interpretation.json",
+      "metadataSha256": "6f8dc2d3503a5b9072a5f2524c4352d8f815b55a3157cb66c60110ed212f4c70",
+      "parserExtraction": "extracted/13.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 14,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+      "rawArtifact": "task-report-history-r1/raw/task-12-seam-findings.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-12-seam-findings.md",
+      "rawSha256": "d63d25b32fe1deb6ee8a2725884152a74e58ab2d6838f37ece45e3db03e4f520",
+      "rawByteCount": 633,
+      "retainedArtifact": "legacy-report-adapters-r1/14-task-12-seam-findings.md",
+      "retainedSha256": "82362c16d463b299eff754164b446101b9c58ea27fbbb302be618f37b82a2794",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/14-interpretation.json",
+      "metadataSha256": "70497286de6824b54a601a4f6bc097af2b7c136400a89b8cc184a3f5ffc65928",
+      "parserExtraction": "extracted/14.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 15,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "rawArtifact": "task-report-history-r1/raw/task-13-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-13-report.md",
+      "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "rawByteCount": 18230,
+      "retainedArtifact": "legacy-report-adapters-r1/15-task-13-report.md",
+      "retainedSha256": "87a1600e1c8f580312e88f15c9287ccb6c86833bc44ecbef90cba812e81eee4e",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/15-interpretation.json",
+      "metadataSha256": "9dc24c56bd9d1c0e20af6a0ce571e2d48c4af37d66047025ff0ccbf2d17bf309",
+      "parserExtraction": "extracted/15.json",
+      "parsedOccurrenceCount": 8,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 16,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "rawArtifact": "task-report-history-r1/raw/task-13-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-13-review.md",
+      "rawSha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+      "rawByteCount": 4419,
+      "retainedArtifact": "legacy-report-adapters-r1/16-task-13-review.md",
+      "retainedSha256": "ea8cd0b0b7bee40a350da737daa353ffca7b28c03d9db7eb6eaf41c34f573314",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/16-interpretation.json",
+      "metadataSha256": "c9b719b7b35c64c48dd8538bcc804cf02eff65d2310827bbe9c73629a9ac1f1e",
+      "parserExtraction": "extracted/16.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 17,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "rawArtifact": "task-report-history-r1/raw/task-14-report-fix.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-14-report-fix.md",
+      "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+      "rawByteCount": 9461,
+      "retainedArtifact": "legacy-report-adapters-r1/17-task-14-report-fix.md",
+      "retainedSha256": "f1b4e0cffd3a6df697dc0f7b45129b56ac6a53835ac75dfc05949561a14e763a",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/17-interpretation.json",
+      "metadataSha256": "d2405fe2efb8c32658a232ce6aec9f2d67eb204a68f70c85459440d43610c04d",
+      "parserExtraction": "extracted/17.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 18,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "rawArtifact": "task-report-history-r1/raw/task-14-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-14-report.md",
+      "rawSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+      "rawByteCount": 24993,
+      "retainedArtifact": "legacy-report-adapters-r1/18-task-14-report.md",
+      "retainedSha256": "c6bf8358131e3b510635726087a87796104ad9625ba2c8ab4e95f51f011f7764",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/18-interpretation.json",
+      "metadataSha256": "aa56e18cffa6a4b47932863d74d98a48d6c1abe554e64c865ff3a6f923e8c0b2",
+      "parserExtraction": "extracted/18.json",
+      "parsedOccurrenceCount": 6,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 19,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "rawArtifact": "task-report-history-r1/raw/task-14-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-14-review.md",
+      "rawSha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+      "rawByteCount": 4111,
+      "retainedArtifact": "legacy-report-adapters-r1/19-task-14-review.md",
+      "retainedSha256": "89fdaf52f7cc4a6678a1c866f4aab855a5cd79b000bf5b115a4d7df1bea415e5",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/19-interpretation.json",
+      "metadataSha256": "5b97277badda00449e95c9050945c19a3f39230cdeb3f435812d660c7ee2bddd",
+      "parserExtraction": "extracted/19.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 20,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "rawArtifact": "task-report-history-r1/raw/task-15-report-fix.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-15-report-fix.md",
+      "rawSha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+      "rawByteCount": 8168,
+      "retainedArtifact": "legacy-report-adapters-r1/20-task-15-report-fix.md",
+      "retainedSha256": "c29e807a3c50935becfff0d8dc5f62fe18943fbf031ae98b20202a2d308bfa93",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/20-interpretation.json",
+      "metadataSha256": "2b43124f017e4dbaf53828125093fcc3c583999b6216d6ade8d4ee3885659a38",
+      "parserExtraction": "extracted/20.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 21,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "rawArtifact": "task-report-history-r1/raw/task-15-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-15-report.md",
+      "rawSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "rawByteCount": 29301,
+      "retainedArtifact": "legacy-report-adapters-r1/21-task-15-report.md",
+      "retainedSha256": "8ca78600158b96410bcab7f98b039380167824b07383cf1d239da7975bce976b",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/21-interpretation.json",
+      "metadataSha256": "7fd4707dbc7fe8d0ac237f18bfe986ba53a71e5ba6c888184f2aeba85369c35c",
+      "parserExtraction": "extracted/21.json",
+      "parsedOccurrenceCount": 8,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 22,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-15-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-15-review-seam.md",
+      "rawSha256": "f7d10c60db55b9d887c10e652f41eec032543d4e72695c669cf4f3a13c4ca525",
+      "rawByteCount": 3154,
+      "retainedArtifact": "legacy-report-adapters-r1/22-task-15-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/22-interpretation.json",
+      "metadataSha256": "30bb8cf8f3f96efe9cd88b7082a8e6e5697462f794d67d917b8ea4c50d1771a7",
+      "parserExtraction": "extracted/22.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 23,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "rawArtifact": "task-report-history-r1/raw/task-15-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-15-review.md",
+      "rawSha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+      "rawByteCount": 5177,
+      "retainedArtifact": "legacy-report-adapters-r1/23-task-15-review.md",
+      "retainedSha256": "9a796e37068dfa0f868a8249f4154dff45fd3d3f432eb2932eae9f8a34109e60",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/23-interpretation.json",
+      "metadataSha256": "fda539a7c63c540126ce98fa01501111af19111e9fa0000b2026a9176721e70f",
+      "parserExtraction": "extracted/23.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 24,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-seam-findings",
+      "rawArtifact": "task-report-history-r1/raw/task-15-seam-findings.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-15-seam-findings.md",
+      "rawSha256": "27a00268406c455df66d5e086295003d28e21bebeb7c8f64f197543737048f32",
+      "rawByteCount": 641,
+      "retainedArtifact": "legacy-report-adapters-r1/24-task-15-seam-findings.md",
+      "retainedSha256": "7f89e49cb835cb1367c270074519b60eb3041037cd918bce2c9edf998b9023e7",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/24-interpretation.json",
+      "metadataSha256": "38f82e2fa86a9f950eae73dc5be3c8e1dceed0f4d218aafadbbfcace14d1a23d",
+      "parserExtraction": "extracted/24.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 25,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "rawArtifact": "task-report-history-r1/raw/task-16-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-16-report.md",
+      "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "rawByteCount": 20563,
+      "retainedArtifact": "legacy-report-adapters-r1/25-task-16-report.md",
+      "retainedSha256": "cd3b8d9591794ad954d530005cf5ea232f10ea1e9f7b431ee6266a90b44916f2",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/25-interpretation.json",
+      "metadataSha256": "56e3f3ab4c5dbcbbf11dc24ffb45f7c3191f85fa1cab39fcdd86981a67b22495",
+      "parserExtraction": "extracted/25.json",
+      "parsedOccurrenceCount": 7,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 26,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-16-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-16-review-seam.md",
+      "rawSha256": "12e2cb1026153ac7517679eeb152f204cf16af385166dc6c9da804be40d7c4e6",
+      "rawByteCount": 2646,
+      "retainedArtifact": "legacy-report-adapters-r1/26-task-16-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/26-interpretation.json",
+      "metadataSha256": "99beeb6c51283d7c98ae44d1156a8e6c5e5889fa87c70050a916332bf5062150",
+      "parserExtraction": "extracted/26.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 27,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "rawArtifact": "task-report-history-r1/raw/task-16-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-16-review.md",
+      "rawSha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+      "rawByteCount": 5689,
+      "retainedArtifact": "legacy-report-adapters-r1/27-task-16-review.md",
+      "retainedSha256": "9c57e5b7c3dcacf7e7b04a4a43f0a34daa9610a073bcb5efd9fac5810638027f",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/27-interpretation.json",
+      "metadataSha256": "57fc9bf1ab37da6501e7a6e076b749cbfc16f91381e6e5b26a49a34ac3769613",
+      "parserExtraction": "extracted/27.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 28,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-seam-findings",
+      "rawArtifact": "task-report-history-r1/raw/task-16-seam-findings.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-16-seam-findings.md",
+      "rawSha256": "cb4c7bb62ed4e37059a20834a847393bb232993914aab25ef2ac74292d856e1c",
+      "rawByteCount": 740,
+      "retainedArtifact": "legacy-report-adapters-r1/28-task-16-seam-findings.md",
+      "retainedSha256": "d876c11bb1653dcb7690320cb1e311d5c3dba33d0eca09ccd6da80523915496b",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/28-interpretation.json",
+      "metadataSha256": "b5cb74b110066182e2fd7b937224bfbc46b2be220cf3c3693b74b08ee6c6fd75",
+      "parserExtraction": "extracted/28.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 29,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "rawArtifact": "task-report-history-r1/raw/task-17-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-17-review.md",
+      "rawSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "rawByteCount": 6122,
+      "retainedArtifact": "legacy-report-adapters-r1/29-task-17-review.md",
+      "retainedSha256": "56154e06d2074a6b6a223b803fc2e7f269f48dcf3e53247ee2f584526753266d",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/29-interpretation.json",
+      "metadataSha256": "5b4b2fc6adbb7f3ba20b0690c1c4c055140252bf6764cd2f1df8f9e8ee2b308f",
+      "parserExtraction": "extracted/29.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 30,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "rawArtifact": "task-report-history-r1/raw/task-18-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-18-report.md",
+      "rawSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "rawByteCount": 12714,
+      "retainedArtifact": "legacy-report-adapters-r1/30-task-18-report.md",
+      "retainedSha256": "0a1e568a1987994f2148884991e97cd5337c19c1392002f9fe53746951a80c39",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/30-interpretation.json",
+      "metadataSha256": "055c82117fe8c218e70d644c2ab658e7b00f4a13afe1a596b4d9e5a19b66c9da",
+      "parserExtraction": "extracted/30.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 31,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-review",
+      "rawArtifact": "task-report-history-r1/raw/task-18-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-18-review.md",
+      "rawSha256": "5e31f71a616f85d8c1a0aa5787c3c8bb175c38fccca877e25da2b7cf8dc86f8e",
+      "rawByteCount": 4652,
+      "retainedArtifact": "legacy-report-adapters-r1/31-task-18-review.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/31-interpretation.json",
+      "metadataSha256": "7d9514d543764e1ff3d2d881f90f5de4f689fc1c55fae31bfbdc86bf1d5d5c53",
+      "parserExtraction": "extracted/31.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 32,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "rawArtifact": "task-report-history-r1/raw/task-19-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-19-review.md",
+      "rawSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+      "rawByteCount": 20313,
+      "retainedArtifact": "legacy-report-adapters-r1/32-task-19-review.md",
+      "retainedSha256": "07ea87f10606ce776b13fd962ac03b5e048ce316a6b613823309e60484933b1d",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/32-interpretation.json",
+      "metadataSha256": "e77f97fdf947b04f31e33e1981be28da6f174bf5211eb64c813cc1608f5ad0af",
+      "parserExtraction": "extracted/32.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 33,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "rawArtifact": "task-report-history-r1/raw/task-2-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-2-report.md",
+      "rawSha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+      "rawByteCount": 12343,
+      "retainedArtifact": "legacy-report-adapters-r1/33-task-2-report.md",
+      "retainedSha256": "6d713bd7663c80dd7bff74eb34824662a5825ded049da100f26198241623286e",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/33-interpretation.json",
+      "metadataSha256": "341a0f68d69cbc72c70d2526dfa5477d1fcaf75efeb2d7494e9103824541d014",
+      "parserExtraction": "extracted/33.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 34,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-2-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-2-review-seam.md",
+      "rawSha256": "dc36c10aefd1eda3670393dca42ea32451dfca9d8af4dcef5f6c0de29ed2ef43",
+      "rawByteCount": 2152,
+      "retainedArtifact": "legacy-report-adapters-r1/34-task-2-review-seam.md",
+      "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/34-interpretation.json",
+      "metadataSha256": "bfa152a083bd18b05bc94b2a6f0b45e0b9e6c2574fd5746313d22108ae9ea323",
+      "parserExtraction": "extracted/34.json",
+      "parsedOccurrenceCount": 0,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 35,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "rawArtifact": "task-report-history-r1/raw/task-2-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-2-review.md",
+      "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "rawByteCount": 3681,
+      "retainedArtifact": "legacy-report-adapters-r1/35-task-2-review.md",
+      "retainedSha256": "48354201d23c7bf95cc17d7f8c5c00546f6d2242831191f20dbedae573b72e4d",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/35-interpretation.json",
+      "metadataSha256": "c165b54027b98daad5ff34f58357f3e2f20167d16fa2c26145363c35cc5fa139",
+      "parserExtraction": "extracted/35.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 36,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "rawArtifact": "task-report-history-r1/raw/task-20-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-20-report.md",
+      "rawSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "rawByteCount": 214271,
+      "retainedArtifact": "legacy-report-adapters-r1/36-task-20-report.md",
+      "retainedSha256": "0315663958107cb4f5d51e208096c8c5b02b0b408b65e810c5b66bb0c90b541b",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/36-interpretation.json",
+      "metadataSha256": "832f5b26afa5eb7fc42e273c2efefa407aac67b1a7869627dd7e6db744aecff1",
+      "parserExtraction": "extracted/36.json",
+      "parsedOccurrenceCount": 8,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 37,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "rawArtifact": "task-report-history-r1/raw/task-20-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-20-review.md",
+      "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "rawByteCount": 15003,
+      "retainedArtifact": "legacy-report-adapters-r1/37-task-20-review.md",
+      "retainedSha256": "c30a46ef381b3517a07bbb23d7128b2d54e3227c437dd5cec7f3576926c20fe5",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/37-interpretation.json",
+      "metadataSha256": "2acdbc4935e5c3e8ebed0e728dc95fda18acf4b8666e6852645708cb257b950e",
+      "parserExtraction": "extracted/37.json",
+      "parsedOccurrenceCount": 5,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "final-review"
+      }
+    },
+    {
+      "ordinal": 38,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+      "rawArtifact": "task-report-history-r1/raw/task-21-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-21-report.md",
+      "rawSha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+      "rawByteCount": 22585,
+      "retainedArtifact": "legacy-report-adapters-r1/38-task-21-report.md",
+      "retainedSha256": "8da2415b83833f00815d8eaba054927b29d7648e07d6dc1ff4da3bad5169b967",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/38-interpretation.json",
+      "metadataSha256": "336789a94ecf581e091e4c4b9f91723720c6edf2dcae63aa56d9eca32fff0ff9",
+      "parserExtraction": "extracted/38.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 39,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "rawArtifact": "task-report-history-r1/raw/task-21-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-21-review.md",
+      "rawSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+      "rawByteCount": 9145,
+      "retainedArtifact": "legacy-report-adapters-r1/39-task-21-review.md",
+      "retainedSha256": "d0a077e5b9be60a0ff951319a65b7bc2952b19ecc13c97bb1c053aa720a20145",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/39-interpretation.json",
+      "metadataSha256": "3d698b06ea9e2e4652bb43c8313e88b03e46bf7362fdeacaca201c56b227ea03",
+      "parserExtraction": "extracted/39.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 40,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+      "rawArtifact": "task-report-history-r1/raw/task-22-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-22-report.md",
+      "rawSha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+      "rawByteCount": 25598,
+      "retainedArtifact": "legacy-report-adapters-r1/40-task-22-report.md",
+      "retainedSha256": "c4d7f51ffe3357b02ebef804f40d3e2c77145f1a61b4f1eda528af76117991e8",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/40-interpretation.json",
+      "metadataSha256": "6daa16af85ad57ad681b4a73c0127679224b019a13725de918475e5bbf349193",
+      "parserExtraction": "extracted/40.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 41,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "rawArtifact": "task-report-history-r1/raw/task-22-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-22-review.md",
+      "rawSha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+      "rawByteCount": 10361,
+      "retainedArtifact": "legacy-report-adapters-r1/41-task-22-review.md",
+      "retainedSha256": "461f69d203fd686cb587acfe13ff3d872021b91c5e2424905a26abccc959c158",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/41-interpretation.json",
+      "metadataSha256": "8f1be7cf74ee092c75c81f60196466c391be3fa3f94e112327c547482e4ee359",
+      "parserExtraction": "extracted/41.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 42,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "rawArtifact": "task-report-history-r1/raw/task-23-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-23-review.md",
+      "rawSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+      "rawByteCount": 16469,
+      "retainedArtifact": "legacy-report-adapters-r1/42-task-23-review.md",
+      "retainedSha256": "6b946def5f12994e9fb18aadaaf8e00741d33b23a9f5fbc9343a88bd8ffbc95a",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/42-interpretation.json",
+      "metadataSha256": "29fec4094cecaa1cdffb7d67662b2d7e97313c3fd3338369cc1314ff602dad9d",
+      "parserExtraction": "extracted/42.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 43,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "rawArtifact": "task-report-history-r1/raw/task-24-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-24-report.md",
+      "rawSha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+      "rawByteCount": 10067,
+      "retainedArtifact": "legacy-report-adapters-r1/43-task-24-report.md",
+      "retainedSha256": "bec5094e8fbfc085ce1d6f0c6ccf072838ae675327c6df3f2b59886768f89c31",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/43-interpretation.json",
+      "metadataSha256": "df9a526741730aab873965a82e190843a401fee45d9b2df2b1358e13fd7665af",
+      "parserExtraction": "extracted/43.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 44,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawArtifact": "task-report-history-r1/raw/task-24-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-24-review.md",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawByteCount": 9804,
+      "retainedArtifact": "legacy-report-adapters-r1/44-task-24-review.md",
+      "retainedSha256": "eef00620623ed96283bd07f7b46d1c3a30bdcaae4ff08122d23a76e3bb84af49",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/44-interpretation.json",
+      "metadataSha256": "f4ed3ef996147f0818e2b0ac49afeecaca62b8abec53d426d5908b0657c7a59f",
+      "parserExtraction": "extracted/44.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 45,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+      "rawArtifact": "task-report-history-r1/raw/task-25-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-25-report.md",
+      "rawSha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+      "rawByteCount": 11553,
+      "retainedArtifact": "legacy-report-adapters-r1/45-task-25-report.md",
+      "retainedSha256": "e932b255f192cf95b022c6b374da036cfa25de45df50ffc05a1b44039e62e3ff",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/45-interpretation.json",
+      "metadataSha256": "21e5a790e53416644c209f831671b3a51d0c3d70e19f2ecae24030a5c17d75ba",
+      "parserExtraction": "extracted/45.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 46,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "rawArtifact": "task-report-history-r1/raw/task-25-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-25-review.md",
+      "rawSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+      "rawByteCount": 10824,
+      "retainedArtifact": "legacy-report-adapters-r1/46-task-25-review.md",
+      "retainedSha256": "0a7f06f192d8c294cb5dc4667e9b26102d222d939a9c4a1c496abef64c5df283",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/46-interpretation.json",
+      "metadataSha256": "2a5a23875d835a7101abea41225680575b58b4ad5f91028fac91cef629ac23c1",
+      "parserExtraction": "extracted/46.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 47,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "rawArtifact": "task-report-history-r1/raw/task-26-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-26-report.md",
+      "rawSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "rawByteCount": 12757,
+      "retainedArtifact": "legacy-report-adapters-r1/47-task-26-report.md",
+      "retainedSha256": "b4a1f322a1ce96cb87c26a220bbc57533922aaecad3418778b6109df0ad7ab54",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/47-interpretation.json",
+      "metadataSha256": "736e3cf384bd6307137c81e8e255a5b549ab0b7c6d10e0f2c3553d6e97f1750c",
+      "parserExtraction": "extracted/47.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      }
+    },
+    {
+      "ordinal": 48,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "rawArtifact": "task-report-history-r1/raw/task-26-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-26-review.md",
+      "rawSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "rawByteCount": 14808,
+      "retainedArtifact": "legacy-report-adapters-r1/48-task-26-review.md",
+      "retainedSha256": "97e493796b43014174673b6756d008ccafc2e315f6976fc966937e42c4ff8bcf",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/48-interpretation.json",
+      "metadataSha256": "070ae4ea5f4e248845243ce9ca7cbc0e72019adc62f050cfc7df2222ce440f6e",
+      "parserExtraction": "extracted/48.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 49,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "rawArtifact": "task-report-history-r1/raw/task-27-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-27-report.md",
+      "rawSha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "rawByteCount": 22592,
+      "retainedArtifact": "legacy-report-adapters-r1/49-task-27-report.md",
+      "retainedSha256": "471b6eaf23204fbb19d8049f4d2e6b31e23d8723559b787e4f1221b8992c7372",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/49-interpretation.json",
+      "metadataSha256": "ca0398040c4700bb85de2f2bf30bfbadae59f98ae2b21bd4c5a0e336eee189b3",
+      "parserExtraction": "extracted/49.json",
+      "parsedOccurrenceCount": 7,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      }
+    },
+    {
+      "ordinal": 50,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "rawArtifact": "task-report-history-r1/raw/task-27-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-27-review.md",
+      "rawSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "rawByteCount": 8933,
+      "retainedArtifact": "legacy-report-adapters-r1/50-task-27-review.md",
+      "retainedSha256": "1d2d0fd7763ebbfda8654817e07344e166cb858db9f0d9cdb873b814b7fc2d19",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/50-interpretation.json",
+      "metadataSha256": "c30e7932046f72e908e3803e1374592a842445e8d1303fd5d7ff95363168cecf",
+      "parserExtraction": "extracted/50.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 51,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+      "rawArtifact": "task-report-history-r1/raw/task-28-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-28-report.md",
+      "rawSha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+      "rawByteCount": 15006,
+      "retainedArtifact": "legacy-report-adapters-r1/51-task-28-report.md",
+      "retainedSha256": "947ae792010f92177d5be6b6b00b593c4abc77143d9ed369eb849964026cf43a",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/51-interpretation.json",
+      "metadataSha256": "3f0e62cb678eb151b6cbb8de8f4f15cb37723ed9efb06c7cd249c152dd57272a",
+      "parserExtraction": "extracted/51.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 52,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "rawArtifact": "task-report-history-r1/raw/task-28-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-28-review.md",
+      "rawSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+      "rawByteCount": 9736,
+      "retainedArtifact": "legacy-report-adapters-r1/52-task-28-review.md",
+      "retainedSha256": "a5f17e524a724c16b83cc32a1d8dddc9e12498d6befbb95d5f00cb3892966a90",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/52-interpretation.json",
+      "metadataSha256": "71e8279f3191053b0b1ced977d47a719bb1853f38d75b69bb90e09d51f7757a9",
+      "parserExtraction": "extracted/52.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 53,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "rawArtifact": "task-report-history-r1/raw/task-29-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-29-report.md",
+      "rawSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+      "rawByteCount": 24995,
+      "retainedArtifact": "legacy-report-adapters-r1/53-task-29-report.md",
+      "retainedSha256": "7e35aae7c85ee65f28851d6dddafc14cf21d8ff0f03847ab5fdd985ef226b3d6",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/53-interpretation.json",
+      "metadataSha256": "a0637026f66e777f3632d6520fc6ccde8f0e6269902a28873b28c6456ba95cbb",
+      "parserExtraction": "extracted/53.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      }
+    },
+    {
+      "ordinal": 54,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawArtifact": "task-report-history-r1/raw/task-29-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-29-review.md",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawByteCount": 27085,
+      "retainedArtifact": "legacy-report-adapters-r1/54-task-29-review.md",
+      "retainedSha256": "7ffbd5878c1e640a1790fbb053c2ed3c59d7c7fedd2f6c46f20baabef053e5ed",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/54-interpretation.json",
+      "metadataSha256": "8a9052107156ea798aa63286037d4bd9422c889cb19de07d6cc119161b064f7d",
+      "parserExtraction": "extracted/54.json",
+      "parsedOccurrenceCount": 4,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 55,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+      "rawArtifact": "task-report-history-r1/raw/task-3-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-3-report.md",
+      "rawSha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+      "rawByteCount": 8419,
+      "retainedArtifact": "legacy-report-adapters-r1/55-task-3-report.md",
+      "retainedSha256": "b910b3139e52fde641b3a3a6f37a13399b3100bfb803f245193126168a31cf21",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/55-interpretation.json",
+      "metadataSha256": "99d3f137821f2c8edba5e0748a9628f631277acc4e169c2d9ae6fa26a8d75cb3",
+      "parserExtraction": "extracted/55.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 56,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-3-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-3-review-seam.md",
+      "rawSha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+      "rawByteCount": 3347,
+      "retainedArtifact": "legacy-report-adapters-r1/56-task-3-review-seam.md",
+      "retainedSha256": "34a0b498c85ab91a353715710e235527990d2a9db12acefe28c5aefbbcb853ff",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/56-interpretation.json",
+      "metadataSha256": "51353838fc43405d67d966d6a4f832ec92d8873605247ddaa89e976d91f49d81",
+      "parserExtraction": "extracted/56.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 57,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "rawArtifact": "task-report-history-r1/raw/task-3-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-3-review.md",
+      "rawSha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+      "rawByteCount": 5261,
+      "retainedArtifact": "legacy-report-adapters-r1/57-task-3-review.md",
+      "retainedSha256": "183e6d0968d6bee0fffdd65b08a6c9234a61e24696f266ca878720b6309f4ea4",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/57-interpretation.json",
+      "metadataSha256": "0847dc46c7619019cafea58fda3978b3f7434a0f215f3c3d6c175b85ee1807c0",
+      "parserExtraction": "extracted/57.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 58,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "rawArtifact": "task-report-history-r1/raw/task-4-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-4-report.md",
+      "rawSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+      "rawByteCount": 18859,
+      "retainedArtifact": "legacy-report-adapters-r1/58-task-4-report.md",
+      "retainedSha256": "5784f5a045d3d5df606a84924ff1307e8e88f5ff92149bb51321152ea1dbc965",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/58-interpretation.json",
+      "metadataSha256": "0b4edffbaffee5641a0a8def4475b6c7f93a16df0c21db6717c0bdfc9123bf11",
+      "parserExtraction": "extracted/58.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 59,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-4-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-4-review-seam.md",
+      "rawSha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+      "rawByteCount": 3500,
+      "retainedArtifact": "legacy-report-adapters-r1/59-task-4-review-seam.md",
+      "retainedSha256": "b3ea113b7217cf95eef25affb84d1e4d39a521d5b980daf628b32afb4911fc86",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/59-interpretation.json",
+      "metadataSha256": "b6ee6a03a80d3b6c8e34de614ff66ac1826d6e987e22c16faa5d023eaac24ad3",
+      "parserExtraction": "extracted/59.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 60,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "rawArtifact": "task-report-history-r1/raw/task-4-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-4-review.md",
+      "rawSha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+      "rawByteCount": 4412,
+      "retainedArtifact": "legacy-report-adapters-r1/60-task-4-review.md",
+      "retainedSha256": "a21d50a56407156d475608852f415884934837bfb7a1749bc9255d82622445d5",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/60-interpretation.json",
+      "metadataSha256": "412ecc0e068a69d74338847032c827d5dd25d5a86e45c8c02ec7c8ba101e4d0a",
+      "parserExtraction": "extracted/60.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 61,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-seam-findings",
+      "rawArtifact": "task-report-history-r1/raw/task-4-seam-findings.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-4-seam-findings.md",
+      "rawSha256": "31884f5cbc94461343cbb07ad2525e89daa26848e34678ccf9c3a746f1cd301a",
+      "rawByteCount": 517,
+      "retainedArtifact": "legacy-report-adapters-r1/61-task-4-seam-findings.md",
+      "retainedSha256": "eb8d17d0540af547675c377d0e2fd27f3bb78a003ab7cfc01fedf9712b647c24",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/61-interpretation.json",
+      "metadataSha256": "c5349ac9a9757227db5013899bad93fb0433c9762a67cc1e5c384d8d307cd417",
+      "parserExtraction": "extracted/61.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "NEEDS_FIX",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 62,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "rawArtifact": "task-report-history-r1/raw/task-5-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-5-report.md",
+      "rawSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+      "rawByteCount": 11769,
+      "retainedArtifact": "legacy-report-adapters-r1/62-task-5-report.md",
+      "retainedSha256": "43819b058fc8b32a799917050a1e3061b3adbd6c1cc1f92d7f5d0284ab745fe4",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/62-interpretation.json",
+      "metadataSha256": "9050960b096268e6a21f57c82e44863480b7bc8c14109e682d7fb91f27490f60",
+      "parserExtraction": "extracted/62.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 63,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-5-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-5-review-seam.md",
+      "rawSha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+      "rawByteCount": 2628,
+      "retainedArtifact": "legacy-report-adapters-r1/63-task-5-review-seam.md",
+      "retainedSha256": "8216115edbfb9b16a653d50e51273557946f5bf354a72a039391764b6b737182",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/63-interpretation.json",
+      "metadataSha256": "83ea253471641a9b05607b78a3898858a3b55228f780824d8a86ad31bb0df36f",
+      "parserExtraction": "extracted/63.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 64,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+      "rawArtifact": "task-report-history-r1/raw/task-5-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-5-review.md",
+      "rawSha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+      "rawByteCount": 4536,
+      "retainedArtifact": "legacy-report-adapters-r1/64-task-5-review.md",
+      "retainedSha256": "74d187dc7868f30518d9d98744a960bb5c1ea68dd258d6dc08bb7f5cbc606440",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/64-interpretation.json",
+      "metadataSha256": "c1f4ba790050849933321228c8a710b1fcec16fcc5d63347e3897ca69ba96118",
+      "parserExtraction": "extracted/64.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 65,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "rawArtifact": "task-report-history-r1/raw/task-6-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-6-report.md",
+      "rawSha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+      "rawByteCount": 13960,
+      "retainedArtifact": "legacy-report-adapters-r1/65-task-6-report.md",
+      "retainedSha256": "9eba458c966142a47644aea43d7fd5372af14c633279e7d4ca6358f6ab4bf2f1",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/65-interpretation.json",
+      "metadataSha256": "40febb05dd638bd830e22c794e211833e538afc680ccc255ef9128b68e02ad18",
+      "parserExtraction": "extracted/65.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 66,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+      "rawArtifact": "task-report-history-r1/raw/task-6-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-6-review.md",
+      "rawSha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+      "rawByteCount": 5580,
+      "retainedArtifact": "legacy-report-adapters-r1/66-task-6-review.md",
+      "retainedSha256": "28ab2854867b38c013c7fd44d56dea72be6acdca3eb2c9d3f7404ad566fd0849",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/66-interpretation.json",
+      "metadataSha256": "177378e8d9e9aa04c3213576009ff41a440a4ac81699b93bbb948040f196ad9e",
+      "parserExtraction": "extracted/66.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 67,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "rawArtifact": "task-report-history-r1/raw/task-7-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-7-report.md",
+      "rawSha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+      "rawByteCount": 10563,
+      "retainedArtifact": "legacy-report-adapters-r1/67-task-7-report.md",
+      "retainedSha256": "c3ade7fb531749eb88987f4b3c2f3b6d31ce232e3394ba274931671211532e48",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/67-interpretation.json",
+      "metadataSha256": "bc8c37fd2a9c085561e77693c0ed13916f35bf9f8031050039de098105362d69",
+      "parserExtraction": "extracted/67.json",
+      "parsedOccurrenceCount": 3,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 68,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review-seam",
+      "rawArtifact": "task-report-history-r1/raw/task-7-review-seam.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-7-review-seam.md",
+      "rawSha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+      "rawByteCount": 2331,
+      "retainedArtifact": "legacy-report-adapters-r1/68-task-7-review-seam.md",
+      "retainedSha256": "25164ca2e8c9f666613cd033b3ef695c9fb553b58b867849d37eb65aa8d9b2bd",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/68-interpretation.json",
+      "metadataSha256": "c6c8eb2b9866ccf2595dfdf22d33948022267402b4f6aef45466798e11d5ff7d",
+      "parserExtraction": "extracted/68.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 69,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+      "rawArtifact": "task-report-history-r1/raw/task-7-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-7-review.md",
+      "rawSha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+      "rawByteCount": 3933,
+      "retainedArtifact": "legacy-report-adapters-r1/69-task-7-review.md",
+      "retainedSha256": "4feb29cd7d29589dfd3396ebd8cb10f9c5759e658f92e830b56e9668a2e42f71",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/69-interpretation.json",
+      "metadataSha256": "6a9ea7fc06be0e730826ece66074b916ca05399926f2cb64f3184b1809a3e6a7",
+      "parserExtraction": "extracted/69.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 70,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "rawArtifact": "task-report-history-r1/raw/task-8-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-8-report.md",
+      "rawSha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+      "rawByteCount": 11108,
+      "retainedArtifact": "legacy-report-adapters-r1/70-task-8-report.md",
+      "retainedSha256": "7933f12ebd88d63cd0d3406db6b2db42350e9970d2360a35320d723a59c21cb1",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/70-interpretation.json",
+      "metadataSha256": "977d3b973668dc1a6d41e64bc6b61f0319a166457b48072fe8c7fddbe71c9b4a",
+      "parserExtraction": "extracted/70.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 71,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "rawArtifact": "task-report-history-r1/raw/task-8-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-8-review.md",
+      "rawSha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+      "rawByteCount": 4482,
+      "retainedArtifact": "legacy-report-adapters-r1/71-task-8-review.md",
+      "retainedSha256": "ce8c77090bf701bdaadde2956d2ae1570a6b57c540e67e081d6799f14eb859d2",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/71-interpretation.json",
+      "metadataSha256": "ddbcb604db48687ed438095f1025dd25ae536bbd55cf87c4744f1ca1304166a1",
+      "parserExtraction": "extracted/71.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "CLEAN",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 72,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-report",
+      "rawArtifact": "task-report-history-r1/raw/task-9-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-9-report.md",
+      "rawSha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+      "rawByteCount": 10165,
+      "retainedArtifact": "legacy-report-adapters-r1/72-task-9-report.md",
+      "retainedSha256": "d9d22e2e8a44f52cefaaa108de3b3dc7185472c444e9a9ba0ee0b369b95fe058",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/72-interpretation.json",
+      "metadataSha256": "07c01040fbc1fcbb0ad024f1f5a8c15a41b68bf1b404a189065cdae9c3d77320",
+      "parserExtraction": "extracted/72.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 73,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+      "rawArtifact": "task-report-history-r1/raw/task-9-review.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-9-review.md",
+      "rawSha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+      "rawByteCount": 3083,
+      "retainedArtifact": "legacy-report-adapters-r1/73-task-9-review.md",
+      "retainedSha256": "49b63f88e7d6275461bddfd6516c90a7f045815fcfda115632833703307312a7",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/73-interpretation.json",
+      "metadataSha256": "427510e22a9f1a1f930261b24624081429f1cf925fdccbe69e5f7c882d0a08dc",
+      "parserExtraction": "extracted/73.json",
+      "parsedOccurrenceCount": 1,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      }
+    },
+    {
+      "ordinal": 74,
+      "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+      "rawArtifact": "2026-10-16-workflow-reliability-roast-pr-1.md",
+      "rawCopy": "raw/2026-10-16-workflow-reliability-roast-pr-1.md",
+      "rawSha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+      "rawByteCount": 11824,
+      "retainedArtifact": "legacy-report-adapters-r1/74-2026-10-16-workflow-reliability-roast-pr-1.md",
+      "retainedSha256": "820f1185bc6dd01411b4f0f99674e1c087495f355c1df393d7267d2384f55c7c",
+      "mode": "interpreted-legacy-adapter",
+      "metadata": "metadata/74-interpretation.json",
+      "metadataSha256": "7d3f8c80c71f9017877eb0ea7b5a43202cef3ac6a0e1419eb8a7e209a7ec70ca",
+      "parserExtraction": "extracted/74.json",
+      "parsedOccurrenceCount": 9,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "Blocking (7 confirmed)",
+        "kind": "roast"
+      }
+    },
+    {
+      "ordinal": 75,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "rawArtifact": "task-report-history-r1/raw/task-1-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-1-report.md",
+      "rawSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "rawByteCount": 10857,
+      "retainedArtifact": "task-report-history-r1/raw/task-1-report.md",
+      "retainedSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "mode": "original-strict-bytes",
+      "metadata": "metadata/75-interpretation.json",
+      "metadataSha256": "f6fad582931cfae0c2e71787772d7012d5a77d6d4f744c1a977b2ca5100549e7",
+      "parserExtraction": "extracted/75.json",
+      "parsedOccurrenceCount": 2,
+      "supplementalQualificationCount": 4,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 76,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "rawArtifact": "task-report-history-r1/raw/task-17-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-17-report.md",
+      "rawSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "rawByteCount": 18094,
+      "retainedArtifact": "task-report-history-r1/raw/task-17-report.md",
+      "retainedSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "mode": "original-strict-bytes",
+      "metadata": "metadata/76-interpretation.json",
+      "metadataSha256": "7f8db0931b9ea4a68510ceb0e29a16a9491371894cea3ba942275cb20ffb5500",
+      "parserExtraction": "extracted/76.json",
+      "parsedOccurrenceCount": 7,
+      "supplementalQualificationCount": 4,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 77,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "rawArtifact": "task-report-history-r1/raw/task-19-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-19-report.md",
+      "rawSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "rawByteCount": 47192,
+      "retainedArtifact": "task-report-history-r1/raw/task-19-report.md",
+      "retainedSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "mode": "original-strict-bytes",
+      "metadata": "metadata/77-interpretation.json",
+      "metadataSha256": "100935d8c867067ddf430df4fadabd99d68b7c836549b3575450c53e6d73123e",
+      "parserExtraction": "extracted/77.json",
+      "parsedOccurrenceCount": 4,
+      "supplementalQualificationCount": 14,
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 78,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "rawArtifact": "task-report-history-r1/raw/task-23-report.md",
+      "rawCopy": "raw/task-report-history-r1/raw/task-23-report.md",
+      "rawSha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "rawByteCount": 53038,
+      "retainedArtifact": "task-report-history-r1/raw/task-23-report.md",
+      "retainedSha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "mode": "original-strict-bytes",
+      "metadata": "metadata/78-interpretation.json",
+      "metadataSha256": "dbce40c13bcdf5d35b5d7ef862e98047503ad53f73559ff3d86f0bf74625805c",
+      "parserExtraction": "extracted/78.json",
+      "parsedOccurrenceCount": 7,
+      "supplementalQualificationCount": 7,
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      }
+    },
+    {
+      "ordinal": 79,
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "rawArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+      "rawCopy": "raw/2026-10-16-workflow-reliability-roast-design-1.md",
+      "rawSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+      "rawByteCount": 4873,
+      "retainedArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+      "retainedSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+      "mode": "original-strict-bytes",
+      "metadata": "metadata/79-interpretation.json",
+      "metadataSha256": "81676d4c7664d337909e6581bdbce28f4a187c66c3b6ef76134dd1c4024f14a9",
+      "parserExtraction": "extracted/79.json",
+      "parsedOccurrenceCount": 4,
+      "supplementalQualificationCount": 0,
+      "originalCompactRecognition": {
+        "verdict": "Should-fix (1 confirmed)",
+        "kind": "roast"
+      }
+    }
+  ],
+  "counts": {
+    "pending-obligation": 86,
+    "interpretedAdapters": 74,
+    "historical-defect-assertion": 24,
+    "scope-or-coverage-qualification": 45,
+    "scopedEmptyAdapters": 7,
+    "review-finding": 24,
+    "structured-finding-appearance": 4,
+    "structured-pending-obligation-appearance": 2,
+    "structured-concern-appearance": 2,
+    "historically-rejected-claim": 2,
+    "strictSources": 5,
+    "strictOccurrences": 24
+  },
+  "registrationCount": 0,
+  "appliedLinks": 0,
+  "appliedDispositions": 0
+}

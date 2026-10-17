@@ -1,0 +1,65 @@
+{
+  "sourceHead": "1ebc6affde90d4de63bf3dfc7aede648c825a592",
+  "sourceTree": "58809cb2af3fff21ca7aa85411a560416150a7ab",
+  "measurementValid": true,
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "toolVersions": {
+    "node": "v26.9.0",
+    "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "planPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/plan.json",
+  "planSha256": "e8f053372ab1a317366ccecf56b96c5d1c5b88b619d4d84df88878988d638a3c",
+  "runnerSha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16",
+  "commandCount": 1,
+  "commandGroupsPassed": 1,
+  "commandGroupsFailed": 0,
+  "commandGroupsErrors": 0,
+  "commandGroupsSkipped": 0,
+  "cases": [
+    {
+      "id": "01",
+      "planCommand": "bash tests/check.sh",
+      "actualArgv": [
+        "/bin/bash",
+        "tests/check.sh"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:57Z",
+      "endUtc": "2026-10-17T21:39:57Z",
+      "durationSeconds": 0.005,
+      "exitCode": 0,
+      "status": "passed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "1ebc6affde90d4de63bf3dfc7aede648c825a592",
+      "sourceTree": "58809cb2af3fff21ca7aa85411a560416150a7ab",
+      "runner": "/bin/bash",
+      "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence/case-01/stderr.log",
+      "stdoutBytes": 10,
+      "stdoutSha256": "bc796dfb2a7f511b709ebcf6b992fadabe9b969f74c9188ddce6dd9b16dae26d",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "clonePath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/clone",
+  "finalSourceStatus": "",
+  "finalSourceHead": "1ebc6affde90d4de63bf3dfc7aede648c825a592",
+  "finalSourceTree": "58809cb2af3fff21ca7aa85411a560416150a7ab",
+  "resourceRetention": "Clone and per-case roots retained; separate scoped inspection pending.",
+  "limitations": [
+    "Actual test execution; canned external agents in fixtures remain simulations.",
+    "No hosted Workflow, provider-wide reliability or global process-absence claim."
+  ]
+}

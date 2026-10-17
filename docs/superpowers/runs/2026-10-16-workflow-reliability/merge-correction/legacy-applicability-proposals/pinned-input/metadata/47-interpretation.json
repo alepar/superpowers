@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "ordinal": 47,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+  "originalArtifact": "task-report-history-r1/raw/task-26-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-26-report.md",
+  "rawSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+  "rawByteCount": 12757,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      12757
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/19",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/47-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "unknown"
+  },
+  "originalVerdictAndStatusFields": [],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/19/semanticPassages/0",
+      "roles": [
+        "deferred-coverage-obligation",
+        "operational-refusal-qualification"
+      ],
+      "span": [
+        12057,
+        12757
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "text": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 159,
+      "lineEnd": 159,
+      "byteStart": 12057,
+      "byteEnd": 12757,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "rawSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "rawSection": "Concerns and pending caller work",
+      "rawSectionOrdinal": 9,
+      "originalHierarchy": [
+        "Task 26 — immutable invocation source binding",
+        "Concerns and pending caller work"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation",
+        "operational-refusal-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+        "section": "Concerns and pending caller work",
+        "sectionOrdinal": 9,
+        "positionInSection": 1,
+        "rawSection": "Concerns and pending caller work",
+        "rawPositionInSection": 1,
+        "byteStart": 12057,
+        "byteEnd": 12757,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 12057,
+      "byteEnd": 12757,
+      "roles": [
+        "deferred-coverage-obligation",
+        "operational-refusal-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/19/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": false,
+    "scope": "No whole-source empty finding assertion supported; retain actual concern/finding/deferred obligations.",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000012057",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation",
+        "operational-refusal-qualification"
+      ],
+      "rawByteStart": 12057,
+      "rawByteEnd": 12757,
+      "rawLineStart": 159,
+      "rawLineEnd": 159,
+      "originalSections": [
+        {
+          "section": "Concerns and pending caller work",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns and pending caller work\n",
+          "hierarchy": [
+            "Task 26 — immutable invocation source binding",
+            "Concerns and pending caller work"
+          ],
+          "byteStart": 12020,
+          "byteEnd": 12757
+        }
+      ],
+      "rawText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/19/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/47-task-26-report.md",
+  "retainedSha256": "b4a1f322a1ce96cb87c26a220bbc57533922aaecad3418778b6109df0ad7ab54"
+}

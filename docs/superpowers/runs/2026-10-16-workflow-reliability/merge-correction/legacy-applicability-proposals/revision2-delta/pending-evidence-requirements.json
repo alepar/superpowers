@@ -1,0 +1,60 @@
+[
+  {
+    "id": "delta15-blocker",
+    "sourceRef": {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+      "position": 1,
+      "key": "Resolved `[rebase-conflict]` by running exactly:",
+      "text": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge."
+    },
+    "status": "unresolved current tracker/bookkeeping",
+    "requirement": "Preserve original super-plan-8fn closure owner and verified-merge condition; actual current parent reconciliation required if still pending. This reviewer made no tracker observation/write."
+  },
+  {
+    "id": "delta1-composition",
+    "sourceRef": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "section": "Concerns — adapter/structured-concern-appearance/raw-section-6/raw-byte-000009651/json-pointer-/concerns/0",
+      "position": 1,
+      "key": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.",
+      "text": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines."
+    },
+    "status": "current required checks pending",
+    "requirement": "Actual final selector/containment composition suite and independent review remain pending; Task4 underway source is not substituted for frozen583f2486 inspection."
+  },
+  {
+    "id": "delta2-caller-gates",
+    "sourceRef": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+      "position": 1,
+      "key": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+      "text": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed."
+    },
+    "status": "current required checks pending",
+    "requirement": "Caller changed-instruction assessment, whole-epic independent review, final suite and existing human/root decision remain required; no historical graph reconstruction or new hosted requirement invented."
+  },
+  {
+    "id": "delta13-current-population",
+    "sourceRef": {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+      "position": 1,
+      "key": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.",
+      "text": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation."
+    },
+    "status": "historical qualification nonblocking; current accounting pending",
+    "requirement": "Use actual current source population and supported partial metrics under R9/R12/R13. Historical fixture task-report absence is not zero or a claim about current population."
+  },
+  {
+    "id": "historical-verification-limit",
+    "status": "preserved limitation",
+    "requirement": "Historical original reports retain actual source-bound command/results, including RED failures. This task executed no tests or agent trials. Static code/fixture survival is not current final-tree proof; broader or later defects remain open."
+  },
+  {
+    "id": "parent-adoption",
+    "status": "proposal-only",
+    "requirement": "Parent must review the exact per-ref support and corrected adapter semantic verdict before adoption/registration. No semantic links, disposition inheritance, source merges or current root acceptance were applied."
+  }
+]

@@ -1,0 +1,280 @@
+{
+  "version": 1,
+  "ordinal": 59,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+  "originalArtifact": "task-report-history-r1/raw/task-4-review-seam.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-4-review-seam.md",
+  "rawSha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+  "rawByteCount": 3500,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        24
+      ]
+    ],
+    "byteScope": [
+      0,
+      3500
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/4",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/59-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 2,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/4/passages/0",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        35,
+        49
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Headerless finding:none is the scoped seam-review declaration."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/4/passages/1",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        50,
+        249
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Review restricted to four declared overlaps and named resolution."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/4/passages/2",
+      "roles": [
+        "pure_context"
+      ],
+      "span": [
+        991,
+        2317
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Compatibility findings are positive checks, not defects."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/4/passages/3",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        3427,
+        3500
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No tests rerun."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Headerless finding:none is the scoped seam-review declaration.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 35,
+      "byteEnd": 49,
+      "rawText": "finding: none\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Review restricted to four declared overlaps and named resolution.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 50,
+      "byteEnd": 249,
+      "rawText": "Reviewed resolution 2826a7d56d1537aa0ff21e53b915ec07eebf0327 onto 522c20bc70d234b1f718445902210186a3ecb389; HEAD verified equal to the resolution. Scope was the four declared overlapping files only.\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "pure_context",
+      "interpretation": "Compatibility findings are positive checks, not defects.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 12,
+      "lineEnd": 17,
+      "byteStart": 991,
+      "byteEnd": 2317,
+      "rawText": "Compatibility findings:\n- coordinator-subagents.md retains Finish cleanup/resource reporting obligations and adds recovery ledger records independently.\n- coordinator-workflow.md retains cleanup exit 0/3/4 meanings, resource retention, and stopped/survived/unknown/kept arrays; recovery obligations and append-only fix history remain independent of terminal delivery buckets.\n- coordinator.js retains the sibling cleanupOutcomeRule, cleanup prompts, merged cleanup process facts, unavailable-inspection handling and worktreesKept/processSweep return fields. The conflict resolution adds recovery to that same return object without dropping cleanup facts. Recovery clear writes at Finish drain the existing ledger writer before the process sweep/return.\n- Stable final review capture remains intact: read-ledger:finish captures verified base/head once, finalSource validates them, and final assembly/single/cluster/seam review consumers share those captured commits. Recovery writes do not recapture mutable branch tips or change consumer routing.\n- replay-harness.mjs retains sibling cleanup scenarios and assertions, including all four process arrays and unavailable inspection. Recovery additions do not alter the cleanup expectations or captured-review fixture fields. No sibling test became vacuous through these changes.\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "No tests rerun.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 3427,
+      "byteEnd": 3500,
+      "rawText": "No tests rerun. No source, branch, tracker or Herdr mutations performed.\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 3427,
+      "byteEnd": 3500,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/4/passages/3"
+      ],
+      "interpretation": "No tests rerun.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000003427",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage_limit"
+      ],
+      "rawByteStart": 3427,
+      "rawByteEnd": 3500,
+      "rawLineStart": 24,
+      "rawLineEnd": 24,
+      "originalSections": [
+        {
+          "section": null,
+          "sectionOrdinal": 0,
+          "headingRaw": null,
+          "hierarchy": [],
+          "byteStart": 0,
+          "byteEnd": 3500
+        }
+      ],
+      "rawText": "No tests rerun. No source, branch, tracker or Herdr mutations performed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No tests rerun. No source, branch, tracker or Herdr mutations performed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/4/passages/3"
+      ],
+      "interpretation": "No tests rerun."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/59-task-4-review-seam.md",
+  "retainedSha256": "b3ea113b7217cf95eef25affb84d1e4d39a521d5b980daf628b32afb4911fc86"
+}

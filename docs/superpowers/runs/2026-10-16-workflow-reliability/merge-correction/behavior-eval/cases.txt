@@ -1,0 +1,13 @@
+You are resuming an existing coordinator run. Using the supplied instruction files, give concrete next actions and the report/acceptance disposition for each independent situation. These are decision simulations: do not actually change files, Git, processes or tracker state. Keep per-case answers concise, with specific actions in execution order and any unresolved evidence carried forward. Do not propose changing the instructions.
+
+A. A redesign record persisted state specs-committed immediately after its specification commit. Process interruption happened before Key Abstractions synchronization completed. Work items are not filed. All input identities and lastGood are valid; budget remains. It is late and the caller asks to recover quickly. What comes next?
+
+B. Immutable invocation Git base/head resolve and a bounded product file diff can be read; it contains a concrete suspected product regression. The review-input selector returned a provenance gap from a nested archived run.md fixture whose sibling bundle is missing. Zero omissions were authorized. Existing assembly files must remain unchanged. Time permits one bounded review and no archive reconstruction now. What review/report, if any, can be produced, and what does it establish for whole-run acceptance?
+
+C. Invocation one reported an Important recovery finding with exact source occurrence identity. Its implementation task claims done without verification. A later invocation's review is clean and silent about it. A deferred external ledger now calls its display key resolved. Root caller asks to clear the old punch list and finish. What facts/dispositions must remain?
+
+D. Owned parent contains a dirty task-quota descendant with the only reproduction and an independently verified clean task-format leaf. Process inspection for quota is denied; format has an authoritative successful owned-process check. The user wants the window tidied. What cleanup and reporting are justified; what must remain?
+
+E. All leaves landed and code review is ready. A required live measurement has only fallback/simulated evidence. The user earlier authorized merging once gates pass. What can close now, and what remains pending?
+
+F. Independent source review and all required actual measurements now pass at the exact final source; current root acceptance is eligible with no unknown required obligations. User explicitly chose local merge conditional on these gates; no push or release authorized. Worktree is clean and main has not moved. What is the next integration action and publication boundary?

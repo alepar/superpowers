@@ -1,0 +1,3 @@
+#!/bin/bash
+if [ "$PROBE_CASE" = denied ]; then echo 'fatal: worktree inspection denied' >&2; exit 128; fi
+printf 'worktree %s\n\nworktree %s/.worktrees/child\n\n' "$PROBE_ROOT" "$PROBE_ROOT"

@@ -1,0 +1,1360 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-12-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-12-report.md",
+  "rawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+  "rawByteCount": 22639,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-report.md",
+    "durablePath": "task-report-history-r1/raw/task-12-report.md",
+    "sha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+    "byteCount": 22639,
+    "logicalRole": "report",
+    "ordinal": 12,
+    "logicalTaskId": "super-plan-ufz.13",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-12-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    },
+    {
+      "line": 157,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "super-plan-ufz.13 — implementation evidence",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# super-plan-ufz.13 — implementation evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence"
+      ],
+      "lineStart": 1,
+      "lineEnd": 12,
+      "byteStart": 0,
+      "byteEnd": 529,
+      "bodyLineStart": 2,
+      "rawText": "# super-plan-ufz.13 — implementation evidence\n\nStatus: IMPLEMENTED\n\n- Branch: `task-super-plan-ufz.13`\n- Base: `caf187cef8d1769da6184de42332a31bc7e30dcb`\n- Head: `9610071921c440aa1debff4b873525b42cf3f217`\n- Tested tracked tree: `a9b037fe8c354ce529bdfd79413a6ccfa8df6fa7`\n- Stacked: false\n- Commit: `fix(super-code): complete reviewed verification-only tasks without commits`\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13`\n\n",
+      "bodyRawText": "\nStatus: IMPLEMENTED\n\n- Branch: `task-super-plan-ufz.13`\n- Base: `caf187cef8d1769da6184de42332a31bc7e30dcb`\n- Head: `9610071921c440aa1debff4b873525b42cf3f217`\n- Tested tracked tree: `a9b037fe8c354ce529bdfd79413a6ccfa8df6fa7`\n- Stacked: false\n- Commit: `fix(super-code): complete reviewed verification-only tasks without commits`\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13`\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 49,
+          "byteEnd": 69
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Branch: `task-super-plan-ufz.13`\n",
+          "text": "Branch: `task-super-plan-ufz.13`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 70,
+          "byteEnd": 105
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Base: `caf187cef8d1769da6184de42332a31bc7e30dcb`\n",
+          "text": "Base: `caf187cef8d1769da6184de42332a31bc7e30dcb`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 105,
+          "byteEnd": 156
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Head: `9610071921c440aa1debff4b873525b42cf3f217`\n",
+          "text": "Head: `9610071921c440aa1debff4b873525b42cf3f217`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 156,
+          "byteEnd": 207
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Tested tracked tree: `a9b037fe8c354ce529bdfd79413a6ccfa8df6fa7`\n",
+          "text": "Tested tracked tree: `a9b037fe8c354ce529bdfd79413a6ccfa8df6fa7`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 207,
+          "byteEnd": 273
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Stacked: false\n",
+          "text": "Stacked: false",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 273,
+          "byteEnd": 290
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Commit: `fix(super-code): complete reviewed verification-only tasks without commits`\n",
+          "text": "Commit: `fix(super-code): complete reviewed verification-only tasks without commits`",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 290,
+          "byteEnd": 377
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13`\n",
+          "text": "Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13`",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 377,
+          "byteEnd": 528
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Implementation"
+      ],
+      "lineStart": 13,
+      "lineEnd": 24,
+      "byteStart": 529,
+      "byteEnd": 3596,
+      "bodyLineStart": 14,
+      "rawText": "## Implementation\n\nAn IMPLEMENTED outcome may explicitly select `completionKind: verification-only`, with unchanged full base/head commits, no delivered files, and a tested sourceTree plus the existing .5 evidence arrays. Implementation is the default and retains its commit nudge, delivered-change review and nonempty review-package guards. The implementer template selects the completion kind before its commit section; it no longer unconditionally demands a commit for a no-change task.\n\nThe task reviewer has a conditional evidence-review path before package construction. It resolves the captured commits/tree, checks clean source, reads current bead/comments/brief to confirm no-change acceptance, and reviews retained command/configuration/outcome/kind coverage without rerunning tests. An implementation requirement rejects the claim. CLEAN must independently confirm verification-only intent and matching commits/tree and preserve the original reviewed measurements. The coordinator validates these identities and exact records, including every required live check from both producers. Missing, stale, failed, unavailable, fallback-for-live, null, INVALID or rejected review cannot complete. A verification rejection never takes an unreviewed fix-to-merge path; tracker closure alone cannot replace rejected acceptance.\n\nAccepted work writes its compact basis through the existing pending-closure Recovery record and waits for appended:true before tracker closure. The basis includes source, unchanged range, retained check records, report/review references and independent review status. If persistence is unavailable, closure is withheld. It then uses existing closure/status confirmation with a verification-specific close prompt that checks the captured commit/tree instead of claiming a Git landing. Cleanup output remains its actual outcome, including unknown or kept resources. Confirmed task closure completes without a merge, commit nudge, early implementation split or new task landing. Pending closure resumes at closure only. Deferred minors retain their existing class, fingerprint and review-source references. Review/seam/check fix history and root/run acceptance are unchanged.\n\nOrdinary dispatch uses `review --result-file <implementer-result.json>` to carry the same explicit intent and source/evidence into the shared builder. `verification-close --result-file <accepted-basis.json>` validates the accepted record and generates the shared closure prompt. The ordinary reference specifies comparison of both original replies before constructing that accepted basis.\n\nThe coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.\n\n",
+      "bodyRawText": "\nAn IMPLEMENTED outcome may explicitly select `completionKind: verification-only`, with unchanged full base/head commits, no delivered files, and a tested sourceTree plus the existing .5 evidence arrays. Implementation is the default and retains its commit nudge, delivered-change review and nonempty review-package guards. The implementer template selects the completion kind before its commit section; it no longer unconditionally demands a commit for a no-change task.\n\nThe task reviewer has a conditional evidence-review path before package construction. It resolves the captured commits/tree, checks clean source, reads current bead/comments/brief to confirm no-change acceptance, and reviews retained command/configuration/outcome/kind coverage without rerunning tests. An implementation requirement rejects the claim. CLEAN must independently confirm verification-only intent and matching commits/tree and preserve the original reviewed measurements. The coordinator validates these identities and exact records, including every required live check from both producers. Missing, stale, failed, unavailable, fallback-for-live, null, INVALID or rejected review cannot complete. A verification rejection never takes an unreviewed fix-to-merge path; tracker closure alone cannot replace rejected acceptance.\n\nAccepted work writes its compact basis through the existing pending-closure Recovery record and waits for appended:true before tracker closure. The basis includes source, unchanged range, retained check records, report/review references and independent review status. If persistence is unavailable, closure is withheld. It then uses existing closure/status confirmation with a verification-specific close prompt that checks the captured commit/tree instead of claiming a Git landing. Cleanup output remains its actual outcome, including unknown or kept resources. Confirmed task closure completes without a merge, commit nudge, early implementation split or new task landing. Pending closure resumes at closure only. Deferred minors retain their existing class, fingerprint and review-source references. Review/seam/check fix history and root/run acceptance are unchanged.\n\nOrdinary dispatch uses `review --result-file <implementer-result.json>` to carry the same explicit intent and source/evidence into the shared builder. `verification-close --result-file <accepted-basis.json>` validates the accepted record and generates the shared closure prompt. The ordinary reference specifies comparison of both original replies before constructing that accepted basis.\n\nThe coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "An IMPLEMENTED outcome may explicitly select `completionKind: verification-only`, with unchanged full base/head commits, no delivered files, and a tested sourceTree plus the existing .5 evidence arrays. Implementation is the default and retains its commit nudge, delivered-change review and nonempty review-package guards. The implementer template selects the completion kind before its commit section; it no longer unconditionally demands a commit for a no-change task.\n",
+          "text": "An IMPLEMENTED outcome may explicitly select `completionKind: verification-only`, with unchanged full base/head commits, no delivered files, and a tested sourceTree plus the existing .5 evidence arrays. Implementation is the default and retains its commit nudge, delivered-change review and nonempty review-package guards. The implementer template selects the completion kind before its commit section; it no longer unconditionally demands a commit for a no-change task.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 548,
+          "byteEnd": 1019
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The task reviewer has a conditional evidence-review path before package construction. It resolves the captured commits/tree, checks clean source, reads current bead/comments/brief to confirm no-change acceptance, and reviews retained command/configuration/outcome/kind coverage without rerunning tests. An implementation requirement rejects the claim. CLEAN must independently confirm verification-only intent and matching commits/tree and preserve the original reviewed measurements. The coordinator validates these identities and exact records, including every required live check from both producers. Missing, stale, failed, unavailable, fallback-for-live, null, INVALID or rejected review cannot complete. A verification rejection never takes an unreviewed fix-to-merge path; tracker closure alone cannot replace rejected acceptance.\n",
+          "text": "The task reviewer has a conditional evidence-review path before package construction. It resolves the captured commits/tree, checks clean source, reads current bead/comments/brief to confirm no-change acceptance, and reviews retained command/configuration/outcome/kind coverage without rerunning tests. An implementation requirement rejects the claim. CLEAN must independently confirm verification-only intent and matching commits/tree and preserve the original reviewed measurements. The coordinator validates these identities and exact records, including every required live check from both producers. Missing, stale, failed, unavailable, fallback-for-live, null, INVALID or rejected review cannot complete. A verification rejection never takes an unreviewed fix-to-merge path; tracker closure alone cannot replace rejected acceptance.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1020,
+          "byteEnd": 1858
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Accepted work writes its compact basis through the existing pending-closure Recovery record and waits for appended:true before tracker closure. The basis includes source, unchanged range, retained check records, report/review references and independent review status. If persistence is unavailable, closure is withheld. It then uses existing closure/status confirmation with a verification-specific close prompt that checks the captured commit/tree instead of claiming a Git landing. Cleanup output remains its actual outcome, including unknown or kept resources. Confirmed task closure completes without a merge, commit nudge, early implementation split or new task landing. Pending closure resumes at closure only. Deferred minors retain their existing class, fingerprint and review-source references. Review/seam/check fix history and root/run acceptance are unchanged.\n",
+          "text": "Accepted work writes its compact basis through the existing pending-closure Recovery record and waits for appended:true before tracker closure. The basis includes source, unchanged range, retained check records, report/review references and independent review status. If persistence is unavailable, closure is withheld. It then uses existing closure/status confirmation with a verification-specific close prompt that checks the captured commit/tree instead of claiming a Git landing. Cleanup output remains its actual outcome, including unknown or kept resources. Confirmed task closure completes without a merge, commit nudge, early implementation split or new task landing. Pending closure resumes at closure only. Deferred minors retain their existing class, fingerprint and review-source references. Review/seam/check fix history and root/run acceptance are unchanged.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1859,
+          "byteEnd": 2732
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Ordinary dispatch uses `review --result-file <implementer-result.json>` to carry the same explicit intent and source/evidence into the shared builder. `verification-close --result-file <accepted-basis.json>` validates the accepted record and generates the shared closure prompt. The ordinary reference specifies comparison of both original replies before constructing that accepted basis.\n",
+          "text": "Ordinary dispatch uses `review --result-file <implementer-result.json>` to carry the same explicit intent and source/evidence into the shared builder. `verification-close --result-file <accepted-basis.json>` validates the accepted record and generates the shared closure prompt. The ordinary reference specifies comparison of both original replies before constructing that accepted basis.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 2733,
+          "byteEnd": 3122
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.\n",
+          "text": "The coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 3123,
+          "byteEnd": 3595
+        }
+      ]
+    },
+    {
+      "section": "Final verification",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Final verification\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Final verification"
+      ],
+      "lineStart": 25,
+      "lineEnd": 77,
+      "byteStart": 3596,
+      "byteEnd": 8756,
+      "bodyLineStart": 26,
+      "rawText": "## Final verification\n\nNo package setup/install is declared for these native Node/Bash checks. Node resolved at `/opt/homebrew/bin/node`; require.resolve located both tests/super-code/replay-harness.mjs and skills/super-code/scripts/dispatch-text.mjs inside this assigned worktree. The package under test and its runners came from this worktree.\n\nThe exact final commands were:\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/digest-final.txt 2>&1\n```\n\nAll three exited 0. Relevant output:\n\n```text\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] verification creates no artificial commit, merge, unreviewed fix or early split\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] resume reuses reviewed verification with unchanged source\n[PASS] verification completion does not increment task landings or invalidate ledger accounting\n[PASS] missing evidence cannot complete unchanged verification\n[PASS] stale source cannot complete unchanged verification\n[PASS] fallback required live cannot complete unchanged verification\n[PASS] unavailable required check cannot complete unchanged verification\n[PASS] changed verification cannot complete unchanged verification\n[PASS] changed files cannot complete unchanged verification\n[PASS] wrong required configuration cannot complete unchanged verification\n[PASS] missing reviewer source cannot complete unchanged verification\n[PASS] failed required check cannot complete unchanged verification\n[PASS] unconfirmed intent cannot complete unchanged verification\n[PASS] implementation bead cannot complete unchanged verification\n[PASS] null review cannot complete unchanged verification\n[PASS] invalid review cannot complete unchanged verification\n[PASS] rejected review cannot complete unchanged verification\n[PASS] tracker closure alone cannot replace rejected verification acceptance\n[PASS] unavailable durable verification write prevents tracker closure\n[PASS] a reviewer cannot switch implementation delivery to no-change completion\n[PASS] confirmed closure retains unverified cleanup as its actual outcome\n[PASS] oversized basis preserves cap/source pointer and verification completion discriminator\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] ready reentry with missing basis obtains independent verification review before closure\n[PASS] unavailable closure preserves verified basis and remains unconfirmed\n[PASS] pending verification resumes closure only without repeating reviewed work\n2062 passed, 0 failed\n\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n\nExisting missing-commit and implementation empty-range INVALID assertions remain unchanged and passed. The run-digest suite was added to the required two because it is the caller of ledger-digest; the replay also invokes the actual reducer for ordinary and oversized Recovery roundtrips. Source identity and final source review assertions remain green. git diff --check returned 0. The final tests exercised the tracked bytes committed at head; the subsequent rebase reported the task branch already up to date, and git status --short was empty.\n\nThese are deterministic fixture results. Replay's Workflow/agent replies are simulated, including the live-sim-labelled scenarios; they are not a fresh-agent behavior evaluation. The dispatch and digest suites run actual local commands against fixture state. No required fresh-agent live evaluation is relabeled passed here.\n\n",
+      "bodyRawText": "\nNo package setup/install is declared for these native Node/Bash checks. Node resolved at `/opt/homebrew/bin/node`; require.resolve located both tests/super-code/replay-harness.mjs and skills/super-code/scripts/dispatch-text.mjs inside this assigned worktree. The package under test and its runners came from this worktree.\n\nThe exact final commands were:\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/digest-final.txt 2>&1\n```\n\nAll three exited 0. Relevant output:\n\n```text\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] verification creates no artificial commit, merge, unreviewed fix or early split\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] resume reuses reviewed verification with unchanged source\n[PASS] verification completion does not increment task landings or invalidate ledger accounting\n[PASS] missing evidence cannot complete unchanged verification\n[PASS] stale source cannot complete unchanged verification\n[PASS] fallback required live cannot complete unchanged verification\n[PASS] unavailable required check cannot complete unchanged verification\n[PASS] changed verification cannot complete unchanged verification\n[PASS] changed files cannot complete unchanged verification\n[PASS] wrong required configuration cannot complete unchanged verification\n[PASS] missing reviewer source cannot complete unchanged verification\n[PASS] failed required check cannot complete unchanged verification\n[PASS] unconfirmed intent cannot complete unchanged verification\n[PASS] implementation bead cannot complete unchanged verification\n[PASS] null review cannot complete unchanged verification\n[PASS] invalid review cannot complete unchanged verification\n[PASS] rejected review cannot complete unchanged verification\n[PASS] tracker closure alone cannot replace rejected verification acceptance\n[PASS] unavailable durable verification write prevents tracker closure\n[PASS] a reviewer cannot switch implementation delivery to no-change completion\n[PASS] confirmed closure retains unverified cleanup as its actual outcome\n[PASS] oversized basis preserves cap/source pointer and verification completion discriminator\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] ready reentry with missing basis obtains independent verification review before closure\n[PASS] unavailable closure preserves verified basis and remains unconfirmed\n[PASS] pending verification resumes closure only without repeating reviewed work\n2062 passed, 0 failed\n\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n\nExisting missing-commit and implementation empty-range INVALID assertions remain unchanged and passed. The run-digest suite was added to the required two because it is the caller of ledger-digest; the replay also invokes the actual reducer for ordinary and oversized Recovery roundtrips. Source identity and final source review assertions remain green. git diff --check returned 0. The final tests exercised the tracked bytes committed at head; the subsequent rebase reported the task branch already up to date, and git status --short was empty.\n\nThese are deterministic fixture results. Replay's Workflow/agent replies are simulated, including the live-sim-labelled scenarios; they are not a fresh-agent behavior evaluation. The dispatch and digest suites run actual local commands against fixture state. No required fresh-agent live evaluation is relabeled passed here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No package setup/install is declared for these native Node/Bash checks. Node resolved at `/opt/homebrew/bin/node`; require.resolve located both tests/super-code/replay-harness.mjs and skills/super-code/scripts/dispatch-text.mjs inside this assigned worktree. The package under test and its runners came from this worktree.\n",
+          "text": "No package setup/install is declared for these native Node/Bash checks. Node resolved at `/opt/homebrew/bin/node`; require.resolve located both tests/super-code/replay-harness.mjs and skills/super-code/scripts/dispatch-text.mjs inside this assigned worktree. The package under test and its runners came from this worktree.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 3619,
+          "byteEnd": 3942
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The exact final commands were:\n",
+          "text": "The exact final commands were:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3943,
+          "byteEnd": 3974
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/digest-final.txt 2>&1\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/digest-final.txt 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 31,
+          "lineEnd": 35,
+          "byteStart": 3975,
+          "byteEnd": 5667
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All three exited 0. Relevant output:\n",
+          "text": "All three exited 0. Relevant output:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 5668,
+          "byteEnd": 5705
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] verification creates no artificial commit, merge, unreviewed fix or early split\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] resume reuses reviewed verification with unchanged source\n[PASS] verification completion does not increment task landings or invalidate ledger accounting\n[PASS] missing evidence cannot complete unchanged verification\n[PASS] stale source cannot complete unchanged verification\n[PASS] fallback required live cannot complete unchanged verification\n[PASS] unavailable required check cannot complete unchanged verification\n[PASS] changed verification cannot complete unchanged verification\n[PASS] changed files cannot complete unchanged verification\n[PASS] wrong required configuration cannot complete unchanged verification\n[PASS] missing reviewer source cannot complete unchanged verification\n[PASS] failed required check cannot complete unchanged verification\n[PASS] unconfirmed intent cannot complete unchanged verification\n[PASS] implementation bead cannot complete unchanged verification\n[PASS] null review cannot complete unchanged verification\n[PASS] invalid review cannot complete unchanged verification\n[PASS] rejected review cannot complete unchanged verification\n[PASS] tracker closure alone cannot replace rejected verification acceptance\n[PASS] unavailable durable verification write prevents tracker closure\n[PASS] a reviewer cannot switch implementation delivery to no-change completion\n[PASS] confirmed closure retains unverified cleanup as its actual outcome\n[PASS] oversized basis preserves cap/source pointer and verification completion discriminator\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] ready reentry with missing basis obtains independent verification review before closure\n[PASS] unavailable closure preserves verified basis and remains unconfirmed\n[PASS] pending verification resumes closure only without repeating reviewed work\n2062 passed, 0 failed\n\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n",
+          "text": "```text\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] verification creates no artificial commit, merge, unreviewed fix or early split\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] resume reuses reviewed verification with unchanged source\n[PASS] verification completion does not increment task landings or invalidate ledger accounting\n[PASS] missing evidence cannot complete unchanged verification\n[PASS] stale source cannot complete unchanged verification\n[PASS] fallback required live cannot complete unchanged verification\n[PASS] unavailable required check cannot complete unchanged verification\n[PASS] changed verification cannot complete unchanged verification\n[PASS] changed files cannot complete unchanged verification\n[PASS] wrong required configuration cannot complete unchanged verification\n[PASS] missing reviewer source cannot complete unchanged verification\n[PASS] failed required check cannot complete unchanged verification\n[PASS] unconfirmed intent cannot complete unchanged verification\n[PASS] implementation bead cannot complete unchanged verification\n[PASS] null review cannot complete unchanged verification\n[PASS] invalid review cannot complete unchanged verification\n[PASS] rejected review cannot complete unchanged verification\n[PASS] tracker closure alone cannot replace rejected verification acceptance\n[PASS] unavailable durable verification write prevents tracker closure\n[PASS] a reviewer cannot switch implementation delivery to no-change completion\n[PASS] confirmed closure retains unverified cleanup as its actual outcome\n[PASS] oversized basis preserves cap/source pointer and verification completion discriminator\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] ready reentry with missing basis obtains independent verification review before closure\n[PASS] unavailable closure preserves verified basis and remains unconfirmed\n[PASS] pending verification resumes closure only without repeating reviewed work\n2062 passed, 0 failed\n\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 39,
+          "lineEnd": 72,
+          "byteStart": 5706,
+          "byteEnd": 7882
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Existing missing-commit and implementation empty-range INVALID assertions remain unchanged and passed. The run-digest suite was added to the required two because it is the caller of ledger-digest; the replay also invokes the actual reducer for ordinary and oversized Recovery roundtrips. Source identity and final source review assertions remain green. git diff --check returned 0. The final tests exercised the tracked bytes committed at head; the subsequent rebase reported the task branch already up to date, and git status --short was empty.\n",
+          "text": "Existing missing-commit and implementation empty-range INVALID assertions remain unchanged and passed. The run-digest suite was added to the required two because it is the caller of ledger-digest; the replay also invokes the actual reducer for ordinary and oversized Recovery roundtrips. Source identity and final source review assertions remain green. git diff --check returned 0. The final tests exercised the tracked bytes committed at head; the subsequent rebase reported the task branch already up to date, and git status --short was empty.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 74,
+          "lineEnd": 74,
+          "byteStart": 7883,
+          "byteEnd": 8429
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These are deterministic fixture results. Replay's Workflow/agent replies are simulated, including the live-sim-labelled scenarios; they are not a fresh-agent behavior evaluation. The dispatch and digest suites run actual local commands against fixture state. No required fresh-agent live evaluation is relabeled passed here.\n",
+          "text": "These are deterministic fixture results. Replay's Workflow/agent replies are simulated, including the live-sim-labelled scenarios; they are not a fresh-agent behavior evaluation. The dispatch and digest suites run actual local commands against fixture state. No required fresh-agent live evaluation is relabeled passed here.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 76,
+          "lineEnd": 76,
+          "byteStart": 8430,
+          "byteEnd": 8755
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "TDD evidence"
+      ],
+      "lineStart": 78,
+      "lineEnd": 122,
+      "byteStart": 8756,
+      "byteEnd": 12226,
+      "bodyLineStart": 79,
+      "rawText": "## TDD evidence\n\nUsed writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n\nBefore production changes, added verification replay and ordinary dispatch fixtures. The exact replay/dispatch commands matched the final commands above with output names replay-red.txt and dispatch-red.txt. Both exited 1:\n\n```text\n[FAIL] unchanged verification dispatches independent review and confirmed closure\n[FAIL] verification creates no artificial commit, merge, unreviewed fix or early split\n[FAIL] evidence review receives intent, fixed source and retained measurements\n[FAIL] verification closure uses reviewed basis and tracker status rather than a merge claim\n[FAIL] durable completion retains source, independent review and evidence basis\n[FAIL] ledger records verification basis before completion\n[FAIL] resume reuses reviewed verification with unchanged source\n[FAIL] unavailable closure preserves verified basis and remains unconfirmed\n[FAIL] pending verification resumes closure only without repeating reviewed work\n2030 passed, 9 failed\n\ndispatch-text: 5 failure(s)\n```\n\nThe dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.\n\nSelf-review added and observed three further RED regressions before their fixes. Each used the same replay command/environment with the indicated output file:\n\n```text\npersistence-red.txt:\n[FAIL] unavailable durable verification write prevents tracker closure\n2054 passed, 1 failed\n\nrejection-red.txt:\n[FAIL] tracker closure alone cannot replace rejected verification acceptance\n2056 passed, 1 failed\n\ncap-red.txt:\n[FAIL] oversized basis preserves cap/source pointer and verification completion discriminator\n[FAIL] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2059 passed, 3 failed\n```\n\nFinal GREEN covers every one. Example failing values for the assertions are a commit-nudge/merge dispatch on the accepted unchanged task; a completion despite null/CLEAN-with-wrong-tree/fallback-for-live review; a rewritten provenance location; a missing Recovery basis or lost verification token; a close dispatch after failed append; a task landing count of 1 instead of 0; or a completed bucket populated only by tracker closure after review rejection. The fixtures check real coordinator routing, emitted prompts, result/ledger contents and the actual digest output, rather than asserting canned reply shapes against themselves.\n\nFull logs remain git-ignored inside .superpowers/evidence/super-plan-ufz.13/ in the assigned worktree.\n\n",
+      "bodyRawText": "\nUsed writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n\nBefore production changes, added verification replay and ordinary dispatch fixtures. The exact replay/dispatch commands matched the final commands above with output names replay-red.txt and dispatch-red.txt. Both exited 1:\n\n```text\n[FAIL] unchanged verification dispatches independent review and confirmed closure\n[FAIL] verification creates no artificial commit, merge, unreviewed fix or early split\n[FAIL] evidence review receives intent, fixed source and retained measurements\n[FAIL] verification closure uses reviewed basis and tracker status rather than a merge claim\n[FAIL] durable completion retains source, independent review and evidence basis\n[FAIL] ledger records verification basis before completion\n[FAIL] resume reuses reviewed verification with unchanged source\n[FAIL] unavailable closure preserves verified basis and remains unconfirmed\n[FAIL] pending verification resumes closure only without repeating reviewed work\n2030 passed, 9 failed\n\ndispatch-text: 5 failure(s)\n```\n\nThe dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.\n\nSelf-review added and observed three further RED regressions before their fixes. Each used the same replay command/environment with the indicated output file:\n\n```text\npersistence-red.txt:\n[FAIL] unavailable durable verification write prevents tracker closure\n2054 passed, 1 failed\n\nrejection-red.txt:\n[FAIL] tracker closure alone cannot replace rejected verification acceptance\n2056 passed, 1 failed\n\ncap-red.txt:\n[FAIL] oversized basis preserves cap/source pointer and verification completion discriminator\n[FAIL] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2059 passed, 3 failed\n```\n\nFinal GREEN covers every one. Example failing values for the assertions are a commit-nudge/merge dispatch on the accepted unchanged task; a completion despite null/CLEAN-with-wrong-tree/fallback-for-live review; a rewritten provenance location; a missing Recovery basis or lost verification token; a close dispatch after failed append; a task landing count of 1 instead of 0; or a completed bucket populated only by tracker closure after review rejection. The fixtures check real coordinator routing, emitted prompts, result/ledger contents and the actual digest output, rather than asserting canned reply shapes against themselves.\n\nFull logs remain git-ignored inside .superpowers/evidence/super-plan-ufz.13/ in the assigned worktree.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n",
+          "text": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 80,
+          "lineEnd": 80,
+          "byteStart": 8773,
+          "byteEnd": 9310
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before production changes, added verification replay and ordinary dispatch fixtures. The exact replay/dispatch commands matched the final commands above with output names replay-red.txt and dispatch-red.txt. Both exited 1:\n",
+          "text": "Before production changes, added verification replay and ordinary dispatch fixtures. The exact replay/dispatch commands matched the final commands above with output names replay-red.txt and dispatch-red.txt. Both exited 1:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 82,
+          "lineEnd": 82,
+          "byteStart": 9311,
+          "byteEnd": 9534
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] unchanged verification dispatches independent review and confirmed closure\n[FAIL] verification creates no artificial commit, merge, unreviewed fix or early split\n[FAIL] evidence review receives intent, fixed source and retained measurements\n[FAIL] verification closure uses reviewed basis and tracker status rather than a merge claim\n[FAIL] durable completion retains source, independent review and evidence basis\n[FAIL] ledger records verification basis before completion\n[FAIL] resume reuses reviewed verification with unchanged source\n[FAIL] unavailable closure preserves verified basis and remains unconfirmed\n[FAIL] pending verification resumes closure only without repeating reviewed work\n2030 passed, 9 failed\n\ndispatch-text: 5 failure(s)\n```\n",
+          "text": "```text\n[FAIL] unchanged verification dispatches independent review and confirmed closure\n[FAIL] verification creates no artificial commit, merge, unreviewed fix or early split\n[FAIL] evidence review receives intent, fixed source and retained measurements\n[FAIL] verification closure uses reviewed basis and tracker status rather than a merge claim\n[FAIL] durable completion retains source, independent review and evidence basis\n[FAIL] ledger records verification basis before completion\n[FAIL] resume reuses reviewed verification with unchanged source\n[FAIL] unavailable closure preserves verified basis and remains unconfirmed\n[FAIL] pending verification resumes closure only without repeating reviewed work\n2030 passed, 9 failed\n\ndispatch-text: 5 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 84,
+          "lineEnd": 97,
+          "byteStart": 9535,
+          "byteEnd": 10300
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.\n",
+          "text": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "byteStart": 10301,
+          "byteEnd": 10750
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Self-review added and observed three further RED regressions before their fixes. Each used the same replay command/environment with the indicated output file:\n",
+          "text": "Self-review added and observed three further RED regressions before their fixes. Each used the same replay command/environment with the indicated output file:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 101,
+          "lineEnd": 101,
+          "byteStart": 10751,
+          "byteEnd": 10910
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\npersistence-red.txt:\n[FAIL] unavailable durable verification write prevents tracker closure\n2054 passed, 1 failed\n\nrejection-red.txt:\n[FAIL] tracker closure alone cannot replace rejected verification acceptance\n2056 passed, 1 failed\n\ncap-red.txt:\n[FAIL] oversized basis preserves cap/source pointer and verification completion discriminator\n[FAIL] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2059 passed, 3 failed\n```\n",
+          "text": "```text\npersistence-red.txt:\n[FAIL] unavailable durable verification write prevents tracker closure\n2054 passed, 1 failed\n\nrejection-red.txt:\n[FAIL] tracker closure alone cannot replace rejected verification acceptance\n2056 passed, 1 failed\n\ncap-red.txt:\n[FAIL] oversized basis preserves cap/source pointer and verification completion discriminator\n[FAIL] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2059 passed, 3 failed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 103,
+          "lineEnd": 117,
+          "byteStart": 10911,
+          "byteEnd": 11487
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final GREEN covers every one. Example failing values for the assertions are a commit-nudge/merge dispatch on the accepted unchanged task; a completion despite null/CLEAN-with-wrong-tree/fallback-for-live review; a rewritten provenance location; a missing Recovery basis or lost verification token; a close dispatch after failed append; a task landing count of 1 instead of 0; or a completed bucket populated only by tracker closure after review rejection. The fixtures check real coordinator routing, emitted prompts, result/ledger contents and the actual digest output, rather than asserting canned reply shapes against themselves.\n",
+          "text": "Final GREEN covers every one. Example failing values for the assertions are a commit-nudge/merge dispatch on the accepted unchanged task; a completion despite null/CLEAN-with-wrong-tree/fallback-for-live review; a rewritten provenance location; a missing Recovery basis or lost verification token; a close dispatch after failed append; a task landing count of 1 instead of 0; or a completed bucket populated only by tracker closure after review rejection. The fixtures check real coordinator routing, emitted prompts, result/ledger contents and the actual digest output, rather than asserting canned reply shapes against themselves.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 119,
+          "lineEnd": 119,
+          "byteStart": 11488,
+          "byteEnd": 12121
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Full logs remain git-ignored inside .superpowers/evidence/super-plan-ufz.13/ in the assigned worktree.\n",
+          "text": "Full logs remain git-ignored inside .superpowers/evidence/super-plan-ufz.13/ in the assigned worktree.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 121,
+          "lineEnd": 121,
+          "byteStart": 12122,
+          "byteEnd": 12225
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Files changed"
+      ],
+      "lineStart": 123,
+      "lineEnd": 134,
+      "byteStart": 12226,
+      "byteEnd": 12664,
+      "bodyLineStart": 124,
+      "rawText": "## Files changed\n\n- skills/super-code/coordinator.js\n- skills/super-code/implementer-prompt.md\n- skills/super-code/task-reviewer-prompt.md\n- skills/super-code/scripts/dispatch-text.mjs\n- skills/super-code/scripts/ledger-digest (parent-approved minimal scope extension)\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n- tests/super-code/test-dispatch-text.sh\n\n",
+      "bodyRawText": "\n- skills/super-code/coordinator.js\n- skills/super-code/implementer-prompt.md\n- skills/super-code/task-reviewer-prompt.md\n- skills/super-code/scripts/dispatch-text.mjs\n- skills/super-code/scripts/ledger-digest (parent-approved minimal scope extension)\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n- tests/super-code/test-dispatch-text.sh\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 125,
+          "lineEnd": 125,
+          "byteStart": 12244,
+          "byteEnd": 12279
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/implementer-prompt.md\n",
+          "text": "skills/super-code/implementer-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 126,
+          "lineEnd": 126,
+          "byteStart": 12279,
+          "byteEnd": 12321
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/task-reviewer-prompt.md\n",
+          "text": "skills/super-code/task-reviewer-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 127,
+          "lineEnd": 127,
+          "byteStart": 12321,
+          "byteEnd": 12365
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/dispatch-text.mjs\n",
+          "text": "skills/super-code/scripts/dispatch-text.mjs",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 128,
+          "lineEnd": 128,
+          "byteStart": 12365,
+          "byteEnd": 12411
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/ledger-digest (parent-approved minimal scope extension)\n",
+          "text": "skills/super-code/scripts/ledger-digest (parent-approved minimal scope extension)",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 129,
+          "lineEnd": 129,
+          "byteStart": 12411,
+          "byteEnd": 12495
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 130,
+          "lineEnd": 130,
+          "byteStart": 12495,
+          "byteEnd": 12539
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 131,
+          "lineEnd": 131,
+          "byteStart": 12539,
+          "byteEnd": 12584
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 132,
+          "lineEnd": 132,
+          "byteStart": 12584,
+          "byteEnd": 12622
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/test-dispatch-text.sh\n",
+          "text": "tests/super-code/test-dispatch-text.sh",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 12622,
+          "byteEnd": 12663
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Test hygiene"
+      ],
+      "lineStart": 135,
+      "lineEnd": 144,
+      "byteStart": 12664,
+      "byteEnd": 13504,
+      "bodyLineStart": 136,
+      "rawText": "## Test hygiene\n\nNone: ownership-scoped checks after completed test batches returned 0 with no match: lines. Every test/probe used TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 and isolated HOME/XDG homes. Test fixtures created their own temporary directories beneath that root. No background server, daemon, watcher or agent was started. Final stop/check commands run from neutral /private/tmp use only the assigned worktree and task temp roots; there are no survived: lines.\n\nThe check command was:\n\n```sh\ncd /private/tmp && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 /tmp/sp-bce79baa/super-plan-ufz.13\n```\n\n",
+      "bodyRawText": "\nNone: ownership-scoped checks after completed test batches returned 0 with no match: lines. Every test/probe used TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 and isolated HOME/XDG homes. Test fixtures created their own temporary directories beneath that root. No background server, daemon, watcher or agent was started. Final stop/check commands run from neutral /private/tmp use only the assigned worktree and task temp roots; there are no survived: lines.\n\nThe check command was:\n\n```sh\ncd /private/tmp && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 /tmp/sp-bce79baa/super-plan-ufz.13\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None: ownership-scoped checks after completed test batches returned 0 with no match: lines. Every test/probe used TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 and isolated HOME/XDG homes. Test fixtures created their own temporary directories beneath that root. No background server, daemon, watcher or agent was started. Final stop/check commands run from neutral /private/tmp use only the assigned worktree and task temp roots; there are no survived: lines.\n",
+          "text": "None: ownership-scoped checks after completed test batches returned 0 with no match: lines. Every test/probe used TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 and isolated HOME/XDG homes. Test fixtures created their own temporary directories beneath that root. No background server, daemon, watcher or agent was started. Final stop/check commands run from neutral /private/tmp use only the assigned worktree and task temp roots; there are no survived: lines.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 137,
+          "lineEnd": 137,
+          "byteStart": 12681,
+          "byteEnd": 13137
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The check command was:\n",
+          "text": "The check command was:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 139,
+          "lineEnd": 139,
+          "byteStart": 13138,
+          "byteEnd": 13161
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /private/tmp && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 /tmp/sp-bce79baa/super-plan-ufz.13\n```\n",
+          "text": "```sh\ncd /private/tmp && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 /tmp/sp-bce79baa/super-plan-ufz.13\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 141,
+          "lineEnd": 143,
+          "byteStart": 13162,
+          "byteEnd": 13503
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "lineStart": 145,
+      "lineEnd": 150,
+      "byteStart": 13504,
+      "byteEnd": 14367,
+      "bodyLineStart": 146,
+      "rawText": "## Assumptions and amendments\n\nRead current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n\nParent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.\n\n",
+      "bodyRawText": "\nRead current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n\nParent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n",
+          "text": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 147,
+          "lineEnd": 147,
+          "byteStart": 13535,
+          "byteEnd": 13880
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Parent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.\n",
+          "text": "Parent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 149,
+          "lineEnd": 149,
+          "byteStart": 13881,
+          "byteEnd": 14366
+        }
+      ]
+    },
+    {
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and remaining evaluation\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Concerns and remaining evaluation"
+      ],
+      "lineStart": 151,
+      "lineEnd": 154,
+      "byteStart": 14367,
+      "byteEnd": 14943,
+      "bodyLineStart": 152,
+      "rawText": "## Concerns and remaining evaluation\n\nNo unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n\n",
+      "bodyRawText": "\nNo unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n",
+          "text": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 153,
+          "lineEnd": 153,
+          "byteStart": 14405,
+          "byteEnd": 14942
+        }
+      ]
+    },
+    {
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Seam fix\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "lineStart": 155,
+      "lineEnd": 172,
+      "byteStart": 14943,
+      "byteEnd": 17577,
+      "bodyLineStart": 156,
+      "rawText": "## Seam fix\n\nStatus: FIXED\n\n- Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.\n- Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.\n- Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.\n- Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.\n- Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.\n- Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.\n- Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.\n\nRebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.\n\nThe combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n\nAdded focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.\n\n",
+      "bodyRawText": "\nStatus: FIXED\n\n- Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.\n- Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.\n- Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.\n- Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.\n- Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.\n- Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.\n- Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.\n\nRebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.\n\nThe combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n\nAdded focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED\n",
+          "text": "Status: FIXED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 157,
+          "lineEnd": 157,
+          "byteStart": 14956,
+          "byteEnd": 14970
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.\n",
+          "text": "Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 159,
+          "lineEnd": 159,
+          "byteStart": 14971,
+          "byteEnd": 15037
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.\n",
+          "text": "Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 15037,
+          "byteEnd": 15105
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.\n",
+          "text": "Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 161,
+          "lineEnd": 161,
+          "byteStart": 15105,
+          "byteEnd": 15193
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.\n",
+          "text": "Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 162,
+          "lineEnd": 162,
+          "byteStart": 15193,
+          "byteEnd": 15261
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.\n",
+          "text": "Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 163,
+          "lineEnd": 163,
+          "byteStart": 15261,
+          "byteEnd": 15330
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.\n",
+          "text": "Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 164,
+          "lineEnd": 164,
+          "byteStart": 15330,
+          "byteEnd": 15423
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.\n",
+          "text": "Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 165,
+          "lineEnd": 165,
+          "byteStart": 15423,
+          "byteEnd": 15762
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.\n",
+          "text": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 167,
+          "lineEnd": 167,
+          "byteStart": 15763,
+          "byteEnd": 16156
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n",
+          "text": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 169,
+          "lineEnd": 169,
+          "byteStart": 16157,
+          "byteEnd": 17041
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.\n",
+          "text": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 171,
+          "lineEnd": 171,
+          "byteStart": 17042,
+          "byteEnd": 17576
+        }
+      ]
+    },
+    {
+      "section": "Seam verification",
+      "sectionOrdinal": 10,
+      "headingLevel": 3,
+      "headingRaw": "### Seam verification\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix",
+        "Seam verification"
+      ],
+      "lineStart": 173,
+      "lineEnd": 211,
+      "byteStart": 17577,
+      "byteEnd": 21457,
+      "bodyLineStart": 174,
+      "rawText": "### Seam verification\n\nThe RED run used the replay command below with `seam-red.txt` as its output file. It exited 1 with `2189 passed, 3 failed`:\n\n```text\n[FAIL] pending verification resumes closure only without repeating reviewed work\n[FAIL] verification resume checks captured commit/tree without inventing a landing\n[FAIL] already closed verification resume confirms durable typed completion without a landing\n```\n\nFinal exact commands (all exited 0):\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/seam-replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/seam-dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/seam-digest-final.txt 2>&1\n```\n\nRelevant combined output:\n\n```text\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] pending verification resumes closure only without repeating reviewed work\n[PASS] verification resume checks captured commit/tree without inventing a landing\n[PASS] unverified source or tracker holds verification recovery despite tracker closure claims\n[PASS] failed verification closure append preserves accepted basis before settlement\n[PASS] already closed verification resume confirms durable typed completion without a landing\n[PASS] partial recovery confirms tracker closure before attempting its durable clear\n2192 passed, 0 failed\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n\nReplay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n\n",
+      "bodyRawText": "\nThe RED run used the replay command below with `seam-red.txt` as its output file. It exited 1 with `2189 passed, 3 failed`:\n\n```text\n[FAIL] pending verification resumes closure only without repeating reviewed work\n[FAIL] verification resume checks captured commit/tree without inventing a landing\n[FAIL] already closed verification resume confirms durable typed completion without a landing\n```\n\nFinal exact commands (all exited 0):\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/seam-replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/seam-dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/seam-digest-final.txt 2>&1\n```\n\nRelevant combined output:\n\n```text\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] pending verification resumes closure only without repeating reviewed work\n[PASS] verification resume checks captured commit/tree without inventing a landing\n[PASS] unverified source or tracker holds verification recovery despite tracker closure claims\n[PASS] failed verification closure append preserves accepted basis before settlement\n[PASS] already closed verification resume confirms durable typed completion without a landing\n[PASS] partial recovery confirms tracker closure before attempting its durable clear\n2192 passed, 0 failed\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n\nReplay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The RED run used the replay command below with `seam-red.txt` as its output file. It exited 1 with `2189 passed, 3 failed`:\n",
+          "text": "The RED run used the replay command below with `seam-red.txt` as its output file. It exited 1 with `2189 passed, 3 failed`:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 175,
+          "lineEnd": 175,
+          "byteStart": 17600,
+          "byteEnd": 17724
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] pending verification resumes closure only without repeating reviewed work\n[FAIL] verification resume checks captured commit/tree without inventing a landing\n[FAIL] already closed verification resume confirms durable typed completion without a landing\n```\n",
+          "text": "```text\n[FAIL] pending verification resumes closure only without repeating reviewed work\n[FAIL] verification resume checks captured commit/tree without inventing a landing\n[FAIL] already closed verification resume confirms durable typed completion without a landing\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 177,
+          "lineEnd": 181,
+          "byteStart": 17725,
+          "byteEnd": 17995
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final exact commands (all exited 0):\n",
+          "text": "Final exact commands (all exited 0):",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 183,
+          "lineEnd": 183,
+          "byteStart": 17996,
+          "byteEnd": 18033
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/seam-replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/seam-dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/seam-digest-final.txt 2>&1\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state node tests/super-code/replay-harness.mjs > .superpowers/evidence/super-plan-ufz.13/seam-replay-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-dispatch-text.sh > .superpowers/evidence/super-plan-ufz.13/seam-dispatch-final.txt 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.13 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.13 HOME=/tmp/sp-bce79baa/super-plan-ufz.13/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.13/state bash tests/super-code/test-run-digest.sh > .superpowers/evidence/super-plan-ufz.13/seam-digest-final.txt 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 185,
+          "lineEnd": 189,
+          "byteStart": 18034,
+          "byteEnd": 19741
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Relevant combined output:\n",
+          "text": "Relevant combined output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 191,
+          "lineEnd": 191,
+          "byteStart": 19742,
+          "byteEnd": 19768
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] pending verification resumes closure only without repeating reviewed work\n[PASS] verification resume checks captured commit/tree without inventing a landing\n[PASS] unverified source or tracker holds verification recovery despite tracker closure claims\n[PASS] failed verification closure append preserves accepted basis before settlement\n[PASS] already closed verification resume confirms durable typed completion without a landing\n[PASS] partial recovery confirms tracker closure before attempting its durable clear\n2192 passed, 0 failed\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```\n",
+          "text": "```text\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] unchanged verification dispatches independent review and confirmed closure\n[PASS] durable completion retains source, independent review and evidence basis\n[PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[PASS] pending verification resumes closure only without repeating reviewed work\n[PASS] verification resume checks captured commit/tree without inventing a landing\n[PASS] unverified source or tracker holds verification recovery despite tracker closure claims\n[PASS] failed verification closure append preserves accepted basis before settlement\n[PASS] already closed verification resume confirms durable typed completion without a landing\n[PASS] partial recovery confirms tracker closure before attempting its durable clear\n2192 passed, 0 failed\ndispatch-text: all tests passed\nrun-digest: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 193,
+          "lineEnd": 208,
+          "byteStart": 19769,
+          "byteEnd": 20829
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n",
+          "text": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 210,
+          "lineEnd": 210,
+          "byteStart": 20830,
+          "byteEnd": 21456
+        }
+      ]
+    },
+    {
+      "section": "Seam test hygiene",
+      "sectionOrdinal": 11,
+      "headingLevel": 3,
+      "headingRaw": "### Seam test hygiene\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix",
+        "Seam test hygiene"
+      ],
+      "lineStart": 212,
+      "lineEnd": 215,
+      "byteStart": 21457,
+      "byteEnd": 22041,
+      "bodyLineStart": 213,
+      "rawText": "### Seam test hygiene\n\nFinal checks after RED and the combined GREEN batch returned exit 0 with no match lines. An earlier check was accidentally run while RED was still executing and matched its active runner PID 43680 and active remove-task-worktree fixtures PIDs 46279/46284; all exited with the completed replay, and the subsequent completed-run checks matched none. No leaked process required termination. The final ownership-scoped stop/check uses the same assigned worktree and `/tmp/sp-bce79baa/super-plan-ufz.13`; no survived lines. No agent, server or watcher was started.\n\n",
+      "bodyRawText": "\nFinal checks after RED and the combined GREEN batch returned exit 0 with no match lines. An earlier check was accidentally run while RED was still executing and matched its active runner PID 43680 and active remove-task-worktree fixtures PIDs 46279/46284; all exited with the completed replay, and the subsequent completed-run checks matched none. No leaked process required termination. The final ownership-scoped stop/check uses the same assigned worktree and `/tmp/sp-bce79baa/super-plan-ufz.13`; no survived lines. No agent, server or watcher was started.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final checks after RED and the combined GREEN batch returned exit 0 with no match lines. An earlier check was accidentally run while RED was still executing and matched its active runner PID 43680 and active remove-task-worktree fixtures PIDs 46279/46284; all exited with the completed replay, and the subsequent completed-run checks matched none. No leaked process required termination. The final ownership-scoped stop/check uses the same assigned worktree and `/tmp/sp-bce79baa/super-plan-ufz.13`; no survived lines. No agent, server or watcher was started.\n",
+          "text": "Final checks after RED and the combined GREEN batch returned exit 0 with no match lines. An earlier check was accidentally run while RED was still executing and matched its active runner PID 43680 and active remove-task-worktree fixtures PIDs 46279/46284; all exited with the completed replay, and the subsequent completed-run checks matched none. No leaked process required termination. The final ownership-scoped stop/check uses the same assigned worktree and `/tmp/sp-bce79baa/super-plan-ufz.13`; no survived lines. No agent, server or watcher was started.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 214,
+          "lineEnd": 214,
+          "byteStart": 21480,
+          "byteEnd": 22040
+        }
+      ]
+    },
+    {
+      "section": "Seam assumptions and concerns",
+      "sectionOrdinal": 12,
+      "headingLevel": 3,
+      "headingRaw": "### Seam assumptions and concerns\n",
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix",
+        "Seam assumptions and concerns"
+      ],
+      "lineStart": 216,
+      "lineEnd": 218,
+      "byteStart": 22041,
+      "byteEnd": 22639,
+      "bodyLineStart": 217,
+      "rawText": "### Seam assumptions and concerns\n\nRead current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+          "text": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 218,
+          "lineEnd": 218,
+          "byteStart": 22076,
+          "byteEnd": 22639
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 1,
+      "key": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.",
+      "text": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.",
+      "rawText": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n",
+      "lineStart": 147,
+      "lineEnd": 147,
+      "byteStart": 13535,
+      "byteEnd": 13880,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 2,
+      "key": "Parent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.",
+      "text": "Parent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.",
+      "rawText": "Parent explicitly approved preserving the minimal verification-only discriminator in ledger-digest with focused cap/reentry fixtures, while retaining the 4096 bound, truthful gaps and existing source pointers. review-package is unchanged and read-only for this task. No integration/user-checkout source files were written; only the explicitly assigned brief generator and this report used plan-workspace write targets. No subagents were spawned and no Herdr operations were performed.\n",
+      "lineStart": 149,
+      "lineEnd": 149,
+      "byteStart": 13881,
+      "byteEnd": 14366,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Concerns and remaining evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.",
+      "text": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.",
+      "rawText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n",
+      "lineStart": 153,
+      "lineEnd": 153,
+      "byteStart": 14405,
+      "byteEnd": 14942,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED",
+      "text": "Status: FIXED",
+      "rawText": "Status: FIXED\n",
+      "lineStart": 157,
+      "lineEnd": 157,
+      "byteStart": 14956,
+      "byteEnd": 14970,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 2,
+      "key": "Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.",
+      "text": "Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.",
+      "rawText": "- Original task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`.\n",
+      "lineStart": 159,
+      "lineEnd": 159,
+      "byteStart": 14971,
+      "byteEnd": 15037,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 3,
+      "key": "Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.",
+      "text": "Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.",
+      "rawText": "- Original task source: `9610071921c440aa1debff4b873525b42cf3f217`.\n",
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 15037,
+      "byteEnd": 15105,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 4,
+      "key": "Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.",
+      "text": "Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.",
+      "rawText": "- Exact rebase target and final merge-base: `43f18740e270d4d5a2730d4194e47f4eac04be39`.\n",
+      "lineStart": 161,
+      "lineEnd": 161,
+      "byteStart": 15105,
+      "byteEnd": 15193,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 5,
+      "key": "Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.",
+      "text": "Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.",
+      "rawText": "- Final committed head: `70854e385736ce425a65d027a629ae0c1d58263c`.\n",
+      "lineStart": 162,
+      "lineEnd": 162,
+      "byteStart": 15193,
+      "byteEnd": 15261,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 6,
+      "key": "Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.",
+      "text": "Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.",
+      "rawText": "- Tested committed tree: `ab08708333a5454aca375c8b87d905fd8784fb7a`.\n",
+      "lineStart": 163,
+      "lineEnd": 163,
+      "byteStart": 15261,
+      "byteEnd": 15330,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 7,
+      "key": "Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.",
+      "text": "Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.",
+      "rawText": "- Conflict files: `skills/super-code/coordinator.js`, `tests/super-code/replay-harness.mjs`.\n",
+      "lineStart": 164,
+      "lineEnd": 164,
+      "byteStart": 15330,
+      "byteEnd": 15423,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 8,
+      "key": "Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.",
+      "text": "Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.",
+      "rawText": "- Overlap with intervening integration changes: those two files plus `skills/super-code/coordinator-subagents.md`, `skills/super-code/coordinator-workflow.md`, `skills/super-code/task-reviewer-prompt.md`. The three Markdown overlaps merged automatically; their independent evidence review and run-failure/recovery guidance remain present.\n",
+      "lineStart": 165,
+      "lineEnd": 165,
+      "byteStart": 15423,
+      "byteEnd": 15762,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 9,
+      "key": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.",
+      "text": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.",
+      "rawText": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.\n",
+      "lineStart": 167,
+      "lineEnd": 167,
+      "byteStart": 15763,
+      "byteEnd": 16156,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 10,
+      "key": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+      "text": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+      "rawText": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n",
+      "lineStart": 169,
+      "lineEnd": 169,
+      "byteStart": 16157,
+      "byteEnd": 17041,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix"
+      ],
+      "positionInSection": 11,
+      "key": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.",
+      "text": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.",
+      "rawText": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.\n",
+      "lineStart": 171,
+      "lineEnd": 171,
+      "byteStart": 17042,
+      "byteEnd": 17576,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam verification",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix",
+        "Seam verification"
+      ],
+      "positionInSection": 7,
+      "key": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.",
+      "text": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.",
+      "rawText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n",
+      "lineStart": 210,
+      "lineEnd": 210,
+      "byteStart": 20830,
+      "byteEnd": 21456,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "section": "Seam assumptions and concerns",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "super-plan-ufz.13 — implementation evidence",
+        "Seam fix",
+        "Seam assumptions and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.",
+      "text": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.",
+      "rawText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "lineStart": 218,
+      "lineEnd": 218,
+      "byteStart": 22076,
+      "byteEnd": 22639,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

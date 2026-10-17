@@ -1,0 +1,624 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-report-fix.md",
+  "rawArtifact": "task-report-history-r1/raw/task-10-report-fix.md",
+  "rawSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+  "rawByteCount": 7526,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-report-fix.md",
+    "durablePath": "task-report-history-r1/raw/task-10-report-fix.md",
+    "sha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+    "byteCount": 7526,
+    "logicalRole": "report-fix",
+    "ordinal": 10,
+    "logicalTaskId": "super-plan-ufz.7",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-10-report-fix.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+    "error": "report-verdict: --complete: finding text without a list marker in Finding and correction"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Fix pass\n",
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "lineStart": 1,
+      "lineEnd": 9,
+      "byteStart": 0,
+      "byteEnd": 274,
+      "bodyLineStart": 2,
+      "rawText": "## Fix pass\n\nStatus: FIXED\nTask: super-plan-ufz.7\nBase: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec\n\n",
+      "bodyRawText": "\nStatus: FIXED\nTask: super-plan-ufz.7\nBase: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED\n",
+          "text": "Status: FIXED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 13,
+          "byteEnd": 27
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.7\n",
+          "text": "Task: super-plan-ufz.7",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 27,
+          "byteEnd": 50
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec\n",
+          "text": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 8,
+          "byteStart": 50,
+          "byteEnd": 273
+        }
+      ]
+    },
+    {
+      "section": "Finding and correction",
+      "sectionOrdinal": 2,
+      "headingLevel": 3,
+      "headingRaw": "### Finding and correction\n",
+      "hierarchy": [
+        "Fix pass",
+        "Finding and correction"
+      ],
+      "lineStart": 10,
+      "lineEnd": 17,
+      "byteStart": 274,
+      "byteEnd": 1813,
+      "bodyLineStart": 11,
+      "rawText": "### Finding and correction\n\nVerified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n\nThe reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.\n\nOnly skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.\n\n",
+      "bodyRawText": "\nVerified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n\nThe reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.\n\nOnly skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n",
+          "text": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 302,
+          "byteEnd": 770
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.\n",
+          "text": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 771,
+          "byteEnd": 1527
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.\n",
+          "text": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1528,
+          "byteEnd": 1812
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN evidence",
+      "sectionOrdinal": 3,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN evidence\n",
+      "hierarchy": [
+        "Fix pass",
+        "RED/GREEN evidence"
+      ],
+      "lineStart": 18,
+      "lineEnd": 88,
+      "byteStart": 1813,
+      "byteEnd": 5943,
+      "bodyLineStart": 19,
+      "rawText": "### RED/GREEN evidence\n\nAll test commands ran from the assigned task worktree:\n\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.7`\n\nEach command used the exact isolation prefix:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.7 HOME=/tmp/sp-bce79baa/super-plan-ufz.7/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/state\n```\n\nBefore the production correction:\n\n```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-red.log 2>&1\n```\n\nExit 1, expected behavior failures (not execution errors):\n\n```text\n[FAIL] verification-only pass at retained failing source preserves open owner\n[FAIL] verification-only same-source contradiction exposes source-bound reconciliation gap\n[FAIL] durable clean re-entry retains same-source contradiction and open owner\n[FAIL] verification cannot bypass contradictory associated runBaseline outcome\n[FAIL] verification cannot bypass contradictory associated taskBase outcome\n1974 passed, 5 failed\n```\n\nThe initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n\nFinal exact commands with the isolation prefix above, all exit 0 on the committed tree:\n\n```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-replay-final.log 2>&1\nbash tests/super-code/test-dispatch-text.sh > evidence-task7-fix-dispatch-final.log 2>&1\nbash tests/super-auto/test-scripts.sh > evidence-task7-fix-auto-final.log 2>&1\nbash tests/super-auto/test-contract-lint.sh > evidence-task7-fix-lint-final.log 2>&1\n```\n\nRelevant final output:\n\n```text\n[PASS] verification-only pass at retained failing source preserves open owner\n[PASS] verification-only same-source contradiction exposes source-bound reconciliation gap\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] verification cannot bypass contradictory associated runBaseline outcome\n[PASS] verification cannot bypass contradictory associated taskBase outcome\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] later associated failure reopens contradictory earlier verification\n[PASS] linked live fix verification resolves obligation while retaining introducing owner history\n[PASS] simulated fix verification cannot resolve live run regression\n[PASS] one before/after reply preserves introduction and linked verified fix independently\n1981 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto script tests passed\nAll super-auto contract lint tests passed\n```\n\nThe full replay also passed the documented dryRun scenarios with canonical 48, fix-pass-blocked 19 and parked 23 dispatches. Producer/dispatch checks and super-auto caller/reporting/contract suites cover consumers of the returned run state. No existing test expectation was deleted, skipped, loosened or changed. `git diff --check` passed.\n\nEach new behavioral assertion has a concrete failure value: a missing/changed owner or `state:verified` for contradictory evidence; an absent source-specific contradiction gap; a clean durable retry losing owner/open/gap; an associated baseline/task-base conflict silently verifying; a valid different-source repair failing to verify or dropping the earlier contradiction gap; or a later associated failure leaving earlier verification closed. The two added no-throw checks fail on reducer execution errors. All assertions executed in the final run.\n\n",
+      "bodyRawText": "\nAll test commands ran from the assigned task worktree:\n\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.7`\n\nEach command used the exact isolation prefix:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.7 HOME=/tmp/sp-bce79baa/super-plan-ufz.7/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/state\n```\n\nBefore the production correction:\n\n```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-red.log 2>&1\n```\n\nExit 1, expected behavior failures (not execution errors):\n\n```text\n[FAIL] verification-only pass at retained failing source preserves open owner\n[FAIL] verification-only same-source contradiction exposes source-bound reconciliation gap\n[FAIL] durable clean re-entry retains same-source contradiction and open owner\n[FAIL] verification cannot bypass contradictory associated runBaseline outcome\n[FAIL] verification cannot bypass contradictory associated taskBase outcome\n1974 passed, 5 failed\n```\n\nThe initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n\nFinal exact commands with the isolation prefix above, all exit 0 on the committed tree:\n\n```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-replay-final.log 2>&1\nbash tests/super-code/test-dispatch-text.sh > evidence-task7-fix-dispatch-final.log 2>&1\nbash tests/super-auto/test-scripts.sh > evidence-task7-fix-auto-final.log 2>&1\nbash tests/super-auto/test-contract-lint.sh > evidence-task7-fix-lint-final.log 2>&1\n```\n\nRelevant final output:\n\n```text\n[PASS] verification-only pass at retained failing source preserves open owner\n[PASS] verification-only same-source contradiction exposes source-bound reconciliation gap\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] verification cannot bypass contradictory associated runBaseline outcome\n[PASS] verification cannot bypass contradictory associated taskBase outcome\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] later associated failure reopens contradictory earlier verification\n[PASS] linked live fix verification resolves obligation while retaining introducing owner history\n[PASS] simulated fix verification cannot resolve live run regression\n[PASS] one before/after reply preserves introduction and linked verified fix independently\n1981 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto script tests passed\nAll super-auto contract lint tests passed\n```\n\nThe full replay also passed the documented dryRun scenarios with canonical 48, fix-pass-blocked 19 and parked 23 dispatches. Producer/dispatch checks and super-auto caller/reporting/contract suites cover consumers of the returned run state. No existing test expectation was deleted, skipped, loosened or changed. `git diff --check` passed.\n\nEach new behavioral assertion has a concrete failure value: a missing/changed owner or `state:verified` for contradictory evidence; an absent source-specific contradiction gap; a clean durable retry losing owner/open/gap; an associated baseline/task-base conflict silently verifying; a valid different-source repair failing to verify or dropping the earlier contradiction gap; or a later associated failure leaving earlier verification closed. The two added no-throw checks fail on reducer execution errors. All assertions executed in the final run.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All test commands ran from the assigned task worktree:\n",
+          "text": "All test commands ran from the assigned task worktree:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1837,
+          "byteEnd": 1892
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.7`\n",
+          "text": "`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.7`",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1893,
+          "byteEnd": 2031
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each command used the exact isolation prefix:\n",
+          "text": "Each command used the exact isolation prefix:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2032,
+          "byteEnd": 2078
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.7 HOME=/tmp/sp-bce79baa/super-plan-ufz.7/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/state\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.7 HOME=/tmp/sp-bce79baa/super-plan-ufz.7/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.7/state\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 26,
+          "lineEnd": 28,
+          "byteStart": 2079,
+          "byteEnd": 2394
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before the production correction:\n",
+          "text": "Before the production correction:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 2395,
+          "byteEnd": 2429
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-red.log 2>&1\n```\n",
+          "text": "```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 32,
+          "lineEnd": 34,
+          "byteStart": 2430,
+          "byteEnd": 2515
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, expected behavior failures (not execution errors):\n",
+          "text": "Exit 1, expected behavior failures (not execution errors):",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 2516,
+          "byteEnd": 2575
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] verification-only pass at retained failing source preserves open owner\n[FAIL] verification-only same-source contradiction exposes source-bound reconciliation gap\n[FAIL] durable clean re-entry retains same-source contradiction and open owner\n[FAIL] verification cannot bypass contradictory associated runBaseline outcome\n[FAIL] verification cannot bypass contradictory associated taskBase outcome\n1974 passed, 5 failed\n```\n",
+          "text": "```text\n[FAIL] verification-only pass at retained failing source preserves open owner\n[FAIL] verification-only same-source contradiction exposes source-bound reconciliation gap\n[FAIL] durable clean re-entry retains same-source contradiction and open owner\n[FAIL] verification cannot bypass contradictory associated runBaseline outcome\n[FAIL] verification cannot bypass contradictory associated taskBase outcome\n1974 passed, 5 failed\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 38,
+          "lineEnd": 45,
+          "byteStart": 2576,
+          "byteEnd": 3013
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n",
+          "text": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 47,
+          "lineEnd": 47,
+          "byteStart": 3014,
+          "byteEnd": 3205
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n",
+          "text": "```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 49,
+          "lineEnd": 52,
+          "byteStart": 3206,
+          "byteEnd": 3335
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "That RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n",
+          "text": "That RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 54,
+          "lineEnd": 54,
+          "byteStart": 3336,
+          "byteEnd": 3613
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final exact commands with the isolation prefix above, all exit 0 on the committed tree:\n",
+          "text": "Final exact commands with the isolation prefix above, all exit 0 on the committed tree:",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 56,
+          "lineEnd": 56,
+          "byteStart": 3614,
+          "byteEnd": 3702
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-replay-final.log 2>&1\nbash tests/super-code/test-dispatch-text.sh > evidence-task7-fix-dispatch-final.log 2>&1\nbash tests/super-auto/test-scripts.sh > evidence-task7-fix-auto-final.log 2>&1\nbash tests/super-auto/test-contract-lint.sh > evidence-task7-fix-lint-final.log 2>&1\n```\n",
+          "text": "```sh\nnode tests/super-code/replay-harness.mjs > evidence-task7-fix-replay-final.log 2>&1\nbash tests/super-code/test-dispatch-text.sh > evidence-task7-fix-dispatch-final.log 2>&1\nbash tests/super-auto/test-scripts.sh > evidence-task7-fix-auto-final.log 2>&1\nbash tests/super-auto/test-contract-lint.sh > evidence-task7-fix-lint-final.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 13,
+          "lineStart": 58,
+          "lineEnd": 63,
+          "byteStart": 3703,
+          "byteEnd": 4050
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Relevant final output:\n",
+          "text": "Relevant final output:",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 65,
+          "lineEnd": 65,
+          "byteStart": 4051,
+          "byteEnd": 4074
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] verification-only pass at retained failing source preserves open owner\n[PASS] verification-only same-source contradiction exposes source-bound reconciliation gap\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] verification cannot bypass contradictory associated runBaseline outcome\n[PASS] verification cannot bypass contradictory associated taskBase outcome\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] later associated failure reopens contradictory earlier verification\n[PASS] linked live fix verification resolves obligation while retaining introducing owner history\n[PASS] simulated fix verification cannot resolve live run regression\n[PASS] one before/after reply preserves introduction and linked verified fix independently\n1981 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto script tests passed\nAll super-auto contract lint tests passed\n```\n",
+          "text": "```text\n[PASS] verification-only pass at retained failing source preserves open owner\n[PASS] verification-only same-source contradiction exposes source-bound reconciliation gap\n[PASS] durable clean re-entry retains same-source contradiction and open owner\n[PASS] verification cannot bypass contradictory associated runBaseline outcome\n[PASS] verification cannot bypass contradictory associated taskBase outcome\n[PASS] supported different-source repair retains earlier verification contradiction in history\n[PASS] later associated failure reopens contradictory earlier verification\n[PASS] linked live fix verification resolves obligation while retaining introducing owner history\n[PASS] simulated fix verification cannot resolve live run regression\n[PASS] one before/after reply preserves introduction and linked verified fix independently\n1981 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto script tests passed\nAll super-auto contract lint tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 67,
+          "lineEnd": 83,
+          "byteStart": 4075,
+          "byteEnd": 5050
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The full replay also passed the documented dryRun scenarios with canonical 48, fix-pass-blocked 19 and parked 23 dispatches. Producer/dispatch checks and super-auto caller/reporting/contract suites cover consumers of the returned run state. No existing test expectation was deleted, skipped, loosened or changed. `git diff --check` passed.\n",
+          "text": "The full replay also passed the documented dryRun scenarios with canonical 48, fix-pass-blocked 19 and parked 23 dispatches. Producer/dispatch checks and super-auto caller/reporting/contract suites cover consumers of the returned run state. No existing test expectation was deleted, skipped, loosened or changed. `git diff --check` passed.",
+          "listMarker": null,
+          "positionInSection": 16,
+          "lineStart": 85,
+          "lineEnd": 85,
+          "byteStart": 5051,
+          "byteEnd": 5391
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each new behavioral assertion has a concrete failure value: a missing/changed owner or `state:verified` for contradictory evidence; an absent source-specific contradiction gap; a clean durable retry losing owner/open/gap; an associated baseline/task-base conflict silently verifying; a valid different-source repair failing to verify or dropping the earlier contradiction gap; or a later associated failure leaving earlier verification closed. The two added no-throw checks fail on reducer execution errors. All assertions executed in the final run.\n",
+          "text": "Each new behavioral assertion has a concrete failure value: a missing/changed owner or `state:verified` for contradictory evidence; an absent source-specific contradiction gap; a clean durable retry losing owner/open/gap; an associated baseline/task-base conflict silently verifying; a valid different-source repair failing to verify or dropping the earlier contradiction gap; or a later associated failure leaving earlier verification closed. The two added no-throw checks fail on reducer execution errors. All assertions executed in the final run.",
+          "listMarker": null,
+          "positionInSection": 17,
+          "lineStart": 87,
+          "lineEnd": 87,
+          "byteStart": 5392,
+          "byteEnd": 5942
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Test hygiene\n",
+      "hierarchy": [
+        "Fix pass",
+        "Test hygiene"
+      ],
+      "lineStart": 89,
+      "lineEnd": 92,
+      "byteStart": 5943,
+      "byteEnd": 6603,
+      "bodyLineStart": 90,
+      "rawText": "### Test hygiene\n\nEvery completed test run (initial RED, first GREEN, history-order RED, final replay, dispatch, super-auto scripts, contract lint) was followed sequentially by the mandated `stop-run-processes --check` command. All seven checks exited 0 with empty output: no match line, leaked process or survivor. Final `stop-run-processes` also exited 0 with empty output. Checks and final stop ran from `/Users/alepar/AleCode/superpowers`, outside the owned task/temp roots, targeting only the assigned task worktree and `/tmp/sp-bce79baa/super-plan-ufz.7`. No processes needed stopping. Scratch output is removed after preserving relevant evidence here.\n\n",
+      "bodyRawText": "\nEvery completed test run (initial RED, first GREEN, history-order RED, final replay, dispatch, super-auto scripts, contract lint) was followed sequentially by the mandated `stop-run-processes --check` command. All seven checks exited 0 with empty output: no match line, leaked process or survivor. Final `stop-run-processes` also exited 0 with empty output. Checks and final stop ran from `/Users/alepar/AleCode/superpowers`, outside the owned task/temp roots, targeting only the assigned task worktree and `/tmp/sp-bce79baa/super-plan-ufz.7`. No processes needed stopping. Scratch output is removed after preserving relevant evidence here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Every completed test run (initial RED, first GREEN, history-order RED, final replay, dispatch, super-auto scripts, contract lint) was followed sequentially by the mandated `stop-run-processes --check` command. All seven checks exited 0 with empty output: no match line, leaked process or survivor. Final `stop-run-processes` also exited 0 with empty output. Checks and final stop ran from `/Users/alepar/AleCode/superpowers`, outside the owned task/temp roots, targeting only the assigned task worktree and `/tmp/sp-bce79baa/super-plan-ufz.7`. No processes needed stopping. Scratch output is removed after preserving relevant evidence here.\n",
+          "text": "Every completed test run (initial RED, first GREEN, history-order RED, final replay, dispatch, super-auto scripts, contract lint) was followed sequentially by the mandated `stop-run-processes --check` command. All seven checks exited 0 with empty output: no match line, leaked process or survivor. Final `stop-run-processes` also exited 0 with empty output. Checks and final stop ran from `/Users/alepar/AleCode/superpowers`, outside the owned task/temp roots, targeting only the assigned task worktree and `/tmp/sp-bce79baa/super-plan-ufz.7`. No processes needed stopping. Scratch output is removed after preserving relevant evidence here.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 91,
+          "lineEnd": 91,
+          "byteStart": 5961,
+          "byteEnd": 6602
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and concerns",
+      "sectionOrdinal": 5,
+      "headingLevel": 3,
+      "headingRaw": "### Assumptions and concerns\n",
+      "hierarchy": [
+        "Fix pass",
+        "Assumptions and concerns"
+      ],
+      "lineStart": 93,
+      "lineEnd": 97,
+      "byteStart": 6603,
+      "byteEnd": 7526,
+      "bodyLineStart": 94,
+      "rawText": "### Assumptions and concerns\n\nRead current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n\nThese are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n\nThese are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n",
+          "text": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 95,
+          "lineEnd": 95,
+          "byteStart": 6633,
+          "byteEnd": 7209
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+          "text": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 97,
+          "lineEnd": 97,
+          "byteStart": 7210,
+          "byteEnd": 7526
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED",
+      "text": "Status: FIXED",
+      "rawText": "Status: FIXED\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 13,
+      "byteEnd": 27,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.7",
+      "text": "Task: super-plan-ufz.7",
+      "rawText": "Task: super-plan-ufz.7\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 27,
+      "byteEnd": 50,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 3,
+      "key": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+      "text": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec",
+      "rawText": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nReviewed implementation head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\nFix head: 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28\nTested tree: 4790bbe2d53e9418423b55cc9f9e399ddc6757ec\n",
+      "lineStart": 5,
+      "lineEnd": 8,
+      "byteStart": 50,
+      "byteEnd": 273,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Finding and correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and correction"
+      ],
+      "positionInSection": 1,
+      "key": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.",
+      "text": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.",
+      "rawText": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n",
+      "lineStart": 12,
+      "lineEnd": 12,
+      "byteStart": 302,
+      "byteEnd": 770,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Finding and correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and correction"
+      ],
+      "positionInSection": 2,
+      "key": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.",
+      "text": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.",
+      "rawText": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.\n",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 771,
+      "byteEnd": 1527,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Finding and correction",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and correction"
+      ],
+      "positionInSection": 3,
+      "key": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.",
+      "text": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.",
+      "rawText": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.\n",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 1528,
+      "byteEnd": 1812,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Assumptions and concerns",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Fix pass",
+        "Assumptions and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.",
+      "text": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.",
+      "rawText": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n",
+      "lineStart": 95,
+      "lineEnd": 95,
+      "byteStart": 6633,
+      "byteEnd": 7209,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "section": "Assumptions and concerns",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Fix pass",
+        "Assumptions and concerns"
+      ],
+      "positionInSection": 2,
+      "key": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.",
+      "text": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.",
+      "rawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "lineStart": 97,
+      "lineEnd": 97,
+      "byteStart": 7210,
+      "byteEnd": 7526,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

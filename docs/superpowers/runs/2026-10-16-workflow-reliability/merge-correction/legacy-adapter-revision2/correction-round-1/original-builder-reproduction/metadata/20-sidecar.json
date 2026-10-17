@@ -1,0 +1,692 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-report-fix.md",
+  "rawArtifact": "task-report-history-r1/raw/task-15-report-fix.md",
+  "rawSha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+  "rawByteCount": 8168,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-report-fix.md",
+    "durablePath": "task-report-history-r1/raw/task-15-report-fix.md",
+    "sha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+    "byteCount": 8168,
+    "logicalRole": "report-fix",
+    "ordinal": 15,
+    "logicalTaskId": "super-plan-ufz.9",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-15-report-fix.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": false,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Fix pass\n",
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "lineStart": 1,
+      "lineEnd": 10,
+      "byteStart": 0,
+      "byteEnd": 670,
+      "bodyLineStart": 2,
+      "rawText": "## Fix pass\n\nStatus: FIXED\n\n- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n- Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).\n- Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.\n- Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.\n- Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.\n\n",
+      "bodyRawText": "\nStatus: FIXED\n\n- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n- Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).\n- Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.\n- Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.\n- Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED\n",
+          "text": "Status: FIXED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 13,
+          "byteEnd": 27
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+          "text": "Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 28,
+          "byteEnd": 210
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).\n",
+          "text": "Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 210,
+          "byteEnd": 291
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.\n",
+          "text": "Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 291,
+          "byteEnd": 351
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.\n",
+          "text": "Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 351,
+          "byteEnd": 417
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.\n",
+          "text": "Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 417,
+          "byteEnd": 669
+        }
+      ]
+    },
+    {
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "headingLevel": 3,
+      "headingRaw": "### Change and self-review\n",
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "lineStart": 11,
+      "lineEnd": 21,
+      "byteStart": 670,
+      "byteEnd": 2160,
+      "bodyLineStart": 12,
+      "rawText": "### Change and self-review\n\n`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n\nChanged files:\n\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nThe replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.\n\n",
+      "bodyRawText": "\n`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n\nChanged files:\n\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nThe replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n",
+          "text": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 698,
+          "byteEnd": 1444
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Changed files:\n",
+          "text": "Changed files:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1445,
+          "byteEnd": 1460
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js`\n",
+          "text": "`skills/super-code/coordinator.js`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1461,
+          "byteEnd": 1498
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+          "text": "`tests/super-code/replay-harness.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1498,
+          "byteEnd": 1538
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.\n",
+          "text": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1539,
+          "byteEnd": 2159
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN evidence and final verification",
+      "sectionOrdinal": 3,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN evidence and final verification\n",
+      "hierarchy": [
+        "Fix pass",
+        "RED/GREEN evidence and final verification"
+      ],
+      "lineStart": 22,
+      "lineEnd": 66,
+      "byteStart": 2160,
+      "byteEnd": 6269,
+      "bodyLineStart": 23,
+      "rawText": "### RED/GREEN evidence and final verification\n\nAll executable replay runs used this isolated environment after the absolute task-worktree `cd`:\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.9 HOME=/tmp/sp-bce79baa/super-plan-ufz.9/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/state node tests/super-code/replay-harness.mjs\n```\n\n1. RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.\n2. RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:\n\n```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```\n\n3. GREEN, the same exact focused scenario with the production fix: same prefix and `node tests/super-code/.retry-replay.mjs`; exit 0, `39 passed, 0 failed`.\n4. Final GREEN, full replay with the final committed source: the full exact command above, exit 0, about 64 seconds. Relevant output:\n\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[PASS] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] Git recovers while review fails on retry: final review uses the complete successful capture\n[PASS] review recovers while Git fails on retry: successful Git source survives without a failed attempt error\n[PASS] both independent sources recover with unavailable ledger: failed source attempts remain qualified gaps\n[PASS] opposite half pairs: no mixed-attempt review pair\n[PASS] partial retry after complete capture: no mixed-attempt review pair\n[PASS] complete retry after partial capture: no mixed-attempt review pair\n[PASS] null retry retains successful empty Git observation\n[PASS] null retry retains coherent review capture\n2191 passed, 0 failed\n```\n\nThe replay exercises both `readLedger` callers (Resume and Finish), downstream Metrics and final review dispatch, and all three documented dryRun scenarios. Canonical/fix-blocked/parked expected counts stay 48/19/23. No producer script or operative skill prose changed in this fix pass, so the earlier script/contract evidence remains as recorded above. `git diff --check` exited 0 with no output. After commit, `git status --short` was empty and `git merge-base --is-ancestor 7074121343636addd41f80ef5261de6ffb74ab80 HEAD` exited 0. Disposable extraction and scratch logs were removed after their relevant output was recorded here.\n\n",
+      "bodyRawText": "\nAll executable replay runs used this isolated environment after the absolute task-worktree `cd`:\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.9 HOME=/tmp/sp-bce79baa/super-plan-ufz.9/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/state node tests/super-code/replay-harness.mjs\n```\n\n1. RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.\n2. RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:\n\n```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```\n\n3. GREEN, the same exact focused scenario with the production fix: same prefix and `node tests/super-code/.retry-replay.mjs`; exit 0, `39 passed, 0 failed`.\n4. Final GREEN, full replay with the final committed source: the full exact command above, exit 0, about 64 seconds. Relevant output:\n\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[PASS] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] Git recovers while review fails on retry: final review uses the complete successful capture\n[PASS] review recovers while Git fails on retry: successful Git source survives without a failed attempt error\n[PASS] both independent sources recover with unavailable ledger: failed source attempts remain qualified gaps\n[PASS] opposite half pairs: no mixed-attempt review pair\n[PASS] partial retry after complete capture: no mixed-attempt review pair\n[PASS] complete retry after partial capture: no mixed-attempt review pair\n[PASS] null retry retains successful empty Git observation\n[PASS] null retry retains coherent review capture\n2191 passed, 0 failed\n```\n\nThe replay exercises both `readLedger` callers (Resume and Finish), downstream Metrics and final review dispatch, and all three documented dryRun scenarios. Canonical/fix-blocked/parked expected counts stay 48/19/23. No producer script or operative skill prose changed in this fix pass, so the earlier script/contract evidence remains as recorded above. `git diff --check` exited 0 with no output. After commit, `git status --short` was empty and `git merge-base --is-ancestor 7074121343636addd41f80ef5261de6ffb74ab80 HEAD` exited 0. Disposable extraction and scratch logs were removed after their relevant output was recorded here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All executable replay runs used this isolated environment after the absolute task-worktree `cd`:\n",
+          "text": "All executable replay runs used this isolated environment after the absolute task-worktree `cd`:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2207,
+          "byteEnd": 2304
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.9 HOME=/tmp/sp-bce79baa/super-plan-ufz.9/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/state node tests/super-code/replay-harness.mjs\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.9 HOME=/tmp/sp-bce79baa/super-plan-ufz.9/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.9/state node tests/super-code/replay-harness.mjs\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 26,
+          "lineEnd": 29,
+          "byteStart": 2305,
+          "byteEnd": 2800
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "1. RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.\n",
+          "text": "RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.",
+          "listMarker": "1. ",
+          "positionInSection": 3,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2801,
+          "byteEnd": 3112
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "2. RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:\n",
+          "text": "RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:",
+          "listMarker": "2. ",
+          "positionInSection": 4,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 3112,
+          "byteEnd": 3532
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```\n",
+          "text": "```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 34,
+          "lineEnd": 42,
+          "byteStart": 3533,
+          "byteEnd": 4169
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "3. GREEN, the same exact focused scenario with the production fix: same prefix and `node tests/super-code/.retry-replay.mjs`; exit 0, `39 passed, 0 failed`.\n",
+          "text": "GREEN, the same exact focused scenario with the production fix: same prefix and `node tests/super-code/.retry-replay.mjs`; exit 0, `39 passed, 0 failed`.",
+          "listMarker": "3. ",
+          "positionInSection": 6,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 4170,
+          "byteEnd": 4327
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "4. Final GREEN, full replay with the final committed source: the full exact command above, exit 0, about 64 seconds. Relevant output:\n",
+          "text": "Final GREEN, full replay with the final committed source: the full exact command above, exit 0, about 64 seconds. Relevant output:",
+          "listMarker": "4. ",
+          "positionInSection": 7,
+          "lineStart": 45,
+          "lineEnd": 45,
+          "byteStart": 4327,
+          "byteEnd": 4461
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[PASS] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] Git recovers while review fails on retry: final review uses the complete successful capture\n[PASS] review recovers while Git fails on retry: successful Git source survives without a failed attempt error\n[PASS] both independent sources recover with unavailable ledger: failed source attempts remain qualified gaps\n[PASS] opposite half pairs: no mixed-attempt review pair\n[PASS] partial retry after complete capture: no mixed-attempt review pair\n[PASS] complete retry after partial capture: no mixed-attempt review pair\n[PASS] null retry retains successful empty Git observation\n[PASS] null retry retains coherent review capture\n2191 passed, 0 failed\n```\n",
+          "text": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[PASS] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[PASS] Git recovers while review fails on retry: final review uses the complete successful capture\n[PASS] review recovers while Git fails on retry: successful Git source survives without a failed attempt error\n[PASS] both independent sources recover with unavailable ledger: failed source attempts remain qualified gaps\n[PASS] opposite half pairs: no mixed-attempt review pair\n[PASS] partial retry after complete capture: no mixed-attempt review pair\n[PASS] complete retry after partial capture: no mixed-attempt review pair\n[PASS] null retry retains successful empty Git observation\n[PASS] null retry retains coherent review capture\n2191 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 47,
+          "lineEnd": 63,
+          "byteStart": 4462,
+          "byteEnd": 5634
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The replay exercises both `readLedger` callers (Resume and Finish), downstream Metrics and final review dispatch, and all three documented dryRun scenarios. Canonical/fix-blocked/parked expected counts stay 48/19/23. No producer script or operative skill prose changed in this fix pass, so the earlier script/contract evidence remains as recorded above. `git diff --check` exited 0 with no output. After commit, `git status --short` was empty and `git merge-base --is-ancestor 7074121343636addd41f80ef5261de6ffb74ab80 HEAD` exited 0. Disposable extraction and scratch logs were removed after their relevant output was recorded here.\n",
+          "text": "The replay exercises both `readLedger` callers (Resume and Finish), downstream Metrics and final review dispatch, and all three documented dryRun scenarios. Canonical/fix-blocked/parked expected counts stay 48/19/23. No producer script or operative skill prose changed in this fix pass, so the earlier script/contract evidence remains as recorded above. `git diff --check` exited 0 with no output. After commit, `git status --short` was empty and `git merge-base --is-ancestor 7074121343636addd41f80ef5261de6ffb74ab80 HEAD` exited 0. Disposable extraction and scratch logs were removed after their relevant output was recorded here.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 65,
+          "lineEnd": 65,
+          "byteStart": 5635,
+          "byteEnd": 6268
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Test hygiene\n",
+      "hierarchy": [
+        "Fix pass",
+        "Test hygiene"
+      ],
+      "lineStart": 67,
+      "lineEnd": 78,
+      "byteStart": 6269,
+      "byteEnd": 7686,
+      "bodyLineStart": 68,
+      "rawText": "### Test hygiene\n\nCompleted-run hygiene checks and the final prescribed stop both exited 0 with no output: no leaked matches and no `survived:` lines. They ran from `/Users/alepar/AleCode/superpowers`, outside the two owned roots:\n\n```sh\ncd /Users/alepar/AleCode/superpowers\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\n```\n\nOne earlier check was inadvertently started before the full RED replay had completed. It listed active replay/cleanup-fixture processes, PIDs 16249, 16268, 31386, 31552, 31615, 31762, 31764, 31765, 31766 and 31793. That scan was not a post-run leak result. The replay and its fixtures completed naturally; after completion, the prescribed check found none. The focused extraction itself starts no external subprocess. No server, daemon or watcher was started by this fix pass, and no test was terminated before its verdict.\n\n",
+      "bodyRawText": "\nCompleted-run hygiene checks and the final prescribed stop both exited 0 with no output: no leaked matches and no `survived:` lines. They ran from `/Users/alepar/AleCode/superpowers`, outside the two owned roots:\n\n```sh\ncd /Users/alepar/AleCode/superpowers\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\n```\n\nOne earlier check was inadvertently started before the full RED replay had completed. It listed active replay/cleanup-fixture processes, PIDs 16249, 16268, 31386, 31552, 31615, 31762, 31764, 31765, 31766 and 31793. That scan was not a post-run leak result. The replay and its fixtures completed naturally; after completion, the prescribed check found none. The focused extraction itself starts no external subprocess. No server, daemon or watcher was started by this fix pass, and no test was terminated before its verdict.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Completed-run hygiene checks and the final prescribed stop both exited 0 with no output: no leaked matches and no `survived:` lines. They ran from `/Users/alepar/AleCode/superpowers`, outside the two owned roots:\n",
+          "text": "Completed-run hygiene checks and the final prescribed stop both exited 0 with no output: no leaked matches and no `survived:` lines. They ran from `/Users/alepar/AleCode/superpowers`, outside the two owned roots:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 69,
+          "lineEnd": 69,
+          "byteStart": 6287,
+          "byteEnd": 6500
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/AleCode/superpowers\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\n```\n",
+          "text": "```sh\ncd /Users/alepar/AleCode/superpowers\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.9 /tmp/sp-bce79baa/super-plan-ufz.9\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 71,
+          "lineEnd": 75,
+          "byteStart": 6501,
+          "byteEnd": 7160
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "One earlier check was inadvertently started before the full RED replay had completed. It listed active replay/cleanup-fixture processes, PIDs 16249, 16268, 31386, 31552, 31615, 31762, 31764, 31765, 31766 and 31793. That scan was not a post-run leak result. The replay and its fixtures completed naturally; after completion, the prescribed check found none. The focused extraction itself starts no external subprocess. No server, daemon or watcher was started by this fix pass, and no test was terminated before its verdict.\n",
+          "text": "One earlier check was inadvertently started before the full RED replay had completed. It listed active replay/cleanup-fixture processes, PIDs 16249, 16268, 31386, 31552, 31615, 31762, 31764, 31765, 31766 and 31793. That scan was not a post-run leak result. The replay and its fixtures completed naturally; after completion, the prescribed check found none. The focused extraction itself starts no external subprocess. No server, daemon or watcher was started by this fix pass, and no test was terminated before its verdict.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 77,
+          "lineEnd": 77,
+          "byteStart": 7161,
+          "byteEnd": 7685
+        }
+      ]
+    },
+    {
+      "section": "Assumptions, amendments and concerns",
+      "sectionOrdinal": 5,
+      "headingLevel": 3,
+      "headingRaw": "### Assumptions, amendments and concerns\n",
+      "hierarchy": [
+        "Fix pass",
+        "Assumptions, amendments and concerns"
+      ],
+      "lineStart": 79,
+      "lineEnd": 81,
+      "byteStart": 7686,
+      "byteEnd": 8168,
+      "bodyLineStart": 80,
+      "rawText": "### Assumptions, amendments and concerns\n\nRead current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+          "text": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 81,
+          "lineEnd": 81,
+          "byteStart": 7728,
+          "byteEnd": 8168
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED",
+      "text": "Status: FIXED",
+      "rawText": "Status: FIXED\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 13,
+      "byteEnd": 27,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 2,
+      "key": "Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.",
+      "text": "Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.",
+      "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 28,
+      "byteEnd": 210,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 3,
+      "key": "Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).",
+      "text": "Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).",
+      "rawText": "- Original stacked base: `7074121343636addd41f80ef5261de6ffb74ab80` (unchanged).\n",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 210,
+      "byteEnd": 291,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 4,
+      "key": "Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.",
+      "text": "Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.",
+      "rawText": "- Pre-fix head: `c3bfd1f9e3109f136b091f843d270455b367cad9`.\n",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 291,
+      "byteEnd": 351,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 5,
+      "key": "Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.",
+      "text": "Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.",
+      "rawText": "- Committed fix head: `548a0b08d7b02a7fdfcb67f4e6899013b6276b9d`.\n",
+      "lineStart": 8,
+      "lineEnd": 8,
+      "byteStart": 351,
+      "byteEnd": 417,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Fix pass",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 6,
+      "key": "Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.",
+      "text": "Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.",
+      "rawText": "- Branch: `task-super-plan-ufz.9`; stacked: true. No rebase, integration mutation, delegation, or Herdr write occurred. The original base remains the coordinator's future `--onto` boundary. Tests exercise this task branch, not a future rebased source.\n",
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 417,
+      "byteEnd": 669,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "positionInSection": 1,
+      "key": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.",
+      "text": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.",
+      "rawText": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 698,
+      "byteEnd": 1444,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "positionInSection": 2,
+      "key": "Changed files:",
+      "text": "Changed files:",
+      "rawText": "Changed files:\n",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1445,
+      "byteEnd": 1460,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "positionInSection": 3,
+      "key": "`skills/super-code/coordinator.js`",
+      "text": "`skills/super-code/coordinator.js`",
+      "rawText": "- `skills/super-code/coordinator.js`\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1461,
+      "byteEnd": 1498,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "positionInSection": 4,
+      "key": "`tests/super-code/replay-harness.mjs`",
+      "text": "`tests/super-code/replay-harness.mjs`",
+      "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1498,
+      "byteEnd": 1538,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Change and self-review",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Fix pass",
+        "Change and self-review"
+      ],
+      "positionInSection": 5,
+      "key": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.",
+      "text": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.",
+      "rawText": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1539,
+      "byteEnd": 2159,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "section": "Assumptions, amendments and concerns",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Fix pass",
+        "Assumptions, amendments and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.",
+      "text": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.",
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "lineStart": 81,
+      "lineEnd": 81,
+      "byteStart": 7728,
+      "byteEnd": 8168,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance.",
+    "Standardized finding headings absent: full narrative and original labels retained; absence does not imply zero findings."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

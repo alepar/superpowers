@@ -1,0 +1,443 @@
+[
+  {
+    "objectId": "o00233",
+    "sourceId": "s0384",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-report.md",
+    "sourceSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+    "location": {
+      "lineStart": 67,
+      "lineEnd": 68,
+      "charStart": 5358,
+      "charEnd": 5639
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": " actual distinct IDs\n[PASS] Finish reconciliation precedes deterministic metrics\n[PASS] Finish-only closure is reflected in the actual Metrics lines\n2152 passed, 0 failed\n```\n\n2. `bash tests/super-auto/test-scripts.sh` — exit 0; 3 seconds.\n\n```text\n[PASS] deterministic metrics separate repaired rejected deferred and outstanding\n[PASS] raw rejected and unverified sections are separate from actionable finding counts\n[PASS] linked occurrences count once as a finding but retain raw occurrence count\n[PASS] metric projection preserves gap exit\n[PASS] partial projection retains supported metrics with explicit scope\nAll super-auto script tests passed\n```\n\nActual emitted projection example:\n\n```json\n",
+    "object": {
+      "scope": "retained sources",
+      "sources": 3,
+      "sourceKinds": [
+        "final-review",
+        "roast"
+      ],
+      "occurrences": 7,
+      "occurrenceGroups": 7,
+      "findings": 5,
+      "otherSectionGroups": 2,
+      "sections": [
+        "Must fix",
+        "Deferred OK",
+        "Rejected",
+        "Not verified"
+      ],
+      "repaired": 1,
+      "rejected": 1,
+      "outstanding": 3,
+      "deferred": 1,
+      "gaps": 0
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.9",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00269",
+    "sourceId": "s0444",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 21,
+      "lineEnd": 22,
+      "charStart": 1930,
+      "charEnd": 2207
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n## Downstream field/operation examples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "pending-closure",
+      "operation": "record",
+      "reason": "tracker closure unconfirmed",
+      "evidence": [
+        "task-1-report.md",
+        "bead:bd-112",
+        "bead:bd-109"
+      ],
+      "data": {
+        "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "reviewBead": "bd-112",
+        "blockerBead": "bd-109"
+      }
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00270",
+    "sourceId": "s0444",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 25,
+      "lineEnd": 26,
+      "charStart": 2341,
+      "charEnd": 2516
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "nt.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n## Downstream field/operation examples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "pending-closure",
+      "operation": "clear",
+      "reason": "tracker closure confirmed",
+      "evidence": [
+        "bead:bd-101",
+        "bead:bd-112",
+        "bead:bd-109"
+      ],
+      "data": {}
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00271",
+    "sourceId": "s0444",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 29,
+      "lineEnd": 30,
+      "charStart": 2549,
+      "charEnd": 2797
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "amples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\nFix history fixture:\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "fix",
+      "operation": "record",
+      "reason": "review finding",
+      "evidence": [
+        "task-1-review.md",
+        "task-1-report.md"
+      ],
+      "data": {
+        "outcome": "FIXED",
+        "reviewPath": "task-1-review.md",
+        "head": "ffffffffffffffffffffffffffffffffffffffff"
+      }
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00272",
+    "sourceId": "s0449",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-5-report.md",
+    "sourceSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+    "location": {
+      "lineStart": 31,
+      "lineEnd": 32,
+      "charStart": 3462,
+      "charEnd": 3799
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "uce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.\n\nOrdinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.\n\nConcrete producer example (illustrative hash):\n\n```json\n",
+    "object": {
+      "evidence": [
+        {
+          "sourceTree": "d84541aed84541aed84541aed84541aed84541ae",
+          "command": "node smoke.mjs",
+          "configuration": "target=staging",
+          "outcome": "pass",
+          "location": "evidence/smoke.log",
+          "kind": "live"
+        }
+      ],
+      "requiredLiveChecks": [
+        {
+          "sourceTree": "d84541aed84541aed84541aed84541aed84541ae",
+          "command": "node smoke.mjs",
+          "configuration": "target=staging"
+        }
+      ]
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.5",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00287",
+    "sourceId": "s0489",
+    "path": "evidence/super-plan-ufz.9/metrics-examples.md",
+    "sourceSha256": "c67396e4a0724dadc64206c46f064594641dccdf777a5d920c52507b0285babf",
+    "location": {
+      "lineStart": 35,
+      "lineEnd": 61,
+      "charStart": 2250,
+      "charEnd": 2750
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "on; one\nretained historical FIXED record. The Git observation identifies bd-999 while ledger\nand completed identify bd-101. Those concrete differences remain unresolved; no cause\nis established. A task FIXED record supplies no repaired-finding count.\n\n## Unreadable ledger with independent known observations\n\nFixture: `metrics partial sources retain known durable fix history and source gaps`.\n\n```text\nMetrics: UNAVAILABLE (merges) — the Finish ledger re-read returned null or unavailable transport (unreadable); no ledger counts derived; this invocation only: completed 1 (parked 0) · escalated 0 · pending retry 0 · append-failed 0; known historical FIXED 1 (supported records only)\n```\n\n```json\n",
+    "object": {
+      "ledger": {
+        "status": "unreadable"
+      },
+      "completed": [
+        "bd-101"
+      ],
+      "findings": {
+        "status": "unavailable",
+        "reason": "finding population requires scope-dispositions --project run.md"
+      },
+      "gaps": [
+        "run-wide ledger totals unavailable: unreadable"
+      ],
+      "git": {
+        "status": "observed",
+        "ids": [
+          "bd-101"
+        ]
+      },
+      "fixHistory": {
+        "scope": "supported known durable records (partial until Finish ledger read)",
+        "attempts": 1,
+        "fixed": 1
+      }
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.9",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00288",
+    "sourceId": "s0489",
+    "path": "evidence/super-plan-ufz.9/metrics-examples.md",
+    "sourceSha256": "c67396e4a0724dadc64206c46f064594641dccdf777a5d920c52507b0285babf",
+    "location": {
+      "lineStart": 73,
+      "lineEnd": 96,
+      "charStart": 3202,
+      "charEnd": 3572
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": " unavailable: unreadable\"\n  ],\n  \"git\": {\n    \"status\": \"observed\",\n    \"ids\": [\n      \"bd-101\"\n    ]\n  },\n  \"fixHistory\": {\n    \"scope\": \"supported known durable records (partial until Finish ledger read)\",\n    \"attempts\": 1,\n    \"fixed\": 1\n  }\n}\n```\n\nSupported reading: known completed bd-101, observed Git landing bd-101 and one\nsupported historical FIXED record remain available. Run-wide ledger totals and\nfinding coverage remain unestablished. Remaining includes the transport/coverage gap;\nzero final merges or a clean run is not established.\n\n## Raw review sections and actionable finding groups\n\nFixture: `scope-dispositions: outstanding occurrence projection` / raw-sections case.\n\n```json\n",
+    "object": {
+      "scope": "retained sources",
+      "sources": 3,
+      "sourceKinds": [
+        "final-review",
+        "roast"
+      ],
+      "occurrences": 7,
+      "occurrenceGroups": 7,
+      "findings": 5,
+      "otherSectionGroups": 2,
+      "sections": [
+        "Must fix",
+        "Deferred OK",
+        "Rejected",
+        "Not verified"
+      ],
+      "repaired": 1,
+      "rejected": 1,
+      "outstanding": 3,
+      "deferred": 1,
+      "gaps": 0
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.9",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00313",
+    "sourceId": "s0538",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-report.md",
+    "sourceSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+    "location": {
+      "lineStart": 67,
+      "lineEnd": 68,
+      "charStart": 5358,
+      "charEnd": 5639
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": " actual distinct IDs\n[PASS] Finish reconciliation precedes deterministic metrics\n[PASS] Finish-only closure is reflected in the actual Metrics lines\n2152 passed, 0 failed\n```\n\n2. `bash tests/super-auto/test-scripts.sh` — exit 0; 3 seconds.\n\n```text\n[PASS] deterministic metrics separate repaired rejected deferred and outstanding\n[PASS] raw rejected and unverified sections are separate from actionable finding counts\n[PASS] linked occurrences count once as a finding but retain raw occurrence count\n[PASS] metric projection preserves gap exit\n[PASS] partial projection retains supported metrics with explicit scope\nAll super-auto script tests passed\n```\n\nActual emitted projection example:\n\n```json\n",
+    "object": {
+      "scope": "retained sources",
+      "sources": 3,
+      "sourceKinds": [
+        "final-review",
+        "roast"
+      ],
+      "occurrences": 7,
+      "occurrenceGroups": 7,
+      "findings": 5,
+      "otherSectionGroups": 2,
+      "sections": [
+        "Must fix",
+        "Deferred OK",
+        "Rejected",
+        "Not verified"
+      ],
+      "repaired": 1,
+      "rejected": 1,
+      "outstanding": 3,
+      "deferred": 1,
+      "gaps": 0
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.9",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00349",
+    "sourceId": "s0579",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 21,
+      "lineEnd": 22,
+      "charStart": 1930,
+      "charEnd": 2207
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n## Downstream field/operation examples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "pending-closure",
+      "operation": "record",
+      "reason": "tracker closure unconfirmed",
+      "evidence": [
+        "task-1-report.md",
+        "bead:bd-112",
+        "bead:bd-109"
+      ],
+      "data": {
+        "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "reviewBead": "bd-112",
+        "blockerBead": "bd-109"
+      }
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00350",
+    "sourceId": "s0579",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 25,
+      "lineEnd": 26,
+      "charStart": 2341,
+      "charEnd": 2516
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "nt.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n## Downstream field/operation examples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "pending-closure",
+      "operation": "clear",
+      "reason": "tracker closure confirmed",
+      "evidence": [
+        "bead:bd-101",
+        "bead:bd-112",
+        "bead:bd-109"
+      ],
+      "data": {}
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00351",
+    "sourceId": "s0579",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+    "sourceSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "location": {
+      "lineStart": 29,
+      "lineEnd": 30,
+      "charStart": 2549,
+      "charEnd": 2797
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "amples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\nFix history fixture:\n```json\n",
+    "object": {
+      "version": 1,
+      "id": "bd-101",
+      "kind": "fix",
+      "operation": "record",
+      "reason": "review finding",
+      "evidence": [
+        "task-1-review.md",
+        "task-1-report.md"
+      ],
+      "data": {
+        "outcome": "FIXED",
+        "reviewPath": "task-1-review.md",
+        "head": "ffffffffffffffffffffffffffffffffffffffff"
+      }
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.4",
+    "arrayLabel": null
+  },
+  {
+    "objectId": "o00352",
+    "sourceId": "s0582",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-report.md",
+    "sourceSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+    "location": {
+      "lineStart": 31,
+      "lineEnd": 32,
+      "charStart": 3462,
+      "charEnd": 3799
+    },
+    "form": "json-fence",
+    "classification": "example-or-fixture-output",
+    "contextBefore": "uce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.\n\nOrdinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.\n\nConcrete producer example (illustrative hash):\n\n```json\n",
+    "object": {
+      "evidence": [
+        {
+          "sourceTree": "d84541aed84541aed84541aed84541aed84541ae",
+          "command": "node smoke.mjs",
+          "configuration": "target=staging",
+          "outcome": "pass",
+          "location": "evidence/smoke.log",
+          "kind": "live"
+        }
+      ],
+      "requiredLiveChecks": [
+        {
+          "sourceTree": "d84541aed84541aed84541aed84541aed84541ae",
+          "command": "node smoke.mjs",
+          "configuration": "target=staging"
+        }
+      ]
+    },
+    "classificationBasis": "Explicit downstream fixture/illustrative producer/projection example; never a real run obligation.",
+    "taskIdentity": "super-plan-ufz.5",
+    "arrayLabel": null
+  }
+]

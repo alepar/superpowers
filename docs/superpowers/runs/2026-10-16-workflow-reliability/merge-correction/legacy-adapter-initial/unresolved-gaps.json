@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "gaps": [
+    {
+      "id": "interpretation-01-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Historical fresh-agent acceptance status beyond this source is unknown; Issues:none has explicitly narrower scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "unknown-original-outcome-01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "kind": "original-format-kind-verdict-unrecognized",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-02-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Whether repeat measurements can be semantically reconciled is intentionally not inferred; no actual agent/live acceptance established.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-03-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Source chronology and same-failure semantic correspondence remain reviewer judgments; live-labelled fixture inputs are synthetic.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-05-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Source does not itself establish completion of the parent-owned behavioral evaluation.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-06-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "kind": "semantic-interpretation-gap",
+      "basis": "The exact current applicability/disposition of the partial-close defect is outside this reading; FIXED is an author claim.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-07-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "No current resolution follows from embedded FIXED statuses; separate seam fixture history and pending live eval remain distinct.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-09-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Resolution claim concerns one earlier artifact; this reading does not validate the repair against current code or create an occurrence identity link.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-11-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Supplied baseline trial counts are historical author attribution, not independently checked eval artifacts; absent seam diff was replaced by quoted dispatch and this limitation must remain.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-15-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Semantic sufficiency of evidence remains agent-owned; exact-looking complete JSON examples are not actual retained run records.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-18-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Absence of optional direct input cannot itself distinguish missing versus unnecessary; callers must declare known requirements. Baseline does not establish collector post behavior.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-20-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "kind": "semantic-interpretation-gap",
+      "basis": "No future rebased source was tested in this historical fix report; its test claims cannot silently transfer to another tree.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-21-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Generated projection populations exclude task reports and cannot establish run-wide totals; named seam artifact absent, quoted dispatch used.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-25-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Earlier report sections describe different original source; named seam file absent. Preserve exact separate revisions and quoted-dispatch qualification.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-26-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+      "kind": "semantic-interpretation-gap",
+      "basis": "finding:null is semantically empty only in this complete CLEAN scoped report; a generic null response elsewhere could be unknown/unavailable.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-32-1",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "kind": "semantic-interpretation-gap",
+      "basis": "JSON/prose same-source appearances remain separately located; no cross-source identity merge.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-36-1",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Do not use fix-pass FIXED/superseding assertion as resolution of original source-local concern or any other source occurrence.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "unknown-original-outcome-47",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "kind": "original-format-kind-verdict-unrecognized",
+      "status": "open"
+    },
+    {
+      "id": "unknown-original-outcome-49",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "kind": "original-format-kind-verdict-unrecognized",
+      "status": "open"
+    },
+    {
+      "id": "unknown-original-outcome-53",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "kind": "original-format-kind-verdict-unrecognized",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-58-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-62-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "unknown-original-outcome-73",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+      "kind": "original-format-kind-verdict-unrecognized",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-75-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "strict-supplemental-75",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "kind": "supplemental-qualification-owner-mapping",
+      "count": 4,
+      "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-76-1",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "strict-supplemental-76",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "kind": "supplemental-qualification-owner-mapping",
+      "count": 4,
+      "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-77-1",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-77-2",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Structured acceptancePending:false is a task-fix assertion while caller/root acceptance remains expressly pending; neither overwrites the other.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-77-3",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "The same-byte Task19 retained/canonical pairs establish byte equality only, not finding identity or disposition.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "strict-supplemental-77",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "kind": "supplemental-qualification-owner-mapping",
+      "count": 14,
+      "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-78-1",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-78-2",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Historical stopped PID29238 command was unavailable and concurrent read-only Git capture may overlap; no supported test-leak attribution.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "interpretation-78-3",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "kind": "semantic-interpretation-gap",
+      "basis": "Prior BLOCKED scope-hold and latest IMPLEMENTED status are temporal layers in one source; retain both without semantic clearing.",
+      "owner": "parent/fresh semantic reviewer",
+      "status": "open"
+    },
+    {
+      "id": "strict-supplemental-78",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "kind": "supplemental-qualification-owner-mapping",
+      "count": 7,
+      "basis": "Original strict24 retained exactly. Additional reviewed pending/coverage qualifications remain exact supplemental spans; parent/fresh review must map to named requirements without a conflicting same-source extraction.",
+      "status": "open"
+    }
+  ],
+  "globalGaps": [
+    {
+      "id": "fresh-review-before-registration",
+      "basis": "All records and supported correspondences here remain proposals; parent/fresh independent review must validate selection, full-item boundaries, raw mappings, status semantics and owner accounting before any canonical registration."
+    },
+    {
+      "id": "historical-repair-sufficiency",
+      "basis": "No repair/fix/CLEAN/DONE/later-silence/rejection disposition applied. Historical rejections retain their original state/reasons only."
+    },
+    {
+      "id": "requirement-ownership",
+      "basis": "Every pending obligation and strict supplemental qualification must be mapped to the current named requirement inventory by its acceptance owner before completeness/acceptance claims."
+    },
+    {
+      "id": "legacy-canonicalization-policy",
+      "basis": "Adapter section labels and physical-order item boundaries are prospective; original section labels/ordinals and bytes remain separate. Current-code applicability and semantic cross-source identities remain unjudged."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Committing complete assembled review inputs feeds previous generated slices into each subsequent invocation, causing recursive input growth and an actual filename-length failure after repeated successful collections.",
+      "location": "skills/super-auto/scripts/report-status:224",
+      "category": "premortem",
+      "external": false,
+      "evidence": "Frozen HEAD ff2f79f62cc34084c8df20edc5c2e4f201a5d630 recursively walks the whole assembled tree at report-status:220-224 and copies those files under the committed run directory at :232-242. super-auto/SKILL.md:400-402 requires committing that collection before re-entry. coordinator.js:2840 captures the complete branch range from the default-branch merge base; assembler-prompt.md:26-27 slices every changed file using its flattened full path. No rule bounds or excludes generated archive inputs. I independently checked the seam candidate in the supplied final integration report: python3 /tmp/ufz-pr1/evidence-premortem/recursive-probe.py initializes an owned Git fixture, changes one product file once, follows those exact full-range diff/flattened-name rules, invokes the real frozen report-status --collect and report-verdict helpers with fresh identities, then commits each successful collection. Invocation 1/2/3 each exit 0, collection complete; changed files grow 2/7/17, slice bytes 420/4355/17189, and copies of the one seed change 1/2/4 without further product changes. Invocation 4 has 37 changed files and an actual OSError errno 63 when writing a 292-byte flattened basename. Full receipt, offending path and all outputs: /tmp/ufz-pr1/evidence-premortem/recursive-result.json; executable fixture: recursive-probe.py beside it. This affects the short-lived CLI repeatedly re-entered on the same run branch, not a hypothetical long-running service. Base-versus-head: d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 has no collection/archive branch or mandatory commit instruction; the PR adds this feedback source to the existing full-range assembler. Frozen source copies/diffs and introduced-check.json are retained beside the receipt.",
+      "kind": "ISSUE"
+    }
+  ]
+}

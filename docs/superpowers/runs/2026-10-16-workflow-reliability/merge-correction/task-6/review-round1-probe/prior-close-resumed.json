@@ -1,0 +1,62 @@
+{
+  "t0": "2026-10-01T00:00:00Z",
+  "launch": {
+    "epicId": "ep",
+    "config": {
+      "concurrency": 1
+    }
+  },
+  "agents": [
+    {
+      "label": "ledger-append:launch",
+      "start": 0,
+      "end": 1
+    },
+    {
+      "label": "plan",
+      "start": 1,
+      "end": 2,
+      "result": {
+        "mapping": [
+          {
+            "id": "ep.1",
+            "n": 1,
+            "deps": []
+          }
+        ]
+      }
+    },
+    {
+      "label": "impl:ep.1",
+      "start": 10,
+      "end": 20,
+      "result": {
+        "status": "ALREADY_MERGED"
+      }
+    },
+    {
+      "label": "close-only:ep.1:landed",
+      "start": 21,
+      "end": 22,
+      "result": {
+        "status": "CLOSED"
+      }
+    },
+    {
+      "label": "close-only:ep.1:verification",
+      "start": 60,
+      "end": 61,
+      "result": {
+        "status": "CLOSED"
+      }
+    },
+    {
+      "label": "ledger:ep.1:verification-settlement",
+      "start": 62,
+      "end": 63,
+      "result": {
+        "appended": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "actualArgv": [
+    "/bin/bash",
+    "tests/check.sh"
+  ],
+  "afterSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-state"
+    },
+    "head": "389279ba0f17c361ede4fba492430be2ee5f0ed6",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "Mzg5Mjc5YmEwZjE3YzM2MWVkZTRmYmE0OTI0MzBiZTJlZTVmMGVkNgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTIwNDgwOGQ2ZmVhZGExOGQ2ZGM3ZWRjZjUwY2YyMTg3ZjFjNGQ5MQo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e204808d6feada18d6dc7edcf50cf2187f1c4d91"
+  },
+  "beforeSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/control/xdg-state"
+    },
+    "head": "389279ba0f17c361ede4fba492430be2ee5f0ed6",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "Mzg5Mjc5YmEwZjE3YzM2MWVkZTRmYmE0OTI0MzBiZTJlZTVmMGVkNgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTIwNDgwOGQ2ZmVhZGExOGQ2ZGM3ZWRjZjUwY2YyMTg3ZjFjNGQ5MQo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e204808d6feada18d6dc7edcf50cf2187f1c4d91"
+  },
+  "cause": null,
+  "configurationSha256": "435ac4b0898d9a1dadd49dba812c222ba0fe2926ab2feb5b47016f911ad484c0",
+  "cwd": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/clone",
+  "durationSeconds": 0.049,
+  "endUtc": "2026-10-17T21:40:01Z",
+  "entrypointSha256": "899af92d8f5c86070ef93ca5959dcf5d5f6615233e18e8488565707825251bda",
+  "environment": {
+    "CI": "1",
+    "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/codex-home",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/home",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/tmp",
+    "TZ": "UTC",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/xdg-config",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/xdg-state"
+  },
+  "executable": {
+    "bytes": 1290128,
+    "name": "bash",
+    "path": "/bin/bash",
+    "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+    "versionArgv": [
+      "/bin/bash",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc.\n"
+  },
+  "exitCode": 0,
+  "id": "01",
+  "planCommand": "bash tests/check.sh",
+  "planSha256": "215ae0a6809eaeb1fc3aba1bdf7483e6c86f1da9310613d99bada078192c1f9c",
+  "requirementIds": [
+    "fixture-0"
+  ],
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "sourceHead": "389279ba0f17c361ede4fba492430be2ee5f0ed6",
+  "sourceTree": "e204808d6feada18d6dc7edcf50cf2187f1c4d91",
+  "startUtc": "2026-10-17T21:40:01Z",
+  "status": "passed",
+  "stderrBytes": 0,
+  "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/stderr.log",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdoutBytes": 0,
+  "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/evidence/case-01/stdout.log",
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "timeout": false
+}

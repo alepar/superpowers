@@ -1,0 +1,25 @@
+{
+  "profile": [
+    "node",
+    "/private/tmp/ufz-correction-coverage/metrics-source/skills/super-code/scripts/run-profile.mjs",
+    "--codex",
+    "01c0ffee-0000-7000-8000-000000000000",
+    "--codex-home",
+    "/private/tmp/ufz-correction-coverage/metrics-probe/run/codex",
+    "--ledger",
+    "/private/tmp/ufz-correction-coverage/metrics-probe/run/progress.md",
+    "--beads",
+    "/private/tmp/ufz-correction-coverage/metrics-probe/run/beads.json",
+    "--out",
+    "/private/tmp/ufz-correction-coverage/metrics-probe/profile"
+  ],
+  "digest": [
+    "bash",
+    "/private/tmp/ufz-correction-coverage/metrics-source/skills/super-code/scripts/run-digest",
+    "--part",
+    "state",
+    "--budget",
+    "9000"
+  ],
+  "marker": "skill: super-code\nledger: /private/tmp/ufz-correction-coverage/metrics-probe/run/progress.md\n"
+}

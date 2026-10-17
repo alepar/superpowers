@@ -1,0 +1,1050 @@
+{
+  "version": 1,
+  "ordinal": 3,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+  "originalArtifact": "task-report-history-r1/raw/task-10-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-10-report.md",
+  "rawSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+  "rawByteCount": 24964,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 293,
+    "byteStart": 0,
+    "byteEnd": 24964,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/2",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/03-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    },
+    {
+      "line": 199,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/0",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        3239,
+        3543
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Reviewers must establish claimed source roles and same-failure semantics; runtime shape checks alone do not prove them."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/1",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "span": [
+        5886,
+        6853
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed implementation/caller RED and self-review expansion are historical mechanics evidence, not separate live run failures."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/2",
+      "roles": [
+        "execution-context"
+      ],
+      "span": [
+        12302,
+        13187
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Early hygiene scan saw still-running tests; source expressly distinguishes this from post-run leaks."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/3",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        13879,
+        14531
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Parent assigns fresh-agent attribution and broad sweep; implementer only deterministic fixtures/examples."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/4",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        14532,
+        14836
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "A tree hash and display label cannot prove introduction; chronology and semantic check correspondence require review."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/5",
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "span": [
+        14896,
+        17436
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Concrete proposed evaluation with synthetic sources/claims; not an actual incident or live measurement. Parent evaluation, pressure compliance, whole sweep unmeasured; local checks claimed passing."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/6",
+      "roles": [
+        "historical-finding"
+      ],
+      "span": [
+        17740,
+        18208
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Verification-only same-source contradiction finding restated in appended fix pass."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/7",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        18209,
+        18965
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Reducer whole-history contradiction protection claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/8",
+      "roles": [
+        "disposition-boundary"
+      ],
+      "span": [
+        18966,
+        19250
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No finding declined or resolved by evidence alone."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/9",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        20452,
+        21051
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Intermediate fix dropped earlier contradiction gap after distinct-source repair; final retained-verification check claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/10",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        24071,
+        24647
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No inferred reconciliation of nondeterministic measurements; contradicting immutable outcomes remain explicit."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/2/interpretedPassages/11",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        24648,
+        24964
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Simulated fixture limit plus fresh-agent attribution and whole-run acceptance pending."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-03-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Reviewers must establish claimed source roles and same-failure semantics; runtime shape checks alone do not prove them.",
+      "lineStart": 29,
+      "lineEnd": 29,
+      "byteStart": 3239,
+      "byteEnd": 3543,
+      "rawText": "Exact sourceTree/command/configuration/outcome/location/kind records remain the landed .5 schema. Runtime checks command/configuration, source identity shape, kind and outcome. Reviewers remain responsible for establishing that each source is the claimed baseline/base/fix and measures the same failure.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Interface for consumers",
+          "headingRaw": "## Interface for consumers\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Interface for consumers"
+          ],
+          "sectionByteStart": 2700,
+          "sectionByteEnd": 4642,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 540
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "interpretation": "Observed implementation/caller RED and self-review expansion are historical mechanics evidence, not separate live run failures.",
+      "lineStart": 59,
+      "lineEnd": 72,
+      "byteStart": 5886,
+      "byteEnd": 6853,
+      "rawText": "Expected cause: baseline coordinator had no associations, durable attribution or runFailures result. Existing routes still ran. The initial caller RED command was:\n\n`bash tests/super-auto/test-scripts.sh > evidence-task7-auto-red.log 2>&1`\n\nExit 1; existing report-status behavior retained the constructed parked qualifiers, but the three operative contract assertions failed:\n\n```text\n[FAIL] SKILL.md carries regression and missing-baseline obligations\n[FAIL] run-state.md carries regression and missing-baseline obligations\n[FAIL] report-prompt.md carries regression and missing-baseline obligations\n3 failure(s)\n```\n\nThe first GREEN replay passed 1965/0; the caller suite and contract lint passed. Self-review expanded coverage for same-tree contradictions, different commands, unavailable baseline, malformed histories, combined before/after measurement, repeated exoneration and later recurrence. Final rebased checks below supersede those intermediate results.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 4642,
+          "sectionByteEnd": 6854,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1245
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "execution-context"
+      ],
+      "interpretation": "Early hygiene scan saw still-running tests; source expressly distinguishes this from post-run leaks.",
+      "lineStart": 159,
+      "lineEnd": 167,
+      "byteStart": 12302,
+      "byteEnd": 13187,
+      "rawText": "Completed test runs' checks and the final stop all exited 0 with empty output; no leaked process or survivor remained. One prematurely ordered check ran after the caller RED suite while the replay RED suite was still deliberately running, and listed that active run's processes:\n\n```text\nmatch: 47379 node tests/super-code/replay-harness.mjs — cwd <assigned task worktree>\nmatch: 76175 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.7/rtw-h8vabr/.worktrees/integ\nmatch: 76206 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.7/rtw-h8vabr/.worktrees/integ\n```\n\nThese were active replay/fixture processes, not post-run leftovers; the completed replay's subsequent check was empty. Subsequent suites ran sequentially with checks after completion. No process had to be stopped and no survived line was produced. All checks and the final stop ran from outside the owned roots, using:\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Test hygiene",
+          "headingRaw": "## Test hygiene\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Test hygiene"
+          ],
+          "sectionByteStart": 12285,
+          "sectionByteEnd": 13848,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 18
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Parent assigns fresh-agent attribution and broad sweep; implementer only deterministic fixtures/examples.",
+      "lineStart": 177,
+      "lineEnd": 177,
+      "byteStart": 13879,
+      "byteEnd": 14531,
+      "rawText": "Read current bd show super-plan-ufz.7 --json and bd comments super-plan-ufz.7 before implementation: description/acceptance matched the frozen task, with no comments/amendments. Read the landed task-4/task-5 reports and their actual code contracts. Applied compatible .4 Recovery and .5 source-bound checkEvidence interfaces. No replacement engine or finding-ledger lifecycle was introduced. The parent dispatch explicitly assigns fresh-agent attribution evaluation and the broad sweep to the coordinator; this agent owns deterministic fixtures and changed examples. Applied writing-skills, TDD and verification-before-completion within that boundary.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Assumptions and amendments",
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Assumptions and amendments"
+          ],
+          "sectionByteStart": 13848,
+          "sectionByteEnd": 14837,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 32
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "A tree hash and display label cannot prove introduction; chronology and semantic check correspondence require review.",
+      "lineStart": 179,
+      "lineEnd": 179,
+      "byteStart": 14532,
+      "byteEnd": 14836,
+      "rawText": "The reviewer must establish source chronology and semantic check correspondence. A source-tree hash plus a display label alone cannot prove introduction; the runtime deliberately does not infer unrecorded historical measurements. Conflicting histories are exposed as gaps with known ownership preserved.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Assumptions and amendments",
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Assumptions and amendments"
+          ],
+          "sectionByteStart": 13848,
+          "sectionByteEnd": 14837,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 685
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "interpretation": "Concrete proposed evaluation with synthetic sources/claims; not an actual incident or live measurement. Parent evaluation, pressure compliance, whole sweep unmeasured; local checks claimed passing.",
+      "lineStart": 183,
+      "lineEnd": 194,
+      "byteStart": 14896,
+      "byteEnd": 17436,
+      "rawText": "The executable A/B, pre-run and absent-baseline artifacts are in tests/super-code/replay-harness.mjs under the scenario `run attribution retains introducing owner independently of task-base exoneration`. The existing temporary run.md caller fixture is in tests/super-auto/test-scripts.sh under `run attribution: caller retention`. These use synthetic tree identities and canned agent replies: even a fixture record whose kind is live is simulated test input, not a real live product measurement.\n\nConcrete scenario for a fresh reviewer/coordinator evaluation:\n\n1. The same exact command `node smoke.mjs --case F` and configuration `target=staging` passes at recorded run-start source a*40, fails after task A at b*40, and fails at task B's base b*40 and head c*40. Retain original output locations run-start.log/A.log/B-base.log/B.log and the reviewed A source range. B can be CLEAN/exonerated against its base while run owner bd-A remains open and assigned for repair.\n2. Re-enter with those Recovery records and a clean latest task result or replacement code buckets. The same introducing owner remains. A missing baseline in B's new local comparison is an explicit gap, not an erasure of earlier evidence.\n3. Change the recorded run-start outcome to live/fail: this failure is pre-run and must not automatically create a goal repair assignment. Remove usable run-start evidence instead: report an attribution gap and invent neither a passing baseline nor exoneration of a known owner.\n4. Reuse display key F with a different command or target=local: it cannot inherit the staging owner's identity. Supply simulated/pass instead of live/pass fixed-source evidence: it cannot discharge the live repair. Supply linked live/pass evidence at reviewed fixed source e*40: verified while retaining the A history.\n\nThe actual fixture association is {failure:'F',command:'node smoke.mjs --case F',configuration:'target=staging',observed:1,runBaseline:0,introducedBy:'bd-A'} beside [run-start live/pass, A live/fail]. The later B association references its own [B-base live/fail, B-head live/fail] array with observed:1 and taskBase:0, leaving runBaseline/introducedBy omitted. This is sufficient to reproduce the deterministic case without machine paths.\n\nFresh-agent evaluation, ordinary-agent compliance under pressure, and the enclosing whole-run sweep remain parent-owned and unmeasured here. All required task-local deterministic checks passed; no failed/unavailable deterministic check, permission rejection, blocker or humanAction remains.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Fixture artifacts and parent-owned behavior evaluation",
+          "headingRaw": "## Fixture artifacts and parent-owned behavior evaluation\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fixture artifacts and parent-owned behavior evaluation"
+          ],
+          "sectionByteStart": 14837,
+          "sectionByteEnd": 17438,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 60
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "historical-finding"
+      ],
+      "interpretation": "Verification-only same-source contradiction finding restated in appended fix pass.",
+      "lineStart": 208,
+      "lineEnd": 208,
+      "byteStart": 17740,
+      "byteEnd": 18208,
+      "rawText": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Finding and correction",
+          "headingRaw": "### Finding and correction\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Finding and correction"
+          ],
+          "sectionByteStart": 17712,
+          "sectionByteEnd": 19251,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Reducer whole-history contradiction protection claimed.",
+      "lineStart": 210,
+      "lineEnd": 210,
+      "byteStart": 18209,
+      "byteEnd": 18965,
+      "rawText": "The reducer now collects failing source trees only from validated live records linked by observed/runBaseline/taskBase/verification associations for this failure's exact command/configuration. After reducing the complete retained history, it checks every otherwise supported passing verification against these linked failures. A conflicting active verification leaves the owner intact and the obligation open, and records a contradiction gap naming the immutable source tree and verification dispatch. Earlier contradictory attempts remain gaps even after a different supported fixed source verifies the repair. Later associated failure evidence can also reopen a conflicting earlier verification. No automatic repeat-measurement reconciliation was added.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Finding and correction",
+          "headingRaw": "### Finding and correction\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Finding and correction"
+          ],
+          "sectionByteStart": 17712,
+          "sectionByteEnd": 19251,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 498
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "disposition-boundary"
+      ],
+      "interpretation": "No finding declined or resolved by evidence alone.",
+      "lineStart": 212,
+      "lineEnd": 212,
+      "byteStart": 18966,
+      "byteEnd": 19250,
+      "rawText": "Only skills/super-code/coordinator.js and tests/super-code/replay-harness.mjs changed in this fix. No instruction content, evidence schema, root acceptance rules, ordinary-agent path, run-state fields or integration branch changed. No findings declined or resolved by evidence alone.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Finding and correction",
+          "headingRaw": "### Finding and correction\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Finding and correction"
+          ],
+          "sectionByteStart": 17712,
+          "sectionByteEnd": 19251,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 1255
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p10",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Intermediate fix dropped earlier contradiction gap after distinct-source repair; final retained-verification check claimed.",
+      "lineStart": 243,
+      "lineEnd": 250,
+      "byteStart": 20452,
+      "byteEnd": 21051,
+      "rawText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "RED/GREEN evidence",
+          "headingRaw": "### RED/GREEN evidence\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "RED/GREEN evidence"
+          ],
+          "sectionByteStart": 19251,
+          "sectionByteEnd": 23381,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 1202
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p11",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "No inferred reconciliation of nondeterministic measurements; contradicting immutable outcomes remain explicit.",
+      "lineStart": 291,
+      "lineEnd": 291,
+      "byteStart": 24071,
+      "byteEnd": 24647,
+      "rawText": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 15,
+          "section": "Assumptions and concerns",
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Assumptions and concerns"
+          ],
+          "sectionByteStart": 24041,
+          "sectionByteEnd": 24964,
+          "canonicalSectionAlias": "legacy-raw-section/15",
+          "positionByteInSection": 31
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-03-p12",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Simulated fixture limit plus fresh-agent attribution and whole-run acceptance pending.",
+      "lineStart": 293,
+      "lineEnd": 293,
+      "byteStart": 24648,
+      "byteEnd": 24964,
+      "rawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 15,
+          "section": "Assumptions and concerns",
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Assumptions and concerns"
+          ],
+          "sectionByteStart": 24041,
+          "sectionByteEnd": 24964,
+          "canonicalSectionAlias": "legacy-raw-section/15",
+          "positionByteInSection": 608
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 3239,
+      "byteEnd": 3543,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/0"
+      ],
+      "interpretation": "Reviewers must establish claimed source roles and same-failure semantics; runtime shape checks alone do not prove them.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13879,
+      "byteEnd": 14531,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/3"
+      ],
+      "interpretation": "Parent assigns fresh-agent attribution and broad sweep; implementer only deterministic fixtures/examples.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14532,
+      "byteEnd": 14836,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/4"
+      ],
+      "interpretation": "A tree hash and display label cannot prove introduction; chronology and semantic check correspondence require review.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14896,
+      "byteEnd": 15391,
+      "roles": [
+        "coverage-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/5"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17145,
+      "byteEnd": 17436,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/5"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17740,
+      "byteEnd": 18208,
+      "roles": [
+        "historical-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/6"
+      ],
+      "interpretation": "Verification-only same-source contradiction finding restated in appended fix pass.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 24071,
+      "byteEnd": 24647,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/10"
+      ],
+      "interpretation": "No inferred reconciliation of nondeterministic measurements; contradicting immutable outcomes remain explicit.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 24648,
+      "byteEnd": 24964,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/11"
+      ],
+      "interpretation": "Simulated fixture limit plus fresh-agent attribution and whole-run acceptance pending.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Incomplete interpreted coverage: original source-chronology/eval qualifiers L177–194 and intermediate fix regression L243–250 are not in projected concern/repair lists; full raw sidecar retains them.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Source chronology and same-failure semantic correspondence remain reviewer judgments; live-labelled fixture inputs are synthetic."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-3/raw-byte-000003239",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 3239,
+      "rawByteEnd": 3543,
+      "rawLineStart": 29,
+      "rawLineEnd": 29,
+      "originalSections": [
+        {
+          "section": "Interface for consumers",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Interface for consumers\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Interface for consumers"
+          ],
+          "byteStart": 2700,
+          "byteEnd": 4642
+        }
+      ],
+      "rawText": "Exact sourceTree/command/configuration/outcome/location/kind records remain the landed .5 schema. Runtime checks command/configuration, source identity shape, kind and outcome. Reviewers remain responsible for establishing that each source is the claimed baseline/base/fix and measures the same failure.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Exact sourceTree/command/configuration/outcome/location/kind records remain the landed .5 schema. Runtime checks command/configuration, source identity shape, kind and outcome. Reviewers remain responsible for establishing that each source is the claimed baseline/base/fix and measures the same failure.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/0"
+      ],
+      "interpretation": "Reviewers must establish claimed source roles and same-failure semantics; runtime shape checks alone do not prove them."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000013879",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 13879,
+      "rawByteEnd": 14531,
+      "rawLineStart": 177,
+      "rawLineEnd": 177,
+      "originalSections": [
+        {
+          "section": "Assumptions and amendments",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Assumptions and amendments"
+          ],
+          "byteStart": 13848,
+          "byteEnd": 14837
+        }
+      ],
+      "rawText": "Read current bd show super-plan-ufz.7 --json and bd comments super-plan-ufz.7 before implementation: description/acceptance matched the frozen task, with no comments/amendments. Read the landed task-4/task-5 reports and their actual code contracts. Applied compatible .4 Recovery and .5 source-bound checkEvidence interfaces. No replacement engine or finding-ledger lifecycle was introduced. The parent dispatch explicitly assigns fresh-agent attribution evaluation and the broad sweep to the coordinator; this agent owns deterministic fixtures and changed examples. Applied writing-skills, TDD and verification-before-completion within that boundary.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current bd show super-plan-ufz.7 --json and bd comments super-plan-ufz.7 before implementation: description/acceptance matched the frozen task, with no comments/amendments. Read the landed task-4/task-5 reports and their actual code contracts. Applied compatible .4 Recovery and .5 source-bound checkEvidence interfaces. No replacement engine or finding-ledger lifecycle was introduced. The parent dispatch explicitly assigns fresh-agent attribution evaluation and the broad sweep to the coordinator; this agent owns deterministic fixtures and changed examples. Applied writing-skills, TDD and verification-before-completion within that boundary.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/3"
+      ],
+      "interpretation": "Parent assigns fresh-agent attribution and broad sweep; implementer only deterministic fixtures/examples."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000014532",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 14532,
+      "rawByteEnd": 14836,
+      "rawLineStart": 179,
+      "rawLineEnd": 179,
+      "originalSections": [
+        {
+          "section": "Assumptions and amendments",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Assumptions and amendments"
+          ],
+          "byteStart": 13848,
+          "byteEnd": 14837
+        }
+      ],
+      "rawText": "The reviewer must establish source chronology and semantic check correspondence. A source-tree hash plus a display label alone cannot prove introduction; the runtime deliberately does not infer unrecorded historical measurements. Conflicting histories are exposed as gaps with known ownership preserved.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The reviewer must establish source chronology and semantic check correspondence. A source-tree hash plus a display label alone cannot prove introduction; the runtime deliberately does not infer unrecorded historical measurements. Conflicting histories are exposed as gaps with known ownership preserved.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/4"
+      ],
+      "interpretation": "A tree hash and display label cannot prove introduction; chronology and semantic check correspondence require review."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-10/raw-byte-000014896",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage-qualification"
+      ],
+      "rawByteStart": 14896,
+      "rawByteEnd": 15391,
+      "rawLineStart": 183,
+      "rawLineEnd": 183,
+      "originalSections": [
+        {
+          "section": "Fixture artifacts and parent-owned behavior evaluation",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Fixture artifacts and parent-owned behavior evaluation\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fixture artifacts and parent-owned behavior evaluation"
+          ],
+          "byteStart": 14837,
+          "byteEnd": 17438
+        }
+      ],
+      "rawText": "The executable A/B, pre-run and absent-baseline artifacts are in tests/super-code/replay-harness.mjs under the scenario `run attribution retains introducing owner independently of task-base exoneration`. The existing temporary run.md caller fixture is in tests/super-auto/test-scripts.sh under `run attribution: caller retention`. These use synthetic tree identities and canned agent replies: even a fixture record whose kind is live is simulated test input, not a real live product measurement.",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The executable A/B, pre-run and absent-baseline artifacts are in tests/super-code/replay-harness.mjs under the scenario `run attribution retains introducing owner independently of task-base exoneration`. The existing temporary run.md caller fixture is in tests/super-auto/test-scripts.sh under `run attribution: caller retention`. These use synthetic tree identities and canned agent replies: even a fixture record whose kind is live is simulated test input, not a real live product measurement.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/5"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000017145",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 17145,
+      "rawByteEnd": 17436,
+      "rawLineStart": 194,
+      "rawLineEnd": 194,
+      "originalSections": [
+        {
+          "section": "Fixture artifacts and parent-owned behavior evaluation",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Fixture artifacts and parent-owned behavior evaluation\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fixture artifacts and parent-owned behavior evaluation"
+          ],
+          "byteStart": 14837,
+          "byteEnd": 17438
+        }
+      ],
+      "rawText": "Fresh-agent evaluation, ordinary-agent compliance under pressure, and the enclosing whole-run sweep remain parent-owned and unmeasured here. All required task-local deterministic checks passed; no failed/unavailable deterministic check, permission rejection, blocker or humanAction remains.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent evaluation, ordinary-agent compliance under pressure, and the enclosing whole-run sweep remain parent-owned and unmeasured here. All required task-local deterministic checks passed; no failed/unavailable deterministic check, permission rejection, blocker or humanAction remains.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/5"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-12/raw-byte-000017740",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding"
+      ],
+      "rawByteStart": 17740,
+      "rawByteEnd": 18208,
+      "rawLineStart": 208,
+      "rawLineEnd": 208,
+      "originalSections": [
+        {
+          "section": "Finding and correction",
+          "sectionOrdinal": 12,
+          "headingRaw": "### Finding and correction\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Finding and correction"
+          ],
+          "byteStart": 17712,
+          "byteEnd": 19251
+        }
+      ],
+      "rawText": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Verified the Important finding against the current bead, brief, retained Recovery history and reducer. A verification-only reply omitted `observed`, so the original guard accepted b/live/pass despite the retained b/live/fail observation for the exact same command/configuration and run-failure identity. The deterministic reproduction retained owner bd-A but incorrectly returned `state:verified` with no contradiction gap, allowing caller qualification to disappear.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/6"
+      ],
+      "interpretation": "Verification-only same-source contradiction finding restated in appended fix pass."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-15/raw-byte-000024071",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 24071,
+      "rawByteEnd": 24647,
+      "rawLineStart": 291,
+      "rawLineEnd": 291,
+      "originalSections": [
+        {
+          "section": "Assumptions and concerns",
+          "sectionOrdinal": 15,
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Assumptions and concerns"
+          ],
+          "byteStart": 24041,
+          "byteEnd": 24964
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.7 --json` and `bd comments super-plan-ufz.7` before changes. There were no amendments, triage comments or unresolved requirement conflicts. The fix does not presume a historical pass or infer reconciliation of nondeterministic measurements; contradictory immutable-source outcomes remain explicit. All work was in the assigned task worktree, with this report as the sole authorized outside write. No rebase, integration write, merge, tracker mutation, spawned agent or Herdr write occurred. No permission refusals or human actions remain.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/10"
+      ],
+      "interpretation": "No inferred reconciliation of nondeterministic measurements; contradicting immutable outcomes remain explicit."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-15/raw-byte-000024648",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 24648,
+      "rawByteEnd": 24964,
+      "rawLineStart": 293,
+      "rawLineEnd": 293,
+      "originalSections": [
+        {
+          "section": "Assumptions and concerns",
+          "sectionOrdinal": 15,
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.7 implementation",
+            "Fix pass",
+            "Assumptions and concerns"
+          ],
+          "byteStart": 24041,
+          "byteEnd": 24964
+        }
+      ],
+      "rawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/2/interpretedPassages/11"
+      ],
+      "interpretation": "Simulated fixture limit plus fresh-agent attribution and whole-run acceptance pending."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/03-task-10-report.md",
+  "retainedSha256": "13ffb3307818da6cdb8347659656ba4643bf550517c2c82264ae566b2dff29d7"
+}

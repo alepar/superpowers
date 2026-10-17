@@ -1,0 +1,6 @@
+{
+  "mergeCommit": "bda03eb1927f85e663fa99e7d470811f6cad811f",
+  "integrationParent": "e3749b014f6939cb82f5e79a33dc020f5b3961f0",
+  "taskParent": "e4c809c9eb83719cef6c5714b1d49d6e0cd900b9",
+  "note": "Agent result head was merge commit; original result retained; verified Git parents are authoritative."
+}

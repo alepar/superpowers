@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+  "artifact": "legacy-report-adapters-r1/01-task-1-review.md",
+  "kind": "task-report",
+  "verdict": "NEEDS_CONTEXT",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000000151",
+      "position": 1,
+      "key": "Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned.",
+      "text": "Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001579",
+      "position": 1,
+      "key": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic.",
+      "text": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000001972",
+      "position": 1,
+      "key": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure.",
+      "text": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure."
+    }
+  ]
+}

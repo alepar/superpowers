@@ -1,0 +1,117 @@
+{
+  "runner": "/private/tmp/ufz-correction-suite-runner-r1/original-v0/runner.py",
+  "runnerSha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16",
+  "testSha256": "c3f69e2a930907a9326061617c0f43216f45bf912c09c70d795ce58562ee866a",
+  "fixtureRoot": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x",
+  "results": [
+    {
+      "name": "ordinary-success",
+      "status": "passed"
+    },
+    {
+      "name": "ambient-test-filter",
+      "status": "failed",
+      "diagnostic": "contaminated TEST_FILTER launcher was not rejected before execution"
+    },
+    {
+      "name": "shell-injection",
+      "status": "failed",
+      "diagnostic": "contaminated BASH_ENV launcher was not rejected before execution"
+    },
+    {
+      "name": "node-injection",
+      "status": "failed",
+      "diagnostic": "contaminated NODE_OPTIONS launcher was not rejected before execution"
+    },
+    {
+      "name": "git-injection",
+      "status": "failed",
+      "diagnostic": "contaminated GIT_* launcher was not rejected before identity probes"
+    },
+    {
+      "name": "per-case-source-drift",
+      "status": "failed",
+      "diagnostic": "transient source drift was hidden by a restoring next case"
+    },
+    {
+      "name": "plan-input-drift",
+      "status": "failed",
+      "diagnostic": "changed plan accepted"
+    },
+    {
+      "name": "runner-input-drift",
+      "status": "failed",
+      "diagnostic": "runner changes accepted"
+    },
+    {
+      "name": "optimized-preflight",
+      "status": "failed",
+      "diagnostic": "python -O bypassed source validation"
+    },
+    {
+      "name": "complete-preflight",
+      "status": "failed",
+      "diagnostic": "earlier case ran before invalid later command was validated"
+    },
+    {
+      "name": "reviewed-digest",
+      "status": "failed",
+      "diagnostic": "unreviewed entrypoint bytes ran"
+    },
+    {
+      "name": "unsafe-output",
+      "status": "failed",
+      "diagnostic": "output inside source checkout was created"
+    },
+    {
+      "name": "last-case-timeout",
+      "status": "failed",
+      "diagnostic": "last-case timeout incorrectly measurementValid"
+    },
+    {
+      "name": "immutable-receipt",
+      "status": "failed",
+      "diagnostic": "launcher/configuration receipt missing"
+    },
+    {
+      "name": "unknown-environment-secret",
+      "status": "failed",
+      "diagnostic": "unknown launcher environment accepted"
+    },
+    {
+      "name": "existing-output",
+      "status": "passed"
+    },
+    {
+      "name": "partial-timeout",
+      "status": "passed"
+    },
+    {
+      "name": "launcher-isolation",
+      "status": "failed",
+      "diagnostic": "unisolated Python launcher accepted"
+    },
+    {
+      "name": "historical-overlap",
+      "status": "failed",
+      "diagnostic": "new output nested inside protected historical evidence"
+    },
+    {
+      "name": "duplicates",
+      "status": "failed",
+      "diagnostic": "duplicate commands not rejected before output creation"
+    },
+    {
+      "name": "symlink-entrypoint",
+      "status": "failed",
+      "diagnostic": "tracked symlink entrypoint executed"
+    },
+    {
+      "name": "ordinary-failure",
+      "status": "failed",
+      "diagnostic": "complete measured failure misreported"
+    }
+  ],
+  "passed": 3,
+  "failed": 19
+}

@@ -1,0 +1,838 @@
+ skills/finishing-a-development-branch/SKILL.md |  39 +++++-
+ skills/super-code/scripts/remove-task-worktree |  45 +++++--
+ skills/super-code/scripts/stop-run-processes   | 123 +++++++++++++----
+ tests/super-auto/outer-cleanup-r1.sh           | 175 +++++++++++++++++++++++++
+ 4 files changed, 344 insertions(+), 38 deletions(-)
+
+
+diff --git a/skills/finishing-a-development-branch/SKILL.md b/skills/finishing-a-development-branch/SKILL.md
+index 3ac10d50..44a2aae3 100644
+--- a/skills/finishing-a-development-branch/SKILL.md
++++ b/skills/finishing-a-development-branch/SKILL.md
+@@ -171,107 +171,136 @@ This will permanently delete:
+ - Branch <name>
+ - All commits: <commit-list>
+ - Worktree at <path>
+ 
+ Type 'discard' to confirm.
+ ```
+ 
+ Wait for that exact confirmation. When it arrives:
+ 
+ ```bash
+ MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+ cd "$MAIN_ROOT"
+ ```
+ 
+ Then clean up the worktree (Step 6) and force-delete the branch:
+ 
+ ```bash
+ git branch -D <feature-branch>
+ ```
+ 
+ ## Step 6: Cleanup Workspace
+ 
+ **Runs for every option, and for confirmed discards.** The worktree is
+ disposable scaffolding: by this point the commits are always preserved —
+ merged locally, pushed via PR, or sitting on a branch in the shared repo —
+-or intentionally discarded. The superpowers-created worktree goes away in
+-all cases.
++or intentionally discarded. Remove the superpowers-created worktree only
++after the removal preconditions below are satisfied; delivery may finish
++with cleanup pending.
+ 
+ Worktree removal must run from outside the worktree. Option 1 and the
+ discard path have already changed directory to the main repo root; Options
+ 2 and 3 have not, so `cd` there first:
+ 
+ ```bash
+ MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+ cd "$MAIN_ROOT"
+ ```
+ 
+ Use the `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` values captured in Step 2,
+ from before any directory change.
+ 
++### Removal preconditions
++
++Before any worktree/temp deletion or workspace-exit operation that removes resources, reconcile
++`git worktree list --porcelain` with the caller's retained resources and actual nested directories.
++Clean Git status does not protect dirty ignored nested `.worktrees/` children. Never delete a
++parent containing retained descendants or retained temporary resources, or required unarchived evidence.
++Task cleanup exit 3 or 4 keeps those resources and their containing parents; unavailable or
++missing cleanup results leave them unchecked. A later zero exit clears no retained path without
++fresh verification. Explicit discard confirmation covers only the named work, not other retained
++nested resources.
++
++Verify owned processes before deleting resources they may need. For `super-auto`, use its
++§Phase 7 — cleanup preconditions: allow the caller's verified leaf sweep first, then require
++successful final parent/root verification before this step removes the parent. The existing
++`stop-run-processes` helper refuses parents still containing nested worktrees; a refusal is
++unknown inspection, not a reason to bypass guards, widen process matching or remove the parent.
++Use the existing helper from outside its roots with the explicit worktree/temp paths. Preserve
++resources when processes survived, are deliberately kept, or inspection/termination is unknown
++(including unavailable tooling, pending parent verification, missing results or unconfirmed
++exit-zero empty wrapper output). Only confirmed helper success for the final roots plus no
++retained descendants permits removal. Never kill by name or traverse process families.
++
++If these preconditions cannot be established, leave the worktree and dependent temporary roots
++in place. Report the exact retained paths, reasons, exit statuses and pending safe check. Honor
++the human's merge/PR/keep choice independently: completion of that choice does not claim cleanup.
++When a caller owns durable run/report state, give it these facts before deleting any source it
++still needs, so it can record cleanup pending and archive required evidence.
++
+ **Before deleting the branch:** if the feature branch is still checked out in a worktree, `git
+ branch -d` fails. Leave that worktree first — via your platform's workspace-exit tool if it has one,
+ otherwise from the main repo root — then delete. This bites specifically on the path
+ `using-git-worktrees` prefers: a native worktree tool places the workspace outside `.worktrees/`,
+ where the rule below declines to clean it up, and the branch stays checked out.
+ 
+ **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
+ 
+ **If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers
+-created this worktree — we own cleanup:
++created this worktree — after the preconditions pass, remove it:
+ 
+ ```bash
+ git worktree remove "$WORKTREE_PATH"
+ git worktree prune  # Self-healing: clean up any stale registrations
+ ```
+ 
+ **If removal is refused** (`contains modified or untracked files`): the
+ worktree holds files that exist nowhere else — uncommitted plans, notes,
+ or scratch work. Never `--force` on your own initiative. Show your human
+ partner what is at stake and ask:
+ 
+ ```bash
+ git -C "$WORKTREE_PATH" status --porcelain -uall
+ ```
+ 
+ ```
+ Worktree removal refused — these files were never committed:
+ 
+ <file list>
+ 
+ 1. Commit them to <branch> before cleanup
+ 2. Move them into <main repo root>
+ 3. Delete them (unrecoverable)
+ 
+ Which?
+ ```
+ 
+-Carry out the choice, then remove the worktree.
++Carry out the choice, then re-check the removal preconditions before removing the worktree.
+ 
+ **Otherwise:** The host environment owns this workspace — leave it in
+ place. If your platform provides a workspace-exit tool, use it.
+ 
+ ## Quick Reference
+ 
+ | Option | Merge | Push | Cleanup Worktree | Cleanup Branch |
+ |--------|-------|------|------------------|----------------|
+ | 1. Merge locally | yes | - | yes | yes |
+ | 2. Create PR | - | yes | yes | - |
+ | 3. Keep as-is | - | - | yes | - |
+ | Discard (explicit request only) | - | - | yes | yes (force) |
+ 
+ ## Common Rationalizations
+ 
+ | Excuse | Reality |
+ |--------|---------|
+ | "Tests passed earlier this session" | Run the suite on the tree you are about to integrate. A green run only proves the tree it ran on. |
+ | "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
+ | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
+ | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
+-| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. The worktree is disposable scaffolding: remove it, and re-establish a workspace if feedback needs work. |
++| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. Remove the worktree after the removal preconditions pass; retain it when nested resources or process verification require that. Re-establish a workspace if later feedback needs work. |
+ | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
+ | "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
+ | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
+ | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
+ | "The caller said the whole run is autonomous, so I'll pick a menu option too" | Autonomy is about not interrupting work in progress. The work is finished; the merge is the human's, same as always. Present the menu and wait. |
+ | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |
+ | "The spec is close enough to what we built" | Step 1.5 is not optional when the plan header names a `Spec:`. The next person reads the design doc, not this session. |
+diff --git a/skills/super-code/scripts/remove-task-worktree b/skills/super-code/scripts/remove-task-worktree
+index 6ac0c1cc..0d9db133 100644
+--- a/skills/super-code/scripts/remove-task-worktree
++++ b/skills/super-code/scripts/remove-task-worktree
+@@ -1,140 +1,167 @@
+ #!/usr/bin/env bash
+ # Remove a finished task's worktree and branch, after stopping the processes started from it.
+ #
+ # Usage:
+ #   bash remove-task-worktree [--keep-branch] [--tmp DIR] WORKTREE BRANCH INTEGRATION_BRANCH
+ #   bash remove-task-worktree --discard [--tmp DIR] WORKTREE BRANCH
+ #   bash remove-task-worktree --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]
+ #
+ # Default mode keeps the worktree (exit 3, nothing changed) when it has uncommitted or untracked
+ # non-ignored files (its .tmp/ is excluded), or when BRANCH is not an ancestor of INTEGRATION_BRANCH.
+ # Otherwise it stops every process belonging to WORKTREE (scripts/stop-run-processes: cwd,
+-# executable, arguments or HOME/TMPDIR under it, plus their children; TERM, then KILL), runs
++# executable, exact HOME/TMPDIR or orphan argument paths under it; TERM, then KILL), runs
+ # `git worktree remove` (never --force) and `git branch -d` (never -D). --keep-branch skips the
+ # branch delete (a task other tasks may still stack on). --discard is for a cancelled task whose
+ # work is abandoned by design: it skips both guards and removes with --force / -D.
+ # --sweep runs the default mode on every worktree under ROOT, then `git branch -d` on each listed
+ # BRANCH that still exists without a worktree.
+ # --tmp DIR names the task's temp root (or, with --sweep, the run's), which must be /tmp/sp-<hex>[/<name>]:
+-# once the worktree is gone (--sweep: once nothing was kept) its processes are stopped and DIR is deleted.
++# worktree and temp processes are verified stopped before any resource is removed. Survivors,
++# unknown inspection or interactive preservation retain all resources checked in that cleanup.
+ #
+ # Output, one fact per line: `stopped:` / `survived: <pid> <command> — <why>`, `removed: <worktree>`,
+ # `deleted: <branch>`, `kept: <worktree-or-branch> — <reason>`.
+-# Exit 0 done, 2 bad input, 3 something was kept.
++# Exit 0 verified done, 2 bad input, 3 something was kept, 4 process inspection unverified.
+ set -euo pipefail
+ 
+ usage() { echo "usage: remove-task-worktree [--keep-branch|--discard] [--tmp DIR] WORKTREE BRANCH [INTEGRATION_BRANCH] | --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]" >&2; exit 2; }
+ 
+ here=$(cd "$(dirname "$0")" && pwd)
+-stop_processes() {  # $1 = absolute worktree path; one implementation, shared with the Finish sweep
+-  bash "$here/stop-run-processes" "$1" || true
++stop_processes() {  # Check all resources together before deleting any of them.
++  local status=0 resource
++  bash "$here/stop-run-processes" "$@" || status=$?
++  [ "$status" = 0 ] && return 0
++  for resource in "$@"; do echo "kept: $resource — process cleanup incomplete (exit $status)"; done
++  return "$status"
+ }
++sweep_verified=
++
+ 
+ exclude_tmp() {  # task temp state lives in <worktree>/.tmp/; it must never read as uncommitted work
+   local ex; ex="$(git -C "$1" rev-parse --git-common-dir)/info/exclude"
+   mkdir -p "$(dirname "$ex")"
+   grep -qx '/.tmp/' "$ex" 2>/dev/null || echo '/.tmp/' >> "$ex"
+ }
+ 
+ integ_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges merged-ness against it
+   git worktree list --porcelain | awk -v b="branch refs/heads/$1" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'
+ }
+ 
+ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration
+   local mode=$1 wt=$2 br=$3 integ=${4:-}
+   if [ ! -d "$wt" ]; then
+     if [ "$mode" = discard ]; then
++      local status=0
++      if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
++      else stop_processes "$wt" || status=$?; fi
++      [ "$status" = 0 ] || return "$status"
+       git worktree prune
+       git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+       return 0
+     fi
+     echo "kept: $wt — not a directory (already removed?)"; return 3
+   fi
+   wt=$(cd "$wt" && pwd -P)
+   case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --git-common-dir)/.." ;; esac
+   exclude_tmp "$wt"
+   if [ "$mode" != discard ]; then
+     if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then
+       echo "kept: $wt — uncommitted or untracked changes"; return 3
+     fi
+     if ! git -C "$wt" merge-base --is-ancestor "$br" "$integ" 2>/dev/null; then
+       echo "kept: $wt — $br is not merged into $integ"; return 3
+     fi
+   fi
+-  stop_processes "$wt"
++  if [ -z "$sweep_verified" ]; then
++    local status=0
++    if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
++    else stop_processes "$wt" || status=$?; fi
++    [ "$status" = 0 ] || return "$status"
++  fi
+   if [ "$mode" = discard ]; then
+     git worktree remove --force "$wt" && echo "removed: $wt"
+     git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+     return 0
+   fi
+   if ! git worktree remove "$wt" 2>/dev/null; then
+     echo "kept: $wt — git worktree remove refused"; return 3
+   fi
+   echo "removed: $wt"
+   [ "$mode" = keep-branch ] && return 0
+   local idir; idir=$(integ_dir "$integ")
+   if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; return 3; fi
+ }
+ 
+ clean_tmp() {  # $1 = the --tmp DIR (validated); stop what runs under it, then delete it
+   [ -n "$1" ] && [ -e "$1" ] || return 0
+-  stop_processes "$1"
+   rm -rf "$1" && echo "removed: $1"
+ }
+ 
+ mode=default tmp=
+ while [ $# -gt 0 ]; do
+   case "$1" in
+     --keep-branch) mode=keep-branch; shift ;;
+     --discard) mode=discard; shift ;;
+     --sweep) mode=sweep; shift ;;
+     --tmp) [ $# -ge 2 ] || usage; tmp=$2; shift 2
+            [[ "$tmp" =~ ^(/private)?/tmp/sp-[0-9a-f]+(/[^/]+)?$ ]] || { echo "--tmp must be /tmp/sp-<hex>[/<name>]: $tmp" >&2; exit 2; } ;;
+     -*) usage ;;
+     *) break ;;
+   esac
+ done
+ 
+ if [ "$mode" = sweep ]; then
+   [ $# -ge 2 ] || usage
+   root=$1 integ=$2; shift 2
+   git rev-parse --verify -q "$integ" >/dev/null || { echo "unknown branch: $integ" >&2; exit 2; }
+   rc=0
++  if [ -n "$tmp" ]; then stop_processes "$root" "$tmp" || rc=$?
++  else stop_processes "$root" || rc=$?; fi
++  if [ "$rc" != 0 ]; then
++    while IFS= read -r line; do
++      case "$line" in
++        "worktree "*) retained=${line#worktree }
++          case "$retained/" in "$root"/*) echo "kept: $retained — process cleanup incomplete (exit $rc)" ;; esac ;;
++      esac
++    done < <(git worktree list --porcelain)
++    exit "$rc"
++  fi
++  sweep_verified=1
+   if [ -d "$root" ]; then
+     root=$(cd "$root" && pwd -P)
+     wt="" br=""
+     while IFS= read -r line; do
+       case "$line" in
+         "worktree "*) wt=${line#worktree } br="" ;;
+         "branch refs/heads/"*) br=${line#branch refs/heads/} ;;
+         "")
+           case "$wt/" in
+-            "$root"/*) if [ -n "$br" ]; then remove_one default "$wt" "$br" "$integ" || rc=3
++            "$root"/*) if [ -n "$br" ]; then remove_one default "$wt" "$br" "$integ" || rc=$?
+                        else echo "kept: $wt — detached HEAD"; rc=3; fi ;;
+           esac
+           wt="" br="" ;;
+       esac
+     done < <(git worktree list --porcelain; echo)
+   fi
+   for br in "$@"; do
+     git rev-parse --verify -q "refs/heads/$br" >/dev/null || continue
+     if git worktree list --porcelain | grep -qx "branch refs/heads/$br"; then continue; fi
+     if ! git merge-base --is-ancestor "$br" "$integ"; then echo "kept: $br — not merged into $integ"; rc=3; continue; fi
+     idir=$(integ_dir "$integ")
+     if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; rc=3; fi
+   done
+   if [ -n "$tmp" ] && [ -e "$tmp" ]; then
+     if [ $rc -eq 0 ]; then clean_tmp "$tmp"; else echo "kept: $tmp — a worktree or branch above was kept"; fi
+   fi
+   exit $rc
+ fi
+ 
+ if [ "$mode" = discard ]; then [ $# -eq 2 ] || usage; else [ $# -eq 3 ] || usage; fi
+ git rev-parse --verify -q "refs/heads/$2" >/dev/null || { [ "$mode" = discard ] || { echo "unknown branch: $2" >&2; exit 2; }; }
+ [ "$mode" = discard ] || git rev-parse --verify -q "$3" >/dev/null || { echo "unknown branch: $3" >&2; exit 2; }
+ rc=0
+ remove_one "$mode" "$1" "$2" "${3:-}" || rc=$?
+ if [ -n "$tmp" ]; then
+-  if [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
++  if [ "$rc" = 0 ] && [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
+ fi
+ exit $rc
+diff --git a/skills/super-code/scripts/stop-run-processes b/skills/super-code/scripts/stop-run-processes
+index a6430d5f..57e6ffc1 100644
+--- a/skills/super-code/scripts/stop-run-processes
++++ b/skills/super-code/scripts/stop-run-processes
+@@ -1,219 +1,294 @@
+ #!/usr/bin/env bash
+ # Find, and by default stop, this user's processes that belong to a run. A process matches when its
+ # working directory or executable is under a root, when its HOME= or TMPDIR= value (exactly those
+ # two variables) is under a root, or — only for an orphan reparented to PID 1 — when one of its
+ # arguments is a path under a root. Nothing matches by name, and a match never pulls in its
+ # children or parents. (macOS hides the environment of its own platform binaries, so there
+ # HOME/TMPDIR is seen only for the user's own executables.)
+ #
+ # Roots must be leaf run directories: a task worktree, the task-worktree directory, a run temp dir,
+ # a run directory. A root that is or contains a git worktree with other worktrees nested under it
+ # (an epic/integration worktree, the main checkout) is refused, and so is a root that contains the
+ # working directory of this process or any of its ancestors: those are where a coordinating session
+ # and the user work. This script's own process, its ancestors, its children and PID 1 are never
+ # candidates.
+ #
+ # Usage:
+ #   bash stop-run-processes [--check] ROOT [ROOT...]
+ #
+ # --check lists matches without signalling anything: `match: <pid> <command> — <why>`, exit 3 when
+-# anything matched, 0 when nothing did. Default mode stops each match (TERM, then KILL after 3 s)
++# anything matched or was kept, 0 only after verified discovery found nothing. Default mode stops
++# each match (TERM, then KILL after 3 s)
+ # and prints `stopped: <pid> <command> — <why>` or `survived: <pid> <command> — <why>` (alive after
+-# KILL), exit 3 when anything survived, 0 otherwise. Exit 2 on bad input.
++# KILL), exit 3 when anything survived or was deliberately kept, 0 otherwise.
++# `unknown: <root-or-pid> — <failed inspection>` and exit 4 mean discovery or termination could
++# not be verified. Unknown takes precedence over 3. Exit 2 on bad input.
+ set -euo pipefail
+ 
+ check=
+ if [ "${1:-}" = --check ]; then check=1; shift; fi
+ [ $# -ge 1 ] || { echo "usage: stop-run-processes [--check] ROOT [ROOT...]" >&2; exit 2; }
+ 
+ # Each root in both spellings: as given and physically resolved (/tmp vs /private/tmp on macOS).
+ roots=()
+ for r in "$@"; do
+   case "$r" in /*) ;; *) echo "root must be absolute: $r" >&2; exit 2 ;; esac
+   r=${r%/}
+   [ -n "$r" ] && [ "$r" != / ] || { echo "refusing root: /" >&2; exit 2; }
+   roots+=("$r")
+   if [ -d "$r" ]; then p=$(cd "$r" && pwd -P); [ "$p" = "$r" ] || roots+=("$p"); fi
+ done
+ 
+ contains() {  # $1 root, $2 path: true when path is the root or inside it
+   case "$2" in "$1"|"$1"/*) return 0 ;; esac; return 1
+ }
+ # Refuse a root holding a parent worktree (one with other worktrees nested under it).
+ for r in "${roots[@]}"; do
+   [ -d "$r" ] || continue
+   wts=$(git -C "$r" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p' || true)
+   [ -n "$wts" ] || continue
+   while IFS= read -r w; do
+     [ -n "$w" ] || continue
+     contains "$r" "$w" || continue
+     nested=$(grep -c "^$w/" <<<"$wts" || true)
+     if [ "$nested" -gt 0 ]; then
+       echo "refusing root $r: it holds worktree $w, which has worktrees nested under it (an epic/integration or main checkout); pass task worktrees, the task-worktree directory or run temp dirs instead" >&2
+       exit 2
+     fi
+   done <<<"$wts"
+ done
+ 
+ under() {  # $1 = a path; true when it is a root or inside one
+   local root
+   for root in "${roots[@]}"; do
+     case "$1" in "$root"|"$root"/*) return 0 ;; esac
+   done
+   return 1
+ }
+ 
++unknown=0
++unknown_roots() {
++  local root
++  for root in "${roots[@]}"; do echo "unknown: $root — $1"; done
++  unknown=1
++}
++# ps -p exits 1 for both absence and inspection failure. Only a successful all-PID
++# enumeration without the PID proves disappearance in that case.
++absent() {
++  local all
++  all=$(ps -A -o pid= 2>/dev/null) || return 1
++  ! awk -v p="$1" '$1==p{found=1} END{exit !found}' <<<"$all"
++}
+ uid=$(id -u)
+ # Never this process, its ancestors, its own children (subshells and the ps/lsof it runs carry
+ # the roots in their arguments), or PID 1.
+-ppids=$(ps -A -o pid=,ppid= 2>/dev/null || true)
++if ! ppids=$(ps -A -o pid=,ppid= 2>/dev/null); then unknown_roots "ps ancestry discovery failed"; exit 4; fi
+ ppid_of() {  # from the snapshot, else live (children started after the snapshot)
+   local r; r=$(awk -v p="$1" '$1==p{print $2; exit}' <<<"$ppids")
+-  [ -n "$r" ] || r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ')
++  if [ -z "$r" ]; then r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ') || return 4; fi
++  [ -n "$r" ] || return 4
+   echo "$r"
+ }
+ skip=" 1 $$ "
+ p=$$
+ while [ -n "$p" ] && [ "$p" != 0 ] && [ "$p" != 1 ]; do
+-  p=$(ppid_of "$p")
++  if ! p=$(ppid_of "$p"); then unknown_roots "ps ancestor inspection failed"; exit 4; fi
+   [ -n "$p" ] && skip="$skip$p "
+ done
+ # Refuse a root that contains the working directory of this process or any ancestor.
+ for a in $skip; do
+   [ "$a" = 1 ] && continue
+-  if [ -r "/proc/$a/cwd" ]; then acwd=$(readlink "/proc/$a/cwd" 2>/dev/null || true)
+-  else acwd=$({ lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null || true; } | sed -n 's/^n//p' | head -1); fi
++  if [ -r "/proc/$a/cwd" ]; then
++    if ! acwd=$(readlink "/proc/$a/cwd" 2>/dev/null); then unknown_roots "ancestor $a cwd inspection failed"; exit 4; fi
++  else
++    if ! acwd=$(lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1); then
++      # Privileged launch/login ancestors are outside this user's cleanup candidates and
++      # may hide cwd on macOS. Successful ownership inspection can exclude them.
++      if ancestor_uid=$(ps -o uid= -p "$a" 2>/dev/null | tr -d ' ') && [ -n "$ancestor_uid" ] && [ "$ancestor_uid" != "$uid" ]; then continue; fi
++      unknown_roots "ancestor $a cwd inspection failed"; exit 4
++    fi
++  fi
+   [ -n "$acwd" ] || continue
+   for r in "${roots[@]}"; do
+     if contains "$r" "$acwd"; then echo "refusing root $r: it contains the working directory of this process or an ancestor ($acwd)" >&2; exit 2; fi
+   done
+ done
+ is_ours() {  # $1 pid; true when it descends from this process
+   local q=$1 n=0
+   while [ -n "$q" ] && [ "$q" != 0 ] && [ "$q" != 1 ] && [ $n -lt 64 ]; do
+     [ "$q" = "$$" ] && return 0
+-    q=$(ppid_of "$q"); n=$((n + 1))
++    q=$(ppid_of "$q") || return 4; n=$((n + 1))
+   done
+   return 1
+ }
+ 
+ matches=""
+ add() {  # $1 pid $2 reason
+   case "$skip" in *" $1 "*) return 0 ;; esac
+   case " $matches " in *" $1 "*) return 0 ;; esac
+-  is_ours "$1" && return 0
++  local ancestry=0
++  is_ours "$1" || ancestry=$?
++  [ "$ancestry" != 0 ] || return 0
++  if [ "$ancestry" = 4 ]; then
++    absent "$1" || unknown_roots "process $1 ancestry inspection failed"
++    return 0
++  fi
+   matches="$matches $1"
+   eval "why_$1=\$2"
+ }
+ 
+ if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
+   for d in /proc/[0-9]*; do
+     pid=${d#/proc/}
+-    [ "$(stat -c %u "$d" 2>/dev/null)" = "$uid" ] || continue
+-    path=$(readlink "$d/cwd" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
+-    path=$(readlink "$d/exe" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
+-    env=$(tr '\0' '\n' < "$d/environ" 2>/dev/null | grep -E '^(HOME|TMPDIR)=' || true)
++    if ! owner=$(stat -c %u "$d" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid ownership inspection failed"
++      continue
++    fi
++    [ "$owner" = "$uid" ] || continue
++    if path=$(readlink "$d/cwd" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid cwd inspection failed"; fi
++    if path=$(readlink "$d/exe" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid executable inspection failed"; fi
++    if ! env=$(tr '\0' '\n' 2>/dev/null < "$d/environ"); then
++      absent "$pid" || unknown_roots "process $pid environment inspection failed"
++      continue
++    fi
++    env=$(grep -E '^(HOME|TMPDIR)=' <<<"$env" || true)
+     envhit=""
+     while IFS= read -r kv; do [ -n "$kv" ] && under "${kv#*=}" && envhit="$envhit $kv"; done <<<"$env"
+     [ -n "$envhit" ] && { add "$pid" "env$envhit"; continue; }
+-    if [ "$(awk '{print $4}' "$d/stat" 2>/dev/null)" = 1 ]; then
+-      args=$(tr '\0' '\n' < "$d/cmdline" 2>/dev/null || true)
++    if ! parent=$(awk '{print $4}' "$d/stat" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid parent inspection failed"
++      continue
++    fi
++    if [ "$parent" = 1 ]; then
++      if ! args=$(tr '\0' '\n' 2>/dev/null < "$d/cmdline"); then
++        absent "$pid" || unknown_roots "process $pid argument inspection failed"
++        continue
++      fi
+       while IFS= read -r a; do [ -n "$a" ] && under "${a#*=}" && { add "$pid" "orphan arg $a"; break; }; done <<<"$args"
+     fi
+   done
+ else
+   if command -v lsof >/dev/null 2>&1; then
++    if ! files=$(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null); then
++      unknown_roots "lsof cwd/executable discovery failed"
++    fi
+     pid=""
+     while IFS= read -r line; do
+       case "$line" in
+         p*) pid=${line#p} ;;
+         f*) fd=${line#f} ;;
+         n*) path=${line#n}
+             under "$path" && add "$pid" "$fd $path" ;;
+       esac
+-    done < <(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null || true)
++    done <<<"$files"
++  else
++    unknown_roots "lsof cwd/executable discovery unavailable"
+   fi
+   # Environment: only HOME= and TMPDIR= tokens from `ps -E`, which appends the environment to the
+   # command line. Arguments: only for orphans (PPID 1), one token at a time, path-boundary checked.
++  if ! processes=$(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null); then
++    unknown_roots "ps environment/orphan discovery failed"
++  fi
+   while read -r pid ppid rest; do
+     [ -n "$pid" ] || continue
+     hit=""
+     for tok in $rest; do
+       case "$tok" in HOME=*|TMPDIR=*) under "${tok#*=}" && hit="$hit $tok" ;; esac
+     done
+     if [ -n "$hit" ]; then add "$pid" "env$hit"; continue; fi
+     if [ "$ppid" = 1 ]; then
+       for tok in $rest; do
+         case "$tok" in *=*) continue ;; esac
+         under "$tok" && { add "$pid" "orphan arg $tok"; break; }
+       done
+     fi
+-  done < <(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null || true)
++  done <<<"$processes"
+ fi
+ 
+ # Interactive work is never stopped: a match with a controlling terminal, or one hosting a
+ # terminal (a descendant has one, e.g. a terminal multiplexer server with live panes), is
+ # reported as `kept:` for a human to decide.
+-ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null || true)
++if ! ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null); then unknown_roots "ps interactive-terminal inspection failed"; exit 4; fi
+ has_tty() { local t; t=$(awk -v p="$1" '$1==p{print $3; exit}' <<<"$ptt"); [ -n "$t" ] && [ "$t" != "??" ] && [ "$t" != "?" ]; }
+ hosts_tty() {  # any descendant with a terminal
+   local frontier=" $1 " next q c pp t n=0
+   while [ -n "${frontier// /}" ] && [ $n -lt 32 ]; do
+     next=""
+     while read -r c pp t; do
+       case "$frontier" in *" $pp "*) ;; *) continue ;; esac
+       [ -n "$t" ] && [ "$t" != "??" ] && [ "$t" != "?" ] && return 0
+       next="$next $c "
+     done <<<"$ptt"
+     frontier=$next; n=$((n + 1))
+   done
+   return 1
+ }
+ kept=""
+ keep=""
+ for pid in $matches; do
+   if has_tty "$pid"; then kept="$kept$pid interactive terminal"$'\n'
+   elif hosts_tty "$pid"; then kept="$kept$pid hosts an interactive terminal session"$'\n'
+   else keep="$keep $pid"; continue; fi
+ done
+ matches=$keep
+ cmd_of0() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+ while IFS= read -r kl; do
+   [ -n "$kl" ] || continue
+   kp=${kl%% *}; eval "w=\${why_$kp:-}"
+   echo "kept: $kp $(cmd_of0 "$kp") — ${kl#* } ($w)"
+ done <<<"$kept"
+ 
+-[ -n "$matches" ] || exit 0
++if [ -z "$matches" ]; then
++  [ "$unknown" = 0 ] || exit 4
++  [ -z "$kept" ] || exit 3
++  exit 0
++fi
+ w="" c=""
+ cmd_of() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+-alive() {  # running, not a zombie waiting for its parent to reap it
+-  local st; st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' ')
+-  [ -n "$st" ] && [ "${st#Z}" = "$st" ]
++alive() {  # 0 running, 1 verified absent/zombie, 4 unverified
++  local st
++  if st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' '); then
++    case "$st" in Z*) return 1 ;; ?*) return 0 ;; esac
++  fi
++  absent "$1" && return 1
++  return 4
+ }
+ 
+ if [ -n "$check" ]; then
+   for pid in $matches; do eval "w=\$why_$pid"; echo "match: $pid $(cmd_of "$pid") — $w"; done
++  [ "$unknown" = 0 ] || exit 4
+   exit 3
+ fi
+ 
+ live=""
+ for pid in $matches; do
+   eval "w=\$why_$pid"; c=$(cmd_of "$pid")
+   eval "cmd_$pid=\$c"
+-  kill -TERM "$pid" 2>/dev/null && live="$live $pid"
++  kill -TERM "$pid" 2>/dev/null || true
++  live="$live $pid"
+ done
+ for _ in 1 2 3 4 5 6; do
+   any=""
+   for pid in $live; do alive "$pid" && any=1; done
+   [ -n "$any" ] || break
+   sleep 0.5
+ done
+ for pid in $live; do alive "$pid" && kill -KILL "$pid" 2>/dev/null || true; done
+ sleep 0.3
+ rc=0
++[ -z "$kept" ] || rc=3
+ for pid in $matches; do
+   eval "w=\$why_$pid"; eval "c=\${cmd_$pid:-?}"
+-  if alive "$pid"; then echo "survived: $pid $c — $w"; rc=3; else echo "stopped: $pid $c — $w"; fi
++  state=0; alive "$pid" || state=$?
++  case "$state" in
++    0) echo "survived: $pid $c — $w"; rc=3 ;;
++    1) echo "stopped: $pid $c — $w" ;;
++    *) echo "unknown: $pid — ps termination inspection failed ($c — $w)"; unknown=1 ;;
++  esac
+ done
++[ "$unknown" = 0 ] || exit 4
+ exit $rc
+diff --git a/tests/super-auto/outer-cleanup-r1.sh b/tests/super-auto/outer-cleanup-r1.sh
+new file mode 100644
+index 00000000..1c26a0c4
+--- /dev/null
++++ b/tests/super-auto/outer-cleanup-r1.sh
+@@ -0,0 +1,175 @@
++#!/usr/bin/env bash
++# Exercise the documented outer-finish decision table with disposable Git resources.
++# This checks the caller contract and Git consequences, not fresh-agent instruction compliance.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++fixture_tmp=${TMPDIR:-/tmp}
++T=$(mktemp -d "${fixture_tmp%/}/outer-cleanup-r1.XXXXXX")
++T=$(cd "$T" && pwd -P)
++owned_process_root=
++cleanup() {
++  local result=0
++  if [ -n "$owned_process_root" ]; then
++    (cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$owned_process_root") || result=$?
++    if [ "$result" != 0 ]; then
++      echo "Fixture process cleanup unverified; retained $T" >&2
++      return "$result"
++    fi
++  fi
++  rm -rf "$T"
++}
++trap cleanup EXIT
++export HOME="$T/home" XDG_CONFIG_HOME="$T/config" XDG_DATA_HOME="$T/data" XDG_CACHE_HOME="$T/cache" XDG_STATE_HOME="$T/state"
++mkdir -p "$HOME"
++export GIT_CONFIG_NOSYSTEM=1
++export GIT_AUTHOR_NAME=Fixture GIT_AUTHOR_EMAIL=fixture@example.invalid
++export GIT_COMMITTER_NAME=Fixture GIT_COMMITTER_EMAIL=fixture@example.invalid
++
++fixture() {
++  repo="$T/$1/repo"
++  outer="$repo/.worktrees/outer"
++  child="$outer/.worktrees/child"
++  temp="$outer/retained-temp"
++  mkdir -p "$repo"
++  git -C "$repo" init -q
++  printf '.worktrees/\nretained-temp/\n' > "$repo/.gitignore"
++  printf 'committed\n' > "$repo/file"
++  git -C "$repo" add .
++  git -C "$repo" commit -qm seed
++  git -C "$repo" worktree add -qb outer "$outer"
++  if [ "$2" = nested ]; then
++    git -C "$repo" worktree add -qb child "$child"
++    printf 'dirty child work\n' > "$child/file"
++  fi
++  mkdir -p "$temp"
++  printf 'retained temporary evidence\n' > "$temp/evidence"
++}
++
++# Baseline consequence: a clean parent status does not protect ignored dirty children.
++fixture baseline nested
++[ -z "$(git -C "$outer" status --porcelain)" ]
++[ -n "$(git -C "$child" status --porcelain)" ]
++git -C "$repo" worktree remove "$outer"
++[ ! -e "$child/file" ]
++echo 'PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child'
++
++# Read the actual decision table, so an absent or regressed caller contract fails this fixture.
++node - "$ROOT" "$T/decisions" <<'NODE'
++const fs=require('node:fs'),assert=require('node:assert/strict'),path=require('node:path');
++const root=process.argv[2],skill=fs.readFileSync(path.join(root,'skills/super-auto/SKILL.md'),'utf8');
++const section=skill.split('### Phase 7 — cleanup preconditions')[1]?.split('\n## ')[0];
++assert(section,'phase 7 cleanup preconditions missing');
++const expected={'task-retained':'retain','resource-retained':'retain','process-survived':'retain','process-unknown':'retain','process-kept':'retain','process-unconfirmed':'retain','verified-clear':'remove'};
++const decisions={};
++for(const row of section.split('\n')) {
++ const match=row.match(/^\| `([^`]+)` \|.*\| `(retain|remove)` \|$/);
++ if(match) decisions[match[1]]=match[2];
++}
++assert.deepEqual(decisions,expected,'every refusal and positive cleanup outcome must remain explicit');
++const verify=section.indexOf('1. Verify run-owned processes'),sweep=section.indexOf('2. Sweep task worktrees'),final=section.indexOf('3. Only after no retained descendants');
++assert(verify>=0&&sweep>verify&&final>sweep,'leaf verification, safe task sweep, then final parent verification must remain ordered');
++assert(section.includes('before the finisher')&&section.includes('Step 6 or any temp deletion'),'final verification must gate both parent and temp deletion');
++assert(section.includes('missing output')&&section.includes('pending until step 3'),'missing results or pending parent verification cannot authorize removal');
++assert(section.includes('exit-zero empty output'),'empty stdout must not establish inspection availability');
++assert(section.includes('exit 3 or 4'),'task retention exits must block outer removal');
++assert(section.includes('refused parent root'),'nested-root refusal must remain unknown');
++const finish=fs.readFileSync(path.join(root,'skills/finishing-a-development-branch/SKILL.md'),'utf8');
++assert(finish.indexOf('### Removal preconditions')<finish.indexOf('git worktree remove "$WORKTREE_PATH"'),'finisher must gate its actual removal');
++assert(finish.includes('retained descendants')&&finish.includes('unknown'),'finisher must independently preserve retained and unverified resources');
++for(const file of ['run-state.md','report-prompt.md']) {
++ const text=fs.readFileSync(path.join(root,'skills/super-auto',file),'utf8');
++ assert(text.toLowerCase().includes('phase-7 cleanup'),'durable cleanup/report contract absent: '+file);
++ assert(text.includes('exit 3 or 4'),'retained cleanup exit provenance absent: '+file);
++}
++fs.writeFileSync(process.argv[3],Object.entries(decisions).map(([k,v])=>k+' '+v+'\n').join(''));
++NODE
++
++action_for() { awk -v key="$1" '$1==key{print $2}' "$T/decisions"; }
++finish_fixture() {
++  action=$(action_for "$1")
++  case "$action" in
++    retain) : ;;
++    remove) git -C "$repo" worktree remove "$outer" ;;
++    *) echo "FAIL missing contract outcome: $1" >&2; exit 1 ;;
++  esac
++}
++assert_retained() {
++  [ -f "$outer/file" ]
++  [ "$(cat "$child/file")" = 'dirty child work' ]
++  [ "$(cat "$temp/evidence")" = 'retained temporary evidence' ]
++  git -C "$repo" worktree list --porcelain | grep -Fx "worktree $child" >/dev/null
++}
++
++# Real cleanup helper results, including process-discovery failure before the dirty check.
++fixture task3 nested
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/remove-task-worktree" "$child" child outer) > "$T/task3.log" 2>&1 || status=$?
++[ "$status" = 3 ]
++finish_fixture task-retained
++assert_retained
++echo 'PASS task cleanup exit 3 retains parent, dirty child and temporary resources'
++
++fixture task4 nested
++mkdir -p "$T/no-inspection"
++printf '#!/bin/sh\nexit 1\n' > "$T/no-inspection/ps"
++chmod +x "$T/no-inspection/ps"
++status=0
++(cd "$repo" && PATH="$T/no-inspection:$PATH" bash "$ROOT/skills/super-code/scripts/remove-task-worktree" --sweep "$outer/.worktrees" outer) > "$T/task4.log" 2>&1 || status=$?
++[ "$status" = 4 ]
++grep -q '^unknown:' "$T/task4.log"
++finish_fixture task-retained
++assert_retained
++echo 'PASS task cleanup exit 4 retains parent, dirty child and temporary resources'
++
++# An actual parent-root refusal cannot be bypassed with a broader process match.
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$outer") > "$T/refused.log" 2>&1 || status=$?
++[ "$status" = 2 ]
++grep -q 'worktrees nested under it' "$T/refused.log"
++finish_fixture process-unknown
++assert_retained
++echo 'PASS parent-root inspection refusal preserves every dependent resource'
++
++# Deterministic process-result scenarios; these are caller decision simulations, not live kills.
++for fact in resource-retained process-survived process-unknown process-kept process-unconfirmed; do
++  fixture "$fact" nested
++  finish_fixture "$fact"
++  assert_retained
++  echo "PASS $fact preserves parent, descendant and temporary resources"
++done
++
++# Positive path: sweep a clean merged leaf, then verify the parent before ordinary removal.
++# This uses the real fail-closed helpers; a text-only success or hard-coded zero cannot pass.
++fixture verified-clear nested
++git -C "$child" restore file
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/remove-task-worktree" --sweep "$outer/.worktrees" outer) > "$T/leaf-sweep.log" 2>&1 || status=$?
++[ "$status" = 0 ]
++[ ! -d "$child" ]
++grep -F "removed: $child" "$T/leaf-sweep.log" >/dev/null
++[ -f "$outer/file" ]
++[ -f "$temp/evidence" ]
++# This is the fixture's own disposable process; only exact resource ownership may match it.
++owned_process_root=$outer
++(cd "$outer" && exec node -e 'process.on("SIGTERM",()=>process.exit(0));require("node:fs").writeFileSync(process.argv[1],"ready\n");setInterval(()=>{},1000)' "$temp/process-ready") &
++owned_pid=$!
++for attempt in 1 2 3 4 5; do
++  [ -f "$temp/process-ready" ] && break
++  sleep 0.1
++done
++[ -f "$temp/process-ready" ]
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$outer" "$temp") > "$T/parent-verification.log" 2>&1 || status=$?
++[ "$status" = 0 ]
++grep -F "stopped: $owned_pid " "$T/parent-verification.log" >/dev/null
++if grep -Eq '^(unknown:|survived:|kept:)' "$T/parent-verification.log"; then exit 1; fi
++owned_status=0
++wait "$owned_pid" 2>/dev/null || owned_status=$?
++[ "$owned_status" = 0 ]
++owned_process_root=
++finish_fixture verified-clear
++[ ! -e "$outer" ]
++[ ! -e "$temp" ]
++if git -C "$repo" worktree list --porcelain | grep -Fx "worktree $outer" >/dev/null; then exit 1; fi
++echo 'PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup'
++echo 'All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)'

@@ -1,0 +1,1 @@
+Launch: mechanism ordinary-subagents · epic seam · invocationId task6-current · branch integration · integrationWorktree /private/tmp/task6-seam-evidence/setup-prompt/integration · concurrency 1 · earlyUnblock on · sweep deferred

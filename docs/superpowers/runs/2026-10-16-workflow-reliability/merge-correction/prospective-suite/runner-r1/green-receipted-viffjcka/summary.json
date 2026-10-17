@@ -1,0 +1,98 @@
+{
+  "runner": "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "testSha256": "c3f69e2a930907a9326061617c0f43216f45bf912c09c70d795ce58562ee866a",
+  "fixtureRoot": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka",
+  "results": [
+    {
+      "name": "ordinary-success",
+      "status": "passed"
+    },
+    {
+      "name": "ambient-test-filter",
+      "status": "passed"
+    },
+    {
+      "name": "shell-injection",
+      "status": "passed"
+    },
+    {
+      "name": "node-injection",
+      "status": "passed"
+    },
+    {
+      "name": "git-injection",
+      "status": "passed"
+    },
+    {
+      "name": "per-case-source-drift",
+      "status": "passed"
+    },
+    {
+      "name": "plan-input-drift",
+      "status": "passed"
+    },
+    {
+      "name": "runner-input-drift",
+      "status": "passed"
+    },
+    {
+      "name": "optimized-preflight",
+      "status": "passed"
+    },
+    {
+      "name": "complete-preflight",
+      "status": "passed"
+    },
+    {
+      "name": "reviewed-digest",
+      "status": "passed"
+    },
+    {
+      "name": "unsafe-output",
+      "status": "passed"
+    },
+    {
+      "name": "last-case-timeout",
+      "status": "passed"
+    },
+    {
+      "name": "immutable-receipt",
+      "status": "passed"
+    },
+    {
+      "name": "unknown-environment-secret",
+      "status": "passed"
+    },
+    {
+      "name": "existing-output",
+      "status": "passed"
+    },
+    {
+      "name": "partial-timeout",
+      "status": "passed"
+    },
+    {
+      "name": "launcher-isolation",
+      "status": "passed"
+    },
+    {
+      "name": "historical-overlap",
+      "status": "passed"
+    },
+    {
+      "name": "duplicates",
+      "status": "passed"
+    },
+    {
+      "name": "symlink-entrypoint",
+      "status": "passed"
+    },
+    {
+      "name": "ordinary-failure",
+      "status": "passed"
+    }
+  ],
+  "passed": 22,
+  "failed": 0
+}

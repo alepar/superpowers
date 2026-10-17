@@ -1,0 +1,101 @@
+{
+  "sourceHead": "6cbd2fc03d5f25f2c9895539b44aa3ed40cd8588",
+  "sourceTree": "45ee088f7906f3a0bf93bb9dc98c2cb80d64d9b4",
+  "measurementValid": true,
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "toolVersions": {
+    "node": "v26.9.0",
+    "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "planPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/plan.json",
+  "planSha256": "494efe9daf791a7eb0e4e3207e3138ae9fdbc6c58613453b8f9249c78f3dd425",
+  "runnerSha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16",
+  "commandCount": 2,
+  "commandGroupsPassed": 2,
+  "commandGroupsFailed": 0,
+  "commandGroupsErrors": 0,
+  "commandGroupsSkipped": 0,
+  "cases": [
+    {
+      "id": "01",
+      "planCommand": "bash tests/one.sh",
+      "actualArgv": [
+        "/bin/bash",
+        "tests/one.sh"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:54Z",
+      "endUtc": "2026-10-17T21:39:54Z",
+      "durationSeconds": 0.005,
+      "exitCode": 0,
+      "status": "passed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "6cbd2fc03d5f25f2c9895539b44aa3ed40cd8588",
+      "sourceTree": "45ee088f7906f3a0bf93bb9dc98c2cb80d64d9b4",
+      "runner": "/bin/bash",
+      "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-01/stderr.log",
+      "stdoutBytes": 12,
+      "stdoutSha256": "a90164e8b468b6393e10305b307e851fb2ebcdcc199978db9cd19cb95a574b79",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "02",
+      "planCommand": "node tests/two.mjs",
+      "actualArgv": [
+        "/opt/homebrew/bin/node",
+        "tests/two.mjs"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:54Z",
+      "endUtc": "2026-10-17T21:39:54Z",
+      "durationSeconds": 0.077,
+      "exitCode": 0,
+      "status": "passed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "6cbd2fc03d5f25f2c9895539b44aa3ed40cd8588",
+      "sourceTree": "45ee088f7906f3a0bf93bb9dc98c2cb80d64d9b4",
+      "runner": "/opt/homebrew/bin/node",
+      "runnerSha256": "28f0fc07e2b86fc0eae5f9751f34ab14d63bd0132882f89cc4a5b4a44965592e",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/evidence/case-02/stderr.log",
+      "stdoutBytes": 11,
+      "stdoutSha256": "5dc8af5a8515d314bd2e54629a84b0497aa6d73ea4ef2cb1b3336fb47ec8564b",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "clonePath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary/clone",
+  "finalSourceStatus": "",
+  "finalSourceHead": "6cbd2fc03d5f25f2c9895539b44aa3ed40cd8588",
+  "finalSourceTree": "45ee088f7906f3a0bf93bb9dc98c2cb80d64d9b4",
+  "resourceRetention": "Clone and per-case roots retained; separate scoped inspection pending.",
+  "limitations": [
+    "Actual test execution; canned external agents in fixtures remain simulations.",
+    "No hosted Workflow, provider-wide reliability or global process-absence claim."
+  ]
+}

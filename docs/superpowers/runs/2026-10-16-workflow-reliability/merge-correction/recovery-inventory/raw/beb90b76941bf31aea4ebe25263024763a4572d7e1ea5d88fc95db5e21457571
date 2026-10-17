@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The newly supported findings-ledger path can retain an unresolved dispute while root acceptance succeeds without any acceptance-relevance judgment for that issue.",
+      "location": "skills/super-auto/scripts/report-status:469",
+      "category": "regression",
+      "external": false,
+      "evidence": "The absorption adds readledger() and reads findingsLedger/findingsLedgerDesign in ordinary status, but --acceptance still visits only scope-dispositions --project findings and its reuse of ordinary status at lines 183-185 imports only collection/projection qualifiers. No reconciliation checks that unresolved ledger entries have retained source refs. At captured head f726f0e97f57b398832891d3f7d95759ed367eb4, /tmp/ufz-postcap-controller/probe-regression/acceptance-probe.cjs starts with the incoming disputed-uncapped fixture, adds an otherwise satisfied synthetic caller-acceptance record and a valid empty final-review extraction, and retains the fixture ledger dispute. Ordinary status reports one unresolved issue, but --acceptance returns exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]. Adding only the original issue as a finding-source occurrence changes the same gate to exit 3 with finding acceptance relevance unproven. Removing all extraction records also rejects, so the demonstrated trigger specifically requires another valid retained extraction plus a disputed issue present only in the loop ledger. This is the new loop-ledger/projection integration seam: acceptance neither assesses that known issue nor reports its missing extraction. The control does not establish acceptance of a live run. Full commands and outputs are retained at /tmp/ufz-postcap-controller/probe-regression/receipt.json.",
+      "kind": "ISSUE"
+    }
+  ]
+}

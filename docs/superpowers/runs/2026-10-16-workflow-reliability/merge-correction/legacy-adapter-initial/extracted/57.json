@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+  "artifact": "legacy-report-adapters-r1/57-task-3-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001111",
+      "position": 1,
+      "key": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.",
+      "text": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000001608",
+      "position": 1,
+      "key": "The implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review.",
+      "text": "The implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review."
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-3-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-3-review.md",
+  "rawSha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+  "rawByteCount": 5261,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-3-review.md",
+    "durablePath": "task-report-history-r1/raw/task-3-review.md",
+    "sha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+    "byteCount": 5261,
+    "logicalRole": "review",
+    "ordinal": 3,
+    "logicalTaskId": "super-plan-ufz.3",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-3-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task review: super-plan-ufz.3",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task review: super-plan-ufz.3\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.3"
+      ],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 142,
+      "bodyLineStart": 2,
+      "rawText": "# Task review: super-plan-ufz.3\n\nStatus: CLEAN\nBase: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: 2e65d11c70e9fa011576a27ea0891dba89275066\n\n",
+      "bodyRawText": "\nStatus: CLEAN\nBase: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: 2e65d11c70e9fa011576a27ea0891dba89275066\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 33,
+          "byteEnd": 47
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b\n",
+          "text": "Base: b635541015f4bc0e037ef8621f8d01135ca2b22b",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 47,
+          "byteEnd": 94
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 2e65d11c70e9fa011576a27ea0891dba89275066\n",
+          "text": "Head: 2e65d11c70e9fa011576a27ea0891dba89275066",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 94,
+          "byteEnd": 141
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 16,
+      "byteStart": 142,
+      "byteEnd": 1532,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n\n✅ Current bead description and acceptance agree with the frozen brief. `bd comments super-plan-ufz.3` returned no comments; no requirement amendment was applied. The independently triaged composed-review fixture correction was authorized and preserves the original coverage.\n\n✅ Capacity waits remain reservations. The common runTask boundary acquires capacity, refreshes external/opaque observations when required, applies integration/start/quarantine/effective-dependency admission, then creates the attempt. Rejected admission releases capacity through finally and never reaches attempt creation or implementation/review/fix/merge outcomes.\n\n✅ Local implementation dependencies retain completed/implDone semantics. External observations require closed tracker status with a recognized kind; missing, duplicate, failed or malformed observations invalidate only the corresponding dependency. Opaque readiness retains tracker-ready authority.\n\n✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.\n\n",
+      "bodyRawText": "\n✅ Current bead description and acceptance agree with the frozen brief. `bd comments super-plan-ufz.3` returned no comments; no requirement amendment was applied. The independently triaged composed-review fixture correction was authorized and preserves the original coverage.\n\n✅ Capacity waits remain reservations. The common runTask boundary acquires capacity, refreshes external/opaque observations when required, applies integration/start/quarantine/effective-dependency admission, then creates the attempt. Rejected admission releases capacity through finally and never reaches attempt creation or implementation/review/fix/merge outcomes.\n\n✅ Local implementation dependencies retain completed/implDone semantics. External observations require closed tracker status with a recognized kind; missing, duplicate, failed or malformed observations invalidate only the corresponding dependency. Opaque readiness retains tracker-ready authority.\n\n✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead description and acceptance agree with the frozen brief. `bd comments super-plan-ufz.3` returned no comments; no requirement amendment was applied. The independently triaged composed-review fixture correction was authorized and preserves the original coverage.\n",
+          "text": "✅ Current bead description and acceptance agree with the frozen brief. `bd comments super-plan-ufz.3` returned no comments; no requirement amendment was applied. The independently triaged composed-review fixture correction was authorized and preserves the original coverage.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 162,
+          "byteEnd": 439
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Capacity waits remain reservations. The common runTask boundary acquires capacity, refreshes external/opaque observations when required, applies integration/start/quarantine/effective-dependency admission, then creates the attempt. Rejected admission releases capacity through finally and never reaches attempt creation or implementation/review/fix/merge outcomes.\n",
+          "text": "✅ Capacity waits remain reservations. The common runTask boundary acquires capacity, refreshes external/opaque observations when required, applies integration/start/quarantine/effective-dependency admission, then creates the attempt. Rejected admission releases capacity through finally and never reaches attempt creation or implementation/review/fix/merge outcomes.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 440,
+          "byteEnd": 809
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Local implementation dependencies retain completed/implDone semantics. External observations require closed tracker status with a recognized kind; missing, duplicate, failed or malformed observations invalidate only the corresponding dependency. Opaque readiness retains tracker-ready authority.\n",
+          "text": "✅ Local implementation dependencies retain completed/implDone semantics. External observations require closed tracker status with a recognized kind; missing, duplicate, failed or malformed observations invalidate only the corresponding dependency. Opaque readiness retains tracker-ready authority.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 810,
+          "byteEnd": 1110
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.\n",
+          "text": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1111,
+          "byteEnd": 1531
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Issues"
+      ],
+      "lineStart": 17,
+      "lineEnd": 22,
+      "byteStart": 1532,
+      "byteEnd": 1590,
+      "bodyLineStart": 18,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1543,
+          "byteEnd": 1559
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1559,
+          "byteEnd": 1576
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1576,
+          "byteEnd": 1589
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Test evidence"
+      ],
+      "lineStart": 23,
+      "lineEnd": 30,
+      "byteStart": 1590,
+      "byteEnd": 3620,
+      "bodyLineStart": 24,
+      "rawText": "## Test evidence\n\nThe implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review.\n\nTest-change commands (both exited 0): `git diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'` and the same command without `--stat`. Result: replay-harness.mjs, 71 insertions and 5 deletions. Timer injection adds a deterministic seam. No tests were deleted or skipped and no expected result was relaxed.\n\nThe composed-interface fixture originally admitted a consumer despite an unfinished known dependency with early unblock disabled and made the producer wait for consumer dispatch. The correction models a supported late-discovered edge through plan-rest.missingEdges. Both original assertions remain unchanged: the merge prompt identifies a producer that landed after branching, and seam review checks its interface. Added assertions require both tasks to complete, consumer implementation before edge installation, edge installation before consumer merge, and no stacked consumer implementation. This preserves the target while removing the fixture admission cycle.\n\n",
+      "bodyRawText": "\nThe implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review.\n\nTest-change commands (both exited 0): `git diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'` and the same command without `--stat`. Result: replay-harness.mjs, 71 insertions and 5 deletions. Timer injection adds a deterministic seam. No tests were deleted or skipped and no expected result was relaxed.\n\nThe composed-interface fixture originally admitted a consumer despite an unfinished known dependency with early unblock disabled and made the producer wait for consumer dispatch. The correction models a supported late-discovered edge through plan-rest.missingEdges. Both original assertions remain unchanged: the merge prompt identifies a producer that landed after branching, and seam review checks its interface. Added assertions require both tasks to complete, consumer implementation before edge installation, edge installation before consumer merge, and no stacked consumer implementation. This preserves the target while removing the fixture admission cycle.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review.\n",
+          "text": "The implementer reports the task-worktree command `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.3/state node tests/super-code/replay-harness.mjs`: 1900 passed, 0 failed, exit 0. The retained post-rebase evidence identifies source 214a28e8c1dba33b026db6441fd97ef27af55d59 and the review base. Head adds retained evidence only. This is plausible targeted evidence for admission, slot release, independent external lookup errors, external release during long work, query bounds, timer cleanup and generated protocol. RED evidence is also retained. No tests were rerun during review.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 1608,
+          "byteEnd": 2440
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test-change commands (both exited 0): `git diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'` and the same command without `--stat`. Result: replay-harness.mjs, 71 insertions and 5 deletions. Timer injection adds a deterministic seam. No tests were deleted or skipped and no expected result was relaxed.\n",
+          "text": "Test-change commands (both exited 0): `git diff --stat b635541015f4bc0e037ef8621f8d01135ca2b22b..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'` and the same command without `--stat`. Result: replay-harness.mjs, 71 insertions and 5 deletions. Timer injection adds a deterministic seam. No tests were deleted or skipped and no expected result was relaxed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2441,
+          "byteEnd": 2953
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The composed-interface fixture originally admitted a consumer despite an unfinished known dependency with early unblock disabled and made the producer wait for consumer dispatch. The correction models a supported late-discovered edge through plan-rest.missingEdges. Both original assertions remain unchanged: the merge prompt identifies a producer that landed after branching, and seam review checks its interface. Added assertions require both tasks to complete, consumer implementation before edge installation, edge installation before consumer merge, and no stacked consumer implementation. This preserves the target while removing the fixture admission cycle.\n",
+          "text": "The composed-interface fixture originally admitted a consumer despite an unfinished known dependency with early unblock disabled and made the producer wait for consumer dispatch. The correction models a supported late-discovered edge through plan-rest.missingEdges. Both original assertions remain unchanged: the merge prompt identifies a producer that landed after branching, and seam review checks its interface. Added assertions require both tasks to complete, consumer implementation before edge installation, edge installation before consumer merge, and no stacked consumer implementation. This preserves the target while removing the fixture admission cycle.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2954,
+          "byteEnd": 3619
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability and risk checks",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability and risk checks\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Focused reachability and risk checks"
+      ],
+      "lineStart": 31,
+      "lineEnd": 39,
+      "byteStart": 3620,
+      "byteEnd": 5261,
+      "bodyLineStart": 32,
+      "rawText": "## Focused reachability and risk checks\n\n- Shared-boundary reachability: traced round-head planned and review-reentry loops, graphTopUp, tracker top-up, RESOLVE retry and stack-conflict retry into runTask; searched all runTask call sites. All use the new post-capacity predicate. Existing withSlot calls perform non-implementation bookkeeping, rather than bypassing implementation admission.\n- Cancellation risk from moving attempt creation: checked startAttempt, failAttempt and cancelStackedOn. Failed parent attempts remove implDone before their dependents can pass fresh dependency admission; active stacked attempts retain existing cancellation handling.\n- External meaning risk: checked the planner/tree-deps interface. Ordinary nonlocal blocker/review dependencies are represented as opaque and retain bd-ready authority; explicit external dependency IDs use compact observations. Planner excludes blocker/review/gate beads from implementation work.\n- Refresh deadlock risk: checked runTopUp/performTopUp and drain. Top-ups enqueue chains without awaiting them or the merge lane; coalescing returns the active query promise and stays budget bounded.\n- Fixture reachability: checked plan-rest installs missingEdges and the existing composed-review merge path. The fixture uses the real late-edge route, rather than an unused wrapper.\n\nThe first review-package attempt encountered sandbox write denial; the authorized artifact was then generated successfully through an approved escalation. The package is nonempty (two commits, seven files). No review checks remain unavailable. No source, branch, tracker, or Herdr state was changed.\n",
+      "bodyRawText": "\n- Shared-boundary reachability: traced round-head planned and review-reentry loops, graphTopUp, tracker top-up, RESOLVE retry and stack-conflict retry into runTask; searched all runTask call sites. All use the new post-capacity predicate. Existing withSlot calls perform non-implementation bookkeeping, rather than bypassing implementation admission.\n- Cancellation risk from moving attempt creation: checked startAttempt, failAttempt and cancelStackedOn. Failed parent attempts remove implDone before their dependents can pass fresh dependency admission; active stacked attempts retain existing cancellation handling.\n- External meaning risk: checked the planner/tree-deps interface. Ordinary nonlocal blocker/review dependencies are represented as opaque and retain bd-ready authority; explicit external dependency IDs use compact observations. Planner excludes blocker/review/gate beads from implementation work.\n- Refresh deadlock risk: checked runTopUp/performTopUp and drain. Top-ups enqueue chains without awaiting them or the merge lane; coalescing returns the active query promise and stays budget bounded.\n- Fixture reachability: checked plan-rest installs missingEdges and the existing composed-review merge path. The fixture uses the real late-edge route, rather than an unused wrapper.\n\nThe first review-package attempt encountered sandbox write denial; the authorized artifact was then generated successfully through an approved escalation. The package is nonempty (two commits, seven files). No review checks remain unavailable. No source, branch, tracker, or Herdr state was changed.\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Shared-boundary reachability: traced round-head planned and review-reentry loops, graphTopUp, tracker top-up, RESOLVE retry and stack-conflict retry into runTask; searched all runTask call sites. All use the new post-capacity predicate. Existing withSlot calls perform non-implementation bookkeeping, rather than bypassing implementation admission.\n",
+          "text": "Shared-boundary reachability: traced round-head planned and review-reentry loops, graphTopUp, tracker top-up, RESOLVE retry and stack-conflict retry into runTask; searched all runTask call sites. All use the new post-capacity predicate. Existing withSlot calls perform non-implementation bookkeeping, rather than bypassing implementation admission.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 3661,
+          "byteEnd": 4012
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Cancellation risk from moving attempt creation: checked startAttempt, failAttempt and cancelStackedOn. Failed parent attempts remove implDone before their dependents can pass fresh dependency admission; active stacked attempts retain existing cancellation handling.\n",
+          "text": "Cancellation risk from moving attempt creation: checked startAttempt, failAttempt and cancelStackedOn. Failed parent attempts remove implDone before their dependents can pass fresh dependency admission; active stacked attempts retain existing cancellation handling.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4012,
+          "byteEnd": 4280
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- External meaning risk: checked the planner/tree-deps interface. Ordinary nonlocal blocker/review dependencies are represented as opaque and retain bd-ready authority; explicit external dependency IDs use compact observations. Planner excludes blocker/review/gate beads from implementation work.\n",
+          "text": "External meaning risk: checked the planner/tree-deps interface. Ordinary nonlocal blocker/review dependencies are represented as opaque and retain bd-ready authority; explicit external dependency IDs use compact observations. Planner excludes blocker/review/gate beads from implementation work.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 4280,
+          "byteEnd": 4577
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Refresh deadlock risk: checked runTopUp/performTopUp and drain. Top-ups enqueue chains without awaiting them or the merge lane; coalescing returns the active query promise and stays budget bounded.\n",
+          "text": "Refresh deadlock risk: checked runTopUp/performTopUp and drain. Top-ups enqueue chains without awaiting them or the merge lane; coalescing returns the active query promise and stays budget bounded.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 4577,
+          "byteEnd": 4777
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Fixture reachability: checked plan-rest installs missingEdges and the existing composed-review merge path. The fixture uses the real late-edge route, rather than an unused wrapper.\n",
+          "text": "Fixture reachability: checked plan-rest installs missingEdges and the existing composed-review merge path. The fixture uses the real late-edge route, rather than an unused wrapper.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 4777,
+          "byteEnd": 4960
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The first review-package attempt encountered sandbox write denial; the authorized artifact was then generated successfully through an approved escalation. The package is nonempty (two commits, seven files). No review checks remain unavailable. No source, branch, tracker, or Herdr state was changed.\n",
+          "text": "The first review-package attempt encountered sandbox write denial; the authorized artifact was then generated successfully through an approved escalation. The package is nonempty (two commits, seven files). No review checks remain unavailable. No source, branch, tracker, or Herdr state was changed.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 4961,
+          "byteEnd": 5261
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Spec compliance"
+      ],
+      "positionInSection": 4,
+      "key": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.",
+      "text": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.",
+      "rawText": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.\n",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1111,
+      "byteEnd": 1531,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1543,
+      "byteEnd": 1559,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1559,
+      "byteEnd": 1576,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task review: super-plan-ufz.3",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1576,
+      "byteEnd": 1589,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

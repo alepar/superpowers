@@ -1,0 +1,17 @@
+{
+  "priorController": "/root/roast_pr_r2_controller",
+  "preserveCompleted": [
+    "judge:reproduce#0",
+    "judge:refute#0",
+    "judge:ground#0"
+  ],
+  "remaining": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "wording": "assembled seatsSafe static review",
+  "maxActiveSeats": 3
+}

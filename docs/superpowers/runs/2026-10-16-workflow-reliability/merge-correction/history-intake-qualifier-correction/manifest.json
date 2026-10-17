@@ -1,0 +1,57 @@
+{
+  "purpose": "Versioned correction of mistaken differing-bytes qualifier. Initial intake artifacts retained unchanged in sibling history-intake. Task19 canonical raw and handoff pairs byteidentical; provenance paths remain distinct, no semanticidentitymerge.",
+  "files": [
+    {
+      "path": "HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "path": "adapt_history.py",
+      "sha256": "d341cb1451838789939cce02f0181bf86370878fe0ff0665b556ecf2062096cd"
+    },
+    {
+      "path": "coverage.json",
+      "sha256": "1dce2a0ac3ccad0cc1c44c7af4cbb3d47cdc9166c76754000cf9fb1cdd125986"
+    },
+    {
+      "path": "coverage.md",
+      "sha256": "4d6222f3aeb4027cf2c38e3ec31f7bfb646a147e508a383444cdf6238cb85a53"
+    },
+    {
+      "path": "finalize.py",
+      "sha256": "7fe32d3d927f04a7a999ea4b847d4192f67f482bbb66f0e4d369ea396380c173"
+    },
+    {
+      "path": "occurrence-projection.md",
+      "sha256": "36a9f47e3974bff9dfbf5e7c6c0a3a25ad87d08a44f79d85adc31f2b935813b5"
+    },
+    {
+      "path": "project_occurrences.py",
+      "sha256": "e2cad84e64ae389d73b6dcae5b9339e29dafb6ad49abce4380109f566bde2612"
+    },
+    {
+      "path": "task19-variant-projection.json",
+      "sha256": "c91f2f036461197737bd72796cced5b3261421fcc7b6c9125e4052a3ae4df92f"
+    },
+    {
+      "path": "task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "path": "task19-qualifier-correction.md",
+      "sha256": "4b3aef2f9320a62de548d2b586059ce519d48499b0513176e211b72373bfd11e"
+    },
+    {
+      "path": "variants/variant-1-task-19-report.md.sidecar.json",
+      "sha256": "cd7ce5ae13f13d176cbb625003469ebf369d76b1405578e1e8efead43ace4e06"
+    },
+    {
+      "path": "variants/variant-2-task-19-review.md.sidecar.json",
+      "sha256": "0def20b5c72c7a4281b9cbdbf1056270f191004a784fc668182ab15c81b88d5d"
+    },
+    {
+      "path": "variants/variant-3-task-19-review-initial.diff.sidecar.json",
+      "sha256": "9850d489beb0ede110bf8c23db6dd7dcf1633a995f79cb4ad30b5a2f1ce1f80e"
+    }
+  ]
+}

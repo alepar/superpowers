@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+  "artifact": "legacy-report-adapters-r1/70-task-8-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000010466",
+      "position": 1,
+      "key": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.",
+      "text": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-7/raw-byte-000010870",
+      "position": 1,
+      "key": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.",
+      "text": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract."
+    }
+  ]
+}

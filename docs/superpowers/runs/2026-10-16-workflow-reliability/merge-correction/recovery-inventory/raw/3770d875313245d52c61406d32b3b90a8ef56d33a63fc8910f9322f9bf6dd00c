@@ -1,0 +1,22 @@
+[
+  {
+    "path": "retained-task-evidence/super-plan-ufz.25/drain-only.log",
+    "sha256": "b8f2b4a7c4a7ef87d107c0ebf556f9ebe9bd71d7782fd6da28da251a951d1e6c",
+    "bytes": 1609
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.25/existing-scripts.log",
+    "sha256": "9f4b7b113ccc353832f67364d6ef7c685899204c36e9bd247249239b897705a5",
+    "bytes": 9860
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.25/green.log",
+    "sha256": "010641e2be79e1983f7ccd760a36d01cc47bfc1002bd1bbe33a193f3ed3abe6e",
+    "bytes": 1163
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.25/red.log",
+    "sha256": "b67e46bb291532a1332437b402cc378c17001a32f4815b46f38bc6ccfda56486",
+    "bytes": 3931
+  }
+]

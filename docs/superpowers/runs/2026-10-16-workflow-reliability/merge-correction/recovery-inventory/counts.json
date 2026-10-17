@@ -1,0 +1,16 @@
+{
+  "actualObjectsIncludingCopies": 261,
+  "exampleObjectsExcludedIncludingCopies": 12,
+  "contextObjects": 80,
+  "exactTaskRequirementIdentities": 33,
+  "requirementComparisons": {
+    "live-pass-observed": 31,
+    "live-fail-observed": 2
+  },
+  "exactTaskMeasurementRecords": 159,
+  "failedMeasurementRecords": 23,
+  "actualFailureAssociationRecords": 6,
+  "formalRecoveryRecordsIncludingCopies": 2,
+  "formalRecoveryRecordValues": 1,
+  "explicitEmptyFieldsIncludingCopies": 32
+}

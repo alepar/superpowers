@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: every dispatched artifact writer must execute its source guard: [{"label":"assemble:final","found":true,"status":0},{"label":"final-review:cluster:1","found":false},{"label":"final-review:seam","found":true,"status":0},{"label":"final-review:stub","found":true,"status":0}]
+    at replay (file:///private/tmp/ufz-correction-final-fix-wave-logs/H1-after-cluster-1.mjs:102:3)
+    at async file:///private/tmp/ufz-correction-final-fix-wave-logs/H1-after-cluster-1.mjs:108:17 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

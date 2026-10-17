@@ -1,0 +1,44 @@
+test source identities: {"head":"9e4e057136d449348135bfc18d1f084cb6e4c303","reportStatusSha256":"617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4","testSha256":"bc8c9fcb9eb35044d81f0b3f7798e38b5625841e756f97c7f3c79220346542a4"}
+FAIL real final-review keys ledger requires supported exact complete line mapping
+AssertionError [ERR_ASSERTION]: {"owner":"super-auto","sourceTree":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","eligible":false,"pending":[],"gaps":["source coverage: conflicting report kind /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/keys/review.keys","source coverage: ledger declared input population unavailable: ledger.md; /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/keys/review.keys","source coverage: source-correspondence /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/keys/review.keys: retained report kind differs from declaration","source coverage: declared report has no retained source extraction: /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/keys/review.keys"],"nonblockingFindings":[{"source":"inv-keys/final","section":"Must fix before landing","position":1},{"source":"inv-keys/final","section":"Must fix before landing","position":2}]}
+
+
+3 !== 0
+
+    at cli (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:19:9)
+    at Object.gate (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:36:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:185:69
+    at test (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:21:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:175:2
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+FAIL declared empty final-review keys ready retain typed correspondence
+AssertionError [ERR_ASSERTION]: {"owner":"super-auto","sourceTree":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","eligible":false,"pending":[],"gaps":["source coverage: ledger declared input population unavailable: ledger.md; /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-ready/unhelpful-name.data","source coverage: source-correspondence /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-ready/unhelpful-name.data: retained report kind differs from declaration","source coverage: declared report has no retained source extraction: /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-ready/unhelpful-name.data"],"nonblockingFindings":[]}
+
+
+3 !== 0
+
+    at cli (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:19:9)
+    at Object.gate (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:36:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:202:99
+    at test (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:21:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:194:39
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+FAIL declared empty final-review keys none retain typed correspondence
+AssertionError [ERR_ASSERTION]: {"owner":"super-auto","sourceTree":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","eligible":false,"pending":[],"gaps":["source coverage: ledger declared input population unavailable: ledger.md; /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-none/unhelpful-name.data","source coverage: source-correspondence /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-none/unhelpful-name.data: retained report kind differs from declaration","source coverage: declared report has no retained source extraction: /private/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B/empty-keys-none/unhelpful-name.data"],"nonblockingFindings":[]}
+
+
+3 !== 0
+
+    at cli (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:19:9)
+    at Object.gate (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:36:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:202:99
+    at test (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:21:103)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-auto/acceptance-population-correction.mjs:194:39
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+0 passed, 3 failed; fixture artifacts: /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/acceptance-population-UhUm2B

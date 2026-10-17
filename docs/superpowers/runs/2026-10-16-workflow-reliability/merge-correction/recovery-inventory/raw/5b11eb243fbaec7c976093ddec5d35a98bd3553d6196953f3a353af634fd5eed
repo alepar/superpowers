@@ -1,0 +1,111 @@
+
+## live-sim: independently reviewed verification-only completion preserves unchanged HEAD
+  [PASS] run completes without throwing
+  [PASS] unchanged verification dispatches independent review and confirmed closure
+  [PASS] verification creates no artificial commit, merge, unreviewed fix or early split
+  [PASS] evidence review receives intent, fixed source and retained measurements
+  [PASS] verification closure uses reviewed basis and tracker status rather than a merge claim
+  [PASS] durable completion retains source, independent review and evidence basis
+  [PASS] ledger records verification basis before completion
+  [PASS] run completes without throwing
+  [PASS] resume reuses reviewed verification with unchanged source
+  [PASS] verification completion does not increment task landings or invalidate ledger accounting
+  [PASS] reconciled metrics retain verification completion without a fictitious missing landing
+  [PASS] run completes without throwing
+  [PASS] missing evidence cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] stale source cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] fallback required live cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] unavailable required check cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] changed verification cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] changed files cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] wrong required configuration cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] missing reviewer source cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] failed required check cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] unconfirmed intent cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] implementation bead cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] null review cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] invalid review cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] rejected review cannot complete unchanged verification
+  [PASS] run completes without throwing
+  [PASS] tracker closure alone cannot replace rejected verification acceptance
+  [PASS] run completes without throwing
+  [PASS] unavailable durable verification write prevents tracker closure
+  [PASS] run completes without throwing
+  [PASS] a reviewer cannot switch implementation delivery to no-change completion
+  [PASS] run completes without throwing
+  [PASS] confirmed closure retains unverified cleanup as its actual outcome
+  [PASS] oversized basis preserves cap/source pointer and verification completion discriminator
+  [PASS] run completes without throwing
+  [PASS] unrecoverable deleted pointer admits no work or closure
+  [PASS] unrecoverable deleted pointer retains the exact unresolved source/line and conservative hold
+  [PASS] run completes without throwing
+  [PASS] supplied foreign-source payload admits no work or closure
+  [PASS] supplied foreign-source payload retains the exact unresolved source/line and conservative hold
+  [PASS] run completes without throwing
+  [PASS] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing
+  [PASS] run completes without throwing
+  [PASS] ready reentry with missing basis obtains independent verification review before closure
+  [PASS] fresh missing-basis reentry confirms tracker closure after close-only
+  [PASS] new independently reviewed basis is durably written before fresh closure
+  [PASS] fresh reentry preserves the original live evidence, required checks and source identity
+  [PASS] run completes without throwing
+  [PASS] fresh missing-basis completion waits for observed tracker closure
+  [PASS] targeted helper retains the complete original oversized pending-closure bytes
+  [PASS] run completes without throwing
+  [PASS] recovered oversized basis reuses independent acceptance and routes only to closure
+  [PASS] recovered source/tracker reconciliation precedes confirmed closure and completion
+  [PASS] existing reader requests this exact ledger/source line without another recovery dispatch
+  [PASS] recovered closure observes the retained commit/tree and exact required bead set
+  [PASS] recovered completion preserves all source-bound live evidence and required checks
+  [PASS] successful recovery clears its resolved transport gap and confirmed closure obligation
+  [PASS] run completes without throwing
+  [PASS] unconfirmed recovered closure retains the entire oversized record, evidence and additive fields
+  [PASS] run completes without throwing
+  [PASS] recovered pending closure with unavailable observations remains held
+  [PASS] unavailable recovery preserves original pending closure bytes
+  [PASS] run completes without throwing
+  [PASS] recovered pending closure with source mismatch observations remains held
+  [PASS] source mismatch recovery preserves original pending closure bytes
+  [PASS] run completes without throwing
+  [PASS] recovered pending closure with tracker unavailable observations remains held
+  [PASS] tracker unavailable recovery preserves original pending closure bytes
+  [PASS] run completes without throwing
+  [PASS] recovered pending closure with tracker contradictory observations remains held
+  [PASS] tracker contradictory recovery preserves original pending closure bytes
+  [PASS] targeted recovery never rewrites the authoritative ledger
+  [PASS] run completes without throwing
+  [PASS] unavailable closure preserves verified basis and remains unconfirmed
+  [PASS] run completes without throwing
+  [PASS] Finish-only verification closure is reconciled before metric source capture
+  [PASS] Finish-only verification contributes a completion and zero missing landings
+  [PASS] run completes without throwing
+  [PASS] pending verification resumes closure only without repeating reviewed work
+  [PASS] verification resume checks captured commit/tree without inventing a landing
+  [PASS] run completes without throwing
+  [PASS] unverified source or tracker holds verification recovery despite tracker closure claims
+  [PASS] run completes without throwing
+  [PASS] unverified source or tracker holds verification recovery despite tracker closure claims
+  [PASS] run completes without throwing
+  [PASS] unverified source or tracker holds verification recovery despite tracker closure claims
+  [PASS] run completes without throwing
+  [PASS] failed verification closure append preserves accepted basis before settlement
+  [PASS] run completes without throwing
+  [PASS] failed verification closure append preserves accepted basis before settlement
+  [PASS] run completes without throwing
+  [PASS] already closed verification resume confirms durable typed completion without a landing
+106 passed, 0 failed
+
+Exit status: 0

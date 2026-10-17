@@ -1,0 +1,447 @@
+{
+  "version": 1,
+  "ordinal": 44,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+  "originalArtifact": "task-report-history-r1/raw/task-24-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-24-review.md",
+  "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+  "rawByteCount": 9804,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      9804
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/16",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/44-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/16/semanticPassages/0",
+      "roles": [
+        "scope-qualification"
+      ],
+      "span": [
+        216,
+        789
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/16/semanticPassages/1",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        800,
+        816
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/16/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        816,
+        833
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/16/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        833,
+        846
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/16/semanticPassages/4",
+      "roles": [
+        "scope-qualification"
+      ],
+      "span": [
+        889,
+        1641
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.\n",
+      "text": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 8,
+      "lineEnd": 8,
+      "byteStart": 216,
+      "byteEnd": 789,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 1,
+      "originalHierarchy": [
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "scope-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 1,
+        "positionInSection": 1,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 1,
+        "byteStart": 216,
+        "byteEnd": 789,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Critical: none.\n",
+      "text": "Critical: none.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 800,
+      "byteEnd": 816,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "section": "Issues",
+        "sectionOrdinal": 2,
+        "positionInSection": 1,
+        "rawSection": "Issues",
+        "rawPositionInSection": 1,
+        "byteStart": 800,
+        "byteEnd": 816,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Important: none.\n",
+      "text": "Important: none.",
+      "listMarker": null,
+      "positionInSection": 2,
+      "lineStart": 12,
+      "lineEnd": 12,
+      "byteStart": 816,
+      "byteEnd": 833,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "section": "Issues",
+        "sectionOrdinal": 2,
+        "positionInSection": 2,
+        "rawSection": "Issues",
+        "rawPositionInSection": 2,
+        "byteStart": 816,
+        "byteEnd": 833,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Minor: none.\n",
+      "text": "Minor: none.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 833,
+      "byteEnd": 846,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Issues"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "section": "Issues",
+        "sectionOrdinal": 2,
+        "positionInSection": 3,
+        "rawSection": "Issues",
+        "rawPositionInSection": 3,
+        "byteStart": 833,
+        "byteEnd": 846,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.\n",
+      "text": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 889,
+      "byteEnd": 1641,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "rawSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "rawSection": "Focused source checks and reachability",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Focused source checks and reachability"
+      ],
+      "semanticRoles": [
+        "scope-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "section": "Focused source checks and reachability",
+        "sectionOrdinal": 3,
+        "positionInSection": 1,
+        "rawSection": "Focused source checks and reachability",
+        "rawPositionInSection": 1,
+        "byteStart": 889,
+        "byteEnd": 1641,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 216,
+      "byteEnd": 789,
+      "roles": [
+        "scope-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/16/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 889,
+      "byteEnd": 1641,
+      "roles": [
+        "scope-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/16/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-1/raw-byte-000000216",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-qualification"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 216,
+      "rawByteEnd": 789,
+      "rawLineStart": 8,
+      "rawLineEnd": 8,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Spec compliance"
+          ],
+          "byteStart": 197,
+          "byteEnd": 790
+        }
+      ],
+      "rawText": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "✅ Current bead description and acceptance plus frozen brief agree; bd comments reports no comments. No amendments used. Only the named collector and new focused regression file changed. Intermediate assembled directory links, required deep/direct links, discovered direct/nested links, and split-manifest links receive explicit unsafe-path gaps before source bytes are hashed, extracted or copied. Normal nested and required inputs and archive replay after source cleanup remain supported. The separately owned .26 recursive selection work is absent and was not assumed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/16/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-3/raw-byte-000000889",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-qualification"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 889,
+      "rawByteEnd": 1641,
+      "rawLineStart": 16,
+      "rawLineEnd": 16,
+      "originalSections": [
+        {
+          "section": "Focused source checks and reachability",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Focused source checks and reachability\n",
+          "hierarchy": [
+            "Focused source checks and reachability"
+          ],
+          "byteStart": 847,
+          "byteEnd": 2656
+        }
+      ],
+      "rawText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Risk: leaf-only validation could still follow intermediate symlinks in required inputs, discovered input enumeration, or split manifest parsing. Read captured HEAD skills/super-auto/scripts/report-status:210-264. source() lstat-checks the workspace and each descendant component, then compares canonical resolutions; walk(), root enumeration, assembled traversal, manifest reading and the per-file hash path use it. The source hash guards subsequent extraction/copy. Unsafe source paths retain a gap even when an earlier archive is available. Missing optional assembled trees remain optional; missing required entries remain explicit gaps. This is a source-boundary check, with no broader filesystem privilege or concurrent-mutation guarantee claimed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/16/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/44-task-24-review.md",
+  "retainedSha256": "eef00620623ed96283bd07f7b46d1c3a30bdcaae4ff08122d23a76e3bb84af49"
+}

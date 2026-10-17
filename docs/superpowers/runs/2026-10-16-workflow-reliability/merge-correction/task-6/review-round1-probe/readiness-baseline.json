@@ -1,0 +1,70 @@
+{
+  "t0": "2026-10-01T00:00:00Z",
+  "launch": {
+    "epicId": "ep",
+    "config": {
+      "concurrency": 2,
+      "earlyUnblock": true
+    }
+  },
+  "agents": [
+    {
+      "label": "ledger-append:launch",
+      "start": 0,
+      "end": 1
+    },
+    {
+      "label": "plan",
+      "start": 1,
+      "end": 2,
+      "result": {
+        "mapping": [
+          {
+            "id": "ep.1",
+            "n": 1,
+            "deps": []
+          },
+          {
+            "id": "ep.2",
+            "n": 2,
+            "deps": [
+              "ep.1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "impl:ep.1",
+      "start": 10,
+      "end": 20,
+      "result": {
+        "status": "IMPLEMENTED"
+      }
+    },
+    {
+      "label": "impl:ep.2",
+      "start": 25,
+      "end": 30,
+      "result": {
+        "status": "IMPLEMENTED"
+      }
+    },
+    {
+      "label": "merge:ep.1",
+      "start": 35,
+      "end": 40,
+      "result": {
+        "merged": true
+      }
+    },
+    {
+      "label": "merge:ep.2",
+      "start": 45,
+      "end": 50,
+      "result": {
+        "merged": true
+      }
+    }
+  ]
+}

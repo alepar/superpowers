@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "ordinal": 45,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+  "originalArtifact": "task-report-history-r1/raw/task-25-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-25-report.md",
+  "rawSha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+  "rawByteCount": 11553,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      11553
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/17",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/45-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED. Completion kind: implementation."
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/17/semanticPassages/0",
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        6646,
+        6922
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.\n",
+      "text": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 83,
+      "lineEnd": 83,
+      "byteStart": 6646,
+      "byteEnd": 6922,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+      "rawSha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 8,
+      "originalHierarchy": [
+        "Task 25 — Normalize temporary path expectations in dispatch-text tests",
+        "Concerns"
+      ],
+      "semanticRoles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+        "section": "Concerns",
+        "sectionOrdinal": 8,
+        "positionInSection": 1,
+        "rawSection": "Concerns",
+        "rawPositionInSection": 1,
+        "byteStart": 6646,
+        "byteEnd": 6922,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 6646,
+      "byteEnd": 6922,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/17/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": true,
+    "scope": "qualified-local-only",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000006646",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "rawByteStart": 6646,
+      "rawByteEnd": 6922,
+      "rawLineStart": 83,
+      "rawLineEnd": 83,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task 25 — Normalize temporary path expectations in dispatch-text tests",
+            "Concerns"
+          ],
+          "byteStart": 6633,
+          "byteEnd": 6923
+        }
+      ],
+      "rawText": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/17/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/45-task-25-report.md",
+  "retainedSha256": "e932b255f192cf95b022c6b374da036cfa25de45df50ffc05a1b44039e62e3ff"
+}

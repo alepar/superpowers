@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "ordinal": 10,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+  "originalArtifact": "task-report-history-r1/raw/task-11-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-11-review.md",
+  "rawSha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+  "rawByteCount": 4441,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 25,
+    "byteStart": 0,
+    "byteEnd": 4441,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/9",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/10-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "NEEDS_FIX",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: NEEDS_FIX"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/9/interpretedPassages/0",
+      "roles": [
+        "finding-summary"
+      ],
+      "span": [
+        137,
+        565
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Partial-close recovery settlement before confirmed append; same finding as line 13."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/9/interpretedPassages/1",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        975,
+        991
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical:none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/9/interpretedPassages/2",
+      "roles": [
+        "review-finding"
+      ],
+      "span": [
+        1002,
+        2311
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Important partial-close confirmation path can drop pending obligation before durable append; concrete failed append/retry and restart fixture requested."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/9/interpretedPassages/3",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        2311,
+        2324
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Minor:none. Must split from preceding no-blank-line Important item."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/9/interpretedPassages/4",
+      "roles": [
+        "coverage-concern",
+        "deferred-coverage"
+      ],
+      "span": [
+        3064,
+        3683
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Initially all-closed fixture misses partial-close durability route; parent fresh-agent evaluation explicitly deferred."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-10-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "roles": [
+        "finding-summary"
+      ],
+      "interpretation": "Partial-close recovery settlement before confirmed append; same finding as line 13.",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 137,
+      "byteEnd": 565,
+      "rawText": "Spec compliance: ❌ Partial-close resume can report recovery settled before its clear/completion append is confirmed. Other inspected requirements are implemented: Recovery-only entry, exact persisted SHA observation, separate associated tracker status observations, missing/incomplete observations held, bounded observation per restart, scoped holds/deferred admission, unrelated work, and diagnostic runFailure preservation.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 4441,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 138
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-10-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Critical:none.",
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 975,
+      "byteEnd": 991,
+      "rawText": "Critical: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 4441,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 976
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-10-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "roles": [
+        "review-finding"
+      ],
+      "interpretation": "Important partial-close confirmation path can drop pending obligation before durable append; concrete failed append/retry and restart fixture requested.",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 1002,
+      "byteEnd": 2311,
+      "rawText": "- skills/super-code/coordinator.js:1511 — Resumed records whose tracker beads are partly open enter closeAlreadyMerged, which calls confirmClosure. That function calls clearPendingClosure at line 1246; noteRecovery/readRecovery remove the pending-closure obligation immediately, before the buffered ledger:<id> append is confirmed. closeAlreadyMerged then settles completed at line 1270. If ledger:<id> and its retry return null (or report appended:false), drainLedger merely drains the chain and the run returns completed with the recovery obligation absent. The new confirmation-aware Resume fast path at lines 724–731 only protects records observed fully closed at the first observation. This violates the brief's requirement to drain confirmed closure/updated obligation records before treating recovery as settled, and the report's claim that in-memory obligations change only after confirmed append. Route partial-close completion through the same confirmed durable transaction, retaining the original record and a scoped recovery-held result on failed append. Add a targeted fixture with an initially open associated bead, successful close/check, and failed ledger:<id> append/retry; assert recovery remains unresolved and a subsequent restart observes facts rather than blindly repeating closure.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 4441,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 1003
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-10-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Minor:none. Must split from preceding no-blank-line Important item.",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 2311,
+      "byteEnd": 2324,
+      "rawText": "Minor: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 4441,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 2312
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-10-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "roles": [
+        "coverage-concern",
+        "deferred-coverage"
+      ],
+      "interpretation": "Initially all-closed fixture misses partial-close durability route; parent fresh-agent evaluation explicitly deferred.",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 3064,
+      "byteEnd": 3683,
+      "rawText": "Test evidence: Implementer reports TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs (2074 passed, 0 failed) and TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh (all tests passed), both exit 0 at reviewed HEAD. Commands, pass counts, targeted RED evidence, and process hygiene are plausible. No tests were run by this reviewer. The interrupted-append fixture covers only the initially all-closed fast path, leaving the partial-close durability failure uncovered. Parent-owned fresh-agent evaluation remains explicitly deferred by the brief/report.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 4441,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 3065
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1002,
+      "byteEnd": 2311,
+      "roles": [
+        "review-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/9/interpretedPassages/2"
+      ],
+      "interpretation": "Important partial-close confirmation path can drop pending obligation before durable append; concrete failed append/retry and restart fixture requested.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3064,
+      "byteEnd": 3683,
+      "roles": [
+        "coverage-concern",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/9/interpretedPassages/4"
+      ],
+      "interpretation": "Initially all-closed fixture misses partial-close durability route; parent fresh-agent evaluation explicitly deferred.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Split projected Important span L13–14: L13 finding, L14 Minor:none. Add L21 pending evaluation and uncovered partial-close route; header L12 has no finding body.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-0/raw-byte-000001002",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review-finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 1002,
+      "rawByteEnd": 2311,
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "originalSections": [
+        {
+          "section": null,
+          "sectionOrdinal": 0,
+          "headingRaw": null,
+          "hierarchy": [],
+          "byteStart": 0,
+          "byteEnd": 4441
+        }
+      ],
+      "rawText": "- skills/super-code/coordinator.js:1511 — Resumed records whose tracker beads are partly open enter closeAlreadyMerged, which calls confirmClosure. That function calls clearPendingClosure at line 1246; noteRecovery/readRecovery remove the pending-closure obligation immediately, before the buffered ledger:<id> append is confirmed. closeAlreadyMerged then settles completed at line 1270. If ledger:<id> and its retry return null (or report appended:false), drainLedger merely drains the chain and the run returns completed with the recovery obligation absent. The new confirmation-aware Resume fast path at lines 724–731 only protects records observed fully closed at the first observation. This violates the brief's requirement to drain confirmed closure/updated obligation records before treating recovery as settled, and the report's claim that in-memory obligations change only after confirmed append. Route partial-close completion through the same confirmed durable transaction, retaining the original record and a scoped recovery-held result on failed append. Add a targeted fixture with an initially open associated bead, successful close/check, and failed ledger:<id> append/retry; assert recovery remains unresolved and a subsequent restart observes facts rather than blindly repeating closure.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "skills/super-code/coordinator.js:1511 — Resumed records whose tracker beads are partly open enter closeAlreadyMerged, which calls confirmClosure. That function calls clearPendingClosure at line 1246; noteRecovery/readRecovery remove the pending-closure obligation immediately, before the buffered ledger:<id> append is confirmed. closeAlreadyMerged then settles completed at line 1270. If ledger:<id> and its retry return null (or report appended:false), drainLedger merely drains the chain and the run returns completed with the recovery obligation absent. The new confirmation-aware Resume fast path at lines 724–731 only protects records observed fully closed at the first observation. This violates the brief's requirement to drain confirmed closure/updated obligation records before treating recovery as settled, and the report's claim that in-memory obligations change only after confirmed append. Route partial-close completion through the same confirmed durable transaction, retaining the original record and a scoped recovery-held result on failed append. Add a targeted fixture with an initially open associated bead, successful close/check, and failed ledger:<id> append/retry; assert recovery remains unresolved and a subsequent restart observes facts rather than blindly repeating closure.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/9/interpretedPassages/2"
+      ],
+      "interpretation": "Important partial-close confirmation path can drop pending obligation before durable append; concrete failed append/retry and restart fixture requested."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-0/raw-byte-000003064",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "coverage-concern",
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 3064,
+      "rawByteEnd": 3683,
+      "rawLineStart": 21,
+      "rawLineEnd": 21,
+      "originalSections": [
+        {
+          "section": null,
+          "sectionOrdinal": 0,
+          "headingRaw": null,
+          "hierarchy": [],
+          "byteStart": 0,
+          "byteEnd": 4441
+        }
+      ],
+      "rawText": "Test evidence: Implementer reports TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs (2074 passed, 0 failed) and TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh (all tests passed), both exit 0 at reviewed HEAD. Commands, pass counts, targeted RED evidence, and process hygiene are plausible. No tests were run by this reviewer. The interrupted-append fixture covers only the initially all-closed fast path, leaving the partial-close durability failure uncovered. Parent-owned fresh-agent evaluation remains explicitly deferred by the brief/report.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Test evidence: Implementer reports TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs (2074 passed, 0 failed) and TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh (all tests passed), both exit 0 at reviewed HEAD. Commands, pass counts, targeted RED evidence, and process hygiene are plausible. No tests were run by this reviewer. The interrupted-append fixture covers only the initially all-closed fast path, leaving the partial-close durability failure uncovered. Parent-owned fresh-agent evaluation remains explicitly deferred by the brief/report.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/9/interpretedPassages/4"
+      ],
+      "interpretation": "Initially all-closed fixture misses partial-close durability route; parent fresh-agent evaluation explicitly deferred."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/10-task-11-review.md",
+  "retainedSha256": "73a82244a6bf044ce6bdb6cd78305d787eb55bd11a9f6cd910a57590f1bf4d72"
+}

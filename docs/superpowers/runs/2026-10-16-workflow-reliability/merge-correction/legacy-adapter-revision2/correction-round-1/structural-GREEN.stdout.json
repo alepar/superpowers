@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "proposalRevision": 2,
+  "status": "representation checks pass; semantic proposal remains unapproved",
+  "sourceCount": 79,
+  "parserReextractionsPassed": 79,
+  "strictSourceCount": 5,
+  "originalStrictOccurrencesExactlyPreserved": 24,
+  "adapterOccurrenceMappingsChecked": 189,
+  "totalOccurrenceCount": 213,
+  "occurrenceCountLimit": "Representation appearances and obligations, not a current outstanding-defect total.",
+  "supportedStatusPreservingCorrespondenceProposals": 69,
+  "unsupportedUnknownOriginalOutcomeAssociations": 5,
+  "reviewedObligationPassagesAccounted": 105,
+  "unrepresentedReviewedObligationPassages": 0,
+  "canonicalSourceHashesUnchanged": true,
+  "canonicalWrites": 0,
+  "identityLinksApplied": 0,
+  "dispositionsApplied": 0,
+  "semanticAcceptance": null
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+  "artifact": "legacy-report-adapters-r1/27-task-16-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-6/raw-byte-000005070",
+      "position": 1,
+      "key": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.",
+      "text": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes."
+    }
+  ]
+}

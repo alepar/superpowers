@@ -1,0 +1,6 @@
+{
+  "originalPath": "/private/tmp/ufz-correction-final-suite-runner.py",
+  "originalSha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16",
+  "reviewSha256": "2aa8f658b2f345869ceb0e3d087925264b423c4fb8b32771804014dc1a309d62",
+  "note": "Initial runner preserved byte-for-byte; original current path remains untouched."
+}

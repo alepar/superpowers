@@ -1,0 +1,39 @@
+{
+  "verdict": "incomplete",
+  "reportPath": "guidance-eval-r1-native/evaluation-report.md",
+  "planned": 20,
+  "intakeComplete": 19,
+  "intakeFailed": 1,
+  "contextDriftSamples": [
+    17,
+    18,
+    19,
+    20
+  ],
+  "sourcePrimary": {
+    "baseline": {
+      "pass": 4,
+      "fail": 0,
+      "unmeasurable": 1
+    },
+    "after": {
+      "pass": 4,
+      "fail": 0,
+      "unmeasurable": 1
+    }
+  },
+  "outerPrimary": {
+    "baseline": {
+      "pass": 2,
+      "fail": 2,
+      "unmeasurable": 1
+    },
+    "after": {
+      "pass": 3,
+      "fail": 0,
+      "unmeasurable": 2
+    }
+  },
+  "assessmentPending": "guidance-eval-assessment-r1.md",
+  "limits": "Text decisions only; no 5/5, generic improvement, hosted Workflow or final-tree acceptance claim."
+}

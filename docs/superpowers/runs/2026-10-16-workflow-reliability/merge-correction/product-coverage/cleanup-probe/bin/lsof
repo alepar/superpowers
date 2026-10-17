@@ -1,0 +1,5 @@
+#!/bin/bash
+case "$*" in
+ *'-u '*) printf 'p990001\nfcwd\nn%s/.worktrees/child\n' "$PROBE_ROOT" ;;
+ *) printf 'n/fixture-outside\n' ;;
+esac

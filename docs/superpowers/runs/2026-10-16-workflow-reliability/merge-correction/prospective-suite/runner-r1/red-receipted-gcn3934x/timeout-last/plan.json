@@ -1,0 +1,21 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/timeout-last/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/timeout-last/evidence",
+  "sourceHead": "478beba6f9ffece64167654dfa938e75eaa532dc",
+  "sourceTree": "a15efa32c05d5e100d59f5250a8a88a033c9d258",
+  "commands": [
+    "bash tests/check.sh"
+  ],
+  "timeoutPerCommandSeconds": 0.1,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/check.sh",
+      "sha256": "384f4e05aa76e1e3d817f754d969000db3821eb0e23be784c14ade0a7f0882c0",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    }
+  ]
+}

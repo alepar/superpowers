@@ -1,0 +1,23 @@
+{
+  "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "head": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "members": [
+    {
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "gitBlob": "57e6ffc1d062bd7d7d272701e358a9b60ce384d3"
+    },
+    {
+      "path": "skills/super-code/scripts/remove-task-worktree",
+      "gitBlob": "0d9db1337f21949715c16ad3075de1cc83fabe28"
+    },
+    {
+      "path": "skills/finishing-a-development-branch/SKILL.md",
+      "gitBlob": "44a2aae37a55eba5042473e85f6f9b92c68c87f7"
+    },
+    {
+      "path": "tests/super-auto/outer-cleanup-r1.sh",
+      "gitBlob": "1c26a0c4f7642f31fc9c145f3ec7c18b7cf4abbb"
+    }
+  ],
+  "scope": "Entire changed bodies plus relevant unchanged context; not wholebranch readiness"
+}

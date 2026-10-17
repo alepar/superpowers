@@ -1,0 +1,901 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-6-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-6-report.md",
+  "rawSha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+  "rawByteCount": 13960,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-6-report.md",
+    "durablePath": "task-report-history-r1/raw/task-6-report.md",
+    "sha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+    "byteCount": 13960,
+    "logicalRole": "report",
+    "ordinal": 6,
+    "logicalTaskId": "super-plan-ufz.10",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-6-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "super-plan-ufz.10 — implementation evidence",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# super-plan-ufz.10 — implementation evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence"
+      ],
+      "lineStart": 1,
+      "lineEnd": 12,
+      "byteStart": 0,
+      "byteEnd": 534,
+      "bodyLineStart": 2,
+      "rawText": "# super-plan-ufz.10 — implementation evidence\n\nStatus: IMPLEMENTED\n\n- Task branch: `task-super-plan-ufz.10`\n- Initial base: `4744895d50b9350ee5296a372d412af1e01b8533`\n- Final base after rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n- Head: `0a58cc008fab96f16105d43688df18f069102249`\n- Stacked: false\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10`\n- Commit: `fix(super-code): bound profiler waits by observed availability`\n\n",
+      "bodyRawText": "\nStatus: IMPLEMENTED\n\n- Task branch: `task-super-plan-ufz.10`\n- Initial base: `4744895d50b9350ee5296a372d412af1e01b8533`\n- Final base after rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n- Head: `0a58cc008fab96f16105d43688df18f069102249`\n- Stacked: false\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10`\n- Commit: `fix(super-code): bound profiler waits by observed availability`\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 49,
+          "byteEnd": 69
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Task branch: `task-super-plan-ufz.10`\n",
+          "text": "Task branch: `task-super-plan-ufz.10`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 70,
+          "byteEnd": 110
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Initial base: `4744895d50b9350ee5296a372d412af1e01b8533`\n",
+          "text": "Initial base: `4744895d50b9350ee5296a372d412af1e01b8533`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 110,
+          "byteEnd": 169
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Final base after rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n",
+          "text": "Final base after rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 169,
+          "byteEnd": 239
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Head: `0a58cc008fab96f16105d43688df18f069102249`\n",
+          "text": "Head: `0a58cc008fab96f16105d43688df18f069102249`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 239,
+          "byteEnd": 290
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Stacked: false\n",
+          "text": "Stacked: false",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 290,
+          "byteEnd": 307
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10`\n",
+          "text": "Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10`",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 307,
+          "byteEnd": 458
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Commit: `fix(super-code): bound profiler waits by observed availability`\n",
+          "text": "Commit: `fix(super-code): bound profiler waits by observed availability`",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 458,
+          "byteEnd": 533
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Implementation"
+      ],
+      "lineStart": 13,
+      "lineEnd": 26,
+      "byteStart": 534,
+      "byteEnd": 3174,
+      "bodyLineStart": 14,
+      "rawText": "## Implementation\n\nThe existing profiler now loads optional tracker creation evidence for Workflow as well as ordinary runs, and retains optional creation evidence supplied in planner mapping rows. Per-bead JSON has distinct `createdAt`, `mappingReadyAt`, and `dependencyReadyAt`. Missing timestamps remain null. Timed mappings can establish availability even when creation itself is unknown; neither mapping completion nor invocation start replaces unknown dependency timing.\n\nFinal-attempt waits and carried time require supported readiness and include the creation bound. External or unobserved dependency releases leave readiness and wait/carried durations unknown. The observed critical path splits pre-availability time from measured task wait and labels an unsupported readiness gap `unmeasured-gap`. Baseline aggregation excludes unknown waits from measured totals and preserves their count as unmeasured.\n\nSchedule estimates retain creation, mapping and invocation boundaries. Unknown readiness uses observed dispatch as a conservative modeled release. Dependencies represented inside the model release dynamically in each scenario; known releases outside the model remain fixed. This preserves historical dependency-chain estimates and the benefit of faster parents without releasing work before its existence or invocation.\n\nOrdinary tracker topology is explicitly an observed residual snapshot. An absent timed planner stays unknown; the initial planner cannot supply a mapping timestamp for a task evidenced as created later. Planner rows cached without a transcript do not acquire a guessed mapping time. Untimed edge cuts keep unknown timestamps as well. Historical topology is not reconstructed.\n\nThe diagnosis retains critical-path planning time and reports `planning-bound` when planning exceeds half the observed task-graph window. Counterfactual stdout/JSON and Markdown identify estimates and their actual window (first dispatch to last landing, or last task step when nothing landed). Graph scope is labeled `observed invocation/residual graph`. All-agent concurrency and task-slot concurrency have independent JSON scopes and measured peaks; the existing chain fixture measures 3 agents versus 2 task slots.\n\nThe invoking session owns one profile generation and one complete stdout append after each settled Workflow or ordinary invocation. Finish and collection do not generate it again. Super-auto copies that invocation's existing md/json pair after collection. `--out` also writes a qualified unavailable pair on exit 3, with no invented timing window, so unavailable output can follow the same collection path.\n\n",
+      "bodyRawText": "\nThe existing profiler now loads optional tracker creation evidence for Workflow as well as ordinary runs, and retains optional creation evidence supplied in planner mapping rows. Per-bead JSON has distinct `createdAt`, `mappingReadyAt`, and `dependencyReadyAt`. Missing timestamps remain null. Timed mappings can establish availability even when creation itself is unknown; neither mapping completion nor invocation start replaces unknown dependency timing.\n\nFinal-attempt waits and carried time require supported readiness and include the creation bound. External or unobserved dependency releases leave readiness and wait/carried durations unknown. The observed critical path splits pre-availability time from measured task wait and labels an unsupported readiness gap `unmeasured-gap`. Baseline aggregation excludes unknown waits from measured totals and preserves their count as unmeasured.\n\nSchedule estimates retain creation, mapping and invocation boundaries. Unknown readiness uses observed dispatch as a conservative modeled release. Dependencies represented inside the model release dynamically in each scenario; known releases outside the model remain fixed. This preserves historical dependency-chain estimates and the benefit of faster parents without releasing work before its existence or invocation.\n\nOrdinary tracker topology is explicitly an observed residual snapshot. An absent timed planner stays unknown; the initial planner cannot supply a mapping timestamp for a task evidenced as created later. Planner rows cached without a transcript do not acquire a guessed mapping time. Untimed edge cuts keep unknown timestamps as well. Historical topology is not reconstructed.\n\nThe diagnosis retains critical-path planning time and reports `planning-bound` when planning exceeds half the observed task-graph window. Counterfactual stdout/JSON and Markdown identify estimates and their actual window (first dispatch to last landing, or last task step when nothing landed). Graph scope is labeled `observed invocation/residual graph`. All-agent concurrency and task-slot concurrency have independent JSON scopes and measured peaks; the existing chain fixture measures 3 agents versus 2 task slots.\n\nThe invoking session owns one profile generation and one complete stdout append after each settled Workflow or ordinary invocation. Finish and collection do not generate it again. Super-auto copies that invocation's existing md/json pair after collection. `--out` also writes a qualified unavailable pair on exit 3, with no invented timing window, so unavailable output can follow the same collection path.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The existing profiler now loads optional tracker creation evidence for Workflow as well as ordinary runs, and retains optional creation evidence supplied in planner mapping rows. Per-bead JSON has distinct `createdAt`, `mappingReadyAt`, and `dependencyReadyAt`. Missing timestamps remain null. Timed mappings can establish availability even when creation itself is unknown; neither mapping completion nor invocation start replaces unknown dependency timing.\n",
+          "text": "The existing profiler now loads optional tracker creation evidence for Workflow as well as ordinary runs, and retains optional creation evidence supplied in planner mapping rows. Per-bead JSON has distinct `createdAt`, `mappingReadyAt`, and `dependencyReadyAt`. Missing timestamps remain null. Timed mappings can establish availability even when creation itself is unknown; neither mapping completion nor invocation start replaces unknown dependency timing.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 553,
+          "byteEnd": 1011
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final-attempt waits and carried time require supported readiness and include the creation bound. External or unobserved dependency releases leave readiness and wait/carried durations unknown. The observed critical path splits pre-availability time from measured task wait and labels an unsupported readiness gap `unmeasured-gap`. Baseline aggregation excludes unknown waits from measured totals and preserves their count as unmeasured.\n",
+          "text": "Final-attempt waits and carried time require supported readiness and include the creation bound. External or unobserved dependency releases leave readiness and wait/carried durations unknown. The observed critical path splits pre-availability time from measured task wait and labels an unsupported readiness gap `unmeasured-gap`. Baseline aggregation excludes unknown waits from measured totals and preserves their count as unmeasured.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1012,
+          "byteEnd": 1448
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Schedule estimates retain creation, mapping and invocation boundaries. Unknown readiness uses observed dispatch as a conservative modeled release. Dependencies represented inside the model release dynamically in each scenario; known releases outside the model remain fixed. This preserves historical dependency-chain estimates and the benefit of faster parents without releasing work before its existence or invocation.\n",
+          "text": "Schedule estimates retain creation, mapping and invocation boundaries. Unknown readiness uses observed dispatch as a conservative modeled release. Dependencies represented inside the model release dynamically in each scenario; known releases outside the model remain fixed. This preserves historical dependency-chain estimates and the benefit of faster parents without releasing work before its existence or invocation.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1449,
+          "byteEnd": 1869
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Ordinary tracker topology is explicitly an observed residual snapshot. An absent timed planner stays unknown; the initial planner cannot supply a mapping timestamp for a task evidenced as created later. Planner rows cached without a transcript do not acquire a guessed mapping time. Untimed edge cuts keep unknown timestamps as well. Historical topology is not reconstructed.\n",
+          "text": "Ordinary tracker topology is explicitly an observed residual snapshot. An absent timed planner stays unknown; the initial planner cannot supply a mapping timestamp for a task evidenced as created later. Planner rows cached without a transcript do not acquire a guessed mapping time. Untimed edge cuts keep unknown timestamps as well. Historical topology is not reconstructed.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1870,
+          "byteEnd": 2246
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The diagnosis retains critical-path planning time and reports `planning-bound` when planning exceeds half the observed task-graph window. Counterfactual stdout/JSON and Markdown identify estimates and their actual window (first dispatch to last landing, or last task step when nothing landed). Graph scope is labeled `observed invocation/residual graph`. All-agent concurrency and task-slot concurrency have independent JSON scopes and measured peaks; the existing chain fixture measures 3 agents versus 2 task slots.\n",
+          "text": "The diagnosis retains critical-path planning time and reports `planning-bound` when planning exceeds half the observed task-graph window. Counterfactual stdout/JSON and Markdown identify estimates and their actual window (first dispatch to last landing, or last task step when nothing landed). Graph scope is labeled `observed invocation/residual graph`. All-agent concurrency and task-slot concurrency have independent JSON scopes and measured peaks; the existing chain fixture measures 3 agents versus 2 task slots.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2247,
+          "byteEnd": 2765
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The invoking session owns one profile generation and one complete stdout append after each settled Workflow or ordinary invocation. Finish and collection do not generate it again. Super-auto copies that invocation's existing md/json pair after collection. `--out` also writes a qualified unavailable pair on exit 3, with no invented timing window, so unavailable output can follow the same collection path.\n",
+          "text": "The invoking session owns one profile generation and one complete stdout append after each settled Workflow or ordinary invocation. Finish and collection do not generate it again. Super-auto copies that invocation's existing md/json pair after collection. `--out` also writes a qualified unavailable pair on exit 3, with no invented timing window, so unavailable output can follow the same collection path.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2766,
+          "byteEnd": 3173
+        }
+      ]
+    },
+    {
+      "section": "Verification",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Verification\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Verification"
+      ],
+      "lineStart": 27,
+      "lineEnd": 80,
+      "byteStart": 3174,
+      "byteEnd": 7109,
+      "bodyLineStart": 28,
+      "rawText": "## Verification\n\nNo package install/setup is defined for these native Node/Bash tests. The interpreter is `/opt/homebrew/bin/node`; the runner scripts and package under test are the files in the assigned worktree. `node -e 'console.log(import.meta.resolve(\"./skills/super-code/scripts/run-profile.mjs\"))'` resolved the profiler inside that worktree. No other checkout's profiler or runner was used.\n\nFinal checks ran after the clean rebase, at the final head above. The exact final profiler command was:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && set -o pipefail && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile.sh | rg '\\[FAIL\\]|expected:|got:|failure\\(s\\)|all tests passed|creation bounds|model cannot release|unknown.*tim|planning-dominated|scope|measured independently|baseline keeps|critical path cannot|ordinary initial planner|ordinary external|unavailable artifacts'\n```\n\nExit 0; relevant output:\n\n```text\n  [PASS] creation bounds wait while mapping and dependency evidence retain their times\n  [PASS] model cannot release the late task before creation\n  [PASS] critical path cannot call pre-creation time a task wait\n  [PASS] unknown external dependency timing cannot become measured readiness\n  [PASS] baseline keeps unknown waits unmeasured\n  [PASS] planning-dominated diagnosis and model window\n  [PASS] graph scope is explicit\n  [PASS] JSON graph scope\n  [PASS] separate JSON concurrency scopes\n  [PASS] all-agent and task-slot peaks are measured independently\n  [PASS] ordinary initial planner cannot establish mapping for a task created later\n  [PASS] ordinary external dependency timing stays unknown\n  [PASS] unavailable artifacts are qualified without invented timings\nrun-profile: all tests passed\n```\n\nThe whole suite ran; output filtering retained failures and selected regression evidence. Its existing historical timing and schedule expectations were not changed. Other new assertions cover exact timestamp meanings, null unknown creation/readiness/carried fields, planning diagnosis in Markdown/stdout, estimate labels, and the qualified exit-3 pair.\n\nThe exact final in-flight command was:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile-in-flight.sh\n```\n\nExit 0; relevant output:\n\n```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 216 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n\nThe missing-transcript in-flight fixture now also supplies a task-creation timestamp; its dispatch age remains `unknown`. Neither suite was slow (each completed in under one minute). `git diff --check` exited 0, and `git status --short` was empty after commit/rebase. A caller search found `test-run-digest.sh` covers mocked `--in-flight` transport, whose interface is unchanged; the actual in-flight callers are covered by the second suite.\n\n",
+      "bodyRawText": "\nNo package install/setup is defined for these native Node/Bash tests. The interpreter is `/opt/homebrew/bin/node`; the runner scripts and package under test are the files in the assigned worktree. `node -e 'console.log(import.meta.resolve(\"./skills/super-code/scripts/run-profile.mjs\"))'` resolved the profiler inside that worktree. No other checkout's profiler or runner was used.\n\nFinal checks ran after the clean rebase, at the final head above. The exact final profiler command was:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && set -o pipefail && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile.sh | rg '\\[FAIL\\]|expected:|got:|failure\\(s\\)|all tests passed|creation bounds|model cannot release|unknown.*tim|planning-dominated|scope|measured independently|baseline keeps|critical path cannot|ordinary initial planner|ordinary external|unavailable artifacts'\n```\n\nExit 0; relevant output:\n\n```text\n  [PASS] creation bounds wait while mapping and dependency evidence retain their times\n  [PASS] model cannot release the late task before creation\n  [PASS] critical path cannot call pre-creation time a task wait\n  [PASS] unknown external dependency timing cannot become measured readiness\n  [PASS] baseline keeps unknown waits unmeasured\n  [PASS] planning-dominated diagnosis and model window\n  [PASS] graph scope is explicit\n  [PASS] JSON graph scope\n  [PASS] separate JSON concurrency scopes\n  [PASS] all-agent and task-slot peaks are measured independently\n  [PASS] ordinary initial planner cannot establish mapping for a task created later\n  [PASS] ordinary external dependency timing stays unknown\n  [PASS] unavailable artifacts are qualified without invented timings\nrun-profile: all tests passed\n```\n\nThe whole suite ran; output filtering retained failures and selected regression evidence. Its existing historical timing and schedule expectations were not changed. Other new assertions cover exact timestamp meanings, null unknown creation/readiness/carried fields, planning diagnosis in Markdown/stdout, estimate labels, and the qualified exit-3 pair.\n\nThe exact final in-flight command was:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile-in-flight.sh\n```\n\nExit 0; relevant output:\n\n```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 216 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n\nThe missing-transcript in-flight fixture now also supplies a task-creation timestamp; its dispatch age remains `unknown`. Neither suite was slow (each completed in under one minute). `git diff --check` exited 0, and `git status --short` was empty after commit/rebase. A caller search found `test-run-digest.sh` covers mocked `--in-flight` transport, whose interface is unchanged; the actual in-flight callers are covered by the second suite.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No package install/setup is defined for these native Node/Bash tests. The interpreter is `/opt/homebrew/bin/node`; the runner scripts and package under test are the files in the assigned worktree. `node -e 'console.log(import.meta.resolve(\"./skills/super-code/scripts/run-profile.mjs\"))'` resolved the profiler inside that worktree. No other checkout's profiler or runner was used.\n",
+          "text": "No package install/setup is defined for these native Node/Bash tests. The interpreter is `/opt/homebrew/bin/node`; the runner scripts and package under test are the files in the assigned worktree. `node -e 'console.log(import.meta.resolve(\"./skills/super-code/scripts/run-profile.mjs\"))'` resolved the profiler inside that worktree. No other checkout's profiler or runner was used.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3191,
+          "byteEnd": 3573
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final checks ran after the clean rebase, at the final head above. The exact final profiler command was:\n",
+          "text": "Final checks ran after the clean rebase, at the final head above. The exact final profiler command was:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 3574,
+          "byteEnd": 3678
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && set -o pipefail && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile.sh | rg '\\[FAIL\\]|expected:|got:|failure\\(s\\)|all tests passed|creation bounds|model cannot release|unknown.*tim|planning-dominated|scope|measured independently|baseline keeps|critical path cannot|ordinary initial planner|ordinary external|unavailable artifacts'\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && set -o pipefail && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile.sh | rg '\\[FAIL\\]|expected:|got:|failure\\(s\\)|all tests passed|creation bounds|model cannot release|unknown.*tim|planning-dominated|scope|measured independently|baseline keeps|critical path cannot|ordinary initial planner|ordinary external|unavailable artifacts'\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 33,
+          "lineEnd": 35,
+          "byteStart": 3679,
+          "byteEnd": 4421
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0; relevant output:\n",
+          "text": "Exit 0; relevant output:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 4422,
+          "byteEnd": 4447
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [PASS] creation bounds wait while mapping and dependency evidence retain their times\n  [PASS] model cannot release the late task before creation\n  [PASS] critical path cannot call pre-creation time a task wait\n  [PASS] unknown external dependency timing cannot become measured readiness\n  [PASS] baseline keeps unknown waits unmeasured\n  [PASS] planning-dominated diagnosis and model window\n  [PASS] graph scope is explicit\n  [PASS] JSON graph scope\n  [PASS] separate JSON concurrency scopes\n  [PASS] all-agent and task-slot peaks are measured independently\n  [PASS] ordinary initial planner cannot establish mapping for a task created later\n  [PASS] ordinary external dependency timing stays unknown\n  [PASS] unavailable artifacts are qualified without invented timings\nrun-profile: all tests passed\n```\n",
+          "text": "```text\n  [PASS] creation bounds wait while mapping and dependency evidence retain their times\n  [PASS] model cannot release the late task before creation\n  [PASS] critical path cannot call pre-creation time a task wait\n  [PASS] unknown external dependency timing cannot become measured readiness\n  [PASS] baseline keeps unknown waits unmeasured\n  [PASS] planning-dominated diagnosis and model window\n  [PASS] graph scope is explicit\n  [PASS] JSON graph scope\n  [PASS] separate JSON concurrency scopes\n  [PASS] all-agent and task-slot peaks are measured independently\n  [PASS] ordinary initial planner cannot establish mapping for a task created later\n  [PASS] ordinary external dependency timing stays unknown\n  [PASS] unavailable artifacts are qualified without invented timings\nrun-profile: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 39,
+          "lineEnd": 54,
+          "byteStart": 4448,
+          "byteEnd": 5263
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The whole suite ran; output filtering retained failures and selected regression evidence. Its existing historical timing and schedule expectations were not changed. Other new assertions cover exact timestamp meanings, null unknown creation/readiness/carried fields, planning diagnosis in Markdown/stdout, estimate labels, and the qualified exit-3 pair.\n",
+          "text": "The whole suite ran; output filtering retained failures and selected regression evidence. Its existing historical timing and schedule expectations were not changed. Other new assertions cover exact timestamp meanings, null unknown creation/readiness/carried fields, planning diagnosis in Markdown/stdout, estimate labels, and the qualified exit-3 pair.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 56,
+          "lineEnd": 56,
+          "byteStart": 5264,
+          "byteEnd": 5617
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The exact final in-flight command was:\n",
+          "text": "The exact final in-flight command was:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 58,
+          "lineEnd": 58,
+          "byteStart": 5618,
+          "byteEnd": 5657
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile-in-flight.sh\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/state bash tests/super-code/test-run-profile-in-flight.sh\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 60,
+          "lineEnd": 62,
+          "byteStart": 5658,
+          "byteEnd": 6131
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0; relevant output:\n",
+          "text": "Exit 0; relevant output:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 64,
+          "lineEnd": 64,
+          "byteStart": 6132,
+          "byteEnd": 6157
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 216 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```\n",
+          "text": "```text\nrun-profile --in-flight: Claude Code\n  [PASS] exits 0\n  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped\nrun-profile --in-flight: Codex\n  [PASS] exits 0\n  [PASS] only the child whose last task event is task_started\nrun-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)\n  [PASS] both harnesses in 216 ms (< 2000)\n  [PASS] run-profile.mjs parses\nrun-profile-in-flight: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 66,
+          "lineEnd": 77,
+          "byteStart": 6158,
+          "byteEnd": 6665
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The missing-transcript in-flight fixture now also supplies a task-creation timestamp; its dispatch age remains `unknown`. Neither suite was slow (each completed in under one minute). `git diff --check` exited 0, and `git status --short` was empty after commit/rebase. A caller search found `test-run-digest.sh` covers mocked `--in-flight` transport, whose interface is unchanged; the actual in-flight callers are covered by the second suite.\n",
+          "text": "The missing-transcript in-flight fixture now also supplies a task-creation timestamp; its dispatch age remains `unknown`. Neither suite was slow (each completed in under one minute). `git diff --check` exited 0, and `git status --short` was empty after commit/rebase. A caller search found `test-run-digest.sh` covers mocked `--in-flight` transport, whose interface is unchanged; the actual in-flight callers are covered by the second suite.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 79,
+          "lineEnd": 79,
+          "byteStart": 6666,
+          "byteEnd": 7108
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "TDD evidence"
+      ],
+      "lineStart": 81,
+      "lineEnd": 135,
+      "byteStart": 7109,
+      "byteEnd": 10712,
+      "bodyLineStart": 82,
+      "rawText": "## TDD evidence\n\nUsed test-driven-development for deterministic mechanics and writing-skills for the protocol/source changes. Before changing production calculations, added synthetic scenarios to the existing shell suite and ran:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache bash tests/super-code/test-run-profile.sh\n```\n\nRED exited 1 with `run-profile: 14 failure(s)`. Existing checks passed; representative new failures:\n\n```text\n[FAIL] creation bounds wait while mapping and dependency evidence retain their times\n  expected: 2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0\n  got:         2026-10-01T00:01:00.000Z 600000 0\n[FAIL] model cannot release the late task before creation\n  expected: 640000\n  got:      100000\n[FAIL] unknown external dependency timing cannot become measured readiness\n  expected: [null,\"2026-10-01T00:01:00.000Z\",null,null,null,null,\"unknown\"]\n  got:      [null,null,null,\"2026-10-01T00:01:00.000Z\",600000,0,\"unexplained\"]\n[FAIL] ordinary residual snapshot without a planner does not invent historical readiness\n  expected: [\"2026-10-01T00:10:00.000Z\",null,null,null,null,null]\n  got:      [null,null,null,\"2026-10-01T00:11:00.000Z\",0,0]\n```\n\nThese demonstrate the original incorrect pre-creation wait/model release and fabricated known readiness. The absent diagnosis and task-slot objects also produced assertion-evaluation errors during this initial RED run; those missing objects were not counted as measured green assertions.\n\nTwo additional critical-path assertions were then run before implementing their gap split. RED exited 1 with exactly these failures:\n\n```text\n[FAIL] critical path cannot call pre-creation time a task wait\n  expected: 540000 60000\n  got:       600000\n[FAIL] unknown readiness gap remains unmeasured on the critical path\n  expected: 600000\n  got:      undefined\nrun-profile: 2 failure(s)\n```\n\nThe unavailable-artifact probe also ran before its implementation: `run-profile --discover --epic unavailable --projects /tmp/sp-bce79baa/super-plan-ufz.10/empty --out /tmp/sp-bce79baa/super-plan-ufz.10/unavailable-red`, with isolated HOME/XDG paths. It printed `Profile: unavailable` and produced no JSON, so the subsequent file-existence check exited 1.\n\nFinally, the baseline-unknown, late-created ordinary-planner and external-ordinary-dependency cases were added and run before their fixes. RED exited 1 with `run-profile: 3 failure(s)`:\n\n```text\n[FAIL] baseline keeps unknown waits unmeasured\n[FAIL] ordinary initial planner cannot establish mapping for a task created later\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:10:00.000Z\",60000]\n[FAIL] ordinary external dependency timing stays unknown\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:01:00.000Z\",600000]\n```\n\nTheir filtered RED commands used the same environment, runner and `set -o pipefail` as final verification, retaining `[FAIL]`, expected/got and the failure summary. Final GREEN evidence above exercises all these checks. A value such as 600000 wait instead of 60000, a guessed nonnull timestamp, equal 3/3 concurrency peaks instead of 3/2, or task-only diagnosis instead of planning would fail the corresponding assertions.\n\n",
+      "bodyRawText": "\nUsed test-driven-development for deterministic mechanics and writing-skills for the protocol/source changes. Before changing production calculations, added synthetic scenarios to the existing shell suite and ran:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache bash tests/super-code/test-run-profile.sh\n```\n\nRED exited 1 with `run-profile: 14 failure(s)`. Existing checks passed; representative new failures:\n\n```text\n[FAIL] creation bounds wait while mapping and dependency evidence retain their times\n  expected: 2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0\n  got:         2026-10-01T00:01:00.000Z 600000 0\n[FAIL] model cannot release the late task before creation\n  expected: 640000\n  got:      100000\n[FAIL] unknown external dependency timing cannot become measured readiness\n  expected: [null,\"2026-10-01T00:01:00.000Z\",null,null,null,null,\"unknown\"]\n  got:      [null,null,null,\"2026-10-01T00:01:00.000Z\",600000,0,\"unexplained\"]\n[FAIL] ordinary residual snapshot without a planner does not invent historical readiness\n  expected: [\"2026-10-01T00:10:00.000Z\",null,null,null,null,null]\n  got:      [null,null,null,\"2026-10-01T00:11:00.000Z\",0,0]\n```\n\nThese demonstrate the original incorrect pre-creation wait/model release and fabricated known readiness. The absent diagnosis and task-slot objects also produced assertion-evaluation errors during this initial RED run; those missing objects were not counted as measured green assertions.\n\nTwo additional critical-path assertions were then run before implementing their gap split. RED exited 1 with exactly these failures:\n\n```text\n[FAIL] critical path cannot call pre-creation time a task wait\n  expected: 540000 60000\n  got:       600000\n[FAIL] unknown readiness gap remains unmeasured on the critical path\n  expected: 600000\n  got:      undefined\nrun-profile: 2 failure(s)\n```\n\nThe unavailable-artifact probe also ran before its implementation: `run-profile --discover --epic unavailable --projects /tmp/sp-bce79baa/super-plan-ufz.10/empty --out /tmp/sp-bce79baa/super-plan-ufz.10/unavailable-red`, with isolated HOME/XDG paths. It printed `Profile: unavailable` and produced no JSON, so the subsequent file-existence check exited 1.\n\nFinally, the baseline-unknown, late-created ordinary-planner and external-ordinary-dependency cases were added and run before their fixes. RED exited 1 with `run-profile: 3 failure(s)`:\n\n```text\n[FAIL] baseline keeps unknown waits unmeasured\n[FAIL] ordinary initial planner cannot establish mapping for a task created later\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:10:00.000Z\",60000]\n[FAIL] ordinary external dependency timing stays unknown\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:01:00.000Z\",600000]\n```\n\nTheir filtered RED commands used the same environment, runner and `set -o pipefail` as final verification, retaining `[FAIL]`, expected/got and the failure summary. Final GREEN evidence above exercises all these checks. A value such as 600000 wait instead of 60000, a guessed nonnull timestamp, equal 3/3 concurrency peaks instead of 3/2, or task-only diagnosis instead of planning would fail the corresponding assertions.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used test-driven-development for deterministic mechanics and writing-skills for the protocol/source changes. Before changing production calculations, added synthetic scenarios to the existing shell suite and ran:\n",
+          "text": "Used test-driven-development for deterministic mechanics and writing-skills for the protocol/source changes. Before changing production calculations, added synthetic scenarios to the existing shell suite and ran:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 83,
+          "lineEnd": 83,
+          "byteStart": 7126,
+          "byteEnd": 7339
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache bash tests/super-code/test-run-profile.sh\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache bash tests/super-code/test-run-profile.sh\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 85,
+          "lineEnd": 87,
+          "byteStart": 7340,
+          "byteEnd": 7747
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED exited 1 with `run-profile: 14 failure(s)`. Existing checks passed; representative new failures:\n",
+          "text": "RED exited 1 with `run-profile: 14 failure(s)`. Existing checks passed; representative new failures:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 89,
+          "lineEnd": 89,
+          "byteStart": 7748,
+          "byteEnd": 7849
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] creation bounds wait while mapping and dependency evidence retain their times\n  expected: 2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0\n  got:         2026-10-01T00:01:00.000Z 600000 0\n[FAIL] model cannot release the late task before creation\n  expected: 640000\n  got:      100000\n[FAIL] unknown external dependency timing cannot become measured readiness\n  expected: [null,\"2026-10-01T00:01:00.000Z\",null,null,null,null,\"unknown\"]\n  got:      [null,null,null,\"2026-10-01T00:01:00.000Z\",600000,0,\"unexplained\"]\n[FAIL] ordinary residual snapshot without a planner does not invent historical readiness\n  expected: [\"2026-10-01T00:10:00.000Z\",null,null,null,null,null]\n  got:      [null,null,null,\"2026-10-01T00:11:00.000Z\",0,0]\n```\n",
+          "text": "```text\n[FAIL] creation bounds wait while mapping and dependency evidence retain their times\n  expected: 2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0\n  got:         2026-10-01T00:01:00.000Z 600000 0\n[FAIL] model cannot release the late task before creation\n  expected: 640000\n  got:      100000\n[FAIL] unknown external dependency timing cannot become measured readiness\n  expected: [null,\"2026-10-01T00:01:00.000Z\",null,null,null,null,\"unknown\"]\n  got:      [null,null,null,\"2026-10-01T00:01:00.000Z\",600000,0,\"unexplained\"]\n[FAIL] ordinary residual snapshot without a planner does not invent historical readiness\n  expected: [\"2026-10-01T00:10:00.000Z\",null,null,null,null,null]\n  got:      [null,null,null,\"2026-10-01T00:11:00.000Z\",0,0]\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 91,
+          "lineEnd": 104,
+          "byteStart": 7850,
+          "byteEnd": 8657
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These demonstrate the original incorrect pre-creation wait/model release and fabricated known readiness. The absent diagnosis and task-slot objects also produced assertion-evaluation errors during this initial RED run; those missing objects were not counted as measured green assertions.\n",
+          "text": "These demonstrate the original incorrect pre-creation wait/model release and fabricated known readiness. The absent diagnosis and task-slot objects also produced assertion-evaluation errors during this initial RED run; those missing objects were not counted as measured green assertions.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 106,
+          "lineEnd": 106,
+          "byteStart": 8658,
+          "byteEnd": 8946
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Two additional critical-path assertions were then run before implementing their gap split. RED exited 1 with exactly these failures:\n",
+          "text": "Two additional critical-path assertions were then run before implementing their gap split. RED exited 1 with exactly these failures:",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 108,
+          "lineEnd": 108,
+          "byteStart": 8947,
+          "byteEnd": 9080
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] critical path cannot call pre-creation time a task wait\n  expected: 540000 60000\n  got:       600000\n[FAIL] unknown readiness gap remains unmeasured on the critical path\n  expected: 600000\n  got:      undefined\nrun-profile: 2 failure(s)\n```\n",
+          "text": "```text\n[FAIL] critical path cannot call pre-creation time a task wait\n  expected: 540000 60000\n  got:       600000\n[FAIL] unknown readiness gap remains unmeasured on the critical path\n  expected: 600000\n  got:      undefined\nrun-profile: 2 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 110,
+          "lineEnd": 118,
+          "byteStart": 9081,
+          "byteEnd": 9337
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The unavailable-artifact probe also ran before its implementation: `run-profile --discover --epic unavailable --projects /tmp/sp-bce79baa/super-plan-ufz.10/empty --out /tmp/sp-bce79baa/super-plan-ufz.10/unavailable-red`, with isolated HOME/XDG paths. It printed `Profile: unavailable` and produced no JSON, so the subsequent file-existence check exited 1.\n",
+          "text": "The unavailable-artifact probe also ran before its implementation: `run-profile --discover --epic unavailable --projects /tmp/sp-bce79baa/super-plan-ufz.10/empty --out /tmp/sp-bce79baa/super-plan-ufz.10/unavailable-red`, with isolated HOME/XDG paths. It printed `Profile: unavailable` and produced no JSON, so the subsequent file-existence check exited 1.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 120,
+          "lineEnd": 120,
+          "byteStart": 9338,
+          "byteEnd": 9694
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Finally, the baseline-unknown, late-created ordinary-planner and external-ordinary-dependency cases were added and run before their fixes. RED exited 1 with `run-profile: 3 failure(s)`:\n",
+          "text": "Finally, the baseline-unknown, late-created ordinary-planner and external-ordinary-dependency cases were added and run before their fixes. RED exited 1 with `run-profile: 3 failure(s)`:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 122,
+          "lineEnd": 122,
+          "byteStart": 9695,
+          "byteEnd": 9881
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] baseline keeps unknown waits unmeasured\n[FAIL] ordinary initial planner cannot establish mapping for a task created later\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:10:00.000Z\",60000]\n[FAIL] ordinary external dependency timing stays unknown\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:01:00.000Z\",600000]\n```\n",
+          "text": "```text\n[FAIL] baseline keeps unknown waits unmeasured\n[FAIL] ordinary initial planner cannot establish mapping for a task created later\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:10:00.000Z\",60000]\n[FAIL] ordinary external dependency timing stays unknown\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:01:00.000Z\",600000]\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 124,
+          "lineEnd": 132,
+          "byteStart": 9882,
+          "byteEnd": 10287
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Their filtered RED commands used the same environment, runner and `set -o pipefail` as final verification, retaining `[FAIL]`, expected/got and the failure summary. Final GREEN evidence above exercises all these checks. A value such as 600000 wait instead of 60000, a guessed nonnull timestamp, equal 3/3 concurrency peaks instead of 3/2, or task-only diagnosis instead of planning would fail the corresponding assertions.\n",
+          "text": "Their filtered RED commands used the same environment, runner and `set -o pipefail` as final verification, retaining `[FAIL]`, expected/got and the failure summary. Final GREEN evidence above exercises all these checks. A value such as 600000 wait instead of 60000, a guessed nonnull timestamp, equal 3/3 concurrency peaks instead of 3/2, or task-only diagnosis instead of planning would fail the corresponding assertions.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 134,
+          "lineEnd": 134,
+          "byteStart": 10288,
+          "byteEnd": 10711
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Files changed"
+      ],
+      "lineStart": 136,
+      "lineEnd": 147,
+      "byteStart": 10712,
+      "byteEnd": 11131,
+      "bodyLineStart": 137,
+      "rawText": "## Files changed\n\n- `skills/super-code/scripts/run-profile.mjs`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-auto/SKILL.md`\n- `skills/super-auto/report-prompt.md`\n- `tests/super-code/run-profile-fixture.mjs`\n- `tests/super-code/run-profile-ordinary-fixture.mjs`\n- `tests/super-code/test-run-profile.sh`\n- `tests/super-code/test-run-profile-in-flight.sh`\n\n",
+      "bodyRawText": "\n- `skills/super-code/scripts/run-profile.mjs`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-auto/SKILL.md`\n- `skills/super-auto/report-prompt.md`\n- `tests/super-code/run-profile-fixture.mjs`\n- `tests/super-code/run-profile-ordinary-fixture.mjs`\n- `tests/super-code/test-run-profile.sh`\n- `tests/super-code/test-run-profile-in-flight.sh`\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/scripts/run-profile.mjs`\n",
+          "text": "`skills/super-code/scripts/run-profile.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 138,
+          "lineEnd": 138,
+          "byteStart": 10730,
+          "byteEnd": 10776
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-workflow.md`\n",
+          "text": "`skills/super-code/coordinator-workflow.md`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 139,
+          "lineEnd": 139,
+          "byteStart": 10776,
+          "byteEnd": 10822
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-subagents.md`\n",
+          "text": "`skills/super-code/coordinator-subagents.md`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 140,
+          "lineEnd": 140,
+          "byteStart": 10822,
+          "byteEnd": 10869
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-auto/SKILL.md`\n",
+          "text": "`skills/super-auto/SKILL.md`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 141,
+          "lineEnd": 141,
+          "byteStart": 10869,
+          "byteEnd": 10900
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-auto/report-prompt.md`\n",
+          "text": "`skills/super-auto/report-prompt.md`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 142,
+          "lineEnd": 142,
+          "byteStart": 10900,
+          "byteEnd": 10939
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/run-profile-fixture.mjs`\n",
+          "text": "`tests/super-code/run-profile-fixture.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 143,
+          "lineEnd": 143,
+          "byteStart": 10939,
+          "byteEnd": 10984
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/run-profile-ordinary-fixture.mjs`\n",
+          "text": "`tests/super-code/run-profile-ordinary-fixture.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 144,
+          "lineEnd": 144,
+          "byteStart": 10984,
+          "byteEnd": 11038
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/test-run-profile.sh`\n",
+          "text": "`tests/super-code/test-run-profile.sh`",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 145,
+          "lineEnd": 145,
+          "byteStart": 11038,
+          "byteEnd": 11079
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/test-run-profile-in-flight.sh`\n",
+          "text": "`tests/super-code/test-run-profile-in-flight.sh`",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 146,
+          "lineEnd": 146,
+          "byteStart": 11079,
+          "byteEnd": 11130
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Test hygiene"
+      ],
+      "lineStart": 148,
+      "lineEnd": 153,
+      "byteStart": 11131,
+      "byteEnd": 11951,
+      "bodyLineStart": 149,
+      "rawText": "## Test hygiene\n\nAll tests used `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10`; both suites set HOME to their fixture home beneath TMPDIR. XDG config/data/cache homes were isolated there, with XDG state also explicit in final verification. The ad-hoc product probe used the same isolated HOME/XDG roots.\n\nNo `match:` or `survived:` process lines were found. Checks after test runs exited 0 with empty output. The first attempted leak check ran from inside the task worktree and correctly refused an ancestor root (exit 2); it was immediately rerun from `/tmp` and returned 0. Final `stop-run-processes --check <task-worktree> <task-temp-root>` and `stop-run-processes <task-worktree> <task-temp-root>`, both from `/tmp`, exited 0 with empty output. No background services were started and no process required termination.\n\n",
+      "bodyRawText": "\nAll tests used `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10`; both suites set HOME to their fixture home beneath TMPDIR. XDG config/data/cache homes were isolated there, with XDG state also explicit in final verification. The ad-hoc product probe used the same isolated HOME/XDG roots.\n\nNo `match:` or `survived:` process lines were found. Checks after test runs exited 0 with empty output. The first attempted leak check ran from inside the task worktree and correctly refused an ancestor root (exit 2); it was immediately rerun from `/tmp` and returned 0. Final `stop-run-processes --check <task-worktree> <task-temp-root>` and `stop-run-processes <task-worktree> <task-temp-root>`, both from `/tmp`, exited 0 with empty output. No background services were started and no process required termination.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All tests used `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10`; both suites set HOME to their fixture home beneath TMPDIR. XDG config/data/cache homes were isolated there, with XDG state also explicit in final verification. The ad-hoc product probe used the same isolated HOME/XDG roots.\n",
+          "text": "All tests used `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10`; both suites set HOME to their fixture home beneath TMPDIR. XDG config/data/cache homes were isolated there, with XDG state also explicit in final verification. The ad-hoc product probe used the same isolated HOME/XDG roots.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 150,
+          "lineEnd": 150,
+          "byteStart": 11148,
+          "byteEnd": 11432
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No `match:` or `survived:` process lines were found. Checks after test runs exited 0 with empty output. The first attempted leak check ran from inside the task worktree and correctly refused an ancestor root (exit 2); it was immediately rerun from `/tmp` and returned 0. Final `stop-run-processes --check <task-worktree> <task-temp-root>` and `stop-run-processes <task-worktree> <task-temp-root>`, both from `/tmp`, exited 0 with empty output. No background services were started and no process required termination.\n",
+          "text": "No `match:` or `survived:` process lines were found. Checks after test runs exited 0 with empty output. The first attempted leak check ran from inside the task worktree and correctly refused an ancestor root (exit 2); it was immediately rerun from `/tmp` and returned 0. Final `stop-run-processes --check <task-worktree> <task-temp-root>` and `stop-run-processes <task-worktree> <task-temp-root>`, both from `/tmp`, exited 0 with empty output. No background services were started and no process required termination.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 152,
+          "lineEnd": 152,
+          "byteStart": 11433,
+          "byteEnd": 11950
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "lineStart": 154,
+      "lineEnd": 163,
+      "byteStart": 11951,
+      "byteEnd": 13439,
+      "bodyLineStart": 155,
+      "rawText": "## Assumptions and amendments\n\nThe current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.\n\nThe ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.\n\nIn-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.\n\nThe existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n\n",
+      "bodyRawText": "\nThe current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.\n\nThe ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.\n\nIn-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.\n\nThe existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.\n",
+          "text": "The current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 156,
+          "lineEnd": 156,
+          "byteStart": 11982,
+          "byteEnd": 12218
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.\n",
+          "text": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 158,
+          "lineEnd": 158,
+          "byteStart": 12219,
+          "byteEnd": 12578
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.\n",
+          "text": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 12579,
+          "byteEnd": 12869
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n",
+          "text": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 162,
+          "lineEnd": 162,
+          "byteStart": 12870,
+          "byteEnd": 13438
+        }
+      ]
+    },
+    {
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and remaining evaluation\n",
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Concerns and remaining evaluation"
+      ],
+      "lineStart": 164,
+      "lineEnd": 166,
+      "byteStart": 13439,
+      "byteEnd": 13960,
+      "bodyLineStart": 165,
+      "rawText": "## Concerns and remaining evaluation\n\nThe coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "bodyRawText": "\nThe coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+          "text": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 166,
+          "lineEnd": 166,
+          "byteStart": 13477,
+          "byteEnd": 13960
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 1,
+      "key": "The current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.",
+      "text": "The current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.",
+      "rawText": "The current bead description/acceptance and `bd comments super-plan-ufz.10` were read before implementation; there were no comments or conflicting amendments. The frozen task-6 brief and approved reliability spec were applied together.\n",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 11982,
+      "byteEnd": 12218,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 2,
+      "key": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.",
+      "text": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.",
+      "rawText": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.\n",
+      "lineStart": 158,
+      "lineEnd": 158,
+      "byteStart": 12219,
+      "byteEnd": 12578,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 3,
+      "key": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.",
+      "text": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.",
+      "rawText": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.\n",
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 12579,
+      "byteEnd": 12869,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 4,
+      "key": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.",
+      "text": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.",
+      "rawText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n",
+      "lineStart": 162,
+      "lineEnd": 162,
+      "byteStart": 12870,
+      "byteEnd": 13438,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Concerns and remaining evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.",
+      "text": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.",
+      "rawText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "lineStart": 166,
+      "lineEnd": 166,
+      "byteStart": 13477,
+      "byteEnd": 13960,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

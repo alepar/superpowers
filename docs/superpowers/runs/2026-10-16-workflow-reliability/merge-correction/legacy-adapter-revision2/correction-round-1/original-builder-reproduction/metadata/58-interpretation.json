@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "ordinal": 58,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+  "originalArtifact": "task-report-history-r1/raw/task-4-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-4-report.md",
+  "rawSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+  "rawByteCount": 18859,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        226
+      ]
+    ],
+    "byteScope": [
+      0,
+      18859
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/3",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/58-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 160,
+      "rawText": "Status: FIXED. Finding: rebase-conflict."
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/0",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        1648,
+        1818
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Transport task excludes resume routing, acceptance and metrics."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/1",
+      "roles": [
+        "illustrative_contract_example"
+      ],
+      "span": [
+        1859,
+        3092
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Pending-closure/fix fixture JSON and illustrative FIXED value are not report findings or resolutions."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/2",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        3093,
+        3522
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Caller owns deferred sweep clearing; no automatic hold clear claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/3",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        3701,
+        5065
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "RED transport and invented check-review-path failures with claimed correction."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/4",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        9577,
+        9927
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Caller-owned deferred clearing and parent live evaluation remain separate."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/5",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        9941,
+        10362
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Explicit task-local no-failure claim is qualified by simulated producers, parent live evaluation and dependent leaves."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/6",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        10417,
+        11810
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Parent-requested bounded malformed-record correction and measured RED; not a new outstanding-finding determination."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/7",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        12766,
+        15170
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Named rebase-conflict finding, original revisions, reproduction and claimed resolution; retain appearance without inferring resolution from FIXED."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/8",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        17428,
+        17797
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Focused deterministic caller checks only; full suite/live evaluation remain parent-owned."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/3/passages/9",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        18678,
+        18859
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Fixer declares no declined finding, evidence-only resolution, authorization blocker or new concern; scope is this fix, not the whole run."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Transport task excludes resume routing, acceptance and metrics.",
+      "rawSection": "Implementation",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Implementation\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1648,
+      "byteEnd": 1818,
+      "rawText": "Ordinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n",
+      "canonicalAdapterSection": "Implementation",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "illustrative_contract_example",
+      "interpretation": "Pending-closure/fix fixture JSON and illustrative FIXED value are not report findings or resolutions.",
+      "rawSection": "Downstream field/operation examples",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Downstream field/operation examples\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Downstream field/operation examples"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 19,
+      "lineEnd": 31,
+      "byteStart": 1859,
+      "byteEnd": 3092,
+      "rawText": "Pending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\nFix history fixture:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"fix\",\"operation\":\"record\",\"reason\":\"review finding\",\"evidence\":[\"task-1-review.md\",\"task-1-report.md\"],\"data\":{\"outcome\":\"FIXED\",\"reviewPath\":\"task-1-review.md\",\"head\":\"ffffffffffffffffffffffffffffffffffffffff\"}}\n```\nProducer fix data also carries phase (review|seam|check), reportPath, known base/head, optional blockerBead, declined/evidenceOnly booleans. Check fixes cite actual merge dispatch/report evidence and omit reviewPath because that artifact does not exist. Unknown commit fields are omitted.\n",
+      "canonicalAdapterSection": "Downstream field/operation examples",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Caller owns deferred sweep clearing; no automatic hold clear claimed.",
+      "rawSection": "Downstream field/operation examples",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Downstream field/operation examples\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Downstream field/operation examples"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 33,
+      "lineEnd": 33,
+      "byteStart": 3093,
+      "byteEnd": 3522,
+      "rawText": "Hold producer ID is `merge-lane`; data has taskId, integrationBranch/integrationWorktree, dirty/dirtyCount or detachedHead. Deferred sweep ID is `<epicId>:sweep:<runTag>`; data has owner=caller, runTag, integrationBranch and declared command when known. Evidence points to the existing ledger Launch for that runTag. Clearing deferred measurements is owned by the measuring caller. No hold is automatically cleared by this task.\n",
+      "canonicalAdapterSection": "Downstream field/operation examples",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "RED transport and invented check-review-path failures with claimed correction.",
+      "rawSection": "Tests and TDD",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## Tests and TDD\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Tests and TDD"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 39,
+      "lineEnd": 64,
+      "byteStart": 3701,
+      "byteEnd": 5065,
+      "rawText": "Initial RED, before production changes:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-red.log 2>&1\n```\nExit 1, approximately 28 seconds (log creation-to-last-write):\n```text\n[FAIL] digest counts recovery records and gaps along with legacy Task tokens\n[FAIL] digest transports complete evidence and uninterpretable recovery lines verbatim\n[FAIL] earlier FIXED record survives the clean retry intact\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] pending closure preserves exact landing head and range\n[FAIL] elided append retry preserves every recovery record and evidence byte\n1775 passed, 12 failed\n```\nExpected failure: baseline digest discarded Recovery records, coordinator had no recovery collections/producers. All original baseline checks remained passing.\n\nAdditional RED for truthful merge-check source references, before fixing the invented check review path:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-contract-red.log 2>&1\n```\nExit 1, approximately 29 seconds:\n```text\n[FAIL] merge-check fix retains its error source and range without inventing a review artifact\n1788 passed, 1 failed\n```\nCorrected to actual merge dispatch/report evidence and omitted the nonexistent reviewPath.\n",
+      "canonicalAdapterSection": "Tests and TDD",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Caller-owned deferred clearing and parent live evaluation remain separate.",
+      "rawSection": "Assumptions",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Assumptions\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Assumptions"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 120,
+      "lineEnd": 120,
+      "byteStart": 9577,
+      "byteEnd": 9927,
+      "rawText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n",
+      "canonicalAdapterSection": "Assumptions",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Explicit task-local no-failure claim is qualified by simulated producers, parent live evaluation and dependent leaves.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 9,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        9
+      ],
+      "lineStart": 124,
+      "lineEnd": 124,
+      "byteStart": 9941,
+      "byteEnd": 10362,
+      "rawText": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Parent-requested bounded malformed-record correction and measured RED; not a new outstanding-finding determination.",
+      "rawSection": "Compact-gap correction and final rebased evidence",
+      "rawSectionOrdinal": 10,
+      "rawSectionHeading": "## Compact-gap correction and final rebased evidence\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Compact-gap correction and final rebased evidence"
+      ],
+      "rawSectionsSpanned": [
+        10
+      ],
+      "lineStart": 128,
+      "lineEnd": 141,
+      "byteStart": 10417,
+      "byteEnd": 11810,
+      "rawText": "Parent review required bounded transport even for malformed/unknown records. Added an oversized malformed line, unknown-version JSON and oversized structured obligation fixture. Each keeps its full body on disk and produces only original source/line gap pointers. The 4096-character transport ceiling bounds coordinator input; compact malformed records return source/digestLine and a 200-character preview. This narrows the record contract without changing missing/unreadable transport taxonomy.\n\nRED command (same task cwd):\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-size-red.log 2>&1\n```\nExit 1, approximately 28 seconds for the completed run:\n```text\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] evidence remains on disk while digest transports bounded gap references\n[FAIL] malformed, unknown and oversized structured records expose original source line references without full raw content\n1790 passed, 3 failed\n```\nExpected failure: the pre-correction digest echoed arbitrary raw bodies and decoder gaps lacked bounded previews/source pointers. A prior attempt at the new assertion raised a TypeError on the missing baseline source field; it was corrected to optional access before the successful RED run above. That failed-start assertion is not counted as RED evidence.\n",
+      "canonicalAdapterSection": "Compact-gap correction and final rebased evidence",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Named rebase-conflict finding, original revisions, reproduction and claimed resolution; retain appearance without inferring resolution from FIXED.",
+      "rawSection": "Seam fix",
+      "rawSectionOrdinal": 11,
+      "rawSectionHeading": "## Seam fix\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "rawSectionsSpanned": [
+        11
+      ],
+      "lineStart": 160,
+      "lineEnd": 179,
+      "byteStart": 12766,
+      "byteEnd": 15170,
+      "rawText": "Status: FIXED. Finding: rebase-conflict.\n\nSource revisions:\n- Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.\n- Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.\n- Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.\n- Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.\n- Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.\n\nRead current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.\n\n`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nResolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.\n\n`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.\n",
+      "canonicalAdapterSection": "Seam fix",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Focused deterministic caller checks only; full suite/live evaluation remain parent-owned.",
+      "rawSection": "Focused verification",
+      "rawSectionOrdinal": 12,
+      "rawSectionHeading": "### Focused verification\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Focused verification"
+      ],
+      "rawSectionsSpanned": [
+        12
+      ],
+      "lineStart": 214,
+      "lineEnd": 214,
+      "byteStart": 17428,
+      "byteEnd": 17797,
+      "rawText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n",
+      "canonicalAdapterSection": "Focused verification",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Fixer declares no declined finding, evidence-only resolution, authorization blocker or new concern; scope is this fix, not the whole run.",
+      "rawSection": "Test hygiene",
+      "rawSectionOrdinal": 13,
+      "rawSectionHeading": "### Test hygiene\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Test hygiene"
+      ],
+      "rawSectionsSpanned": [
+        13
+      ],
+      "lineStart": 226,
+      "lineEnd": 226,
+      "byteStart": 18678,
+      "byteEnd": 18859,
+      "rawText": "No leaked matches, stopped processes or survivors. No background process remains from this fix. No declined finding, evidence-only resolution, authorization blocker or new concern.\n",
+      "canonicalAdapterSection": "Test hygiene",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 9577,
+      "byteEnd": 9927,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/4"
+      ],
+      "interpretation": "Caller-owned deferred clearing and parent live evaluation remain separate.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9941,
+      "byteEnd": 10362,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/5"
+      ],
+      "interpretation": "Explicit task-local no-failure claim is qualified by simulated producers, parent live evaluation and dependent leaves.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17428,
+      "byteEnd": 17797,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/8"
+      ],
+      "interpretation": "Focused deterministic caller checks only; full suite/live evaluation remain parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [
+    "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000009577",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawByteStart": 9577,
+      "rawByteEnd": 9927,
+      "rawLineStart": 120,
+      "rawLineEnd": 120,
+      "originalSections": [
+        {
+          "section": "Assumptions",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Assumptions\n",
+          "hierarchy": [
+            "Task super-plan-ufz.4 — IMPLEMENTED",
+            "Assumptions"
+          ],
+          "byteStart": 9561,
+          "byteEnd": 9928
+        }
+      ],
+      "rawText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/4"
+      ],
+      "interpretation": "Caller-owned deferred clearing and parent live evaluation remain separate."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000009941",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope_concern"
+      ],
+      "rawByteStart": 9941,
+      "rawByteEnd": 10362,
+      "rawLineStart": 124,
+      "rawLineEnd": 124,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.4 — IMPLEMENTED",
+            "Concerns"
+          ],
+          "byteStart": 9928,
+          "byteEnd": 10363
+        }
+      ],
+      "rawText": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/5"
+      ],
+      "interpretation": "Explicit task-local no-failure claim is qualified by simulated producers, parent live evaluation and dependent leaves."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017428",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawByteStart": 17428,
+      "rawByteEnd": 17797,
+      "rawLineStart": 214,
+      "rawLineEnd": 214,
+      "originalSections": [
+        {
+          "section": "Focused verification",
+          "sectionOrdinal": 12,
+          "headingRaw": "### Focused verification\n",
+          "hierarchy": [
+            "Task super-plan-ufz.4 — IMPLEMENTED",
+            "Seam fix",
+            "Focused verification"
+          ],
+          "byteStart": 15171,
+          "byteEnd": 17798
+        }
+      ],
+      "rawText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/3/passages/8"
+      ],
+      "interpretation": "Focused deterministic caller checks only; full suite/live evaluation remain parent-owned."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/58-task-4-report.md",
+  "retainedSha256": "5784f5a045d3d5df606a84924ff1307e8e88f5ff92149bb51321152ea1dbc965"
+}

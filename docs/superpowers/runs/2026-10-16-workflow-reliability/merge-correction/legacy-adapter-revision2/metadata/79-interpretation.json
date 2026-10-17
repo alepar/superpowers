@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "ordinal": 79,
+  "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+  "originalArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+  "rawCopy": "raw/2026-10-16-workflow-reliability-roast-design-1.md",
+  "rawSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+  "rawByteCount": 4873,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        37
+      ]
+    ],
+    "byteScope": [
+      0,
+      4873
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/24",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/79-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "Should-fix (1 confirmed)",
+    "kind": "roast"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "super-roast verdict: Should-fix (1 confirmed)"
+    },
+    {
+      "line": 12,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/0",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        1251,
+        2752
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict confirmed Should-fix acceptance contradiction with full evidence/fix hint."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/1",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        2788,
+        2795
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No beyond-panel unverified candidates."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/2",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        2842,
+        2849
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No pipeline-failure unjudged candidates."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/3",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        2887,
+        2894
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No beyond-remainder candidates/count."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/4",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "span": [
+        2921,
+        3505
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original strict rejected survivor-handling claim/reason, not current accepted defect."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/5",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "span": [
+        3505,
+        4146
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original strict rejected universal review-invalidation claim/reason."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/6",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "span": [
+        4146,
+        4795
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original strict rejected later-linked occurrence inheritance claim/reason."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/7",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        4830,
+        4837
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No unverified nits."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/24/passages/8",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        4866,
+        4873
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No escalations."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "review_finding",
+      "interpretation": "Original strict confirmed Should-fix acceptance contradiction with full evidence/fix hint.",
+      "rawSection": "Confirmed findings",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 11,
+      "lineEnd": 14,
+      "byteStart": 1251,
+      "byteEnd": 2752,
+      "rawText": "- [Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.\n",
+      "canonicalAdapterSection": "Confirmed findings",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No beyond-panel unverified candidates.",
+      "rawSection": "Not verified (beyond panel cap)",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Not verified (beyond panel cap)\n",
+      "rawSectionHierarchy": [
+        "Not verified (beyond panel cap)"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 2788,
+      "byteEnd": 2795,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Not verified (beyond panel cap)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No pipeline-failure unjudged candidates.",
+      "rawSection": "Not verified (dedupe failed or judge lost)",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Not verified (dedupe failed or judge lost)\n",
+      "rawSectionHierarchy": [
+        "Not verified (dedupe failed or judge lost)"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 2842,
+      "byteEnd": 2849,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Not verified (dedupe failed or judge lost)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No beyond-remainder candidates/count.",
+      "rawSection": "Beyond remainder cap (count only)",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## Beyond remainder cap (count only)\n",
+      "rawSectionHierarchy": [
+        "Beyond remainder cap (count only)"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2887,
+      "byteEnd": 2894,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Beyond remainder cap (count only)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historically_rejected_finding",
+      "interpretation": "Original strict rejected survivor-handling claim/reason, not current accepted defect.",
+      "rawSection": "Rejected (with reason)",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Rejected (with reason)\n",
+      "rawSectionHierarchy": [
+        "Rejected (with reason)"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 26,
+      "lineEnd": 27,
+      "byteStart": 2921,
+      "byteEnd": 3505,
+      "rawText": "- Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.\n",
+      "canonicalAdapterSection": "Rejected (with reason)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historically_rejected_finding",
+      "interpretation": "Original strict rejected universal review-invalidation claim/reason.",
+      "rawSection": "Rejected (with reason)",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Rejected (with reason)\n",
+      "rawSectionHierarchy": [
+        "Rejected (with reason)"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 28,
+      "lineEnd": 29,
+      "byteStart": 3505,
+      "byteEnd": 4146,
+      "rawText": "- docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.\n",
+      "canonicalAdapterSection": "Rejected (with reason)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "historically_rejected_finding",
+      "interpretation": "Original strict rejected later-linked occurrence inheritance claim/reason.",
+      "rawSection": "Rejected (with reason)",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Rejected (with reason)\n",
+      "rawSectionHierarchy": [
+        "Rejected (with reason)"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 30,
+      "lineEnd": 31,
+      "byteStart": 4146,
+      "byteEnd": 4795,
+      "rawText": "- docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.\n",
+      "canonicalAdapterSection": "Rejected (with reason)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No unverified nits.",
+      "rawSection": "Unverified nits (spot-checked)",
+      "rawSectionOrdinal": 6,
+      "rawSectionHeading": "## Unverified nits (spot-checked)\n",
+      "rawSectionHierarchy": [
+        "Unverified nits (spot-checked)"
+      ],
+      "rawSectionsSpanned": [
+        6
+      ],
+      "lineStart": 34,
+      "lineEnd": 34,
+      "byteStart": 4830,
+      "byteEnd": 4837,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Unverified nits (spot-checked)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No escalations.",
+      "rawSection": "Escalations (need human)",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Escalations (need human)\n",
+      "rawSectionHierarchy": [
+        "Escalations (need human)"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 37,
+      "lineEnd": 37,
+      "byteStart": 4866,
+      "byteEnd": 4873,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Escalations (need human)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1251,
+      "byteEnd": 2752,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/24/passages/0"
+      ],
+      "interpretation": "Original strict confirmed Should-fix acceptance contradiction with full evidence/fix hint.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "supplementalQualifications": [],
+  "retainedArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+  "retainedSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2"
+}

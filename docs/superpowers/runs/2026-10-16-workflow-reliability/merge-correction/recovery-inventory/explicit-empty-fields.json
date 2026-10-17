@@ -1,0 +1,546 @@
+[
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00133",
+    "sourceId": "s0153",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-acceptance-accounting/proposed-root-acceptance.json",
+    "sourceSha256": "9796e3616eaf20ca2227aafabbb91334d3ff48f37946d6445a0acc9cc821bb25",
+    "location": {
+      "lineStart": 1,
+      "lineEnd": 4609,
+      "charStart": 0,
+      "charEnd": 422622
+    },
+    "pointer": "$/checkEvidence/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": null,
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00162",
+    "sourceId": "s0207",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.32-result.json",
+    "sourceSha256": "4f5156befbed42be87d98dd380d58916db27f307dfa8b937762cf5c8c52eb5c8",
+    "location": {
+      "lineStart": 1,
+      "lineEnd": 191,
+      "charStart": 0,
+      "charEnd": 17269
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00194",
+    "sourceId": "s0248",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-21-review.md",
+    "sourceSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+    "location": {
+      "lineStart": 29,
+      "lineEnd": 99,
+      "charStart": 4645,
+      "charEnd": 9127
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.24",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00202",
+    "sourceId": "s0254",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-23-review.md",
+    "sourceSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+    "location": {
+      "lineStart": 62,
+      "lineEnd": 171,
+      "charStart": 7921,
+      "charEnd": 16449
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.26",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00205",
+    "sourceId": "s0258",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-24-review.md",
+    "sourceSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+    "location": {
+      "lineStart": 37,
+      "lineEnd": 86,
+      "charStart": 5205,
+      "charEnd": 9217
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.27",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00208",
+    "sourceId": "s0261",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-25-review.md",
+    "sourceSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+    "location": {
+      "lineStart": 46,
+      "lineEnd": 131,
+      "charStart": 5777,
+      "charEnd": 10812
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.28",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00212",
+    "sourceId": "s0264",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+    "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+    "location": {
+      "lineStart": 123,
+      "lineEnd": 180,
+      "charStart": 11081,
+      "charEnd": 14794
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.29",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00214",
+    "sourceId": "s0267",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-27-review.md",
+    "sourceSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+    "location": {
+      "lineStart": 44,
+      "lineEnd": 77,
+      "charStart": 4878,
+      "charEnd": 8256
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.30",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00217",
+    "sourceId": "s0270",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-28-review.md",
+    "sourceSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+    "location": {
+      "lineStart": 87,
+      "lineEnd": 122,
+      "charStart": 8174,
+      "charEnd": 9730
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.31",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00218",
+    "sourceId": "s0272",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-29-report.md",
+    "sourceSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+    "location": {
+      "lineStart": 158,
+      "lineEnd": 315,
+      "charStart": 9259,
+      "charEnd": 24989
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00219",
+    "sourceId": "s0273",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-29-review.md",
+    "sourceSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+    "location": {
+      "lineStart": 83,
+      "lineEnd": 261,
+      "charStart": 9632,
+      "charEnd": 27071
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00229",
+    "sourceId": "s0352",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+    "sourceSha256": "146ecea08d9164d1f0d62db48eb52fa58c6deb3fccdb18a0325cf9ea43333ffd",
+    "location": {
+      "lineStart": 18,
+      "lineEnd": 18,
+      "charStart": 1299,
+      "charEnd": 386888
+    },
+    "pointer": "$/checkEvidence/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": null,
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00243",
+    "sourceId": "s0413",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-21-review.md",
+    "sourceSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+    "location": {
+      "lineStart": 29,
+      "lineEnd": 99,
+      "charStart": 4645,
+      "charEnd": 9127
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.24",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00251",
+    "sourceId": "s0419",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-23-review.md",
+    "sourceSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+    "location": {
+      "lineStart": 62,
+      "lineEnd": 171,
+      "charStart": 7921,
+      "charEnd": 16449
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.26",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00254",
+    "sourceId": "s0423",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-24-review.md",
+    "sourceSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+    "location": {
+      "lineStart": 37,
+      "lineEnd": 86,
+      "charStart": 5205,
+      "charEnd": 9217
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.27",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00257",
+    "sourceId": "s0426",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-25-review.md",
+    "sourceSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+    "location": {
+      "lineStart": 46,
+      "lineEnd": 131,
+      "charStart": 5777,
+      "charEnd": 10812
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.28",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00261",
+    "sourceId": "s0429",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+    "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+    "location": {
+      "lineStart": 123,
+      "lineEnd": 180,
+      "charStart": 11081,
+      "charEnd": 14794
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.29",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00263",
+    "sourceId": "s0432",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-review.md",
+    "sourceSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+    "location": {
+      "lineStart": 44,
+      "lineEnd": 77,
+      "charStart": 4878,
+      "charEnd": 8256
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.30",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00266",
+    "sourceId": "s0435",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-28-review.md",
+    "sourceSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+    "location": {
+      "lineStart": 87,
+      "lineEnd": 122,
+      "charStart": 8174,
+      "charEnd": 9730
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.31",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00267",
+    "sourceId": "s0437",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-29-report.md",
+    "sourceSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+    "location": {
+      "lineStart": 158,
+      "lineEnd": 315,
+      "charStart": 9259,
+      "charEnd": 24989
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00268",
+    "sourceId": "s0438",
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-29-review.md",
+    "sourceSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+    "location": {
+      "lineStart": 83,
+      "lineEnd": 261,
+      "charStart": 9632,
+      "charEnd": 27071
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00286",
+    "sourceId": "s0485",
+    "path": "evidence/super-plan-ufz.32/check-records.json",
+    "sourceSha256": "a836210078d84f025ec2a17e99ff632b37a1193c829fcc25d5a10f9748151deb",
+    "location": {
+      "lineStart": 1,
+      "lineEnd": 158,
+      "charStart": 0,
+      "charEnd": 15730
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "pinned-git",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00304",
+    "sourceId": "s0506",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.32-result.json",
+    "sourceSha256": "4f5156befbed42be87d98dd380d58916db27f307dfa8b937762cf5c8c52eb5c8",
+    "location": {
+      "lineStart": 1,
+      "lineEnd": 191,
+      "charStart": 0,
+      "charEnd": 17269
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00323",
+    "sourceId": "s0558",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-review.md",
+    "sourceSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+    "location": {
+      "lineStart": 29,
+      "lineEnd": 99,
+      "charStart": 4645,
+      "charEnd": 9127
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.24",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00331",
+    "sourceId": "s0562",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-review.md",
+    "sourceSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+    "location": {
+      "lineStart": 62,
+      "lineEnd": 171,
+      "charStart": 7921,
+      "charEnd": 16449
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.26",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00334",
+    "sourceId": "s0565",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-review.md",
+    "sourceSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+    "location": {
+      "lineStart": 37,
+      "lineEnd": 86,
+      "charStart": 5205,
+      "charEnd": 9217
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.27",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00337",
+    "sourceId": "s0567",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-review.md",
+    "sourceSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+    "location": {
+      "lineStart": 46,
+      "lineEnd": 131,
+      "charStart": 5777,
+      "charEnd": 10812
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.28",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00341",
+    "sourceId": "s0569",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+    "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+    "location": {
+      "lineStart": 123,
+      "lineEnd": 180,
+      "charStart": 11081,
+      "charEnd": 14794
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.29",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00343",
+    "sourceId": "s0571",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-review.md",
+    "sourceSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+    "location": {
+      "lineStart": 44,
+      "lineEnd": 77,
+      "charStart": 4878,
+      "charEnd": 8256
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.30",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00346",
+    "sourceId": "s0573",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-review.md",
+    "sourceSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+    "location": {
+      "lineStart": 87,
+      "lineEnd": 122,
+      "charStart": 8174,
+      "charEnd": 9730
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.31",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "requiredLiveChecks",
+    "objectId": "o00347",
+    "sourceId": "s0574",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-report.md",
+    "sourceSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+    "location": {
+      "lineStart": 158,
+      "lineEnd": 315,
+      "charStart": 9259,
+      "charEnd": 24989
+    },
+    "pointer": "$/requiredLiveChecks",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  },
+  {
+    "field": "failureAttribution",
+    "objectId": "o00348",
+    "sourceId": "s0575",
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-review.md",
+    "sourceSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+    "location": {
+      "lineStart": 83,
+      "lineEnd": 261,
+      "charStart": 9632,
+      "charEnd": 27071
+    },
+    "pointer": "$/failureAttribution",
+    "identityKind": "local-untracked-snapshot",
+    "task": "super-plan-ufz.32",
+    "meaning": "Explicit empty declaration in this record only; no run-wide or prior-obligation erasure."
+  }
+]

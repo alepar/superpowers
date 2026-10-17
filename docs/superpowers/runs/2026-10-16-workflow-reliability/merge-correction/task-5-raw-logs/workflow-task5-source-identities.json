@@ -1,0 +1,18 @@
+{
+  "skills/super-auto/resume.md": {
+    "gitBlob": "04328efc901547fb5d23878eae08e06f1d4e8dac",
+    "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf"
+  },
+  "skills/super-design/SKILL.md": {
+    "gitBlob": "33cfc962107741ad939a5e8fc7b448bf3c7d7b81",
+    "sha256": "e23a402ce0fde5dbb4245c4bf4c0de6361aec144cfec71c0e2dfc787c38ecf95"
+  },
+  "tests/super-auto/resume-sync-contract.mjs": {
+    "gitBlob": "3e16fdb66ecf7c4219412c333822db68a5566915",
+    "sha256": "acdf27fed2346f2793b19abd2e9ed27c9ca87007494a508ad90a0a0915cab051"
+  },
+  "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt": {
+    "gitBlob": "cf1979c8002c986534a6791e3bd177b615fae4e2",
+    "sha256": "5cae2ad527fab6c3adac312f9f25c5509fb586c865efe131248e3424590dd2c4"
+  }
+}

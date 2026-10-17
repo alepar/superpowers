@@ -1,0 +1,67 @@
+{
+  "id": "super-plan-ufz.29",
+  "status": "IMPLEMENTED",
+  "files": [
+    "evidence/super-plan-ufz.29/checks.json",
+    "evidence/super-plan-ufz.29/dispatch-final.log",
+    "evidence/super-plan-ufz.29/focused-final.log",
+    "evidence/super-plan-ufz.29/red-fixture.mjs",
+    "evidence/super-plan-ufz.29/red.log",
+    "evidence/super-plan-ufz.29/replay-final.log",
+    "skills/super-code/coordinator-subagents.md",
+    "skills/super-code/coordinator-workflow.md",
+    "skills/super-code/coordinator.js",
+    "skills/super-code/scripts/dispatch-text.mjs",
+    "tests/super-code/invocation-source-binding-r1.mjs"
+  ],
+  "base": "1d0ab308f09598c8c2826cfbca2af119a631d37a",
+  "head": "7db21aaec321ce133ad792f9ffc0e05879e4cf40",
+  "stacked": false,
+  "completionKind": "implementation",
+  "evidence": [
+    {
+      "sourceTree": "9e544a4b64d593c254cef710d0fb55ff862cff38",
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies; original RED fixture",
+      "outcome": "fail",
+      "location": "evidence/super-plan-ufz.29/red.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies",
+      "outcome": "pass",
+      "location": "evidence/super-plan-ufz.29/focused-final.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures",
+      "outcome": "pass",
+      "location": "evidence/super-plan-ufz.29/replay-final.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged ordinary-dispatch callers; real CLI and prompt builders",
+      "outcome": "pass",
+      "location": "evidence/super-plan-ufz.29/dispatch-final.log",
+      "kind": "live"
+    }
+  ],
+  "requiredLiveChecks": [
+    {
+      "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies"
+    },
+    {
+      "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; unchanged replay; canned agent replies plus real helper fixtures"
+    }
+  ]
+}

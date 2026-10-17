@@ -1,0 +1,10 @@
+[
+  {
+    "claim": "Large finding projections silently truncate their JSON on piped stdout while returning success, preventing status and acceptance reporting from observing the retained findings.",
+    "location": "skills/super-auto/scripts/scope-dispositions:194",
+    "category": "observability",
+    "external": false,
+    "kind": "ISSUE",
+    "evidence": "Introduced in the new --project branch between frozen base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 and head ff2f79f62cc34084c8df20edc5c2e4f201a5d630: line 192 console.log writes the entire projection and line 194 immediately process.exit ends the process before buffered pipe output flushes. Independent frozen-source reproduction reconstructed run.md and every referenced source artifact with git show, without using mutable caller source. Regular-file stdout produced exit 0, 155300 bytes, 128 finding groups and no gaps; the actual spawnSync pipe pattern used by report-status:150 and :298 returned exit 0, empty stderr and exactly 65536 bytes ending within a JSON string. Ordinary report-status consequently replaced the available outstanding count with 'finding projection unavailable — retain known findings'; the acceptance gate consumes the same broken transport. This is not a genuinely unavailable input: the full projection succeeds when redirected to a file. An owned synthetic 128-finding fixture likewise produced 177916 valid bytes to a file and 65536 malformed bytes to a pipe; changing only process.exit to process.exitCode in an owned helper copy made piped output parse successfully as all 128 findings. Reproduction receipts: /tmp/ufz-pr1/evidence-observability/frozen-run-receipt.json, receipt.json, flush-probe-receipt.json; runner capture-projection.cjs; exact introduced diff scope-dispositions.diff. Independently corroborates the correctness lane's same candidate; initial risk attribution is the supplied roast-status-observation.json."
+  }
+]

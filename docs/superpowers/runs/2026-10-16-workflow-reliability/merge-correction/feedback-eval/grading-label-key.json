@@ -1,0 +1,92 @@
+[
+  {
+    "blinded": "response-01.md",
+    "variant": "after",
+    "subject": 3,
+    "original": "/private/tmp/ufz-correction-feedback-eval/after_3-response.md",
+    "rawSha256": "10bce4ad77cbe6f466fc63e9cb5d3e434df8959fa648f78d3ea0596cf3ba632d",
+    "maskedSha256": "1a22cd1a6f3134ed1ec377da40ef93963dcfae481550cccafdeb7d163862268a",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-02.md",
+    "variant": "baseline",
+    "subject": 1,
+    "original": "/private/tmp/ufz-correction-feedback-eval/baseline_1-response.md",
+    "rawSha256": "2693dca777436da354ff164cdbec9cdb37f87638cf6cfbaa12059632edb4863b",
+    "maskedSha256": "b3c2fa0b1076ddc9ddc5615161eb17fa64a9eeabdd5341a19cb84363666b0b04",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-03.md",
+    "variant": "baseline",
+    "subject": 2,
+    "original": "/private/tmp/ufz-correction-feedback-eval/baseline_2-response.md",
+    "rawSha256": "9c7a4b318115c58a9427a44e053884188a6e0ba6752c083c65e61499e0076077",
+    "maskedSha256": "97548a87ba5a52e17b0021c2fd0b52798eb57aebad142e7f5e5292a0e388c501",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-04.md",
+    "variant": "baseline",
+    "subject": 5,
+    "original": "/private/tmp/ufz-correction-feedback-eval/baseline_5-response.md",
+    "rawSha256": "99390ff723b1015201ec18aaf995bbc88f8d99afa5e1bc2239947f6599dd7f3d",
+    "maskedSha256": "b7e071d70b42526c77b59135d8fce4e09ad69985a243a76d9a1f1c78ff3cf19d",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-05.md",
+    "variant": "baseline",
+    "subject": 4,
+    "original": "/private/tmp/ufz-correction-feedback-eval/baseline_4-response.md",
+    "rawSha256": "7486b99b3cbe61050bf2fec0141869850eaab9d3e58439646e8f03c3a48af5fa",
+    "maskedSha256": "846c4013fe6648346dc24a20b4a6e2b4047bfbdbf3903e1e6ed25955730c672d",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-06.md",
+    "variant": "after",
+    "subject": 2,
+    "original": "/private/tmp/ufz-correction-feedback-eval/after_2-response.md",
+    "rawSha256": "8acd910d91b203780525b71dc51e53b60f51ca07e7bb54beabba8594ecd10d18",
+    "maskedSha256": "48ff719c272f8220c9d28b39eb86f20d4378d8151d6ba6284f118f03e16c9da6",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-07.md",
+    "variant": "after",
+    "subject": 4,
+    "original": "/private/tmp/ufz-correction-feedback-eval/after_4-response.md",
+    "rawSha256": "9743b8c3b47adb3b3c7f3c26142c23d5723bc1addbc480d53ca31eb4dac465f1",
+    "maskedSha256": "e3b1edeb18fa2c75af91a4d8e789c55de04bdf8a47445dcd844f59ffb6332c3c",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-08.md",
+    "variant": "baseline",
+    "subject": 3,
+    "original": "/private/tmp/ufz-correction-feedback-eval/baseline_3-response.md",
+    "rawSha256": "9859a53787ffcab8161687f81a07560e50f6b1b9fe46cdee2b52d0b2bcef0687",
+    "maskedSha256": "4996e0c493569b94a051eac00641d9d07aac1672c124c279c22d1c4ebf9c01f2",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-09.md",
+    "variant": "after",
+    "subject": 1,
+    "original": "/private/tmp/ufz-correction-feedback-eval/after_1-response.md",
+    "rawSha256": "4e8c964eac26a1525a85939f1b47f8197e031c666bd0b318bdfc39d27cb6025b",
+    "maskedSha256": "50c802539a299b1d67fdbd3b48ca8fc9daf20a6e8bb4e49dcc4c68061eb4b1c6",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  },
+  {
+    "blinded": "response-10.md",
+    "variant": "after",
+    "subject": 5,
+    "original": "/private/tmp/ufz-correction-feedback-eval/after_5-response.md",
+    "rawSha256": "b5a53224892c83446f593f57879f4cffd3aeee9c2a42da3d2797a0a4906fb0f6",
+    "maskedSha256": "2c2f5b61fb97d017e438590002fc89c29ec88f205832a087f2ad8340d9b4583b",
+    "masking": "Only explicit variant context/template/response filenames normalized; answer semantics and limitations preserved."
+  }
+]

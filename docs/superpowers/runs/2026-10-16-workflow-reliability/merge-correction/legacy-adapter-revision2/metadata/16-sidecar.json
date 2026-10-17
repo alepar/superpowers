@@ -1,0 +1,425 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-13-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-13-review.md",
+  "rawSha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+  "rawByteCount": 4419,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-13-review.md",
+    "durablePath": "task-report-history-r1/raw/task-13-review.md",
+    "sha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+    "byteCount": 4419,
+    "logicalRole": "review",
+    "ordinal": 13,
+    "logicalTaskId": "super-plan-ufz.8.4",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-13-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status:CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 13 review — super-plan-ufz.8.4",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 13 review — super-plan-ufz.8.4\n",
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4"
+      ],
+      "lineStart": 1,
+      "lineEnd": 7,
+      "byteStart": 0,
+      "byteEnd": 181,
+      "bodyLineStart": 2,
+      "rawText": "# Task 13 review — super-plan-ufz.8.4\n\nStatus:CLEAN\nBase: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\nHead: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nReview bead: super-plan-ufz.8.7\n\n",
+      "bodyRawText": "\nStatus:CLEAN\nBase: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\nHead: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nReview bead: super-plan-ufz.8.7\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status:CLEAN\n",
+          "text": "Status:CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 41,
+          "byteEnd": 54
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\n",
+          "text": "Base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 54,
+          "byteEnd": 101
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nReview bead: super-plan-ufz.8.7\n",
+          "text": "Head: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nReview bead: super-plan-ufz.8.7",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 6,
+          "byteStart": 101,
+          "byteEnd": 180
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Spec compliance"
+      ],
+      "lineStart": 8,
+      "lineEnd": 15,
+      "byteStart": 181,
+      "byteEnd": 1419,
+      "bodyLineStart": 9,
+      "rawText": "## Spec compliance\n\n✅ All five acceptance criteria are implemented within this task’s independently testable projection boundary. Source/section/position identities remain separate without explicit reference links; archive copies retain the identity. Routing facts coexist with supported dispositions. Resolution needs explicit supported judgment, basis, evidence and verification; rejection needs supported judgment, basis and evidence. Unsupported external records produce gaps without replacing retained local occurrences. Key output derives from outstanding deferred groups, excluding supported fixes and rejections.\n\n✅ Existing round/filter/step-back implementation and legacy test assertions are unchanged. No competing ledger, lifecycle, trigger policy, collector or status integration was introduced. Historical field/format fixture files have no changes in the immutable reviewed range. Contract lint consumes their union with explicit additive fixtures and adds mutation coverage for legacy format changes, dropped approved additions and unapproved fields.\n\nCurrent bead description, acceptance and comments were read before the frozen task section and brief. No amendments/comments or unresolved conflicts were present.\n\n",
+      "bodyRawText": "\n✅ All five acceptance criteria are implemented within this task’s independently testable projection boundary. Source/section/position identities remain separate without explicit reference links; archive copies retain the identity. Routing facts coexist with supported dispositions. Resolution needs explicit supported judgment, basis, evidence and verification; rejection needs supported judgment, basis and evidence. Unsupported external records produce gaps without replacing retained local occurrences. Key output derives from outstanding deferred groups, excluding supported fixes and rejections.\n\n✅ Existing round/filter/step-back implementation and legacy test assertions are unchanged. No competing ledger, lifecycle, trigger policy, collector or status integration was introduced. Historical field/format fixture files have no changes in the immutable reviewed range. Contract lint consumes their union with explicit additive fixtures and adds mutation coverage for legacy format changes, dropped approved additions and unapproved fields.\n\nCurrent bead description, acceptance and comments were read before the frozen task section and brief. No amendments/comments or unresolved conflicts were present.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ All five acceptance criteria are implemented within this task’s independently testable projection boundary. Source/section/position identities remain separate without explicit reference links; archive copies retain the identity. Routing facts coexist with supported dispositions. Resolution needs explicit supported judgment, basis, evidence and verification; rejection needs supported judgment, basis and evidence. Unsupported external records produce gaps without replacing retained local occurrences. Key output derives from outstanding deferred groups, excluding supported fixes and rejections.\n",
+          "text": "✅ All five acceptance criteria are implemented within this task’s independently testable projection boundary. Source/section/position identities remain separate without explicit reference links; archive copies retain the identity. Routing facts coexist with supported dispositions. Resolution needs explicit supported judgment, basis, evidence and verification; rejection needs supported judgment, basis and evidence. Unsupported external records produce gaps without replacing retained local occurrences. Key output derives from outstanding deferred groups, excluding supported fixes and rejections.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 201,
+          "byteEnd": 806
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Existing round/filter/step-back implementation and legacy test assertions are unchanged. No competing ledger, lifecycle, trigger policy, collector or status integration was introduced. Historical field/format fixture files have no changes in the immutable reviewed range. Contract lint consumes their union with explicit additive fixtures and adds mutation coverage for legacy format changes, dropped approved additions and unapproved fields.\n",
+          "text": "✅ Existing round/filter/step-back implementation and legacy test assertions are unchanged. No competing ledger, lifecycle, trigger policy, collector or status integration was introduced. Historical field/format fixture files have no changes in the immutable reviewed range. Contract lint consumes their union with explicit additive fixtures and adds mutation coverage for legacy format changes, dropped approved additions and unapproved fields.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 807,
+          "byteEnd": 1254
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description, acceptance and comments were read before the frozen task section and brief. No amendments/comments or unresolved conflicts were present.\n",
+          "text": "Current bead description, acceptance and comments were read before the frozen task section and brief. No amendments/comments or unresolved conflicts were present.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 1255,
+          "byteEnd": 1418
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Issues"
+      ],
+      "lineStart": 16,
+      "lineEnd": 21,
+      "byteStart": 1419,
+      "byteEnd": 1477,
+      "bodyLineStart": 17,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1430,
+          "byteEnd": 1446
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1446,
+          "byteEnd": 1463
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1463,
+          "byteEnd": 1476
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Test evidence"
+      ],
+      "lineStart": 22,
+      "lineEnd": 34,
+      "byteStart": 1477,
+      "byteEnd": 3286,
+      "bodyLineStart": 23,
+      "rawText": "## Test evidence\n\nThe implementer reports final runs of `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh` on the reviewed head, using isolated TMPDIR/HOME/XDG homes. Both exited 0 with explicit pass output. Script evidence covers supported dispositions, duplicate appearances, explicit linking, archive identity, unsupported and malformed records, missing external input, immutable-source conflicts, unknown coverage, no-jq behavior, Node unavailability and unavailable artifacts. Contract evidence includes live-tree success and each mutation rejection. This is plausible, targeted evidence; no reported failure is glossed over. Test hygiene reports no surviving processes after completed runs. Per reviewer instructions, no tests were run here.\n\nTest-change commands run from the task worktree (RANGE = `0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74..ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b`):\n\n```sh\ngit diff --stat RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\nBoth succeeded. Changes are 126 insertions and 3 replacements across four test/fixture files; replaced lint lines explicitly union approved additions with the unchanged baseline. No test was deleted, skipped or loosened. A separate `git diff --exit-code RANGE -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` succeeded with no output.\n\n",
+      "bodyRawText": "\nThe implementer reports final runs of `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh` on the reviewed head, using isolated TMPDIR/HOME/XDG homes. Both exited 0 with explicit pass output. Script evidence covers supported dispositions, duplicate appearances, explicit linking, archive identity, unsupported and malformed records, missing external input, immutable-source conflicts, unknown coverage, no-jq behavior, Node unavailability and unavailable artifacts. Contract evidence includes live-tree success and each mutation rejection. This is plausible, targeted evidence; no reported failure is glossed over. Test hygiene reports no surviving processes after completed runs. Per reviewer instructions, no tests were run here.\n\nTest-change commands run from the task worktree (RANGE = `0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74..ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b`):\n\n```sh\ngit diff --stat RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\nBoth succeeded. Changes are 126 insertions and 3 replacements across four test/fixture files; replaced lint lines explicitly union approved additions with the unchanged baseline. No test was deleted, skipped or loosened. A separate `git diff --exit-code RANGE -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` succeeded with no output.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The implementer reports final runs of `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh` on the reviewed head, using isolated TMPDIR/HOME/XDG homes. Both exited 0 with explicit pass output. Script evidence covers supported dispositions, duplicate appearances, explicit linking, archive identity, unsupported and malformed records, missing external input, immutable-source conflicts, unknown coverage, no-jq behavior, Node unavailability and unavailable artifacts. Contract evidence includes live-tree success and each mutation rejection. This is plausible, targeted evidence; no reported failure is glossed over. Test hygiene reports no surviving processes after completed runs. Per reviewer instructions, no tests were run here.\n",
+          "text": "The implementer reports final runs of `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh` on the reviewed head, using isolated TMPDIR/HOME/XDG homes. Both exited 0 with explicit pass output. Script evidence covers supported dispositions, duplicate appearances, explicit linking, archive identity, unsupported and malformed records, missing external input, immutable-source conflicts, unknown coverage, no-jq behavior, Node unavailability and unavailable artifacts. Contract evidence includes live-tree success and each mutation rejection. This is plausible, targeted evidence; no reported failure is glossed over. Test hygiene reports no surviving processes after completed runs. Per reviewer instructions, no tests were run here.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 1495,
+          "byteEnd": 2264
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test-change commands run from the task worktree (RANGE = `0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74..ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b`):\n",
+          "text": "Test-change commands run from the task worktree (RANGE = `0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74..ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b`):",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2265,
+          "byteEnd": 2409
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ngit diff --stat RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n",
+          "text": "```sh\ngit diff --stat RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff RANGE -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 28,
+          "lineEnd": 31,
+          "byteStart": 2410,
+          "byteEnd": 2855
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both succeeded. Changes are 126 insertions and 3 replacements across four test/fixture files; replaced lint lines explicitly union approved additions with the unchanged baseline. No test was deleted, skipped or loosened. A separate `git diff --exit-code RANGE -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` succeeded with no output.\n",
+          "text": "Both succeeded. Changes are 126 insertions and 3 replacements across four test/fixture files; replaced lint lines explicitly union approved additions with the unchanged baseline. No test was deleted, skipped or loosened. A separate `git diff --exit-code RANGE -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` succeeded with no output.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 2856,
+          "byteEnd": 3285
+        }
+      ]
+    },
+    {
+      "section": "Focused checks and scope",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Focused checks and scope\n",
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Focused checks and scope"
+      ],
+      "lineStart": 35,
+      "lineEnd": 41,
+      "byteStart": 3286,
+      "byteEnd": 4419,
+      "bodyLineStart": 36,
+      "rawText": "## Focused checks and scope\n\nRisk: projection consumes a schema incompatible with its actual source producer. Checked the landed report-verdict complete-mode contract and kind/occurrence output; the new parser consumes that contract directly and tests call the actual producer.\n\nReachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.\n\nThe review package initially failed to write under sandbox restrictions. Re-running the same artifact-only operation with approved escalation succeeded; the complete immutable diff and requested test diffs were then read. No source, test, tracker or Herdr state was changed.\n",
+      "bodyRawText": "\nRisk: projection consumes a schema incompatible with its actual source producer. Checked the landed report-verdict complete-mode contract and kind/occurrence output; the new parser consumes that contract directly and tests call the actual producer.\n\nReachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.\n\nThe review package initially failed to write under sandbox restrictions. Re-running the same artifact-only operation with approved escalation succeeded; the complete immutable diff and requested test diffs were then read. No source, test, tracker or Herdr state was changed.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: projection consumes a schema incompatible with its actual source producer. Checked the landed report-verdict complete-mode contract and kind/occurrence output; the new parser consumes that contract directly and tests call the actual producer.\n",
+          "text": "Risk: projection consumes a schema incompatible with its actual source producer. Checked the landed report-verdict complete-mode contract and kind/occurrence output; the new parser consumes that contract directly and tests call the actual producer.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3315,
+          "byteEnd": 3564
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.\n",
+          "text": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 3565,
+          "byteEnd": 4143
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The review package initially failed to write under sandbox restrictions. Re-running the same artifact-only operation with approved escalation succeeded; the complete immutable diff and requested test diffs were then read. No source, test, tracker or Herdr state was changed.\n",
+          "text": "The review package initially failed to write under sandbox restrictions. Re-running the same artifact-only operation with approved escalation succeeded; the complete immutable diff and requested test diffs were then read. No source, test, tracker or Herdr state was changed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 41,
+          "lineEnd": 41,
+          "byteStart": 4144,
+          "byteEnd": 4419
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1430,
+      "byteEnd": 1446,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1446,
+      "byteEnd": 1463,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1463,
+      "byteEnd": 1476,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "section": "Focused checks and scope",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task 13 review — super-plan-ufz.8.4",
+        "Focused checks and scope"
+      ],
+      "positionInSection": 2,
+      "key": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.",
+      "text": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.",
+      "rawText": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.\n",
+      "lineStart": 39,
+      "lineEnd": 39,
+      "byteStart": 3565,
+      "byteEnd": 4143,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

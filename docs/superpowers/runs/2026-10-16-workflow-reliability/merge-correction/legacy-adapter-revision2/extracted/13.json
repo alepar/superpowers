@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+  "artifact": "legacy-report-adapters-r1/13-task-12-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001698",
+      "position": 1,
+      "key": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task.",
+      "text": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task."
+    }
+  ]
+}

@@ -1,0 +1,749 @@
+{
+  "version": 1,
+  "ordinal": 18,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+  "originalArtifact": "task-report-history-r1/raw/task-14-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-14-report.md",
+  "rawSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+  "rawByteCount": 24993,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 282,
+    "byteStart": 0,
+    "byteEnd": 24993,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/17",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/18-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status:IMPLEMENTED"
+    },
+    {
+      "line": 164,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/0",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        7840,
+        8114
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No full-epic sweep was run."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/1",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "span": [
+        8523,
+        9716
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed collector defects: absent mode, archive-only recovery, null settlement refusal, partial-null clean/lost findings, malformed status omitted, repaired completion globally deduped; contract-consumer instructions absent. One no-work failure was fixture interference, explicitly corrected, not production finding."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/2",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        10629,
+        12775
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Exit/collection/status boundaries: preserved inline occurrences, no empty-key acceptance, settled serial collector, no root-closing authority."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/3",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        13919,
+        14275
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Archived paired baseline is attributed to coordinator and does not establish new collector behavior."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/4",
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "span": [
+        14276,
+        14947
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Required fresh-agent post/integrated same-pack/live-isolation evaluation pending. Suggested two-resume scenario is a proposed test, not observed run."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/5",
+      "roles": [
+        "scope-concern",
+        "deferred-coverage"
+      ],
+      "span": [
+        14948,
+        15531
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Semantic support remains agent judgment; absent optional direct input cannot be inferred, known inputs must be declared; settlement and serial run.md writes required; acceptance/metrics/sweep outside scope."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/6",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        16071,
+        16518
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Producer direct package suffix mismatch reiterated in appended fix pass, repair claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/7",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "span": [
+        16519,
+        17344
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Archive and null/direct bundle regression coverage claimed, no disposition."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/17/interpretedPassages/8",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        24709,
+        24993
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Pending-behavior-eval Minor retained; post/integrated live-isolation/root acceptance/metrics parent-owned."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-18-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "No full-epic sweep was run.",
+      "lineStart": 107,
+      "lineEnd": 107,
+      "byteStart": 7840,
+      "byteEnd": 8114,
+      "rawText": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Tests",
+          "headingRaw": "## Tests\n",
+          "hierarchy": [
+            "Tests"
+          ],
+          "sectionByteStart": 3494,
+          "sectionByteEnd": 8115,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 4347
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "interpretation": "Observed collector defects: absent mode, archive-only recovery, null settlement refusal, partial-null clean/lost findings, malformed status omitted, repaired completion globally deduped; contract-consumer instructions absent. One no-work failure was fixture interference, explicitly corrected, not production finding.",
+      "lineStart": 113,
+      "lineEnd": 119,
+      "byteStart": 8523,
+      "byteEnd": 9716,
+      "rawText": "- scripts-red.log: 2 failures; --collect returned usage exit 2 instead of 0. The guarded archive/projection/status assertions were explicitly unmeasured until GREEN.\n- scripts-edge-red.log: archive-only resume returned 3 instead of 0. Its second no-work failure was fixture interference from a deliberately pending preceding case; the cases were reordered to test no-work independently, rather than weakening the expected outcome.\n- scripts-null-red.log: 1 failure; the actual null/no-work settlement was refused against its planned non-null launch path.\n- scripts-partial-null-red.log: 3 failures; contradictory null/no-work with a recoverable bundle returned 0, omitted source extraction and lost discoverable findings.\n- scripts-malformed-red.log: 1 failure; malformed complete-looking collection JSON was omitted from status instead of qualifying a gap.\n- scripts-repair-red.log: 1 failure; repaired archive completion was globally deduplicated against an older completion, leaving the latest record gapped.\n- contract-red.log: 1 failing suite with four live-tree errors: no I8 projection, no retained complete extraction, Remaining not using projection and no resume collection recovery.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "TDD evidence"
+          ],
+          "sectionByteStart": 8115,
+          "sectionByteEnd": 10292,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 409
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Exit/collection/status boundaries: preserved inline occurrences, no empty-key acceptance, settled serial collector, no root-closing authority.",
+      "lineStart": 133,
+      "lineEnd": 144,
+      "byteStart": 10629,
+      "byteEnd": 12775,
+      "rawText": "JSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n\nNew explicit preservation interface:\n\n```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n\nThe caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n\nOrdinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "Interface for downstream super-plan-ufz.6",
+          "headingRaw": "## Interface for downstream super-plan-ufz.6\n",
+          "hierarchy": [
+            "Interface for downstream super-plan-ufz.6"
+          ],
+          "sectionByteStart": 10292,
+          "sectionByteEnd": 12776,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 338
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "Archived paired baseline is attributed to coordinator and does not establish new collector behavior.",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 13919,
+      "byteEnd": 14275,
+      "rawText": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Concerns and coordinator evaluation",
+          "headingRaw": "## Concerns and coordinator evaluation\n",
+          "hierarchy": [
+            "Concerns and coordinator evaluation"
+          ],
+          "sectionByteStart": 13879,
+          "sectionByteEnd": 15532,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 41
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "interpretation": "Required fresh-agent post/integrated same-pack/live-isolation evaluation pending. Suggested two-resume scenario is a proposed test, not observed run.",
+      "lineStart": 158,
+      "lineEnd": 158,
+      "byteStart": 14276,
+      "byteEnd": 14947,
+      "rawText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Concerns and coordinator evaluation",
+          "headingRaw": "## Concerns and coordinator evaluation\n",
+          "hierarchy": [
+            "Concerns and coordinator evaluation"
+          ],
+          "sectionByteStart": 13879,
+          "sectionByteEnd": 15532,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 398
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "scope-concern",
+        "deferred-coverage"
+      ],
+      "interpretation": "Semantic support remains agent judgment; absent optional direct input cannot be inferred, known inputs must be declared; settlement and serial run.md writes required; acceptance/metrics/sweep outside scope.",
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 14948,
+      "byteEnd": 15531,
+      "rawText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Concerns and coordinator evaluation",
+          "headingRaw": "## Concerns and coordinator evaluation\n",
+          "hierarchy": [
+            "Concerns and coordinator evaluation"
+          ],
+          "sectionByteStart": 13879,
+          "sectionByteEnd": 15532,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 1070
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Producer direct package suffix mismatch reiterated in appended fix pass, repair claimed.",
+      "lineStart": 175,
+      "lineEnd": 175,
+      "byteStart": 16071,
+      "byteEnd": 16518,
+      "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Finding and narrow correction",
+          "headingRaw": "### Finding and narrow correction\n",
+          "hierarchy": [
+            "Fix pass",
+            "Finding and narrow correction"
+          ],
+          "sectionByteStart": 16036,
+          "sectionByteEnd": 17526,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 36
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "interpretation": "Archive and null/direct bundle regression coverage claimed, no disposition.",
+      "lineStart": 177,
+      "lineEnd": 177,
+      "byteStart": 16519,
+      "byteEnd": 17344,
+      "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Finding and narrow correction",
+          "headingRaw": "### Finding and narrow correction\n",
+          "hierarchy": [
+            "Fix pass",
+            "Finding and narrow correction"
+          ],
+          "sectionByteStart": 16036,
+          "sectionByteEnd": 17526,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 484
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-18-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Pending-behavior-eval Minor retained; post/integrated live-isolation/root acceptance/metrics parent-owned.",
+      "lineStart": 282,
+      "lineEnd": 282,
+      "byteStart": 24709,
+      "byteEnd": 24993,
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Fix-pass test hygiene and remaining evaluation",
+          "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+          "hierarchy": [
+            "Fix pass",
+            "Fix-pass test hygiene and remaining evaluation"
+          ],
+          "sectionByteStart": 23927,
+          "sectionByteEnd": 24993,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 783
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 7840,
+      "byteEnd": 8114,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/0"
+      ],
+      "interpretation": "No full-epic sweep was run.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10629,
+      "byteEnd": 12775,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/2"
+      ],
+      "interpretation": "Exit/collection/status boundaries: preserved inline occurrences, no empty-key acceptance, settled serial collector, no root-closing authority.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14276,
+      "byteEnd": 14583,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/4"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14948,
+      "byteEnd": 15531,
+      "roles": [
+        "scope-concern",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/5"
+      ],
+      "interpretation": "Semantic support remains agent judgment; absent optional direct input cannot be inferred, known inputs must be declared; settlement and serial run.md writes required; acceptance/metrics/sweep outside scope.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 24709,
+      "byteEnd": 24993,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/8"
+      ],
+      "interpretation": "Pending-behavior-eval Minor retained; post/integrated live-isolation/root acceptance/metrics parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Central appended suffix defect and required eval captured, but observed historical collector regressions L113–119 should remain interpreted repair history; raw bytes alone are lossless but do not finish semantic extraction.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Absence of optional direct input cannot itself distinguish missing versus unnecessary; callers must declare known requirements. Baseline does not establish collector post behavior."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000007840",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 7840,
+      "rawByteEnd": 8114,
+      "rawLineStart": 107,
+      "rawLineEnd": 107,
+      "originalSections": [
+        {
+          "section": "Tests",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Tests\n",
+          "hierarchy": [
+            "Tests"
+          ],
+          "byteStart": 3494,
+          "byteEnd": 8115
+        }
+      ],
+      "rawText": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/0"
+      ],
+      "interpretation": "No full-epic sweep was run."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-5/raw-byte-000010629",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 10629,
+      "rawByteEnd": 12775,
+      "rawLineStart": 133,
+      "rawLineEnd": 144,
+      "originalSections": [
+        {
+          "section": "Interface for downstream super-plan-ufz.6",
+          "sectionOrdinal": 5,
+          "headingRaw": "## Interface for downstream super-plan-ufz.6\n",
+          "hierarchy": [
+            "Interface for downstream super-plan-ufz.6"
+          ],
+          "byteStart": 10292,
+          "byteEnd": 12776
+        }
+      ],
+      "rawText": "JSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n\nNew explicit preservation interface:\n\n```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n\nThe caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n\nOrdinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "JSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n\nNew explicit preservation interface:\n\n```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n\nThe caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n\nOrdinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/2"
+      ],
+      "interpretation": "Exit/collection/status boundaries: preserved inline occurrences, no empty-key acceptance, settled serial collector, no root-closing authority."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014276",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 14276,
+      "rawByteEnd": 14583,
+      "rawLineStart": 158,
+      "rawLineEnd": 158,
+      "originalSections": [
+        {
+          "section": "Concerns and coordinator evaluation",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Concerns and coordinator evaluation\n",
+          "hierarchy": [
+            "Concerns and coordinator evaluation"
+          ],
+          "byteStart": 13879,
+          "byteEnd": 15532
+        }
+      ],
+      "rawText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification.",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/4"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014948",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "scope-concern",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 14948,
+      "rawByteEnd": 15531,
+      "rawLineStart": 160,
+      "rawLineEnd": 160,
+      "originalSections": [
+        {
+          "section": "Concerns and coordinator evaluation",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Concerns and coordinator evaluation\n",
+          "hierarchy": [
+            "Concerns and coordinator evaluation"
+          ],
+          "byteStart": 13879,
+          "byteEnd": 15532
+        }
+      ],
+      "rawText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/5"
+      ],
+      "interpretation": "Semantic support remains agent judgment; absent optional direct input cannot be inferred, known inputs must be declared; settlement and serial run.md writes required; acceptance/metrics/sweep outside scope."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000024709",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 24709,
+      "rawByteEnd": 24993,
+      "rawLineStart": 282,
+      "rawLineEnd": 282,
+      "originalSections": [
+        {
+          "section": "Fix-pass test hygiene and remaining evaluation",
+          "sectionOrdinal": 12,
+          "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+          "hierarchy": [
+            "Fix pass",
+            "Fix-pass test hygiene and remaining evaluation"
+          ],
+          "byteStart": 23927,
+          "byteEnd": 24993
+        }
+      ],
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/17/interpretedPassages/8"
+      ],
+      "interpretation": "Pending-behavior-eval Minor retained; post/integrated live-isolation/root acceptance/metrics parent-owned."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/18-task-14-report.md",
+  "retainedSha256": "82aeb2d5447f0730d8eff2ebd9fa096d3c6a03ac74518572e8b6604cd080f6fb"
+}

@@ -1,0 +1,78 @@
+{
+  "inspectionFreeze": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "sourceRunSha256": "b466fd6810673fce663552bed897b68b8f40f4d81ca58014b658f6d5f6099380",
+  "sourceRunUnchanged": true,
+  "priorProposalFilesUnchanged": true,
+  "registrationReceipt": {
+    "kind": "retained-scope-and-execution-receipt",
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/history-registration-receipt.json",
+    "sha256": "5456d1401f1c280cf728f6dc62cf48a7b5983271974a63b53fa47656758b1299",
+    "retained": "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/history-registration.json",
+    "limits": "Read existing source/receipt; no new execution or source rebinding inferred."
+  },
+  "projection": {
+    "recordedOccurrences": 486,
+    "recordedGroups": 469,
+    "structuralGaps": 0,
+    "notAcceptance": true
+  },
+  "newExactRefs": 213,
+  "strictOriginalRefs": 24,
+  "interpretedRefs": 189,
+  "oldRequiredGroups": 26,
+  "candidateUpdateRecords": 239,
+  "newRelevanceCounts": {
+    "required": 134,
+    "nonblocking": 79
+  },
+  "oldRequiredRemainsRequired": 26,
+  "supplements": 29,
+  "sourceGaps": 35,
+  "unknownOriginalVerdicts": 5,
+  "recordsMatchCurrentRegisteredExtraction": true,
+  "allCandidateRefsExistInRecordedProjection": true,
+  "requiredNamesExistInActualSnapshot": true,
+  "actualDeclaredInputs": [
+    "roast-design: 2026-10-16-workflow-reliability-roast-design-1.md",
+    "roast-code: 2026-10-16-workflow-reliability-roast-pr-1.md, 2026-10-16-workflow-reliability-roast-pr-2.md, 2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md"
+  ],
+  "actualSourceCorrespondenceRecords": [
+    {
+      "version": 1,
+      "artifact": "2026-10-16-workflow-reliability-roast-pr-1.md",
+      "sha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+      "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+      "retainedArtifact": "legacy-report-adapters-r1/74-2026-10-16-workflow-reliability-roast-pr-1.md",
+      "retainedSha256": "820f1185bc6dd01411b4f0f99674e1c087495f355c1df393d7267d2384f55c7c",
+      "basis": "Parent reviewed independent full raw interpretation, initial fidelity failure and clean scoped correction review: this exact original roast has a strict none-marker/prose format failure; complete reversible interpreted extraction preserves original compact kind/verdict and every qualified source appearance. This associates transport only, not finding identity or resolution.",
+      "evidence": [
+        "merge-correction/legacy-adapter-revision2/reversible-manifest.json",
+        "merge-correction/legacy-adapter-initial-review.md",
+        "merge-correction/legacy-adapter-correction-round-1-rereview.md",
+        "merge-correction/source-interpretation/part-3-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "Blocking (7 confirmed)",
+        "limitations": [
+          "Original recognizable roast marker copied exactly; not a new historical outcome.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "Pure contextual/example/repair-only passages remain metadata; explicit mixed finding/repair assertions retain both roles without supported disposition."
+        ]
+      },
+      "judgment": "supported"
+    }
+  ],
+  "sourceCorrespondenceLimit": "Only the actual declared original roast correspondence is retained; registering79 representations grants no blanket original-source correspondence, finding identity or historical outcome normalization.",
+  "limits": {
+    "testsExecuted": false,
+    "canonicalWrites": false,
+    "dispositionsApplied": false,
+    "identityLinksApplied": false,
+    "productWrites": false,
+    "trackerHerdrWrites": false,
+    "subagents": false,
+    "finalAcceptanceEstablished": false
+  }
+}

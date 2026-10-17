@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+  "artifact": "legacy-report-adapters-r1/53-task-29-report.md",
+  "kind": "task-report",
+  "verdict": "NEEDS_CONTEXT",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000074",
+      "position": 1,
+      "key": "IMPLEMENTED; completionKind: implementation. Independent acceptance remains with the caller.",
+      "text": "IMPLEMENTED; completionKind: implementation. Independent acceptance remains with the caller."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+      "position": 1,
+      "key": "The independent fresh-agent instruction evaluation is pending, as are independent review,",
+      "text": "The independent fresh-agent instruction evaluation is pending, as are independent review,\ncaller-owned final integrated sweep, root acceptance and reserved human choices. The fixture's\nlive Git/helper behavior and simulated decision table do not substitute for those obligations.\ninstruction-evaluation.md retains five combined-pressure cases, before/after contract analysis,\na no-new-guidance baseline, and the separate fresh-sample protocol. No model repetitions or\nagent rationalizations were fabricated. Native process verification here is macOS; Linux native\nprocess discovery/termination was not measured. No release, root closure or deployment is claimed."
+    }
+  ]
+}

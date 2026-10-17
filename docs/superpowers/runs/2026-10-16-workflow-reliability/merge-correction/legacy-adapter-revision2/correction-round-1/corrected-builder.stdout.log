@@ -1,0 +1,22 @@
+{
+  "sources": 79,
+  "counts": {
+    "pending-obligation": 86,
+    "interpretedAdapters": 74,
+    "historical-defect-assertion": 24,
+    "scope-or-coverage-qualification": 45,
+    "scopedEmptyAdapters": 7,
+    "review-finding": 24,
+    "structured-finding-appearance": 4,
+    "structured-pending-obligation-appearance": 2,
+    "structured-concern-appearance": 2,
+    "historically-rejected-claim": 2,
+    "strictSources": 5,
+    "strictOccurrences": 24
+  },
+  "supportedCorrespondenceProposals": 69,
+  "unsupportedCorrespondenceGaps": 5,
+  "supplementalQualifications": 29,
+  "namedSourceGaps": 35,
+  "canonicalWrites": 0
+}

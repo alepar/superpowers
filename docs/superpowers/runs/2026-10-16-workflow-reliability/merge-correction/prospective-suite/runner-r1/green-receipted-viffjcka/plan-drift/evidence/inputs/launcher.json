@@ -1,0 +1,38 @@
+{
+  "actualArgv": [
+    "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "-I",
+    "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+    "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/plan.json"
+  ],
+  "entryArgv": [
+    "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+    "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/plan-drift/plan.json"
+  ],
+  "environment": {
+    "CI": "1",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka",
+    "TZ": "UTC",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0"
+  },
+  "initialStartupLimitation": "Invoke initially with -I; pre-bootstrap code is outside this runner boundary.",
+  "python": {
+    "bytes": 34640,
+    "name": "python",
+    "path": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "sha256": "87d4df53fd91304be5bac391fb204643c36b7df2023c04a0953bcbc7d4fdf634",
+    "versionArgv": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "Python 3.14.7\n"
+  },
+  "runtimeFlags": "sys.flags(debug=0, inspect=0, interactive=0, optimize=0, dont_write_bytecode=0, no_user_site=1, no_site=0, ignore_environment=1, verbose=0, bytes_warning=0, quiet=0, hash_randomization=1, isolated=1, dev_mode=False, utf8_mode=1, warn_default_encoding=0, safe_path=True, int_max_str_digits=4300)",
+  "runtimeVersion": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+}

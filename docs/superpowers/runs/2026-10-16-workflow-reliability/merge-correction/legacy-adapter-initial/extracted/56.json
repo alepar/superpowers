@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-3-review-seam",
+  "artifact": "legacy-report-adapters-r1/56-task-3-review-seam.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000002967",
+      "position": 1,
+      "key": "\"testsRun\": \"None, as instructed. Static seam review only; no source or branch mutations.\",",
+      "text": "\"testsRun\": \"None, as instructed. Static seam review only; no source or branch mutations.\","
+    }
+  ]
+}

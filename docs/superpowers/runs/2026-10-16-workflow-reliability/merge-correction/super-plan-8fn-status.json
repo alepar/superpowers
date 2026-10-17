@@ -1,0 +1,23 @@
+[
+  {
+    "id": "super-plan-8fn",
+    "title": "Resolve task super-plan-ufz.6 integration rebase conflict",
+    "description": "Task super-plan-ufz.6 failed its integration rebase onto super-auto/workflow-reliability. Failed-attempt merge-base: 8ed4be9e1a63c0d52273dd2772e65097c43b7797. Integration tip at dispatch: 549545dd. Conflicted file: skills/super-auto/SKILL.md while applying 1a1360fb (fix: preserve caller-owned super-auto root acceptance). Rebase was aborted without inline resolution, as requested by the coordinator. A fresh agent must resolve the conflict while preserving corrected parent collector and metrics, then repeat review and merge dispatch. No tests ran and no task or review bead was closed.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T08:09:58Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-17T08:18:50Z",
+    "closed_at": "2026-10-17T08:18:50Z",
+    "close_reason": "resolved: task super-plan-ufz.6 merged",
+    "labels": [
+      "blocker"
+    ],
+    "dependent_count": 0,
+    "dependency_count": 0,
+    "comment_count": 0,
+    "revision": "5066698844295241962"
+  }
+]

@@ -1,0 +1,25 @@
+Status: CLEAN
+
+{
+  "id": "super-plan-ufz.11",
+  "status": "CLEAN",
+  "finding": null,
+  "scope": [
+    "skills/super-code/coordinator-subagents.md",
+    "skills/super-code/coordinator-workflow.md"
+  ],
+  "reviewedHead": "226542c78c9b92d116ae599d93a83df9ba6fc332",
+  "base": "15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+  "evidence": [
+    "Sibling 0a58cc00 changes only the profiler paragraphs in these shared files. Both paragraphs survive unchanged in the task diff and final files: one profile per settled invocation, whole stdout appended once, qualified unavailable output retained, existing md/json copied without regeneration, observed/evidenced diagnostics rather than assumed waits.",
+    "Task additions preserve the exact process alias table and unknown/untagged exact-text identities, numeric/path distinctions, raw evidence/task/source provenance, case-insensitive tag lookup, and separation of recurrence counts from finding identity, severity, disposition and fix scope. These additions do not contradict the profiler contract."
+  ],
+  "testChanges": {
+    "commands": [
+      "git diff --stat 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+      "git diff 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'"
+    ],
+    "result": "Both commands exited 0. One changed test file: tests/super-code/replay-harness.mjs (135 insertions, 6 deletions). Added alias/identity/resume/provenance scenarios are independent of profiler guidance. Existing expected values changed for the documented compact recurrence transport (raw case, fingerprints/source pointers and retained untagged minor), and the template count decreases by one with an explicit reason. No deleted/skipped/loosened test or unjustified expectation change found. No tests executed in this seam-only review."
+  },
+  "diffPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.diff"
+}

@@ -1,0 +1,475 @@
+{
+  "version": 1,
+  "ordinal": 64,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+  "originalArtifact": "task-report-history-r1/raw/task-5-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-5-review.md",
+  "rawSha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+  "rawByteCount": 4536,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        43
+      ]
+    ],
+    "byteScope": [
+      0,
+      4536
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/9",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/64-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/0",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        791,
+        1131
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent behavior remains pending outside deterministic completion claim."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/1",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        1143,
+        1159
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical issues explicitly none."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/2",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        1159,
+        1176
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Important issues explicitly none."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/3",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        1176,
+        1630
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Minor test-process-cleanup with requested finally teardown and explicit missing-ps handling. CLEAN does not erase it."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/4",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        2116,
+        2525
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Simulated runtime and real CLI fixtures do not establish live multi-agent behavior; reviewer ran no tests."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/9/passages/5",
+      "roles": [
+        "supporting_finding_context"
+      ],
+      "span": [
+        3575,
+        3903
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Reviewer corroboration/severity rationale for line18, not a second finding."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Fresh-agent behavior remains pending outside deterministic completion claim.",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Spec compliance\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Spec compliance"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 12,
+      "lineEnd": 12,
+      "byteStart": 791,
+      "byteEnd": 1131,
+      "rawText": "Current requirements checked with `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; no amendments or comments. Parent-owned fresh-agent behavior evaluation remains pending, explicitly reported by the implementer; it is outside this task review's deterministic completion claim. No behavioral evaluation is claimed here.\n",
+      "canonicalAdapterSection": "Spec compliance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Critical issues explicitly none.",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Issues\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Issues"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 1143,
+      "byteEnd": 1159,
+      "rawText": "Critical: none.\n",
+      "canonicalAdapterSection": "Issues",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Important issues explicitly none.",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Issues\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Issues"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1159,
+      "byteEnd": 1176,
+      "rawText": "Important: none.\n",
+      "canonicalAdapterSection": "Issues",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Minor test-process-cleanup with requested finally teardown and explicit missing-ps handling. CLEAN does not erase it.",
+      "rawSection": "Issues",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Issues\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Issues"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1176,
+      "byteEnd": 1630,
+      "rawText": "Minor: [test-process-cleanup] tests/super-code/replay-harness.mjs:4019 — The implementer reports an initial sandbox-aborted replay left its detached `sleep 300` fixture alive until the authorized cleanup helper stopped it. This is a test-suite hygiene defect under the review rubric, though no process survived final cleanup. Ensure this fixture cleans up in a finally block even when process inspection fails, and handle missing ps stdout explicitly.\n",
+      "canonicalAdapterSection": "Issues",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Simulated runtime and real CLI fixtures do not establish live multi-agent behavior; reviewer ran no tests.",
+      "rawSection": "Test evidence",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## Test evidence\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Test evidence"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 2116,
+      "byteEnd": 2525,
+      "rawText": "Both use the report's explicit TMPDIR/HOME/XDG configuration. RED excerpts exercise the missing transport/schema/classifier and ordinary CLI contract; GREEN excerpts plausibly cover this task. Replay measures a simulated Workflow runtime; ordinary fixtures measure actual CLI execution against fixture replies. Neither is evidence of a live multi-agent behavior evaluation. No tests were rerun during review.\n",
+      "canonicalAdapterSection": "Test evidence",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "supporting_finding_context",
+      "interpretation": "Reviewer corroboration/severity rationale for line18, not a second finding.",
+      "rawSection": "Reachability and focused checks",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Reachability and focused checks\n",
+      "rawSectionHierarchy": [
+        "Review: super-plan-ufz.5",
+        "Reachability and focused checks"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 35,
+      "lineEnd": 35,
+      "byteStart": 3575,
+      "byteEnd": 3903,
+      "rawText": "Risk: the reported leaked process might remain alive or arise from task-added fixture changes. Checked the named fixture source at replay-harness.mjs:4015–4019 and the report's Test hygiene section: it is an existing detached child fixture, explicitly stopped, with final cleanup reported empty. This supports Minor severity.\n",
+      "canonicalAdapterSection": "Reachability and focused checks",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 791,
+      "byteEnd": 1131,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/0"
+      ],
+      "interpretation": "Fresh-agent behavior remains pending outside deterministic completion claim.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1176,
+      "byteEnd": 1630,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/3"
+      ],
+      "interpretation": "Minor test-process-cleanup with requested finally teardown and explicit missing-ps handling. CLEAN does not erase it.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 2116,
+      "byteEnd": 2525,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/4"
+      ],
+      "interpretation": "Simulated runtime and real CLI fixtures do not establish live multi-agent behavior; reviewer ran no tests.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000791",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawByteStart": 791,
+      "rawByteEnd": 1131,
+      "rawLineStart": 12,
+      "rawLineEnd": 12,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.5",
+            "Spec compliance"
+          ],
+          "byteStart": 168,
+          "byteEnd": 1132
+        }
+      ],
+      "rawText": "Current requirements checked with `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; no amendments or comments. Parent-owned fresh-agent behavior evaluation remains pending, explicitly reported by the implementer; it is outside this task review's deterministic completion claim. No behavioral evaluation is claimed here.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Current requirements checked with `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; no amendments or comments. Parent-owned fresh-agent behavior evaluation remains pending, explicitly reported by the implementer; it is outside this task review's deterministic completion claim. No behavioral evaluation is claimed here.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/0"
+      ],
+      "interpretation": "Fresh-agent behavior remains pending outside deterministic completion claim."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-3/raw-byte-000001176",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "rawByteStart": 1176,
+      "rawByteEnd": 1630,
+      "rawLineStart": 18,
+      "rawLineEnd": 18,
+      "originalSections": [
+        {
+          "section": "Issues",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.5",
+            "Issues"
+          ],
+          "byteStart": 1132,
+          "byteEnd": 1631
+        }
+      ],
+      "rawText": "Minor: [test-process-cleanup] tests/super-code/replay-harness.mjs:4019 — The implementer reports an initial sandbox-aborted replay left its detached `sleep 300` fixture alive until the authorized cleanup helper stopped it. This is a test-suite hygiene defect under the review rubric, though no process survived final cleanup. Ensure this fixture cleans up in a finally block even when process inspection fails, and handle missing ps stdout explicitly.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Minor: [test-process-cleanup] tests/super-code/replay-harness.mjs:4019 — The implementer reports an initial sandbox-aborted replay left its detached `sleep 300` fixture alive until the authorized cleanup helper stopped it. This is a test-suite hygiene defect under the review rubric, though no process survived final cleanup. Ensure this fixture cleans up in a finally block even when process inspection fails, and handle missing ps stdout explicitly.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/3"
+      ],
+      "interpretation": "Minor test-process-cleanup with requested finally teardown and explicit missing-ps handling. CLEAN does not erase it."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000002116",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage_limit"
+      ],
+      "rawByteStart": 2116,
+      "rawByteEnd": 2525,
+      "rawLineStart": 27,
+      "rawLineEnd": 27,
+      "originalSections": [
+        {
+          "section": "Test evidence",
+          "sectionOrdinal": 4,
+          "headingRaw": "## Test evidence\n",
+          "hierarchy": [
+            "Review: super-plan-ufz.5",
+            "Test evidence"
+          ],
+          "byteStart": 1631,
+          "byteEnd": 2964
+        }
+      ],
+      "rawText": "Both use the report's explicit TMPDIR/HOME/XDG configuration. RED excerpts exercise the missing transport/schema/classifier and ordinary CLI contract; GREEN excerpts plausibly cover this task. Replay measures a simulated Workflow runtime; ordinary fixtures measure actual CLI execution against fixture replies. Neither is evidence of a live multi-agent behavior evaluation. No tests were rerun during review.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Both use the report's explicit TMPDIR/HOME/XDG configuration. RED excerpts exercise the missing transport/schema/classifier and ordinary CLI contract; GREEN excerpts plausibly cover this task. Replay measures a simulated Workflow runtime; ordinary fixtures measure actual CLI execution against fixture replies. Neither is evidence of a live multi-agent behavior evaluation. No tests were rerun during review.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/9/passages/4"
+      ],
+      "interpretation": "Simulated runtime and real CLI fixtures do not establish live multi-agent behavior; reviewer ran no tests."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/64-task-5-review.md",
+  "retainedSha256": "74d187dc7868f30518d9d98744a960bb5c1ea68dd258d6dc08bb7f5cbc606440"
+}

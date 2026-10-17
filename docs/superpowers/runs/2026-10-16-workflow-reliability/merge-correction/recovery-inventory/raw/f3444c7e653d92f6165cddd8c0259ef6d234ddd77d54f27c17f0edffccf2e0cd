@@ -1,0 +1,27 @@
+[
+  {
+    "path": "retained-task-evidence/super-plan-ufz.27/archive-integrity.log",
+    "sha256": "020935e1322f814e6ed79cf630f8d2910baa809d2ce782b230bde6f978ec781c",
+    "bytes": 1314
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.27/green.log",
+    "sha256": "ad5a9a5d98eb6b0d29519ba56b3ea639cb4087beb2ec183ae6099cd11d97530e",
+    "bytes": 1531
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.27/red.log",
+    "sha256": "ce8314b158102930cd52ff3d4571b7d4d2b5fbee052d5456da0ed4df1ec14cd1",
+    "bytes": 2360
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.27/source-capture.txt",
+    "sha256": "33a0b8eb3a65ac26ea5694759cb9db89b5599d658266142c2d20d9f43bd114b8",
+    "bytes": 1921
+  },
+  {
+    "path": "retained-task-evidence/super-plan-ufz.27/test-scripts.log",
+    "sha256": "9f4b7b113ccc353832f67364d6ef7c685899204c36e9bd247249239b897705a5",
+    "bytes": 9860
+  }
+]

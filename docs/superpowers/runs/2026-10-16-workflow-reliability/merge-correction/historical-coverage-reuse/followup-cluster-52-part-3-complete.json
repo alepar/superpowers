@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "source": "612ea0a7/cluster52/part3",
+  "artifact": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.md",
+  "kind": "final-review",
+  "verdict": "Ready for this bounded historical evidence review only; no new must-fix is established by the assigned evidence, and landing readiness is not assessed.",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "This is one historical partition of former cluster 52. Parts 1, 2, 4, and 5, duplicate-name cluster 9, current product behavior, root acceptance, live behavior, and whole-epic or current landing readiness remain outside scope. No missing earlier-reviewer coverage was inferred.",
+      "text": "This is one historical partition of former cluster 52. Parts 1, 2, 4, and 5, duplicate-name cluster 9, current product behavior, root acceptance, live behavior, and whole-epic or current landing readiness remain outside scope. No missing earlier-reviewer coverage was inferred."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "The complete relationship among initial, pre-rebase, corrected-pre-rebase, and final executions is not established by this partition. Initial command failures and the pre-rebase replay failure remain historical failures; a later passing log from another phase cannot silently replace them. Corrected/final logs, phase summaries, baseline-red/package evidence, and evaluations assigned elsewhere were not reviewed here.",
+      "text": "The complete relationship among initial, pre-rebase, corrected-pre-rebase, and final executions is not established by this partition. Initial command failures and the pre-rebase replay failure remain historical failures; a later passing log from another phase cannot silently replace them. Corrected/final logs, phase summaries, baseline-red/package evidence, and evaluations assigned elsewhere were not reviewed here."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "`source-delta-for-refresh.json` establishes two valid digest changes but does not independently establish a complete refresh baseline. Initial/final measured maps differ in four paths, and committed endpoints differ in five paths. Selective-refresh sufficiency requires a named measured comparator and reconciliation with the other phase evidence; this report does not treat the two-entry delta as a complete initial/final or committed-HEAD delta.",
+      "text": "`source-delta-for-refresh.json` establishes two valid digest changes but does not independently establish a complete refresh baseline. Initial/final measured maps differ in four paths, and committed endpoints differ in five paths. Selective-refresh sufficiency requires a named measured comparator and reconciliation with the other phase evidence; this report does not treat the two-entry delta as a complete initial/final or committed-HEAD delta."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "Replay pass labels and prompt/parser assertions establish their captured fixture outcomes only. They do not establish real live check execution, actual agent compliance, actual process signaling/termination, denied-host introspection behavior, installation success, or source-bound evaluation coverage. Empty hygiene logs carry no diagnostic content; the pre-rebase failure's source-truncated diagnostic limits root-cause reconstruction.",
+      "text": "Replay pass labels and prompt/parser assertions establish their captured fixture outcomes only. They do not establish real live check execution, actual agent compliance, actual process signaling/termination, denied-host introspection behavior, installation success, or source-bound evaluation coverage. Empty hygiene logs carry no diagnostic content; the pre-rebase failure's source-truncated diagnostic limits root-cause reconstruction."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "Source manifests cover 331 named `skills`/`tests` paths, not an independent full repository/environment inventory. Initial hashes include declared working-tree modifications. Matching final digests binds this measured population to the frozen head but does not prove source stability throughout each execution, cross-partition command-result correspondence, or all environmental/configuration identities.",
+      "text": "Source manifests cover 331 named `skills`/`tests` paths, not an independent full repository/environment inventory. Initial hashes include declared working-tree modifications. Matching final digests binds this measured population to the frozen head but does not prove source stability throughout each execution, cross-partition command-result correspondence, or all environmental/configuration identities."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "Preserve the failing pre-rebase replay and the initial nonzero command results as historical evidence. Their presence is consistent with retaining failed attempts rather than replacing them with later success; no fresh product defect or still-unresolved current failure can be inferred from this partition alone.",
+      "text": "Preserve the failing pre-rebase replay and the initial nonzero command results as historical evidence. Their presence is consistent with retaining failed attempts rather than replacing them with later success; no fresh product defect or still-unresolved current failure can be inferred from this partition alone."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "Preserve the explicit simulation, fake-signal, unknown/unavailable, caller-owned measurement, cleanup, and source-identity qualifications in the replay evidence. Passing fixture assertions for those qualifications do not discharge the real-world obligations they describe.",
+      "text": "Preserve the explicit simulation, fake-signal, unknown/unavailable, caller-owned measurement, cleanup, and source-identity qualifications in the replay evidence. Passing fixture assertions for those qualifications do not discharge the real-world obligations they describe."
+    }
+  ]
+}

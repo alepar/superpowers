@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Task19 finding and full bounded amendment",
+    "refs": [
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+        "section": "Findings — adapter/structured-finding-appearance/raw-section-7/raw-byte-000011561/json-pointer-/finding",
+        "position": 1,
+        "key": "tests/super-code/replay-harness.mjs:594: Important / Missing — Implement the recorded bounded fixture amendment. The pinned range leaves lines 594–610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance.",
+        "text": "tests/super-code/replay-harness.mjs:594: Important / Missing — Implement the recorded bounded fixture amendment. The pinned range leaves lines 594–610 unchanged: a deleted foreign-ledger pointer still expects implementation/review reentry, and the required recovered-basis, genuinely missing-basis, unrecoverable-pointer and supplied-foreign-payload ownership cases are absent. Preserve the real cap assertion; add the three semantically separate replays and foreign-source rejection using the current bead requirements, then rerun all three named commands on the resulting source and retain complete source-bound outcomes. The current replay result is 2294 passed / 1 failed and cannot satisfy acceptance."
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+        "section": "Findings — adapter/review-finding/raw-section-3/raw-byte-000001511",
+        "position": 1,
+        "key": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.",
+        "text": "Important / Missing — tests/super-code/replay-harness.mjs:594. The legacy fixture at 594–610 remains unchanged and deletes its foreign temporary ledger after producing only capped transport. Line 610 expects ready independent-review reentry despite the unresolved Recovery pointer. This is exactly the recorded test defect. The required recovered pending-closure reuse, valid missing-basis reentry, unrecoverable-pointer ready admission hold and foreign-source supplied-payload rejection are not added by the pinned diff. Their absence leaves amended acceptance unimplemented and the required replay suite failing.\n\nRequired bounded fix:\n\n  - Preserve line 603's real helper assertion: actual source-line pointer, typed verification-only Task discriminator, and no evidence/live.log in compact transport.\n  - Add a recovered pending-closure case using a configured integrationWorktree's actual ledger. Generate compact and complete counted `--recovery-line 1` output while that ledger exists; provide the exact pointer source/line through the existing read-ledger recoveryRecords. Preserve the entire original oversized pending-closure record, evidence and additive fields. Assert the existing reader prompt targets that ledger/line and adds no read-recovery dispatch. Supply exact retained source/tracker observations (`sourceVerified: true`, `landed: false`, `closed: []`, `open: ['bd-101']` only if that is the exact required bead set). Assert resume-check precedes closure, impl/review/merge are zero, close-only is one, completed requires confirmed closure, evidence/source identity survives, and the resolved transport gap disappears. Retain negative pending-closure source/tracker cases.\n  - Separately use a valid counted ledger containing only `Task 1 (bd-101): complete, verification-only` for fresh missing-basis reentry, with no unresolved pointer or surviving basis. Preserve original live evidence and requiredLiveChecks in fresh impl/review responses. Assert impl/review are one, merge zero, confirmed close-only closure, completion only afterward, and durable new reviewed basis before closure. Retain the not-ready missing-basis gap assertion without inferred completion.\n  - Add ready replay of the original deleted foreign-source capped text with no recoveryRecords. Assert impl/review/merge/close-only are zero, completed excludes bd-101, stopReason is recovery-held, and recovery.gaps retains exact unresolved source/line. Do not infer unrelated scope. Add supplied-foreign-source recoveryRecords coverage proving ownership cannot be bypassed, while retaining the current-ledger missing/truncated/empty/malformed cases.\n  - Run exactly the three required commands on the fixed task source, record revision/diff and complete results, and require all assertions to pass. Do not alter unrelated replay assertions, snapshot baselines, digest tests, schema, specs or historical evidence, or add a recovery-reader dispatch."
+      }
+    ],
+    "sameOriginalReport": true,
+    "status": "candidate rendition relation only; parent raw-block/full-item judgment required",
+    "basis": "Original structured /finding or /minors field describes the same named task and concrete scenario within this one raw report. Exact raw byte ranges/JSON pointer and prose full item remain distinct; neither matching keys nor byte equality supplies identity.",
+    "requiredEvidence": [
+      "pinned-input/metadata/32-interpretation.json",
+      "pinned-input/metadata/32-interpretation.json",
+      "pinned-input/raw/task-report-history-r1/raw/task-19-review.md"
+    ],
+    "linkApplied": false,
+    "dispositionInherited": false
+  },
+  {
+    "name": "Task20 builder/startup finding",
+    "refs": [
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Findings — adapter/structured-finding-appearance/raw-section-10/raw-byte-000009133/json-pointer-/finding",
+        "position": 1,
+        "key": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+        "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix."
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Findings — adapter/review-finding/raw-section-5/raw-byte-000001611",
+        "position": 1,
+        "key": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+        "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n\nThe report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity."
+      }
+    ],
+    "sameOriginalReport": true,
+    "status": "candidate rendition relation only; parent raw-block/full-item judgment required",
+    "basis": "Original structured /finding or /minors field describes the same named task and concrete scenario within this one raw report. Exact raw byte ranges/JSON pointer and prose full item remain distinct; neither matching keys nor byte equality supplies identity.",
+    "requiredEvidence": [
+      "pinned-input/metadata/37-interpretation.json",
+      "pinned-input/metadata/37-interpretation.json",
+      "pinned-input/raw/task-report-history-r1/raw/task-20-review.md"
+    ],
+    "linkApplied": false,
+    "dispositionInherited": false
+  },
+  {
+    "name": "Task20 pending changed-instruction evaluation",
+    "refs": [
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Findings — adapter/structured-finding-appearance/raw-section-10/raw-byte-000010054/json-pointer-/minors/0",
+        "position": 1,
+        "key": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+        "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker."
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "section": "Findings — adapter/review-finding/raw-section-6/raw-byte-000003198",
+        "position": 1,
+        "key": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+        "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker."
+      }
+    ],
+    "sameOriginalReport": true,
+    "status": "candidate rendition relation only; parent raw-block/full-item judgment required",
+    "basis": "Original structured /finding or /minors field describes the same named task and concrete scenario within this one raw report. Exact raw byte ranges/JSON pointer and prose full item remain distinct; neither matching keys nor byte equality supplies identity.",
+    "requiredEvidence": [
+      "pinned-input/metadata/37-interpretation.json",
+      "pinned-input/metadata/37-interpretation.json",
+      "pinned-input/raw/task-report-history-r1/raw/task-20-review.md"
+    ],
+    "linkApplied": false,
+    "dispositionInherited": false
+  },
+  {
+    "name": "Task29 deferred instruction evaluation",
+    "refs": [
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Findings — adapter/structured-finding-appearance/raw-section-12/raw-byte-000009729/json-pointer-/minors/0",
+        "position": 1,
+        "key": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+        "text": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it."
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Findings — adapter/review-finding/raw-section-7/raw-byte-000003942",
+        "position": 1,
+        "key": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.",
+        "text": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results."
+      }
+    ],
+    "sameOriginalReport": true,
+    "status": "candidate rendition relation only; parent raw-block/full-item judgment required",
+    "basis": "Original structured /finding or /minors field describes the same named task and concrete scenario within this one raw report. Exact raw byte ranges/JSON pointer and prose full item remain distinct; neither matching keys nor byte equality supplies identity.",
+    "requiredEvidence": [
+      "pinned-input/metadata/54-interpretation.json",
+      "pinned-input/metadata/54-interpretation.json",
+      "pinned-input/raw/task-report-history-r1/raw/task-29-review.md"
+    ],
+    "linkApplied": false,
+    "dispositionInherited": false
+  }
+]

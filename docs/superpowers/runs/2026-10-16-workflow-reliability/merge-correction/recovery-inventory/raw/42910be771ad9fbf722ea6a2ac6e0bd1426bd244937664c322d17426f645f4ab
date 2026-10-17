@@ -1,0 +1,10 @@
+[
+  {
+    "claim": "The default invocation-id generator aborts Workflow launches that omit invocationId because the deterministic Workflow runtime forbids Date.now() and Math.random().",
+    "location": "skills/super-code/coordinator.js:25",
+    "category": "concurrency-async",
+    "external": true,
+    "kind": "ISSUE",
+    "evidence": "Introduced in head ff2f79f62cc34084c8df20edc5c2e4f201a5d630: the invocationId fallback evaluates Date.now() and Math.random() before the first log or dispatch; base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 has neither reference. coordinator-workflow.md:71-73 explicitly permits omission ('The script mints one when omitted'), including standalone callers, and its documented dryRun args omit this field. Independently inspected the installed Claude Code 2.1.302 executable at /Users/alepar/.local/share/claude/versions/2.1.302: its Workflow VM installs throwing Date.now/Math.random shims, and its inline-script validator walks the whole AST and rejects these member references with errorCode 4. Exact extracted checker/validation/shim and executable identity are retained in /tmp/ufz-pr1/evidence-concurrency-async/runtime-receipt.txt and runtime-identity.json. Focused frozen-base/head startup reproduction: node /tmp/ufz-pr1/evidence-concurrency-async/repro-runtime.mjs executes the actual startup source under a VM with those throwing hooks; base reaches the startup log without error, head throws 'Date.now() / new Date() are unavailable in workflow scripts (breaks resume)' before logging. Result: /tmp/ufz-pr1/evidence-concurrency-async/repro-runtime-result.json. This is a bounded runtime-contract reproduction, not a live agent invocation. Passing invocationId avoids the fallback at execution, but inline launches still contain the banned AST references. The Node replay harness uses an unrestricted AsyncFunction, so it does not cover this Workflow restriction. Mint identities in the invoking session and keep the coordinator deterministic."
+  }
+]

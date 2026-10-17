@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "snapshot": "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction",
+  "controlScriptSha256": "8a216ddcbdaf0e715972052d1ce5141c2a5023b008e8e0a824b5d42a7a2cc997",
+  "passed": 7,
+  "failed": 18,
+  "results": [
+    {
+      "name": "F1/2/3014:3613",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/3/20452:21051",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/7/5758:6278",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/7/6279:6985",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/11/10301:10750",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/11/16157:17041",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/15/8564:8868",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/15/8869:9295",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/17/539:986",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/18/16071:16518",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/21/21569:21919",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/25/7247:7805",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F1/25/14138:15094",
+      "passed": false,
+      "detail": "Exactly one complete independently judged finding+repair appearance with explicit source-local assertion/repair qualification; no test-name inference or disposition."
+    },
+    {
+      "name": "F2/exact-population-qualification",
+      "passed": false,
+      "detail": "Select exact substantive paragraph, including task-report population limit; equality, not overlap."
+    },
+    {
+      "name": "F2/example-excluded",
+      "passed": false,
+      "detail": "Illustrative JSON [5358,5650) is not a registered occurrence."
+    },
+    {
+      "name": "F2/labelled-example-metadata",
+      "passed": false,
+      "detail": "Original label, exact JSON example and exact qualifier remain distinguished in metadata."
+    },
+    {
+      "name": "parent-structured-concern/43",
+      "passed": false,
+      "detail": "Exact JSON string/pointer/value, separate original-source appearance, full original block provenance and bounded representation ruling."
+    },
+    {
+      "name": "parent-structured-concern/49",
+      "passed": false,
+      "detail": "Exact JSON string/pointer/value, separate original-source appearance, full original block provenance and bounded representation ruling."
+    },
+    {
+      "name": "negative/pure-repair-example-context-not-promoted",
+      "passed": true,
+      "detail": "29 explicitly pure repair/example/context passages remain metadata."
+    },
+    {
+      "name": "invariant/strict24",
+      "passed": true,
+      "detail": "Exact original strict24 bytes unchanged."
+    },
+    {
+      "name": "invariant/strict-supplements",
+      "passed": true,
+      "detail": "All29 strict supplemental objects unchanged."
+    },
+    {
+      "name": "invariant/open-gaps",
+      "passed": true,
+      "detail": "All35 source gaps and four global categories remain open and unchanged."
+    },
+    {
+      "name": "invariant/105-reviewed-obligations-exact-text",
+      "passed": true,
+      "detail": "All105 original independently classified obligation passages and their open owner-mapping statuses survive; synthetic refs may change only through explicit correction mapping."
+    },
+    {
+      "name": "invariant/task16-blocker-obligation-text",
+      "passed": true,
+      "detail": "Original exact blocker text remains in the represented passage, independent of role/count regrouping; no closure/disposition inferred."
+    },
+    {
+      "name": "invariant/current73-records-and-run-hash",
+      "passed": true,
+      "detail": "All73 original finding-source registrations and original run.md hash remain exact."
+    }
+  ],
+  "limit": "These controls establish bounded corrected selections and invariants; fresh semantic review remains required."
+}

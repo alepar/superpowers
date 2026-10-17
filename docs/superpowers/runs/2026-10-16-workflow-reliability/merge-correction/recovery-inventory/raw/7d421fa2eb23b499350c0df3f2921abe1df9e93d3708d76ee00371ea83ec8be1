@@ -1,0 +1,123 @@
+round 1 only
+  [PASS] exit 0
+  [PASS] header line
+  [PASS] no triggers in round 1
+  [PASS] round 1 blocking line: nothing computable
+  [PASS] row carries the sha from the inputs line
+no-progress and its non-triggers
+  [PASS] every prior Blocking key re-confirmed fires no-progress (reports given out of order)
+  [PASS] blocking line from the delta
+  [PASS] same Blocking count with different keys: no trigger
+  [PASS] counts are equal yet nothing fires
+  [PASS] disputed key leaves prev; the other key still re-confirmed fires with count 1
+  [PASS] effective counts exclude the key only after its override round
+  [PASS] disputed key stays disputed after re-confirmation
+  [PASS] every prior Blocking key disputed: prev is empty, no no-progress
+recurrence: regressed Blocking and plausibility
+  [PASS] regressedB >= 1 with plausible counts fires recurrence
+  [PASS] counts shown when plausible
+  [PASS] implausible regressed count fires nothing (only key identity no-progress)
+  [PASS] carriedB+regressedB > prior: both counts -, not-computable=regressed
+recurrence: returned key
+  [PASS] a Blocking and a Should-fix key returned: one recurrence trigger
+  [PASS] key absent in r2 and back in r3
+  [PASS] key confirmed in r2 and absent from r3 is resolved@r3
+  [PASS] absent from a non-degraded round: resolved@r2
+  [PASS] a disputed returned key does not count toward recurrence
+degraded round
+  [PASS] no trigger across the degraded r2
+  [PASS] not-computable lists the skipped signals
+  [PASS] key missing from the degraded r2 and back in r3 is plain open, not returned
+  [PASS] key missing from a degraded latest round stays open
+  [PASS] degraded latest round: only no-progress is skipped (returned is a latest-vs-previous check on a non-degraded r1)
+punch list and overrides statuses
+  [PASS] punch-listed key (rN-prefixed line matched canonically)
+  [PASS] same key without a punch list is resolved@r2
+  [PASS] precedence scenario exits 0
+  [PASS] dissolved@r1 (rN-prefixed line) beaten by the r2 re-confirmation
+  [PASS] last override line for a key wins
+  [PASS] disputed is sticky across a re-confirmation
+  [PASS] dissolved stands when the key is not confirmed later
+  [PASS] r1 and r2 counts exclude disputed and dissolved keys only after their override round, include the re-confirmed one
+overrides count only after their round
+  [PASS] the deciding round's own count is not reduced by its override
+  [PASS] the next round compares against the unreduced baseline (no false breach)
+  [PASS] the override status still reads dissolved@r2
+ignored overrides
+  [PASS] unknown-key and dropped-report overrides: exit 0
+  [PASS] both lines counted
+  [PASS] the other override still applies
+  [PASS] ignored keys get no rows
+multi-location keys
+  [PASS] a '; ' key is carried verbatim and matched by an rN-prefixed override line
+  [PASS] the multi-location override was not ignored
+final-review keys
+  [PASS] final-review inputs accepted in the code loop
+  [PASS] open while in the latest final-review file (rN prefix stripped)
+  [PASS] final-review text points to the latest keys file holding it
+  [PASS] omitted from the latest file: resolved
+  [PASS] final-review rows never feed the triggers
+  [PASS] final-review rows are not counted as Blocking
+input presence
+  [PASS] an empty final-review file resolves nothing
+  [PASS] a clean 'review: ready' file resolves the key it no longer lists
+  [PASS] the review header is never a ledger row
+  [PASS] a 'review: none' file resolves nothing
+  [PASS] an unknown review header: exit 2
+  [PASS] bad review header named on stderr
+  [PASS] 'review: none' carrying keys: exit 2
+  [PASS] no round-2 final-review file: the key stays open
+  [PASS] an empty later file is not the frmax round: r3 still decides
+  [PASS] the same final-review round twice: exit 2
+  [PASS] duplicate final-review round named on stderr
+  [PASS] an override targets a final-review row
+  [PASS] the final-review override is not ignored
+  [PASS] a key first raised in a degraded round and re-confirmed is open, not returned
+  [PASS] no returned trigger for it
+  [PASS] [panel-capped: N unverified] marks the round degraded
+  [PASS] absence from a panel-capped round is neither returned nor resolved
+  [PASS] missing round N-1: nothing computable
+  [PASS] missing round N-1: no trigger
+  [PASS] a returned Nit is labelled returned
+  [PASS] a returned Nit never fires recurrence
+  [PASS] the latest existing punch list stays valid across a round that wrote none
+  [PASS] without a punch list the same key is resolved
+lastGood breach inputs
+  [PASS] better r3 with the @r2 overrides: r2 baseline unreduced, r3=2
+  [PASS] r3 fewer than r2: no breach
+  [PASS] worse r3 with the @r2 overrides: r3=5 against the unreduced r2=4
+  [PASS] r3 above r2: breach
+  [PASS] missing r2: r2=-
+  [PASS] r2 not computable: the item 3 test does not fire
+  [PASS] overrides do not decide the comparison: the same counts breach without them
+routing inputs
+  [PASS] cap round: no-progress first fires on round 3, comparing r3 with r2
+  [PASS] the same stuck pair one round earlier fires on round 2
+  [PASS] both triggers fire: no-progress then recurrence, as emitted
+  [PASS] progress between r2 and r3: no trigger
+  [PASS] none fired and regressed skipped (r3 carries no delta line): not-computable names it
+text pointers
+  [PASS] a re-confirmed key points to the latest confirming report
+  [PASS] a key not in r2 points to the report that last confirmed it
+missing delta line
+  [PASS] a missing delta line is not an error
+  [PASS] counts - and not-computable=regressed
+  [PASS] key-identity no-progress still computed
+exit 2 on bad input
+  [PASS] missing report: exit 2
+  [PASS] missing report path named on stderr
+  [PASS] unreadable overrides: exit 2
+  [PASS] overrides path named on stderr
+  [PASS] step-back file as a report (report-verdict --keys exit 3): exit 2
+  [PASS] step-back path named on stderr
+  [PASS] design loop rejects --final-review
+  [PASS] no --report: exit 2
+  [PASS] non-numeric round: exit 2
+  [PASS] the same round twice: exit 2
+design loop and idempotence
+  [PASS] design loop header
+  [PASS] a second run produces an identical file
+runs with only bash and the core tools on PATH (no jq)
+  [PASS] works without jq
+
+All findings-ledger tests passed

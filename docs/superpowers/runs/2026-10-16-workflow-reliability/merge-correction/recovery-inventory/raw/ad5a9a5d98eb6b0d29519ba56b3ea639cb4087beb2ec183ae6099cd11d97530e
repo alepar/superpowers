@@ -1,0 +1,24 @@
+[PASS] assembled-intermediate exits with collection gap
+[PASS] assembled-intermediate stays incomplete with an explicit unsafe path gap
+[PASS] assembled-intermediate never archives sentinel bytes
+[PASS] discovered-direct-file exits with collection gap
+[PASS] discovered-direct-file stays incomplete with an explicit unsafe path gap
+[PASS] discovered-direct-file never archives sentinel bytes
+[PASS] required-deep-intermediate exits with collection gap
+[PASS] required-deep-intermediate stays incomplete with an explicit unsafe path gap
+[PASS] required-deep-intermediate never archives sentinel bytes
+[PASS] required-direct-file exits with collection gap
+[PASS] required-direct-file stays incomplete with an explicit unsafe path gap
+[PASS] required-direct-file never archives sentinel bytes
+[PASS] discovered-nested-directory exits with collection gap
+[PASS] discovered-nested-directory stays incomplete with an explicit unsafe path gap
+[PASS] discovered-nested-directory never archives sentinel bytes
+[PASS] in-workspace-symlink exits with collection gap
+[PASS] in-workspace-symlink stays incomplete with an explicit unsafe path gap
+[PASS] in-workspace-symlink never archives sentinel bytes
+[PASS] split-manifest-intermediate exits with collection gap
+[PASS] split-manifest-intermediate stays incomplete with an explicit unsafe path gap
+[PASS] split-manifest-intermediate never archives sentinel bytes
+[PASS] normal nested and required files collect
+[PASS] completed archive survives intentional source cleanup
+23 passed, 0 failed

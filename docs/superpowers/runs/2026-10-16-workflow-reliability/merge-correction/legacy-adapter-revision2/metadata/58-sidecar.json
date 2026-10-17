@@ -1,0 +1,1763 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-4-report.md",
+  "rawSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+  "rawByteCount": 18859,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+    "durablePath": "task-report-history-r1/raw/task-4-report.md",
+    "sha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+    "byteCount": 18859,
+    "logicalRole": "report",
+    "ordinal": 4,
+    "logicalTaskId": "super-plan-ufz.4",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-4-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 160,
+      "rawText": "Status: FIXED. Finding: rebase-conflict."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.4 — IMPLEMENTED",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.4 — IMPLEMENTED\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED"
+      ],
+      "lineStart": 1,
+      "lineEnd": 8,
+      "byteStart": 0,
+      "byteEnd": 238,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.4 — IMPLEMENTED\n\nBase: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nHead: 18a0b359df063617af5c643bb73f2737c8aacbdd\nOriginal implementation base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nStacked: false\nReopened: false\n\n",
+      "bodyRawText": "\nBase: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nHead: 18a0b359df063617af5c643bb73f2737c8aacbdd\nOriginal implementation base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nStacked: false\nReopened: false\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\n",
+          "text": "Base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 41,
+          "byteEnd": 88
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 18a0b359df063617af5c643bb73f2737c8aacbdd\nOriginal implementation base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nStacked: false\nReopened: false\n",
+          "text": "Head: 18a0b359df063617af5c643bb73f2737c8aacbdd\nOriginal implementation base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nStacked: false\nReopened: false",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 7,
+          "byteStart": 88,
+          "byteEnd": 237
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "lineStart": 9,
+      "lineEnd": 16,
+      "byteStart": 238,
+      "byteEnd": 1819,
+      "bodyLineStart": 10,
+      "rawText": "## Implementation\n\nAdded compact `Recovery: <JSON>` records to the existing progress ledger/digest. Existing Task/Merge/Human action reducers are retained. Records use `{version:1,id,kind,operation,reason,evidence,data}`, with nonempty source/artifact references; kinds are hold, pending-closure, deferred, fix. Record/clear affects only the matching obligation (kind,id). Fix attempts remain append-only and independent of latest terminal task status. Unknown-version/malformed/evidenceless/fix-clear inputs appear as explicit `gaps` with source path, digestLine, reason and a preview capped at 200 characters. Recovery lines over 4096 characters become `Recovery gap: <original source line> <ledger path>` in the digest; complete input remains on disk, and the returned gap is `{source,line,reason}`. Valid compact records retain full evidence; no unbounded raw line is echoed.\n\nWorkflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n",
+      "bodyRawText": "\nAdded compact `Recovery: <JSON>` records to the existing progress ledger/digest. Existing Task/Merge/Human action reducers are retained. Records use `{version:1,id,kind,operation,reason,evidence,data}`, with nonempty source/artifact references; kinds are hold, pending-closure, deferred, fix. Record/clear affects only the matching obligation (kind,id). Fix attempts remain append-only and independent of latest terminal task status. Unknown-version/malformed/evidenceless/fix-clear inputs appear as explicit `gaps` with source path, digestLine, reason and a preview capped at 200 characters. Recovery lines over 4096 characters become `Recovery gap: <original source line> <ledger path>` in the digest; complete input remains on disk, and the returned gap is `{source,line,reason}`. Valid compact records retain full evidence; no unbounded raw line is echoed.\n\nWorkflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n\nOrdinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added compact `Recovery: <JSON>` records to the existing progress ledger/digest. Existing Task/Merge/Human action reducers are retained. Records use `{version:1,id,kind,operation,reason,evidence,data}`, with nonempty source/artifact references; kinds are hold, pending-closure, deferred, fix. Record/clear affects only the matching obligation (kind,id). Fix attempts remain append-only and independent of latest terminal task status. Unknown-version/malformed/evidenceless/fix-clear inputs appear as explicit `gaps` with source path, digestLine, reason and a preview capped at 200 characters. Recovery lines over 4096 characters become `Recovery gap: <original source line> <ledger path>` in the digest; complete input remains on disk, and the returned gap is `{source,line,reason}`. Valid compact records retain full evidence; no unbounded raw line is echoed.\n",
+          "text": "Added compact `Recovery: <JSON>` records to the existing progress ledger/digest. Existing Task/Merge/Human action reducers are retained. Records use `{version:1,id,kind,operation,reason,evidence,data}`, with nonempty source/artifact references; kinds are hold, pending-closure, deferred, fix. Record/clear affects only the matching obligation (kind,id). Fix attempts remain append-only and independent of latest terminal task status. Unknown-version/malformed/evidenceless/fix-clear inputs appear as explicit `gaps` with source path, digestLine, reason and a preview capped at 200 characters. Recovery lines over 4096 characters become `Recovery gap: <original source line> <ledger path>` in the digest; complete input remains on disk, and the returned gap is `{source,line,reason}`. Valid compact records retain full evidence; no unbounded raw line is echoed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 257,
+          "byteEnd": 1118
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Workflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n",
+          "text": "Workflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 1119,
+          "byteEnd": 1647
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Ordinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.\n",
+          "text": "Ordinary-subagent reference text defines the same emission and read contract. No resume routing/reconciliation, root acceptance, attribution or metrics policy was added.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1648,
+          "byteEnd": 1818
+        }
+      ]
+    },
+    {
+      "section": "Downstream field/operation examples",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Downstream field/operation examples\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Downstream field/operation examples"
+      ],
+      "lineStart": 17,
+      "lineEnd": 34,
+      "byteStart": 1819,
+      "byteEnd": 3523,
+      "bodyLineStart": 18,
+      "rawText": "## Downstream field/operation examples\n\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\nFix history fixture:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"fix\",\"operation\":\"record\",\"reason\":\"review finding\",\"evidence\":[\"task-1-review.md\",\"task-1-report.md\"],\"data\":{\"outcome\":\"FIXED\",\"reviewPath\":\"task-1-review.md\",\"head\":\"ffffffffffffffffffffffffffffffffffffffff\"}}\n```\nProducer fix data also carries phase (review|seam|check), reportPath, known base/head, optional blockerBead, declined/evidenceOnly booleans. Check fixes cite actual merge dispatch/report evidence and omit reviewPath because that artifact does not exist. Unknown commit fields are omitted.\n\nHold producer ID is `merge-lane`; data has taskId, integrationBranch/integrationWorktree, dirty/dirtyCount or detachedHead. Deferred sweep ID is `<epicId>:sweep:<runTag>`; data has owner=caller, runTag, integrationBranch and declared command when known. Evidence points to the existing ledger Launch for that runTag. Clearing deferred measurements is owned by the measuring caller. No hold is automatically cleared by this task.\n\n",
+      "bodyRawText": "\nPending closure fixture (full b SHA, source review/blocker IDs):\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\nProducer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\nFix history fixture:\n```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"fix\",\"operation\":\"record\",\"reason\":\"review finding\",\"evidence\":[\"task-1-review.md\",\"task-1-report.md\"],\"data\":{\"outcome\":\"FIXED\",\"reviewPath\":\"task-1-review.md\",\"head\":\"ffffffffffffffffffffffffffffffffffffffff\"}}\n```\nProducer fix data also carries phase (review|seam|check), reportPath, known base/head, optional blockerBead, declined/evidenceOnly booleans. Check fixes cite actual merge dispatch/report evidence and omit reviewPath because that artifact does not exist. Unknown commit fields are omitted.\n\nHold producer ID is `merge-lane`; data has taskId, integrationBranch/integrationWorktree, dirty/dirtyCount or detachedHead. Deferred sweep ID is `<epicId>:sweep:<runTag>`; data has owner=caller, runTag, integrationBranch and declared command when known. Evidence points to the existing ledger Launch for that runTag. Clearing deferred measurements is owned by the measuring caller. No hold is automatically cleared by this task.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Pending closure fixture (full b SHA, source review/blocker IDs):\n",
+          "text": "Pending closure fixture (full b SHA, source review/blocker IDs):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1859,
+          "byteEnd": 1924
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```\n",
+          "text": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"record\",\"reason\":\"tracker closure unconfirmed\",\"evidence\":[\"task-1-report.md\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"reviewBead\":\"bd-112\",\"blockerBead\":\"bd-109\"}}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 22,
+          "byteStart": 1924,
+          "byteEnd": 2213
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Producer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:\n",
+          "text": "Producer additionally includes exact known `range`, `git:<head>` and `bead:<taskId>` evidence. Confirmed closure appends:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2213,
+          "byteEnd": 2335
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```\n",
+          "text": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"pending-closure\",\"operation\":\"clear\",\"reason\":\"tracker closure confirmed\",\"evidence\":[\"bead:bd-101\",\"bead:bd-112\",\"bead:bd-109\"],\"data\":{}}\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 24,
+          "lineEnd": 26,
+          "byteStart": 2335,
+          "byteEnd": 2522
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fix history fixture:\n",
+          "text": "Fix history fixture:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2522,
+          "byteEnd": 2543
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"fix\",\"operation\":\"record\",\"reason\":\"review finding\",\"evidence\":[\"task-1-review.md\",\"task-1-report.md\"],\"data\":{\"outcome\":\"FIXED\",\"reviewPath\":\"task-1-review.md\",\"head\":\"ffffffffffffffffffffffffffffffffffffffff\"}}\n```\n",
+          "text": "```json\n{\"version\":1,\"id\":\"bd-101\",\"kind\":\"fix\",\"operation\":\"record\",\"reason\":\"review finding\",\"evidence\":[\"task-1-review.md\",\"task-1-report.md\"],\"data\":{\"outcome\":\"FIXED\",\"reviewPath\":\"task-1-review.md\",\"head\":\"ffffffffffffffffffffffffffffffffffffffff\"}}\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 28,
+          "lineEnd": 30,
+          "byteStart": 2543,
+          "byteEnd": 2803
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Producer fix data also carries phase (review|seam|check), reportPath, known base/head, optional blockerBead, declined/evidenceOnly booleans. Check fixes cite actual merge dispatch/report evidence and omit reviewPath because that artifact does not exist. Unknown commit fields are omitted.\n",
+          "text": "Producer fix data also carries phase (review|seam|check), reportPath, known base/head, optional blockerBead, declined/evidenceOnly booleans. Check fixes cite actual merge dispatch/report evidence and omit reviewPath because that artifact does not exist. Unknown commit fields are omitted.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2803,
+          "byteEnd": 3092
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Hold producer ID is `merge-lane`; data has taskId, integrationBranch/integrationWorktree, dirty/dirtyCount or detachedHead. Deferred sweep ID is `<epicId>:sweep:<runTag>`; data has owner=caller, runTag, integrationBranch and declared command when known. Evidence points to the existing ledger Launch for that runTag. Clearing deferred measurements is owned by the measuring caller. No hold is automatically cleared by this task.\n",
+          "text": "Hold producer ID is `merge-lane`; data has taskId, integrationBranch/integrationWorktree, dirty/dirtyCount or detachedHead. Deferred sweep ID is `<epicId>:sweep:<runTag>`; data has owner=caller, runTag, integrationBranch and declared command when known. Evidence points to the existing ledger Launch for that runTag. Clearing deferred measurements is owned by the measuring caller. No hold is automatically cleared by this task.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 3093,
+          "byteEnd": 3522
+        }
+      ]
+    },
+    {
+      "section": "Tests and TDD",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests and TDD\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Tests and TDD"
+      ],
+      "lineStart": 35,
+      "lineEnd": 96,
+      "byteStart": 3523,
+      "byteEnd": 7473,
+      "bodyLineStart": 36,
+      "rawText": "## Tests and TDD\n\nAll commands ran in `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`.\n\nInitial RED, before production changes:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-red.log 2>&1\n```\nExit 1, approximately 28 seconds (log creation-to-last-write):\n```text\n[FAIL] digest counts recovery records and gaps along with legacy Task tokens\n[FAIL] digest transports complete evidence and uninterpretable recovery lines verbatim\n[FAIL] earlier FIXED record survives the clean retry intact\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] pending closure preserves exact landing head and range\n[FAIL] elided append retry preserves every recovery record and evidence byte\n1775 passed, 12 failed\n```\nExpected failure: baseline digest discarded Recovery records, coordinator had no recovery collections/producers. All original baseline checks remained passing.\n\nAdditional RED for truthful merge-check source references, before fixing the invented check review path:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-contract-red.log 2>&1\n```\nExit 1, approximately 29 seconds:\n```text\n[FAIL] merge-check fix retains its error source and range without inventing a review artifact\n1788 passed, 1 failed\n```\nCorrected to actual merge dispatch/report evidence and omitted the nonexistent reviewPath.\n\nGREEN before final compact-gap correction (historical):\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\n```\nExit 0, approximately 28 seconds:\n```text\n[PASS] digest counts recovery records and gaps along with legacy Task tokens\n[PASS] digest transports complete evidence and uninterpretable recovery lines verbatim\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] elided append retry preserves every recovery record and evidence byte\n[PASS] seam fix retains its source without inventing an unreported head\n[PASS] merge-check fix retains its error source and range without inventing a review artifact\n1789 passed, 0 failed\n```\nIncludes real digest subprocesses, simulated coordinator append/read/closure paths, old-format input and all three documented dryRun scenarios with their expected dispatch counts. Legacy test extraction defaults to Task/Merge lines; `recovery:true` exposes complete additive transport to the new independent recovery assertions. No existing assertion or expected value was removed/changed.\n\nCaller check:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\nExit 0, approximately 6 seconds:\n```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n`git diff --check` passed. The first rebase was up to date; integration subsequently moved to f1fb23d1. Final rebase retained both reviewBase/reviewHead fields from integration and recovery append support in the single conflicting fixture hunk. All product-source changes auto-merged. Final replay and caller checks were rerun on head 18a0b359; their result is recorded below.\n\nAssertions catch missing/truncated Recovery JSON, incorrect header accounting, overwritten FIXED history, unrelated-obligation clearing, missing gap evidence, missing clear emission, abbreviated/wrong landing SHA/range, missing source refs, differing elided fallback, missing caller ownership, invented seam head and invented check review artifact. Tests use hand-authored records and real digest output; expected values are independent of the producer.\n\n",
+      "bodyRawText": "\nAll commands ran in `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`.\n\nInitial RED, before production changes:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-red.log 2>&1\n```\nExit 1, approximately 28 seconds (log creation-to-last-write):\n```text\n[FAIL] digest counts recovery records and gaps along with legacy Task tokens\n[FAIL] digest transports complete evidence and uninterpretable recovery lines verbatim\n[FAIL] earlier FIXED record survives the clean retry intact\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] pending closure preserves exact landing head and range\n[FAIL] elided append retry preserves every recovery record and evidence byte\n1775 passed, 12 failed\n```\nExpected failure: baseline digest discarded Recovery records, coordinator had no recovery collections/producers. All original baseline checks remained passing.\n\nAdditional RED for truthful merge-check source references, before fixing the invented check review path:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-contract-red.log 2>&1\n```\nExit 1, approximately 29 seconds:\n```text\n[FAIL] merge-check fix retains its error source and range without inventing a review artifact\n1788 passed, 1 failed\n```\nCorrected to actual merge dispatch/report evidence and omitted the nonexistent reviewPath.\n\nGREEN before final compact-gap correction (historical):\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\n```\nExit 0, approximately 28 seconds:\n```text\n[PASS] digest counts recovery records and gaps along with legacy Task tokens\n[PASS] digest transports complete evidence and uninterpretable recovery lines verbatim\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] elided append retry preserves every recovery record and evidence byte\n[PASS] seam fix retains its source without inventing an unreported head\n[PASS] merge-check fix retains its error source and range without inventing a review artifact\n1789 passed, 0 failed\n```\nIncludes real digest subprocesses, simulated coordinator append/read/closure paths, old-format input and all three documented dryRun scenarios with their expected dispatch counts. Legacy test extraction defaults to Task/Merge lines; `recovery:true` exposes complete additive transport to the new independent recovery assertions. No existing assertion or expected value was removed/changed.\n\nCaller check:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\nExit 0, approximately 6 seconds:\n```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n`git diff --check` passed. The first rebase was up to date; integration subsequently moved to f1fb23d1. Final rebase retained both reviewBase/reviewHead fields from integration and recovery append support in the single conflicting fixture hunk. All product-source changes auto-merged. Final replay and caller checks were rerun on head 18a0b359; their result is recorded below.\n\nAssertions catch missing/truncated Recovery JSON, incorrect header accounting, overwritten FIXED history, unrelated-obligation clearing, missing gap evidence, missing clear emission, abbreviated/wrong landing SHA/range, missing source refs, differing elided fallback, missing caller ownership, invented seam head and invented check review artifact. Tests use hand-authored records and real digest output; expected values are independent of the producer.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands ran in `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`.\n",
+          "text": "All commands ran in `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3541,
+          "byteEnd": 3700
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Initial RED, before production changes:\n",
+          "text": "Initial RED, before production changes:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 3701,
+          "byteEnd": 3741
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 40,
+          "lineEnd": 42,
+          "byteStart": 3741,
+          "byteEnd": 3863
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, approximately 28 seconds (log creation-to-last-write):\n",
+          "text": "Exit 1, approximately 28 seconds (log creation-to-last-write):",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 43,
+          "lineEnd": 43,
+          "byteStart": 3863,
+          "byteEnd": 3926
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] digest counts recovery records and gaps along with legacy Task tokens\n[FAIL] digest transports complete evidence and uninterpretable recovery lines verbatim\n[FAIL] earlier FIXED record survives the clean retry intact\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] pending closure preserves exact landing head and range\n[FAIL] elided append retry preserves every recovery record and evidence byte\n1775 passed, 12 failed\n```\n",
+          "text": "```text\n[FAIL] digest counts recovery records and gaps along with legacy Task tokens\n[FAIL] digest transports complete evidence and uninterpretable recovery lines verbatim\n[FAIL] earlier FIXED record survives the clean retry intact\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] pending closure preserves exact landing head and range\n[FAIL] elided append retry preserves every recovery record and evidence byte\n1775 passed, 12 failed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 44,
+          "lineEnd": 52,
+          "byteStart": 3926,
+          "byteEnd": 4415
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Expected failure: baseline digest discarded Recovery records, coordinator had no recovery collections/producers. All original baseline checks remained passing.\n",
+          "text": "Expected failure: baseline digest discarded Recovery records, coordinator had no recovery collections/producers. All original baseline checks remained passing.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 53,
+          "lineEnd": 53,
+          "byteStart": 4415,
+          "byteEnd": 4575
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Additional RED for truthful merge-check source references, before fixing the invented check review path:\n",
+          "text": "Additional RED for truthful merge-check source references, before fixing the invented check review path:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 55,
+          "lineEnd": 55,
+          "byteStart": 4576,
+          "byteEnd": 4681
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-contract-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-contract-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 56,
+          "lineEnd": 58,
+          "byteStart": 4681,
+          "byteEnd": 4812
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, approximately 29 seconds:\n",
+          "text": "Exit 1, approximately 29 seconds:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 59,
+          "lineEnd": 59,
+          "byteStart": 4812,
+          "byteEnd": 4846
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] merge-check fix retains its error source and range without inventing a review artifact\n1788 passed, 1 failed\n```\n",
+          "text": "```text\n[FAIL] merge-check fix retains its error source and range without inventing a review artifact\n1788 passed, 1 failed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 60,
+          "lineEnd": 63,
+          "byteStart": 4846,
+          "byteEnd": 4974
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Corrected to actual merge dispatch/report evidence and omitted the nonexistent reviewPath.\n",
+          "text": "Corrected to actual merge dispatch/report evidence and omitted the nonexistent reviewPath.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 64,
+          "lineEnd": 64,
+          "byteStart": 4974,
+          "byteEnd": 5065
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "GREEN before final compact-gap correction (historical):\n",
+          "text": "GREEN before final compact-gap correction (historical):",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 66,
+          "lineEnd": 66,
+          "byteStart": 5066,
+          "byteEnd": 5122
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 13,
+          "lineStart": 67,
+          "lineEnd": 69,
+          "byteStart": 5122,
+          "byteEnd": 5246
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0, approximately 28 seconds:\n",
+          "text": "Exit 0, approximately 28 seconds:",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 70,
+          "lineEnd": 70,
+          "byteStart": 5246,
+          "byteEnd": 5280
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] digest counts recovery records and gaps along with legacy Task tokens\n[PASS] digest transports complete evidence and uninterpretable recovery lines verbatim\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] elided append retry preserves every recovery record and evidence byte\n[PASS] seam fix retains its source without inventing an unreported head\n[PASS] merge-check fix retains its error source and range without inventing a review artifact\n1789 passed, 0 failed\n```\n",
+          "text": "```text\n[PASS] digest counts recovery records and gaps along with legacy Task tokens\n[PASS] digest transports complete evidence and uninterpretable recovery lines verbatim\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] elided append retry preserves every recovery record and evidence byte\n[PASS] seam fix retains its source without inventing an unreported head\n[PASS] merge-check fix retains its error source and range without inventing a review artifact\n1789 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 71,
+          "lineEnd": 81,
+          "byteStart": 5280,
+          "byteEnd": 5978
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Includes real digest subprocesses, simulated coordinator append/read/closure paths, old-format input and all three documented dryRun scenarios with their expected dispatch counts. Legacy test extraction defaults to Task/Merge lines; `recovery:true` exposes complete additive transport to the new independent recovery assertions. No existing assertion or expected value was removed/changed.\n",
+          "text": "Includes real digest subprocesses, simulated coordinator append/read/closure paths, old-format input and all three documented dryRun scenarios with their expected dispatch counts. Legacy test extraction defaults to Task/Merge lines; `recovery:true` exposes complete additive transport to the new independent recovery assertions. No existing assertion or expected value was removed/changed.",
+          "listMarker": null,
+          "positionInSection": 16,
+          "lineStart": 82,
+          "lineEnd": 82,
+          "byteStart": 5978,
+          "byteEnd": 6368
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Caller check:\n",
+          "text": "Caller check:",
+          "listMarker": null,
+          "positionInSection": 17,
+          "lineStart": 84,
+          "lineEnd": 84,
+          "byteStart": 6369,
+          "byteEnd": 6383
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 18,
+          "lineStart": 85,
+          "lineEnd": 87,
+          "byteStart": 6383,
+          "byteEnd": 6513
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0, approximately 6 seconds:\n",
+          "text": "Exit 0, approximately 6 seconds:",
+          "listMarker": null,
+          "positionInSection": 19,
+          "lineStart": 88,
+          "lineEnd": 88,
+          "byteStart": 6513,
+          "byteEnd": 6546
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 20,
+          "lineStart": 89,
+          "lineEnd": 92,
+          "byteStart": 6546,
+          "byteEnd": 6640
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check` passed. The first rebase was up to date; integration subsequently moved to f1fb23d1. Final rebase retained both reviewBase/reviewHead fields from integration and recovery append support in the single conflicting fixture hunk. All product-source changes auto-merged. Final replay and caller checks were rerun on head 18a0b359; their result is recorded below.\n",
+          "text": "`git diff --check` passed. The first rebase was up to date; integration subsequently moved to f1fb23d1. Final rebase retained both reviewBase/reviewHead fields from integration and recovery append support in the single conflicting fixture hunk. All product-source changes auto-merged. Final replay and caller checks were rerun on head 18a0b359; their result is recorded below.",
+          "listMarker": null,
+          "positionInSection": 21,
+          "lineStart": 93,
+          "lineEnd": 93,
+          "byteStart": 6640,
+          "byteEnd": 7017
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Assertions catch missing/truncated Recovery JSON, incorrect header accounting, overwritten FIXED history, unrelated-obligation clearing, missing gap evidence, missing clear emission, abbreviated/wrong landing SHA/range, missing source refs, differing elided fallback, missing caller ownership, invented seam head and invented check review artifact. Tests use hand-authored records and real digest output; expected values are independent of the producer.\n",
+          "text": "Assertions catch missing/truncated Recovery JSON, incorrect header accounting, overwritten FIXED history, unrelated-obligation clearing, missing gap evidence, missing clear emission, abbreviated/wrong landing SHA/range, missing source refs, differing elided fallback, missing caller ownership, invented seam head and invented check review artifact. Tests use hand-authored records and real digest output; expected values are independent of the producer.",
+          "listMarker": null,
+          "positionInSection": 22,
+          "lineStart": 95,
+          "lineEnd": 95,
+          "byteStart": 7018,
+          "byteEnd": 7472
+        }
+      ]
+    },
+    {
+      "section": "Toolchain provenance",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Toolchain provenance\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Toolchain provenance"
+      ],
+      "lineStart": 97,
+      "lineEnd": 100,
+      "byteStart": 7473,
+      "byteEnd": 7990,
+      "bodyLineStart": 98,
+      "rawText": "## Toolchain provenance\n\nNo setup/install step is required by the zero-dependency Node replay harness. Both test runner `tests/super-code/replay-harness.mjs` and package-under-test `skills/super-code/coordinator.js` resolve inside this task worktree. Node interpreter resolves to `/opt/homebrew/Cellar/node/26.9.0/bin/node`; this is the interpreter, not another checkout's runner/package. Product source is executed by the replay's AsyncFunction runtime; no live product invocation accessed the real home directory.\n\n",
+      "bodyRawText": "\nNo setup/install step is required by the zero-dependency Node replay harness. Both test runner `tests/super-code/replay-harness.mjs` and package-under-test `skills/super-code/coordinator.js` resolve inside this task worktree. Node interpreter resolves to `/opt/homebrew/Cellar/node/26.9.0/bin/node`; this is the interpreter, not another checkout's runner/package. Product source is executed by the replay's AsyncFunction runtime; no live product invocation accessed the real home directory.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No setup/install step is required by the zero-dependency Node replay harness. Both test runner `tests/super-code/replay-harness.mjs` and package-under-test `skills/super-code/coordinator.js` resolve inside this task worktree. Node interpreter resolves to `/opt/homebrew/Cellar/node/26.9.0/bin/node`; this is the interpreter, not another checkout's runner/package. Product source is executed by the replay's AsyncFunction runtime; no live product invocation accessed the real home directory.\n",
+          "text": "No setup/install step is required by the zero-dependency Node replay harness. Both test runner `tests/super-code/replay-harness.mjs` and package-under-test `skills/super-code/coordinator.js` resolve inside this task worktree. Node interpreter resolves to `/opt/homebrew/Cellar/node/26.9.0/bin/node`; this is the interpreter, not another checkout's runner/package. Product source is executed by the replay's AsyncFunction runtime; no live product invocation accessed the real home directory.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "byteStart": 7498,
+          "byteEnd": 7989
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Files changed"
+      ],
+      "lineStart": 101,
+      "lineEnd": 108,
+      "byteStart": 7990,
+      "byteEnd": 8213,
+      "bodyLineStart": 102,
+      "rawText": "## Files changed\n\n- skills/super-code/coordinator.js\n- skills/super-code/scripts/ledger-digest\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "bodyRawText": "\n- skills/super-code/coordinator.js\n- skills/super-code/scripts/ledger-digest\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 103,
+          "lineEnd": 103,
+          "byteStart": 8008,
+          "byteEnd": 8043
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/ledger-digest\n",
+          "text": "skills/super-code/scripts/ledger-digest",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 104,
+          "lineEnd": 104,
+          "byteStart": 8043,
+          "byteEnd": 8085
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 105,
+          "lineEnd": 105,
+          "byteStart": 8085,
+          "byteEnd": 8129
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 106,
+          "lineEnd": 106,
+          "byteStart": 8129,
+          "byteEnd": 8174
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 107,
+          "lineEnd": 107,
+          "byteStart": 8174,
+          "byteEnd": 8212
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Test hygiene"
+      ],
+      "lineStart": 109,
+      "lineEnd": 117,
+      "byteStart": 8213,
+      "byteEnd": 9561,
+      "bodyLineStart": 110,
+      "rawText": "## Test hygiene\n\nNo post-run leaked process and no survived line. Final check and stop commands each exited 0 with empty output:\n```sh\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nOne early check ran from inside the owned worktree and exited 2 by the stop script's ancestor protection; it was corrected to an outside cwd. A diagnostic check made while RED replay was still running observed active harness/fixture PIDs 70867, 74618, 74629, 74630, 74632, 74633, 74720, 74933. These were ongoing RED replay/stop-run-processes test children, not post-run leaks; they all exited naturally. The required post-RED and subsequent post-run checks found no matches. No process was stopped by name/pattern.\n\n",
+      "bodyRawText": "\nNo post-run leaked process and no survived line. Final check and stop commands each exited 0 with empty output:\n```sh\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nOne early check ran from inside the owned worktree and exited 2 by the stop script's ancestor protection; it was corrected to an outside cwd. A diagnostic check made while RED replay was still running observed active harness/fixture PIDs 70867, 74618, 74629, 74630, 74632, 74633, 74720, 74933. These were ongoing RED replay/stop-run-processes test children, not post-run leaks; they all exited naturally. The required post-RED and subsequent post-run checks found no matches. No process was stopped by name/pattern.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No post-run leaked process and no survived line. Final check and stop commands each exited 0 with empty output:\n",
+          "text": "No post-run leaked process and no survived line. Final check and stop commands each exited 0 with empty output:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 8230,
+          "byteEnd": 8342
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\n",
+          "text": "```sh\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 112,
+          "lineEnd": 115,
+          "byteStart": 8342,
+          "byteEnd": 9044
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "One early check ran from inside the owned worktree and exited 2 by the stop script's ancestor protection; it was corrected to an outside cwd. A diagnostic check made while RED replay was still running observed active harness/fixture PIDs 70867, 74618, 74629, 74630, 74632, 74633, 74720, 74933. These were ongoing RED replay/stop-run-processes test children, not post-run leaks; they all exited naturally. The required post-RED and subsequent post-run checks found no matches. No process was stopped by name/pattern.\n",
+          "text": "One early check ran from inside the owned worktree and exited 2 by the stop script's ancestor protection; it was corrected to an outside cwd. A diagnostic check made while RED replay was still running observed active harness/fixture PIDs 70867, 74618, 74629, 74630, 74632, 74633, 74720, 74933. These were ongoing RED replay/stop-run-processes test children, not post-run leaks; they all exited naturally. The required post-RED and subsequent post-run checks found no matches. No process was stopped by name/pattern.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 9044,
+          "byteEnd": 9560
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Assumptions"
+      ],
+      "lineStart": 118,
+      "lineEnd": 121,
+      "byteStart": 9561,
+      "byteEnd": 9928,
+      "bodyLineStart": 119,
+      "rawText": "## Assumptions\n\nCurrent bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n\n",
+      "bodyRawText": "\nCurrent bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n",
+          "text": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 120,
+          "lineEnd": 120,
+          "byteStart": 9577,
+          "byteEnd": 9927
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "lineStart": 122,
+      "lineEnd": 125,
+      "byteStart": 9928,
+      "byteEnd": 10363,
+      "bodyLineStart": 123,
+      "rawText": "## Concerns\n\nNo task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n\n",
+      "bodyRawText": "\nNo task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n",
+          "text": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 124,
+          "lineEnd": 124,
+          "byteStart": 9941,
+          "byteEnd": 10362
+        }
+      ]
+    },
+    {
+      "section": "Compact-gap correction and final rebased evidence",
+      "sectionOrdinal": 10,
+      "headingLevel": 2,
+      "headingRaw": "## Compact-gap correction and final rebased evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Compact-gap correction and final rebased evidence"
+      ],
+      "lineStart": 126,
+      "lineEnd": 157,
+      "byteStart": 10363,
+      "byteEnd": 12753,
+      "bodyLineStart": 127,
+      "rawText": "## Compact-gap correction and final rebased evidence\n\nParent review required bounded transport even for malformed/unknown records. Added an oversized malformed line, unknown-version JSON and oversized structured obligation fixture. Each keeps its full body on disk and produces only original source/line gap pointers. The 4096-character transport ceiling bounds coordinator input; compact malformed records return source/digestLine and a 200-character preview. This narrows the record contract without changing missing/unreadable transport taxonomy.\n\nRED command (same task cwd):\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-size-red.log 2>&1\n```\nExit 1, approximately 28 seconds for the completed run:\n```text\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] evidence remains on disk while digest transports bounded gap references\n[FAIL] malformed, unknown and oversized structured records expose original source line references without full raw content\n1790 passed, 3 failed\n```\nExpected failure: the pre-correction digest echoed arbitrary raw bodies and decoder gaps lacked bounded previews/source pointers. A prior attempt at the new assertion raised a TypeError on the missing baseline source field; it was corrected to optional access before the successful RED run above. That failed-start assertion is not counted as RED evidence.\n\nGREEN before rebase was 1793 passed, 0 failed; dispatch-text all tests passed.\n\nFinal commands on rebased head 18a0b359df063617af5c643bb73f2737c8aacbdd and base f1fb23d15eaaa70fff95404a97342cd83fb0bdb7:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\nBoth commands exited 0:\n```text\n1802 passed, 0 failed\ndispatch-text: all tests passed\n```\nReplay approximately 28 seconds; dispatch-text approximately 6 seconds. The higher rebased count includes integration's nine new review-identity assertions. Final post-run process --check and stop each exited 0 with empty output: no matches, stops or survivors. `git diff --check` passed. Task-owned test logs were removed after preserving their command/output evidence here. Final git status is clean.\n\n\n",
+      "bodyRawText": "\nParent review required bounded transport even for malformed/unknown records. Added an oversized malformed line, unknown-version JSON and oversized structured obligation fixture. Each keeps its full body on disk and produces only original source/line gap pointers. The 4096-character transport ceiling bounds coordinator input; compact malformed records return source/digestLine and a 200-character preview. This narrows the record contract without changing missing/unreadable transport taxonomy.\n\nRED command (same task cwd):\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-size-red.log 2>&1\n```\nExit 1, approximately 28 seconds for the completed run:\n```text\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] evidence remains on disk while digest transports bounded gap references\n[FAIL] malformed, unknown and oversized structured records expose original source line references without full raw content\n1790 passed, 3 failed\n```\nExpected failure: the pre-correction digest echoed arbitrary raw bodies and decoder gaps lacked bounded previews/source pointers. A prior attempt at the new assertion raised a TypeError on the missing baseline source field; it was corrected to optional access before the successful RED run above. That failed-start assertion is not counted as RED evidence.\n\nGREEN before rebase was 1793 passed, 0 failed; dispatch-text all tests passed.\n\nFinal commands on rebased head 18a0b359df063617af5c643bb73f2737c8aacbdd and base f1fb23d15eaaa70fff95404a97342cd83fb0bdb7:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\nBoth commands exited 0:\n```text\n1802 passed, 0 failed\ndispatch-text: all tests passed\n```\nReplay approximately 28 seconds; dispatch-text approximately 6 seconds. The higher rebased count includes integration's nine new review-identity assertions. Final post-run process --check and stop each exited 0 with empty output: no matches, stops or survivors. `git diff --check` passed. Task-owned test logs were removed after preserving their command/output evidence here. Final git status is clean.\n\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Parent review required bounded transport even for malformed/unknown records. Added an oversized malformed line, unknown-version JSON and oversized structured obligation fixture. Each keeps its full body on disk and produces only original source/line gap pointers. The 4096-character transport ceiling bounds coordinator input; compact malformed records return source/digestLine and a 200-character preview. This narrows the record contract without changing missing/unreadable transport taxonomy.\n",
+          "text": "Parent review required bounded transport even for malformed/unknown records. Added an oversized malformed line, unknown-version JSON and oversized structured obligation fixture. Each keeps its full body on disk and produces only original source/line gap pointers. The 4096-character transport ceiling bounds coordinator input; compact malformed records return source/digestLine and a 200-character preview. This narrows the record contract without changing missing/unreadable transport taxonomy.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 128,
+          "lineEnd": 128,
+          "byteStart": 10417,
+          "byteEnd": 10913
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED command (same task cwd):\n",
+          "text": "RED command (same task cwd):",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 130,
+          "lineEnd": 130,
+          "byteStart": 10914,
+          "byteEnd": 10943
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-size-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-size-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 131,
+          "lineEnd": 133,
+          "byteStart": 10943,
+          "byteEnd": 11070
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, approximately 28 seconds for the completed run:\n",
+          "text": "Exit 1, approximately 28 seconds for the completed run:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 134,
+          "lineEnd": 134,
+          "byteStart": 11070,
+          "byteEnd": 11126
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] evidence remains on disk while digest transports bounded gap references\n[FAIL] malformed, unknown and oversized structured records expose original source line references without full raw content\n1790 passed, 3 failed\n```\n",
+          "text": "```text\n[FAIL] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[FAIL] evidence remains on disk while digest transports bounded gap references\n[FAIL] malformed, unknown and oversized structured records expose original source line references without full raw content\n1790 passed, 3 failed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 135,
+          "lineEnd": 140,
+          "byteStart": 11126,
+          "byteEnd": 11453
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Expected failure: the pre-correction digest echoed arbitrary raw bodies and decoder gaps lacked bounded previews/source pointers. A prior attempt at the new assertion raised a TypeError on the missing baseline source field; it was corrected to optional access before the successful RED run above. That failed-start assertion is not counted as RED evidence.\n",
+          "text": "Expected failure: the pre-correction digest echoed arbitrary raw bodies and decoder gaps lacked bounded previews/source pointers. A prior attempt at the new assertion raised a TypeError on the missing baseline source field; it was corrected to optional access before the successful RED run above. That failed-start assertion is not counted as RED evidence.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 141,
+          "lineEnd": 141,
+          "byteStart": 11453,
+          "byteEnd": 11810
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "GREEN before rebase was 1793 passed, 0 failed; dispatch-text all tests passed.\n",
+          "text": "GREEN before rebase was 1793 passed, 0 failed; dispatch-text all tests passed.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 143,
+          "lineEnd": 143,
+          "byteStart": 11811,
+          "byteEnd": 11890
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final commands on rebased head 18a0b359df063617af5c643bb73f2737c8aacbdd and base f1fb23d15eaaa70fff95404a97342cd83fb0bdb7:\n",
+          "text": "Final commands on rebased head 18a0b359df063617af5c643bb73f2737c8aacbdd and base f1fb23d15eaaa70fff95404a97342cd83fb0bdb7:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 145,
+          "lineEnd": 145,
+          "byteStart": 11891,
+          "byteEnd": 12014
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 146,
+          "lineEnd": 149,
+          "byteStart": 12014,
+          "byteEnd": 12258
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both commands exited 0:\n",
+          "text": "Both commands exited 0:",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 150,
+          "lineEnd": 150,
+          "byteStart": 12258,
+          "byteEnd": 12282
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n1802 passed, 0 failed\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n1802 passed, 0 failed\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 151,
+          "lineEnd": 154,
+          "byteStart": 12282,
+          "byteEnd": 12348
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Replay approximately 28 seconds; dispatch-text approximately 6 seconds. The higher rebased count includes integration's nine new review-identity assertions. Final post-run process --check and stop each exited 0 with empty output: no matches, stops or survivors. `git diff --check` passed. Task-owned test logs were removed after preserving their command/output evidence here. Final git status is clean.\n",
+          "text": "Replay approximately 28 seconds; dispatch-text approximately 6 seconds. The higher rebased count includes integration's nine new review-identity assertions. Final post-run process --check and stop each exited 0 with empty output: no matches, stops or survivors. `git diff --check` passed. Task-owned test logs were removed after preserving their command/output evidence here. Final git status is clean.",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 155,
+          "lineEnd": 155,
+          "byteStart": 12348,
+          "byteEnd": 12751
+        }
+      ]
+    },
+    {
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "headingLevel": 2,
+      "headingRaw": "## Seam fix\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "lineStart": 158,
+      "lineEnd": 180,
+      "byteStart": 12753,
+      "byteEnd": 15171,
+      "bodyLineStart": 159,
+      "rawText": "## Seam fix\n\nStatus: FIXED. Finding: rebase-conflict.\n\nSource revisions:\n- Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.\n- Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.\n- Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.\n- Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.\n- Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.\n\nRead current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.\n\n`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nResolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.\n\n`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.\n\n",
+      "bodyRawText": "\nStatus: FIXED. Finding: rebase-conflict.\n\nSource revisions:\n- Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.\n- Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.\n- Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.\n- Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.\n- Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.\n\nRead current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.\n\n`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nResolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.\n\n`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED. Finding: rebase-conflict.\n",
+          "text": "Status: FIXED. Finding: rebase-conflict.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 12766,
+          "byteEnd": 12807
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Source revisions:\n",
+          "text": "Source revisions:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 162,
+          "lineEnd": 162,
+          "byteStart": 12808,
+          "byteEnd": 12826
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.\n",
+          "text": "Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 163,
+          "lineEnd": 163,
+          "byteStart": 12826,
+          "byteEnd": 12891
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.\n",
+          "text": "Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 164,
+          "lineEnd": 164,
+          "byteStart": 12891,
+          "byteEnd": 12957
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.\n",
+          "text": "Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 165,
+          "lineEnd": 165,
+          "byteStart": 12957,
+          "byteEnd": 13044
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.\n",
+          "text": "Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 166,
+          "lineEnd": 166,
+          "byteStart": 13044,
+          "byteEnd": 13135
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.\n",
+          "text": "Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 167,
+          "lineEnd": 167,
+          "byteStart": 13135,
+          "byteEnd": 13320
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.\n",
+          "text": "Read current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 169,
+          "lineEnd": 169,
+          "byteStart": 13321,
+          "byteEnd": 13652
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:\n",
+          "text": "`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 171,
+          "lineEnd": 171,
+          "byteStart": 13653,
+          "byteEnd": 13875
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-subagents.md`\n",
+          "text": "`skills/super-code/coordinator-subagents.md`",
+          "listMarker": "- ",
+          "positionInSection": 10,
+          "lineStart": 172,
+          "lineEnd": 172,
+          "byteStart": 13875,
+          "byteEnd": 13922
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-workflow.md`\n",
+          "text": "`skills/super-code/coordinator-workflow.md`",
+          "listMarker": "- ",
+          "positionInSection": 11,
+          "lineStart": 173,
+          "lineEnd": 173,
+          "byteStart": 13922,
+          "byteEnd": 13968
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js`\n",
+          "text": "`skills/super-code/coordinator.js`",
+          "listMarker": "- ",
+          "positionInSection": 12,
+          "lineStart": 174,
+          "lineEnd": 174,
+          "byteStart": 13968,
+          "byteEnd": 14005
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+          "text": "`tests/super-code/replay-harness.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 13,
+          "lineStart": 175,
+          "lineEnd": 175,
+          "byteStart": 14005,
+          "byteEnd": 14045
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Resolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.\n",
+          "text": "Resolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 177,
+          "lineEnd": 177,
+          "byteStart": 14046,
+          "byteEnd": 14718
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.\n",
+          "text": "`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 179,
+          "lineEnd": 179,
+          "byteStart": 14719,
+          "byteEnd": 15170
+        }
+      ]
+    },
+    {
+      "section": "Focused verification",
+      "sectionOrdinal": 12,
+      "headingLevel": 3,
+      "headingRaw": "### Focused verification\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Focused verification"
+      ],
+      "lineStart": 181,
+      "lineEnd": 215,
+      "byteStart": 15171,
+      "byteEnd": 17798,
+      "bodyLineStart": 182,
+      "rawText": "### Focused verification\n\nTests executed against the resolved tree, then `git rebase --continue` committed that exact source as the rebased tip above. Source was unchanged between verification and commit; final `git diff --check` passed and tracked diff was empty.\n\nBoth test commands ran from:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`\n\nExact replay command:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state node tests/super-code/replay-harness.mjs > evidence-task4-seam-replay.log 2>&1\n```\nExit 0. Relevant output:\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] malformed, unknown and oversized structured records expose original source line references without full raw content\n[PASS] pending closure preserves exact landing head and range\n1884 passed, 0 failed\n```\nReplay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.\n\nExact caller command:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state bash tests/super-code/test-dispatch-text.sh > evidence-task4-seam-dispatch.log 2>&1\n```\nExit 0:\n```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\nThis checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n\n",
+      "bodyRawText": "\nTests executed against the resolved tree, then `git rebase --continue` committed that exact source as the rebased tip above. Source was unchanged between verification and commit; final `git diff --check` passed and tracked diff was empty.\n\nBoth test commands ran from:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`\n\nExact replay command:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state node tests/super-code/replay-harness.mjs > evidence-task4-seam-replay.log 2>&1\n```\nExit 0. Relevant output:\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] malformed, unknown and oversized structured records expose original source line references without full raw content\n[PASS] pending closure preserves exact landing head and range\n1884 passed, 0 failed\n```\nReplay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.\n\nExact caller command:\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state bash tests/super-code/test-dispatch-text.sh > evidence-task4-seam-dispatch.log 2>&1\n```\nExit 0:\n```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\nThis checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Tests executed against the resolved tree, then `git rebase --continue` committed that exact source as the rebased tip above. Source was unchanged between verification and commit; final `git diff --check` passed and tracked diff was empty.\n",
+          "text": "Tests executed against the resolved tree, then `git rebase --continue` committed that exact source as the rebased tip above. Source was unchanged between verification and commit; final `git diff --check` passed and tracked diff was empty.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 183,
+          "lineEnd": 183,
+          "byteStart": 15197,
+          "byteEnd": 15436
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both test commands ran from:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`\n",
+          "text": "Both test commands ran from:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4`",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 185,
+          "lineEnd": 186,
+          "byteStart": 15437,
+          "byteEnd": 15604
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact replay command:\n",
+          "text": "Exact replay command:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 188,
+          "lineEnd": 188,
+          "byteStart": 15605,
+          "byteEnd": 15627
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state node tests/super-code/replay-harness.mjs > evidence-task4-seam-replay.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state node tests/super-code/replay-harness.mjs > evidence-task4-seam-replay.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 189,
+          "lineEnd": 191,
+          "byteStart": 15627,
+          "byteEnd": 16021
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0. Relevant output:\n",
+          "text": "Exit 0. Relevant output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 192,
+          "lineEnd": 192,
+          "byteStart": 16021,
+          "byteEnd": 16046
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] malformed, unknown and oversized structured records expose original source line references without full raw content\n[PASS] pending closure preserves exact landing head and range\n1884 passed, 0 failed\n```\n",
+          "text": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] earlier FIXED record survives the clean retry intact\n[PASS] malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps\n[PASS] malformed, unknown and oversized structured records expose original source line references without full raw content\n[PASS] pending closure preserves exact landing head and range\n1884 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 193,
+          "lineEnd": 202,
+          "byteStart": 16046,
+          "byteEnd": 16575
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Replay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.\n",
+          "text": "Replay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 203,
+          "lineEnd": 203,
+          "byteStart": 16575,
+          "byteEnd": 16904
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact caller command:\n",
+          "text": "Exact caller command:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 205,
+          "lineEnd": 205,
+          "byteStart": 16905,
+          "byteEnd": 16927
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state bash tests/super-code/test-dispatch-text.sh > evidence-task4-seam-dispatch.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.4/state bash tests/super-code/test-dispatch-text.sh > evidence-task4-seam-dispatch.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 206,
+          "lineEnd": 208,
+          "byteStart": 16927,
+          "byteEnd": 17326
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0:\n",
+          "text": "Exit 0:",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 209,
+          "lineEnd": 209,
+          "byteStart": 17326,
+          "byteEnd": 17334
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 210,
+          "lineEnd": 213,
+          "byteStart": 17334,
+          "byteEnd": 17428
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n",
+          "text": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 214,
+          "lineEnd": 214,
+          "byteStart": 17428,
+          "byteEnd": 17797
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 13,
+      "headingLevel": 3,
+      "headingRaw": "### Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Test hygiene"
+      ],
+      "lineStart": 216,
+      "lineEnd": 226,
+      "byteStart": 17798,
+      "byteEnd": 18859,
+      "bodyLineStart": 217,
+      "rawText": "### Test hygiene\n\nAfter each completed test, the following command ran from `/Users/alepar/AleCode/superpowers`, outside the owned roots, and exited 0 with empty output:\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nFinal stop command from the same outside cwd also exited 0 with empty output:\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nNo leaked matches, stopped processes or survivors. No background process remains from this fix. No declined finding, evidence-only resolution, authorization blocker or new concern.\n",
+      "bodyRawText": "\nAfter each completed test, the following command ran from `/Users/alepar/AleCode/superpowers`, outside the owned roots, and exited 0 with empty output:\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nFinal stop command from the same outside cwd also exited 0 with empty output:\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\nNo leaked matches, stopped processes or survivors. No background process remains from this fix. No declined finding, evidence-only resolution, authorization blocker or new concern.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "After each completed test, the following command ran from `/Users/alepar/AleCode/superpowers`, outside the owned roots, and exited 0 with empty output:\n",
+          "text": "After each completed test, the following command ran from `/Users/alepar/AleCode/superpowers`, outside the owned roots, and exited 0 with empty output:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 218,
+          "lineEnd": 218,
+          "byteStart": 17816,
+          "byteEnd": 17968
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\n",
+          "text": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 219,
+          "lineEnd": 221,
+          "byteStart": 17968,
+          "byteEnd": 18288
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final stop command from the same outside cwd also exited 0 with empty output:\n",
+          "text": "Final stop command from the same outside cwd also exited 0 with empty output:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 222,
+          "lineEnd": 222,
+          "byteStart": 18288,
+          "byteEnd": 18366
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```\n",
+          "text": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.4 /tmp/sp-bce79baa/super-plan-ufz.4\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 223,
+          "lineEnd": 225,
+          "byteStart": 18366,
+          "byteEnd": 18678
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No leaked matches, stopped processes or survivors. No background process remains from this fix. No declined finding, evidence-only resolution, authorization blocker or new concern.\n",
+          "text": "No leaked matches, stopped processes or survivors. No background process remains from this fix. No declined finding, evidence-only resolution, authorization blocker or new concern.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 226,
+          "lineEnd": 226,
+          "byteStart": 18678,
+          "byteEnd": 18859
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "positionInSection": 2,
+      "key": "Workflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.",
+      "text": "Workflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.",
+      "rawText": "Workflow producers use existing noteLedger/queueLedger buffering at merge-lane holds, pending/confirmed closure, caller-owned sweep deferral and review/seam/check fix results. Elided append retries preserve compact Recovery JSON byte-for-byte. Existing chain/Finish drains settle writes before the result returns. The additive return field is `recovery: {obligations,fixHistory,gaps}`. Report bodies and finding prose remain in artifacts, with pointers in records. Dirty hold details are limited to five paths plus total count.\n",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 1119,
+      "byteEnd": 1647,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.",
+      "text": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.",
+      "rawText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n",
+      "lineStart": 120,
+      "lineEnd": 120,
+      "byteStart": 9577,
+      "byteEnd": 9927,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.",
+      "text": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.",
+      "rawText": "No task-local test failure remains. Live harness execution/agent-behavior evaluation is not claimed by these simulated producer tests; the parent run owns it. Resume reconciliation and downstream acceptance/attribution/metrics remain dependent leaves, as specified. Failed ledger append status continues to be exposed through the existing ledgerAppendFailed return field; no replacement durability engine was introduced.\n",
+      "lineStart": 124,
+      "lineEnd": 124,
+      "byteStart": 9941,
+      "byteEnd": 10362,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED. Finding: rebase-conflict.",
+      "text": "Status: FIXED. Finding: rebase-conflict.",
+      "rawText": "Status: FIXED. Finding: rebase-conflict.\n",
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 12766,
+      "byteEnd": 12807,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 2,
+      "key": "Source revisions:",
+      "text": "Source revisions:",
+      "rawText": "Source revisions:\n",
+      "lineStart": 162,
+      "lineEnd": 162,
+      "byteStart": 12808,
+      "byteEnd": 12826,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 3,
+      "key": "Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.",
+      "text": "Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.",
+      "rawText": "- Original task tip: `18a0b359df063617af5c643bb73f2737c8aacbdd`.\n",
+      "lineStart": 163,
+      "lineEnd": 163,
+      "byteStart": 12826,
+      "byteEnd": 12891,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 4,
+      "key": "Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.",
+      "text": "Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.",
+      "rawText": "- Original task base: `f1fb23d15eaaa70fff95404a97342cd83fb0bdb7`.\n",
+      "lineStart": 164,
+      "lineEnd": 164,
+      "byteStart": 12891,
+      "byteEnd": 12957,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 5,
+      "key": "Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.",
+      "text": "Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.",
+      "rawText": "- Integration target and final merge-base: `522c20bc70d234b1f718445902210186a3ecb389`.\n",
+      "lineStart": 165,
+      "lineEnd": 165,
+      "byteStart": 12957,
+      "byteEnd": 13044,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 6,
+      "key": "Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.",
+      "text": "Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.",
+      "rawText": "- Rebased task tip: `2826a7d56d1537aa0ff21e53b915ec07eebf0327` on `task-super-plan-ufz.4`.\n",
+      "lineStart": 166,
+      "lineEnd": 166,
+      "byteStart": 13044,
+      "byteEnd": 13135,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 7,
+      "key": "Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.",
+      "text": "Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.",
+      "rawText": "- Integration still resolved to `522c20bc70d234b1f718445902210186a3ecb389` at final inspection. This agent did not write to integration, merge, close beads or remove the task worktree.\n",
+      "lineStart": 167,
+      "lineEnd": 167,
+      "byteStart": 13135,
+      "byteEnd": 13320,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 8,
+      "key": "Read current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.",
+      "text": "Read current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.",
+      "rawText": "Read current `bd show super-plan-ufz.4 --json` and `bd comments super-plan-ufz.4` before modifying source. Description/acceptance match the frozen contract; no comments or amendments. The named `task-4-review-seam.diff` artifact did not exist; the dispatch's complete quoted conflict finding was used and independently reproduced.\n",
+      "lineStart": 169,
+      "lineEnd": 169,
+      "byteStart": 13321,
+      "byteEnd": 13652,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 9,
+      "key": "`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:",
+      "text": "`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:",
+      "rawText": "`git rebase 522c20bc70d234b1f718445902210186a3ecb389` reproduced exactly one conflicted file: `skills/super-code/coordinator.js`, one hunk at the final cleanup summary/return. The original task-versus-sibling overlap was:\n",
+      "lineStart": 171,
+      "lineEnd": 171,
+      "byteStart": 13653,
+      "byteEnd": 13875,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 10,
+      "key": "`skills/super-code/coordinator-subagents.md`",
+      "text": "`skills/super-code/coordinator-subagents.md`",
+      "rawText": "- `skills/super-code/coordinator-subagents.md`\n",
+      "lineStart": 172,
+      "lineEnd": 172,
+      "byteStart": 13875,
+      "byteEnd": 13922,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 11,
+      "key": "`skills/super-code/coordinator-workflow.md`",
+      "text": "`skills/super-code/coordinator-workflow.md`",
+      "rawText": "- `skills/super-code/coordinator-workflow.md`\n",
+      "lineStart": 173,
+      "lineEnd": 173,
+      "byteStart": 13922,
+      "byteEnd": 13968,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 12,
+      "key": "`skills/super-code/coordinator.js`",
+      "text": "`skills/super-code/coordinator.js`",
+      "rawText": "- `skills/super-code/coordinator.js`\n",
+      "lineStart": 174,
+      "lineEnd": 174,
+      "byteStart": 13968,
+      "byteEnd": 14005,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 13,
+      "key": "`tests/super-code/replay-harness.mjs`",
+      "text": "`tests/super-code/replay-harness.mjs`",
+      "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+      "lineStart": 175,
+      "lineEnd": 175,
+      "byteStart": 14005,
+      "byteEnd": 14045,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 14,
+      "key": "Resolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.",
+      "text": "Resolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.",
+      "rawText": "Resolution retained integration's entire truthful cleanup block: combined process observations, distinct stopped/survived/unknown/kept facts, unknown for null/scriptError/missing processLines, retained resource references and cleanup prompt rules. It added only the previously reviewed `recovery: {obligations,fixHistory,gaps}` field to that return. The other three overlapping files auto-merged. Stable captured review inputs from landed task 1 remain intact. Durable recovery records, evidence references, bounded gaps, append-only fix history, pending closure handling and digest compatibility from task 4 remain intact. No resume/acceptance/metrics routing was added.\n",
+      "lineStart": 177,
+      "lineEnd": 177,
+      "byteStart": 14046,
+      "byteEnd": 14718,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 15,
+      "key": "`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.",
+      "text": "`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.",
+      "rawText": "`git range-diff f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd 522c20bc70d234b1f718445902210186a3ecb389..2826a7d56d1537aa0ff21e53b915ec07eebf0327` shows the original patch unchanged except the cleanup context surrounding this same additive return field. The rebased task delta remains five files, 229 insertions and 10 deletions. No new tests, instructions or production behavior were introduced by the resolution.\n",
+      "lineStart": 179,
+      "lineEnd": 179,
+      "byteStart": 14719,
+      "byteEnd": 15170,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Focused verification",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Focused verification"
+      ],
+      "positionInSection": 7,
+      "key": "Replay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.",
+      "text": "Replay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.",
+      "rawText": "Replay includes real digest subprocess fixtures, the stable review-input fixtures, cleanup summary/prompt fixtures, helper tests for unverified/surviving/interactive cleanup and resource retention, plus the documented dryRun scenarios. Dispatch counts match coordinator-workflow.md: canonical 48, fix-pass-blocked 19, parked 23.\n",
+      "lineStart": 203,
+      "lineEnd": 203,
+      "byteStart": 16575,
+      "byteEnd": 16904,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "section": "Focused verification",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Task super-plan-ufz.4 — IMPLEMENTED",
+        "Seam fix",
+        "Focused verification"
+      ],
+      "positionInSection": 12,
+      "key": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.",
+      "text": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.",
+      "rawText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n",
+      "lineStart": 214,
+      "lineEnd": 214,
+      "byteStart": 17428,
+      "byteEnd": 17797,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

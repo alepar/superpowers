@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "ordinal": 68,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-7-review-seam",
+  "originalArtifact": "task-report-history-r1/raw/task-7-review-seam.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-7-review-seam.md",
+  "rawSha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+  "rawByteCount": 2331,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        25
+      ]
+    ],
+    "byteScope": [
+      0,
+      2331
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/13",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/68-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 5,
+      "rawText": "  \"status\": \"CLEAN\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/13/passages/0",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        67,
+        86
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "JSON /finding null, scoped seam review."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/13/passages/1",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        1626,
+        2177
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No tests executed; test-diff review only."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "JSON /finding null, scoped seam review.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 67,
+      "byteEnd": 86,
+      "rawText": "  \"finding\": null,\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "No tests executed; test-diff review only.",
+      "rawSection": null,
+      "rawSectionOrdinal": 0,
+      "rawSectionHeading": null,
+      "rawSectionHierarchy": [],
+      "rawSectionsSpanned": [
+        0
+      ],
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1626,
+      "byteEnd": 2177,
+      "rawText": "    \"result\": \"Both commands exited 0. One changed test file: tests/super-code/replay-harness.mjs (135 insertions, 6 deletions). Added alias/identity/resume/provenance scenarios are independent of profiler guidance. Existing expected values changed for the documented compact recurrence transport (raw case, fingerprints/source pointers and retained untagged minor), and the template count decreases by one with an explicit reason. No deleted/skipped/loosened test or unjustified expectation change found. No tests executed in this seam-only review.\"\n",
+      "canonicalAdapterSection": "@raw-headerless/0",
+      "canonicalAdapterSectionIsSynthetic": true,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1626,
+      "byteEnd": 2177,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/13/passages/1"
+      ],
+      "interpretation": "No tests executed; test-diff review only.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000001626",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage_limit"
+      ],
+      "rawByteStart": 1626,
+      "rawByteEnd": 2177,
+      "rawLineStart": 22,
+      "rawLineEnd": 22,
+      "originalSections": [
+        {
+          "section": null,
+          "sectionOrdinal": 0,
+          "headingRaw": null,
+          "hierarchy": [],
+          "byteStart": 0,
+          "byteEnd": 2331
+        }
+      ],
+      "rawText": "    \"result\": \"Both commands exited 0. One changed test file: tests/super-code/replay-harness.mjs (135 insertions, 6 deletions). Added alias/identity/resume/provenance scenarios are independent of profiler guidance. Existing expected values changed for the documented compact recurrence transport (raw case, fingerprints/source pointers and retained untagged minor), and the template count decreases by one with an explicit reason. No deleted/skipped/loosened test or unjustified expectation change found. No tests executed in this seam-only review.\"\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "\"result\": \"Both commands exited 0. One changed test file: tests/super-code/replay-harness.mjs (135 insertions, 6 deletions). Added alias/identity/resume/provenance scenarios are independent of profiler guidance. Existing expected values changed for the documented compact recurrence transport (raw case, fingerprints/source pointers and retained untagged minor), and the template count decreases by one with an explicit reason. No deleted/skipped/loosened test or unjustified expectation change found. No tests executed in this seam-only review.\"",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "    ",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/13/passages/1"
+      ],
+      "interpretation": "No tests executed; test-diff review only."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/68-task-7-review-seam.md",
+  "retainedSha256": "25164ca2e8c9f666613cd033b3ef695c9fb553b58b867849d37eb65aa8d9b2bd"
+}

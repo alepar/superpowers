@@ -1,0 +1,182 @@
+{
+  "checks": [
+    {
+      "id": "H01",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H02",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H03",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H04",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H05",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H06",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H07",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H08",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H09",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H10",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H11",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H12",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H13",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H14",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H15",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H16",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H17",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H18",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H19",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H20",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H21",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H22",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H23",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H24",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H25",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "H26",
+      "rawSpanMatches": true,
+      "frozenSourceHashMatches": true
+    },
+    {
+      "id": "J1",
+      "rawSpanMatches": true,
+      "jsonPointerValueMatches": true
+    },
+    {
+      "id": "J2",
+      "rawSpanMatches": true,
+      "jsonPointerValueMatches": true
+    },
+    {
+      "id": "J3",
+      "rawSpanMatches": true,
+      "jsonPointerValueMatches": true
+    },
+    {
+      "id": "J4",
+      "rawSpanMatches": true,
+      "jsonPointerValueMatches": true
+    }
+  ],
+  "reportedSourceRevisionChecks": [
+    {
+      "commit": "d604b8a7cf305bddd29ff1ddd0c42c01a108c2bb",
+      "expectedTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+      "observedTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+      "independentlyExecuted": true
+    },
+    {
+      "commit": "c79e41c260b5958cd50b9ed923435cb041de3bae",
+      "expectedTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+      "observedTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+      "independentlyExecuted": true
+    },
+    {
+      "commit": "633c351b1a2efc5b84dfde39ca2defd69ed2c6e8",
+      "expectedTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "observedTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+      "independentlyExecuted": true
+    },
+    {
+      "commit": "340d4ef85fbe59dbf55950d3c5e6c44df5d11d28",
+      "expectedTree": "4790bbe2d53e9418423b55cc9f9e399ddc6757ec",
+      "observedTree": "4790bbe2d53e9418423b55cc9f9e399ddc6757ec",
+      "independentlyExecuted": true
+    }
+  ],
+  "productTestsExecutedByThisReview": false,
+  "method": "Read-only immutable Git source, original raw reports and retained outputs; no new tests, index/source changes, process control, tracker or Herdr mutation."
+}

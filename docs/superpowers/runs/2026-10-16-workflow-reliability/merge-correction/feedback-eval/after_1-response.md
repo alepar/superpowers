@@ -1,0 +1,7 @@
+## Metadata
+
+Plugin: version not supplied. Run: 2 task landings (bead-X and bead-Y); the exact first-parent Git range contains 3 merge commits, including one absorption of updated main (3333333); date, round count, and duration not supplied.
+
+**Evidence qualification:** The complete ledger records successful `Merge:` lines for bead-X and bead-Y and a `baseAbsorbed` record for commit 3333333. Independent complete task-ID reconciliation identifies bead-X and bead-Y as the only task landings. All retained ledger bytes and Git identities were verified, and no missing task or unknown source remains. Thus the difference between 3 Git merge commits and 2 task landings is explained by the base absorption; this evidence supports no ledger-completeness finding. This is a hand-authored evidence packet for a textual decision test, not actual run-performance evidence; no profiling was requested, so no performance conclusions are established.
+
+Read scope and limitations: Read only `/private/tmp/ufz-correction-feedback-eval/after-subject-dispatch-template.txt`, the complete `/private/tmp/ufz-correction-feedback-eval/after-context.md`, and `/private/tmp/ufz-correction-feedback-eval/case.txt`. Wrote only this assigned response file. No other files, protocols, rubrics, baselines, identities, or responses were read; no repository or external lookup, subagents, or actual filing/project actions were performed.

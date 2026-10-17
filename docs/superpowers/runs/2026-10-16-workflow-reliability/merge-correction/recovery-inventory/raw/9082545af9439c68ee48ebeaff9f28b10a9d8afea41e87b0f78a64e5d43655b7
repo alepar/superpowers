@@ -1,0 +1,15 @@
+[
+  {
+    "command": "node tests/super-code/replay-harness.mjs",
+    "code": 0,
+    "signal": null,
+    "seconds": 26.577,
+    "log": "evidence/super-plan-ufz.14/corrected-pre-rebase-super-code--replay-harness.mjs.log",
+    "hygiene": {
+      "code": 0,
+      "signal": null,
+      "seconds": 2.291,
+      "log": "evidence/super-plan-ufz.14/corrected-pre-rebase-super-code--replay-harness.mjs.hygiene.log"
+    }
+  }
+]

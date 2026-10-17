@@ -1,0 +1,465 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-4-review.md",
+  "rawSha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+  "rawByteCount": 4412,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-review.md",
+    "durablePath": "task-report-history-r1/raw/task-4-review.md",
+    "sha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+    "byteCount": 4412,
+    "logicalRole": "review",
+    "ordinal": 4,
+    "logicalTaskId": "super-plan-ufz.4",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-4-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 2,
+      "byteStart": 0,
+      "byteEnd": 15,
+      "bodyLineStart": 1,
+      "rawText": "Status: CLEAN\n\n",
+      "bodyRawText": "Status: CLEAN\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 14
+        }
+      ]
+    },
+    {
+      "section": "Task 4 review — CLEAN",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 4 review — CLEAN\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN"
+      ],
+      "lineStart": 3,
+      "lineEnd": 8,
+      "byteStart": 15,
+      "byteEnd": 423,
+      "bodyLineStart": 4,
+      "rawText": "# Task 4 review — CLEAN\n\nTask: super-plan-ufz.4; review tracking: super-plan-ufz.17.\nImmutable range: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd.\nThe supplied base is an ancestor of the reviewed head. Current bead description and acceptance were read with `bd show super-plan-ufz.4 --json`; `bd comments super-plan-ufz.4` returned no comments. No amendments apply.\n\n",
+      "bodyRawText": "\nTask: super-plan-ufz.4; review tracking: super-plan-ufz.17.\nImmutable range: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd.\nThe supplied base is an ancestor of the reviewed head. Current bead description and acceptance were read with `bd show super-plan-ufz.4 --json`; `bd comments super-plan-ufz.4` returned no comments. No amendments apply.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.4; review tracking: super-plan-ufz.17.\nImmutable range: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd.\nThe supplied base is an ancestor of the reviewed head. Current bead description and acceptance were read with `bd show super-plan-ufz.4 --json`; `bd comments super-plan-ufz.4` returned no comments. No amendments apply.\n",
+          "text": "Task: super-plan-ufz.4; review tracking: super-plan-ufz.17.\nImmutable range: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7..18a0b359df063617af5c643bb73f2737c8aacbdd.\nThe supplied base is an ancestor of the reviewed head. Current bead description and acceptance were read with `bd show super-plan-ufz.4 --json`; `bd comments super-plan-ufz.4` returned no comments. No amendments apply.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 5,
+          "lineEnd": 7,
+          "byteStart": 42,
+          "byteEnd": 422
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Spec compliance"
+      ],
+      "lineStart": 9,
+      "lineEnd": 16,
+      "byteStart": 423,
+      "byteEnd": 1433,
+      "bodyLineStart": 10,
+      "rawText": "## Spec compliance\n\n✅ Durable hold, pending-closure, deferred and fix records use the requested additive fields and evidence references. Clear affects only the matching obligation; fix history stays separate from terminal Task status. Existing Task/Merge/Human action reducers remain compatible. Both coordinator references describe the shared ordinary-subagent contract and contain the concrete pending-closure and FIXED examples.\n\n✅ Malformed/unknown compact records produce explicit gaps with source, digestLine, reason and a preview capped at 200 characters. The digest replaces records above 4096 characters with an original ledger path/line pointer, preserving full evidence on disk. Added fixtures cover malformed, unknown-version and valid structured oversized records without echoing their bodies. Report/finding prose is not added to Recovery payloads.\n\n✅ Scope remains durable transport and producers; later recovery reconciliation, acceptance and metrics consumers are not implemented here.\n\n",
+      "bodyRawText": "\n✅ Durable hold, pending-closure, deferred and fix records use the requested additive fields and evidence references. Clear affects only the matching obligation; fix history stays separate from terminal Task status. Existing Task/Merge/Human action reducers remain compatible. Both coordinator references describe the shared ordinary-subagent contract and contain the concrete pending-closure and FIXED examples.\n\n✅ Malformed/unknown compact records produce explicit gaps with source, digestLine, reason and a preview capped at 200 characters. The digest replaces records above 4096 characters with an original ledger path/line pointer, preserving full evidence on disk. Added fixtures cover malformed, unknown-version and valid structured oversized records without echoing their bodies. Report/finding prose is not added to Recovery payloads.\n\n✅ Scope remains durable transport and producers; later recovery reconciliation, acceptance and metrics consumers are not implemented here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Durable hold, pending-closure, deferred and fix records use the requested additive fields and evidence references. Clear affects only the matching obligation; fix history stays separate from terminal Task status. Existing Task/Merge/Human action reducers remain compatible. Both coordinator references describe the shared ordinary-subagent contract and contain the concrete pending-closure and FIXED examples.\n",
+          "text": "✅ Durable hold, pending-closure, deferred and fix records use the requested additive fields and evidence references. Clear affects only the matching obligation; fix history stays separate from terminal Task status. Existing Task/Merge/Human action reducers remain compatible. Both coordinator references describe the shared ordinary-subagent contract and contain the concrete pending-closure and FIXED examples.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 443,
+          "byteEnd": 857
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Malformed/unknown compact records produce explicit gaps with source, digestLine, reason and a preview capped at 200 characters. The digest replaces records above 4096 characters with an original ledger path/line pointer, preserving full evidence on disk. Added fixtures cover malformed, unknown-version and valid structured oversized records without echoing their bodies. Report/finding prose is not added to Recovery payloads.\n",
+          "text": "✅ Malformed/unknown compact records produce explicit gaps with source, digestLine, reason and a preview capped at 200 characters. The digest replaces records above 4096 characters with an original ledger path/line pointer, preserving full evidence on disk. Added fixtures cover malformed, unknown-version and valid structured oversized records without echoing their bodies. Report/finding prose is not added to Recovery payloads.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 858,
+          "byteEnd": 1290
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Scope remains durable transport and producers; later recovery reconciliation, acceptance and metrics consumers are not implemented here.\n",
+          "text": "✅ Scope remains durable transport and producers; later recovery reconciliation, acceptance and metrics consumers are not implemented here.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1291,
+          "byteEnd": 1432
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Issues"
+      ],
+      "lineStart": 17,
+      "lineEnd": 22,
+      "byteStart": 1433,
+      "byteEnd": 1491,
+      "bodyLineStart": 18,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1444,
+          "byteEnd": 1460
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1460,
+          "byteEnd": 1477
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1477,
+          "byteEnd": 1490
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability checks\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Focused reachability checks"
+      ],
+      "lineStart": 23,
+      "lineEnd": 28,
+      "byteStart": 1491,
+      "byteEnd": 2551,
+      "bodyLineStart": 24,
+      "rawText": "## Focused reachability checks\n\nRisk: the new records might not reach the existing durable writer or might be returned before flushing. Checked the real task chain at coordinator.js:1420 through reviewAndFix and its noteFixHistory call; runTask finally flushes at :1448, and round completion flushes remaining buffers and drains at :1585-1586. Merge-lane holds and pending-closure producers likewise use noteRecovery/noteLedger. Deferred sweep records queue directly and drain at :1668; Finish closure clears queue directly and drain at :1852. Checked sibling review/seam/check fixer dispatches: each non-null result reaches noteFixHistory. Identical elided Recovery fallbacks retain source/commit facts.\n\nRisk: new durable data could inflate the mechanical reader or be silently lost by the digest. Checked readLedgerPrompt at coordinator.js:2309 and ledger-digest:40-44: the actual reader invokes the modified digest, while oversized lines become source pointers and compact invalid lines reach the explicit decoder gap path. Legacy reducers are unchanged.\n\n",
+      "bodyRawText": "\nRisk: the new records might not reach the existing durable writer or might be returned before flushing. Checked the real task chain at coordinator.js:1420 through reviewAndFix and its noteFixHistory call; runTask finally flushes at :1448, and round completion flushes remaining buffers and drains at :1585-1586. Merge-lane holds and pending-closure producers likewise use noteRecovery/noteLedger. Deferred sweep records queue directly and drain at :1668; Finish closure clears queue directly and drain at :1852. Checked sibling review/seam/check fixer dispatches: each non-null result reaches noteFixHistory. Identical elided Recovery fallbacks retain source/commit facts.\n\nRisk: new durable data could inflate the mechanical reader or be silently lost by the digest. Checked readLedgerPrompt at coordinator.js:2309 and ledger-digest:40-44: the actual reader invokes the modified digest, while oversized lines become source pointers and compact invalid lines reach the explicit decoder gap path. Legacy reducers are unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: the new records might not reach the existing durable writer or might be returned before flushing. Checked the real task chain at coordinator.js:1420 through reviewAndFix and its noteFixHistory call; runTask finally flushes at :1448, and round completion flushes remaining buffers and drains at :1585-1586. Merge-lane holds and pending-closure producers likewise use noteRecovery/noteLedger. Deferred sweep records queue directly and drain at :1668; Finish closure clears queue directly and drain at :1852. Checked sibling review/seam/check fixer dispatches: each non-null result reaches noteFixHistory. Identical elided Recovery fallbacks retain source/commit facts.\n",
+          "text": "Risk: the new records might not reach the existing durable writer or might be returned before flushing. Checked the real task chain at coordinator.js:1420 through reviewAndFix and its noteFixHistory call; runTask finally flushes at :1448, and round completion flushes remaining buffers and drains at :1585-1586. Merge-lane holds and pending-closure producers likewise use noteRecovery/noteLedger. Deferred sweep records queue directly and drain at :1668; Finish closure clears queue directly and drain at :1852. Checked sibling review/seam/check fixer dispatches: each non-null result reaches noteFixHistory. Identical elided Recovery fallbacks retain source/commit facts.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 1523,
+          "byteEnd": 2196
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: new durable data could inflate the mechanical reader or be silently lost by the digest. Checked readLedgerPrompt at coordinator.js:2309 and ledger-digest:40-44: the actual reader invokes the modified digest, while oversized lines become source pointers and compact invalid lines reach the explicit decoder gap path. Legacy reducers are unchanged.\n",
+          "text": "Risk: new durable data could inflate the mechanical reader or be silently lost by the digest. Checked readLedgerPrompt at coordinator.js:2309 and ledger-digest:40-44: the actual reader invokes the modified digest, while oversized lines become source pointers and compact invalid lines reach the explicit decoder gap path. Legacy reducers are unchanged.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2197,
+          "byteEnd": 2550
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Test evidence"
+      ],
+      "lineStart": 29,
+      "lineEnd": 40,
+      "byteStart": 2551,
+      "byteEnd": 4129,
+      "bodyLineStart": 30,
+      "rawText": "## Test evidence\n\nNo tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:\n\n- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1` — exit 0, `1802 passed, 0 failed`.\n- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1` — exit 0, `dispatch-text: all tests passed`.\n\nThese commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.\n\nTest changes commands executed successfully in the task worktree: `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, with BASE=f1fb23d15eaaa70fff95404a97342cd83fb0bdb7, HEAD=18a0b359df063617af5c643bb73f2737c8aacbdd and PATHSPECS=`'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`.\nResult: replay-harness.mjs, 96 additions and 3 deletions. Existing expected assertions remain; helper filtering preserves the legacy Task/Merge assertion view while new recovery-aware assertions examine the complete additive stream. No unjustified deletion, skip or weakened expected value found.\n\n",
+      "bodyRawText": "\nNo tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:\n\n- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1` — exit 0, `1802 passed, 0 failed`.\n- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1` — exit 0, `dispatch-text: all tests passed`.\n\nThese commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.\n\nTest changes commands executed successfully in the task worktree: `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, with BASE=f1fb23d15eaaa70fff95404a97342cd83fb0bdb7, HEAD=18a0b359df063617af5c643bb73f2737c8aacbdd and PATHSPECS=`'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`.\nResult: replay-harness.mjs, 96 additions and 3 deletions. Existing expected assertions remain; helper filtering preserves the legacy Task/Merge assertion view while new recovery-aware assertions examine the complete additive stream. No unjustified deletion, skip or weakened expected value found.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:\n",
+          "text": "No tests rerun, as instructed. The implementation report records final commands on the reviewed immutable head:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2569,
+          "byteEnd": 2681
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1` — exit 0, `1802 passed, 0 failed`.\n",
+          "text": "`TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 node tests/super-code/replay-harness.mjs > evidence-task4-final.log 2>&1` — exit 0, `1802 passed, 0 failed`.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 2682,
+          "byteEnd": 2837
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1` — exit 0, `dispatch-text: all tests passed`.\n",
+          "text": "`TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.4 bash tests/super-code/test-dispatch-text.sh > evidence-task4-dispatch.log 2>&1` — exit 0, `dispatch-text: all tests passed`.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 2837,
+          "byteEnd": 3008
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.\n",
+          "text": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 3009,
+          "byteEnd": 3371
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands executed successfully in the task worktree: `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, with BASE=f1fb23d15eaaa70fff95404a97342cd83fb0bdb7, HEAD=18a0b359df063617af5c643bb73f2737c8aacbdd and PATHSPECS=`'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`.\nResult: replay-harness.mjs, 96 additions and 3 deletions. Existing expected assertions remain; helper filtering preserves the legacy Task/Merge assertion view while new recovery-aware assertions examine the complete additive stream. No unjustified deletion, skip or weakened expected value found.\n",
+          "text": "Test changes commands executed successfully in the task worktree: `git diff --stat BASE..HEAD -- PATHSPECS` and `git diff BASE..HEAD -- PATHSPECS`, with BASE=f1fb23d15eaaa70fff95404a97342cd83fb0bdb7, HEAD=18a0b359df063617af5c643bb73f2737c8aacbdd and PATHSPECS=`'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`.\nResult: replay-harness.mjs, 96 additions and 3 deletions. Existing expected assertions remain; helper filtering preserves the legacy Task/Merge assertion view while new recovery-aware assertions examine the complete additive stream. No unjustified deletion, skip or weakened expected value found.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 38,
+          "lineEnd": 39,
+          "byteStart": 3372,
+          "byteEnd": 4128
+        }
+      ]
+    },
+    {
+      "section": "Review artifacts",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Review artifacts\n",
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Review artifacts"
+      ],
+      "lineStart": 41,
+      "lineEnd": 43,
+      "byteStart": 4129,
+      "byteEnd": 4412,
+      "bodyLineStart": 42,
+      "rawText": "## Review artifacts\n\nThe initial sandboxed review-package invocation could not create its output; the same command was rerun successfully with approved escalation. The final package contains one commit and all five changed files. No source or test files were modified during review.\n",
+      "bodyRawText": "\nThe initial sandboxed review-package invocation could not create its output; the same command was rerun successfully with approved escalation. The final package contains one commit and all five changed files. No source or test files were modified during review.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The initial sandboxed review-package invocation could not create its output; the same command was rerun successfully with approved escalation. The final package contains one commit and all five changed files. No source or test files were modified during review.\n",
+          "text": "The initial sandboxed review-package invocation could not create its output; the same command was rerun successfully with approved escalation. The final package contains one commit and all five changed files. No source or test files were modified during review.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 43,
+          "lineEnd": 43,
+          "byteStart": 4150,
+          "byteEnd": 4412
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: CLEAN",
+      "text": "Status: CLEAN",
+      "rawText": "Status: CLEAN\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 14,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1444,
+      "byteEnd": 1460,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1460,
+      "byteEnd": 1477,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1477,
+      "byteEnd": 1490,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "section": "Test evidence",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task 4 review — CLEAN",
+        "Test evidence"
+      ],
+      "positionInSection": 4,
+      "key": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.",
+      "text": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.",
+      "rawText": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.\n",
+      "lineStart": 36,
+      "lineEnd": 36,
+      "byteStart": 3009,
+      "byteEnd": 3371,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

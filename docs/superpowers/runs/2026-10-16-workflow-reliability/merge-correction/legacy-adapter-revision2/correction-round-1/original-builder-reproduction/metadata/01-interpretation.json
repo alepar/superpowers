@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "ordinal": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+  "originalArtifact": "task-report-history-r1/raw/task-1-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-1-review.md",
+  "rawSha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+  "rawByteCount": 4560,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 45,
+    "byteStart": 0,
+    "byteEnd": 4560,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/0",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/01-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "unknown"
+  },
+  "originalVerdictAndStatusFields": [],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/0",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        151,
+        519
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Current requirements assign fresh-agent pressure evaluation to coordinator; early task closure is not epic acceptance."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/1",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        1579,
+        1925
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Explicit outstanding parent-owned fresh-agent behavioral acceptance; complete and record before enclosing acceptance."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/2",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        1937,
+        1953
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical issues declared none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/3",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        1954,
+        1971
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Important issues declared none."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/4",
+      "roles": [
+        "explicit-empty",
+        "deferred-coverage"
+      ],
+      "span": [
+        1972,
+        2102
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Minor issues declared none, expressly qualified by outstanding parent evaluation. This is not a minor finding."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/0/interpretedPassages/5",
+      "roles": [
+        "review-risk-context"
+      ],
+      "span": [
+        3820,
+        4560
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Named hypothetical reachability risk was checked; passage asserts no new finding."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-01-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Current requirements assign fresh-agent pressure evaluation to coordinator; early task closure is not epic acceptance.",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 151,
+      "byteEnd": 519,
+      "rawText": "- Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Task super-plan-ufz.1 review",
+          "headingRaw": "# Task super-plan-ufz.1 review\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 609,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 152
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-01-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Explicit outstanding parent-owned fresh-agent behavioral acceptance; complete and record before enclosing acceptance.",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 1579,
+      "byteEnd": 1925,
+      "rawText": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Spec compliance",
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Spec compliance"
+          ],
+          "sectionByteStart": 609,
+          "sectionByteEnd": 1926,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 971
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-01-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Critical issues declared none.",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1937,
+      "byteEnd": 1953,
+      "rawText": "Critical: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Issues"
+          ],
+          "sectionByteStart": 1926,
+          "sectionByteEnd": 2103,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 12
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-01-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Important issues declared none.",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1954,
+      "byteEnd": 1971,
+      "rawText": "Important: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Issues"
+          ],
+          "sectionByteStart": 1926,
+          "sectionByteEnd": 2103,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-01-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "explicit-empty",
+        "deferred-coverage"
+      ],
+      "interpretation": "Minor issues declared none, expressly qualified by outstanding parent evaluation. This is not a minor finding.",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 1972,
+      "byteEnd": 2102,
+      "rawText": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Issues",
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Issues"
+          ],
+          "sectionByteStart": 1926,
+          "sectionByteEnd": 2103,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 47
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-01-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "roles": [
+        "review-risk-context"
+      ],
+      "interpretation": "Named hypothetical reachability risk was checked; passage asserts no new finding.",
+      "lineStart": 45,
+      "lineEnd": 45,
+      "byteStart": 3820,
+      "byteEnd": 4560,
+      "rawText": "Risk: pinned helpers could be disconnected from real dispatches, or sibling callers could retain moving source inputs. Traced implementation result/head into `reviewAndFix` → `taskReviewPrompt`, and Finish ledger capture → final assembly → final single/cluster/seam builders. Inspected the scoped check-fix caller carrying `fixRes.head`. Searched matching dispatch/assembly call sites across skills/tests: ordinary instructions pass the captured pair, super-auto preserves it through assembly failure, and report-verdict supplies explicit inputs. History/assess defaults remain permitted. Source checks used the quiescent inspected head, confirmed by `git rev-parse HEAD`; no source, tracker, index, or branch mutation was performed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "Focused reachability checks",
+          "headingRaw": "## Focused reachability checks\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Focused reachability checks"
+          ],
+          "sectionByteStart": 3788,
+          "sectionByteEnd": 4560,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 33
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 151,
+      "byteEnd": 519,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/0"
+      ],
+      "interpretation": "Current requirements assign fresh-agent pressure evaluation to coordinator; early task closure is not epic acceptance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1579,
+      "byteEnd": 1925,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/1"
+      ],
+      "interpretation": "Explicit outstanding parent-owned fresh-agent behavioral acceptance; complete and record before enclosing acceptance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1972,
+      "byteEnd": 2102,
+      "roles": [
+        "explicit-empty",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/4"
+      ],
+      "interpretation": "Minor issues declared none, expressly qualified by outstanding parent evaluation. This is not a minor finding.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Add qualified Minor:none at L24 to empty declarations; retain requirement/ownership qualification L5. Explicit Issues emptiness never clears L16 evaluation.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "Issues Critical/Important/Minor only; outstanding parent behavioral acceptance expressly excluded.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Historical fresh-agent acceptance status beyond this source is unknown; Issues:none has explicitly narrower scope."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000000151",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 151,
+      "rawByteEnd": 519,
+      "rawLineStart": 5,
+      "rawLineEnd": 5,
+      "originalSections": [
+        {
+          "section": "Task super-plan-ufz.1 review",
+          "sectionOrdinal": 1,
+          "headingRaw": "# Task super-plan-ufz.1 review\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review"
+          ],
+          "byteStart": 0,
+          "byteEnd": 609
+        }
+      ],
+      "rawText": "- Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/0"
+      ],
+      "interpretation": "Current requirements assign fresh-agent pressure evaluation to coordinator; early task closure is not epic acceptance."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001579",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 1579,
+      "rawByteEnd": 1925,
+      "rawLineStart": 16,
+      "rawLineEnd": 16,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Spec compliance"
+          ],
+          "byteStart": 609,
+          "byteEnd": 1926
+        }
+      ],
+      "rawText": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/1"
+      ],
+      "interpretation": "Explicit outstanding parent-owned fresh-agent behavioral acceptance; complete and record before enclosing acceptance."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000001972",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "explicit-empty",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 1972,
+      "rawByteEnd": 2102,
+      "rawLineStart": 24,
+      "rawLineEnd": 24,
+      "originalSections": [
+        {
+          "section": "Issues",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Issues\n",
+          "hierarchy": [
+            "Task super-plan-ufz.1 review",
+            "Issues"
+          ],
+          "byteStart": 1926,
+          "byteEnd": 2103
+        }
+      ],
+      "rawText": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/0/interpretedPassages/4"
+      ],
+      "interpretation": "Minor issues declared none, expressly qualified by outstanding parent evaluation. This is not a minor finding."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/01-task-1-review.md",
+  "retainedSha256": "989f75807a05894709bdfd451a8c7a831ccda05d4cfb10aaa7a54b2d2fa8f5f9"
+}

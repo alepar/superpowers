@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "ordinal": 22,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+  "originalArtifact": "task-report-history-r1/raw/task-15-review-seam.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-15-review-seam.md",
+  "rawSha256": "f7d10c60db55b9d887c10e652f41eec032543d4e72695c669cf4f3a13c4ca525",
+  "rawByteCount": 3154,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 23,
+    "byteStart": 0,
+    "byteEnd": 3154,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/21",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/22-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 5,
+      "rawText": "  \"status\": \"CLEAN\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/21/interpretedPassages/0",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        66,
+        83
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Actual seam review JSON declares finding empty string, with CLEAN context; not an illustrative example or new finding occurrence."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/21/interpretedPassages/1",
+      "roles": [
+        "review-scope"
+      ],
+      "span": [
+        83,
+        362
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Seam-only nine overlaps and exact sibling/task ranges."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/21/interpretedPassages/2",
+      "roles": [
+        "review-context"
+      ],
+      "span": [
+        378,
+        1573
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Compatibility evidence retaining prior independent source, history/projection and collector contracts; no new finding."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-22-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Actual seam review JSON declares finding empty string, with CLEAN context; not an illustrative example or new finding occurrence.",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 66,
+      "byteEnd": 83,
+      "rawText": "  \"finding\": \"\",\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3154,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 67
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-22-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "roles": [
+        "review-scope"
+      ],
+      "interpretation": "Seam-only nine overlaps and exact sibling/task ranges.",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 83,
+      "byteEnd": 362,
+      "rawText": "  \"scope\": \"Seam-only compatibility review: sibling range 7074121343636addd41f80ef5261de6ffb74ab80..6c332aa22824c185dc474b0fb5055b465cbd1412 and task range 6c332aa22824c185dc474b0fb5055b465cbd1412..9b41133178416096df0b16a390342d81eeb0f690, limited to the nine listed overlaps.\",\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3154,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 84
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-22-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "roles": [
+        "review-context"
+      ],
+      "interpretation": "Compatibility evidence retaining prior independent source, history/projection and collector contracts; no new finding.",
+      "lineStart": 9,
+      "lineEnd": 13,
+      "byteStart": 378,
+      "byteEnd": 1573,
+      "rawText": "    \"Recovery validation refactoring retains verification-only basis validation and reconstruction. Typed completion discriminators survive ledger-digest's additive availability markers.\",\n    \"Finish reconciliation retains verificationCompletions in closure candidates and typed completion lines, and verificationCandidates prevents unsupported tracker closures. Reconciliation and its ledger drain now precede Metrics capture. completedLandings excludes verificationCompletions while the completion tally retains them.\",\n    \"Ledger retries retain successful Git observations independently from ledger transport and preserve complete review base/head pairs from a single attempt. Failed observations remain qualified gaps.\",\n    \"Finding metrics remain additive over the accumulated projection. Raw occurrences, actionable groups and retained source populations stay distinct; earlier supported dispositions and outstanding findings survive later clean invocations.\",\n    \"Review-collection recovery, direct package preservation, pending/gap qualifiers and profile ownership are preserved. New report instructions consume accumulated projection evidence without treating empty keys as clean.\"\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 0,
+          "section": null,
+          "headingRaw": null,
+          "hierarchy": [],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3154,
+          "canonicalSectionAlias": "legacy-raw-section/0",
+          "positionByteInSection": 379
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Empty-string finding is an actual scoped review declaration, not an illustrative JSON duplicate. Entire object may be kept as evidence but is not one giant empty-finding text.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "New seam compatibility finding only; JSON empty string preserved.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterScopedEmptyBasis": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/21",
+      "passageIndex": 0,
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 66,
+      "byteEnd": 83,
+      "rawText": "  \"finding\": \"\",\n",
+      "roles": [
+        "explicit-empty"
+      ]
+    }
+  ],
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [],
+  "retainedArtifact": "legacy-report-adapters-r1/22-task-15-review-seam.md",
+  "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6"
+}

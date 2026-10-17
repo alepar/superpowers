@@ -1,0 +1,494 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-2-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-2-review.md",
+  "rawSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+  "rawByteCount": 3681,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-review.md",
+    "durablePath": "task-report-history-r1/raw/task-2-review.md",
+    "sha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+    "byteCount": 3681,
+    "logicalRole": "review",
+    "ordinal": 2,
+    "logicalTaskId": "super-plan-ufz.2",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-2-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 5,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.2 review",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.2 review\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 review"
+      ],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 141,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.2 review\n\nBase: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nHead: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nStatus: CLEAN\n\n",
+      "bodyRawText": "\nBase: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nHead: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nStatus: CLEAN\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\n",
+          "text": "Base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 32,
+          "byteEnd": 79
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\n",
+          "text": "Head: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 79,
+          "byteEnd": 126
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 126,
+          "byteEnd": 140
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 14,
+      "byteStart": 141,
+      "byteEnd": 1179,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n\n✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.\n\n⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n\n⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n\n",
+      "bodyRawText": "\n✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.\n\n⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n\n⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.\n",
+          "text": "✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 161,
+          "byteEnd": 707
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n",
+          "text": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 708,
+          "byteEnd": 914
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n",
+          "text": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 915,
+          "byteEnd": 1178
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "lineStart": 15,
+      "lineEnd": 20,
+      "byteStart": 1179,
+      "byteEnd": 1586,
+      "bodyLineStart": 16,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1190,
+          "byteEnd": 1206
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1206,
+          "byteEnd": 1223
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n",
+          "text": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1223,
+          "byteEnd": 1585
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Test evidence"
+      ],
+      "lineStart": 21,
+      "lineEnd": 32,
+      "byteStart": 1586,
+      "byteEnd": 2967,
+      "bodyLineStart": 22,
+      "rawText": "## Test evidence\n\nNo tests rerun. Reported commands, run from the task worktree:\n\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n\nRead the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.\n\nTest changes commands, both successful: git diff --stat 01ff39cc0b6fc0effdf559e9b1164273610c24e6..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'; git diff with the same range and pathspecs. Result: one test file, 85 insertions, 2 deletions. The two changed expectations implement the requested new outcome fields/classification; no unrelated weakening, skipped tests or deletions found.\n\n",
+      "bodyRawText": "\nNo tests rerun. Reported commands, run from the task worktree:\n\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\n- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n\nRead the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.\n\nTest changes commands, both successful: git diff --stat 01ff39cc0b6fc0effdf559e9b1164273610c24e6..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'; git diff with the same range and pathspecs. Result: one test file, 85 insertions, 2 deletions. The two changed expectations implement the requested new outcome fields/classification; no unrelated weakening, skipped tests or deletions found.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests rerun. Reported commands, run from the task worktree:\n",
+          "text": "No tests rerun. Reported commands, run from the task worktree:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 1604,
+          "byteEnd": 1667
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\n",
+          "text": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 1668,
+          "byteEnd": 1812
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\n",
+          "text": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 1812,
+          "byteEnd": 1961
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n",
+          "text": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 1961,
+          "byteEnd": 2110
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.\n",
+          "text": "Read the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2111,
+          "byteEnd": 2421
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands, both successful: git diff --stat 01ff39cc0b6fc0effdf559e9b1164273610c24e6..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'; git diff with the same range and pathspecs. Result: one test file, 85 insertions, 2 deletions. The two changed expectations implement the requested new outcome fields/classification; no unrelated weakening, skipped tests or deletions found.\n",
+          "text": "Test changes commands, both successful: git diff --stat 01ff39cc0b6fc0effdf559e9b1164273610c24e6..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'; git diff with the same range and pathspecs. Result: one test file, 85 insertions, 2 deletions. The two changed expectations implement the requested new outcome fields/classification; no unrelated weakening, skipped tests or deletions found.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2422,
+          "byteEnd": 2966
+        }
+      ]
+    },
+    {
+      "section": "Reachability and focused checks",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Reachability and focused checks\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Reachability and focused checks"
+      ],
+      "lineStart": 33,
+      "lineEnd": 35,
+      "byteStart": 2967,
+      "byteEnd": 3681,
+      "bodyLineStart": 34,
+      "rawText": "## Reachability and focused checks\n\nTraced Finish dispatch through worktreeSweepPrompt to remove-task-worktree --sweep, its stop_processes wrapper and stop-run-processes, then back through processSweep/worktreesKept to run-state and Remaining sources. Checked sibling merge, close-only and discard prompts: each carries exit 3/4 outcomes instead of treating them as verified cleanup. Checked dispatch scriptError normalization to null to verify unavailable cleanup reaches unknown. Focused retention check read remove-task-worktree around preflight and deletion paths; verified stop errors return before worktree, branch or temp deletion. Existing dirty/unmerged guards remain. No broader process targeting found.\n",
+      "bodyRawText": "\nTraced Finish dispatch through worktreeSweepPrompt to remove-task-worktree --sweep, its stop_processes wrapper and stop-run-processes, then back through processSweep/worktreesKept to run-state and Remaining sources. Checked sibling merge, close-only and discard prompts: each carries exit 3/4 outcomes instead of treating them as verified cleanup. Checked dispatch scriptError normalization to null to verify unavailable cleanup reaches unknown. Focused retention check read remove-task-worktree around preflight and deletion paths; verified stop errors return before worktree, branch or temp deletion. Existing dirty/unmerged guards remain. No broader process targeting found.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Traced Finish dispatch through worktreeSweepPrompt to remove-task-worktree --sweep, its stop_processes wrapper and stop-run-processes, then back through processSweep/worktreesKept to run-state and Remaining sources. Checked sibling merge, close-only and discard prompts: each carries exit 3/4 outcomes instead of treating them as verified cleanup. Checked dispatch scriptError normalization to null to verify unavailable cleanup reaches unknown. Focused retention check read remove-task-worktree around preflight and deletion paths; verified stop errors return before worktree, branch or temp deletion. Existing dirty/unmerged guards remain. No broader process targeting found.\n",
+          "text": "Traced Finish dispatch through worktreeSweepPrompt to remove-task-worktree --sweep, its stop_processes wrapper and stop-run-processes, then back through processSweep/worktreesKept to run-state and Remaining sources. Checked sibling merge, close-only and discard prompts: each carries exit 3/4 outcomes instead of treating them as verified cleanup. Checked dispatch scriptError normalization to null to verify unavailable cleanup reaches unknown. Focused retention check read remove-task-worktree around preflight and deletion paths; verified stop errors return before worktree, branch or temp deletion. Existing dirty/unmerged guards remain. No broader process targeting found.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 3003,
+          "byteEnd": 3681
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.",
+      "text": "✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.",
+      "rawText": "✅ Current bead description and acceptance, frozen Task 2, brief, report and eight-file diff agree. No bead comments or explicit amendments were present. Task closure is implementation-only; review/merge remain tracked by super-plan-ufz.16. Failed discovery/status remains unknown; verified disappearance alone permits stopped. Worktree and temp preflight runs before destructive cleanup, including discard/sweep. Interactive preservation is distinct. Existing matching boundaries remain; delivered code is independent from cleanup obligations.\n",
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 161,
+      "byteEnd": 707,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "positionInSection": 2,
+      "key": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+      "text": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.",
+      "rawText": "⚠️ tests/super-code/replay-harness.mjs:3697 — fixtures intentionally force the lsof path. Native Linux /proc integration is not demonstrated on the macOS host; the report correctly states this limit.\n",
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 708,
+      "byteEnd": 914,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Spec compliance"
+      ],
+      "positionInSection": 3,
+      "key": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+      "text": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.",
+      "rawText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 915,
+      "byteEnd": 1178,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1190,
+      "byteEnd": 1206,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1206,
+      "byteEnd": 1223,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+      "text": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.",
+      "rawText": "Minor: tests/super-code/replay-harness.mjs:3771 — the report records three real sleeper fixtures leaked by an intermediate failed run. Canonical teardown subsequently stopped them and final checks were empty, so this is not a surviving daemon finding. The real-process fixtures should have failure-path teardown independent of the cleanup helper being tested.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1223,
+      "byteEnd": 1585,
+      "appearanceClass": "historical-minor-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Task super-plan-ufz.2 review",
+        "Test evidence"
+      ],
+      "positionInSection": 5,
+      "key": "Read the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.",
+      "text": "Read the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.",
+      "rawText": "Read the final log tails: 1852 passed, 0 failed; dispatch-text all tests passed; all super-auto contract lint tests passed. Report supplies exit 0, targeted RED failures, fixture identities and cleanup evidence. Evidence plausibly covers changed mechanics and callers without claiming parent-owned evaluation.\n",
+      "lineStart": 29,
+      "lineEnd": 29,
+      "byteStart": 2111,
+      "byteEnd": 2421,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

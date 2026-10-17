@@ -1,0 +1,728 @@
+[
+  {
+    "objectId": "o00274",
+    "sourceId": "s0468",
+    "path": "evidence/super-plan-ufz.14/corrected-pre-rebase-required-results.json",
+    "sourceSha256": "9082545af9439c68ee48ebeaff9f28b10a9d8afea41e87b0f78a64e5d43655b7",
+    "pointer": "$/0",
+    "record": {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "code": 0,
+      "signal": null,
+      "seconds": 26.577,
+      "log": "evidence/super-plan-ufz.14/corrected-pre-rebase-super-code--replay-harness.mjs.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.291,
+        "log": "evidence/super-plan-ufz.14/corrected-pre-rebase-super-code--replay-harness.mjs.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/0",
+    "record": {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "code": 0,
+      "signal": null,
+      "seconds": 26.401,
+      "log": "evidence/super-plan-ufz.14/final-super-code--replay-harness.mjs.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.241,
+        "log": "evidence/super-plan-ufz.14/final-super-code--replay-harness.mjs.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/1",
+    "record": {
+      "command": "bash tests/super-code/test-run-profile.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 17.339,
+      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.173,
+        "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/2",
+    "record": {
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 10.17,
+      "log": "evidence/super-plan-ufz.14/final-super-code--test-dispatch-text.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.205,
+        "log": "evidence/super-plan-ufz.14/final-super-code--test-dispatch-text.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/3",
+    "record": {
+      "command": "bash tests/super-code/test-run-profile-in-flight.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 5.237,
+      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.133,
+        "log": "evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/4",
+    "record": {
+      "command": "bash tests/super-code/test-report-verdict.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 2.697,
+      "log": "evidence/super-plan-ufz.14/final-super-code--test-report-verdict.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.277,
+        "log": "evidence/super-plan-ufz.14/final-super-code--test-report-verdict.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00276",
+    "sourceId": "s0470",
+    "path": "evidence/super-plan-ufz.14/final-required-results.json",
+    "sourceSha256": "c25c093ca260440baa7ad7c8fb990c1c594d95cca1084076edad6881782929dc",
+    "pointer": "$/5",
+    "record": {
+      "command": "bash tests/super-code/test-run-digest.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 14.416,
+      "log": "evidence/super-plan-ufz.14/final-super-code--test-run-digest.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.158,
+        "log": "evidence/super-plan-ufz.14/final-super-code--test-run-digest.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00278",
+    "sourceId": "s0473",
+    "path": "evidence/super-plan-ufz.14/pre-rebase-required-results.json",
+    "sourceSha256": "84453882a25996084e7d08e286fa866df409fae0fc3323967e0c2290df8046f8",
+    "pointer": "$/0",
+    "record": {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "code": 1,
+      "signal": null,
+      "seconds": 26.957,
+      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--replay-harness.mjs.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.225,
+        "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--replay-harness.mjs.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00278",
+    "sourceId": "s0473",
+    "path": "evidence/super-plan-ufz.14/pre-rebase-required-results.json",
+    "sourceSha256": "84453882a25996084e7d08e286fa866df409fae0fc3323967e0c2290df8046f8",
+    "pointer": "$/1",
+    "record": {
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 10.41,
+      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-dispatch-text.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.128,
+        "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-dispatch-text.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00278",
+    "sourceId": "s0473",
+    "path": "evidence/super-plan-ufz.14/pre-rebase-required-results.json",
+    "sourceSha256": "84453882a25996084e7d08e286fa866df409fae0fc3323967e0c2290df8046f8",
+    "pointer": "$/2",
+    "record": {
+      "command": "bash tests/super-code/test-report-verdict.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 2.835,
+      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-report-verdict.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.216,
+        "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-report-verdict.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/0",
+    "record": {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "code": 0,
+      "signal": null,
+      "seconds": 30.578,
+      "log": "evidence/super-plan-ufz.14/super-code--replay-harness.mjs.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.523,
+        "log": "evidence/super-plan-ufz.14/super-code--replay-harness.mjs.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/1",
+    "record": {
+      "command": "bash tests/super-code/test-run-profile.sh",
+      "code": 1,
+      "signal": null,
+      "seconds": 20.199,
+      "log": "evidence/super-plan-ufz.14/super-code--test-run-profile.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 4.132,
+        "log": "evidence/super-plan-ufz.14/super-code--test-run-profile.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/2",
+    "record": {
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 14.947,
+      "log": "evidence/super-plan-ufz.14/super-code--test-dispatch-text.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.267,
+        "log": "evidence/super-plan-ufz.14/super-code--test-dispatch-text.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/3",
+    "record": {
+      "command": "bash tests/super-design/test-scripts.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 1.227,
+      "log": "evidence/super-plan-ufz.14/super-design--test-scripts.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.381,
+        "log": "evidence/super-plan-ufz.14/super-design--test-scripts.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/4",
+    "record": {
+      "command": "bash tests/super-roast/test-assemble-args.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 3.298,
+      "log": "evidence/super-plan-ufz.14/super-roast--test-assemble-args.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 5.423,
+        "log": "evidence/super-plan-ufz.14/super-roast--test-assemble-args.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/5",
+    "record": {
+      "command": "bash tests/super-auto/test-scripts.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 34.101,
+      "log": "evidence/super-plan-ufz.14/super-auto--test-scripts.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 3.409,
+        "log": "evidence/super-plan-ufz.14/super-auto--test-scripts.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/6",
+    "record": {
+      "command": "bash tests/super-auto/test-contract-lint.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 44.051,
+      "log": "evidence/super-plan-ufz.14/super-auto--test-contract-lint.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 6.414,
+        "log": "evidence/super-plan-ufz.14/super-auto--test-contract-lint.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/7",
+    "record": {
+      "command": "bash tests/skill-scripts/test-bash-invocation.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 559.911,
+      "log": "evidence/super-plan-ufz.14/skill-scripts--test-bash-invocation.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.223,
+        "log": "evidence/super-plan-ufz.14/skill-scripts--test-bash-invocation.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/8",
+    "record": {
+      "command": "bash tests/codex/test-marketplace-manifest.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 0.033,
+      "log": "evidence/super-plan-ufz.14/codex--test-marketplace-manifest.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.117,
+        "log": "evidence/super-plan-ufz.14/codex--test-marketplace-manifest.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/9",
+    "record": {
+      "command": "bash tests/super-code/test-run-marker.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 4.013,
+      "log": "evidence/super-plan-ufz.14/super-code--test-run-marker.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.652,
+        "log": "evidence/super-plan-ufz.14/super-code--test-run-marker.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/10",
+    "record": {
+      "command": "bash tests/super-code/test-run-profile-in-flight.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 6.211,
+      "log": "evidence/super-plan-ufz.14/super-code--test-run-profile-in-flight.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.43,
+        "log": "evidence/super-plan-ufz.14/super-code--test-run-profile-in-flight.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/11",
+    "record": {
+      "command": "bash tests/super-code/test-report-verdict.sh",
+      "code": 1,
+      "signal": null,
+      "seconds": 2.914,
+      "log": "evidence/super-plan-ufz.14/super-code--test-report-verdict.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.564,
+        "log": "evidence/super-plan-ufz.14/super-code--test-report-verdict.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/12",
+    "record": {
+      "command": "bash tests/super-code/test-run-digest.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 13.925,
+      "log": "evidence/super-plan-ufz.14/super-code--test-run-digest.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.379,
+        "log": "evidence/super-plan-ufz.14/super-code--test-run-digest.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/13",
+    "record": {
+      "command": "bash tests/super-code/test-task-surface.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 0.187,
+      "log": "evidence/super-plan-ufz.14/super-code--test-task-surface.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.444,
+        "log": "evidence/super-plan-ufz.14/super-code--test-task-surface.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/14",
+    "record": {
+      "command": "bash tests/super-code/test-split-oversized.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 22.127,
+      "log": "evidence/super-plan-ufz.14/super-code--test-split-oversized.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.365,
+        "log": "evidence/super-plan-ufz.14/super-code--test-split-oversized.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/15",
+    "record": {
+      "command": "bash tests/super-code/test-context-preflight.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 1.759,
+      "log": "evidence/super-plan-ufz.14/super-code--test-context-preflight.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.328,
+        "log": "evidence/super-plan-ufz.14/super-code--test-context-preflight.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/16",
+    "record": {
+      "command": "bash tests/super-code/test-assembled-size.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 0.539,
+      "log": "evidence/super-plan-ufz.14/super-code--test-assembled-size.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.238,
+        "log": "evidence/super-plan-ufz.14/super-code--test-assembled-size.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/17",
+    "record": {
+      "command": "bash tests/hooks/test-session-start.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 0.458,
+      "log": "evidence/super-plan-ufz.14/hooks--test-session-start.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.307,
+        "log": "evidence/super-plan-ufz.14/hooks--test-session-start.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/18",
+    "record": {
+      "command": "bash tests/hooks/test-run-block.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 27.622,
+      "log": "evidence/super-plan-ufz.14/hooks--test-run-block.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.193,
+        "log": "evidence/super-plan-ufz.14/hooks--test-run-block.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/19",
+    "record": {
+      "command": "bash tests/hooks/test-reinject-smoke.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 27.361,
+      "log": "evidence/super-plan-ufz.14/hooks--test-reinject-smoke.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.354,
+        "log": "evidence/super-plan-ufz.14/hooks--test-reinject-smoke.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/20",
+    "record": {
+      "command": "bash tests/codex/test-package-codex-plugin.sh",
+      "code": 9,
+      "signal": null,
+      "seconds": 0.389,
+      "log": "evidence/super-plan-ufz.14/codex--test-package-codex-plugin.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.351,
+        "log": "evidence/super-plan-ufz.14/codex--test-package-codex-plugin.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/21",
+    "record": {
+      "command": "bash tests/codex-plugin-sync/test-sync-to-codex-plugin.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 2.737,
+      "log": "evidence/super-plan-ufz.14/codex-plugin-sync--test-sync-to-codex-plugin.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.251,
+        "log": "evidence/super-plan-ufz.14/codex-plugin-sync--test-sync-to-codex-plugin.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  },
+  {
+    "objectId": "o00279",
+    "sourceId": "s0474",
+    "path": "evidence/super-plan-ufz.14/required-results.json",
+    "sourceSha256": "882442fa56b256e275ade3882b094b08369e72fa4f1b7a1ad855715bb4c434e8",
+    "pointer": "$/22",
+    "record": {
+      "command": "bash tests/skill-scripts/test-prompt-text-fresh-rounds.sh",
+      "code": 0,
+      "signal": null,
+      "seconds": 0.08,
+      "log": "evidence/super-plan-ufz.14/skill-scripts--test-prompt-text-fresh-rounds.sh.log",
+      "hygiene": {
+        "code": 0,
+        "signal": null,
+        "seconds": 2.393,
+        "log": "evidence/super-plan-ufz.14/skill-scripts--test-prompt-text-fresh-rounds.sh.hygiene.log"
+      }
+    },
+    "sourceTreeBinding": "Not in this receipt. Preserve source-manifest/source-stability artifacts separately; no inferred or restamped hash.",
+    "configurationBinding": "Runner and source manifests retained separately; receipt itself lacks explicit exact configuration field."
+  }
+]

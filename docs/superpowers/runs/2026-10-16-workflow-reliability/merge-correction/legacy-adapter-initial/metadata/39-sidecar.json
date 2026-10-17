@@ -1,0 +1,301 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-21-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-21-review.md",
+  "rawSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+  "rawByteCount": 9145,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md",
+    "durablePath": "task-report-history-r1/raw/task-21-review.md",
+    "sha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+    "byteCount": 9145,
+    "logicalRole": "review",
+    "ordinal": 21,
+    "logicalTaskId": "super-plan-ufz.24",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-21-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": false,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 12,
+      "rawText": "The read-only status loop at skills/super-auto/scripts/report-status:297–312 reads and hashes every file in each latest valid collection inventory, even when complete:true persists. Missing, unreadable, nonregular and changed files become path/invocation-specific gaps; an affected collection is pending. No write or recollection occurs in this branch. Existing saved gaps remain counted. The acceptance entrypoint at :168–173 invokes ordinary status with RS_SKIP_ACCEPTANCE=1 and consumes these qualifiers, so the new check is reached by the actual acceptance command."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 21 review — super-plan-ufz.24",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 21 review — super-plan-ufz.24\n",
+      "hierarchy": [
+        "Task 21 review — super-plan-ufz.24"
+      ],
+      "lineStart": 1,
+      "lineEnd": 25,
+      "byteStart": 0,
+      "byteEnd": 4624,
+      "bodyLineStart": 2,
+      "rawText": "# Task 21 review — super-plan-ufz.24\n\nStatus: CLEAN\n\nSpec compliance: ✅. Current bead and comments were read before the frozen brief; no amendments or comments exist. The captured range implements the stated archive-integrity boundary and adds only the named regression. No spec or existing suite changes.\n\nCritical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.\n\nThe read-only status loop at skills/super-auto/scripts/report-status:297–312 reads and hashes every file in each latest valid collection inventory, even when complete:true persists. Missing, unreadable, nonregular and changed files become path/invocation-specific gaps; an affected collection is pending. No write or recollection occurs in this branch. Existing saved gaps remain counted. The acceptance entrypoint at :168–173 invokes ordinary status with RS_SKIP_ACCEPTANCE=1 and consumes these qualifiers, so the new check is reached by the actual acceptance command.\n\nConcrete boundary checks beyond changed context: inspected the acceptance delegation at :168–173 for reachability and recursion; inspected collection inventory production and the unchanged validation at :283–293 for malformed/missing/duplicate records. Malformed records retain an error even alongside valid records; incomplete/missing inventories for ordinary non-null complete reviews fail validation; latest records intentionally supersede earlier intent/completion snapshots. Every duplicate file entry in a selected inventory is checked, so a conflicting hash cannot silently become a pass. Existing no-work null-review semantics are preserved. Source-bound root acceptance, finding projection, settlement validation and evidence matching are unchanged. The patch does not introduce another weaker acceptance path. Final-component symlinks are rejected by lstat.isFile; ancestor symlink containment remains the independently owned .27 scope and is not reopened.\n\nTest evidence: no product tests were run by this reviewer. Reviewed original retained logs and the report. Final archive-final.log records all 15 focused scenarios passing; script-suite-final.log ends with All super-auto script tests passed and includes 44 root-acceptance assertions. Their commands are bash tests/super-auto/archive-integrity-r1.sh and bash tests/super-auto/test-scripts.sh, both bound to a487f101832c60590555f835faa3ba9a27e0d691, which git rev-parse of captured HEAD^{tree} confirms. The focused source deletes and corrupts all six retained artifact classes independently, uses the real collection/status/acceptance CLI, checks exact gaps, checks a matching archive after workspace removal, and snapshots bytes/mtimes/modes/inventory across each read. It preserves the separate human obligation. This plausibly covers all acceptance criteria.\n\nTest changes: ran git diff --stat BASE..HEAD -- TEST_PATHSPECS and git diff BASE..HEAD -- TEST_PATHSPECS with the dispatch's full pathspec list. Both succeeded; only the new 70-line tests/super-auto/archive-integrity-r1.sh appears. No tests were deleted, skipped, loosened or edited to match the implementation. Existing test-scripts.sh is unchanged.\n\nIdentity/package checks: both captured commits resolve; merge-base --is-ancestor BASE HEAD succeeds. review-package produced a nonempty two-file package. Caller git status --short was empty. A first combined rev-parse --verify call was invalid CLI usage and was corrected to separate successful identity checks. Initial sandboxed package write was denied; the explicitly authorized named diff write succeeded with narrow escalation. No source, Git, bead or Herdr state was mutated. No filesystem view or reproduction was required.\n\nCheck records: retained below unchanged from the implementer report, with full source capture commands remaining in task-21-report.md (temporary-index read-tree/add/write-tree for RED/GREEN and git rev-parse HEAD^{tree} for final committed source). RED measures the actual missing-direct-package acceptance defect; GREEN and final evidence show the targeted correction. Earlier RED/GREEN records are historical; requiredLiveChecks select only final captured source. Both required final checks have matching live/pass evidence at their original locations.\n\nFailure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.\n\n",
+      "bodyRawText": "\nStatus: CLEAN\n\nSpec compliance: ✅. Current bead and comments were read before the frozen brief; no amendments or comments exist. The captured range implements the stated archive-integrity boundary and adds only the named regression. No spec or existing suite changes.\n\nCritical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.\n\nThe read-only status loop at skills/super-auto/scripts/report-status:297–312 reads and hashes every file in each latest valid collection inventory, even when complete:true persists. Missing, unreadable, nonregular and changed files become path/invocation-specific gaps; an affected collection is pending. No write or recollection occurs in this branch. Existing saved gaps remain counted. The acceptance entrypoint at :168–173 invokes ordinary status with RS_SKIP_ACCEPTANCE=1 and consumes these qualifiers, so the new check is reached by the actual acceptance command.\n\nConcrete boundary checks beyond changed context: inspected the acceptance delegation at :168–173 for reachability and recursion; inspected collection inventory production and the unchanged validation at :283–293 for malformed/missing/duplicate records. Malformed records retain an error even alongside valid records; incomplete/missing inventories for ordinary non-null complete reviews fail validation; latest records intentionally supersede earlier intent/completion snapshots. Every duplicate file entry in a selected inventory is checked, so a conflicting hash cannot silently become a pass. Existing no-work null-review semantics are preserved. Source-bound root acceptance, finding projection, settlement validation and evidence matching are unchanged. The patch does not introduce another weaker acceptance path. Final-component symlinks are rejected by lstat.isFile; ancestor symlink containment remains the independently owned .27 scope and is not reopened.\n\nTest evidence: no product tests were run by this reviewer. Reviewed original retained logs and the report. Final archive-final.log records all 15 focused scenarios passing; script-suite-final.log ends with All super-auto script tests passed and includes 44 root-acceptance assertions. Their commands are bash tests/super-auto/archive-integrity-r1.sh and bash tests/super-auto/test-scripts.sh, both bound to a487f101832c60590555f835faa3ba9a27e0d691, which git rev-parse of captured HEAD^{tree} confirms. The focused source deletes and corrupts all six retained artifact classes independently, uses the real collection/status/acceptance CLI, checks exact gaps, checks a matching archive after workspace removal, and snapshots bytes/mtimes/modes/inventory across each read. It preserves the separate human obligation. This plausibly covers all acceptance criteria.\n\nTest changes: ran git diff --stat BASE..HEAD -- TEST_PATHSPECS and git diff BASE..HEAD -- TEST_PATHSPECS with the dispatch's full pathspec list. Both succeeded; only the new 70-line tests/super-auto/archive-integrity-r1.sh appears. No tests were deleted, skipped, loosened or edited to match the implementation. Existing test-scripts.sh is unchanged.\n\nIdentity/package checks: both captured commits resolve; merge-base --is-ancestor BASE HEAD succeeds. review-package produced a nonempty two-file package. Caller git status --short was empty. A first combined rev-parse --verify call was invalid CLI usage and was corrected to separate successful identity checks. Initial sandboxed package write was denied; the explicitly authorized named diff write succeeded with narrow escalation. No source, Git, bead or Herdr state was mutated. No filesystem view or reproduction was required.\n\nCheck records: retained below unchanged from the implementer report, with full source capture commands remaining in task-21-report.md (temporary-index read-tree/add/write-tree for RED/GREEN and git rev-parse HEAD^{tree} for final committed source). RED measures the actual missing-direct-package acceptance defect; GREEN and final evidence show the targeted correction. Earlier RED/GREEN records are historical; requiredLiveChecks select only final captured source. Both required final checks have matching live/pass evidence at their original locations.\n\nFailure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 40,
+          "byteEnd": 54
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Spec compliance: ✅. Current bead and comments were read before the frozen brief; no amendments or comments exist. The captured range implements the stated archive-integrity boundary and adds only the named regression. No spec or existing suite changes.\n",
+          "text": "Spec compliance: ✅. Current bead and comments were read before the frozen brief; no amendments or comments exist. The captured range implements the stated archive-integrity boundary and adds only the named regression. No spec or existing suite changes.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 55,
+          "byteEnd": 310
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.\n",
+          "text": "Critical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 7,
+          "lineEnd": 10,
+          "byteStart": 311,
+          "byteEnd": 414
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The read-only status loop at skills/super-auto/scripts/report-status:297–312 reads and hashes every file in each latest valid collection inventory, even when complete:true persists. Missing, unreadable, nonregular and changed files become path/invocation-specific gaps; an affected collection is pending. No write or recollection occurs in this branch. Existing saved gaps remain counted. The acceptance entrypoint at :168–173 invokes ordinary status with RS_SKIP_ACCEPTANCE=1 and consumes these qualifiers, so the new check is reached by the actual acceptance command.\n",
+          "text": "The read-only status loop at skills/super-auto/scripts/report-status:297–312 reads and hashes every file in each latest valid collection inventory, even when complete:true persists. Missing, unreadable, nonregular and changed files become path/invocation-specific gaps; an affected collection is pending. No write or recollection occurs in this branch. Existing saved gaps remain counted. The acceptance entrypoint at :168–173 invokes ordinary status with RS_SKIP_ACCEPTANCE=1 and consumes these qualifiers, so the new check is reached by the actual acceptance command.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 415,
+          "byteEnd": 989
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Concrete boundary checks beyond changed context: inspected the acceptance delegation at :168–173 for reachability and recursion; inspected collection inventory production and the unchanged validation at :283–293 for malformed/missing/duplicate records. Malformed records retain an error even alongside valid records; incomplete/missing inventories for ordinary non-null complete reviews fail validation; latest records intentionally supersede earlier intent/completion snapshots. Every duplicate file entry in a selected inventory is checked, so a conflicting hash cannot silently become a pass. Existing no-work null-review semantics are preserved. Source-bound root acceptance, finding projection, settlement validation and evidence matching are unchanged. The patch does not introduce another weaker acceptance path. Final-component symlinks are rejected by lstat.isFile; ancestor symlink containment remains the independently owned .27 scope and is not reopened.\n",
+          "text": "Concrete boundary checks beyond changed context: inspected the acceptance delegation at :168–173 for reachability and recursion; inspected collection inventory production and the unchanged validation at :283–293 for malformed/missing/duplicate records. Malformed records retain an error even alongside valid records; incomplete/missing inventories for ordinary non-null complete reviews fail validation; latest records intentionally supersede earlier intent/completion snapshots. Every duplicate file entry in a selected inventory is checked, so a conflicting hash cannot silently become a pass. Existing no-work null-review semantics are preserved. Source-bound root acceptance, finding projection, settlement validation and evidence matching are unchanged. The patch does not introduce another weaker acceptance path. Final-component symlinks are rejected by lstat.isFile; ancestor symlink containment remains the independently owned .27 scope and is not reopened.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 990,
+          "byteEnd": 1961
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test evidence: no product tests were run by this reviewer. Reviewed original retained logs and the report. Final archive-final.log records all 15 focused scenarios passing; script-suite-final.log ends with All super-auto script tests passed and includes 44 root-acceptance assertions. Their commands are bash tests/super-auto/archive-integrity-r1.sh and bash tests/super-auto/test-scripts.sh, both bound to a487f101832c60590555f835faa3ba9a27e0d691, which git rev-parse of captured HEAD^{tree} confirms. The focused source deletes and corrupts all six retained artifact classes independently, uses the real collection/status/acceptance CLI, checks exact gaps, checks a matching archive after workspace removal, and snapshots bytes/mtimes/modes/inventory across each read. It preserves the separate human obligation. This plausibly covers all acceptance criteria.\n",
+          "text": "Test evidence: no product tests were run by this reviewer. Reviewed original retained logs and the report. Final archive-final.log records all 15 focused scenarios passing; script-suite-final.log ends with All super-auto script tests passed and includes 44 root-acceptance assertions. Their commands are bash tests/super-auto/archive-integrity-r1.sh and bash tests/super-auto/test-scripts.sh, both bound to a487f101832c60590555f835faa3ba9a27e0d691, which git rev-parse of captured HEAD^{tree} confirms. The focused source deletes and corrupts all six retained artifact classes independently, uses the real collection/status/acceptance CLI, checks exact gaps, checks a matching archive after workspace removal, and snapshots bytes/mtimes/modes/inventory across each read. It preserves the separate human obligation. This plausibly covers all acceptance criteria.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1962,
+          "byteEnd": 2824
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes: ran git diff --stat BASE..HEAD -- TEST_PATHSPECS and git diff BASE..HEAD -- TEST_PATHSPECS with the dispatch's full pathspec list. Both succeeded; only the new 70-line tests/super-auto/archive-integrity-r1.sh appears. No tests were deleted, skipped, loosened or edited to match the implementation. Existing test-scripts.sh is unchanged.\n",
+          "text": "Test changes: ran git diff --stat BASE..HEAD -- TEST_PATHSPECS and git diff BASE..HEAD -- TEST_PATHSPECS with the dispatch's full pathspec list. Both succeeded; only the new 70-line tests/super-auto/archive-integrity-r1.sh appears. No tests were deleted, skipped, loosened or edited to match the implementation. Existing test-scripts.sh is unchanged.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 2825,
+          "byteEnd": 3176
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Identity/package checks: both captured commits resolve; merge-base --is-ancestor BASE HEAD succeeds. review-package produced a nonempty two-file package. Caller git status --short was empty. A first combined rev-parse --verify call was invalid CLI usage and was corrected to separate successful identity checks. Initial sandboxed package write was denied; the explicitly authorized named diff write succeeded with narrow escalation. No source, Git, bead or Herdr state was mutated. No filesystem view or reproduction was required.\n",
+          "text": "Identity/package checks: both captured commits resolve; merge-base --is-ancestor BASE HEAD succeeds. review-package produced a nonempty two-file package. Caller git status --short was empty. A first combined rev-parse --verify call was invalid CLI usage and was corrected to separate successful identity checks. Initial sandboxed package write was denied; the explicitly authorized named diff write succeeded with narrow escalation. No source, Git, bead or Herdr state was mutated. No filesystem view or reproduction was required.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 3177,
+          "byteEnd": 3708
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Check records: retained below unchanged from the implementer report, with full source capture commands remaining in task-21-report.md (temporary-index read-tree/add/write-tree for RED/GREEN and git rev-parse HEAD^{tree} for final committed source). RED measures the actual missing-direct-package acceptance defect; GREEN and final evidence show the targeted correction. Earlier RED/GREEN records are historical; requiredLiveChecks select only final captured source. Both required final checks have matching live/pass evidence at their original locations.\n",
+          "text": "Check records: retained below unchanged from the implementer report, with full source capture commands remaining in task-21-report.md (temporary-index read-tree/add/write-tree for RED/GREEN and git rev-parse HEAD^{tree} for final committed source). RED measures the actual missing-direct-package acceptance defect; GREEN and final evidence show the targeted correction. Earlier RED/GREEN records are historical; requiredLiveChecks select only final captured source. Both required final checks have matching live/pass evidence at their original locations.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 3709,
+          "byteEnd": 4264
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.\n",
+          "text": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 4265,
+          "byteEnd": 4623
+        }
+      ]
+    },
+    {
+      "section": "Full structured result",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Full structured result\n",
+      "hierarchy": [
+        "Task 21 review — super-plan-ufz.24",
+        "Full structured result"
+      ],
+      "lineStart": 26,
+      "lineEnd": 99,
+      "byteStart": 4624,
+      "byteEnd": 9145,
+      "bodyLineStart": 27,
+      "rawText": "## Full structured result\n\n```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```\n",
+      "bodyRawText": "\n```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 28,
+          "lineEnd": 99,
+          "byteStart": 4651,
+          "byteEnd": 9145
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "section": "Task 21 review — super-plan-ufz.24",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Task 21 review — super-plan-ufz.24"
+      ],
+      "positionInSection": 3,
+      "key": "Critical issues: none.",
+      "text": "Critical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.",
+      "rawText": "Critical issues: none.\nImportant issues: none.\nMinor issues: none.\nUnverified requirement items: none.\n",
+      "lineStart": 7,
+      "lineEnd": 10,
+      "byteStart": 311,
+      "byteEnd": 414,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "section": "Task 21 review — super-plan-ufz.24",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Task 21 review — super-plan-ufz.24"
+      ],
+      "positionInSection": 10,
+      "key": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.",
+      "text": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.",
+      "rawText": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.\n",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 4265,
+      "byteEnd": 4623,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Full structured result",
+      "sectionOrdinal": 2,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```\n",
+      "lineStart": 28,
+      "lineEnd": 99,
+      "byteStart": 4651,
+      "byteEnd": 9145,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Full structured result",
+      "sectionOrdinal": 2,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.24\",\n  \"base\": \"5bfbb92331652df67d9af367f0f81baa8267f020\",\n  \"head\": \"22634c4c57e190dea56db60710b6de4f9327bfad\",\n  \"completionKind\": \"implementation\",\n  \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n  \"files\": [\n    \"skills/super-auto/scripts/report-status\",\n    \"tests/super-auto/archive-integrity-r1.sh\"\n  ],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"c3e10cacbf5be5008b16e915c291267531fa1499\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"b42f3d131b5a1be9adecc0f6026378bc79da436f\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/archive-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.24/.superpowers/task-evidence/script-suite-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    },\n    {\n      \"sourceTree\": \"a487f101832c60590555f835faa3ba9a27e0d691\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; bash; Node v26.9.0; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.24; HOME=$TMPDIR/home; XDG_CONFIG_HOME=$TMPDIR/config; XDG_CACHE_HOME=$TMPDIR/cache; XDG_DATA_HOME=$TMPDIR/data; XDG_STATE_HOME=$TMPDIR/state\"\n    }\n  ],\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"failureAttribution\": [],\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md\"\n}\n```\n",
+      "lineStart": 28,
+      "lineEnd": 99,
+      "byteStart": 4651,
+      "byteEnd": 9145,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance.",
+    "Standardized finding headings absent: full narrative and original labels retained; absence does not imply zero findings."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

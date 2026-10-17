@@ -1,0 +1,27 @@
+{
+  "actualArgv": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+    "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/launcher-isolation/plan.json"
+  ],
+  "controlledBaseEnvironment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka",
+    "LC_ALL": "C",
+    "LANG": "C",
+    "TZ": "UTC",
+    "CI": "1",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0"
+  },
+  "injectedKeys": [],
+  "injectedValuesWithheld": true,
+  "environmentSha256": "7f569d7396a7f2ccd1f1a70a0eef0f6990d9487f58e8e845cb256cabafb84605",
+  "launcherExecutableSha256": "87d4df53fd91304be5bac391fb204643c36b7df2023c04a0953bcbc7d4fdf634",
+  "pythonVersion": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "runnerSha256AtLaunch": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "planSha256AtLaunch": "245f4a84c5f8a36def1b274b1056a6f81e2474ada728f234857cf581ae4882c5",
+  "exitCode": 2,
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSha256": "82c0e2bd4227e8d7fdc5e0d9d59fee815caddc1adebfb8350729f011d0cdcb27"
+}

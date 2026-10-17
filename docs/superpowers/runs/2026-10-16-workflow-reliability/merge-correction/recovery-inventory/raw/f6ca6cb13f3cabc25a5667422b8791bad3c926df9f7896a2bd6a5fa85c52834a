@@ -1,0 +1,71 @@
+{
+  "installed6.0": {
+    "D1": {
+      "pass": 0,
+      "fail": 5,
+      "ambiguous": 0
+    },
+    "D2": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D3": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D4": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "joint_success": 0
+  },
+  "final": {
+    "D1": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D2": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D3": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D4": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "joint_success": 5
+  },
+  "control": {
+    "D1": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D2": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D3": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "D4": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0
+    },
+    "joint_success": 5
+  }
+}

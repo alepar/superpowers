@@ -1,0 +1,776 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-5-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-5-report.md",
+  "rawSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+  "rawByteCount": 11769,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-5-report.md",
+    "durablePath": "task-report-history-r1/raw/task-5-report.md",
+    "sha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+    "byteCount": 11769,
+    "logicalRole": "report",
+    "ordinal": 5,
+    "logicalTaskId": "super-plan-ufz.5",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-5-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.5 implementation",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.5 implementation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation"
+      ],
+      "lineStart": 1,
+      "lineEnd": 10,
+      "byteStart": 0,
+      "byteEnd": 320,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.5 implementation\n\nStatus: IMPLEMENTED\nBase: 4744895d50b9350ee5296a372d412af1e01b8533\nHead: 6642a5403ad20dd47c963fa6b5dde7efd1094eac\nTested tree: 1eecad5d96cd955951340a71669135b77b53004c\nOriginal fresh-cut base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nBranch: task-super-plan-ufz.5\nStacked: false\n\n",
+      "bodyRawText": "\nStatus: IMPLEMENTED\nBase: 4744895d50b9350ee5296a372d412af1e01b8533\nHead: 6642a5403ad20dd47c963fa6b5dde7efd1094eac\nTested tree: 1eecad5d96cd955951340a71669135b77b53004c\nOriginal fresh-cut base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nBranch: task-super-plan-ufz.5\nStacked: false\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 40,
+          "byteEnd": 60
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 4744895d50b9350ee5296a372d412af1e01b8533\n",
+          "text": "Base: 4744895d50b9350ee5296a372d412af1e01b8533",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 60,
+          "byteEnd": 107
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 6642a5403ad20dd47c963fa6b5dde7efd1094eac\nTested tree: 1eecad5d96cd955951340a71669135b77b53004c\nOriginal fresh-cut base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nBranch: task-super-plan-ufz.5\nStacked: false\n",
+          "text": "Head: 6642a5403ad20dd47c963fa6b5dde7efd1094eac\nTested tree: 1eecad5d96cd955951340a71669135b77b53004c\nOriginal fresh-cut base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nBranch: task-super-plan-ufz.5\nStacked: false",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 9,
+          "byteStart": 107,
+          "byteEnd": 319
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Implementation"
+      ],
+      "lineStart": 11,
+      "lineEnd": 16,
+      "byteStart": 320,
+      "byteEnd": 1418,
+      "bodyLineStart": 12,
+      "rawText": "## Implementation\n\nAdded optional typed source-bound evidence and required-live-check identities to RESULT. Every RESULT dispatch records its own check facts separately from implementation/review status; Workflow returns the additive checkEvidence result. Malformed records become explicit gaps. Exact source tree, command, configuration, outcome, output location and kind survive transport. Matching simulated/fallback success never supplies a required live check, and failed/unavailable records remain distinct. Existing delivery routing is unchanged.\n\nThe ordinary path uses the same runtime validator/classifier through dispatch-text check-evidence, with retained JSON output. Implementer/fixer and reviewer reports keep the arrays durably; generated dispatch contracts state their shape. Both execution references document the same transport and independent evidence/acceptance boundaries. No new task-completion route, root gate, regression attribution, mandatory phase, or Recovery-record change was added. Landed stable review sources, cleanup outcomes and recovery records remain intact.\n\n",
+      "bodyRawText": "\nAdded optional typed source-bound evidence and required-live-check identities to RESULT. Every RESULT dispatch records its own check facts separately from implementation/review status; Workflow returns the additive checkEvidence result. Malformed records become explicit gaps. Exact source tree, command, configuration, outcome, output location and kind survive transport. Matching simulated/fallback success never supplies a required live check, and failed/unavailable records remain distinct. Existing delivery routing is unchanged.\n\nThe ordinary path uses the same runtime validator/classifier through dispatch-text check-evidence, with retained JSON output. Implementer/fixer and reviewer reports keep the arrays durably; generated dispatch contracts state their shape. Both execution references document the same transport and independent evidence/acceptance boundaries. No new task-completion route, root gate, regression attribution, mandatory phase, or Recovery-record change was added. Landed stable review sources, cleanup outcomes and recovery records remain intact.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added optional typed source-bound evidence and required-live-check identities to RESULT. Every RESULT dispatch records its own check facts separately from implementation/review status; Workflow returns the additive checkEvidence result. Malformed records become explicit gaps. Exact source tree, command, configuration, outcome, output location and kind survive transport. Matching simulated/fallback success never supplies a required live check, and failed/unavailable records remain distinct. Existing delivery routing is unchanged.\n",
+          "text": "Added optional typed source-bound evidence and required-live-check identities to RESULT. Every RESULT dispatch records its own check facts separately from implementation/review status; Workflow returns the additive checkEvidence result. Malformed records become explicit gaps. Exact source tree, command, configuration, outcome, output location and kind survive transport. Matching simulated/fallback success never supplies a required live check, and failed/unavailable records remain distinct. Existing delivery routing is unchanged.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 339,
+          "byteEnd": 874
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The ordinary path uses the same runtime validator/classifier through dispatch-text check-evidence, with retained JSON output. Implementer/fixer and reviewer reports keep the arrays durably; generated dispatch contracts state their shape. Both execution references document the same transport and independent evidence/acceptance boundaries. No new task-completion route, root gate, regression attribution, mandatory phase, or Recovery-record change was added. Landed stable review sources, cleanup outcomes and recovery records remain intact.\n",
+          "text": "The ordinary path uses the same runtime validator/classifier through dispatch-text check-evidence, with retained JSON output. Implementer/fixer and reviewer reports keep the arrays durably; generated dispatch contracts state their shape. Both execution references document the same transport and independent evidence/acceptance boundaries. No new task-completion route, root gate, regression attribution, mandatory phase, or Recovery-record change was added. Landed stable review sources, cleanup outcomes and recovery records remain intact.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 875,
+          "byteEnd": 1417
+        }
+      ]
+    },
+    {
+      "section": "Interfaces for consumers .6, .7 and .13",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Interfaces for consumers .6, .7 and .13\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Interfaces for consumers .6, .7 and .13"
+      ],
+      "lineStart": 17,
+      "lineEnd": 33,
+      "byteStart": 1418,
+      "byteEnd": 3804,
+      "bodyLineStart": 18,
+      "rawText": "## Interfaces for consumers .6, .7 and .13\n\nProducer RESULT fields are optional:\n\n- evidence: [{sourceTree, command, configuration, outcome, location, kind}]. sourceTree is a full lowercase Git tree hash (40 or 64 hex digits). command/configuration/location are nonempty strings. outcome is pass|fail|unavailable; kind is live|simulated|fallback. Clean source uses HEAD^{tree}; dirty source uses an authorized temporary index snapshot with retained capture commands.\n- requiredLiveChecks: [{sourceTree, command, configuration}]. The reviewer selects the expected identity against acceptance; no mechanical semantic inference is attempted.\n\nWorkflow return: checkEvidence = {records, gaps, requiredLiveChecks}. Each record has the six original fields plus coordinator-stamped task id and dispatch. Each required check has its identity/id/dispatch, outcome, and matches (indices into records). Matching requires the same task and exact tree/command/configuration plus kind live. Outcome describes evidence availability: pass when any matching live/pass exists; otherwise fail when matching live/fail exists; otherwise unavailable. All matching records remain present, including conflicting outcomes; caller/reviewer still judges coverage, relevance and acceptance. The classification is not a run-acceptance decision. Missing optional arrays produce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.\n\nOrdinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.\n\nConcrete producer example (illustrative hash):\n\n```json\n{\"evidence\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\",\"outcome\":\"pass\",\"location\":\"evidence/smoke.log\",\"kind\":\"live\"}],\"requiredLiveChecks\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\"}]}\n```\n\n",
+      "bodyRawText": "\nProducer RESULT fields are optional:\n\n- evidence: [{sourceTree, command, configuration, outcome, location, kind}]. sourceTree is a full lowercase Git tree hash (40 or 64 hex digits). command/configuration/location are nonempty strings. outcome is pass|fail|unavailable; kind is live|simulated|fallback. Clean source uses HEAD^{tree}; dirty source uses an authorized temporary index snapshot with retained capture commands.\n- requiredLiveChecks: [{sourceTree, command, configuration}]. The reviewer selects the expected identity against acceptance; no mechanical semantic inference is attempted.\n\nWorkflow return: checkEvidence = {records, gaps, requiredLiveChecks}. Each record has the six original fields plus coordinator-stamped task id and dispatch. Each required check has its identity/id/dispatch, outcome, and matches (indices into records). Matching requires the same task and exact tree/command/configuration plus kind live. Outcome describes evidence availability: pass when any matching live/pass exists; otherwise fail when matching live/fail exists; otherwise unavailable. All matching records remain present, including conflicting outcomes; caller/reviewer still judges coverage, relevance and acceptance. The classification is not a run-acceptance decision. Missing optional arrays produce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.\n\nOrdinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.\n\nConcrete producer example (illustrative hash):\n\n```json\n{\"evidence\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\",\"outcome\":\"pass\",\"location\":\"evidence/smoke.log\",\"kind\":\"live\"}],\"requiredLiveChecks\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\"}]}\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Producer RESULT fields are optional:\n",
+          "text": "Producer RESULT fields are optional:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1462,
+          "byteEnd": 1499
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- evidence: [{sourceTree, command, configuration, outcome, location, kind}]. sourceTree is a full lowercase Git tree hash (40 or 64 hex digits). command/configuration/location are nonempty strings. outcome is pass|fail|unavailable; kind is live|simulated|fallback. Clean source uses HEAD^{tree}; dirty source uses an authorized temporary index snapshot with retained capture commands.\n",
+          "text": "evidence: [{sourceTree, command, configuration, outcome, location, kind}]. sourceTree is a full lowercase Git tree hash (40 or 64 hex digits). command/configuration/location are nonempty strings. outcome is pass|fail|unavailable; kind is live|simulated|fallback. Clean source uses HEAD^{tree}; dirty source uses an authorized temporary index snapshot with retained capture commands.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1500,
+          "byteEnd": 1885
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- requiredLiveChecks: [{sourceTree, command, configuration}]. The reviewer selects the expected identity against acceptance; no mechanical semantic inference is attempted.\n",
+          "text": "requiredLiveChecks: [{sourceTree, command, configuration}]. The reviewer selects the expected identity against acceptance; no mechanical semantic inference is attempted.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1885,
+          "byteEnd": 2057
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Workflow return: checkEvidence = {records, gaps, requiredLiveChecks}. Each record has the six original fields plus coordinator-stamped task id and dispatch. Each required check has its identity/id/dispatch, outcome, and matches (indices into records). Matching requires the same task and exact tree/command/configuration plus kind live. Outcome describes evidence availability: pass when any matching live/pass exists; otherwise fail when matching live/fail exists; otherwise unavailable. All matching records remain present, including conflicting outcomes; caller/reviewer still judges coverage, relevance and acceptance. The classification is not a run-acceptance decision. Missing optional arrays produce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.\n",
+          "text": "Workflow return: checkEvidence = {records, gaps, requiredLiveChecks}. Each record has the six original fields plus coordinator-stamped task id and dispatch. Each required check has its identity/id/dispatch, outcome, and matches (indices into records). Matching requires the same task and exact tree/command/configuration plus kind live. Outcome describes evidence availability: pass when any matching live/pass exists; otherwise fail when matching live/fail exists; otherwise unavailable. All matching records remain present, including conflicting outcomes; caller/reviewer still judges coverage, relevance and acceptance. The classification is not a run-acceptance decision. Missing optional arrays produce no invented measurements; an explicitly required check without matching evidence remains unavailable. gaps reports malformed arrays/records and producer/field references.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2058,
+          "byteEnd": 2937
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Ordinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.\n",
+          "text": "Ordinary path: `bash <skillsRoot>/super-code/scripts/dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>` consumes an array of `{dispatch, result}` replies and writes `dispatch/check-evidence.json` (or uses --out/--stdout). Its JSON shape equals Workflow.checkEvidence. Existing task reports/review artifacts retain source records; existing callers/consumers decide whether particular fields are required. Legacy producers remain compatible.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2938,
+          "byteEnd": 3405
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Concrete producer example (illustrative hash):\n",
+          "text": "Concrete producer example (illustrative hash):",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 3406,
+          "byteEnd": 3453
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\"evidence\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\",\"outcome\":\"pass\",\"location\":\"evidence/smoke.log\",\"kind\":\"live\"}],\"requiredLiveChecks\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\"}]}\n```\n",
+          "text": "```json\n{\"evidence\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\",\"outcome\":\"pass\",\"location\":\"evidence/smoke.log\",\"kind\":\"live\"}],\"requiredLiveChecks\":[{\"sourceTree\":\"d84541aed84541aed84541aed84541aed84541ae\",\"command\":\"node smoke.mjs\",\"configuration\":\"target=staging\"}]}\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 30,
+          "lineEnd": 32,
+          "byteStart": 3454,
+          "byteEnd": 3803
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "TDD evidence"
+      ],
+      "lineStart": 34,
+      "lineEnd": 56,
+      "byteStart": 3804,
+      "byteEnd": 5459,
+      "bodyLineStart": 35,
+      "rawText": "## TDD evidence\n\nBefore production changes, the new replay fixtures ran with the same command scope: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 node tests/super-code/replay-harness.mjs` (outside the sandbox for real process-inspection fixtures). Relevant RED output:\n\n```text\n[FAIL] complete evidence survives both RESULT producers without changing provenance\n[FAIL] measurement retains its producer separately from task outcome\n[FAIL] matching live/pass discharges the explicitly required check\n[FAIL] RESULT validates the separate kind and outcome vocabularies\n[FAIL] simulated/pass leaves the required live check outstanding\n[FAIL] fallback/pass leaves the required live check outstanding\n[FAIL] required live fail remains fail\n[FAIL] required live unavailable remains unavailable\n[FAIL] another source tree, command or configuration cannot satisfy the check\n[FAIL] malformed evidence produces an explicit gap\n[FAIL] old producers remain compatible without invented evidence\n1892 passed, 11 failed\n```\n\nThese failures were expected: RESULT had no evidence fields and the return had no checkEvidence. The existing routing assertion still passed.\n\nDispatch RED command: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 bash tests/super-code/test-dispatch-text.sh`. Its new assertions initially failed because generated implement/review prompts lacked the shared field contract. After adding the ordinary classifier fixture, a second RED run failed with check-evidence exit 2 (the command did not exist), then failed the retained-JSON assertion. Existing dispatch clients continued to pass. The subsequent GREEN runs passed before commit and again after rebase.\n\n",
+      "bodyRawText": "\nBefore production changes, the new replay fixtures ran with the same command scope: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 node tests/super-code/replay-harness.mjs` (outside the sandbox for real process-inspection fixtures). Relevant RED output:\n\n```text\n[FAIL] complete evidence survives both RESULT producers without changing provenance\n[FAIL] measurement retains its producer separately from task outcome\n[FAIL] matching live/pass discharges the explicitly required check\n[FAIL] RESULT validates the separate kind and outcome vocabularies\n[FAIL] simulated/pass leaves the required live check outstanding\n[FAIL] fallback/pass leaves the required live check outstanding\n[FAIL] required live fail remains fail\n[FAIL] required live unavailable remains unavailable\n[FAIL] another source tree, command or configuration cannot satisfy the check\n[FAIL] malformed evidence produces an explicit gap\n[FAIL] old producers remain compatible without invented evidence\n1892 passed, 11 failed\n```\n\nThese failures were expected: RESULT had no evidence fields and the return had no checkEvidence. The existing routing assertion still passed.\n\nDispatch RED command: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 bash tests/super-code/test-dispatch-text.sh`. Its new assertions initially failed because generated implement/review prompts lacked the shared field contract. After adding the ordinary classifier fixture, a second RED run failed with check-evidence exit 2 (the command did not exist), then failed the retained-JSON assertion. Existing dispatch clients continued to pass. The subsequent GREEN runs passed before commit and again after rebase.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before production changes, the new replay fixtures ran with the same command scope: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 node tests/super-code/replay-harness.mjs` (outside the sandbox for real process-inspection fixtures). Relevant RED output:\n",
+          "text": "Before production changes, the new replay fixtures ran with the same command scope: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 node tests/super-code/replay-harness.mjs` (outside the sandbox for real process-inspection fixtures). Relevant RED output:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 3821,
+          "byteEnd": 4070
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] complete evidence survives both RESULT producers without changing provenance\n[FAIL] measurement retains its producer separately from task outcome\n[FAIL] matching live/pass discharges the explicitly required check\n[FAIL] RESULT validates the separate kind and outcome vocabularies\n[FAIL] simulated/pass leaves the required live check outstanding\n[FAIL] fallback/pass leaves the required live check outstanding\n[FAIL] required live fail remains fail\n[FAIL] required live unavailable remains unavailable\n[FAIL] another source tree, command or configuration cannot satisfy the check\n[FAIL] malformed evidence produces an explicit gap\n[FAIL] old producers remain compatible without invented evidence\n1892 passed, 11 failed\n```\n",
+          "text": "```text\n[FAIL] complete evidence survives both RESULT producers without changing provenance\n[FAIL] measurement retains its producer separately from task outcome\n[FAIL] matching live/pass discharges the explicitly required check\n[FAIL] RESULT validates the separate kind and outcome vocabularies\n[FAIL] simulated/pass leaves the required live check outstanding\n[FAIL] fallback/pass leaves the required live check outstanding\n[FAIL] required live fail remains fail\n[FAIL] required live unavailable remains unavailable\n[FAIL] another source tree, command or configuration cannot satisfy the check\n[FAIL] malformed evidence produces an explicit gap\n[FAIL] old producers remain compatible without invented evidence\n1892 passed, 11 failed\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 38,
+          "lineEnd": 51,
+          "byteStart": 4071,
+          "byteEnd": 4808
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These failures were expected: RESULT had no evidence fields and the return had no checkEvidence. The existing routing assertion still passed.\n",
+          "text": "These failures were expected: RESULT had no evidence fields and the return had no checkEvidence. The existing routing assertion still passed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 53,
+          "lineEnd": 53,
+          "byteStart": 4809,
+          "byteEnd": 4951
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Dispatch RED command: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 bash tests/super-code/test-dispatch-text.sh`. Its new assertions initially failed because generated implement/review prompts lacked the shared field contract. After adding the ordinary classifier fixture, a second RED run failed with check-evidence exit 2 (the command did not exist), then failed the retained-JSON assertion. Existing dispatch clients continued to pass. The subsequent GREEN runs passed before commit and again after rebase.\n",
+          "text": "Dispatch RED command: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 bash tests/super-code/test-dispatch-text.sh`. Its new assertions initially failed because generated implement/review prompts lacked the shared field contract. After adding the ordinary classifier fixture, a second RED run failed with check-evidence exit 2 (the command did not exist), then failed the retained-JSON assertion. Existing dispatch clients continued to pass. The subsequent GREEN runs passed before commit and again after rebase.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 55,
+          "lineEnd": 55,
+          "byteStart": 4952,
+          "byteEnd": 5458
+        }
+      ]
+    },
+    {
+      "section": "Final tests",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Final tests\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Final tests"
+      ],
+      "lineStart": 57,
+      "lineEnd": 106,
+      "byteStart": 5459,
+      "byteEnd": 8419,
+      "bodyLineStart": 58,
+      "rawText": "## Final tests\n\nAll commands ran in the task worktree. Final execution prefix, verbatim:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 HOME=/tmp/sp-bce79baa/super-plan-ufz.5/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/state\n```\n\nWith that prefix:\n\n```sh\nbash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.5/dispatch-final.log 2>&1\nnode tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.5/replay-final.log 2>&1\n```\n\nBoth final commands exited 0 after the clean rebase. Relevant dispatch output:\n\n```text\n[PASS] ordinary record classification exits 0\n[PASS] ordinary results preserve provenance, failed/unavailable and required-live gaps\n[PASS] implementer RESULT carries optional evidence\n[PASS] implementer dispatch names the complete provenance contract\n[PASS] review dispatch carries explicit live-check identities\n[PASS] review dispatch carries the shared evidence contract\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nRelevant replay output:\n\n```text\n[PASS] complete evidence survives both RESULT producers without changing provenance\n[PASS] measurement retains its producer separately from task outcome\n[PASS] matching live/pass discharges the explicitly required check\n[PASS] additive records preserve existing completion routing\n[PASS] RESULT validates the separate kind and outcome vocabularies\n[PASS] simulated/pass leaves the required live check outstanding\n[PASS] fallback/pass leaves the required live check outstanding\n[PASS] required live fail remains fail\n[PASS] required live unavailable remains unavailable\n[PASS] another source tree, command or configuration cannot satisfy the check\n[PASS] malformed evidence produces an explicit gap\n[PASS] old producers remain compatible without invented evidence\n1935 passed, 0 failed\n```\n\nEach assertion can fail on a concrete changed production value: dropped/rewritten provenance, absent producer identities, non-live success supplying a live requirement, fail/unavailable collapse, mismatched tree/command/configuration acceptance, silently discarded malformed records, or altered legacy routing. The schema assertion fails if either enum changes or disappears. The ordinary fixture parses actual CLI output and checks provenance/count/outcomes rather than echoing an expected object.\n\n`git diff --check 4744895d50b9350ee5296a372d412af1e01b8533..6642a5403ad20dd47c963fa6b5dde7efd1094eac` passed; final git status was empty. The zero-dependency runner tests/super-code/replay-harness.mjs and package-under-test skills/super-code/coordinator.js both resolve inside the assigned worktree. Node is the system interpreter /opt/homebrew/Cellar/node/26.9.0/bin/node; no project environment/install step exists for these direct script tests.\n\n",
+      "bodyRawText": "\nAll commands ran in the task worktree. Final execution prefix, verbatim:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 HOME=/tmp/sp-bce79baa/super-plan-ufz.5/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/state\n```\n\nWith that prefix:\n\n```sh\nbash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.5/dispatch-final.log 2>&1\nnode tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.5/replay-final.log 2>&1\n```\n\nBoth final commands exited 0 after the clean rebase. Relevant dispatch output:\n\n```text\n[PASS] ordinary record classification exits 0\n[PASS] ordinary results preserve provenance, failed/unavailable and required-live gaps\n[PASS] implementer RESULT carries optional evidence\n[PASS] implementer dispatch names the complete provenance contract\n[PASS] review dispatch carries explicit live-check identities\n[PASS] review dispatch carries the shared evidence contract\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nRelevant replay output:\n\n```text\n[PASS] complete evidence survives both RESULT producers without changing provenance\n[PASS] measurement retains its producer separately from task outcome\n[PASS] matching live/pass discharges the explicitly required check\n[PASS] additive records preserve existing completion routing\n[PASS] RESULT validates the separate kind and outcome vocabularies\n[PASS] simulated/pass leaves the required live check outstanding\n[PASS] fallback/pass leaves the required live check outstanding\n[PASS] required live fail remains fail\n[PASS] required live unavailable remains unavailable\n[PASS] another source tree, command or configuration cannot satisfy the check\n[PASS] malformed evidence produces an explicit gap\n[PASS] old producers remain compatible without invented evidence\n1935 passed, 0 failed\n```\n\nEach assertion can fail on a concrete changed production value: dropped/rewritten provenance, absent producer identities, non-live success supplying a live requirement, fail/unavailable collapse, mismatched tree/command/configuration acceptance, silently discarded malformed records, or altered legacy routing. The schema assertion fails if either enum changes or disappears. The ordinary fixture parses actual CLI output and checks provenance/count/outcomes rather than echoing an expected object.\n\n`git diff --check 4744895d50b9350ee5296a372d412af1e01b8533..6642a5403ad20dd47c963fa6b5dde7efd1094eac` passed; final git status was empty. The zero-dependency runner tests/super-code/replay-harness.mjs and package-under-test skills/super-code/coordinator.js both resolve inside the assigned worktree. Node is the system interpreter /opt/homebrew/Cellar/node/26.9.0/bin/node; no project environment/install step exists for these direct script tests.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands ran in the task worktree. Final execution prefix, verbatim:\n",
+          "text": "All commands ran in the task worktree. Final execution prefix, verbatim:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 59,
+          "lineEnd": 59,
+          "byteStart": 5475,
+          "byteEnd": 5548
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 HOME=/tmp/sp-bce79baa/super-plan-ufz.5/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/state\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.5 HOME=/tmp/sp-bce79baa/super-plan-ufz.5/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.5/state\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 61,
+          "lineEnd": 63,
+          "byteStart": 5549,
+          "byteEnd": 5864
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "With that prefix:\n",
+          "text": "With that prefix:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 65,
+          "lineEnd": 65,
+          "byteStart": 5865,
+          "byteEnd": 5883
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.5/dispatch-final.log 2>&1\nnode tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.5/replay-final.log 2>&1\n```\n",
+          "text": "```sh\nbash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.5/dispatch-final.log 2>&1\nnode tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.5/replay-final.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 67,
+          "lineEnd": 70,
+          "byteStart": 5884,
+          "byteEnd": 6097
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both final commands exited 0 after the clean rebase. Relevant dispatch output:\n",
+          "text": "Both final commands exited 0 after the clean rebase. Relevant dispatch output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 72,
+          "lineEnd": 72,
+          "byteStart": 6098,
+          "byteEnd": 6177
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] ordinary record classification exits 0\n[PASS] ordinary results preserve provenance, failed/unavailable and required-live gaps\n[PASS] implementer RESULT carries optional evidence\n[PASS] implementer dispatch names the complete provenance contract\n[PASS] review dispatch carries explicit live-check identities\n[PASS] review dispatch carries the shared evidence contract\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n[PASS] ordinary record classification exits 0\n[PASS] ordinary results preserve provenance, failed/unavailable and required-live gaps\n[PASS] implementer RESULT carries optional evidence\n[PASS] implementer dispatch names the complete provenance contract\n[PASS] review dispatch carries explicit live-check identities\n[PASS] review dispatch carries the shared evidence contract\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 74,
+          "lineEnd": 83,
+          "byteStart": 6178,
+          "byteEnd": 6646
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Relevant replay output:\n",
+          "text": "Relevant replay output:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 85,
+          "lineEnd": 85,
+          "byteStart": 6647,
+          "byteEnd": 6671
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] complete evidence survives both RESULT producers without changing provenance\n[PASS] measurement retains its producer separately from task outcome\n[PASS] matching live/pass discharges the explicitly required check\n[PASS] additive records preserve existing completion routing\n[PASS] RESULT validates the separate kind and outcome vocabularies\n[PASS] simulated/pass leaves the required live check outstanding\n[PASS] fallback/pass leaves the required live check outstanding\n[PASS] required live fail remains fail\n[PASS] required live unavailable remains unavailable\n[PASS] another source tree, command or configuration cannot satisfy the check\n[PASS] malformed evidence produces an explicit gap\n[PASS] old producers remain compatible without invented evidence\n1935 passed, 0 failed\n```\n",
+          "text": "```text\n[PASS] complete evidence survives both RESULT producers without changing provenance\n[PASS] measurement retains its producer separately from task outcome\n[PASS] matching live/pass discharges the explicitly required check\n[PASS] additive records preserve existing completion routing\n[PASS] RESULT validates the separate kind and outcome vocabularies\n[PASS] simulated/pass leaves the required live check outstanding\n[PASS] fallback/pass leaves the required live check outstanding\n[PASS] required live fail remains fail\n[PASS] required live unavailable remains unavailable\n[PASS] another source tree, command or configuration cannot satisfy the check\n[PASS] malformed evidence produces an explicit gap\n[PASS] old producers remain compatible without invented evidence\n1935 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 87,
+          "lineEnd": 101,
+          "byteStart": 6672,
+          "byteEnd": 7469
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each assertion can fail on a concrete changed production value: dropped/rewritten provenance, absent producer identities, non-live success supplying a live requirement, fail/unavailable collapse, mismatched tree/command/configuration acceptance, silently discarded malformed records, or altered legacy routing. The schema assertion fails if either enum changes or disappears. The ordinary fixture parses actual CLI output and checks provenance/count/outcomes rather than echoing an expected object.\n",
+          "text": "Each assertion can fail on a concrete changed production value: dropped/rewritten provenance, absent producer identities, non-live success supplying a live requirement, fail/unavailable collapse, mismatched tree/command/configuration acceptance, silently discarded malformed records, or altered legacy routing. The schema assertion fails if either enum changes or disappears. The ordinary fixture parses actual CLI output and checks provenance/count/outcomes rather than echoing an expected object.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 103,
+          "lineEnd": 103,
+          "byteStart": 7470,
+          "byteEnd": 7969
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check 4744895d50b9350ee5296a372d412af1e01b8533..6642a5403ad20dd47c963fa6b5dde7efd1094eac` passed; final git status was empty. The zero-dependency runner tests/super-code/replay-harness.mjs and package-under-test skills/super-code/coordinator.js both resolve inside the assigned worktree. Node is the system interpreter /opt/homebrew/Cellar/node/26.9.0/bin/node; no project environment/install step exists for these direct script tests.\n",
+          "text": "`git diff --check 4744895d50b9350ee5296a372d412af1e01b8533..6642a5403ad20dd47c963fa6b5dde7efd1094eac` passed; final git status was empty. The zero-dependency runner tests/super-code/replay-harness.mjs and package-under-test skills/super-code/coordinator.js both resolve inside the assigned worktree. Node is the system interpreter /opt/homebrew/Cellar/node/26.9.0/bin/node; no project environment/install step exists for these direct script tests.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 105,
+          "lineEnd": 105,
+          "byteStart": 7970,
+          "byteEnd": 8418
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Files changed"
+      ],
+      "lineStart": 107,
+      "lineEnd": 117,
+      "byteStart": 8419,
+      "byteEnd": 8773,
+      "bodyLineStart": 108,
+      "rawText": "## Files changed\n\n- skills/super-code/coordinator.js\n- skills/super-code/implementer-prompt.md\n- skills/super-code/task-reviewer-prompt.md\n- skills/super-code/scripts/dispatch-text.mjs\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n- tests/super-code/test-dispatch-text.sh\n\n",
+      "bodyRawText": "\n- skills/super-code/coordinator.js\n- skills/super-code/implementer-prompt.md\n- skills/super-code/task-reviewer-prompt.md\n- skills/super-code/scripts/dispatch-text.mjs\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n- tests/super-code/test-dispatch-text.sh\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 109,
+          "lineEnd": 109,
+          "byteStart": 8437,
+          "byteEnd": 8472
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/implementer-prompt.md\n",
+          "text": "skills/super-code/implementer-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 8472,
+          "byteEnd": 8514
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/task-reviewer-prompt.md\n",
+          "text": "skills/super-code/task-reviewer-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 8514,
+          "byteEnd": 8558
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/dispatch-text.mjs\n",
+          "text": "skills/super-code/scripts/dispatch-text.mjs",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 112,
+          "lineEnd": 112,
+          "byteStart": 8558,
+          "byteEnd": 8604
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 113,
+          "lineEnd": 113,
+          "byteStart": 8604,
+          "byteEnd": 8648
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 114,
+          "lineEnd": 114,
+          "byteStart": 8648,
+          "byteEnd": 8693
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 115,
+          "lineEnd": 115,
+          "byteStart": 8693,
+          "byteEnd": 8731
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/test-dispatch-text.sh\n",
+          "text": "tests/super-code/test-dispatch-text.sh",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 8731,
+          "byteEnd": 8772
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Test hygiene"
+      ],
+      "lineStart": 118,
+      "lineEnd": 128,
+      "byteStart": 8773,
+      "byteEnd": 9766,
+      "bodyLineStart": 119,
+      "rawText": "## Test hygiene\n\nThe first sandboxed RED replay aborted in the existing remove-task-worktree fixture when its `ps` probe provided no stdout and `.trim()` threw. The task-owned sleep fixture remained:\n\n```text\nmatch: 64960 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\nstopped: 64960 sleep 300 — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\n```\n\nThe authorized stop-run-processes helper stopped it. An initial --check from inside the owned worktree refused that root because it contained its own working directory; checks were then correctly run from the integration worktree (read-only cwd). Complete RED/GREEN/final runs used real process inspection. The final `bash <canonical skillsRoot>/super-code/scripts/stop-run-processes --check <assigned worktree> /tmp/sp-bce79baa/super-plan-ufz.5` exited 0 with empty output. No surviving process was reported. No other background processes were started.\n\n",
+      "bodyRawText": "\nThe first sandboxed RED replay aborted in the existing remove-task-worktree fixture when its `ps` probe provided no stdout and `.trim()` threw. The task-owned sleep fixture remained:\n\n```text\nmatch: 64960 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\nstopped: 64960 sleep 300 — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\n```\n\nThe authorized stop-run-processes helper stopped it. An initial --check from inside the owned worktree refused that root because it contained its own working directory; checks were then correctly run from the integration worktree (read-only cwd). Complete RED/GREEN/final runs used real process inspection. The final `bash <canonical skillsRoot>/super-code/scripts/stop-run-processes --check <assigned worktree> /tmp/sp-bce79baa/super-plan-ufz.5` exited 0 with empty output. No surviving process was reported. No other background processes were started.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The first sandboxed RED replay aborted in the existing remove-task-worktree fixture when its `ps` probe provided no stdout and `.trim()` threw. The task-owned sleep fixture remained:\n",
+          "text": "The first sandboxed RED replay aborted in the existing remove-task-worktree fixture when its `ps` probe provided no stdout and `.trim()` threw. The task-owned sleep fixture remained:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 120,
+          "lineEnd": 120,
+          "byteStart": 8790,
+          "byteEnd": 8973
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nmatch: 64960 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\nstopped: 64960 sleep 300 — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\n```\n",
+          "text": "```text\nmatch: 64960 ? — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\nstopped: 64960 sleep 300 — cwd /private/tmp/sp-bce79baa/super-plan-ufz.5/rtw-ad2lDJ/.worktrees/integ/.worktrees/t1\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 122,
+          "lineEnd": 125,
+          "byteStart": 8974,
+          "byteEnd": 9210
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The authorized stop-run-processes helper stopped it. An initial --check from inside the owned worktree refused that root because it contained its own working directory; checks were then correctly run from the integration worktree (read-only cwd). Complete RED/GREEN/final runs used real process inspection. The final `bash <canonical skillsRoot>/super-code/scripts/stop-run-processes --check <assigned worktree> /tmp/sp-bce79baa/super-plan-ufz.5` exited 0 with empty output. No surviving process was reported. No other background processes were started.\n",
+          "text": "The authorized stop-run-processes helper stopped it. An initial --check from inside the owned worktree refused that root because it contained its own working directory; checks were then correctly run from the integration worktree (read-only cwd). Complete RED/GREEN/final runs used real process inspection. The final `bash <canonical skillsRoot>/super-code/scripts/stop-run-processes --check <assigned worktree> /tmp/sp-bce79baa/super-plan-ufz.5` exited 0 with empty output. No surviving process was reported. No other background processes were started.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 127,
+          "lineEnd": 127,
+          "byteStart": 9211,
+          "byteEnd": 9765
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Assumptions and amendments"
+      ],
+      "lineStart": 129,
+      "lineEnd": 134,
+      "byteStart": 9766,
+      "byteEnd": 10755,
+      "bodyLineStart": 130,
+      "rawText": "## Assumptions and amendments\n\nRead current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.\n\nApplied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.\n\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.\n\nApplied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.\n",
+          "text": "Read current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 131,
+          "lineEnd": 131,
+          "byteStart": 9797,
+          "byteEnd": 10327
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.\n",
+          "text": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 10328,
+          "byteEnd": 10754
+        }
+      ]
+    },
+    {
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and remaining evaluation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Concerns and remaining evaluation"
+      ],
+      "lineStart": 135,
+      "lineEnd": 139,
+      "byteStart": 10755,
+      "byteEnd": 11769,
+      "bodyLineStart": 136,
+      "rawText": "## Concerns and remaining evaluation\n\nNo required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.\n\nClassification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.\n",
+      "bodyRawText": "\nNo required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.\n\nClassification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.\n",
+          "text": "No required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 137,
+          "lineEnd": 137,
+          "byteStart": 10793,
+          "byteEnd": 11118
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.\n",
+          "text": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 139,
+          "lineEnd": 139,
+          "byteStart": 11119,
+          "byteEnd": 11769
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 1,
+      "key": "Read current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.",
+      "text": "Read current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.",
+      "rawText": "Read current `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; there were no comments or amendments. Read the frozen brief/spec and the dependent .6/.7/.13 sections; the additive transport is compatible with their consumption boundaries. Source tree is represented by its actual Git tree identity, a narrower concrete form permitted by the brief. Configuration is an explicit string to make equality deterministic. Reports retain complete records; no new Recovery kind or ledger parsing schema was introduced.\n",
+      "lineStart": 131,
+      "lineEnd": 131,
+      "byteStart": 9797,
+      "byteEnd": 10327,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 2,
+      "key": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.",
+      "text": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.",
+      "rawText": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.\n",
+      "lineStart": 133,
+      "lineEnd": 133,
+      "byteStart": 10328,
+      "byteEnd": 10754,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Concerns and remaining evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "No required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.",
+      "text": "No required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.",
+      "rawText": "No required deterministic check remains failed or unavailable. Replay is a simulated Workflow runtime; ordinary dispatch fixtures exercise the real CLI against fixtures, not a live multi-agent run. Parent-owned post-change fresh-agent evaluation remains outstanding and must not be reported as passed by this implementation.\n",
+      "lineStart": 137,
+      "lineEnd": 137,
+      "byteStart": 10793,
+      "byteEnd": 11118,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "section": "Concerns and remaining evaluation",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task super-plan-ufz.5 implementation",
+        "Concerns and remaining evaluation"
+      ],
+      "positionInSection": 2,
+      "key": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.",
+      "text": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.",
+      "rawText": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.\n",
+      "lineStart": 139,
+      "lineEnd": 139,
+      "byteStart": 11119,
+      "byteEnd": 11769,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

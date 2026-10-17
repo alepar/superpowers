@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+  "artifact": "legacy-report-adapters-r1/41-task-22-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-6/raw-byte-000008675",
+      "position": 1,
+      "key": "No recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.",
+      "text": "No recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged."
+    }
+  ]
+}

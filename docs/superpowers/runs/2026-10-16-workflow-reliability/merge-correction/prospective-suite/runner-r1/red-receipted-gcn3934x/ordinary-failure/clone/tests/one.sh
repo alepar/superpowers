@@ -1,0 +1,2 @@
+echo EXPECTED-FAILURE
+exit 7

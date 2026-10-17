@@ -1,0 +1,43 @@
+step-back-check
+  [PASS] valid patch record (no scope:) is ok
+  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
+  [PASS] unknown key exits 3
+  [PASS] only the unknown key gets a reject line (unprefixed canonical key matches)
+  [PASS] missing decision: is rejected
+  [PASS] redesign without scope: is rejected
+  [PASS] missing step-back file exits 2
+  [PASS] missing --keys exits 2
+step-back-check: triggers and ledger
+  [PASS] local with a ledger showing triggers: none is ok
+  [PASS] local under a mechanical trigger is rejected
+  [PASS] patch is read as local and rejected under a mechanical trigger (evidence with commas)
+  [PASS] patch is accepted as local
+  [PASS] redesign with triggers: none is rejected
+  [PASS] a cited mechanical trigger absent from the ledger is rejected (and the ledger trigger it drops)
+  [PASS] a cited mechanical trigger the ledger lists is ok
+  [PASS] semantic-only redesign is ok with a ledger showing triggers: none
+  [PASS] mechanical plus semantic triggers are ok when the ledger lists the mechanical one
+  [PASS] with --ledger a record without triggers: is rejected
+  [PASS] without --ledger a record without triggers: is ok
+  [PASS] missing ledger file exits 2
+  [PASS] ledger without a triggers: line exits 2
+step-back-check: trigger sets
+  [PASS] triggers copied verbatim, evidence with commas, parse like the ledger line
+  [PASS] a redesign record dropping ledger triggers is rejected, in ledger order
+  [PASS] semantic-only record against a ledger with no triggers stays ok
+  [PASS] a misspelled semantic trigger is treated as an unlisted mechanical one
+  [PASS] an unknown key in remains: is rejected
+step-back-check: key forms
+  [PASS] unprefixed canonical keys match rN-prefixed keys-file lines
+  [PASS] rN-prefixed keys match too
+  [PASS] a key containing ', ' is split only on ', [' into the right keys
+  [PASS] the comma-bearing key stays whole when it is unknown
+step-back-check: redesign-only fields
+  [PASS] dissolves: on a local record is rejected
+  [PASS] remains: on a local record is rejected
+  [PASS] dissolves: on a patch record is rejected (patch is read as local)
+  [PASS] dissolves: none and remains: none on a local record are ok
+step-back-check: no jq
+  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
+
+All step-back-check tests passed

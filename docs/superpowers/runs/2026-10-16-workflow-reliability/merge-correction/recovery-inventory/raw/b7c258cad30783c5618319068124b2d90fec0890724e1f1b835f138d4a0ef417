@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete.",
+      "location": "skills/super-auto/scripts/report-status:254",
+      "category": "security",
+      "external": false,
+      "evidence": "The added collector validates source components with source(relative), but forms dst as path.join(archive,rel) and calls mkdirSync/copyFileSync without validating destination components. Frozen-head probe /tmp/ufz-pr2-controller/evidence-security/destination-probe.py used an ordinary valid report and required payload/new-file.txt, with only reviews/probe/payload symlinked to a separate outside directory. It created outside/new-file.txt with the review input sentinel, exited 0 with collection: complete, recorded complete:true/gaps:[], and ordinary status returned status: clean. Receipt: /tmp/ufz-pr2-controller/evidence-security/destination-receipt.json. COPYFILE_EXCL prevents replacing an existing leaf; this evidence establishes creation of new files outside the intended archive. The input is a local developer run and the exploit requires control of an existing archive directory entry; no remote service input is claimed. This destination-write escape is distinct from the prior source-read symlink finding, whose source-component fix is present. Source provenance confirms this collector is added relative to the captured base and the executed snapshot equals captured HEAD (source-provenance.json).",
+      "kind": "ISSUE"
+    }
+  ]
+}

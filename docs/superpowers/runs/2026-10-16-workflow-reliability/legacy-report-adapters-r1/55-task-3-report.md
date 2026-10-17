@@ -1,0 +1,17 @@
+Status: IMPLEMENTED
+
+# Legacy interpretation adapter
+
+Adapter-only synthetic labels and item boundaries. Exact raw source, original headings, complete passages, line/byte locators and interpretation limits are recorded in the hash-bound metadata. This document proposes history representation and makes no acceptance, identity-link or resolution decision.
+
+## Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000003725
+
+- The mechanical generated prompt requests authoritative status/kind observations and preserves independent lookup errors. Both Workflow and ordinary-subagent contracts were inspected; live ordinary-subagent behavior evaluation remains parent-owned.
+
+## Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007548
+
+- Used writing-skills and TDD for changed behavior content. Parent-owned baseline: docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md with adjacent manifest/raw/scores (30 trials). Parent reported targeted scheduling clauses passed baseline/control; therefore instructions only describe the minimal implemented mechanism and add no generic stronger prompting. Parent owns integrated post-evaluation and the live ordinary-subagent scenario. These remain pending; deterministic fixtures are simulated evidence, not live instruction validation.
+
+## Concerns — adapter/scope-or-coverage-qualification/raw-section-8/raw-byte-000008120
+
+- No live Workflow tool was available in this task seat; timer lifecycle and scheduling were exercised through the actual coordinator script in replay. The supported runtime must provide standard setTimeout/clearTimeout, as the Node replay does. Final acceptance belongs to the enclosing coordinator.

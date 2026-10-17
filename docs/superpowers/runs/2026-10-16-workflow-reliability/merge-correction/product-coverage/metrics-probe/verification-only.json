@@ -1,0 +1,35 @@
+{
+  "t0": "2026-10-01T00:00:00Z",
+  "epic": "verify",
+  "cwd": "/private/tmp/ufz-correction-coverage/metrics-probe",
+  "end": 50,
+  "beads": [
+    {
+      "id": "verify",
+      "issue_type": "epic"
+    },
+    {
+      "id": "verify.1",
+      "parent": "verify",
+      "created_at": 0
+    }
+  ],
+  "ledger": [
+    "Launch: mechanism ordinary-subagents \u00b7 epic verify",
+    "Task 1 (verify.1): complete, verification-only, review clean"
+  ],
+  "agents": [
+    {
+      "codex": "impl_verify_1",
+      "label": "impl:verify.1",
+      "start": 10,
+      "end": 30
+    },
+    {
+      "codex": "review_verify_1",
+      "label": "review:verify.1",
+      "start": 31,
+      "end": 40
+    }
+  ]
+}

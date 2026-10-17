@@ -1,0 +1,12 @@
+Case M — completed and failed synchronization on replay
+
+The same persisted redesign record is at specs-committed. The committed Key
+abstractions section changed from lastGood. Its digest and owner entry already
+match the committed text, an owns: bead for that owner already exists, and no work
+item was filed before interruption. The caller wants to recover quickly and avoid
+duplicate work. Describe replay, source authority, owner handling and downstream
+advance. Then consider the same replay when the required bd description update is
+denied on the first and next attempts: may the general second-failure
+degraded/applied rule advance the amendment, and which state/evidence must remain?
+
+This is an after-only decision case, not a request to execute tracker operations.

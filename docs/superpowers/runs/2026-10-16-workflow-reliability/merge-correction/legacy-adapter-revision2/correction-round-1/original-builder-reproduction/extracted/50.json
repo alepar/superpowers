@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+  "artifact": "legacy-report-adapters-r1/50-task-27-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008696",
+      "position": 1,
+      "key": "Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.",
+      "text": "Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+  "artifact": "legacy-report-adapters-r1/38-task-21-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000017429",
+      "position": 1,
+      "key": "Read bd show super-plan-ufz.24 --json and bd comments super-plan-ufz.24 before implementation; there were no comments or amendments. The frozen brief and current bead agree. Saved files from the latest collection record are the integrity boundary; collection settlement, finding semantics and source bindings retain their existing contracts. Symlink containment remains separately owned by task .27.",
+      "text": "Read bd show super-plan-ufz.24 --json and bd comments super-plan-ufz.24 before implementation; there were no comments or amendments. The frozen brief and current bead agree. Saved files from the latest collection record are the integrity boundary; collection settlement, finding semantics and source bindings retain their existing contracts. Symlink containment remains separately owned by task .27."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000017843",
+      "position": 1,
+      "key": "None within this task. Caller-owned final sweep, independent review, instruction evaluations and root/human acceptance remain pending under their existing owners. No extra agents, workflow roles or replacement engine were introduced.",
+      "text": "None within this task. Caller-owned final sweep, independent review, instruction evaluations and root/human acceptance remain pending under their existing owners. No extra agents, workflow roles or replacement engine were introduced."
+    }
+  ]
+}

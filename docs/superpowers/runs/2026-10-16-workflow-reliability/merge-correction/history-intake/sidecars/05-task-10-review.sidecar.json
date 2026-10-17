@@ -1,0 +1,498 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-10-review.md",
+  "rawSha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+  "rawByteCount": 4327,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-review.md",
+    "durablePath": "task-report-history-r1/raw/task-10-review.md",
+    "sha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+    "byteCount": 4327,
+    "logicalRole": "review",
+    "ordinal": 10,
+    "logicalTaskId": "super-plan-ufz.7",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-10-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: NEEDS_FIX"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 5,
+      "byteStart": 0,
+      "byteEnd": 136,
+      "bodyLineStart": 1,
+      "rawText": "Status: NEEDS_FIX\nTask: super-plan-ufz.7\nBase: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nHead: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\n\n",
+      "bodyRawText": "Status: NEEDS_FIX\nTask: super-plan-ufz.7\nBase: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\nHead: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: NEEDS_FIX\n",
+          "text": "Status: NEEDS_FIX",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 18
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.7\n",
+          "text": "Task: super-plan-ufz.7",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 2,
+          "lineEnd": 2,
+          "byteStart": 18,
+          "byteEnd": 41
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\n",
+          "text": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 41,
+          "byteEnd": 88
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\n",
+          "text": "Head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 88,
+          "byteEnd": 135
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "lineStart": 6,
+      "lineEnd": 13,
+      "byteStart": 136,
+      "byteEnd": 965,
+      "bodyLineStart": 7,
+      "rawText": "## Spec compliance\n\n❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).\n\n✅ The A/B comparison keeps task exoneration separate from introducing ownership. Pre-run failures and absent baseline evidence are distinct. Exact command/configuration identity, durable history, ordinary-subagent instructions and caller parked records are present. No new root acceptance gate, mandatory baseline phase or compulsory pre-run repair was introduced. Existing run-state fields suffice, so additive contract goldens need no changes.\n\nCurrent bd show/acceptance and bd comments were read; there are no amendments or triage comments. The coordinator owns the pending fresh-agent evaluation; its absence from implementer evidence is not a task-local failure.\n\n",
+      "bodyRawText": "\n❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).\n\n✅ The A/B comparison keeps task exoneration separate from introducing ownership. Pre-run failures and absent baseline evidence are distinct. Exact command/configuration identity, durable history, ordinary-subagent instructions and caller parked records are present. No new root acceptance gate, mandatory baseline phase or compulsory pre-run repair was introduced. Existing run-state fields suffice, so additive contract goldens need no changes.\n\nCurrent bd show/acceptance and bd comments were read; there are no amendments or triage comments. The coordinator owns the pending fresh-agent evaluation; its absence from implementer evidence is not a task-local failure.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).\n",
+          "text": "❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 156,
+          "byteEnd": 292
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The A/B comparison keeps task exoneration separate from introducing ownership. Pre-run failures and absent baseline evidence are distinct. Exact command/configuration identity, durable history, ordinary-subagent instructions and caller parked records are present. No new root acceptance gate, mandatory baseline phase or compulsory pre-run repair was introduced. Existing run-state fields suffice, so additive contract goldens need no changes.\n",
+          "text": "✅ The A/B comparison keeps task exoneration separate from introducing ownership. Pre-run failures and absent baseline evidence are distinct. Exact command/configuration identity, durable history, ordinary-subagent instructions and caller parked records are present. No new root acceptance gate, mandatory baseline phase or compulsory pre-run repair was introduced. Existing run-state fields suffice, so additive contract goldens need no changes.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 293,
+          "byteEnd": 741
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bd show/acceptance and bd comments were read; there are no amendments or triage comments. The coordinator owns the pending fresh-agent evaluation; its absence from implementer evidence is not a task-local failure.\n",
+          "text": "Current bd show/acceptance and bd comments were read; there are no amendments or triage comments. The coordinator owns the pending fresh-agent evaluation; its absence from implementer evidence is not a task-local failure.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 742,
+          "byteEnd": 964
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Issues"
+      ],
+      "lineStart": 14,
+      "lineEnd": 21,
+      "byteStart": 965,
+      "byteEnd": 2435,
+      "bodyLineStart": 15,
+      "rawText": "## Issues\n\nCritical: none.\n\nImportant — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.\n\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\n\nImportant — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.\n\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 976,
+          "byteEnd": 992
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.\n",
+          "text": "Important — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 993,
+          "byteEnd": 2420
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 2421,
+          "byteEnd": 2434
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Test evidence"
+      ],
+      "lineStart": 22,
+      "lineEnd": 27,
+      "byteStart": 2435,
+      "byteEnd": 3466,
+      "bodyLineStart": 23,
+      "rawText": "## Test evidence\n\nThe implementer reports final runs on the immutable head: node tests/super-code/replay-harness.mjs (1972 passed, 0 failed); bash tests/super-code/test-dispatch-text.sh (all passed); bash tests/super-auto/test-scripts.sh (all passed); bash tests/super-auto/test-contract-lint.sh (all passed). Commands, exact isolated execution prefix, worktree, output summaries and simulated-mechanics limitation are provided. This plausibly covers the task changes but omits the contradictory verification-only case above. RED evidence is also provided. No tests were run by this reviewer, as required.\n\nTest changes commands: git diff --stat 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6 -- [all supplied TEST_PATHSPECS], and git diff with the same immutable range and all supplied TEST_PATHSPECS. Both succeeded. Only additions: tests/super-code/replay-harness.mjs (56 lines), tests/super-auto/test-scripts.sh (16 lines). No deleted, skipped, loosened or rewritten existing expectations.\n\n",
+      "bodyRawText": "\nThe implementer reports final runs on the immutable head: node tests/super-code/replay-harness.mjs (1972 passed, 0 failed); bash tests/super-code/test-dispatch-text.sh (all passed); bash tests/super-auto/test-scripts.sh (all passed); bash tests/super-auto/test-contract-lint.sh (all passed). Commands, exact isolated execution prefix, worktree, output summaries and simulated-mechanics limitation are provided. This plausibly covers the task changes but omits the contradictory verification-only case above. RED evidence is also provided. No tests were run by this reviewer, as required.\n\nTest changes commands: git diff --stat 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6 -- [all supplied TEST_PATHSPECS], and git diff with the same immutable range and all supplied TEST_PATHSPECS. Both succeeded. Only additions: tests/super-code/replay-harness.mjs (56 lines), tests/super-auto/test-scripts.sh (16 lines). No deleted, skipped, loosened or rewritten existing expectations.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The implementer reports final runs on the immutable head: node tests/super-code/replay-harness.mjs (1972 passed, 0 failed); bash tests/super-code/test-dispatch-text.sh (all passed); bash tests/super-auto/test-scripts.sh (all passed); bash tests/super-auto/test-contract-lint.sh (all passed). Commands, exact isolated execution prefix, worktree, output summaries and simulated-mechanics limitation are provided. This plausibly covers the task changes but omits the contradictory verification-only case above. RED evidence is also provided. No tests were run by this reviewer, as required.\n",
+          "text": "The implementer reports final runs on the immutable head: node tests/super-code/replay-harness.mjs (1972 passed, 0 failed); bash tests/super-code/test-dispatch-text.sh (all passed); bash tests/super-auto/test-scripts.sh (all passed); bash tests/super-auto/test-contract-lint.sh (all passed). Commands, exact isolated execution prefix, worktree, output summaries and simulated-mechanics limitation are provided. This plausibly covers the task changes but omits the contradictory verification-only case above. RED evidence is also provided. No tests were run by this reviewer, as required.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2453,
+          "byteEnd": 3041
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands: git diff --stat 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6 -- [all supplied TEST_PATHSPECS], and git diff with the same immutable range and all supplied TEST_PATHSPECS. Both succeeded. Only additions: tests/super-code/replay-harness.mjs (56 lines), tests/super-auto/test-scripts.sh (16 lines). No deleted, skipped, loosened or rewritten existing expectations.\n",
+          "text": "Test changes commands: git diff --stat 15084177065dbaaa4eff1992cfb2fbfb56cee5f8..e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6 -- [all supplied TEST_PATHSPECS], and git diff with the same immutable range and all supplied TEST_PATHSPECS. Both succeeded. Only additions: tests/super-code/replay-harness.mjs (56 lines), tests/super-auto/test-scripts.sh (16 lines). No deleted, skipped, loosened or rewritten existing expectations.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 3042,
+          "byteEnd": 3465
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability/risk checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability/risk checks\n",
+      "hierarchy": [
+        "Focused reachability/risk checks"
+      ],
+      "lineStart": 28,
+      "lineEnd": 31,
+      "byteStart": 3466,
+      "byteEnd": 4134,
+      "bodyLineStart": 29,
+      "rawText": "## Focused reachability/risk checks\n\nRisk: a reducer that is unreachable from real review handling would not implement ownership. Traced reviewAndFix -> validReview -> dispatch(schema RESULT) -> recordCheckEvidence/recordFailureAttribution -> noteRecovery, and final return -> runFailures. Searched sibling RESULT dispatches: the centralized dispatch hook applies to them as well. Read only this focused caller and the changed classifier to check the source-conflict risk. The classifier at lines 410-435 confirms that verification-only events bypass the sole same-source guard; durable prior evidence is available in data.history but is not consulted by that guard.\n\n",
+      "bodyRawText": "\nRisk: a reducer that is unreachable from real review handling would not implement ownership. Traced reviewAndFix -> validReview -> dispatch(schema RESULT) -> recordCheckEvidence/recordFailureAttribution -> noteRecovery, and final return -> runFailures. Searched sibling RESULT dispatches: the centralized dispatch hook applies to them as well. Read only this focused caller and the changed classifier to check the source-conflict risk. The classifier at lines 410-435 confirms that verification-only events bypass the sole same-source guard; durable prior evidence is available in data.history but is not consulted by that guard.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: a reducer that is unreachable from real review handling would not implement ownership. Traced reviewAndFix -> validReview -> dispatch(schema RESULT) -> recordCheckEvidence/recordFailureAttribution -> noteRecovery, and final return -> runFailures. Searched sibling RESULT dispatches: the centralized dispatch hook applies to them as well. Read only this focused caller and the changed classifier to check the source-conflict risk. The classifier at lines 410-435 confirms that verification-only events bypass the sole same-source guard; durable prior evidence is available in data.history but is not consulted by that guard.\n",
+          "text": "Risk: a reducer that is unreachable from real review handling would not implement ownership. Traced reviewAndFix -> validReview -> dispatch(schema RESULT) -> recordCheckEvidence/recordFailureAttribution -> noteRecovery, and final return -> runFailures. Searched sibling RESULT dispatches: the centralized dispatch hook applies to them as well. Read only this focused caller and the changed classifier to check the source-conflict risk. The classifier at lines 410-435 confirms that verification-only events bypass the sole same-source guard; durable prior evidence is available in data.history but is not consulted by that guard.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 3503,
+          "byteEnd": 4133
+        }
+      ]
+    },
+    {
+      "section": "Strengths",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Strengths\n",
+      "hierarchy": [
+        "Strengths"
+      ],
+      "lineStart": 32,
+      "lineEnd": 34,
+      "byteStart": 4134,
+      "byteEnd": 4327,
+      "bodyLineStart": 33,
+      "rawText": "## Strengths\n\nThe additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.\n",
+      "bodyRawText": "\nThe additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.\n",
+          "text": "The additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4148,
+          "byteEnd": 4327
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: NEEDS_FIX",
+      "text": "Status: NEEDS_FIX",
+      "rawText": "Status: NEEDS_FIX\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 18,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.7",
+      "text": "Task: super-plan-ufz.7",
+      "rawText": "Task: super-plan-ufz.7\n",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "byteStart": 18,
+      "byteEnd": 41,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+      "text": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+      "rawText": "Base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 41,
+      "byteEnd": 88,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "Head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6",
+      "text": "Head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6",
+      "rawText": "Head: e1591cca16ce4a4d7f96f865e0ba3fb6e03ea5c6\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 88,
+      "byteEnd": 135,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).",
+      "text": "❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).",
+      "rawText": "❌ Contradictory source-bound evidence can close a retained run repair obligation without being exposed as a gap (coordinator.js:432).\n",
+      "lineStart": 8,
+      "lineEnd": 8,
+      "byteStart": 156,
+      "byteEnd": 292,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 976,
+      "byteEnd": 992,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.",
+      "text": "Important — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.",
+      "rawText": "Important — skills/super-code/coordinator.js:432: The verification guard compares verified.sourceTree only against the current event's observed record. A normal verification-only reply omits observed, so !observed makes the guard true even if that exact source tree and command/configuration already has a retained live/fail observation. Concrete history: the existing fixture establishes baseline a/pass, A source b/fail and owner bd-A; append a reply with evidence [b/live/pass] and an association containing verification:0 but no observed/runBaseline. The reducer retains the original b/fail comparison, sets state=verified, and records no contradiction gap. This is the same immutable tested source as the recorded failure, not evidence of a repaired source; the contradictory outcomes need reconciliation. Callers explicitly retire the qualifier on this verified state, so the open repair can disappear. Compare the verification source/outcome against retained linked observations (and other associated outcomes), preserve ownership/open state with a contradiction gap when they conflict, and add a deterministic fixture for verification-only contradiction after durable re-entry. If repeat measurements are intentionally reconciled, require explicit supported reconciliation rather than silently accepting the later pass. The within-one-event baseline/observed same-tree guard does not cover this durable-history path.\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 993,
+      "byteEnd": 2420,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 2421,
+      "byteEnd": 2434,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "section": "Strengths",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Strengths"
+      ],
+      "positionInSection": 1,
+      "key": "The additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.",
+      "text": "The additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.",
+      "rawText": "The additive Recovery envelope preserves introducing events across clean retries; the test/report claims clearly distinguish simulated mechanics from parent-owned agent behavior.\n",
+      "lineStart": 34,
+      "lineEnd": 34,
+      "byteStart": 4148,
+      "byteEnd": 4327,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

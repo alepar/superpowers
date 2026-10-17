@@ -1,0 +1,11 @@
+{
+  "exitCode": 3,
+  "eligible": false,
+  "pending": 46,
+  "gaps": 221,
+  "relevanceUnproven": 213,
+  "sourceCoverageGaps": [],
+  "sourceCheckpoint": "35e91189 historical late checkpoint explicitly unchanged",
+  "actualHelperSourceHead": "480f7a23",
+  "limits": "Read-only diagnostic after registration/one reviewed correspondence, not current final acceptance. Original stale checkpoint gaps remain until justified current reconciliation."
+}

@@ -1,0 +1,79 @@
+{
+  "createdUtc": "2026-10-17T22:25:18.595023+00:00",
+  "scope": "Additive bounded role assessment only; original inventory artifact manifest remains unchanged. No global readiness or omission authority.",
+  "inputs": [
+    {
+      "path": "artifact-manifest.json",
+      "bytes": 4200,
+      "sha256": "f70790cb005225583b7d4eeb26a10ee8120378e2d08e4950545c5a18266b7f3a"
+    },
+    {
+      "path": "tracked-path-inventory.json",
+      "bytes": 12468441,
+      "sha256": "3f7c8274e492aa98cb1f3433b7af880c53cd6c030e92b21d8bff94f5e4785588"
+    },
+    {
+      "path": "unestablished-role-review-queue.json",
+      "bytes": 6923,
+      "sha256": "8b42f5dbe8231293168f07d3063320b6a305308b80a672273cf3d54177e233c8"
+    },
+    {
+      "path": "substantive-document-review-queue.json",
+      "bytes": 307011,
+      "sha256": "2a37d786798549cb221dfa6eb77fd9f5b8e0605a2a89df8304d0bd2a0f69803c"
+    },
+    {
+      "path": "source-bound-reuse-proof.json",
+      "bytes": 228954,
+      "sha256": "fe4b60e8ee5d1ac842f6d8022d7cbd1f04f3336356034bfc6f63a71ff291caa7"
+    },
+    {
+      "path": "pending-adapter-provenance.json",
+      "bytes": 269275,
+      "sha256": "05356bd3c048457161a2760399d839481e6ee03136f9e92ee7c4b6dd1c561dfd"
+    },
+    {
+      "path": "hash-provenance-claims.json",
+      "bytes": 6711502,
+      "sha256": "9ce5b84e8c83bb0341af966fcb826907e7d1e6c5c10d1e0a412a007c10bf19a6"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "role-addendum-normative-preparation.json",
+      "bytes": 98066,
+      "sha256": "ca615a2e47b64198f7efc31e1f7b853a1db4e30d3ce062312b9da14f6a0dd34a"
+    },
+    {
+      "path": "role-addendum-derived-diff-proof.json",
+      "bytes": 1933,
+      "sha256": "b2d697adc39a10e89e471c0d8ce1da4ec9bc47047ce4587a7be0d3592ff930e4"
+    },
+    {
+      "path": "role_assessment.py",
+      "bytes": 30284,
+      "sha256": "3e820ce26089fa046d6829f972184ace4c91c9d799fcf4ff205dc87758fc8a58"
+    },
+    {
+      "path": "role-assessment-addendum.json",
+      "bytes": 477960,
+      "sha256": "55605b0c73f238fb61c7719b75e78f5d4b28d362f4ea8fc9551efd8d373c393a"
+    },
+    {
+      "path": "role-assessment-addendum.md",
+      "bytes": 19474,
+      "sha256": "e97c745ea754aba9c4e4c6c9d61ae0d77e8cf2e3f295e809cb357b5040706389"
+    }
+  ],
+  "consistencyChecks": {
+    "exact18RoleRecords": true,
+    "exact364Members49Groups": true,
+    "historicalMerge11FileProofsMatch": true,
+    "eightCarryRecordsPresentAtCommittedRunLines19Through26": true,
+    "acceptanceManifest20RowsMatch": true,
+    "oldSweepManifest112RowsMatch": true,
+    "headerExtractLinesExist": true,
+    "fourDiffsExactlyReproduced": true,
+    "testsExecuted": false
+  }
+}

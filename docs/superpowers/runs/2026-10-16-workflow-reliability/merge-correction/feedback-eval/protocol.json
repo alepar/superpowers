@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "purpose": "Prospective feedback instruction consistency micro-evaluation; no live issue filing",
+  "source": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "samplesPerVariant": 5,
+  "variants": [
+    "baseline",
+    "after"
+  ],
+  "model": "gpt-6-luna",
+  "reasoningEffort": "medium",
+  "files": [
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+      "bytes": 10316
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "sha256": "f9a92a7f311492402f3d8870156062a508ea9564193be88c077163c885b36a05",
+      "bytes": 3992
+    },
+    {
+      "path": "skills/upstream-feedback/analyst-prompt.md",
+      "sha256": "b9a5d6fb0b92f1bae8155291cb74e58712258b4f815adddcd169dd3cfea72cd2",
+      "bytes": 3790
+    }
+  ],
+  "contextSha256": "0cdc39d8039d7c7b43852e289179fd4374fbff34b73663b56343fd4b9e26ff2b",
+  "caseSha256": "a1e8c4e11ba486c6c978146c07406b883c50bec19131759ee1272e635c1ea1d2",
+  "rubric": "Two evidenced task landings match two successful task Merge identities; one base absorption does not create a ledger-incomplete claim. Preserve known raw merge count separately if included.",
+  "limitations": [
+    "Textual drafting, not actual upstream filing or performance measurement",
+    "All outcomes preserved without replacement; static instruction contradiction independently source-evidenced",
+    "Common inherited harness, provider prefix/revision not controlled"
+  ]
+}

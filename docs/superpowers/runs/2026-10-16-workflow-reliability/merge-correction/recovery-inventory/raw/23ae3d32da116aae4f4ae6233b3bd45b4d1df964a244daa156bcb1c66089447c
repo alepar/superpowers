@@ -1,0 +1,178 @@
+{
+  "status": "completed",
+  "iteration": "post-cap audit",
+  "verdict": "Blocking (7 confirmed)",
+  "reportPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+  "coveragePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-coverage.json",
+  "completePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/post-cap-audit.complete.json",
+  "stageDirectory": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit-stages",
+  "scratchRoot": "/tmp/ufz-postcap-controller",
+  "sourceBase": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "sourceHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "counts": {
+    "confirmedReportEntries": 7,
+    "carriedPriorBlocking": 1,
+    "carriedPriorShouldFix": 4,
+    "newShouldFix": 1,
+    "newFYIPreExisting": 1,
+    "escalations": 2,
+    "scouts": 14,
+    "raw": 4,
+    "deduped": 4,
+    "panels": 4,
+    "judgeSeats": 12,
+    "completeOccurrences": 13
+  },
+  "newConfirmedKeys": [
+    "[FYI] skills/super-auto/scripts/report-status:468",
+    "[Should-fix] skills/super-auto/resume.md:68"
+  ],
+  "newEscalation": "skills/super-auto/scripts/report-status:469 \u2014 supported design-loop ledger producer versus retained-source acceptance population; materially unsettled",
+  "priorSelectorEscalationRetained": true,
+  "normalFixLoopRestarted": false,
+  "newBlocking": 0,
+  "all17OriginalMixedPunchKeysRetained": true,
+  "coverage": {
+    "triageDead": false,
+    "scoutsDispatched": 14,
+    "scoutsDead": 0,
+    "unknownLanes": [],
+    "domainsDropped": [],
+    "rawFindings": 4,
+    "dedupedFindings": 4,
+    "dedupeOrphans": 0,
+    "beyondCap": 0,
+    "beyondPanelCap": 0,
+    "dedupeDead": false,
+    "panelCount": 4,
+    "spotCount": 0,
+    "promotedCount": 0,
+    "judgeLost": 0,
+    "spotLost": 0,
+    "laneYield": {
+      "correctness": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "security": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "premortem": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "simplicity-design": {
+        "found": 1,
+        "confirmed": 1,
+        "unique": 1,
+        "refuted": 0
+      },
+      "hot-path-perf": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "concurrency-async": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "regression": {
+        "found": 1,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 1
+      },
+      "data-migrations": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "deploy-safety": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "api-contract": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "observability": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "testing": {
+        "found": 1,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 1
+      },
+      "dependency": {
+        "found": 0,
+        "confirmed": 0,
+        "unique": 0,
+        "refuted": 0
+      },
+      "hygiene-docs": {
+        "found": 1,
+        "confirmed": 1,
+        "unique": 1,
+        "refuted": 0
+      }
+    },
+    "judgeCompletionPct": 100,
+    "lowCoverage": false,
+    "panelCappedTag": "",
+    "emptyLateRound": false,
+    "convergenceEligible": true
+  },
+  "retainedGaps": [
+    "Mandatory pre-assembler unavailable; captured Git fallback does not clear original selector/provenance gaps.",
+    "Same-family GPT-6 method-differentiated panel, not cross-family independence.",
+    "Prior one Blocking/four Should-fix carried only, not reverified in scoped range.",
+    "No hosted Workflow execution; resume defect proven by static instruction trace.",
+    "37-group caller suite pass retained; audit did not rerun suite.",
+    "No actual root acceptance or global cleanup inspection established."
+  ],
+  "archiveVerification": {
+    "verifiedEntries": 621,
+    "hashMap": {
+      "sha256": "407dc941ead36362bf3cb57238fe8fbcc74c61ea03d4553630e9052208a2c0c8",
+      "bytes": 115545
+    },
+    "symlinks": 0,
+    "liveGitEntries": 0,
+    "mapWrittenAfterOtherStageWrites": true
+  },
+  "report": {
+    "sha256": "0b1152a15448933747511f509825deea4e802f30cdff209b190fdef097a98b48",
+    "bytes": 22053
+  },
+  "structuredFindingSectionCounts": {
+    "Confirmed findings            \u2190 consumed by super-design, one task per finding": 7,
+    "Rejected (with reason)        \u2190 so re-roasts don't re-litigate": 4,
+    "Escalations (need human)      \u2190 UNVERIFIED externals, incomplete panels, unsettled panels, material dissent": 2
+  },
+  "friction": [
+    "Initial dedupe prompt path absent; materialized exact engine state prompt and resumed same owed task.",
+    "Reporter first output retained; suite wording corrected and concrete minority design-loop producer dissent escalated."
+  ],
+  "sourceEdits": false,
+  "commits": false,
+  "processCleanupPerformed": false
+}

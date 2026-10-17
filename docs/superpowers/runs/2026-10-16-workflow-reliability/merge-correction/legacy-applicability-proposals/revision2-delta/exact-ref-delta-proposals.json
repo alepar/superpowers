@@ -1,0 +1,1736 @@
+{
+  "schemaVersion": 1,
+  "proposalRevision": 2,
+  "deltaOnly": true,
+  "proposalOnly": true,
+  "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+  "correctedAdapterRecordsSha256": "c04593efb7ffd0b9414222ee39c1337e1b3e5d2722356d11fe2de0dfd5e7b9ee",
+  "correctedAdapterManifestSha256": "d759bee75ac79d3952540ff325f13f422848b8c26ed5a599d4a47cca4066e262",
+  "reusedInitialWork": {
+    "path": "../exact-ref-proposals.json",
+    "sha256": "267ab370f24b3589b2896ae30039ffe579b83ed84e0a22875839d08f03b0654d",
+    "scope": "Initial199 assessment retained unchanged at its original freeze87166167;197 unchanged exact ref objects reused with attribution, not claimed independently reread/rejudged at583f2486."
+  },
+  "populationAccounting": {
+    "initial": 199,
+    "removedReplacedSyntheticRefs": 2,
+    "addedExactRefs": 16,
+    "corrected": 213,
+    "historicalMixedAppearances": 13,
+    "structuredConcernAppearances": 2,
+    "actualPopulationQualification": 1,
+    "independentDefectCount": null
+  },
+  "freshReviewScope": "Only the16 added exact refs and two replaced refs; exact substantive raw spans, source-bound historical repair/verification and selected relevant Git blobs at583f2486. Corrected adapter controls are selection/representation evidence only, not product acceptance.",
+  "proposals": [
+    {
+      "id": "delta-01",
+      "originalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-6/raw-byte-000009651/json-pointer-/concerns/0",
+        "position": 1,
+        "key": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.",
+        "text": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines."
+      },
+      "originalRawSha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+      "originalRawArtifact": "task-report-history-r1/raw/task-24-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Concerns — adapter/structured-concern-appearance/raw-section-6/raw-byte-000009651/json-pointer-/concerns/0",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "structured-concern-appearance",
+        "roles": [
+          "structured-concern-appearance"
+        ],
+        "passageJudgment": null,
+        "representationChoice": "parent-bounded-two-structured-concerns",
+        "rawByteStart": 9651,
+        "rawByteEnd": 9791,
+        "rawLineStart": 114,
+        "rawLineEnd": 114,
+        "originalSections": [
+          {
+            "section": "Evidence and source identity",
+            "sectionOrdinal": 6,
+            "headingRaw": "## Evidence and source identity\n",
+            "hierarchy": [
+              "Evidence and source identity"
+            ],
+            "byteStart": 4643,
+            "byteEnd": 9824
+          }
+        ],
+        "rawText": "\"Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.\"",
+        "jsonPointer": "/concerns/0",
+        "originalReviewedJsonBlockSpan": [
+          5079,
+          9823
+        ],
+        "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+        "decodedFieldText": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.",
+        "adapterText": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-2-review.json#/sources/15/structuredAppearances/0"
+        ],
+        "interpretation": "Parent explicitly requests this one of two independently identified structured concern renditions as a separate interpreted appearance. Full exact JSON provenance retained. Not an independent defect, identity link, resolution, or exhaustive-every-quote claim."
+      },
+      "sourceMetadata": "pinned-input/metadata/43-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Structured collector selection/containment concern",
+      "criteria": [
+        "R1",
+        "R9",
+        "R15"
+      ],
+      "classification": "current-required-composition-obligation",
+      "proposedDisposition": null,
+      "basis": "This original JSON concern explicitly requires composing independently owned input selection with source containment across shared collector lines. It neither asserts a separate defect nor measures a completed integration. The parent still needs the actual final selector/containment composition review and final suite; interim frozen-source inspection cannot establish Task 4 final behavior.",
+      "evidenceKeys": [],
+      "pendingCurrentRoutes": [
+        "selector",
+        "review",
+        "suite"
+      ],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "current named obligation remains pending/blocking",
+      "renditionStatus": "Separate original structured concern appearance. No link to prose, extra independent defect, or independent execution claim is applied."
+    },
+    {
+      "id": "delta-02",
+      "originalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+        "position": 1,
+        "key": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+        "text": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed."
+      },
+      "originalRawSha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "originalRawArtifact": "task-report-history-r1/raw/task-27-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "structured-concern-appearance",
+        "roles": [
+          "structured-concern-appearance"
+        ],
+        "passageJudgment": null,
+        "representationChoice": "parent-bounded-two-structured-concerns",
+        "rawByteStart": 22349,
+        "rawByteEnd": 22581,
+        "rawLineStart": 209,
+        "rawLineEnd": 209,
+        "originalSections": [
+          {
+            "section": "Structured result",
+            "sectionOrdinal": 13,
+            "headingRaw": "## Structured result\n",
+            "hierarchy": [
+              "Task 27 / super-plan-ufz.30 implementation report",
+              "Structured result"
+            ],
+            "byteStart": 18256,
+            "byteEnd": 22592
+          }
+        ],
+        "rawText": "\"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"",
+        "jsonPointer": "/concerns/0",
+        "originalReviewedJsonBlockSpan": [
+          18279,
+          22592
+        ],
+        "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+        "decodedFieldText": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+        "adapterText": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-2-review.json#/sources/21/structuredAppearances/0"
+        ],
+        "interpretation": "Parent explicitly requests this one of two independently identified structured concern renditions as a separate interpreted appearance. Full exact JSON provenance retained. Not an independent defect, identity link, resolution, or exhaustive-every-quote claim."
+      },
+      "sourceMetadata": "pinned-input/metadata/49-interpretation.json",
+      "sourceRecordVerdict": "NEEDS_CONTEXT",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "unknown"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Structured historical profile qualification and caller gates",
+      "criteria": [
+        "R7",
+        "R14",
+        "R15"
+      ],
+      "classification": "historical-scope-with-current-required-caller-obligations",
+      "proposedDisposition": null,
+      "basis": "The exact JSON concern limits this leaf to historical interpretation correction and separately leaves review, final sweep, changed-instruction evaluation and human/root acceptance with the caller. Historical graph reconstruction/new measurement is not required by approved design section 5. Keep the named current caller gates pending; this separate appearance is not another independent defect.",
+      "evidenceKeys": [],
+      "pendingCurrentRoutes": [
+        "behavior",
+        "review",
+        "suite",
+        "human"
+      ],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "current named obligation remains pending/blocking",
+      "renditionStatus": "Separate original structured concern appearance. No link to prose, extra independent defect, or independent execution claim is applied."
+    },
+    {
+      "id": "delta-03",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-13/raw-byte-000020452",
+        "position": 1,
+        "key": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:",
+        "text": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one."
+      },
+      "originalRawSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+      "originalRawArtifact": "task-report-history-r1/raw/task-10-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-13/raw-byte-000020452",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 3,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+          "rawSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+          "byteStart": 20452,
+          "byteEnd": 21051,
+          "lineStart": 243,
+          "lineEnd": 250,
+          "selection": "full-original-passage",
+          "assertionQuote": "could drop an earlier contradiction gap when a genuinely different fixed source passed.",
+          "repairClaimQuote": "The final correction checks every retained verification and only reopens the currently active conflicting one.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "This separately attributed appended report appearance asserts the same local regression behavior. No identity link to the fix report or supported repair is inferred.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 20452,
+        "rawByteEnd": 21051,
+        "rawLineStart": 243,
+        "rawLineEnd": 250,
+        "originalSections": [
+          {
+            "section": "RED/GREEN evidence",
+            "sectionOrdinal": 13,
+            "headingRaw": "### RED/GREEN evidence\n",
+            "hierarchy": [
+              "Task super-plan-ufz.7 implementation",
+              "Fix pass",
+              "RED/GREEN evidence"
+            ],
+            "byteStart": 19251,
+            "byteEnd": 23381
+          }
+        ],
+        "rawText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/2/interpretedPassages/9"
+        ],
+        "interpretation": "This separately attributed appended report appearance asserts the same local regression behavior. No identity link to the fix report or supported repair is inferred. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/03-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Appended history-order contradiction loss",
+      "criteria": [
+        "R5",
+        "R8"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-mechanism-repair-proposal",
+      "basis": "The original appended report describes loss of an earlier contradiction after a different-source repair, retaining its 1980/1 RED. It also retains the explicit every-verification correction and final 1981/0 checks at the named fixed tree. Frozen code iterates all retained verifications and records prior gaps while reopening only active conflicting verification; the exact different-source fixture still checks retained b-source contradiction after e-source repair. This supports this source appearance independently, without borrowing a later silence or applying a link to the fix-report appearance.",
+      "evidenceKeys": [
+        "history-order-appended-source",
+        "history-order-code",
+        "history-order-fixture"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-04",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-3/raw-byte-000003014",
+        "position": 1,
+        "key": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:",
+        "text": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one."
+      },
+      "originalRawSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+      "originalRawArtifact": "task-report-history-r1/raw/task-10-report-fix.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-3/raw-byte-000003014",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 2,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+          "rawSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+          "byteStart": 3014,
+          "byteEnd": 3613,
+          "lineStart": 47,
+          "lineEnd": 54,
+          "selection": "full-original-passage",
+          "assertionQuote": "could drop an earlier contradiction gap when a genuinely different fixed source passed.",
+          "repairClaimQuote": "The final correction checks every retained verification and only reopens the currently active conflicting one.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source expressly asserts earlier-contradiction loss after a different-source repair, supported by its RED history-order observation; its claimed correction qualifies but does not erase that historical appearance.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 3014,
+        "rawByteEnd": 3613,
+        "rawLineStart": 47,
+        "rawLineEnd": 54,
+        "originalSections": [
+          {
+            "section": "RED/GREEN evidence",
+            "sectionOrdinal": 3,
+            "headingRaw": "### RED/GREEN evidence\n",
+            "hierarchy": [
+              "Fix pass",
+              "RED/GREEN evidence"
+            ],
+            "byteStart": 1813,
+            "byteEnd": 5943
+          }
+        ],
+        "rawText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/1/interpretedPassages/3"
+        ],
+        "interpretation": "The source expressly asserts earlier-contradiction loss after a different-source repair, supported by its RED history-order observation; its claimed correction qualifies but does not erase that historical appearance. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/02-interpretation.json",
+      "sourceRecordVerdict": "FIXED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Fix-report history-order contradiction loss",
+      "criteria": [
+        "R5",
+        "R8"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-mechanism-repair-proposal",
+      "basis": "This source names fixed head 340d4ef85fbe59dbf55950d3c5e6c44df5d11d28 and tested tree 4790bbe2d53e9418423b55cc9f9e399ddc6757ec. Its specific history-order RED 1980/1 is followed by an executed 1981/0 run that explicitly passes earlier-contradiction retention. Current static inspection confirms the complete-history guard and scenario fixture, not a final-tree pass. The separately appended report remains a separate occurrence.",
+      "evidenceKeys": [
+        "history-order-fix-source",
+        "history-order-code",
+        "history-order-fixture"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-05",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000005758",
+        "position": 1,
+        "key": "Additional interrupted-clear RED:",
+        "text": "Additional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`."
+      },
+      "originalRawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "originalRawArtifact": "task-report-history-r1/raw/task-11-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000005758",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 7,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "rawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+          "byteStart": 5758,
+          "byteEnd": 6278,
+          "lineStart": 65,
+          "lineEnd": 78,
+          "selection": "full-original-passage",
+          "assertionQuote": "the initial implementation cleared the in-memory obligation before its append was confirmed.",
+          "repairClaimQuote": "Combined clear/completion appending with confirmation before reduction fixed this.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "Expected-failure prose expressly asserts premature reduction before append confirmation. Retain the complete supporting command/output within this single historical appearance; do not infer a separate finding from each FAIL line.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 5758,
+        "rawByteEnd": 6278,
+        "rawLineStart": 65,
+        "rawLineEnd": 78,
+        "originalSections": [
+          {
+            "section": "Tests and TDD",
+            "sectionOrdinal": 4,
+            "headingRaw": "## Tests and TDD\n",
+            "hierarchy": [
+              "Task super-plan-ufz.12 — IMPLEMENTED",
+              "Tests and TDD"
+            ],
+            "byteStart": 4366,
+            "byteEnd": 8672
+          }
+        ],
+        "rawText": "Additional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Additional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/6/interpretedPassages/3"
+        ],
+        "interpretation": "Expected-failure prose expressly asserts premature reduction before append confirmation. Retain the complete supporting command/output within this single historical appearance; do not infer a separate finding from each FAIL line. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/07-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "In-memory Recovery clear before durable confirmation",
+      "criteria": [
+        "R4"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-mechanism-repair-proposal",
+      "basis": "Original source records the actual failed unconfirmed-clear case, 2010/1, and 2011/0 after combining clear/completion append before reduction. Its final rebased head 26cc469e06bab7b6dad98cb726326f949d1c486f records replay 2074/0 and passing dispatch commands. Frozen resume code awaits the combined append and retains the obligation on unavailable persistence before readRecovery/settle; the null append/retry fixture asserts recovery-held and the original pending closure. This supports only this all-closed recovery transaction, not every interruption or later partial-close defect.",
+      "evidenceKeys": [
+        "resume-original-source-identity",
+        "resume-original-regressions-and-final-checks",
+        "resume-confirmed-append-code",
+        "resume-clear-and-array-fixtures"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-06",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000006279",
+        "position": 1,
+        "key": "Additional incomplete-observation RED:",
+        "text": "Additional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`."
+      },
+      "originalRawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "originalRawArtifact": "task-report-history-r1/raw/task-11-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000006279",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 7,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "rawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+          "byteStart": 6279,
+          "byteEnd": 6985,
+          "lineStart": 80,
+          "lineEnd": 97,
+          "selection": "full-original-passage",
+          "assertionQuote": "a reply missing its closed-status array was not safely classified as unknown.",
+          "repairClaimQuote": "Explicit array guards fixed it.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "Expected-failure prose expressly identifies unsafe handling of a missing array, with a TypeError and bounded-held behavior failures. The entire passage remains one qualified historical appearance rather than a set of new defects per TDD assertion.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 6279,
+        "rawByteEnd": 6985,
+        "rawLineStart": 80,
+        "rawLineEnd": 97,
+        "originalSections": [
+          {
+            "section": "Tests and TDD",
+            "sectionOrdinal": 4,
+            "headingRaw": "## Tests and TDD\n",
+            "hierarchy": [
+              "Task super-plan-ufz.12 — IMPLEMENTED",
+              "Tests and TDD"
+            ],
+            "byteStart": 4366,
+            "byteEnd": 8672
+          }
+        ],
+        "rawText": "Additional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Additional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/6/interpretedPassages/4"
+        ],
+        "interpretation": "Expected-failure prose expressly identifies unsafe handling of a missing array, with a TypeError and bounded-held behavior failures. The entire passage remains one qualified historical appearance rather than a set of new defects per TDD assertion. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/07-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Missing closed-status array threw during resume",
+      "criteria": [
+        "R4"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-mechanism-repair-proposal",
+      "basis": "The original report preserves TypeError and 2014/4, records 2018/0 after explicit array guards, and gives final rebased 2074/0 with exact commands. Frozen known-observation classification first requires both closed/open arrays, then uses includes; missing closed is a retained held reason. The actual fixture includes {landed:true,open:[]} and asserts no throw, bounded one attempt, retained additive data and explicit recovery-held. No unsafe generic array guarantee beyond this route is inferred.",
+      "evidenceKeys": [
+        "resume-original-source-identity",
+        "resume-original-regressions-and-final-checks",
+        "resume-confirmed-append-code",
+        "resume-clear-and-array-fixtures"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-07",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000010301",
+        "position": 1,
+        "key": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.",
+        "text": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened."
+      },
+      "originalRawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "originalRawArtifact": "task-report-history-r1/raw/task-12-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000010301",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 11,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "rawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+          "byteStart": 10301,
+          "byteEnd": 10750,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "selection": "full-original-passage",
+          "assertionQuote": "one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output.",
+          "repairClaimQuote": "Production now retains the exact old metrics line when there are no verification-only completions",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source identifies an actual intermediate exact-output regression in addition to missing dispatch fields, then claims a conditional-output correction. Preserve this assertion with its complete qualifier; no present applicability follows.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 10301,
+        "rawByteEnd": 10750,
+        "rawLineStart": 99,
+        "rawLineEnd": 99,
+        "originalSections": [
+          {
+            "section": "TDD evidence",
+            "sectionOrdinal": 4,
+            "headingRaw": "## TDD evidence\n",
+            "hierarchy": [
+              "super-plan-ufz.13 — implementation evidence",
+              "TDD evidence"
+            ],
+            "byteStart": 8756,
+            "byteEnd": 12226
+          }
+        ],
+        "rawText": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/10/interpretedPassages/3"
+        ],
+        "interpretation": "The source identifies an actual intermediate exact-output regression in addition to missing dispatch fields, then claims a conditional-output correction. Preserve this assertion with its complete qualifier; no present applicability follows. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/11-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Zero-valued verification metric broke unchanged output",
+      "criteria": [
+        "R6",
+        "R13",
+        "R15"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-output-compatibility-repair-proposal",
+      "basis": "The original report identifies the intermediate zero-valued field regression and the conditional output fix, names head 9610071921c440aa1debff4b873525b42cf3f217/tree a9b037fe8c354ce529bdfd79413a6ccfa8df6fa7, and records exact replay/dispatch/digest commands exiting 0 with replay 2062/0. Frozen production appends the verification-only suffix only when cVerification is nonzero, while the unchanged fixture still requires the exact legacy completion line. This supports exact zero-count output compatibility, not all current metrics corrections or behavior.",
+      "evidenceKeys": [
+        "zero-metrics-original-source-and-final-checks",
+        "zero-metrics-original-assertion",
+        "zero-metrics-conditional-code",
+        "zero-metrics-unchanged-expectation"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-08",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-9/raw-byte-000016157",
+        "position": 1,
+        "key": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+        "text": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact."
+      },
+      "originalRawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "originalRawArtifact": "task-report-history-r1/raw/task-12-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-9/raw-byte-000016157",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 11,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "rawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+          "byteStart": 16157,
+          "byteEnd": 17041,
+          "lineStart": 169,
+          "lineEnd": 169,
+          "selection": "full-original-passage",
+          "assertionQuote": "the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks.",
+          "repairClaimQuote": "Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source explicitly identifies an incompatible landing-head requirement for verification-only recovery and qualifies it with a claimed additive branch and confirmed-write behavior. Retain the full substantive boundary rather than just a TDD label.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 16157,
+        "rawByteEnd": 17041,
+        "rawLineStart": 169,
+        "rawLineEnd": 169,
+        "originalSections": [
+          {
+            "section": "Seam fix",
+            "sectionOrdinal": 9,
+            "headingRaw": "## Seam fix\n",
+            "hierarchy": [
+              "super-plan-ufz.13 — implementation evidence",
+              "Seam fix"
+            ],
+            "byteStart": 14943,
+            "byteEnd": 17577
+          }
+        ],
+        "rawText": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/10/interpretedPassages/8"
+        ],
+        "interpretation": "The source explicitly identifies an incompatible landing-head requirement for verification-only recovery and qualifies it with a claimed additive branch and confirmed-write behavior. Retain the full substantive boundary rather than just a TDD label. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/11-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Verification-only resume wrongly required Git landing",
+      "criteria": [
+        "R4",
+        "R6"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-mechanism-repair-proposal",
+      "basis": "The source names rebased head 70854e385736ce425a65d027a629ae0c1d58263c/tree ab08708333a5454aca375c8b87d905fd8784fb7a. It preserves three specific RED seam failures (2189/3) and executed final 2192/0 plus dispatch/digest passes for sourceVerified/no-landing and confirmed closure. Frozen resume selects verification.source/head, requires sourceVerified, avoids landed insertion, and confirms durable typed completion before settle; current fixtures verify zero impl/review/merge and no invented landing. B4 agent adherence and unrelated pending interruption repairs remain separate.",
+      "evidenceKeys": [
+        "verification-seam-source-and-results",
+        "resume-confirmed-append-code",
+        "verification-source-prompt",
+        "verification-confirmed-completion",
+        "verification-resume-fixtures"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-09",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008564",
+        "position": 1,
+        "key": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.",
+        "text": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN."
+      },
+      "originalRawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "originalRawArtifact": "task-report-history-r1/raw/task-13-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008564",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 15,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+          "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+          "byteStart": 8564,
+          "byteEnd": 8868,
+          "lineStart": 125,
+          "lineEnd": 125,
+          "selection": "full-original-passage",
+          "assertionQuote": "with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3.",
+          "repairClaimQuote": "Adding the explicit unknown-coverage gap made this GREEN.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 8564,
+        "rawByteEnd": 8868,
+        "rawLineStart": 125,
+        "rawLineEnd": 125,
+        "originalSections": [
+          {
+            "section": "TDD evidence",
+            "sectionOrdinal": 5,
+            "headingRaw": "## TDD evidence\n",
+            "hierarchy": [
+              "super-plan-ufz.8.4 implementation evidence",
+              "TDD evidence"
+            ],
+            "byteStart": 7495,
+            "byteEnd": 9880
+          }
+        ],
+        "rawText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/14/interpretedPassages/2"
+        ],
+        "interpretation": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/15-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "No retained source returned clean projection",
+      "criteria": [
+        "R9",
+        "R10"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-coverage-gap-repair-proposal",
+      "basis": "The source preserves wrong exit 0 versus required 3, records the added unknown-coverage guard, and identifies final head ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b with actual final script/lint commands exiting 0. Its exact output includes the no-retained-source assertion passing. Frozen helper still emits unknown-coverage gap when no finding-source exists, and the fixture checks exit 3. This narrow missing-population guard does not prove every declared source is accounted or resolve current legacy registration gaps.",
+      "evidenceKeys": [
+        "projection-original-source-and-final-checks",
+        "projection-original-regressions",
+        "unknown-source-coverage-guard",
+        "unknown-source-coverage-fixture"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-10",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008869",
+        "position": 1,
+        "key": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.",
+        "text": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again."
+      },
+      "originalRawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "originalRawArtifact": "task-report-history-r1/raw/task-13-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008869",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 15,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+          "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+          "byteStart": 8869,
+          "byteEnd": 9295,
+          "lineStart": 127,
+          "lineEnd": 127,
+          "selection": "full-original-passage",
+          "assertionQuote": "identifying the missing approvals finding-source/link/route/disposition fields and exact line formats.",
+          "repairClaimQuote": "Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 8869,
+        "rawByteEnd": 9295,
+        "rawLineStart": 127,
+        "rawLineEnd": 127,
+        "originalSections": [
+          {
+            "section": "TDD evidence",
+            "sectionOrdinal": 5,
+            "headingRaw": "## TDD evidence\n",
+            "hierarchy": [
+              "super-plan-ufz.8.4 implementation evidence",
+              "TDD evidence"
+            ],
+            "byteStart": 7495,
+            "byteEnd": 9880
+          }
+        ],
+        "rawText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/14/interpretedPassages/3"
+        ],
+        "interpretation": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/15-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Operative finding-record fields/formats missing",
+      "criteria": [
+        "R9",
+        "R10"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-operative-contract-repair-proposal",
+      "basis": "The source identifies exact missing approvals finding-source/link/route/disposition fields and formats, retains failing lint, and records final operative table/examples/instructions plus actual rebased script and lint success at ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b. Frozen run-state field table and operative record instructions contain those fields/formats; mutation fixtures still reject dropped/changed approved additions. This supports the specific historical documentation/contract omission, not semantic sufficiency of any supplied disposition or future lint pass.",
+      "evidenceKeys": [
+        "projection-original-source-and-final-checks",
+        "projection-original-regressions",
+        "operative-finding-field-table",
+        "operative-finding-record-contract",
+        "contract-mutation-fixtures"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-11",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000016071",
+        "position": 1,
+        "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed."
+      },
+      "originalRawSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+      "originalRawArtifact": "task-report-history-r1/raw/task-14-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000016071",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 18,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+          "rawSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+          "byteStart": 16071,
+          "byteEnd": 16518,
+          "lineStart": 175,
+          "lineEnd": 175,
+          "selection": "full-original-passage",
+          "assertionQuote": "The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`.",
+          "repairClaimQuote": "Both now recognize the actual `final-review-ID.md.diff` filename.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "Preserve this appended report appearance independently from the fix-report and review appearances. Identical wording supplies no applied identity link, repair sufficiency or current status.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 16071,
+        "rawByteEnd": 16518,
+        "rawLineStart": 175,
+        "rawLineEnd": 175,
+        "originalSections": [
+          {
+            "section": "Finding and narrow correction",
+            "sectionOrdinal": 10,
+            "headingRaw": "### Finding and narrow correction\n",
+            "hierarchy": [
+              "Fix pass",
+              "Finding and narrow correction"
+            ],
+            "byteStart": 16036,
+            "byteEnd": 17526
+          }
+        ],
+        "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/17/interpretedPassages/6"
+        ],
+        "interpretation": "Preserve this appended report appearance independently from the fix-report and review appearances. Identical wording supplies no applied identity link, repair sufficiency or current status. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/18-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Appended direct-review package suffix mismatch",
+      "criteria": [
+        "R9"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-producer-consumer-repair-proposal",
+      "basis": "The source-local appended fix names RED production 9095b266 and fixed efec33f6c7ceb333d695a5163b9d4987116c2fc7; actual producer-shaped scripts went from seven failures to exit 0, including byte preservation, inventory, conflict, direct-only null and idempotent gaps. Frozen hasBundle and discovery both recognize .md.diff. The original Important assertion and its exact producer filename stay attributed to this source; this does not apply an identity link to the separate fix report or certify current acceptance recovery transitions.",
+      "evidenceKeys": [
+        "direct-package-appended-source-and-results",
+        "direct-package-detection"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-12",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-2/raw-byte-000000539",
+        "position": 1,
+        "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed."
+      },
+      "originalRawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+      "originalRawArtifact": "task-report-history-r1/raw/task-14-report-fix.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-2/raw-byte-000000539",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 17,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+          "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+          "byteStart": 539,
+          "byteEnd": 986,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "selection": "full-original-passage",
+          "assertionQuote": "The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`.",
+          "repairClaimQuote": "Both now recognize the actual `final-review-ID.md.diff` filename.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 539,
+        "rawByteEnd": 986,
+        "rawLineStart": 14,
+        "rawLineEnd": 14,
+        "originalSections": [
+          {
+            "section": "Finding and narrow correction",
+            "sectionOrdinal": 2,
+            "headingRaw": "### Finding and narrow correction\n",
+            "hierarchy": [
+              "Fix pass",
+              "Finding and narrow correction"
+            ],
+            "byteStart": 504,
+            "byteEnd": 1994
+          }
+        ],
+        "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/16/interpretedPassages/0"
+        ],
+        "interpretation": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/17-interpretation.json",
+      "sourceRecordVerdict": "FIXED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Fix-report direct-review package suffix mismatch",
+      "criteria": [
+        "R9"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-producer-consumer-repair-proposal",
+      "basis": "The exact fix report identifies producer ${reviewPath}.diff with final-review-ID.md, correction of discovery plus hasBundle, fixed efec33f6c7ceb333d695a5163b9d4987116c2fc7, seven expected RED failures and actual GREEN script/lint commands. Current frozen suffix detection preserves both fixes. Support is bounded to that producer/collector filename and original null-bundle behavior; separate current gate/population/recovery corrections remain pending final verification.",
+      "evidenceKeys": [
+        "direct-package-fix-source-and-results",
+        "direct-package-detection"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-13",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "position": 1,
+        "key": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.",
+        "text": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation."
+      },
+      "originalRawSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "originalRawArtifact": "task-report-history-r1/raw/task-15-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "scope-or-coverage-qualification",
+        "roles": [
+          "scope-concern"
+        ],
+        "passageJudgment": null,
+        "representationChoice": null,
+        "rawByteStart": 5652,
+        "rawByteEnd": 5840,
+        "rawLineStart": 70,
+        "rawLineEnd": 70,
+        "originalSections": [
+          {
+            "section": "Tests — final commands and output",
+            "sectionOrdinal": 4,
+            "headingRaw": "## Tests — final commands and output\n",
+            "hierarchy": [
+              "super-plan-ufz.9 — deterministic reconciled metrics",
+              "Tests — final commands and output"
+            ],
+            "byteStart": 3557,
+            "byteEnd": 7459
+          }
+        ],
+        "rawText": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/20/interpretedPassages/1"
+        ],
+        "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+      },
+      "sourceMetadata": "pinned-input/metadata/21-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Actual retained metrics population qualification",
+      "criteria": [
+        "R9",
+        "R12",
+        "R13"
+      ],
+      "classification": "nonblocking-historical-population-qualification-with-current-accounting-route",
+      "proposedDisposition": null,
+      "basis": "This exact original paragraph states task reports were absent from that specific retained fixture/projection population and other-section groups remained in the full projection. It prevents interpreting absence as zero run-wide task reviews. It is not a current run metric or evidence current task-report coverage is absent. Preserve this historical scope limit; current source population and supported partial metrics still require the existing R9/R12/R13 accounting. The replaced JSON example has no adoption authority.",
+      "evidenceKeys": [],
+      "pendingCurrentRoutes": [
+        "source-accounting",
+        "cleanup-metrics"
+      ],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "Historical population scope itself is nonblocking and retained without resolution; actual current source accounting/metrics checks remain blocking."
+    },
+    {
+      "id": "delta-14",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-16/raw-byte-000021569",
+        "position": 1,
+        "key": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope.",
+        "text": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope."
+      },
+      "originalRawSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "originalRawArtifact": "task-report-history-r1/raw/task-15-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-16/raw-byte-000021569",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair",
+          "execution-context"
+        ],
+        "passageJudgment": {
+          "ordinal": 21,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+          "rawSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+          "byteStart": 21569,
+          "byteEnd": 21919,
+          "lineStart": 247,
+          "lineEnd": 247,
+          "selection": "full-original-passage",
+          "assertionQuote": "the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict.",
+          "repairClaimQuote": "Resolved the quoted `rebase-conflict` finding.",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source acknowledges the quoted finding and a reproduced coordinator.js conflict, while claiming resolution and explaining absent diff input. Keep that entire historical assertion/repair context without certifying the resolution.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 21569,
+        "rawByteEnd": 21919,
+        "rawLineStart": 247,
+        "rawLineEnd": 247,
+        "originalSections": [
+          {
+            "section": "Seam fix",
+            "sectionOrdinal": 16,
+            "headingRaw": "## Seam fix\n",
+            "hierarchy": [
+              "super-plan-ufz.9 — deterministic reconciled metrics",
+              "Seam fix"
+            ],
+            "byteStart": 21541,
+            "byteEnd": 21920
+          }
+        ],
+        "rawText": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/20/interpretedPassages/10"
+        ],
+        "interpretation": "The source acknowledges the quoted finding and a reproduced coordinator.js conflict, while claiming resolution and explaining absent diff input. Keep that entire historical assertion/repair context without certifying the resolution. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/21-interpretation.json",
+      "sourceRecordVerdict": "IMPLEMENTED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "IMPLEMENTED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Metrics rebase conflict with missing named seam wrapper",
+      "criteria": [
+        "R4",
+        "R12",
+        "R13"
+      ],
+      "classification": "supported-bounded-historical-seam-repair-proposal",
+      "proposedDisposition": "supported-historical-seam-addressed-proposal",
+      "basis": "The original source preserves absence of task-15-review-seam.diff and says the complete quoted dispatch matched the reproduced conflict. It gives original head 548a0b08, original stacked boundary 70741213, exact --onto target 6c332aa2, resolved coordinator hunk, range-diff preservation, final head 9b41133178416096df0b16a390342d81eeb0f690 and actual combined 2263/0 with independent-source/no-fictitious-landing cases. Frozen ancestry is inspected separately; a missing historical wrapper is not fabricated or demanded anew. This addresses the specific historical seam, not a current rebase or tracker/root disposition.",
+      "evidenceKeys": [
+        "metrics-seam-source-and-results"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "readOnlyAncestryInspection": {
+        "historicalHead": "9b41133178416096df0b16a390342d81eeb0f690",
+        "freeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+        "exitCode": 0,
+        "limits": "Ancestry confirms integration history only; actual recorded combined checks support the historical seam. No current tracker closure or acceptance follows."
+      },
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-15",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "position": 1,
+        "key": "Resolved `[rebase-conflict]` by running exactly:",
+        "text": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge."
+      },
+      "originalRawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "originalRawArtifact": "task-report-history-r1/raw/task-16-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair",
+          "deferred-integration-scope"
+        ],
+        "passageJudgment": {
+          "ordinal": 25,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+          "byteStart": 14138,
+          "byteEnd": 15094,
+          "lineStart": 244,
+          "lineEnd": 258,
+          "selection": "full-original-passage",
+          "assertionQuote": "The single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph",
+          "repairClaimQuote": "Resolved `[rebase-conflict]` by running exactly:",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 14138,
+        "rawByteEnd": 15094,
+        "rawLineStart": 244,
+        "rawLineEnd": 258,
+        "originalSections": [
+          {
+            "section": "Seam fix",
+            "sectionOrdinal": 10,
+            "headingRaw": "## Seam fix\n",
+            "hierarchy": [
+              "Seam fix"
+            ],
+            "byteStart": 14111,
+            "byteEnd": 16145
+          }
+        ],
+        "rawText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/24/interpretedPassages/5"
+        ],
+        "interpretation": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/25-interpretation.json",
+      "sourceRecordVerdict": "FIXED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Full root-acceptance rebase passage and retained blocker",
+      "criteria": [
+        "R4",
+        "R7"
+      ],
+      "classification": "supported-historical-seam-with-unresolved-current-bookkeeping",
+      "proposedDisposition": "supported-historical-seam-addressed-proposal-only",
+      "basis": "The complete passage gives exact --onto boundary/target, only-own-commit replay, verbatim source-population and acceptance blocks, patch-equivalence, final 0bb280edcf5fc6a60499fdfdb090d1819a432963/tree 87567e36e0dde251b05a76381473ff3330b50d22, and four actual combined command passes (replay 2273/0, status 44 assertions, lint and digest). That supports this historical conflict resolution only. The exact same source expressly leaves super-plan-8fn for parent closure after verified merge; current tracker closure was not observed and cannot follow from ancestry or reported FIXED.",
+      "evidenceKeys": [
+        "root-seam-source-and-results"
+      ],
+      "pendingCurrentRoutes": [
+        "tracker-reconciliation",
+        "review"
+      ],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "Only the specific historical rebase seam has repair support; its original blocker obligation is not cleared. Actual required current R4/R7 gates remain pending until parent reconciliation.",
+      "readOnlyAncestryInspection": {
+        "historicalHead": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "freeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+        "exitCode": 0,
+        "limits": "Ancestry confirms integration history only; actual recorded combined checks support the historical seam. No current tracker closure or acceptance follows."
+      },
+      "retainedPendingObligation": {
+        "exactOriginalText": "blocker `super-plan-8fn` remains for the parent to close after verified merge.",
+        "underlyingStatus": "Current tracker/bookkeeping unobserved; remains open in evidence accounting until actual parent reconciliation. No new duplicate blocker or retrospective closure invented.",
+        "route": "Reconcile actual current tracker/hold state under existing R4/R7 before caller acceptance; retain any real pending gate. Historical source alone does not establish present tracker state."
+      },
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    },
+    {
+      "id": "delta-16",
+      "originalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+        "position": 1,
+        "key": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with",
+        "text": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint."
+      },
+      "originalRawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "originalRawArtifact": "task-report-history-r1/raw/task-16-report.md",
+      "exactRawMapping": {
+        "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+        "adapterSectionSynthetic": true,
+        "adapterPosition": 1,
+        "category": "historical-defect-assertion",
+        "roles": [
+          "historical-finding",
+          "claimed-repair"
+        ],
+        "passageJudgment": {
+          "ordinal": 25,
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+          "byteStart": 7247,
+          "byteEnd": 7805,
+          "lineStart": 116,
+          "lineEnd": 126,
+          "selection": "full-original-passage",
+          "assertionQuote": "`gaps:[\"conflicting source history\"]` incorrectly returned:",
+          "repairClaimQuote": "Retaining those run-owned attribution gaps fixed it;",
+          "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+          "basis": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated.",
+          "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+          "appliedDisposition": false,
+          "currentApplicability": "unjudged",
+          "crossSourceIdentity": "unjudged"
+        },
+        "representationChoice": null,
+        "rawByteStart": 7247,
+        "rawByteEnd": 7805,
+        "rawLineStart": 116,
+        "rawLineEnd": 126,
+        "originalSections": [
+          {
+            "section": "TDD evidence",
+            "sectionOrdinal": 4,
+            "headingRaw": "## TDD evidence\n",
+            "hierarchy": [
+              "TDD evidence"
+            ],
+            "byteStart": 5868,
+            "byteEnd": 7806
+          }
+        ],
+        "rawText": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint.\n",
+        "jsonPointer": null,
+        "originalReviewedJsonBlockSpan": null,
+        "fieldLocatorInterpretation": null,
+        "decodedFieldText": null,
+        "adapterText": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint.",
+        "transformation": {
+          "firstListMarkerRemoved": false,
+          "firstLeadingWhitespaceRemoved": "",
+          "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+          "continuationEscapes": [],
+          "originalSpanPreservedSeparately": true
+        },
+        "reviewRefs": [
+          "review-evidence/part-1-review.json#/sources/24/interpretedPassages/2"
+        ],
+        "interpretation": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+      },
+      "sourceMetadata": "pinned-input/metadata/25-interpretation.json",
+      "sourceRecordVerdict": "FIXED",
+      "sourceRecordVerdictScope": "Interpreted adapter record only; when original compact kind/verdict is unknown, NEEDS_CONTEXT is a new adapter interpretation and original historical outcome remains unknown.",
+      "originalCompactRecognition": {
+        "verdict": "FIXED",
+        "kind": "task-report"
+      },
+      "inspectionFreeze": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "title": "Verified run failure with history gaps incorrectly eligible",
+      "criteria": [
+        "R5",
+        "R7",
+        "R8"
+      ],
+      "classification": "supported-bounded-historical-repair-proposal",
+      "proposedDisposition": "supported-historical-acceptance-gap-repair-proposal",
+      "basis": "The original source preserves eligible:true on a run-introduced/verified failure retaining conflicting source history, its wrong 0 versus 3 exit, then the bounded gap-retention correction and actual status rerun. It identifies initial source 232d3ca4/tree 4ebd4903 and later rebased 0bb280ed/tree 87567e36, with recorded final 44 acceptance assertions and combined commands passing. Frozen report-status emits each f.gaps before considering verified/pre-run state, and its actual fixture still expects exit 3 for this exact run-introduced verified-with-gap input. This supports only the historical lost-gap mechanism, not global root eligibility, current source population, semantic evidence reconciliation or Task 4 final changes.",
+      "evidenceKeys": [
+        "root-gate-original-regression-and-results",
+        "root-seam-source-and-results",
+        "run-failure-gap-gate",
+        "run-failure-gap-fixture"
+      ],
+      "pendingCurrentRoutes": [],
+      "proposalOnly": true,
+      "canonicalApplied": false,
+      "identityLinkApplied": false,
+      "originalOccurrenceMerged": false,
+      "historicalRecordedEvidenceIsNotFreshCurrentVerification": true,
+      "currentFinalGateStatus": "Still pending: final repairs, actual final combined-source suite, whole-epic independent review, representative changed-instruction assessment and actual caller/human acceptance. Only the named delta scenario was inspected at583f2486.",
+      "acceptanceEffect": "historical or scope qualification may be nonblocking only within this exact scenario after parent judgment; existing final criteria remain pending",
+      "dispositionSupportBoundary": "A concrete repair source, actual original executed command/result evidence and relevant frozen source/fixture inspection support only this historical scenario. Parent must review/adopt the judgment against this exact ref; no automatic resolution inheritance or final acceptance."
+    }
+  ],
+  "obsoleteReplacedRefs": [
+    {
+      "oldExactRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005358",
+        "position": 1,
+        "key": "```json",
+        "text": "```json\n{\"scope\":\"retained sources\",\"sources\":3,\"sourceKinds\":[\"final-review\",\"roast\"],\"occurrences\":7,\"occurrenceGroups\":7,\"findings\":5,\"otherSectionGroups\":2,\"sections\":[\"Must fix\",\"Deferred OK\",\"Rejected\",\"Not verified\"],\"repaired\":1,\"rejected\":1,\"outstanding\":3,\"deferred\":1,\"gaps\":0}\n```"
+      },
+      "priorProposalID": "occurrence-056",
+      "initialProposalUnchanged": true,
+      "adoptability": "obsolete/unadoptable synthetic extraction ref in revision2; retained as failed/narrow initial history only",
+      "replacementExactRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "position": 1,
+        "key": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.",
+        "text": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation."
+      },
+      "representationReplacementOnly": true,
+      "semanticFindingLinkApplied": false,
+      "findingRejectionApplied": false,
+      "findingResolutionApplied": false,
+      "underlyingObligations": "Actual population-scope qualification retained at delta-13; no fixture-example metric supplies a run total.",
+      "basis": "F2 corrects an adapter selection error: unqualified illustrative JSON leaves occurrence extraction and remains exact labelled contextual evidence; its exact population qualification becomes the interpreted occurrence. This is no semantic rejection disposition."
+    },
+    {
+      "oldExactRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000015015",
+        "position": 1,
+        "key": "blocker `super-plan-8fn` remains for the parent to close after verified merge.",
+        "text": "blocker `super-plan-8fn` remains for the parent to close after verified merge."
+      },
+      "priorProposalID": "occurrence-069",
+      "initialProposalUnchanged": true,
+      "adoptability": "obsolete/unadoptable synthetic extraction ref in revision2; retained as failed/narrow initial history only",
+      "replacementExactRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "position": 1,
+        "key": "Resolved `[rebase-conflict]` by running exactly:",
+        "text": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge."
+      },
+      "representationReplacementOnly": true,
+      "semanticFindingLinkApplied": false,
+      "findingRejectionApplied": false,
+      "findingResolutionApplied": false,
+      "underlyingObligations": "Exact super-plan-8fn pending-closure requirement remains inside full delta-15 passage; no closure or waiver is inferred.",
+      "basis": "F1 expands the adapter item to the full original mixed historical-finding/repair passage, including the exact unchanged blocker obligation. It replaces only the narrower synthetic representation; no blocker closure, supported resolution or cross-source identity decision occurs."
+    }
+  ],
+  "canonicalAdoptionPerformed": false,
+  "currentWholeRunAcceptanceEstablished": false
+}

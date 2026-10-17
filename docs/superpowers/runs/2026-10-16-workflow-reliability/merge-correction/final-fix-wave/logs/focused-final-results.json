@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "node",
+      "tests/super-code/recovery-hold-scope-r1.mjs"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-1.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "node",
+      "tests/super-code/unplanned-admission-final-wave.mjs"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-2.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "bash",
+      "tests/super-auto/collection-recovery-correction.sh"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-3.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "bash",
+      "tests/super-code/test-report-verdict.sh"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-4.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "bash",
+      "tests/super-code/test-dispatch-text.sh"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-5.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "bash",
+      "tests/super-auto/collection-symlinks-r1.sh"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-6.log",
+    "sourceManifest": "final-source-hashes.json"
+  },
+  {
+    "command": [
+      "bash",
+      "tests/super-auto/archive-integrity-r1.sh"
+    ],
+    "exit": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/focused-final-7.log",
+    "sourceManifest": "final-source-hashes.json"
+  }
+]

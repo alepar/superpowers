@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+  "artifact": "legacy-report-adapters-r1/48-task-26-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001301",
+      "position": 1,
+      "key": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.",
+      "text": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000002921",
+      "position": 1,
+      "key": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.",
+      "text": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration."
+    },
+    {
+      "section": "Concerns — adapter/structured-pending-obligation-appearance/raw-section-9/raw-byte-000014785/json-pointer-/instructionEvaluation",
+      "position": 1,
+      "key": "caller-pending",
+      "text": "caller-pending"
+    }
+  ]
+}

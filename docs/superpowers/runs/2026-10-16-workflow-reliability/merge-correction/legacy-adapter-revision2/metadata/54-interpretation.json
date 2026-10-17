@@ -1,0 +1,640 @@
+{
+  "version": 1,
+  "ordinal": 54,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+  "originalArtifact": "task-report-history-r1/raw/task-29-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-29-review.md",
+  "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+  "rawByteCount": 27085,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "bytesRead": [
+      0,
+      27085
+    ],
+    "method": "complete raw bytes displayed untruncated in bounded chunks",
+    "readLimits": [
+      "No current code, failure disposition sufficiency or root acceptance judged. External reports named inside raw sources are not independently re-read."
+    ],
+    "allRawSectionAndUnitByteLocatorsVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-2-review.json#/sources/26",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/54-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 85,
+      "rawText": "  \"status\": \"CLEAN\","
+    },
+    {
+      "line": 92,
+      "rawText": "  \"completionKind\": \"implementation\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/26/semanticPassages/0",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        240,
+        707
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/26/semanticPassages/1",
+      "roles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "span": [
+        3505,
+        3853
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/26/semanticPassages/2",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        3879,
+        3885
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/26/semanticPassages/3",
+      "roles": [
+        "explicit-empty-declaration"
+      ],
+      "span": [
+        3901,
+        3907
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": null
+    },
+    {
+      "reviewRef": "review-evidence/part-2-review.json#/sources/26/semanticPassages/4",
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "span": [
+        3942,
+        4289
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": null
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "unitKind": "paragraph",
+      "rawText": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.\n",
+      "text": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.",
+      "listMarker": null,
+      "positionInSection": 3,
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 240,
+      "byteEnd": 707,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawSection": "Captured identities and requirements",
+      "rawSectionOrdinal": 2,
+      "originalHierarchy": [
+        "Task 29 / super-plan-ufz.32 independent review",
+        "Captured identities and requirements"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Captured identities and requirements",
+        "sectionOrdinal": 2,
+        "positionInSection": 3,
+        "rawSection": "Captured identities and requirements",
+        "rawPositionInSection": 3,
+        "byteStart": 240,
+        "byteEnd": 707,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.\n",
+      "text": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.",
+      "listMarker": null,
+      "positionInSection": 5,
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 3505,
+      "byteEnd": 3853,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawSection": "Spec compliance",
+      "rawSectionOrdinal": 3,
+      "originalHierarchy": [
+        "Task 29 / super-plan-ufz.32 independent review",
+        "Spec compliance"
+      ],
+      "semanticRoles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Spec compliance",
+        "sectionOrdinal": 3,
+        "positionInSection": 5,
+        "rawSection": "Spec compliance",
+        "rawPositionInSection": 5,
+        "byteStart": 3505,
+        "byteEnd": 3853,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "None.\n",
+      "text": "None.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 33,
+      "lineEnd": 33,
+      "byteStart": 3879,
+      "byteEnd": 3885,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawSection": "Critical",
+      "rawSectionOrdinal": 5,
+      "originalHierarchy": [
+        "Task 29 / super-plan-ufz.32 independent review",
+        "Issues",
+        "Critical"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Critical",
+        "sectionOrdinal": 5,
+        "positionInSection": 1,
+        "rawSection": "Critical",
+        "rawPositionInSection": 1,
+        "byteStart": 3879,
+        "byteEnd": 3885,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "paragraph",
+      "rawText": "None.\n",
+      "text": "None.",
+      "listMarker": null,
+      "positionInSection": 1,
+      "lineStart": 37,
+      "lineEnd": 37,
+      "byteStart": 3901,
+      "byteEnd": 3907,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawSection": "Important",
+      "rawSectionOrdinal": 6,
+      "originalHierarchy": [
+        "Task 29 / super-plan-ufz.32 independent review",
+        "Issues",
+        "Important"
+      ],
+      "semanticRoles": [
+        "explicit-empty-declaration"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Important",
+        "sectionOrdinal": 6,
+        "positionInSection": 1,
+        "rawSection": "Important",
+        "rawPositionInSection": 1,
+        "byteStart": 3901,
+        "byteEnd": 3907,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    },
+    {
+      "unitKind": "list-item",
+      "rawText": "- [deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.\n",
+      "text": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.",
+      "listMarker": "- ",
+      "positionInSection": 1,
+      "lineStart": 41,
+      "lineEnd": 41,
+      "byteStart": 3942,
+      "byteEnd": 4289,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "rawSection": "Minor / deferred observation",
+      "rawSectionOrdinal": 7,
+      "originalHierarchy": [
+        "Task 29 / super-plan-ufz.32 independent review",
+        "Issues",
+        "Minor / deferred observation"
+      ],
+      "semanticRoles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "manuallySelectedSubstantivePassage": true,
+      "recommendedCanonicalLocator": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "section": "Minor / deferred observation",
+        "sectionOrdinal": 7,
+        "positionInSection": 1,
+        "rawSection": "Minor / deferred observation",
+        "rawPositionInSection": 1,
+        "byteStart": 3942,
+        "byteEnd": 4289,
+        "note": "Proposed reversible locator only; preserve raw identity/text. Original positions count all units, including context; do not renumber after filtering."
+      }
+    }
+  ],
+  "structuredAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 12,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.32\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [\n    \"[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 \\u2014 Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.\"\n  ],\n  \"base\": \"0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed\",\n  \"head\": \"cd01f8e6e94c76db1104ba8911d6c4f085f444ad\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e0ff9d1f9c2f33b4067a358b3b12f39fb6f2ca85\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7450ea19db55d3a62688fef3847b3bb69fcec2d2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7450ea19db55d3a62688fef3847b3bb69fcec2d2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash -x tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-debug.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7d188a10f723fda698c01cfe674ef16b8b43dc6f\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green-v2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7d188a10f723fda698c01cfe674ef16b8b43dc6f\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"ac97310f154d51d5b25565f4fb40c8e9bdda0498\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d11ce83faff4120212b1affc7eef3712205f5f05\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-rebased.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/hygiene-rebased.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 82,
+      "lineEnd": 261,
+      "byteStart": 9634,
+      "byteEnd": 27085,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "semanticRole": "explicit-structured-local-empty-declaration",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 12,
+      "field": "minors",
+      "jsonPointer": "/minors/0",
+      "fieldValue": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+      "text": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.32\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [\n    \"[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 \\u2014 Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.\"\n  ],\n  \"base\": \"0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed\",\n  \"head\": \"cd01f8e6e94c76db1104ba8911d6c4f085f444ad\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e0ff9d1f9c2f33b4067a358b3b12f39fb6f2ca85\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7450ea19db55d3a62688fef3847b3bb69fcec2d2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7450ea19db55d3a62688fef3847b3bb69fcec2d2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash -x tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-debug.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7d188a10f723fda698c01cfe674ef16b8b43dc6f\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green-v2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7d188a10f723fda698c01cfe674ef16b8b43dc6f\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"ac97310f154d51d5b25565f4fb40c8e9bdda0498\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d11ce83faff4120212b1affc7eef3712205f5f05\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"599620b464c51575f159cf4d3bbf938328f76c4a\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"6e108a5656d46e363f458dfb85edc8f23913189b\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene-verified.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-rebased.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log\",\n      \"kind\": \"simulated\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32\",\n      \"configuration\": \"macOS; invoked outside checked roots; exact task worktree and task temp root only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/hygiene-rebased.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\"\n    },\n    {\n      \"sourceTree\": \"0072b6b7c817a2e7fc64943ffe061a729f88deaa\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 82,
+      "lineEnd": 261,
+      "byteStart": 9634,
+      "byteEnd": 27085,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "rawSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "semanticRole": "structured-same-source-finding-rendition",
+      "appearanceIdentity": "source + original sectionOrdinal + JSON block byteStart + jsonPointer; no cross-source identity inference",
+      "canonicalization": "Retain JSON pointer and exact block separately from prose. Do not emit as a second independent defect merely because structured text repeats prose. Do not apply an appearance link or disposition here.",
+      "locatorScope": "lineStart/lineEnd and byteStart/byteEnd bound exactJsonBlock; jsonPointer locates the decoded field within that immutable block."
+    }
+  ],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 240,
+      "byteEnd": 707,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3505,
+      "byteEnd": 3853,
+      "roles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3942,
+      "byteEnd": 4289,
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9729,
+      "byteEnd": 10029,
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/structuredAppearances/1"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count.",
+      "jsonPointer": "/minors/0",
+      "originalReviewedJsonBlockSpan": [
+        9634,
+        27085
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedText": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it."
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "supportedLocalEmpty": false,
+    "scope": "No whole-source empty finding assertion supported; retain actual concern/finding/deferred obligations.",
+    "neverGlobalAcceptance": true,
+    "basis": "Only exact explicit declarations marked in semanticPassages/structuredAppearances. CLEAN, DONE, parse failure and absent headings supply no empty basis."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000240",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 240,
+      "rawByteEnd": 707,
+      "rawLineStart": 11,
+      "rawLineEnd": 11,
+      "originalSections": [
+        {
+          "section": "Captured identities and requirements",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Captured identities and requirements\n",
+          "hierarchy": [
+            "Task 29 / super-plan-ufz.32 independent review",
+            "Captured identities and requirements"
+          ],
+          "byteStart": 65,
+          "byteEnd": 1685
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/0"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000003505",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 3505,
+      "rawByteEnd": 3853,
+      "rawLineStart": 27,
+      "rawLineEnd": 27,
+      "originalSections": [
+        {
+          "section": "Spec compliance",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Spec compliance\n",
+          "hierarchy": [
+            "Task 29 / super-plan-ufz.32 independent review",
+            "Spec compliance"
+          ],
+          "byteStart": 1685,
+          "byteEnd": 3854
+        }
+      ],
+      "rawText": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/1"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-7/raw-byte-000003942",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 3942,
+      "rawByteEnd": 4289,
+      "rawLineStart": 41,
+      "rawLineEnd": 41,
+      "originalSections": [
+        {
+          "section": "Minor / deferred observation",
+          "sectionOrdinal": 7,
+          "headingRaw": "### Minor / deferred observation\n",
+          "hierarchy": [
+            "Task 29 / super-plan-ufz.32 independent review",
+            "Issues",
+            "Minor / deferred observation"
+          ],
+          "byteStart": 3908,
+          "byteEnd": 4290
+        }
+      ],
+      "rawText": "- [deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/semanticPassages/4"
+      ],
+      "interpretation": "See complete independently reviewed source interpretation."
+    },
+    {
+      "adapterSection": "Findings — adapter/structured-finding-appearance/raw-section-12/raw-byte-000009729/json-pointer-/minors/0",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "structured-finding-appearance",
+      "roles": [
+        "structured-finding-appearance"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 9729,
+      "rawByteEnd": 10029,
+      "rawLineStart": 88,
+      "rawLineEnd": 88,
+      "originalSections": [
+        {
+          "section": "Structured result",
+          "sectionOrdinal": 12,
+          "headingRaw": "## Structured result\n",
+          "hierarchy": [
+            "Task 29 / super-plan-ufz.32 independent review",
+            "Structured result"
+          ],
+          "byteStart": 9612,
+          "byteEnd": 27085
+        }
+      ],
+      "rawText": "\"[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 \\u2014 Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.\"",
+      "jsonPointer": "/minors/0",
+      "originalReviewedJsonBlockSpan": [
+        9634,
+        27085
+      ],
+      "fieldLocatorInterpretation": "Mechanically derived exact raw JSON value span from verified complete original block and reviewed JSON pointer; no semantic identity link.",
+      "decodedFieldText": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+      "adapterText": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-2-review.json#/sources/26/structuredAppearances/1"
+      ],
+      "interpretation": "Distinct decoded JSON-field appearance; exact original JSON block and pointer retained. No applied semantic identity link; occurrence count is appearance count."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/54-task-29-review.md",
+  "retainedSha256": "7ffbd5878c1e640a1790fbb053c2ed3c59d7c7fedd2f6c46f20baabef053e5ed"
+}

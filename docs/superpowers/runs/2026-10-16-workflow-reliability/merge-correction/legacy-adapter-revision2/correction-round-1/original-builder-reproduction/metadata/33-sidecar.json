@@ -1,0 +1,724 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-2-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-2-report.md",
+  "rawSha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+  "rawByteCount": 12343,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-report.md",
+    "durablePath": "task-report-history-r1/raw/task-2-report.md",
+    "sha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+    "byteCount": 12343,
+    "logicalRole": "report",
+    "ordinal": 2,
+    "logicalTaskId": "super-plan-ufz.2",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-2-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator-owned evidence"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.2 implementation",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.2 implementation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation"
+      ],
+      "lineStart": 1,
+      "lineEnd": 9,
+      "byteStart": 0,
+      "byteEnd": 261,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.2 implementation\n\nStatus: IMPLEMENTED\nInitial base: 444ae642f59a22886526b41538eafadd8ff9faca\nFinal base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nHead: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nBranch: task-super-plan-ufz.2\nStacked: false\n\n",
+      "bodyRawText": "\nStatus: IMPLEMENTED\nInitial base: 444ae642f59a22886526b41538eafadd8ff9faca\nFinal base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\nHead: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nBranch: task-super-plan-ufz.2\nStacked: false\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\nInitial base: 444ae642f59a22886526b41538eafadd8ff9faca\nFinal base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6\n",
+          "text": "Status: IMPLEMENTED\nInitial base: 444ae642f59a22886526b41538eafadd8ff9faca\nFinal base: 01ff39cc0b6fc0effdf559e9b1164273610c24e6",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 5,
+          "byteStart": 40,
+          "byteEnd": 168
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nBranch: task-super-plan-ufz.2\nStacked: false\n",
+          "text": "Head: 9c4b5c74091bf7b882d44ccfee5a6dda5169fb79\nBranch: task-super-plan-ufz.2\nStacked: false",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 6,
+          "lineEnd": 8,
+          "byteStart": 168,
+          "byteEnd": 260
+        }
+      ]
+    },
+    {
+      "section": "Implemented",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implemented\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Implemented"
+      ],
+      "lineStart": 10,
+      "lineEnd": 17,
+      "byteStart": 261,
+      "byteEnd": 2070,
+      "bodyLineStart": 11,
+      "rawText": "## Implemented\n\nProcess inspection failures now produce `unknown:` facts and exit 4. Failed ancestry, cwd/executable discovery, environment/orphan discovery, terminal inspection and termination inspection cannot become a verified empty sweep. A failed/empty per-PID status query requires successful authoritative PID enumeration proving disappearance before `stopped:` is emitted. TERM failure still receives status verification and, for an observably live process, a KILL attempt; survivors remain exit 3. Interactive preservation now returns exit 3. Existing cwd/executable, exact HOME/TMPDIR, orphan-argument matching, caller/ancestor protection and lack of kinship expansion remain in force. A macOS privileged login ancestor with hidden cwd is excluded only after successful ownership inspection proves it belongs to another user.\n\nWorktree cleanup verifies the worktree and its temp root together before removing either. Sweep verifies its owned roots before any worktree/branch/temp deletion. Survivor, unknown and deliberate-retention outcomes retain resources and identify their paths, including --discard and --sweep. Dirty/unmerged guards remain. Missing-worktree discard also verifies owned roots before deleting its branch/temp state.\n\nFinish returns `processSweep.stopped`, `survived`, `unknown`, `kept`, combines relevant facts from resource preflight and the final process sweep, and retains worktree/temp paths in `worktreesKept`. Null/scriptError sweep dispatch and missing processLines produce explicit unknowns rather than invented survivors or verified absence. Delivery completion remains separate. Merge, close-only, discard, ordinary-subagent Finish, run-state and Remaining report sources carry the same concrete helper contract. No replacement engine or broader matching was added.\n\n",
+      "bodyRawText": "\nProcess inspection failures now produce `unknown:` facts and exit 4. Failed ancestry, cwd/executable discovery, environment/orphan discovery, terminal inspection and termination inspection cannot become a verified empty sweep. A failed/empty per-PID status query requires successful authoritative PID enumeration proving disappearance before `stopped:` is emitted. TERM failure still receives status verification and, for an observably live process, a KILL attempt; survivors remain exit 3. Interactive preservation now returns exit 3. Existing cwd/executable, exact HOME/TMPDIR, orphan-argument matching, caller/ancestor protection and lack of kinship expansion remain in force. A macOS privileged login ancestor with hidden cwd is excluded only after successful ownership inspection proves it belongs to another user.\n\nWorktree cleanup verifies the worktree and its temp root together before removing either. Sweep verifies its owned roots before any worktree/branch/temp deletion. Survivor, unknown and deliberate-retention outcomes retain resources and identify their paths, including --discard and --sweep. Dirty/unmerged guards remain. Missing-worktree discard also verifies owned roots before deleting its branch/temp state.\n\nFinish returns `processSweep.stopped`, `survived`, `unknown`, `kept`, combines relevant facts from resource preflight and the final process sweep, and retains worktree/temp paths in `worktreesKept`. Null/scriptError sweep dispatch and missing processLines produce explicit unknowns rather than invented survivors or verified absence. Delivery completion remains separate. Merge, close-only, discard, ordinary-subagent Finish, run-state and Remaining report sources carry the same concrete helper contract. No replacement engine or broader matching was added.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Process inspection failures now produce `unknown:` facts and exit 4. Failed ancestry, cwd/executable discovery, environment/orphan discovery, terminal inspection and termination inspection cannot become a verified empty sweep. A failed/empty per-PID status query requires successful authoritative PID enumeration proving disappearance before `stopped:` is emitted. TERM failure still receives status verification and, for an observably live process, a KILL attempt; survivors remain exit 3. Interactive preservation now returns exit 3. Existing cwd/executable, exact HOME/TMPDIR, orphan-argument matching, caller/ancestor protection and lack of kinship expansion remain in force. A macOS privileged login ancestor with hidden cwd is excluded only after successful ownership inspection proves it belongs to another user.\n",
+          "text": "Process inspection failures now produce `unknown:` facts and exit 4. Failed ancestry, cwd/executable discovery, environment/orphan discovery, terminal inspection and termination inspection cannot become a verified empty sweep. A failed/empty per-PID status query requires successful authoritative PID enumeration proving disappearance before `stopped:` is emitted. TERM failure still receives status verification and, for an observably live process, a KILL attempt; survivors remain exit 3. Interactive preservation now returns exit 3. Existing cwd/executable, exact HOME/TMPDIR, orphan-argument matching, caller/ancestor protection and lack of kinship expansion remain in force. A macOS privileged login ancestor with hidden cwd is excluded only after successful ownership inspection proves it belongs to another user.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 277,
+          "byteEnd": 1097
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Worktree cleanup verifies the worktree and its temp root together before removing either. Sweep verifies its owned roots before any worktree/branch/temp deletion. Survivor, unknown and deliberate-retention outcomes retain resources and identify their paths, including --discard and --sweep. Dirty/unmerged guards remain. Missing-worktree discard also verifies owned roots before deleting its branch/temp state.\n",
+          "text": "Worktree cleanup verifies the worktree and its temp root together before removing either. Sweep verifies its owned roots before any worktree/branch/temp deletion. Survivor, unknown and deliberate-retention outcomes retain resources and identify their paths, including --discard and --sweep. Dirty/unmerged guards remain. Missing-worktree discard also verifies owned roots before deleting its branch/temp state.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 1098,
+          "byteEnd": 1509
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Finish returns `processSweep.stopped`, `survived`, `unknown`, `kept`, combines relevant facts from resource preflight and the final process sweep, and retains worktree/temp paths in `worktreesKept`. Null/scriptError sweep dispatch and missing processLines produce explicit unknowns rather than invented survivors or verified absence. Delivery completion remains separate. Merge, close-only, discard, ordinary-subagent Finish, run-state and Remaining report sources carry the same concrete helper contract. No replacement engine or broader matching was added.\n",
+          "text": "Finish returns `processSweep.stopped`, `survived`, `unknown`, `kept`, combines relevant facts from resource preflight and the final process sweep, and retains worktree/temp paths in `worktreesKept`. Null/scriptError sweep dispatch and missing processLines produce explicit unknowns rather than invented survivors or verified absence. Delivery completion remains separate. Merge, close-only, discard, ordinary-subagent Finish, run-state and Remaining report sources carry the same concrete helper contract. No replacement engine or broader matching was added.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1510,
+          "byteEnd": 2069
+        }
+      ]
+    },
+    {
+      "section": "Tests",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Tests\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Tests"
+      ],
+      "lineStart": 18,
+      "lineEnd": 65,
+      "byteStart": 2070,
+      "byteEnd": 5337,
+      "bodyLineStart": 19,
+      "rawText": "## Tests\n\nAll final commands began in the task worktree:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.2`.\n\nFinal post-rebase runs:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n```\n\nEvery command exited 0. Relevant output:\n\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] unknown: completed code delivery remains independent of cleanup\n[PASS] unknown: the cleanup outcome reaches its own result array\n[PASS] survivor: worktree and temp paths reach Remaining sources\n[PASS] interactive: the cleanup outcome reaches its own result array\n[PASS] missing-process-lines: the cleanup outcome reaches its own result array\n[PASS] script-error: unavailable inspection is unknown rather than an invented survivor\n[PASS] unavailable: unavailable inspection is unknown rather than an invented survivor\n[PASS] ancestry-discovery-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] ancestry-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] discovery-denied: denied inspection never claims stopped\n[PASS] env-denied: worktree and temp resources survive together until verified cleanup\n[PASS] tty-denied: denied inspection never claims stopped\n[PASS] status-denied: retained resource identities are explicit\n[PASS] status-listed: denied inspection never claims stopped\n[PASS] signal-failed: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] survivor: worktree and temp resources survive together until verified cleanup\n[PASS] interactive: deliberate preservation sends no signal\n[PASS] successful authoritative enumeration verifies disappearance after ps -p exits 1\n[PASS] empty: worktree and temp resources survive together until verified cleanup\n1852 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto contract lint tests passed\n```\n\nThe replay suite exercises the documented canonical/fix-pass-blocked/parked dryRuns and checks their expected dispatch counts. Each denial/survivor fixture checks both output/exit and resource existence; fake PID 990001 is the only permitted signal target and fake 990002 remains unrelated. Existing real owned sleepers exercise actual termination on macOS. `git diff --check` passed and `git status --short` was empty after commit/rebase.\n\nToolchain: this is a dependency-free repository with no setup/install step. Node interpreter resolved to `/opt/homebrew/bin/node`; the replay runner and helper scripts resolved inside this task worktree (`node -p \"require.resolve('./tests/super-code/replay-harness.mjs')\"` returned its absolute task-worktree path). No external package-under-test or shared package environment was used.\n\n",
+      "bodyRawText": "\nAll final commands began in the task worktree:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.2`.\n\nFinal post-rebase runs:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n```\n\nEvery command exited 0. Relevant output:\n\n```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] unknown: completed code delivery remains independent of cleanup\n[PASS] unknown: the cleanup outcome reaches its own result array\n[PASS] survivor: worktree and temp paths reach Remaining sources\n[PASS] interactive: the cleanup outcome reaches its own result array\n[PASS] missing-process-lines: the cleanup outcome reaches its own result array\n[PASS] script-error: unavailable inspection is unknown rather than an invented survivor\n[PASS] unavailable: unavailable inspection is unknown rather than an invented survivor\n[PASS] ancestry-discovery-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] ancestry-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] discovery-denied: denied inspection never claims stopped\n[PASS] env-denied: worktree and temp resources survive together until verified cleanup\n[PASS] tty-denied: denied inspection never claims stopped\n[PASS] status-denied: retained resource identities are explicit\n[PASS] status-listed: denied inspection never claims stopped\n[PASS] signal-failed: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] survivor: worktree and temp resources survive together until verified cleanup\n[PASS] interactive: deliberate preservation sends no signal\n[PASS] successful authoritative enumeration verifies disappearance after ps -p exits 1\n[PASS] empty: worktree and temp resources survive together until verified cleanup\n1852 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto contract lint tests passed\n```\n\nThe replay suite exercises the documented canonical/fix-pass-blocked/parked dryRuns and checks their expected dispatch counts. Each denial/survivor fixture checks both output/exit and resource existence; fake PID 990001 is the only permitted signal target and fake 990002 remains unrelated. Existing real owned sleepers exercise actual termination on macOS. `git diff --check` passed and `git status --short` was empty after commit/rebase.\n\nToolchain: this is a dependency-free repository with no setup/install step. Node interpreter resolved to `/opt/homebrew/bin/node`; the replay runner and helper scripts resolved inside this task worktree (`node -p \"require.resolve('./tests/super-code/replay-harness.mjs')\"` returned its absolute task-worktree path). No external package-under-test or shared package environment was used.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All final commands began in the task worktree:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.2`.\n",
+          "text": "All final commands began in the task worktree:\n`/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.2`.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 20,
+          "lineEnd": 21,
+          "byteStart": 2080,
+          "byteEnd": 2266
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final post-rebase runs:\n",
+          "text": "Final post-rebase runs:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2267,
+          "byteEnd": 2291
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n```\n",
+          "text": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node tests/super-code/replay-harness.mjs > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-replay.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-code/test-dispatch-text.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-dispatch.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 bash tests/super-auto/test-contract-lint.sh > /tmp/sp-bce79baa/super-plan-ufz.2/rebased-contract.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 25,
+          "lineEnd": 29,
+          "byteStart": 2292,
+          "byteEnd": 2740
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Every command exited 0. Relevant output:\n",
+          "text": "Every command exited 0. Relevant output:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2741,
+          "byteEnd": 2782
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] unknown: completed code delivery remains independent of cleanup\n[PASS] unknown: the cleanup outcome reaches its own result array\n[PASS] survivor: worktree and temp paths reach Remaining sources\n[PASS] interactive: the cleanup outcome reaches its own result array\n[PASS] missing-process-lines: the cleanup outcome reaches its own result array\n[PASS] script-error: unavailable inspection is unknown rather than an invented survivor\n[PASS] unavailable: unavailable inspection is unknown rather than an invented survivor\n[PASS] ancestry-discovery-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] ancestry-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] discovery-denied: denied inspection never claims stopped\n[PASS] env-denied: worktree and temp resources survive together until verified cleanup\n[PASS] tty-denied: denied inspection never claims stopped\n[PASS] status-denied: retained resource identities are explicit\n[PASS] status-listed: denied inspection never claims stopped\n[PASS] signal-failed: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] survivor: worktree and temp resources survive together until verified cleanup\n[PASS] interactive: deliberate preservation sends no signal\n[PASS] successful authoritative enumeration verifies disappearance after ps -p exits 1\n[PASS] empty: worktree and temp resources survive together until verified cleanup\n1852 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto contract lint tests passed\n```\n",
+          "text": "```text\n[PASS] 48 agent dispatches (got 48) — the doc's \"Expected dispatch count\" arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] unknown: completed code delivery remains independent of cleanup\n[PASS] unknown: the cleanup outcome reaches its own result array\n[PASS] survivor: worktree and temp paths reach Remaining sources\n[PASS] interactive: the cleanup outcome reaches its own result array\n[PASS] missing-process-lines: the cleanup outcome reaches its own result array\n[PASS] script-error: unavailable inspection is unknown rather than an invented survivor\n[PASS] unavailable: unavailable inspection is unknown rather than an invented survivor\n[PASS] ancestry-discovery-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] ancestry-denied: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] discovery-denied: denied inspection never claims stopped\n[PASS] env-denied: worktree and temp resources survive together until verified cleanup\n[PASS] tty-denied: denied inspection never claims stopped\n[PASS] status-denied: retained resource identities are explicit\n[PASS] status-listed: denied inspection never claims stopped\n[PASS] signal-failed: truthful exit distinguishes verified, unknown and retained outcomes\n[PASS] survivor: worktree and temp resources survive together until verified cleanup\n[PASS] interactive: deliberate preservation sends no signal\n[PASS] successful authoritative enumeration verifies disappearance after ps -p exits 1\n[PASS] empty: worktree and temp resources survive together until verified cleanup\n1852 passed, 0 failed\n\ndispatch-text: all tests passed\nAll super-auto contract lint tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 33,
+          "lineEnd": 60,
+          "byteStart": 2783,
+          "byteEnd": 4507
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The replay suite exercises the documented canonical/fix-pass-blocked/parked dryRuns and checks their expected dispatch counts. Each denial/survivor fixture checks both output/exit and resource existence; fake PID 990001 is the only permitted signal target and fake 990002 remains unrelated. Existing real owned sleepers exercise actual termination on macOS. `git diff --check` passed and `git status --short` was empty after commit/rebase.\n",
+          "text": "The replay suite exercises the documented canonical/fix-pass-blocked/parked dryRuns and checks their expected dispatch counts. Each denial/survivor fixture checks both output/exit and resource existence; fake PID 990001 is the only permitted signal target and fake 990002 remains unrelated. Existing real owned sleepers exercise actual termination on macOS. `git diff --check` passed and `git status --short` was empty after commit/rebase.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 62,
+          "lineEnd": 62,
+          "byteStart": 4508,
+          "byteEnd": 4948
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Toolchain: this is a dependency-free repository with no setup/install step. Node interpreter resolved to `/opt/homebrew/bin/node`; the replay runner and helper scripts resolved inside this task worktree (`node -p \"require.resolve('./tests/super-code/replay-harness.mjs')\"` returned its absolute task-worktree path). No external package-under-test or shared package environment was used.\n",
+          "text": "Toolchain: this is a dependency-free repository with no setup/install step. Node interpreter resolved to `/opt/homebrew/bin/node`; the replay runner and helper scripts resolved inside this task worktree (`node -p \"require.resolve('./tests/super-code/replay-harness.mjs')\"` returned its absolute task-worktree path). No external package-under-test or shared package environment was used.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 64,
+          "lineEnd": 64,
+          "byteStart": 4949,
+          "byteEnd": 5336
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "TDD evidence"
+      ],
+      "lineStart": 66,
+      "lineEnd": 94,
+      "byteStart": 5337,
+      "byteEnd": 8539,
+      "bodyLineStart": 67,
+      "rawText": "## TDD evidence\n\nHelpers RED: the corrected signal-safe regression block was executed directly from replay-harness.mjs against unchanged helpers using:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-focused.log 2>&1 <<'JS'\nimport * as fs from 'node:fs'; import * as cp from 'node:child_process'; import os from 'node:os'; import path from 'node:path';\nconst src=fs.readFileSync('tests/super-code/replay-harness.mjs','utf8'); const start=src.indexOf(\"      scenario('scripts: cleanup uncertainty\"); const end=src.indexOf(\"      scenario('scripts: remove-task-worktree\",start); let failed=0;\nconst check=(ok,msg,detail)=>{console.log((ok?'PASS ':'FAIL ')+msg); if(!ok){failed++;console.log(detail)}};\nconst {mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync}=fs;const {execFileSync,spawnSync}=cp;\nconst args={mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync,execFileSync,spawnSync,os,path,process,scenario:console.log,check,bashPath:'/bin/bash',scriptsDir:path.resolve('skills/super-code/scripts')};\nnew Function(...Object.keys(args),src.slice(start,end))(...Object.values(args)); console.log(`${failed} failed`);process.exitCode=failed?1:0;\nJS\n```\n\nExit 1, `25 failed`. Representative failures: denied discovery returned code 0 and removed both the task worktree and temp directory; survivors and interactive retention also lost resources. This was the expected defect. The first full RED run had 1783 passed/27 failed, but its fixture path initially used a logical /tmp alias; only the corrected focused RED is the definitive helper baseline.\n\nCoordinator RED: after adding result propagation fixtures and before coordinator implementation, the coordinator-only section of replay-harness.mjs ran with the following extraction command:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-coordinator.log 2>&1 <<'JS'\nimport {readFileSync} from 'node:fs';import {pathToFileURL} from 'node:url';import path from 'node:path';const file=path.resolve('tests/super-code/replay-harness.mjs');const src=readFileSync(file,'utf8').replaceAll('import.meta.url',JSON.stringify(pathToFileURL(file).href));const cut=src.indexOf('  // ===== 10. shipped tree scripts');const end=src.indexOf('  // ===== summary =====',cut);await import('data:text/javascript;base64,'+Buffer.from(src.slice(0,cut)+src.slice(end)).toString('base64'));\nJS\n```\n\nExit 1, `1699 passed, 10 failed`: unknown/kept result arrays and missing-output handling did not exist, and unavailable inspection was put in survived. After implementation the same coordinator-only checks passed `1709 passed, 0 failed`; final full GREEN is the post-rebase `1852 passed, 0 failed` run above.\n\nOne intermediate full GREEN attempt exposed the previously ignored root-owned macOS login ancestor's hidden cwd; it correctly returned unknown but prevented actual fixture cleanup. Ownership exclusion was added for verified different-user ancestors. A separate contract-lint failure rejected numeric wording \"all four\"; named outcome fields replaced it. Both failures were fixed before the final runs.\n\n",
+      "bodyRawText": "\nHelpers RED: the corrected signal-safe regression block was executed directly from replay-harness.mjs against unchanged helpers using:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-focused.log 2>&1 <<'JS'\nimport * as fs from 'node:fs'; import * as cp from 'node:child_process'; import os from 'node:os'; import path from 'node:path';\nconst src=fs.readFileSync('tests/super-code/replay-harness.mjs','utf8'); const start=src.indexOf(\"      scenario('scripts: cleanup uncertainty\"); const end=src.indexOf(\"      scenario('scripts: remove-task-worktree\",start); let failed=0;\nconst check=(ok,msg,detail)=>{console.log((ok?'PASS ':'FAIL ')+msg); if(!ok){failed++;console.log(detail)}};\nconst {mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync}=fs;const {execFileSync,spawnSync}=cp;\nconst args={mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync,execFileSync,spawnSync,os,path,process,scenario:console.log,check,bashPath:'/bin/bash',scriptsDir:path.resolve('skills/super-code/scripts')};\nnew Function(...Object.keys(args),src.slice(start,end))(...Object.values(args)); console.log(`${failed} failed`);process.exitCode=failed?1:0;\nJS\n```\n\nExit 1, `25 failed`. Representative failures: denied discovery returned code 0 and removed both the task worktree and temp directory; survivors and interactive retention also lost resources. This was the expected defect. The first full RED run had 1783 passed/27 failed, but its fixture path initially used a logical /tmp alias; only the corrected focused RED is the definitive helper baseline.\n\nCoordinator RED: after adding result propagation fixtures and before coordinator implementation, the coordinator-only section of replay-harness.mjs ran with the following extraction command:\n\n```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-coordinator.log 2>&1 <<'JS'\nimport {readFileSync} from 'node:fs';import {pathToFileURL} from 'node:url';import path from 'node:path';const file=path.resolve('tests/super-code/replay-harness.mjs');const src=readFileSync(file,'utf8').replaceAll('import.meta.url',JSON.stringify(pathToFileURL(file).href));const cut=src.indexOf('  // ===== 10. shipped tree scripts');const end=src.indexOf('  // ===== summary =====',cut);await import('data:text/javascript;base64,'+Buffer.from(src.slice(0,cut)+src.slice(end)).toString('base64'));\nJS\n```\n\nExit 1, `1699 passed, 10 failed`: unknown/kept result arrays and missing-output handling did not exist, and unavailable inspection was put in survived. After implementation the same coordinator-only checks passed `1709 passed, 0 failed`; final full GREEN is the post-rebase `1852 passed, 0 failed` run above.\n\nOne intermediate full GREEN attempt exposed the previously ignored root-owned macOS login ancestor's hidden cwd; it correctly returned unknown but prevented actual fixture cleanup. Ownership exclusion was added for verified different-user ancestors. A separate contract-lint failure rejected numeric wording \"all four\"; named outcome fields replaced it. Both failures were fixed before the final runs.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Helpers RED: the corrected signal-safe regression block was executed directly from replay-harness.mjs against unchanged helpers using:\n",
+          "text": "Helpers RED: the corrected signal-safe regression block was executed directly from replay-harness.mjs against unchanged helpers using:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 68,
+          "lineEnd": 68,
+          "byteStart": 5354,
+          "byteEnd": 5489
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-focused.log 2>&1 <<'JS'\nimport * as fs from 'node:fs'; import * as cp from 'node:child_process'; import os from 'node:os'; import path from 'node:path';\nconst src=fs.readFileSync('tests/super-code/replay-harness.mjs','utf8'); const start=src.indexOf(\"      scenario('scripts: cleanup uncertainty\"); const end=src.indexOf(\"      scenario('scripts: remove-task-worktree\",start); let failed=0;\nconst check=(ok,msg,detail)=>{console.log((ok?'PASS ':'FAIL ')+msg); if(!ok){failed++;console.log(detail)}};\nconst {mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync}=fs;const {execFileSync,spawnSync}=cp;\nconst args={mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync,execFileSync,spawnSync,os,path,process,scenario:console.log,check,bashPath:'/bin/bash',scriptsDir:path.resolve('skills/super-code/scripts')};\nnew Function(...Object.keys(args),src.slice(start,end))(...Object.values(args)); console.log(`${failed} failed`);process.exitCode=failed?1:0;\nJS\n```\n",
+          "text": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-focused.log 2>&1 <<'JS'\nimport * as fs from 'node:fs'; import * as cp from 'node:child_process'; import os from 'node:os'; import path from 'node:path';\nconst src=fs.readFileSync('tests/super-code/replay-harness.mjs','utf8'); const start=src.indexOf(\"      scenario('scripts: cleanup uncertainty\"); const end=src.indexOf(\"      scenario('scripts: remove-task-worktree\",start); let failed=0;\nconst check=(ok,msg,detail)=>{console.log((ok?'PASS ':'FAIL ')+msg); if(!ok){failed++;console.log(detail)}};\nconst {mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync}=fs;const {execFileSync,spawnSync}=cp;\nconst args={mkdtempSync,mkdirSync,writeFileSync,existsSync,readFileSync,rmSync,execFileSync,spawnSync,os,path,process,scenario:console.log,check,bashPath:'/bin/bash',scriptsDir:path.resolve('skills/super-code/scripts')};\nnew Function(...Object.keys(args),src.slice(start,end))(...Object.values(args)); console.log(`${failed} failed`);process.exitCode=failed?1:0;\nJS\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 70,
+          "lineEnd": 79,
+          "byteStart": 5490,
+          "byteEnd": 6587
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, `25 failed`. Representative failures: denied discovery returned code 0 and removed both the task worktree and temp directory; survivors and interactive retention also lost resources. This was the expected defect. The first full RED run had 1783 passed/27 failed, but its fixture path initially used a logical /tmp alias; only the corrected focused RED is the definitive helper baseline.\n",
+          "text": "Exit 1, `25 failed`. Representative failures: denied discovery returned code 0 and removed both the task worktree and temp directory; survivors and interactive retention also lost resources. This was the expected defect. The first full RED run had 1783 passed/27 failed, but its fixture path initially used a logical /tmp alias; only the corrected focused RED is the definitive helper baseline.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 81,
+          "lineEnd": 81,
+          "byteStart": 6588,
+          "byteEnd": 6983
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Coordinator RED: after adding result propagation fixtures and before coordinator implementation, the coordinator-only section of replay-harness.mjs ran with the following extraction command:\n",
+          "text": "Coordinator RED: after adding result propagation fixtures and before coordinator implementation, the coordinator-only section of replay-harness.mjs ran with the following extraction command:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 83,
+          "lineEnd": 83,
+          "byteStart": 6984,
+          "byteEnd": 7175
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-coordinator.log 2>&1 <<'JS'\nimport {readFileSync} from 'node:fs';import {pathToFileURL} from 'node:url';import path from 'node:path';const file=path.resolve('tests/super-code/replay-harness.mjs');const src=readFileSync(file,'utf8').replaceAll('import.meta.url',JSON.stringify(pathToFileURL(file).href));const cut=src.indexOf('  // ===== 10. shipped tree scripts');const end=src.indexOf('  // ===== summary =====',cut);await import('data:text/javascript;base64,'+Buffer.from(src.slice(0,cut)+src.slice(end)).toString('base64'));\nJS\n```\n",
+          "text": "```bash\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.2 node --input-type=module > /tmp/sp-bce79baa/super-plan-ufz.2/red-coordinator.log 2>&1 <<'JS'\nimport {readFileSync} from 'node:fs';import {pathToFileURL} from 'node:url';import path from 'node:path';const file=path.resolve('tests/super-code/replay-harness.mjs');const src=readFileSync(file,'utf8').replaceAll('import.meta.url',JSON.stringify(pathToFileURL(file).href));const cut=src.indexOf('  // ===== 10. shipped tree scripts');const end=src.indexOf('  // ===== summary =====',cut);await import('data:text/javascript;base64,'+Buffer.from(src.slice(0,cut)+src.slice(end)).toString('base64'));\nJS\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 85,
+          "lineEnd": 89,
+          "byteStart": 7176,
+          "byteEnd": 7825
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, `1699 passed, 10 failed`: unknown/kept result arrays and missing-output handling did not exist, and unavailable inspection was put in survived. After implementation the same coordinator-only checks passed `1709 passed, 0 failed`; final full GREEN is the post-rebase `1852 passed, 0 failed` run above.\n",
+          "text": "Exit 1, `1699 passed, 10 failed`: unknown/kept result arrays and missing-output handling did not exist, and unavailable inspection was put in survived. After implementation the same coordinator-only checks passed `1709 passed, 0 failed`; final full GREEN is the post-rebase `1852 passed, 0 failed` run above.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 91,
+          "lineEnd": 91,
+          "byteStart": 7826,
+          "byteEnd": 8135
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "One intermediate full GREEN attempt exposed the previously ignored root-owned macOS login ancestor's hidden cwd; it correctly returned unknown but prevented actual fixture cleanup. Ownership exclusion was added for verified different-user ancestors. A separate contract-lint failure rejected numeric wording \"all four\"; named outcome fields replaced it. Both failures were fixed before the final runs.\n",
+          "text": "One intermediate full GREEN attempt exposed the previously ignored root-owned macOS login ancestor's hidden cwd; it correctly returned unknown but prevented actual fixture cleanup. Ownership exclusion was added for verified different-user ancestors. A separate contract-lint failure rejected numeric wording \"all four\"; named outcome fields replaced it. Both failures were fixed before the final runs.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 93,
+          "lineEnd": 93,
+          "byteStart": 8136,
+          "byteEnd": 8538
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Files changed"
+      ],
+      "lineStart": 95,
+      "lineEnd": 105,
+      "byteStart": 8539,
+      "byteEnd": 8886,
+      "bodyLineStart": 96,
+      "rawText": "## Files changed\n\n- skills/super-code/scripts/stop-run-processes\n- skills/super-code/scripts/remove-task-worktree\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- skills/super-auto/run-state.md\n- skills/super-auto/report-prompt.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "bodyRawText": "\n- skills/super-code/scripts/stop-run-processes\n- skills/super-code/scripts/remove-task-worktree\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- skills/super-auto/run-state.md\n- skills/super-auto/report-prompt.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/stop-run-processes\n",
+          "text": "skills/super-code/scripts/stop-run-processes",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 97,
+          "lineEnd": 97,
+          "byteStart": 8557,
+          "byteEnd": 8604
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/remove-task-worktree\n",
+          "text": "skills/super-code/scripts/remove-task-worktree",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 98,
+          "lineEnd": 98,
+          "byteStart": 8604,
+          "byteEnd": 8653
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "byteStart": 8653,
+          "byteEnd": 8688
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 100,
+          "lineEnd": 100,
+          "byteStart": 8688,
+          "byteEnd": 8732
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 101,
+          "lineEnd": 101,
+          "byteStart": 8732,
+          "byteEnd": 8777
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/run-state.md\n",
+          "text": "skills/super-auto/run-state.md",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 102,
+          "lineEnd": 102,
+          "byteStart": 8777,
+          "byteEnd": 8810
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/report-prompt.md\n",
+          "text": "skills/super-auto/report-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 103,
+          "lineEnd": 103,
+          "byteStart": 8810,
+          "byteEnd": 8847
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 104,
+          "lineEnd": 104,
+          "byteStart": 8847,
+          "byteEnd": 8885
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Test hygiene"
+      ],
+      "lineStart": 106,
+      "lineEnd": 119,
+      "byteStart": 8886,
+      "byteEnd": 10797,
+      "bodyLineStart": 107,
+      "rawText": "## Test hygiene\n\nThe failed intermediate replay run (green.log) left these narrowly matched owned fixtures, discovered by the prescribed canonical `stop-run-processes --check` from /tmp:\n\n- PID 10170, `sleep 300`, cwd under task TMPDIR's rtw-5mdEhk task t1: leaked by the real remove-task-worktree success fixture while the hidden privileged ancestor blocked cleanup; canonical stop reported `stopped:`.\n- PID 11201, owned copied `sleepcopy 301`, executable under task TMPDIR's srp-1pFlUZ/wt/.bin: same ancestor issue in stop-run-processes real-process fixture; canonical stop reported `stopped:`.\n- PID 11200, Node sleeper with HOME under task TMPDIR's srp-1pFlUZ/wt/.tmp/home: same fixture/cause; canonical stop reported `stopped:`.\n\nA check launched while contract-lint was still finishing also observed active test processes PID 42917 (`bash tests/super-auto/test-contract-lint.sh`) and PID 53314 (transient child, command already unavailable). These were active validation, not residual fixtures; both exited before the follow-up canonical stop, which found nothing. Subsequent checks were performed only after all validation sessions ended.\n\nThe canonical check initially refused task-local cwd by its normal caller-protection guard; checks were rerun from /tmp. The final post-rebase canonical stop and then `--check` each exited 0 with empty stdout. No `survived:` lines, remaining background processes or human cleanup actions remain.\n\nAll test runs use assigned TMPDIR. Fixtures exercising the existing --tmp validator need unique `/tmp/sp-<hex>[/onechild]` resources; the coordinator explicitly allowed this existing interface-compatible layout rather than widening validation. The new fixture removes its own unique root in finally. Process signals in denial/survivor fixtures are intercepted through BASH_ENV and a fake kill; real sleeper fixtures use their existing narrowly owned teardown only.\n\n",
+      "bodyRawText": "\nThe failed intermediate replay run (green.log) left these narrowly matched owned fixtures, discovered by the prescribed canonical `stop-run-processes --check` from /tmp:\n\n- PID 10170, `sleep 300`, cwd under task TMPDIR's rtw-5mdEhk task t1: leaked by the real remove-task-worktree success fixture while the hidden privileged ancestor blocked cleanup; canonical stop reported `stopped:`.\n- PID 11201, owned copied `sleepcopy 301`, executable under task TMPDIR's srp-1pFlUZ/wt/.bin: same ancestor issue in stop-run-processes real-process fixture; canonical stop reported `stopped:`.\n- PID 11200, Node sleeper with HOME under task TMPDIR's srp-1pFlUZ/wt/.tmp/home: same fixture/cause; canonical stop reported `stopped:`.\n\nA check launched while contract-lint was still finishing also observed active test processes PID 42917 (`bash tests/super-auto/test-contract-lint.sh`) and PID 53314 (transient child, command already unavailable). These were active validation, not residual fixtures; both exited before the follow-up canonical stop, which found nothing. Subsequent checks were performed only after all validation sessions ended.\n\nThe canonical check initially refused task-local cwd by its normal caller-protection guard; checks were rerun from /tmp. The final post-rebase canonical stop and then `--check` each exited 0 with empty stdout. No `survived:` lines, remaining background processes or human cleanup actions remain.\n\nAll test runs use assigned TMPDIR. Fixtures exercising the existing --tmp validator need unique `/tmp/sp-<hex>[/onechild]` resources; the coordinator explicitly allowed this existing interface-compatible layout rather than widening validation. The new fixture removes its own unique root in finally. Process signals in denial/survivor fixtures are intercepted through BASH_ENV and a fake kill; real sleeper fixtures use their existing narrowly owned teardown only.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The failed intermediate replay run (green.log) left these narrowly matched owned fixtures, discovered by the prescribed canonical `stop-run-processes --check` from /tmp:\n",
+          "text": "The failed intermediate replay run (green.log) left these narrowly matched owned fixtures, discovered by the prescribed canonical `stop-run-processes --check` from /tmp:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 108,
+          "lineEnd": 108,
+          "byteStart": 8903,
+          "byteEnd": 9073
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- PID 10170, `sleep 300`, cwd under task TMPDIR's rtw-5mdEhk task t1: leaked by the real remove-task-worktree success fixture while the hidden privileged ancestor blocked cleanup; canonical stop reported `stopped:`.\n",
+          "text": "PID 10170, `sleep 300`, cwd under task TMPDIR's rtw-5mdEhk task t1: leaked by the real remove-task-worktree success fixture while the hidden privileged ancestor blocked cleanup; canonical stop reported `stopped:`.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 9074,
+          "byteEnd": 9290
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- PID 11201, owned copied `sleepcopy 301`, executable under task TMPDIR's srp-1pFlUZ/wt/.bin: same ancestor issue in stop-run-processes real-process fixture; canonical stop reported `stopped:`.\n",
+          "text": "PID 11201, owned copied `sleepcopy 301`, executable under task TMPDIR's srp-1pFlUZ/wt/.bin: same ancestor issue in stop-run-processes real-process fixture; canonical stop reported `stopped:`.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 9290,
+          "byteEnd": 9484
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- PID 11200, Node sleeper with HOME under task TMPDIR's srp-1pFlUZ/wt/.tmp/home: same fixture/cause; canonical stop reported `stopped:`.\n",
+          "text": "PID 11200, Node sleeper with HOME under task TMPDIR's srp-1pFlUZ/wt/.tmp/home: same fixture/cause; canonical stop reported `stopped:`.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 112,
+          "lineEnd": 112,
+          "byteStart": 9484,
+          "byteEnd": 9621
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "A check launched while contract-lint was still finishing also observed active test processes PID 42917 (`bash tests/super-auto/test-contract-lint.sh`) and PID 53314 (transient child, command already unavailable). These were active validation, not residual fixtures; both exited before the follow-up canonical stop, which found nothing. Subsequent checks were performed only after all validation sessions ended.\n",
+          "text": "A check launched while contract-lint was still finishing also observed active test processes PID 42917 (`bash tests/super-auto/test-contract-lint.sh`) and PID 53314 (transient child, command already unavailable). These were active validation, not residual fixtures; both exited before the follow-up canonical stop, which found nothing. Subsequent checks were performed only after all validation sessions ended.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 114,
+          "lineEnd": 114,
+          "byteStart": 9622,
+          "byteEnd": 10033
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The canonical check initially refused task-local cwd by its normal caller-protection guard; checks were rerun from /tmp. The final post-rebase canonical stop and then `--check` each exited 0 with empty stdout. No `survived:` lines, remaining background processes or human cleanup actions remain.\n",
+          "text": "The canonical check initially refused task-local cwd by its normal caller-protection guard; checks were rerun from /tmp. The final post-rebase canonical stop and then `--check` each exited 0 with empty stdout. No `survived:` lines, remaining background processes or human cleanup actions remain.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 10034,
+          "byteEnd": 10330
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All test runs use assigned TMPDIR. Fixtures exercising the existing --tmp validator need unique `/tmp/sp-<hex>[/onechild]` resources; the coordinator explicitly allowed this existing interface-compatible layout rather than widening validation. The new fixture removes its own unique root in finally. Process signals in denial/survivor fixtures are intercepted through BASH_ENV and a fake kill; real sleeper fixtures use their existing narrowly owned teardown only.\n",
+          "text": "All test runs use assigned TMPDIR. Fixtures exercising the existing --tmp validator need unique `/tmp/sp-<hex>[/onechild]` resources; the coordinator explicitly allowed this existing interface-compatible layout rather than widening validation. The new fixture removes its own unique root in finally. Process signals in denial/survivor fixtures are intercepted through BASH_ENV and a fake kill; real sleeper fixtures use their existing narrowly owned teardown only.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 118,
+          "lineEnd": 118,
+          "byteStart": 10331,
+          "byteEnd": 10796
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Assumptions"
+      ],
+      "lineStart": 120,
+      "lineEnd": 123,
+      "byteStart": 10797,
+      "byteEnd": 11253,
+      "bodyLineStart": 121,
+      "rawText": "## Assumptions\n\nCurrent bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.\n\n",
+      "bodyRawText": "\nCurrent bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.\n",
+          "text": "Current bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 122,
+          "lineEnd": 122,
+          "byteStart": 10813,
+          "byteEnd": 11252
+        }
+      ]
+    },
+    {
+      "section": "Concerns and coordinator-owned evidence",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and coordinator-owned evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Concerns and coordinator-owned evidence"
+      ],
+      "lineStart": 124,
+      "lineEnd": 130,
+      "byteStart": 11253,
+      "byteEnd": 12343,
+      "bodyLineStart": 125,
+      "rawText": "## Concerns and coordinator-owned evidence\n\nFresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.\n\nPrepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.\n\nActual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.\n",
+      "bodyRawText": "\nFresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.\n\nPrepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.\n\nActual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.\n",
+          "text": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 126,
+          "lineEnd": 126,
+          "byteStart": 11297,
+          "byteEnd": 11557
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Prepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.\n",
+          "text": "Prepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 128,
+          "lineEnd": 128,
+          "byteStart": 11558,
+          "byteEnd": 12061
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.\n",
+          "text": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 130,
+          "lineEnd": 130,
+          "byteStart": 12062,
+          "byteEnd": 12343
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.",
+      "text": "Current bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.",
+      "rawText": "Current bead description/acceptance and comments were read before implementation. There were no explicit amendments or comments overriding the frozen brief. Coordinator steering assigns fresh-agent instruction evaluations to the parent, and asks for only truthful concrete helper protocol rather than stronger generic prose. The caller edits follow that limit. No tracker mutation, integration-tree write or thread mutation was performed.\n",
+      "lineStart": 122,
+      "lineEnd": 122,
+      "byteStart": 10813,
+      "byteEnd": 11252,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "section": "Concerns and coordinator-owned evidence",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Concerns and coordinator-owned evidence"
+      ],
+      "positionInSection": 1,
+      "key": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.",
+      "text": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.",
+      "rawText": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.\n",
+      "lineStart": 126,
+      "lineEnd": 126,
+      "byteStart": 11297,
+      "byteEnd": 11557,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "section": "Concerns and coordinator-owned evidence",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Concerns and coordinator-owned evidence"
+      ],
+      "positionInSection": 2,
+      "key": "Prepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.",
+      "text": "Prepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.",
+      "rawText": "Prepared denied-inspection acceptance scenario: start with delivered/closed code, a clean merged task worktree and its temp socket state; controlled lsof discovery fails while other process enumeration succeeds. remove-task-worktree must return unknown/exit 4 and keep both resources. Finish reports the code id in completed, the unknown inspection in processSweep.unknown, and retained worktree/temp identities in worktreesKept/Remaining. Signal-safe mechanical versions of both halves pass in replay.\n",
+      "lineStart": 128,
+      "lineEnd": 128,
+      "byteStart": 11558,
+      "byteEnd": 12061,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "section": "Concerns and coordinator-owned evidence",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.2 implementation",
+        "Concerns and coordinator-owned evidence"
+      ],
+      "positionInSection": 3,
+      "key": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.",
+      "text": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.",
+      "rawText": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.\n",
+      "lineStart": 130,
+      "lineEnd": 130,
+      "byteStart": 12062,
+      "byteEnd": 12343,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

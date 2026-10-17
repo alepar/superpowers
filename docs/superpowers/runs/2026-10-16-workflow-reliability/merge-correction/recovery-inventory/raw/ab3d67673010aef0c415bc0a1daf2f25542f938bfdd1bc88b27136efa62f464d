@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Review collection follows intermediate directory symlinks and archives files outside the declared source workspace while reporting collection complete.",
+      "location": "skills/super-auto/scripts/report-status:220",
+      "category": "security",
+      "external": false,
+      "evidence": "At frozen head ff2f79f62cc34084c8df20edc5c2e4f201a5d630, walk() calls lstatSync only on workspace/assembled/final-review-ID-final and its descendants. An intermediate workspace/assembled symlink is therefore followed before the final component is inspected; the subsequent source checks at line 233 also inspect only the final component. The normal caller collects this complete tree and commits its archive (skills/super-auto/SKILL.md:400-402). Reproduction using the immutable extracted helper and only /tmp fixtures made workspace/assembled a symlink to ../outside, placed outside/final-review-probe-final/private-material.txt there, and ran --collect with no --required arguments. Exit was 0 with collection: complete, and reviews/probe/assembled/final-review-probe-final/private-material.txt contained the outside-workspace sentinel. Exact command and result: /tmp/ufz-pr1/evidence-security/archive-symlink-fixture/result.json. This is a local agent-produced artifact workspace, not an established remote attacker surface; the demonstrated containment failure can copy accessible material outside that declared workspace into the committed review archive.",
+      "kind": "ISSUE"
+    }
+  ]
+}

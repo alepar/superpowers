@@ -1,0 +1,268 @@
+command: bash tests/super-code/test-dispatch-text.sh
+configuration: trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28
+sourceTree: 1e8641caa6a1ef1252f07d412a8d7694982e274d
+test runner: /bin/bash
+node runtime: /opt/homebrew/bin/node
+package under test: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.28/skills/super-code/scripts/dispatch-text
+dispatch-text: evidence classification shares the Workflow record contract
+  [PASS] ordinary record classification exits 0
+  [PASS] ordinary results preserve provenance, failed/unavailable and required-live gaps
+dispatch-text: verification-only evidence review
+  [PASS] verification review dispatch exits 0
+  [PASS] ordinary review transports explicit verification intent
+  [PASS] ordinary review transports the fixed tree
+  [PASS] ordinary review transports retained measurement references
+  [PASS] evidence review reads the existing report
+  [PASS] evidence review branches before nonempty-diff packaging
+  [PASS] legacy review keeps implementation intent
+  [PASS] reviewed verification produces ordinary closure dispatch
+  [PASS] closure observes tracker status first
+  [PASS] closure carries independent review identity
+  [PASS] verification closure claims no Git landing
+  [PASS] verification closure retains cleanup outcomes
+  [PASS] unreviewed verification cannot dispatch closure
+dispatch-text: implement
+  [PASS] exits 0
+  [PASS] writes <ledger dir>/dispatch/<label>.md and prints only its path
+  [PASS] the implementer dispatch
+  [PASS] task worktree under the Launch: line's integration worktree
+  [PASS] artifacts in the ledger's directory, by ordinal
+  [PASS] workspace setup cuts from the integration branch
+  [PASS] process hygiene the implementer template points at
+  [PASS] current requirements
+  [PASS] implementer RESULT carries optional evidence
+  [PASS] implementer dispatch names the complete provenance contract
+  [PASS] no stacking without --parents
+  [PASS] --parents stacks on the parent's branch
+  [PASS] and names the stack-conflict return
+  [PASS] --reentry: the review re-entry setup
+dispatch-text: review, fix, seam review, check-fix review
+  [PASS] task review receives captured implementation head
+  [PASS] base check uses captured head
+  [PASS] pinned final single exits 0
+  [PASS] final single diff is captured
+  [PASS] final single source is captured
+  [PASS] pinned final cluster exits 0
+  [PASS] final cluster diff is captured
+  [PASS] final cluster source is captured
+  [PASS] pinned final seam exits 0
+  [PASS] final seam diff is captured
+  [PASS] final seam source is captured
+  [PASS] task review rejects a moving source ref
+  [PASS] final review rejects a moving source ref
+  [PASS] review carries the base check
+  [PASS] review dispatch carries explicit live-check identities
+  [PASS] review dispatch carries the shared evidence contract
+  [PASS] and the reported base
+  [PASS] fix --kind check: the merge-check fix scope
+  [PASS] with the Launch: line's mergeCheck
+  [PASS] and the build errors as data
+  [PASS] fix --kind check: fresh-agent handoff
+  [PASS] fix --kind check: brief path
+  [PASS] fix --kind check: previous report path
+  [PASS] fix --kind check: base..HEAD range
+  [PASS] fix --kind seam: fresh-agent handoff
+  [PASS] fix --kind seam: brief path
+  [PASS] fix --kind seam: previous report path
+  [PASS] fix --kind seam: base..HEAD range
+  [PASS] fix --kind review: fresh-agent handoff
+  [PASS] fix --kind review: brief path
+  [PASS] fix --kind review: previous report path
+  [PASS] fix --kind review: base..HEAD range
+  [PASS] fix --kind review: the review file path
+  [PASS] seam review
+  [PASS] a consumes entry gets the composed-review text
+  [PASS] check-fix review
+dispatch-text: merge
+  [PASS] an unstacked merge rebases the whole branch
+  [PASS] fail-closed branch and clean checks
+  [PASS] the merge check
+  [PASS] the merge leaves the ledger lines to the coordinator
+  [PASS] an unsplit task's branch is removed
+  [PASS] --stacked rebases only the task's own commits
+  [PASS] --review-bead closes the review bead after the task bead
+  [PASS] and keeps a split task's branch for its dependents
+dispatch-text: plan, triage
+  [PASS] plan --mode ready
+  [PASS] plan --mode rest appends
+  [PASS] plan text names task-surface
+  [PASS] plan text names filesToRead
+  [PASS] plan text names surfaceTokens
+  [PASS] plan text names oversized
+  [PASS] triage
+  [PASS] and its waitFor field
+dispatch-text: final-answer rule
+  [PASS] implement ends with the final-answer rule
+  [PASS] implement (stacked) ends with the final-answer rule
+  [PASS] implement (reentry) ends with the final-answer rule
+  [PASS] review ends with the final-answer rule
+  [PASS] fix (check) ends with the final-answer rule
+  [PASS] fix (review) ends with the final-answer rule
+  [PASS] fix (seam) ends with the final-answer rule
+  [PASS] seam-review ends with the final-answer rule
+  [PASS] check-fix-review ends with the final-answer rule
+  [PASS] merge ends with the final-answer rule
+  [PASS] merge (stacked) ends with the final-answer rule
+  [PASS] plan (ready) ends with the final-answer rule
+  [PASS] plan (rest) ends with the final-answer rule
+  [PASS] plan (refill) ends with the final-answer rule
+  [PASS] triage ends with the final-answer rule
+  [PASS] coordinator.js carries the schema-form rule
+  [PASS] coordinator.js carries the verdict-form rule
+  [PASS] step-back-prompt.md copies the schema form
+  [PASS] scope-filter-prompt.md copies the schema form
+  [PASS] report-prompt.md copies the verdict form
+  [PASS] report-prompt.md has no schema form
+  [PASS] step-back-prompt.md has no verdict form
+  [PASS] scope-filter-prompt.md has no verdict form
+  [PASS] report-prompt.md describes the draft handoff
+  [PASS] report-prompt.md names the status placeholder
+  [PASS] SKILL.md's report drafter row names report.draft.md
+dispatch-text: assemble
+  [PASS] assemble final-review exits 0
+  [PASS] final-review OUT_DIR includes persisted invocation identity
+  [PASS] points at the assembler template
+  [PASS] names the consumer
+  [PASS] final-review asks for clusters
+  [PASS] final-review section: diffstat
+  [PASS] final-review section: report summaries
+  [PASS] final-review section: interfaces and seams
+  [PASS] final-review section: deferred minors
+  [PASS] final-review section: amendments
+  [PASS] assembled-size is named by absolute script path
+  [PASS] and it is the script, not a re-implementation
+  [PASS] the ledger path
+  [PASS] default threshold
+  [PASS] no spec paths by default
+  [PASS] assemble final-review ends with the final-answer rule
+  [PASS] roast-code OUT_DIR carries the instance
+  [PASS] roast-code section: slice index
+  [PASS] roast-code section: stated-intent spec paths
+  [PASS] roast-code section: diffstat
+  [PASS] roast-code carries no report summaries
+  [PASS] roast-code carries no concerns
+  [PASS] roast-code asks for no clusters
+  [PASS] assemble roast-code ends with the final-answer rule
+  [PASS] --spec lists the spec paths
+  [PASS] history instance is a bead id
+  [PASS] history section: ledger lines
+  [PASS] history section: bead comments
+  [PASS] history section: report summaries
+  [PASS] history asks for no clusters
+  [PASS] assemble history ends with the final-answer rule
+  [PASS] assess section: ledger state counts
+  [PASS] assess section: deferred minors
+  [PASS] assess asks for no clusters
+  [PASS] assemble assess ends with the final-answer rule
+  [PASS] --run-tag overrides the Launch: line
+  [PASS] the Launch: args form carries runTag
+  [PASS] final-review assembly uses the persisted identity without runTag
+  [PASS] assembler-prompt.md states it judges nothing
+  [PASS] assembler-prompt.md empties the instance dir first
+  [PASS] assembler-prompt.md relays the exit code and the fits: line
+  [PASS] assembler-prompt.md names no model (opus)
+  [PASS] assembler-prompt.md names no model (sonnet)
+  [PASS] assembler-prompt.md names no model (haiku)
+  [PASS] assembler-prompt.md names no model (gpt)
+  [PASS] --consumer bogus: exit 2
+  [PASS] assemble without --instance: exit 2
+dispatch-text: final-review
+  [PASS] final-review --mode single exits 0
+  [PASS] single without --dir reviews direct inputs through the review package
+  [PASS] single writes the invocation handoff file
+  [PASS] an uncapped single review is not told its inputs overflow
+  [PASS] single ends with the final-answer line
+  [PASS] single --dir reads the assembled digest
+  [PASS] single --dir does not rebuild the review package
+  [PASS] --capped tells the reviewer its inputs exceed the window
+  [PASS] cluster writes the invocation cluster file
+  [PASS] cluster names the cluster it reviews
+  [PASS] cluster ends with the final-answer line
+  [PASS] seam --reviewed exits 0
+  [PASS] seam is given reviewed cluster file 1
+  [PASS] seam is given reviewed cluster file 3
+  [PASS] seam is not given the unreviewed cluster's file
+  [PASS] seam names the unreviewed entry verbatim
+  [PASS] seam writes the handoff file
+  [PASS] seam ends with the final-answer line
+  [PASS] --reviewed none: the empty list
+  [PASS] stub exits 0
+  [PASS] stub writes the handoff file
+  [PASS] stub names the unreviewed entries
+  [PASS] stub lists the reviewed cluster file
+  [PASS] stub ends with the final-answer line
+  [PASS] stub dispatch name includes its invocation identity
+  [PASS] final-review --mode bogus: exit 2
+  [PASS] cluster without --name: exit 2
+  [PASS] stub without --unreviewed: exit 2
+  [PASS] seam --reviewed 0: exit 2
+  [PASS] seam --reviewed a,b: exit 2
+  [PASS] seam without --reviewed: exit 2
+  [PASS] and says what is missing
+  [PASS] single reads the ledger's Sweep: line into the prompt
+  [PASS] and its text
+  [PASS] single reads the four Metrics: lines
+  [PASS] a recorded sweep is not reported absent
+  [PASS] --sweep deferred passes the deferred marker
+  [PASS] --sweep F overrides the ledger
+  [PASS] and the ledger's sweep is not used
+  [PASS] --metrics F overrides the ledger
+  [PASS] and the ledger's metrics are not used
+  [PASS] a Launch line with sweep deferred and no Sweep: line defers the sweep
+  [PASS] the Workflow Launch form's deferSweep defers the sweep
+  [PASS] no Sweep: line and no deferral: still no sweep result
+  [PASS] argument parity: finalReviewPrompt
+  [PASS] argument parity: finalClusterReviewPrompt
+  [PASS] argument parity: finalSeamReviewPrompt
+  [PASS] argument parity: finalReviewStubPrompt
+dispatch-text: advancing caller fixture
+  [PASS] regenerated task/assembly/single/cluster/seam prompts preserve captured source across two caller advances
+dispatch-text: invocation bundle identity and resume
+  [PASS] inv-a/single builds from persisted identity
+  [PASS] inv-a/single bundle includes invocation identity
+  [PASS] inv-a/single never uses the enclosing runTag for review files
+  [PASS] inv-a/cluster builds from persisted identity
+  [PASS] inv-a/cluster bundle includes invocation identity
+  [PASS] inv-a/cluster never uses the enclosing runTag for review files
+  [PASS] inv-a/seam builds from persisted identity
+  [PASS] inv-a/seam bundle includes invocation identity
+  [PASS] inv-a/seam never uses the enclosing runTag for review files
+  [PASS] inv-a/stub builds from persisted identity
+  [PASS] inv-a/stub bundle includes invocation identity
+  [PASS] inv-a/stub never uses the enclosing runTag for review files
+  [PASS] inv-a assembly is invocation scoped
+  [PASS] inv-b/single builds from persisted identity
+  [PASS] inv-b/single bundle includes invocation identity
+  [PASS] inv-b/single never uses the enclosing runTag for review files
+  [PASS] inv-b/cluster builds from persisted identity
+  [PASS] inv-b/cluster bundle includes invocation identity
+  [PASS] inv-b/cluster never uses the enclosing runTag for review files
+  [PASS] inv-b/seam builds from persisted identity
+  [PASS] inv-b/seam bundle includes invocation identity
+  [PASS] inv-b/seam never uses the enclosing runTag for review files
+  [PASS] inv-b/stub builds from persisted identity
+  [PASS] inv-b/stub bundle includes invocation identity
+  [PASS] inv-b/stub never uses the enclosing runTag for review files
+  [PASS] inv-b assembly is invocation scoped
+  [PASS] resume replay uses the identical persisted source and artifact path
+  [PASS] Workflow Launch args also replay invocation identity
+  [PASS] unsafe or missing invocation identity [../escape] refuses review output
+  [PASS] unsafe or missing invocation identity [a/b] refuses review output
+  [PASS] unsafe or missing invocation identity [a b] refuses review output
+  [PASS] unsafe or missing invocation identity [] refuses review output
+  [PASS] an unpersisted identity override cannot replace the launch identity
+dispatch-text: emitted bundle paths retain prior contents, including suffix-like identities
+  [PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs
+dispatch-text: run facts and bad input
+  [PASS] a Workflow Launch: args line is read too
+  [PASS] mergeCheck none: no check step
+  [PASS] --branch overrides the Launch: line
+  [PASS] no Launch: line and no overrides: exit 2
+  [PASS] a missing required option: exit 2
+  [PASS] an unknown kind: exit 2
+dispatch-text: every kind --help lists is one it builds
+  [PASS] the help's kinds all parse (missing: none)
+
+dispatch-text: all tests passed
+
+exit=0

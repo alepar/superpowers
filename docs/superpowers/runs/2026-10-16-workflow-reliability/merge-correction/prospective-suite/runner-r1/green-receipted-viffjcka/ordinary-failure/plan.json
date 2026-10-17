@@ -1,0 +1,29 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/ordinary-failure/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/ordinary-failure/evidence",
+  "sourceHead": "f02d441f28dfc54b154873b52758d655db7ca290",
+  "sourceTree": "f5218c3807b5de3973ae5c376f6be888f7d97d7f",
+  "commands": [
+    "bash tests/one.sh",
+    "bash tests/two.sh"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/one.sh",
+      "sha256": "06a639543872d8c10aa0c98949967fbdf50e83356b78b428a574271d89623e56",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    },
+    {
+      "command": "bash tests/two.sh",
+      "sha256": "b6fcd840ad95152742d813e27c45338de902862adc599da23db333b3fe662f4c",
+      "requirementIds": [
+        "fixture-1"
+      ]
+    }
+  ]
+}

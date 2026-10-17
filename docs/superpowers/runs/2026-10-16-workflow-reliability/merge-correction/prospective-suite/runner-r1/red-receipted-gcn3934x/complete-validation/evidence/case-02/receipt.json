@@ -1,0 +1,37 @@
+{
+  "id": "02",
+  "planCommand": "bash -c true",
+  "actualArgv": [
+    "/bin/bash",
+    "-c",
+    "true"
+  ],
+  "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/clone",
+  "environment": {
+    "CI": "1",
+    "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/tmp",
+    "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/home",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/xdg-config",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/xdg-cache",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/xdg-state",
+    "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/codex-home"
+  },
+  "startUtc": "2026-10-17T21:39:56Z",
+  "endUtc": "2026-10-17T21:39:56Z",
+  "durationSeconds": 0.005,
+  "exitCode": 0,
+  "status": "passed",
+  "timeout": false,
+  "cause": null,
+  "sourceHead": "5e23aa5a5d05ecf9ac1851512fe3f672da4b2f3a",
+  "sourceTree": "da7f395384680c7182d9ac3b1cf4d86c6c1bba53",
+  "runner": "/bin/bash",
+  "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+  "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/stdout.log",
+  "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/complete-validation/evidence/case-02/stderr.log",
+  "stdoutBytes": 0,
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrBytes": 0,
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

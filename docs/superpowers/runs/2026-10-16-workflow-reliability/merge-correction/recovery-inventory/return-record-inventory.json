@@ -1,0 +1,2521 @@
+[
+  {
+    "taskNumber": 1,
+    "taskId": "super-plan-ufz.1",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0357",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-1-report.md",
+        "sha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0358",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-1-review.md",
+        "sha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0518",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-report.md",
+        "sha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0519",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-review.md",
+        "sha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 2,
+    "taskId": "super-plan-ufz.2",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0405",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-2-report.md",
+        "sha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0406",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-2-review-seam.md",
+        "sha256": "dc36c10aefd1eda3670393dca42ea32451dfca9d8af4dcef5f6c0de29ed2ef43",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0407",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-2-review.md",
+        "sha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0552",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-report.md",
+        "sha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0553",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review-seam.md",
+        "sha256": "dc36c10aefd1eda3670393dca42ea32451dfca9d8af4dcef5f6c0de29ed2ef43",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0554",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review.md",
+        "sha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 3,
+    "taskId": "super-plan-ufz.3",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0440",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-3-report.md",
+        "sha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0441",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-3-review-seam.md",
+        "sha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0442",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-3-review.md",
+        "sha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0576",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-report.md",
+        "sha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0577",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review-seam.md",
+        "sha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0578",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review.md",
+        "sha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 4,
+    "taskId": "super-plan-ufz.4",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0444",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-report.md",
+        "sha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00269",
+          "o00270",
+          "o00271"
+        ]
+      },
+      {
+        "sourceId": "s0445",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-review-seam.md",
+        "sha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0446",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-4-review.md",
+        "sha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0579",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+        "sha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00349",
+          "o00350",
+          "o00351"
+        ]
+      },
+      {
+        "sourceId": "s0580",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review-seam.md",
+        "sha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0581",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review.md",
+        "sha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 5,
+    "taskId": "super-plan-ufz.5",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0449",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-5-report.md",
+        "sha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00272"
+        ]
+      },
+      {
+        "sourceId": "s0450",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-5-review-seam.md",
+        "sha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0451",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-5-review.md",
+        "sha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0582",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-report.md",
+        "sha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00352"
+        ]
+      },
+      {
+        "sourceId": "s0583",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review-seam.md",
+        "sha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0584",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review.md",
+        "sha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 6,
+    "taskId": "super-plan-ufz.10",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0453",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-6-report.md",
+        "sha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0454",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-6-review.md",
+        "sha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0585",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-report.md",
+        "sha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0586",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-review.md",
+        "sha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 7,
+    "taskId": "super-plan-ufz.11",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0456",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-7-report.md",
+        "sha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0457",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-7-review-seam.json",
+        "sha256": "e5472ff4a34c151b99b04b2c1f69d43e82e1d82d6554e448571a2b2f66e1cb13",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00273"
+        ]
+      },
+      {
+        "sourceId": "s0458",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-7-review-seam.md",
+        "sha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0459",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-7-review.md",
+        "sha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0587",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-report.md",
+        "sha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0588",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.json",
+        "sha256": "e5472ff4a34c151b99b04b2c1f69d43e82e1d82d6554e448571a2b2f66e1cb13",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00353"
+        ]
+      },
+      {
+        "sourceId": "s0589",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.md",
+        "sha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0590",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review.md",
+        "sha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 8,
+    "taskId": "super-plan-ufz.8.1",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0461",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-8-report.md",
+        "sha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0462",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-8-review.md",
+        "sha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0591",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-report.md",
+        "sha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0592",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-review.md",
+        "sha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 9,
+    "taskId": "super-plan-ufz.8.2",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0464",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-9-report.md",
+        "sha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0465",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-9-review.md",
+        "sha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0593",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-report.md",
+        "sha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0594",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-review.md",
+        "sha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 10,
+    "taskId": "super-plan-ufz.7",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0360",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-report-fix.md",
+        "sha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0361",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-report.md",
+        "sha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0362",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-review-seam.md",
+        "sha256": "0207f7ebb7bd0c49f2aba519a6837addbf5598f359f7683a43bd2e216c816257",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0363",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-10-review.md",
+        "sha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0520",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-report-fix.md",
+        "sha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0521",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-report.md",
+        "sha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0522",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review-seam.md",
+        "sha256": "0207f7ebb7bd0c49f2aba519a6837addbf5598f359f7683a43bd2e216c816257",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0523",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review.md",
+        "sha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 11,
+    "taskId": "super-plan-ufz.12",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0365",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-report-fix.md",
+        "sha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0366",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-report.md",
+        "sha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0367",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-review-seam-round-1.md",
+        "sha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0368",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-review-seam.md",
+        "sha256": "4557d37e47897380f2d615e380d9c7ef4c04cb5b946c59fc26e6cf55f890f324",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0369",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-review.md",
+        "sha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0524",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-report-fix.md",
+        "sha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0525",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-report.md",
+        "sha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0526",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-seam-round-1.md",
+        "sha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0527",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-seam.md",
+        "sha256": "4557d37e47897380f2d615e380d9c7ef4c04cb5b946c59fc26e6cf55f890f324",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0528",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review.md",
+        "sha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 12,
+    "taskId": "super-plan-ufz.13",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0371",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-12-report.md",
+        "sha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0372",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-12-review-seam.md",
+        "sha256": "9d4696f8a994235bcf3b38b12a334e6b9d4ea12884c101b3ff79f55f3291026b",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0373",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-12-review.md",
+        "sha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0529",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-report.md",
+        "sha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0530",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review-seam.md",
+        "sha256": "9d4696f8a994235bcf3b38b12a334e6b9d4ea12884c101b3ff79f55f3291026b",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0531",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review.md",
+        "sha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 13,
+    "taskId": "super-plan-ufz.8.4",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0376",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-13-report.md",
+        "sha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0377",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-13-review.md",
+        "sha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0532",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-report.md",
+        "sha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0533",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-review.md",
+        "sha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 14,
+    "taskId": "super-plan-ufz.8.3",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0379",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-report-fix.md",
+        "sha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0380",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-report.md",
+        "sha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0381",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-review.md",
+        "sha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0534",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-report-fix.md",
+        "sha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0535",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-report.md",
+        "sha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0536",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-review.md",
+        "sha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 15,
+    "taskId": "super-plan-ufz.9",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0383",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-report-fix.md",
+        "sha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0384",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-report.md",
+        "sha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00233"
+        ]
+      },
+      {
+        "sourceId": "s0385",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-review-seam-report.json",
+        "sha256": "7771b03af5001f2dd8facfb6759a1f39172a199e6d817326244785132fb73361",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00234"
+        ]
+      },
+      {
+        "sourceId": "s0386",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-review-seam.md",
+        "sha256": "f7d10c60db55b9d887c10e652f41eec032543d4e72695c669cf4f3a13c4ca525",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0387",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-review.md",
+        "sha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0537",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-report-fix.md",
+        "sha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0538",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-report.md",
+        "sha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00313"
+        ]
+      },
+      {
+        "sourceId": "s0539",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-seam-report.json",
+        "sha256": "7771b03af5001f2dd8facfb6759a1f39172a199e6d817326244785132fb73361",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00314"
+        ]
+      },
+      {
+        "sourceId": "s0540",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-seam.md",
+        "sha256": "f7d10c60db55b9d887c10e652f41eec032543d4e72695c669cf4f3a13c4ca525",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0541",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review.md",
+        "sha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 16,
+    "taskId": "super-plan-ufz.6",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0390",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-16-report.md",
+        "sha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0391",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-16-review-seam.json",
+        "sha256": "db5f75ac1c3054a636fe115c1745010dacfb72201bba49c38ef8654a7b241cc9",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00235"
+        ]
+      },
+      {
+        "sourceId": "s0392",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-16-review-seam.md",
+        "sha256": "12e2cb1026153ac7517679eeb152f204cf16af385166dc6c9da804be40d7c4e6",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0393",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-16-review.md",
+        "sha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0542",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-report.md",
+        "sha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0543",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.json",
+        "sha256": "db5f75ac1c3054a636fe115c1745010dacfb72201bba49c38ef8654a7b241cc9",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00315"
+        ]
+      },
+      {
+        "sourceId": "s0544",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.md",
+        "sha256": "12e2cb1026153ac7517679eeb152f204cf16af385166dc6c9da804be40d7c4e6",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0545",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review.md",
+        "sha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 17,
+    "taskId": "super-plan-ufz.14",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0396",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-17-report.md",
+        "sha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0397",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-17-review.md",
+        "sha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0546",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-report.md",
+        "sha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0547",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-review.md",
+        "sha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 18,
+    "taskId": "super-plan-ufz.20",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0399",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-18-report.md",
+        "sha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0400",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-18-review.md",
+        "sha256": "5e31f71a616f85d8c1a0aa5787c3c8bb175c38fccca877e25da2b7cf8dc86f8e",
+        "identityKind": "pinned-git",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0548",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-report.md",
+        "sha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      },
+      {
+        "sourceId": "s0549",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-review.md",
+        "sha256": "5e31f71a616f85d8c1a0aa5787c3c8bb175c38fccca877e25da2b7cf8dc86f8e",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": []
+      }
+    ],
+    "actualObjectIds": [],
+    "structuredTypedProducerOrReviewerObjectIds": [],
+    "retainedReturnStatus": "complete prose reports/reviews retained; original separate RESULT callback/envelope not retained in bounded canonical sources; no empty-population inference",
+    "declaredExactLiveRequirementIds": [],
+    "typedMeasurementRecordIds": [],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 19,
+    "taskId": "super-plan-ufz.22",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0182",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.22-result.json",
+        "sha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00148"
+        ]
+      },
+      {
+        "sourceId": "s0198",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.22-result.json",
+        "sha256": "b0778626ae891983812a4ce5e2e0cbecd0324cb7d9e253063e4b109be234a09a",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00153"
+        ]
+      },
+      {
+        "sourceId": "s0241",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+        "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00187",
+          "o00188"
+        ]
+      },
+      {
+        "sourceId": "s0242",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-review.md",
+        "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00189"
+        ]
+      },
+      {
+        "sourceId": "s0402",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+        "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00236",
+          "o00237"
+        ]
+      },
+      {
+        "sourceId": "s0403",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+        "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00238"
+        ]
+      },
+      {
+        "sourceId": "s0494",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.22-result.json",
+        "sha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00293"
+        ]
+      },
+      {
+        "sourceId": "s0497",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.22-result.json",
+        "sha256": "b0778626ae891983812a4ce5e2e0cbecd0324cb7d9e253063e4b109be234a09a",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00295"
+        ]
+      },
+      {
+        "sourceId": "s0550",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+        "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00316",
+          "o00317"
+        ]
+      },
+      {
+        "sourceId": "s0551",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+        "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00318"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00148",
+      "o00153",
+      "o00187",
+      "o00188",
+      "o00189",
+      "o00236",
+      "o00237",
+      "o00238",
+      "o00293",
+      "o00295",
+      "o00316",
+      "o00317",
+      "o00318"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00148",
+      "o00153",
+      "o00187",
+      "o00188",
+      "o00189",
+      "o00236",
+      "o00237",
+      "o00238",
+      "o00293",
+      "o00295",
+      "o00316",
+      "o00317",
+      "o00318"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0003",
+      "l0004",
+      "l0005",
+      "l0011",
+      "l0012",
+      "l0013"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0079",
+      "e0080",
+      "e0081",
+      "e0082",
+      "e0083",
+      "e0084",
+      "e0085",
+      "e0086",
+      "e0087",
+      "e0088",
+      "e0089",
+      "e0090",
+      "e0091",
+      "e0092",
+      "e0093",
+      "e0094"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 20,
+    "taskId": "super-plan-ufz.23",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0183",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.23-result.json",
+        "sha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00149"
+        ]
+      },
+      {
+        "sourceId": "s0199",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.23-result.json",
+        "sha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00154"
+        ]
+      },
+      {
+        "sourceId": "s0227",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-report-before-fix.md",
+        "sha256": "417474cab3275a954e60d5b25aa7057b5edc63ca86b718bdf9e1e36bb3ed4754",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00177"
+        ]
+      },
+      {
+        "sourceId": "s0228",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-review-before-fix.md",
+        "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00178"
+        ]
+      },
+      {
+        "sourceId": "s0244",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-report.md",
+        "sha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00190",
+          "o00191"
+        ]
+      },
+      {
+        "sourceId": "s0245",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-review.md",
+        "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00192"
+        ]
+      },
+      {
+        "sourceId": "s0409",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-report.md",
+        "sha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00239",
+          "o00240"
+        ]
+      },
+      {
+        "sourceId": "s0410",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-review.md",
+        "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00241"
+        ]
+      },
+      {
+        "sourceId": "s0495",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.23-result.json",
+        "sha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00294"
+        ]
+      },
+      {
+        "sourceId": "s0498",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.23-result.json",
+        "sha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00296"
+        ]
+      },
+      {
+        "sourceId": "s0555",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+        "sha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00319",
+          "o00320"
+        ]
+      },
+      {
+        "sourceId": "s0556",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+        "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00321"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00149",
+      "o00154",
+      "o00177",
+      "o00178",
+      "o00190",
+      "o00191",
+      "o00192",
+      "o00239",
+      "o00240",
+      "o00241",
+      "o00294",
+      "o00296",
+      "o00319",
+      "o00320",
+      "o00321"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00149",
+      "o00154",
+      "o00177",
+      "o00178",
+      "o00190",
+      "o00191",
+      "o00192",
+      "o00239",
+      "o00240",
+      "o00241",
+      "o00294",
+      "o00296",
+      "o00319",
+      "o00320",
+      "o00321"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0006",
+      "l0007",
+      "l0008",
+      "l0009",
+      "l0010",
+      "l0014",
+      "l0015",
+      "l0031"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0095",
+      "e0096",
+      "e0097",
+      "e0098",
+      "e0099",
+      "e0100",
+      "e0101",
+      "e0102",
+      "e0103",
+      "e0104",
+      "e0105",
+      "e0106"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 21,
+    "taskId": "super-plan-ufz.24",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0200",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.24-result.json",
+        "sha256": "b84ce06173f6f028a270394282e2035a6f5560d9d28c5a00e0654d175c4fa4da",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00155"
+        ]
+      },
+      {
+        "sourceId": "s0247",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-21-report.md",
+        "sha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00193"
+        ]
+      },
+      {
+        "sourceId": "s0248",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-21-review.md",
+        "sha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00194"
+        ]
+      },
+      {
+        "sourceId": "s0412",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-21-report.md",
+        "sha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00242"
+        ]
+      },
+      {
+        "sourceId": "s0413",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-21-review.md",
+        "sha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00243"
+        ]
+      },
+      {
+        "sourceId": "s0499",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.24-result.json",
+        "sha256": "b84ce06173f6f028a270394282e2035a6f5560d9d28c5a00e0654d175c4fa4da",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00297"
+        ]
+      },
+      {
+        "sourceId": "s0557",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-report.md",
+        "sha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00322"
+        ]
+      },
+      {
+        "sourceId": "s0558",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-review.md",
+        "sha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00323"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00155",
+      "o00193",
+      "o00194",
+      "o00242",
+      "o00243",
+      "o00297",
+      "o00322",
+      "o00323"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00155",
+      "o00193",
+      "o00194",
+      "o00242",
+      "o00243",
+      "o00297",
+      "o00322",
+      "o00323"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0016",
+      "l0017"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0107",
+      "e0108",
+      "e0109",
+      "e0110",
+      "e0111"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 22,
+    "taskId": "super-plan-ufz.25",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0201",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.25-result.json",
+        "sha256": "2e77154aa683723a5d90bbad4a7a049253c4a1691559cce9396af37158421fc5",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00156"
+        ]
+      },
+      {
+        "sourceId": "s0250",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-22-report.md",
+        "sha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00195",
+          "o00196"
+        ]
+      },
+      {
+        "sourceId": "s0251",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-22-review.md",
+        "sha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00197",
+          "o00198"
+        ]
+      },
+      {
+        "sourceId": "s0415",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-22-report.md",
+        "sha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00244",
+          "o00245"
+        ]
+      },
+      {
+        "sourceId": "s0416",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-22-review.md",
+        "sha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00246",
+          "o00247"
+        ]
+      },
+      {
+        "sourceId": "s0500",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.25-result.json",
+        "sha256": "2e77154aa683723a5d90bbad4a7a049253c4a1691559cce9396af37158421fc5",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00298"
+        ]
+      },
+      {
+        "sourceId": "s0559",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-report.md",
+        "sha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00324",
+          "o00325"
+        ]
+      },
+      {
+        "sourceId": "s0560",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-review.md",
+        "sha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00326",
+          "o00327"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00156",
+      "o00195",
+      "o00196",
+      "o00197",
+      "o00198",
+      "o00244",
+      "o00245",
+      "o00246",
+      "o00247",
+      "o00298",
+      "o00324",
+      "o00325",
+      "o00326",
+      "o00327"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00156",
+      "o00298"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0018",
+      "l0019"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0112",
+      "e0113",
+      "e0114",
+      "e0115"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 23,
+    "taskId": "super-plan-ufz.26",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0202",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.26-result.json",
+        "sha256": "24a34792406d8f6ac1983e4f4a1a50fd67ed743ea3917085ad8f717d39349753",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00157"
+        ]
+      },
+      {
+        "sourceId": "s0253",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-23-report.md",
+        "sha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00199",
+          "o00200",
+          "o00201"
+        ]
+      },
+      {
+        "sourceId": "s0254",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-23-review.md",
+        "sha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00202"
+        ]
+      },
+      {
+        "sourceId": "s0418",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-23-report.md",
+        "sha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00248",
+          "o00249",
+          "o00250"
+        ]
+      },
+      {
+        "sourceId": "s0419",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-23-review.md",
+        "sha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00251"
+        ]
+      },
+      {
+        "sourceId": "s0501",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.26-result.json",
+        "sha256": "24a34792406d8f6ac1983e4f4a1a50fd67ed743ea3917085ad8f717d39349753",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00299"
+        ]
+      },
+      {
+        "sourceId": "s0561",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-report.md",
+        "sha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00328",
+          "o00329",
+          "o00330"
+        ]
+      },
+      {
+        "sourceId": "s0562",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-review.md",
+        "sha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00331"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00157",
+      "o00199",
+      "o00200",
+      "o00201",
+      "o00202",
+      "o00248",
+      "o00249",
+      "o00250",
+      "o00251",
+      "o00299",
+      "o00328",
+      "o00329",
+      "o00330",
+      "o00331"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00157",
+      "o00202",
+      "o00251",
+      "o00299",
+      "o00331"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0020",
+      "l0021",
+      "l0022"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0116",
+      "e0117",
+      "e0118",
+      "e0119",
+      "e0120",
+      "e0121",
+      "e0122",
+      "e0123",
+      "e0124",
+      "e0125"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 24,
+    "taskId": "super-plan-ufz.27",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0203",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.27-result.json",
+        "sha256": "627fb4e7e8442fe37ba817c21fea39f8143d5b6fb8f63e1a2f9cf956baa68f52",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00158"
+        ]
+      },
+      {
+        "sourceId": "s0257",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-24-report.md",
+        "sha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00204"
+        ]
+      },
+      {
+        "sourceId": "s0258",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-24-review.md",
+        "sha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00205"
+        ]
+      },
+      {
+        "sourceId": "s0422",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-24-report.md",
+        "sha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00253"
+        ]
+      },
+      {
+        "sourceId": "s0423",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-24-review.md",
+        "sha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00254"
+        ]
+      },
+      {
+        "sourceId": "s0502",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.27-result.json",
+        "sha256": "627fb4e7e8442fe37ba817c21fea39f8143d5b6fb8f63e1a2f9cf956baa68f52",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00300"
+        ]
+      },
+      {
+        "sourceId": "s0564",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-report.md",
+        "sha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00333"
+        ]
+      },
+      {
+        "sourceId": "s0565",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-review.md",
+        "sha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00334"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00158",
+      "o00204",
+      "o00205",
+      "o00253",
+      "o00254",
+      "o00300",
+      "o00333",
+      "o00334"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00158",
+      "o00204",
+      "o00205",
+      "o00253",
+      "o00254",
+      "o00300",
+      "o00333",
+      "o00334"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0023",
+      "l0024"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0126",
+      "e0127",
+      "e0128",
+      "e0129"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 25,
+    "taskId": "super-plan-ufz.28",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0204",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.28-result.json",
+        "sha256": "d6c12e6cbdca953cd262cf5f996ccba246e356f0578762c92eec96cd2aaa5d68",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00159"
+        ]
+      },
+      {
+        "sourceId": "s0260",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-25-report.md",
+        "sha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00206",
+          "o00207"
+        ]
+      },
+      {
+        "sourceId": "s0261",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-25-review.md",
+        "sha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00208"
+        ]
+      },
+      {
+        "sourceId": "s0425",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-25-report.md",
+        "sha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00255",
+          "o00256"
+        ]
+      },
+      {
+        "sourceId": "s0426",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-25-review.md",
+        "sha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00257"
+        ]
+      },
+      {
+        "sourceId": "s0503",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.28-result.json",
+        "sha256": "d6c12e6cbdca953cd262cf5f996ccba246e356f0578762c92eec96cd2aaa5d68",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00301"
+        ]
+      },
+      {
+        "sourceId": "s0566",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-report.md",
+        "sha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00335",
+          "o00336"
+        ]
+      },
+      {
+        "sourceId": "s0567",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-review.md",
+        "sha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00337"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00159",
+      "o00206",
+      "o00207",
+      "o00208",
+      "o00255",
+      "o00256",
+      "o00257",
+      "o00301",
+      "o00335",
+      "o00336",
+      "o00337"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00159",
+      "o00208",
+      "o00257",
+      "o00301",
+      "o00337"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0025",
+      "l0026",
+      "l0027"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0130",
+      "e0131",
+      "e0132",
+      "e0133",
+      "e0134",
+      "e0135",
+      "e0136"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 26,
+    "taskId": "super-plan-ufz.29",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0173",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/dispatch/impl-super-plan-ufz.29-result.json",
+        "sha256": "5a1ac39d8591a89ad931a750262aaa1f0c91cdc23618d18aab4f87f19c723fe2",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00141"
+        ]
+      },
+      {
+        "sourceId": "s0263",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-report.md",
+        "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00209",
+          "o00210"
+        ]
+      },
+      {
+        "sourceId": "s0264",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+        "sha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00211",
+          "o00212"
+        ]
+      },
+      {
+        "sourceId": "s0428",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-report.md",
+        "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00258",
+          "o00259"
+        ]
+      },
+      {
+        "sourceId": "s0429",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+        "sha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00260",
+          "o00261"
+        ]
+      },
+      {
+        "sourceId": "s0568",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+        "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00338",
+          "o00339"
+        ]
+      },
+      {
+        "sourceId": "s0569",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+        "sha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00340",
+          "o00341"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00141",
+      "o00209",
+      "o00210",
+      "o00211",
+      "o00212",
+      "o00258",
+      "o00259",
+      "o00260",
+      "o00261",
+      "o00338",
+      "o00339",
+      "o00340",
+      "o00341"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00141",
+      "o00211",
+      "o00212",
+      "o00260",
+      "o00261",
+      "o00340",
+      "o00341"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0001",
+      "l0002"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0075",
+      "e0076",
+      "e0077",
+      "e0078"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 27,
+    "taskId": "super-plan-ufz.30",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0205",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.30-result.json",
+        "sha256": "46798f0738ed49a084d02e729be8607f11473b67504be4c830da0fcc568c6262",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00160"
+        ]
+      },
+      {
+        "sourceId": "s0266",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-27-report.md",
+        "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00213"
+        ]
+      },
+      {
+        "sourceId": "s0267",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-27-review.md",
+        "sha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00214"
+        ]
+      },
+      {
+        "sourceId": "s0431",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-report.md",
+        "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00262"
+        ]
+      },
+      {
+        "sourceId": "s0432",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-review.md",
+        "sha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00263"
+        ]
+      },
+      {
+        "sourceId": "s0504",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.30-result.json",
+        "sha256": "46798f0738ed49a084d02e729be8607f11473b67504be4c830da0fcc568c6262",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00302"
+        ]
+      },
+      {
+        "sourceId": "s0570",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-report.md",
+        "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00342"
+        ]
+      },
+      {
+        "sourceId": "s0571",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-review.md",
+        "sha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00343"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00160",
+      "o00213",
+      "o00214",
+      "o00262",
+      "o00263",
+      "o00302",
+      "o00342",
+      "o00343"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00160",
+      "o00213",
+      "o00214",
+      "o00262",
+      "o00263",
+      "o00302",
+      "o00342",
+      "o00343"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0028",
+      "l0029"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0137",
+      "e0138"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 28,
+    "taskId": "super-plan-ufz.31",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0206",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.31-result.json",
+        "sha256": "7d3650e7cb07e0181ade7c32a645be0bf136aca0566265312c9d1a7f3e5f3480",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00161"
+        ]
+      },
+      {
+        "sourceId": "s0269",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-28-report.md",
+        "sha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00215"
+        ]
+      },
+      {
+        "sourceId": "s0270",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-28-review.md",
+        "sha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00216",
+          "o00217"
+        ]
+      },
+      {
+        "sourceId": "s0434",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-28-report.md",
+        "sha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00264"
+        ]
+      },
+      {
+        "sourceId": "s0435",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-28-review.md",
+        "sha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00265",
+          "o00266"
+        ]
+      },
+      {
+        "sourceId": "s0505",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.31-result.json",
+        "sha256": "7d3650e7cb07e0181ade7c32a645be0bf136aca0566265312c9d1a7f3e5f3480",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00303"
+        ]
+      },
+      {
+        "sourceId": "s0572",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-report.md",
+        "sha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00344"
+        ]
+      },
+      {
+        "sourceId": "s0573",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-review.md",
+        "sha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00345",
+          "o00346"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00161",
+      "o00215",
+      "o00216",
+      "o00217",
+      "o00264",
+      "o00265",
+      "o00266",
+      "o00303",
+      "o00344",
+      "o00345",
+      "o00346"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00161",
+      "o00215",
+      "o00216",
+      "o00217",
+      "o00264",
+      "o00265",
+      "o00266",
+      "o00303",
+      "o00344",
+      "o00345",
+      "o00346"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0030"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0139",
+      "e0140"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  },
+  {
+    "taskNumber": 29,
+    "taskId": "super-plan-ufz.32",
+    "mappingSource": {
+      "sourceId": "s0214",
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/mapping-all.json",
+      "sha256": "e118e68c365dab2447b73c73b7e4b00d0067261a5d62184c7e383ab3b39e7eb5"
+    },
+    "sources": [
+      {
+        "sourceId": "s0207",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.32-result.json",
+        "sha256": "4f5156befbed42be87d98dd380d58916db27f307dfa8b937762cf5c8c52eb5c8",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00162"
+        ]
+      },
+      {
+        "sourceId": "s0272",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-29-report.md",
+        "sha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00218"
+        ]
+      },
+      {
+        "sourceId": "s0273",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-29-review.md",
+        "sha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00219"
+        ]
+      },
+      {
+        "sourceId": "s0437",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-29-report.md",
+        "sha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00267"
+        ]
+      },
+      {
+        "sourceId": "s0438",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-29-review.md",
+        "sha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+        "identityKind": "pinned-git",
+        "objectIds": [
+          "o00268"
+        ]
+      },
+      {
+        "sourceId": "s0506",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.32-result.json",
+        "sha256": "4f5156befbed42be87d98dd380d58916db27f307dfa8b937762cf5c8c52eb5c8",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00304"
+        ]
+      },
+      {
+        "sourceId": "s0574",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-report.md",
+        "sha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00347"
+        ]
+      },
+      {
+        "sourceId": "s0575",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-review.md",
+        "sha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+        "identityKind": "local-untracked-snapshot",
+        "objectIds": [
+          "o00348"
+        ]
+      }
+    ],
+    "actualObjectIds": [
+      "o00162",
+      "o00218",
+      "o00219",
+      "o00267",
+      "o00268",
+      "o00304",
+      "o00347",
+      "o00348"
+    ],
+    "structuredTypedProducerOrReviewerObjectIds": [
+      "o00162",
+      "o00218",
+      "o00219",
+      "o00267",
+      "o00268",
+      "o00304",
+      "o00347",
+      "o00348"
+    ],
+    "retainedReturnStatus": "actual typed returned records retained; scalar/array fields and earlier failures preserved",
+    "declaredExactLiveRequirementIds": [
+      "l0032",
+      "l0033"
+    ],
+    "typedMeasurementRecordIds": [
+      "e0141",
+      "e0142",
+      "e0143",
+      "e0144",
+      "e0145",
+      "e0146",
+      "e0147",
+      "e0148",
+      "e0149",
+      "e0150",
+      "e0151",
+      "e0152",
+      "e0153",
+      "e0154",
+      "e0155",
+      "e0156",
+      "e0157",
+      "e0158",
+      "e0159"
+    ],
+    "remainingHistoricalLimitation": "Original enclosing Workflow/ordinary-coordinator full returned Recovery/checkEvidence/runFailures wrapper and all transient callbacks not established by these report copies."
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "capturedUtc": "2026-10-17T22:20:30.207419+00:00",
+  "kind": "Read-only consistency check of generated inventory and existing evidence; no repository tests executed",
+  "exactChangedSetEquality": true,
+  "trackedChangedPaths": 8476,
+  "sourcePartitionPathCount": 58,
+  "sourcePartitionHashMatches": true,
+  "otherTrackedPaths": 8418,
+  "all242PriorMembersMatch": true,
+  "all79PendingRawCopiesMatchCommittedReports": true,
+  "all79OperationalAdapterCopiesMatchProposal": true,
+  "retainedSelectorEvidenceHashesMatch": true,
+  "noOmissionsAuthorized": true,
+  "noProductGitRunHerdrTrackerOrIndexWrites": true,
+  "onlyWrites": "/private/tmp/ufz-correction-final-artifact-inventory/",
+  "independentSemanticWholeRangeReview": false,
+  "wholeBranchReadyAuthority": false
+}

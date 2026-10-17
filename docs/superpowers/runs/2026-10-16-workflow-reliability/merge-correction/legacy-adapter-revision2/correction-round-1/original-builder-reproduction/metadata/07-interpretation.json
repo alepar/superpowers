@@ -1,0 +1,1234 @@
+{
+  "version": 1,
+  "ordinal": 7,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+  "originalArtifact": "task-report-history-r1/raw/task-11-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-11-report.md",
+  "rawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+  "rawByteCount": 23500,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 275,
+    "byteStart": 0,
+    "byteEnd": 23500,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/6",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/07-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status: IMPLEMENTED"
+    },
+    {
+      "line": 6,
+      "rawText": "- status: IMPLEMENTED"
+    },
+    {
+      "line": 145,
+      "rawText": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed."
+    },
+    {
+      "line": 206,
+      "rawText": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed."
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/0",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        1614,
+        2128
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Unscoped caller-owned sweeps/runFailure diagnostics remain visible obligations without generic repair routing; described contract boundary."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/1",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        3572,
+        4118
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Restored holds/deferred obligations require owner-supplied matching evidence clear; only reconciler-owned resume holds auto-clear."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/2",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "span": [
+        5525,
+        5757
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Baseline lacked pending-closure reconciliation and restored admission gates; report claims initial implementation."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/3",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        5758,
+        6278
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Self-review found initial implementation reduced in-memory obligation before append confirmation; combined confirmed write claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/4",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        6279,
+        6985
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Missing closed-status array threw and lost bounded held behavior; explicit array guards claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/5",
+      "roles": [
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "span": [
+        10014,
+        10603
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Foreign holds are not resolved from silence; parent owns fresh-agent resume evaluation."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/6",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "span": [
+        10617,
+        11181
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No deterministic local failure is declared, while ordinary resume live evaluation is pending; named scenarios are recommendations."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/7",
+      "roles": [
+        "historical-finding"
+      ],
+      "span": [
+        11480,
+        11889
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Appended partial-close durable-write defect is asserted valid."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/8",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        11890,
+        12500
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Partial-close confirmed append ordering claimed; original obligation retained on persistence failure."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/9",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "span": [
+        12613,
+        13340
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Partial-close failure/restart fixtures preserve independent counterexamples."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/10",
+      "roles": [
+        "execution-context"
+      ],
+      "span": [
+        15325,
+        15980
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Sandbox/working-directory setup failures are not test verdicts."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/11",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "span": [
+        15981,
+        16448
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent evaluation still pending; no evidence-only resolution claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/12",
+      "roles": [
+        "historical-finding"
+      ],
+      "span": [
+        16891,
+        17367
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Seam diagnostic fixture lacked required configuration/event fields; readRecovery retained gap, exact preservation assertions failed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/13",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        17368,
+        18304
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Schema-valid diagnostic fixture and additional owner/source assertions claimed; no production change."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/14",
+      "roles": [
+        "repair-scope"
+      ],
+      "span": [
+        18305,
+        18726
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Author claims production contracts unchanged; static diff observation, not disposition."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/6/interpretedPassages/15",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "span": [
+        22959,
+        23500
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No task-local unresolved failure asserted; fresh-agent evaluation remains separate and parent-owned."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-07-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Unscoped caller-owned sweeps/runFailure diagnostics remain visible obligations without generic repair routing; described contract boundary.",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1614,
+      "byteEnd": 2128,
+      "rawText": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Implementation",
+          "headingRaw": "## Implementation\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Implementation"
+          ],
+          "sectionByteStart": 503,
+          "sectionByteEnd": 3084,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 1112
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Restored holds/deferred obligations require owner-supplied matching evidence clear; only reconciler-owned resume holds auto-clear.",
+      "lineStart": 32,
+      "lineEnd": 32,
+      "byteStart": 3572,
+      "byteEnd": 4118,
+      "rawText": "Generated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Interfaces",
+          "headingRaw": "## Interfaces\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Interfaces"
+          ],
+          "sectionByteStart": 3084,
+          "sectionByteEnd": 4366,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 489
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "interpretation": "Baseline lacked pending-closure reconciliation and restored admission gates; report claims initial implementation.",
+      "lineStart": 63,
+      "lineEnd": 63,
+      "byteStart": 5525,
+      "byteEnd": 5757,
+      "rawText": "These failures were expected: the baseline decoded Recovery data but did not reconcile pending closures or use restored obligations for admission. First GREEN after implementation/compatibility corrections: `1990 passed, 0 failed`.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Tests and TDD",
+          "headingRaw": "## Tests and TDD\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Tests and TDD"
+          ],
+          "sectionByteStart": 4366,
+          "sectionByteEnd": 8672,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1160
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Self-review found initial implementation reduced in-memory obligation before append confirmation; combined confirmed write claimed.",
+      "lineStart": 65,
+      "lineEnd": 78,
+      "byteStart": 5758,
+      "byteEnd": 6278,
+      "rawText": "Additional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Tests and TDD",
+          "headingRaw": "## Tests and TDD\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Tests and TDD"
+          ],
+          "sectionByteStart": 4366,
+          "sectionByteEnd": 8672,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1393
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Missing closed-status array threw and lost bounded held behavior; explicit array guards claimed.",
+      "lineStart": 80,
+      "lineEnd": 97,
+      "byteStart": 6279,
+      "byteEnd": 6985,
+      "rawText": "Additional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Tests and TDD",
+          "headingRaw": "## Tests and TDD\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Tests and TDD"
+          ],
+          "sectionByteStart": 4366,
+          "sectionByteEnd": 8672,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1914
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "interpretation": "Foreign holds are not resolved from silence; parent owns fresh-agent resume evaluation.",
+      "lineStart": 137,
+      "lineEnd": 137,
+      "byteStart": 10014,
+      "byteEnd": 10603,
+      "rawText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Assumptions",
+          "headingRaw": "## Assumptions\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Assumptions"
+          ],
+          "sectionByteStart": 9998,
+          "sectionByteEnd": 10604,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 17
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "interpretation": "No deterministic local failure is declared, while ordinary resume live evaluation is pending; named scenarios are recommendations.",
+      "lineStart": 141,
+      "lineEnd": 141,
+      "byteStart": 10617,
+      "byteEnd": 11181,
+      "rawText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Concerns",
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Concerns"
+          ],
+          "sectionByteStart": 10604,
+          "sectionByteEnd": 11182,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 14
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "historical-finding"
+      ],
+      "interpretation": "Appended partial-close durable-write defect is asserted valid.",
+      "lineStart": 147,
+      "lineEnd": 147,
+      "byteStart": 11480,
+      "byteEnd": 11889,
+      "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass"
+          ],
+          "sectionByteStart": 11182,
+          "sectionByteEnd": 13341,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 299
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Partial-close confirmed append ordering claimed; original obligation retained on persistence failure.",
+      "lineStart": 149,
+      "lineEnd": 149,
+      "byteStart": 11890,
+      "byteEnd": 12500,
+      "rawText": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass"
+          ],
+          "sectionByteStart": 11182,
+          "sectionByteEnd": 13341,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 709
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p10",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "interpretation": "Partial-close failure/restart fixtures preserve independent counterexamples.",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 12613,
+      "byteEnd": 13340,
+      "rawText": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass"
+          ],
+          "sectionByteStart": 11182,
+          "sectionByteEnd": 13341,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 1432
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p11",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "execution-context"
+      ],
+      "interpretation": "Sandbox/working-directory setup failures are not test verdicts.",
+      "lineStart": 200,
+      "lineEnd": 200,
+      "byteStart": 15325,
+      "byteEnd": 15980,
+      "rawText": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Test hygiene, assumptions and concerns",
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "sectionByteStart": 15281,
+          "sectionByteEnd": 16449,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 45
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p12",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "interpretation": "Fresh-agent evaluation still pending; no evidence-only resolution claimed.",
+      "lineStart": 202,
+      "lineEnd": 202,
+      "byteStart": 15981,
+      "byteEnd": 16448,
+      "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Test hygiene, assumptions and concerns",
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "sectionByteStart": 15281,
+          "sectionByteEnd": 16449,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 701
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p13",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "historical-finding"
+      ],
+      "interpretation": "Seam diagnostic fixture lacked required configuration/event fields; readRecovery retained gap, exact preservation assertions failed.",
+      "lineStart": 208,
+      "lineEnd": 208,
+      "byteStart": 16891,
+      "byteEnd": 17367,
+      "rawText": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix"
+          ],
+          "sectionByteStart": 16449,
+          "sectionByteEnd": 18727,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 443
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p14",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Schema-valid diagnostic fixture and additional owner/source assertions claimed; no production change.",
+      "lineStart": 210,
+      "lineEnd": 210,
+      "byteStart": 17368,
+      "byteEnd": 18304,
+      "rawText": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix"
+          ],
+          "sectionByteStart": 16449,
+          "sectionByteEnd": 18727,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 920
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p15",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "repair-scope"
+      ],
+      "interpretation": "Author claims production contracts unchanged; static diff observation, not disposition.",
+      "lineStart": 212,
+      "lineEnd": 212,
+      "byteStart": 18305,
+      "byteEnd": 18726,
+      "rawText": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix"
+          ],
+          "sectionByteStart": 16449,
+          "sectionByteEnd": 18727,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 1857
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-07-p16",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "interpretation": "No task-local unresolved failure asserted; fresh-agent evaluation remains separate and parent-owned.",
+      "lineStart": 275,
+      "lineEnd": 275,
+      "byteStart": 22959,
+      "byteEnd": 23500,
+      "rawText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 16,
+          "section": "Assumptions and concerns",
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix",
+            "Assumptions and concerns"
+          ],
+          "sectionByteStart": 22929,
+          "sectionByteEnd": 23500,
+          "canonicalSectionAlias": "legacy-raw-section/16",
+          "positionByteInSection": 31
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1614,
+      "byteEnd": 2128,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/0"
+      ],
+      "interpretation": "Unscoped caller-owned sweeps/runFailure diagnostics remain visible obligations without generic repair routing; described contract boundary.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3572,
+      "byteEnd": 4118,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/1"
+      ],
+      "interpretation": "Restored holds/deferred obligations require owner-supplied matching evidence clear; only reconciler-owned resume holds auto-clear.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10014,
+      "byteEnd": 10603,
+      "roles": [
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/5"
+      ],
+      "interpretation": "Foreign holds are not resolved from silence; parent owns fresh-agent resume evaluation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10617,
+      "byteEnd": 11181,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/6"
+      ],
+      "interpretation": "No deterministic local failure is declared, while ordinary resume live evaluation is pending; named scenarios are recommendations.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 11480,
+      "byteEnd": 11889,
+      "roles": [
+        "historical-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/7"
+      ],
+      "interpretation": "Appended partial-close durable-write defect is asserted valid.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 15981,
+      "byteEnd": 16448,
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/11"
+      ],
+      "interpretation": "Fresh-agent evaluation still pending; no evidence-only resolution claimed.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 16891,
+      "byteEnd": 17367,
+      "roles": [
+        "historical-finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/12"
+      ],
+      "interpretation": "Seam diagnostic fixture lacked required configuration/event fields; readRecovery retained gap, exact preservation assertions failed.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 22959,
+      "byteEnd": 23500,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/15"
+      ],
+      "interpretation": "No task-local unresolved failure asserted; fresh-agent evaluation remains separate and parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Incomplete interpreted coverage: L78/L97 intermediate defects, L147–149 partial-close finding/repair, L208–212 seam fixture defect/repair must be explicitly represented; pending scope is retained.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "No current resolution follows from embedded FIXED statuses; separate seam fixture history and pending live eval remain distinct."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000001614",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 1614,
+      "rawByteEnd": 2128,
+      "rawLineStart": 22,
+      "rawLineEnd": 22,
+      "originalSections": [
+        {
+          "section": "Implementation",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Implementation\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Implementation"
+          ],
+          "byteStart": 503,
+          "byteEnd": 3084
+        }
+      ],
+      "rawText": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/0"
+      ],
+      "interpretation": "Unscoped caller-owned sweeps/runFailure diagnostics remain visible obligations without generic repair routing; described contract boundary."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-3/raw-byte-000003572",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 3572,
+      "rawByteEnd": 4118,
+      "rawLineStart": 32,
+      "rawLineEnd": 32,
+      "originalSections": [
+        {
+          "section": "Interfaces",
+          "sectionOrdinal": 3,
+          "headingRaw": "## Interfaces\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Interfaces"
+          ],
+          "byteStart": 3084,
+          "byteEnd": 4366
+        }
+      ],
+      "rawText": "Generated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Generated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/1"
+      ],
+      "interpretation": "Restored holds/deferred obligations require owner-supplied matching evidence clear; only reconciler-owned resume holds auto-clear."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000010014",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "rawByteStart": 10014,
+      "rawByteEnd": 10603,
+      "rawLineStart": 137,
+      "rawLineEnd": 137,
+      "originalSections": [
+        {
+          "section": "Assumptions",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Assumptions\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Assumptions"
+          ],
+          "byteStart": 9998,
+          "byteEnd": 10604
+        }
+      ],
+      "rawText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/5"
+      ],
+      "interpretation": "Foreign holds are not resolved from silence; parent owns fresh-agent resume evaluation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000010617",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 10617,
+      "rawByteEnd": 11181,
+      "rawLineStart": 141,
+      "rawLineEnd": 141,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Concerns"
+          ],
+          "byteStart": 10604,
+          "byteEnd": 11182
+        }
+      ],
+      "rawText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/6"
+      ],
+      "interpretation": "No deterministic local failure is declared, while ordinary resume live evaluation is pending; named scenarios are recommendations."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000011480",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding"
+      ],
+      "rawByteStart": 11480,
+      "rawByteEnd": 11889,
+      "rawLineStart": 147,
+      "rawLineEnd": 147,
+      "originalSections": [
+        {
+          "section": "Fix pass",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass"
+          ],
+          "byteStart": 11182,
+          "byteEnd": 13341
+        }
+      ],
+      "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/7"
+      ],
+      "interpretation": "Appended partial-close durable-write defect is asserted valid."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000015981",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "rawByteStart": 15981,
+      "rawByteEnd": 16448,
+      "rawLineStart": 202,
+      "rawLineEnd": 202,
+      "originalSections": [
+        {
+          "section": "Test hygiene, assumptions and concerns",
+          "sectionOrdinal": 12,
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Fix pass",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "byteStart": 15281,
+          "byteEnd": 16449
+        }
+      ],
+      "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/11"
+      ],
+      "interpretation": "Fresh-agent evaluation still pending; no evidence-only resolution claimed."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-13/raw-byte-000016891",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding"
+      ],
+      "rawByteStart": 16891,
+      "rawByteEnd": 17367,
+      "rawLineStart": 208,
+      "rawLineEnd": 208,
+      "originalSections": [
+        {
+          "section": "Seam fix",
+          "sectionOrdinal": 13,
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix"
+          ],
+          "byteStart": 16449,
+          "byteEnd": 18727
+        }
+      ],
+      "rawText": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/12"
+      ],
+      "interpretation": "Seam diagnostic fixture lacked required configuration/event fields; readRecovery retained gap, exact preservation assertions failed."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-16/raw-byte-000022959",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 22959,
+      "rawByteEnd": 23500,
+      "rawLineStart": 275,
+      "rawLineEnd": 275,
+      "originalSections": [
+        {
+          "section": "Assumptions and concerns",
+          "sectionOrdinal": 16,
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Task super-plan-ufz.12 — IMPLEMENTED",
+            "Seam fix",
+            "Assumptions and concerns"
+          ],
+          "byteStart": 22929,
+          "byteEnd": 23500
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/6/interpretedPassages/15"
+      ],
+      "interpretation": "No task-local unresolved failure asserted; fresh-agent evaluation remains separate and parent-owned."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/07-task-11-report.md",
+  "retainedSha256": "25e59934d4a4ed1efe52c8b7ffc151ba9edabe9f3fb70129cdc77fe0b260eb58"
+}

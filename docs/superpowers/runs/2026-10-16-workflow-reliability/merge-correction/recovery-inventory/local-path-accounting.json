@@ -1,0 +1,2288 @@
+[
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/acceptance-reconciliation-assessment-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/assemble-final-fix-r1-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/assemble-post-cap-audit-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/assemble-roast-pr-r2-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/assembled",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/caller-handoff-fix-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/closure-super-plan-ufz.27-approved.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/coordinator-state.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0490"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/dispatch",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/feedback-gather-pre-audit",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-acceptance-accounting-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-acceptance-linked-projection.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-acceptance-new-relevance.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-report-status.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-fix-r1-keys.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-fix-r1-unavailable-attempt.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0491"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-fix-r1.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d-keys.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-11.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-12.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-14.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-15.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-17.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-20.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-21.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-22.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-23.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-26.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-27.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-28.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-29.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-3.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-30.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-31.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-32.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-33.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-34.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-35.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-36.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-4.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-40.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-41.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-42.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-43.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-44.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-45.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-46.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-47.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-48.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-49.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-5.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-50.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-52.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-57.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-7.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-8.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.cluster-9.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-inv-mvc60k41-xt8p35rk04d.md.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-queue.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-source.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-review-unreviewed.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/final-sweep-combined-1-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-after-historical-addendum.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-after-historical-addendum.stderr",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-after-old-fix-verification-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-after-reconciliation-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-after-reconciliation-r1.stderr",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-final-linked.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-post-cap-audit.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finding-projection-post-loop-r2.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finish-fix-r1.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0492"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/finish-state.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0493"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/fix-beads-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.22-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0494"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.23-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0495"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/fixture-amendment-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-cluster-52-part-2-complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-cluster-52-part-3-complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-cluster-52-part-4-complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/guidance-eval-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0496"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/guidance-eval-summary-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/historical-addendum-extraction-status.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/historical-review-aggregate-r1.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/historical-review-aggregate-r1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.22-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0497"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.23-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0498"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.24-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0499"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.25-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0500"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.26-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0501"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.27-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0502"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.28-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0503"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.30-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0504"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.31-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0505"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.32-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0506"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/invocation-fix-r1-source.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/invocation-fixture-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0507"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/large-roast-diff-packaging-r2.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/launch-fix-r1.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0508"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/main-absorption-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/main-drift-assessment-r1.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/main-drift-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/main-drift-assessment-r1.original.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/mapping-all.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/mapping-ready.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/merge-super-plan-ufz.22-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0509"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/merge-super-plan-ufz.23-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0510"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/merge-super-plan-ufz.26-reconciled.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/merge-super-plan-ufz.27-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0511"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/merge-super-plan-ufz.29-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0512"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/metrics-fix-r1-reconciled.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/old-fix-semantic-review-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/pinned-policy-6.0",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/plan-path",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/post-cap-audit-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/post-cap-audit.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/post-cap-audit.complete.stderr",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-finish.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-finish.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-fix-r1-qualification.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-fix-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-fix-r1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-fix-r1.stderr",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/profile-fix-r1.stdout",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/progress.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0513"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/proposed-final-acceptance-links.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/recovery-fixture-amendment-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/recovery-fixture-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0514"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/recursive-boundary-amendment-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/recursive-input-boundary-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/refill-18-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0515"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/report-status-post-loop-r2.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/retained-task-evidence",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/review-gap-queue-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/review-obligations-r1",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/review-obligations-r1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-evidence-audit.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-evidence-ignored.paths",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-1-keys.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-r2-keys.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-r2-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-r2.complete.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-r2.complete.stderr",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-pr-r2.complete.stdout",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/roast-status-observation.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/root-acceptance-gate-final.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0516"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/scope-dispositions-r1.txt",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/skill-source-relocation.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/startup-builder-seam-assessment-r1.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0517"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/super-plan-ufz-plan.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/sweep-command-plan-combined-1.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0518"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-1-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0519"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-report-fix.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0520"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0521"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0522"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-10-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0523"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-report-fix.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0524"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0525"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-seam-round-1.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0526"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0527"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-11-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0528"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0529"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0530"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0531"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-12-seam-findings.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0532"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-13-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0533"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-report-fix.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0534"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0535"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-14-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0536"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-report-fix.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0537"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0538"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-seam-report.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0539"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0540"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0541"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-15-seam-findings.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0542"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0543"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0544"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0545"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-16-seam-findings.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0546"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-17-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0547"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0548"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-18-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0549"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-fixture-fix-r1.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0550"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0551"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0552"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0553"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-2-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0554"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0555"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0556"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0557"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-21-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0558"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0559"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-22-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0560"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0561"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0562"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-23-scope-held-result.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0563"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0564"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-24-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0565"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-evidence",
+    "kind": "directory",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0566"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-25-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0567"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0568"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0569"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0570"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-27-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0571"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0572"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-28-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0573"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0574"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-29-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0575"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0576"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0577"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-3-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0578"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0579"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0580"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0581"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-4-seam-findings.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0582"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0583"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-5-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0584"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0585"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-6-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0586"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0587"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.json",
+    "kind": "file",
+    "capturedSources": [
+      "s0588"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0589"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-7-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0590"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0591"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-8-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0592"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-brief.md",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-report.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0593"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-review-initial.diff",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-9-review.md",
+    "kind": "file",
+    "capturedSources": [
+      "s0594"
+    ],
+    "status": "captured"
+  },
+  {
+    "path": ".superpowers/sdd/super-plan-ufz-plan/task-report-history-intake-r1-result.json",
+    "kind": "file",
+    "capturedSources": [],
+    "status": "metadata-only: outside bounded canonical-return selection; not asserted empty"
+  }
+]

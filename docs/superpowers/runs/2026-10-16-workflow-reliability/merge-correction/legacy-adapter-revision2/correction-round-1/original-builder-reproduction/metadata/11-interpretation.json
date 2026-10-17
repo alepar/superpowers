@@ -1,0 +1,957 @@
+{
+  "version": 1,
+  "ordinal": 11,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+  "originalArtifact": "task-report-history-r1/raw/task-12-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-12-report.md",
+  "rawSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+  "rawByteCount": 22639,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 218,
+    "byteStart": 0,
+    "byteEnd": 22639,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/10",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/11-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    },
+    {
+      "line": 157,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/0",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        3123,
+        3595
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Compacted/missing retained verification basis remains explicit recovery gap and requires independent review on reentry; described bounded transport limitation."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/1",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        8430,
+        8755
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Simulated Workflow replies/live-labelled fixtures do not establish fresh-agent behavior."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/2",
+      "roles": [
+        "historical-finding",
+        "deferred-coverage"
+      ],
+      "span": [
+        8773,
+        9310
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Supplied 3/5 installed-guidance versus 0/5 controls no-change baseline failure attributed to empty-diff INVALID; parent same-pack post evaluation pending. Baseline not independently verified here."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/3",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        10301,
+        10750
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Intermediate zero-valued metrics field broke unchanged exact-output assertion; conditional old metrics line claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/4",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "span": [
+        10751,
+        12121
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Self-review REDs: closure after unavailable durable write, tracker-only closure after rejection, lost verification discriminator/basis on cap and ready reentry. Report claims final GREEN."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/5",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        13535,
+        13880
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Unchanged Git history alone does not establish no-change acceptance; semantic coverage remains necessary."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/6",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "span": [
+        14405,
+        14942
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No local deterministic failure claimed; same-pack fresh-agent contrast, root acceptance, final integration review/sweep pending. Oversized/missing basis is a truthful gap requiring source pointer or review."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/7",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        15763,
+        16156
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Conflict preservation of no-change, attribution and durable recovery contracts claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/8",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        16157,
+        17041
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Combined pending-closure reconciler wrongly required Git landing for verification-only record; sourceVerified branch and confirmed typed completion writes claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/9",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "span": [
+        17042,
+        17576
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Seam assertions and counterexamples, not new production findings."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/10",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        20830,
+        21456
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Deterministic seam checks do not establish parent no-change/implementation behavior evaluation."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/10/interpretedPassages/11",
+      "roles": [
+        "execution-context",
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "span": [
+        22076,
+        22639
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Named seam diff absent, quoted dispatch used; no unresolved deterministic failure claimed, fresh-agent/integration acceptance still parent-owned."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-11-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Compacted/missing retained verification basis remains explicit recovery gap and requires independent review on reentry; described bounded transport limitation.",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 3123,
+      "byteEnd": 3595,
+      "rawText": "The coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Implementation",
+          "headingRaw": "## Implementation\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Implementation"
+          ],
+          "sectionByteStart": 529,
+          "sectionByteEnd": 3596,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 2595
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "Simulated Workflow replies/live-labelled fixtures do not establish fresh-agent behavior.",
+      "lineStart": 76,
+      "lineEnd": 76,
+      "byteStart": 8430,
+      "byteEnd": 8755,
+      "rawText": "These are deterministic fixture results. Replay's Workflow/agent replies are simulated, including the live-sim-labelled scenarios; they are not a fresh-agent behavior evaluation. The dispatch and digest suites run actual local commands against fixture state. No required fresh-agent live evaluation is relabeled passed here.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "Final verification",
+          "headingRaw": "## Final verification\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Final verification"
+          ],
+          "sectionByteStart": 3596,
+          "sectionByteEnd": 8756,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 4835
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "historical-finding",
+        "deferred-coverage"
+      ],
+      "interpretation": "Supplied 3/5 installed-guidance versus 0/5 controls no-change baseline failure attributed to empty-diff INVALID; parent same-pack post evaluation pending. Baseline not independently verified here.",
+      "lineStart": 80,
+      "lineEnd": 80,
+      "byteStart": 8773,
+      "byteEnd": 9310,
+      "rawText": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 8756,
+          "sectionByteEnd": 12226,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 18
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Intermediate zero-valued metrics field broke unchanged exact-output assertion; conditional old metrics line claimed.",
+      "lineStart": 99,
+      "lineEnd": 99,
+      "byteStart": 10301,
+      "byteEnd": 10750,
+      "rawText": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 8756,
+          "sectionByteEnd": 12226,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1546
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "interpretation": "Self-review REDs: closure after unavailable durable write, tracker-only closure after rejection, lost verification discriminator/basis on cap and ready reentry. Report claims final GREEN.",
+      "lineStart": 101,
+      "lineEnd": 119,
+      "byteStart": 10751,
+      "byteEnd": 12121,
+      "rawText": "Self-review added and observed three further RED regressions before their fixes. Each used the same replay command/environment with the indicated output file:\n\n```text\npersistence-red.txt:\n[FAIL] unavailable durable verification write prevents tracker closure\n2054 passed, 1 failed\n\nrejection-red.txt:\n[FAIL] tracker closure alone cannot replace rejected verification acceptance\n2056 passed, 1 failed\n\ncap-red.txt:\n[FAIL] oversized basis preserves cap/source pointer and verification completion discriminator\n[FAIL] typed completion with compacted-away basis remains an evidence gap rather than an inferred landing\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2059 passed, 3 failed\n```\n\nFinal GREEN covers every one. Example failing values for the assertions are a commit-nudge/merge dispatch on the accepted unchanged task; a completion despite null/CLEAN-with-wrong-tree/fallback-for-live review; a rewritten provenance location; a missing Recovery basis or lost verification token; a close dispatch after failed append; a task landing count of 1 instead of 0; or a completed bucket populated only by tracker closure after review rejection. The fixtures check real coordinator routing, emitted prompts, result/ledger contents and the actual digest output, rather than asserting canned reply shapes against themselves.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 8756,
+          "sectionByteEnd": 12226,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1996
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Unchanged Git history alone does not establish no-change acceptance; semantic coverage remains necessary.",
+      "lineStart": 147,
+      "lineEnd": 147,
+      "byteStart": 13535,
+      "byteEnd": 13880,
+      "rawText": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 7,
+          "section": "Assumptions and amendments",
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Assumptions and amendments"
+          ],
+          "sectionByteStart": 13504,
+          "sectionByteEnd": 14367,
+          "canonicalSectionAlias": "legacy-raw-section/7",
+          "positionByteInSection": 32
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "interpretation": "No local deterministic failure claimed; same-pack fresh-agent contrast, root acceptance, final integration review/sweep pending. Oversized/missing basis is a truthful gap requiring source pointer or review.",
+      "lineStart": 153,
+      "lineEnd": 153,
+      "byteStart": 14405,
+      "byteEnd": 14942,
+      "rawText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Concerns and remaining evaluation",
+          "headingRaw": "## Concerns and remaining evaluation\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Concerns and remaining evaluation"
+          ],
+          "sectionByteStart": 14367,
+          "sectionByteEnd": 14943,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 39
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Conflict preservation of no-change, attribution and durable recovery contracts claimed.",
+      "lineStart": 167,
+      "lineEnd": 167,
+      "byteStart": 15763,
+      "byteEnd": 16156,
+      "rawText": "Rebased only the assigned task branch onto the exact target. Resolved each conflict preserving the verification-only result discriminator, independent source/evidence review, typed digest/resume evidence gaps, failureAttribution schema, durable introducing-owner/contradiction history, and resumed admission/Finish hold gates. Both previously independent replay scenario groups remain intact.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix"
+          ],
+          "sectionByteStart": 14943,
+          "sectionByteEnd": 17577,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 821
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Combined pending-closure reconciler wrongly required Git landing for verification-only record; sourceVerified branch and confirmed typed completion writes claimed.",
+      "lineStart": 169,
+      "lineEnd": 169,
+      "byteStart": 16157,
+      "byteEnd": 17041,
+      "rawText": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix"
+          ],
+          "sectionByteStart": 14943,
+          "sectionByteEnd": 17577,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 1215
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p10",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "interpretation": "Seam assertions and counterexamples, not new production findings.",
+      "lineStart": 171,
+      "lineEnd": 171,
+      "byteStart": 17042,
+      "byteEnd": 17576,
+      "rawText": "Added focused seam assertions for verification source/tracker recovery, already-closed verification recovery, and null/false closure append results. Values that fail these assertions include a missing sourceVerified observation, a fabricated already-merged prompt, a completion after failed append, a discarded accepted basis, or a merge count above zero. The existing recovered verification fixture now supplies the required explicit read-only source/tracker observation instead of assuming it. No assertion was deleted or weakened.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix"
+          ],
+          "sectionByteStart": 14943,
+          "sectionByteEnd": 17577,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 2100
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p11",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Deterministic seam checks do not establish parent no-change/implementation behavior evaluation.",
+      "lineStart": 210,
+      "lineEnd": 210,
+      "byteStart": 20830,
+      "byteEnd": 21456,
+      "rawText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Seam verification",
+          "headingRaw": "### Seam verification\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix",
+            "Seam verification"
+          ],
+          "sectionByteStart": 17577,
+          "sectionByteEnd": 21457,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 3254
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-11-p12",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "roles": [
+        "execution-context",
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "interpretation": "Named seam diff absent, quoted dispatch used; no unresolved deterministic failure claimed, fresh-agent/integration acceptance still parent-owned.",
+      "lineStart": 218,
+      "lineEnd": 218,
+      "byteStart": 22076,
+      "byteEnd": 22639,
+      "rawText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Seam assumptions and concerns",
+          "headingRaw": "### Seam assumptions and concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix",
+            "Seam assumptions and concerns"
+          ],
+          "sectionByteStart": 22041,
+          "sectionByteEnd": 22639,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 36
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 3123,
+      "byteEnd": 3595,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/0"
+      ],
+      "interpretation": "Compacted/missing retained verification basis remains explicit recovery gap and requires independent review on reentry; described bounded transport limitation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8773,
+      "byteEnd": 9310,
+      "roles": [
+        "historical-finding",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/2"
+      ],
+      "interpretation": "Supplied 3/5 installed-guidance versus 0/5 controls no-change baseline failure attributed to empty-diff INVALID; parent same-pack post evaluation pending. Baseline not independently verified here.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13535,
+      "byteEnd": 13880,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/5"
+      ],
+      "interpretation": "Unchanged Git history alone does not establish no-change acceptance; semantic coverage remains necessary.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14405,
+      "byteEnd": 14942,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/6"
+      ],
+      "interpretation": "No local deterministic failure claimed; same-pack fresh-agent contrast, root acceptance, final integration review/sweep pending. Oversized/missing basis is a truthful gap requiring source pointer or review.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 20830,
+      "byteEnd": 21456,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/10"
+      ],
+      "interpretation": "Deterministic seam checks do not establish parent no-change/implementation behavior evaluation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 22076,
+      "byteEnd": 22639,
+      "roles": [
+        "execution-context",
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/11"
+      ],
+      "interpretation": "Named seam diff absent, quoted dispatch used; no unresolved deterministic failure claimed, fresh-agent/integration acceptance still parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Incomplete interpreted coverage: baseline problem L80, intermediate regressions L99–119 and combined no-landing seam L169 are actual historical finding/repair evidence, not just context. Concern section alone is insufficient.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Supplied baseline trial counts are historical author attribution, not independently checked eval artifacts; absent seam diff was replaced by quoted dispatch and this limitation must remain."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000003123",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 3123,
+      "rawByteEnd": 3595,
+      "rawLineStart": 23,
+      "rawLineEnd": 23,
+      "originalSections": [
+        {
+          "section": "Implementation",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Implementation\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Implementation"
+          ],
+          "byteStart": 529,
+          "byteEnd": 3596
+        }
+      ],
+      "rawText": "The coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The coordinator approved a minimal additional touched file, ledger-digest: complete lines retain the verification-only discriminator. The existing 4096-byte Recovery cap and gap source pointers remain unchanged. A typed completion with no valid retained basis is a recovery gap, rather than an inferred historical landing/completion; a ready reentry obtains independent review before closing. This preserves task .7's source-pointer contract and does not add a root gate.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/0"
+      ],
+      "interpretation": "Compacted/missing retained verification basis remains explicit recovery gap and requires independent review on reentry; described bounded transport limitation."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000008773",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 8773,
+      "rawByteEnd": 9310,
+      "rawLineStart": 80,
+      "rawLineEnd": 80,
+      "originalSections": [
+        {
+          "section": "TDD evidence",
+          "sectionOrdinal": 4,
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "TDD evidence"
+          ],
+          "byteStart": 8756,
+          "byteEnd": 12226
+        }
+      ],
+      "rawText": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/2"
+      ],
+      "interpretation": "Supplied 3/5 installed-guidance versus 0/5 controls no-change baseline failure attributed to empty-diff INVALID; parent same-pack post evaluation pending. Baseline not independently verified here."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-7/raw-byte-000013535",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 13535,
+      "rawByteEnd": 13880,
+      "rawLineStart": 147,
+      "rawLineEnd": 147,
+      "originalSections": [
+        {
+          "section": "Assumptions and amendments",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Assumptions and amendments"
+          ],
+          "byteStart": 13504,
+          "byteEnd": 14367
+        }
+      ],
+      "rawText": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current bd show super-plan-ufz.13 --json and bd comments before implementation; there were no comments or conflicting bead amendments. Applied the frozen task-12 brief and .5 source-bound evidence contract. Explicit no-change intent and independent semantic coverage are required; unchanged Git history alone does not establish acceptance.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/5"
+      ],
+      "interpretation": "Unchanged Git history alone does not establish no-change acceptance; semantic coverage remains necessary."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014405",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "rawByteStart": 14405,
+      "rawByteEnd": 14942,
+      "rawLineStart": 153,
+      "rawLineEnd": 153,
+      "originalSections": [
+        {
+          "section": "Concerns and remaining evaluation",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Concerns and remaining evaluation\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Concerns and remaining evaluation"
+          ],
+          "byteStart": 14367,
+          "byteEnd": 14943
+        }
+      ],
+      "rawText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/6"
+      ],
+      "interpretation": "No local deterministic failure claimed; same-pack fresh-agent contrast, root acceptance, final integration review/sweep pending. Oversized/missing basis is a truthful gap requiring source pointer or review."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000020830",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 20830,
+      "rawByteEnd": 21456,
+      "rawLineStart": 210,
+      "rawLineEnd": 210,
+      "originalSections": [
+        {
+          "section": "Seam verification",
+          "sectionOrdinal": 10,
+          "headingRaw": "### Seam verification\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix",
+            "Seam verification"
+          ],
+          "byteStart": 17577,
+          "byteEnd": 21457
+        }
+      ],
+      "rawText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/10"
+      ],
+      "interpretation": "Deterministic seam checks do not establish parent no-change/implementation behavior evaluation."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000022076",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "execution-context",
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawByteStart": 22076,
+      "rawByteEnd": 22639,
+      "rawLineStart": 218,
+      "rawLineEnd": 218,
+      "originalSections": [
+        {
+          "section": "Seam assumptions and concerns",
+          "sectionOrdinal": 12,
+          "headingRaw": "### Seam assumptions and concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.13 — implementation evidence",
+            "Seam fix",
+            "Seam assumptions and concerns"
+          ],
+          "byteStart": 22041,
+          "byteEnd": 22639
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/10/interpretedPassages/11"
+      ],
+      "interpretation": "Named seam diff absent, quoted dispatch used; no unresolved deterministic failure claimed, fresh-agent/integration acceptance still parent-owned."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/11-task-12-report.md",
+  "retainedSha256": "820d04e9bfd0285a3a4b809d6181857e57002f747f1ac07dabb34dff074b6721"
+}

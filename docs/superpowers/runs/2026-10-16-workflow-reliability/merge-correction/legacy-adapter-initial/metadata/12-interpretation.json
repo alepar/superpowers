@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "ordinal": 12,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+  "originalArtifact": "task-report-history-r1/raw/task-12-review-seam.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-12-review-seam.md",
+  "rawSha256": "9d4696f8a994235bcf3b38b12a334e6b9d4ea12884c101b3ff79f55f3291026b",
+  "rawByteCount": 3283,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 18,
+    "byteStart": 0,
+    "byteEnd": 3283,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/11",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/12-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "CLEAN",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/11/interpretedPassages/0",
+      "roles": [
+        "explicit-empty"
+      ],
+      "span": [
+        47,
+        62
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Finding:none is explicitly limited to seam compatibility."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/11/interpretedPassages/1",
+      "roles": [
+        "review-scope",
+        "execution-context"
+      ],
+      "span": [
+        63,
+        530
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Exact sibling/task ranges/five files; artifact retained in private tmp due sandbox destination constraint."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/11/interpretedPassages/2",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        2201,
+        2946
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No tests run; parent replay count is contextual, not reviewer execution."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-12-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "roles": [
+        "explicit-empty"
+      ],
+      "interpretation": "Finding:none is explicitly limited to seam compatibility.",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 47,
+      "byteEnd": 62,
+      "rawText": "Finding: none.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Seam review super-plan-ufz.13",
+          "headingRaw": "# Seam review super-plan-ufz.13\n",
+          "hierarchy": [
+            "Seam review super-plan-ufz.13"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3283,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 48
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-12-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "roles": [
+        "review-scope",
+        "execution-context"
+      ],
+      "interpretation": "Exact sibling/task ranges/five files; artifact retained in private tmp due sandbox destination constraint.",
+      "lineStart": 6,
+      "lineEnd": 6,
+      "byteStart": 63,
+      "byteEnd": 530,
+      "rawText": "Reviewed sibling changes from caf187cef8d1769da6184de42332a31bc7e30dcb through 43f18740e270d4d5a2730d4194e47f4eac04be39 and task changes from 43f18740e270d4d5a2730d4194e47f4eac04be39 through 70854e385736ce425a65d027a629ae0c1d58263c in the five dispatched seam files. Read the requested git log and both git diffs. Task-side seam diff retained at /private/tmp/task-12-review-seam.diff; the requested workspace destination was outside this subagent's writable sandbox.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Seam review super-plan-ufz.13",
+          "headingRaw": "# Seam review super-plan-ufz.13\n",
+          "hierarchy": [
+            "Seam review super-plan-ufz.13"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3283,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 64
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-12-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "No tests run; parent replay count is contextual, not reviewer execution.",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 2201,
+      "byteEnd": 2946,
+      "rawText": "Test-change audit: ran both `git diff --stat 43f18740e270d4d5a2730d4194e47f4eac04be39..HEAD -- <test pathspecs>` and `git diff 43f18740e270d4d5a2730d4194e47f4eac04be39..HEAD -- <test pathspecs>`, each successfully, with the exact pathspec list below. There are 138 additions across replay-harness.mjs (108) and test-dispatch-text.sh (30), with no deletions, skips, loosened assertions, or edited preexisting expectations. Added checks cover reviewed unchanged source, rejected/stale/unavailable evidence, retained typed completion, held source/status recovery and failed durable writes. Existing sibling tests retain their effective assertions and fixtures. No tests run per the seam-only dispatch; the parent supplied replay 2192/0 separately.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Seam review super-plan-ufz.13",
+          "headingRaw": "# Seam review super-plan-ufz.13\n",
+          "hierarchy": [
+            "Seam review super-plan-ufz.13"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 3283,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 2202
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Scoped empty declaration supported; no separate deferred fresh-agent obligation is asserted in this seam report. Parent test result remains contextual.",
+    "hasActualFindingOrHistoricalDefect": false,
+    "validScopedEmptySupported": true,
+    "emptyScope": "New findings within five-file post-rebase seam review only.",
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterScopedEmptyBasis": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/11",
+      "passageIndex": 0,
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 47,
+      "byteEnd": 62,
+      "rawText": "Finding: none.\n",
+      "roles": [
+        "explicit-empty"
+      ]
+    }
+  ],
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [],
+  "retainedArtifact": "legacy-report-adapters-r1/12-task-12-review-seam.md",
+  "retainedSha256": "955a0942a067f602baf59b61a210d2fae673604a9f87880288b5f2b71dfbc3c6"
+}

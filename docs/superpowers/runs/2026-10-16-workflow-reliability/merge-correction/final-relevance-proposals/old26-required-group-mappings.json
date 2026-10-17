@@ -1,0 +1,1956 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "inspectionFreeze": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "groups": [
+    {
+      "id": "old-required-01",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 1,
+        "key": "[Blocking] skills/super-code/coordinator.js:1830",
+        "text": "[Blocking] skills/super-code/coordinator.js:1830 — A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails. (still-open, see iteration 2; prior report evidence retained, not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records independent full-coordinator simulations stalling after both reviews when the verification-only child occupies the sole slot awaiting parentsMerged and parent failure handling needs that slot. No current packet re-tests or resolves this finding.\n  fix-shape hint: Release the child task slot before waiting for parent merge settlement, or let failure settlement run without that slot."
+      },
+      "criteria": [
+        "R6"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R6"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R6",
+        "basis": "The cap=1 parent-failure/verification-child cycle has reviewed slot-release/reacquisition and fresh-admission corrections. Preserve this exact confirmed group as required until final combined-source verification; do not rewrite the old deadlock report or claim hosted runtime success. Current concrete path: Reviewed unchanged verification completion has a typed evidence basis, releases the slot before parent settlement, reacquires with fresh admission and avoids invented Git landings. Current metrics separately classify verification closures.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/run-profile.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task1-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task1-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 0,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 1,
+          "key": "[Blocking] skills/super-code/coordinator.js:1830",
+          "text": "[Blocking] skills/super-code/coordinator.js:1830 — A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails. (still-open, see iteration 2; prior report evidence retained, not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records independent full-coordinator simulations stalling after both reviews when the verification-only child occupies the sole slot awaiting parentsMerged and parent failure handling needs that slot. No current packet re-tests or resolves this finding.\n  fix-shape hint: Release the child task slot before waiting for parent merge settlement, or let failure settlement run without that slot."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 2,
+          "key": "[Blocking] skills/super-code/coordinator.js:1830",
+          "text": "[Blocking] skills/super-code/coordinator.js:1830 — A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails. [lanes: concurrency-async]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Independent full-coordinator simulations stall after both reviews when a verification-only child holds the sole slot awaiting parentsMerged, while parent failure handling needs that slot to resolve the promise. Controls with an ordinary child, a successful parent merge, or capacity 2 complete. The supported concurrency=1 path therefore prevents cancellation, reopen, triage, and round completion. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-1-reproduce/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-1-refute/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-1-ground/receipt.json; coordinator-workflow.md:564-570.\n  fix-shape hint: Release the child task slot before waiting for parent merge settlement, or otherwise let failure settlement run without that slot."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-02",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 2,
+        "key": "[Should-fix] skills/super-auto/scripts/report-status:254",
+        "text": "[Should-fix] skills/super-auto/scripts/report-status:254 — Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records three frozen-head probes creating an outside file while collection returned complete; this key was deliberately punch-listed and is not re-surfaced by the current packets.\n  fix-shape hint: Validate each destination path component before creating or copying archived review files."
+      },
+      "criteria": [
+        "R9"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R9"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R9",
+        "basis": "Destination-parent containment and archive recovery provenance have scoped reviewed corrections. Current complete source/collection and final suite/review remain required; matching outside bytes and historical complete metadata never supply ownership. Current concrete path: Immutable occurrence refs remain individually retained; current caller declarations and complete registered extractions reconcile actual design/code ledger populations. Transport keys never establish semantic identity; bounded collected reviews remain incomplete.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/scope-dispositions",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/history-registration.json",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 1,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 2,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:254",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:254 — Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records three frozen-head probes creating an outside file while collection returned complete; this key was deliberately punch-listed and is not re-surfaced by the current packets.\n  fix-shape hint: Validate each destination path component before creating or copying archived review files."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 1,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:254",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:254 — Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete. [lanes: security]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Three frozen-head probes created outside/new-file.txt through reviews/probe/payload, returned exit 0 with collection complete and complete:true/gaps:[], and ordinary status returned clean. The collector validates source components but not destination ancestors before mkdirSync/copyFileSync. The prior source-read symlink finding is fixed; this destination-write escape is introduced by the current collector. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-0-reproduce/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-0-refute/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-0-ground/destination-receipt.json; skills/super-auto/SKILL.md:461; run-state.md:214.\n  fix-shape hint: Validate each destination path component before creating or copying archived review files."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-03",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 3,
+        "key": "[Should-fix] skills/super-auto/scripts/report-status:131",
+        "text": "[Should-fix] skills/super-auto/scripts/report-status:131 — Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records the actual classifier preserving a pre-run classification while adding a run-introduced/pre-run conflict, with acceptance eligible until classification changes to gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Preserve attribution gaps from pre-run failures when same-tree pass/fail history remains contradictory."
+      },
+      "criteria": [
+        "R8"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R8"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R8",
+        "basis": "The caller now imports runFailure gaps before diagnostic pre-run classification. The original retained-contradiction group remains required through final evidence; pre-run diagnosis is not a new repair owner and current source role/history still needs semantic support. Current concrete path: Run attribution retains introducing ownership and earlier contradictory history independently from task-base exoneration; the gate imports gaps before diagnostic/pre-run classification. Missing real baseline is not fabricated.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "semantic-evidence",
+          "basis": "Owner must assess exact source roles, command/configuration, chronology and support for any disposition. No source hash, key membership, task success or later silence supplies semantic proof."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 2,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 3,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:131",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:131 — Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records the actual classifier preserving a pre-run classification while adding a run-introduced/pre-run conflict, with acceptance eligible until classification changes to gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Preserve attribution gaps from pre-run failures when same-tree pass/fail history remains contradictory."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 3,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:131",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:131 — Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled. [lanes: correctness]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: The actual classifier retains a pre-run classification while adding a run-introduced/pre-run conflict for pass and fail observations at the same baseline tree. The unmodified acceptance command then exits 0 with eligible:true, pending:[], gaps:[], while changing only classification to gap exposes the contradiction and exits 3. The required final suite is a different command and does not detect this targeted conflict. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-2-reproduce/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-2-refute/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-2-ground/reproduction-output.json; run-state.md:274-277; coordinator-workflow.md:700-704.\n  fix-shape hint: Preserve attribution gaps from pre-run failures when same-tree pass/fail history remains contradictory."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-04",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 4,
+        "key": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319",
+        "text": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319 — Persisted immutable review-source bindings are recovered as deferred measurement obligations, causing otherwise satisfied root acceptance to fail for missing measurement identity. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records a real binding recovered as an obligation without measurement identity and acceptance failing with that sole gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Give review-source provenance a defined recovery disposition that does not require measurement fields it does not contain."
+      },
+      "criteria": [
+        "R7"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R7"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R7",
+        "basis": "Review-source Recovery provenance is validated as immutable metadata and exempted only from fabricated measurement interpretation. Current source/producer/gate reconciliation and final review still need actual evidence. Current concrete path: The caller gate independently checks source-bound review, measurements, producer Recovery facts, exact source population and reserved human decisions. Collection or leaf success does not establish root acceptance; output must drain without a false successful partial JSON result.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 3,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 4,
+          "key": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319",
+          "text": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319 — Persisted immutable review-source bindings are recovered as deferred measurement obligations, causing otherwise satisfied root acceptance to fail for missing measurement identity. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records a real binding recovered as an obligation without measurement identity and acceptance failing with that sole gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Give review-source provenance a defined recovery disposition that does not require measurement fields it does not contain."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 4,
+          "key": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319",
+          "text": "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319 — Persisted immutable review-source bindings are recovered as deferred measurement obligations, causing otherwise satisfied root acceptance to fail for missing measurement identity. [lanes: simplicity-design, regression, data-migrations] [fix-regression]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: The real bind-review-source CLI writes a provenance-only deferred record; ledger-digest and recovery preserve it as an obligation without measurement identity. A satisfied synthetic acceptance control passes, but adding only the recovered binding makes the real acceptance CLI exit 3 with the sole gap “review-source: measurement identity unavailable.” The fixture does not assert actual run acceptance. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-3-reproduce/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-3-refute/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-3-ground/receipt.json; run-state.md:225-230.\n  fix-shape hint: Give review-source provenance a defined recovery disposition that does not require measurement fields it does not contain."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-05",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 5,
+        "key": "[Should-fix] skills/super-auto/scripts/report-status:206",
+        "text": "[Should-fix] skills/super-auto/scripts/report-status:206 — The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records a recovered report rejected as an identity change while replay retained the reconciliation gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Add a supported reconciliation transition that associates a recovered report with the settled null result while preserving its history."
+      },
+      "criteria": [
+        "R9"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 5
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R9"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 5
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R9",
+        "basis": "Explicit settled-null recovery preserves predecessor provenance and actual report verdict; captured-Git selector now mirrors that supported transition. The actual final producer/consumer seam remains required, not waived by a focused collection pass. Current concrete path: Immutable occurrence refs remain individually retained; current caller declarations and complete registered extractions reconcile actual design/code ledger populations. Transport keys never establish semantic identity; bounded collected reviews remain incomplete.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/scope-dispositions",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/history-registration.json",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task2-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 4,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 5,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:206",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:206 — The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Prior report records a recovered report rejected as an identity change while replay retained the reconciliation gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Add a supported reconciliation transition that associates a recovered report with the settled null result while preserving its history."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 5,
+          "key": "[Should-fix] skills/super-auto/scripts/report-status:206",
+          "text": "[Should-fix] skills/super-auto/scripts/report-status:206 — The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending. [lanes: api-contract]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: After settling a required review as UNAVAILABLE, supplying the recovered review path is rejected as an identity change; replay archives the report but retains the null reconciliation gap. A fresh collection of identical bytes succeeds. This prevents the documented recovery path from clearing collection status before a subsequent invocation or cleanup. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-5-reproduce/receipt.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-5-refute/receipts.json, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-5-ground/receipt.json; skills/super-auto/SKILL.md:390, 465; run-state.md:210-214; resume.md:29-31.\n  fix-shape hint: Add a supported reconciliation transition that associates a recovered report with the settled null result while preserving its history."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-06",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+        "position": 7,
+        "key": "[Should-fix] skills/super-auto/resume.md:68",
+        "text": "[Should-fix] skills/super-auto/resume.md:68 — The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync. (new; static instruction trace only) [lanes: hygiene-docs]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Amend Mode orders commit and persist specs-committed before running Key Abstractions sync at super-design/SKILL.md:905-907. The specs-committed replay at super-auto/resume.md:68 only files missing work items, then the beads-filed path continues without sync; the adjacent amend-checked path at :67 explicitly syncs. All three seats confirm this source-backed interruption trace, which is not a live workflow execution. The profile makes synchronization of changed abstractions core to preserving review and task inputs, so the Should-fix severity stands.\n  fix-shape hint: Make the persisted resume state prove synchronization completed, or run the sync before advancing from specs-committed."
+      },
+      "criteria": [
+        "R4"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Source-backed interruption trace shows committed-spec resume skips required abstraction synchronization, impairing durable recovery and subsequent review/task inputs. This violates R4 independent of broad test success; static trace is not live execution.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R4"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R4",
+        "basis": "Both committed-amendment replay paths now sync before filing/advance and retain specs-committed on sync failure. Static contract/mutation tests and scoped review do not establish real agent/tracker adherence; required behavior and final review remain pending. Current concrete path: Resume preserves exact pending closures, guards unavailable tracker arrays, waits for durable confirmation and distinguishes verification source from landing. Amendment replay now repeats committed abstraction sync before filing/advance and holds sync failure.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/resume.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task5-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task5-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 6,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "position": 7,
+          "key": "[Should-fix] skills/super-auto/resume.md:68",
+          "text": "[Should-fix] skills/super-auto/resume.md:68 — The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync. (new; static instruction trace only) [lanes: hygiene-docs]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Amend Mode orders commit and persist specs-committed before running Key Abstractions sync at super-design/SKILL.md:905-907. The specs-committed replay at super-auto/resume.md:68 only files missing work items, then the beads-filed path continues without sync; the adjacent amend-checked path at :67 explicitly syncs. All three seats confirm this source-backed interruption trace, which is not a live workflow execution. The profile makes synchronization of changed abstractions core to preserving review and task inputs, so the Should-fix severity stands.\n  fix-shape hint: Make the persisted resume state prove synchronization completed, or run the sync before advancing from specs-committed."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-07",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+        "position": 1,
+        "key": "skills/super-code/scripts/dispatch-text.mjs:154",
+        "text": "skills/super-code/scripts/dispatch-text.mjs:154 — Still-open material dissent from iteration 2: confirming seats found nested historical run.md snapshots suppress review of available product edits and cited direct-input review when assembly is unavailable; the refute seat cited assembler-prompt.md:22-29 and super-auto/SKILL.md:463, which keep invalid provenance unavailable through fallback. The seats did not resolve whether that explicit refusal policy governs this nested snapshot case. Selector assembly failed before this audit; captured-Git fallback preserved the coverage gaps and does not resolve this policy question."
+      },
+      "criteria": [
+        "R1"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Retain materially unsettled nested selector/fallback authority as an existing required acceptance gap. No ruling, verified fix, equivalence to FYI, or rejection is inferred.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R1"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R1",
+        "basis": "The specific policy ruling permits independently verified captured source to receive an explicitly incomplete bounded review while every omission-provenance gap remains. Current implementation follows that bounded contract; whole-range coverage and actual instruction behavior still remain required. The old escalation title creates no new human gate. Current concrete path: Reviews use captured Git bounds and independent mutable output ownership. Provenance gaps now permit a separately bound incomplete review, while omission authority and whole-range readiness remain refused.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/policy.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 11,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 1,
+          "key": "skills/super-code/scripts/dispatch-text.mjs:154",
+          "text": "skills/super-code/scripts/dispatch-text.mjs:154 — Still-open material dissent from iteration 2: confirming seats found nested historical run.md snapshots suppress review of available product edits and cited direct-input review when assembly is unavailable; the refute seat cited assembler-prompt.md:22-29 and super-auto/SKILL.md:463, which keep invalid provenance unavailable through fallback. The seats did not resolve whether that explicit refusal policy governs this nested snapshot case. Selector assembly failed before this audit; captured-Git fallback preserved the coverage gaps and does not resolve this policy question."
+        },
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-2.md",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 1,
+          "key": "skills/super-code/scripts/dispatch-text.mjs:154",
+          "text": "skills/super-code/scripts/dispatch-text.mjs:154 — Material dissent remains between the confirmed claim that nested historical run.md snapshots suppress review of available product edits and the refute seat's concrete policy evidence: assembler-prompt.md:22-29 and super-auto/SKILL.md:463 say invalid provenance remains unavailable through fallback. The confirming seats cite the authoritative run.md location and direct-input review when assembly is unavailable, but do not settle whether that explicit invalid-provenance refusal policy applies to this nested snapshot case. New evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-4-reproduce/receipt.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/judge-4-ground/receipt.json. The prior filename-length rejection remains rejected; this is the materially new fallback-refusal evidence."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-08",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+        "position": 2,
+        "key": "skills/super-auto/scripts/report-status:469",
+        "text": "skills/super-auto/scripts/report-status:469 — Cross-packet material dissent leaves the producer contract unresolved. The two refute seats for this packet cite super-auto/SKILL.md:491, requiring complete extraction for each settled roast source, and base acceptance behavior. The ground seat for the adjacent confirmed packet at :468 says the supported design-loop producer writes findingsLedgerDesign without creating finding-source records and identifies this as a producer-consumer seam. That concrete design-loop evidence, recorded in probe-panel0-ground/receipt.json, is not answered by the roast-source requirement; the packets do not establish whether the requirement applies to that producer. The new-regression claim needs human judgment on this scope question."
+      },
+      "criteria": [
+        "R7"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "basis": "Retain materially unsettled supported design-ledger producer versus retained-source acceptance population contract as an existing required acceptance gap. No ruling, verified fix, equivalence to FYI, or rejection is inferred.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ],
+        "requirement": "R7"
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R7",
+        "basis": "The scope ruling assigns design/code source collection to the outer caller. Real declared input populations and ledger transports are now reconciled; a dispute count alone is not a universal veto. Actual current population/relevance and final gate evidence remain required; no fabricated historical producer result is inferred. Current concrete path: The caller gate independently checks source-bound review, measurements, producer Recovery facts, exact source population and reserved human decisions. Collection or leaf success does not establish root acceptance; output must drain without a false successful partial JSON result.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/policy.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "semantic-evidence",
+          "basis": "Owner must assess exact source roles, command/configuration, chronology and support for any disposition. No source hash, key membership, task success or later silence supplies semantic proof."
+        },
+        {
+          "id": "source-accounting",
+          "basis": "The79 historical sources are now registered with213 exact refs and zero structural projection gaps. Remaining step here is semantic applicability/adoption and any actual declared-source gate reconciliation, not fabricated missing source wrappers."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 12,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+          "artifact": "2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+          "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+          "position": 2,
+          "key": "skills/super-auto/scripts/report-status:469",
+          "text": "skills/super-auto/scripts/report-status:469 — Cross-packet material dissent leaves the producer contract unresolved. The two refute seats for this packet cite super-auto/SKILL.md:491, requiring complete extraction for each settled roast source, and base acceptance behavior. The ground seat for the adjacent confirmed packet at :468 says the supported design-loop producer writes findingsLedgerDesign without creating finding-source records and identifies this as a producer-consumer seam. That concrete design-loop evidence, recorded in probe-panel0-ground/receipt.json, is not answered by the roast-source requirement; the packets do not establish whether the requirement applies to that producer. The new-regression claim needs human judgment on this scope question."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-09",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Deferred OK",
+        "position": 1,
+        "key": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence.",
+        "text": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "section": "Deferred OK",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence expressly retains existing caller-owned evaluation/measurement work; its bounded review does not supply the required representative changed-instruction assessment. Only the actually declared checks are required; no every-platform certification is added. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "section": "Deferred OK",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This exact earlier cluster defers caller behavior/measurement; replay evidence keeps its simulated kind and cannot discharge actual required current acceptance work. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 26,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence.",
+          "text": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-10",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Untested scope",
+        "position": 2,
+        "key": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned.",
+        "text": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence expressly retains existing caller-owned evaluation/measurement work; its bounded review does not supply the required representative changed-instruction assessment. Only the actually declared checks are required; no every-platform certification is added. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "Keep the required root sweep and behavior evidence, while native Linux/hosted limits stay explicitly bounded qualifications. The source does not independently mandate retrospective native/hosted execution. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "human",
+          "basis": "The existing phase-7 human choice remains with the human partner; no new human gate is created by an historical escalation title."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 32,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned.",
+          "text": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-11",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+        "section": "Untested scope",
+        "position": 1,
+        "key": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation.",
+        "text": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence explicitly retains coordinator-owned representative ordinary scheduling/recovery behavior evaluation; replay is not the named live evaluation. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The source excludes live ordinary-agent scheduling/tracker behavior from its simulated replay evidence. Current representative behavior assessment remains required without calling fixtures live agents. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 103,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation.",
+          "text": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-12",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+        "section": "Untested scope",
+        "position": 1,
+        "key": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations.",
+        "text": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence expressly assigns fresh-agent scenarios to enclosing coordinator; a reviewed scenario document is not performed evaluation. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The cluster validates prepared scenarios, not execution of fresh-agent continuity/evidence decisions. Required current representative execution/assessment remains pending. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 106,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations.",
+          "text": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-13",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+        "section": "Untested scope",
+        "position": 2,
+        "key": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review.",
+        "text": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence explicitly retains independent fresh-agent interpretation evaluation; documentation fixture support alone does not supply it. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "Independent fresh-agent report interpretation and current live-run acceptance were explicitly outside this historical partition. Preserve that source limit and the current behavior requirement. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 109,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review.",
+          "text": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-14",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 1,
+        "key": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above.",
+        "text": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This occurrence expressly retains existing caller-owned evaluation/measurement work; its bounded review does not supply the required representative changed-instruction assessment. Only the actually declared checks are required; no every-platform certification is added. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The historical final seam review executes only its named feedback fixture. It cannot establish the actual final combined-source suite or changed-instruction behavior; no separate compulsory hosted runtime is invented. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 124,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above.",
+          "text": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-15",
+      "exactOriginalRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 3,
+        "key": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance.",
+        "text": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "section": "Untested scope",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-suite",
+        "basis": "The exact caller-owned final integrated sweep remains SWEEP DEFERRED; completed leaves and a not-ready review cannot satisfy it. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "section": "Untested scope",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-suite",
+        "basis": "Root final sweep, required acceptance review and existing human decision remain independently owned. Closed leaves and this old not-ready review cannot satisfy them. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "human",
+          "basis": "The existing phase-7 human choice remains with the human partner; no new human gate is created by an historical escalation title."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 126,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 3,
+          "key": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance.",
+          "text": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-16",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Must-fix",
+        "position": 1,
+        "key": "[P2; recovery/acceptance seam] `skills/super-code/scripts/dispatch-text.mjs:319` → `skills/super-code/coordinator.js:432–448` → `skills/super-auto/scripts/report-status:135–143`: immutable review-source metadata becomes an unsatisfiable measurement obligation after recovery. The producer writes `kind:\"deferred\"` with `data.reviewSource` only; the actual coordinator reader accepts and retains that record in `recoveryObligations`, which the returned Recovery snapshot and caller contract preserve. Acceptance handles every non-runFailure deferred record as a measurement, so this metadata lacks the required sourceTree/command/configuration. A read-only in-memory probe executed the actual captured reader and acceptance heredoc using the actual current binding from progress.md. With synthetic satisfied review/measurement/human controls and mocked clean projection/status, control returned exit 0, eligible:true; adding only the real binding returned exit 3, eligible:false, gap `review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable`. This verifies deterministic classification, not actual run acceptance or a live resumed workflow. The first invocation may not reread its newly appended binding into memory; the supported resume/next-invocation path does. Preserve the immutable binding and distinguish it from actionable deferred measurement obligations; do not fabricate a test or delete binding history to pass acceptance. Add a focused producer→recovery→acceptance control with real binding metadata and independently satisfied actual acceptance prerequisites. Full probe, raw outputs, and exact source hashes are retained in the companion package.",
+        "text": "[P2; recovery/acceptance seam] `skills/super-code/scripts/dispatch-text.mjs:319` → `skills/super-code/coordinator.js:432–448` → `skills/super-auto/scripts/report-status:135–143`: immutable review-source metadata becomes an unsatisfiable measurement obligation after recovery. The producer writes `kind:\"deferred\"` with `data.reviewSource` only; the actual coordinator reader accepts and retains that record in `recoveryObligations`, which the returned Recovery snapshot and caller contract preserve. Acceptance handles every non-runFailure deferred record as a measurement, so this metadata lacks the required sourceTree/command/configuration. A read-only in-memory probe executed the actual captured reader and acceptance heredoc using the actual current binding from progress.md. With synthetic satisfied review/measurement/human controls and mocked clean projection/status, control returned exit 0, eligible:true; adding only the real binding returned exit 3, eligible:false, gap `review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable`. This verifies deterministic classification, not actual run acceptance or a live resumed workflow. The first invocation may not reread its newly appended binding into memory; the supported resume/next-invocation path does. Preserve the immutable binding and distinguish it from actionable deferred measurement obligations; do not fabricate a test or delete binding history to pass acceptance. Add a focused producer→recovery→acceptance control with real binding metadata and independently satisfied actual acceptance prerequisites. Full probe, raw outputs, and exact source hashes are retained in the companion package."
+      },
+      "criteria": [
+        "R7"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Must-fix",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R7",
+        "basis": "The specific producer/recovery/acceptance classification makes required acceptance unsatisfiable; preserve metadata and await independent judgment/fix. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Must-fix",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R7",
+        "basis": "The exact final-review Must-fix reports fabricated measurement interpretation of immutable review-source metadata. Its typed exemption is implemented/reviewed, but current full producer/gate and final evidence remain required; no automatic disposition is supplied. Current concrete path: The caller gate independently checks source-bound review, measurements, producer Recovery facts, exact source population and reserved human decisions. Collection or leaf success does not establish root acceptance; output must drain without a false successful partial JSON result.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 132,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Must-fix",
+          "position": 1,
+          "key": "[P2; recovery/acceptance seam] `skills/super-code/scripts/dispatch-text.mjs:319` → `skills/super-code/coordinator.js:432–448` → `skills/super-auto/scripts/report-status:135–143`: immutable review-source metadata becomes an unsatisfiable measurement obligation after recovery. The producer writes `kind:\"deferred\"` with `data.reviewSource` only; the actual coordinator reader accepts and retains that record in `recoveryObligations`, which the returned Recovery snapshot and caller contract preserve. Acceptance handles every non-runFailure deferred record as a measurement, so this metadata lacks the required sourceTree/command/configuration. A read-only in-memory probe executed the actual captured reader and acceptance heredoc using the actual current binding from progress.md. With synthetic satisfied review/measurement/human controls and mocked clean projection/status, control returned exit 0, eligible:true; adding only the real binding returned exit 3, eligible:false, gap `review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable`. This verifies deterministic classification, not actual run acceptance or a live resumed workflow. The first invocation may not reread its newly appended binding into memory; the supported resume/next-invocation path does. Preserve the immutable binding and distinguish it from actionable deferred measurement obligations; do not fabricate a test or delete binding history to pass acceptance. Add a focused producer→recovery→acceptance control with real binding metadata and independently satisfied actual acceptance prerequisites. Full probe, raw outputs, and exact source hashes are retained in the companion package.",
+          "text": "[P2; recovery/acceptance seam] `skills/super-code/scripts/dispatch-text.mjs:319` → `skills/super-code/coordinator.js:432–448` → `skills/super-auto/scripts/report-status:135–143`: immutable review-source metadata becomes an unsatisfiable measurement obligation after recovery. The producer writes `kind:\"deferred\"` with `data.reviewSource` only; the actual coordinator reader accepts and retains that record in `recoveryObligations`, which the returned Recovery snapshot and caller contract preserve. Acceptance handles every non-runFailure deferred record as a measurement, so this metadata lacks the required sourceTree/command/configuration. A read-only in-memory probe executed the actual captured reader and acceptance heredoc using the actual current binding from progress.md. With synthetic satisfied review/measurement/human controls and mocked clean projection/status, control returned exit 0, eligible:true; adding only the real binding returned exit 3, eligible:false, gap `review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable`. This verifies deterministic classification, not actual run acceptance or a live resumed workflow. The first invocation may not reread its newly appended binding into memory; the supported resume/next-invocation path does. Preserve the immutable binding and distinguish it from actionable deferred measurement obligations; do not fabricate a test or delete binding history to pass acceptance. Add a focused producer→recovery→acceptance control with real binding metadata and independently satisfied actual acceptance prerequisites. Full probe, raw outputs, and exact source hashes are retained in the companion package."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-17",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Must-fix",
+        "position": 2,
+        "key": "[P2; selection authority and review recovery] `skills/super-code/scripts/dispatch-text.mjs:153–224`, `skills/super-code/coordinator.js:2326,2361,2943`, and `skills/super-code/assembler-prompt.md:22–29`: every tracked file named run.md, including archived roast-fixture snapshots, is promoted into current omission authority; any resulting gap then suppresses even a bounded direct-source final review. The actual current assembly selected no slices and returned exit 2 with `review input selection:`; its sidecar retains 5,587 changed paths, 22 archive records, zero omissions and 690 gaps. Its first cause is the captured `...roast-pr-1-stages/evidence-observability/run.md:87` snapshot's missing sibling `reviews/.../clusters.json`. Both Git endpoints and the invocation binding remain available and valid. The first generated final-review attempt then returned UNAVAILABLE without a report, requiring this manual pinned-policy dispatch. Refusing to omit unverified payloads is legitimate, and those 690 claims remain evidence gaps: this finding does not authorize exclusion, archive repair by inference, or a clean verdict. The defect is letting nested historical fixture records govern whether any scoped review of independently available current source can be reported. Keep the refusal/provenance details while distinguishing archival input evidence from review-selection authority and preserving a source-bound, explicitly incomplete review route. A fixture should include an ordinary archived run.md snapshot with unavailable referenced payload plus an independently reviewable product edit; it must neither authorize omission nor erase that edit's review/report opportunity. This is materially new evidence relative to round 1's rejected filename/fallback-materiality candidate: that rejection explicitly relied on working captured-Git direct fallback; this head adds selection-prefix refusal and the unconditional single-review selection-gap return, and the current invocation actually lost its first review. The old errno-63-only claim remains rejected; this is the changed selection/guard behavior, not a claim that an unavailable assembly is clean.",
+        "text": "[P2; selection authority and review recovery] `skills/super-code/scripts/dispatch-text.mjs:153–224`, `skills/super-code/coordinator.js:2326,2361,2943`, and `skills/super-code/assembler-prompt.md:22–29`: every tracked file named run.md, including archived roast-fixture snapshots, is promoted into current omission authority; any resulting gap then suppresses even a bounded direct-source final review. The actual current assembly selected no slices and returned exit 2 with `review input selection:`; its sidecar retains 5,587 changed paths, 22 archive records, zero omissions and 690 gaps. Its first cause is the captured `...roast-pr-1-stages/evidence-observability/run.md:87` snapshot's missing sibling `reviews/.../clusters.json`. Both Git endpoints and the invocation binding remain available and valid. The first generated final-review attempt then returned UNAVAILABLE without a report, requiring this manual pinned-policy dispatch. Refusing to omit unverified payloads is legitimate, and those 690 claims remain evidence gaps: this finding does not authorize exclusion, archive repair by inference, or a clean verdict. The defect is letting nested historical fixture records govern whether any scoped review of independently available current source can be reported. Keep the refusal/provenance details while distinguishing archival input evidence from review-selection authority and preserving a source-bound, explicitly incomplete review route. A fixture should include an ordinary archived run.md snapshot with unavailable referenced payload plus an independently reviewable product edit; it must neither authorize omission nor erase that edit's review/report opportunity. This is materially new evidence relative to round 1's rejected filename/fallback-materiality candidate: that rejection explicitly relied on working captured-Git direct fallback; this head adds selection-prefix refusal and the unconditional single-review selection-gap return, and the current invocation actually lost its first review. The old errno-63-only claim remains rejected; this is the changed selection/guard behavior, not a claim that an unavailable assembly is clean."
+      },
+      "criteria": [
+        "R1"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Must-fix",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R1",
+        "basis": "The changed current selector/guard obstructs even available pinned-source review through historical fixture authority; pending independent panel/fix. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Must-fix",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R1",
+        "basis": "The actual lost first review is preserved. Corrected provenance-only fallback may now produce a strictly incomplete source-bound report; it grants no omission authority and does not resolve the original 690 gaps or whole-epic coverage. Required final review/behavior remain pending. Current concrete path: Reviews use captured Git bounds and independent mutable output ownership. Provenance gaps now permit a separately bound incomplete review, while omission authority and whole-range readiness remain refused.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/policy.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 133,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Must-fix",
+          "position": 2,
+          "key": "[P2; selection authority and review recovery] `skills/super-code/scripts/dispatch-text.mjs:153–224`, `skills/super-code/coordinator.js:2326,2361,2943`, and `skills/super-code/assembler-prompt.md:22–29`: every tracked file named run.md, including archived roast-fixture snapshots, is promoted into current omission authority; any resulting gap then suppresses even a bounded direct-source final review. The actual current assembly selected no slices and returned exit 2 with `review input selection:`; its sidecar retains 5,587 changed paths, 22 archive records, zero omissions and 690 gaps. Its first cause is the captured `...roast-pr-1-stages/evidence-observability/run.md:87` snapshot's missing sibling `reviews/.../clusters.json`. Both Git endpoints and the invocation binding remain available and valid. The first generated final-review attempt then returned UNAVAILABLE without a report, requiring this manual pinned-policy dispatch. Refusing to omit unverified payloads is legitimate, and those 690 claims remain evidence gaps: this finding does not authorize exclusion, archive repair by inference, or a clean verdict. The defect is letting nested historical fixture records govern whether any scoped review of independently available current source can be reported. Keep the refusal/provenance details while distinguishing archival input evidence from review-selection authority and preserving a source-bound, explicitly incomplete review route. A fixture should include an ordinary archived run.md snapshot with unavailable referenced payload plus an independently reviewable product edit; it must neither authorize omission nor erase that edit's review/report opportunity. This is materially new evidence relative to round 1's rejected filename/fallback-materiality candidate: that rejection explicitly relied on working captured-Git direct fallback; this head adds selection-prefix refusal and the unconditional single-review selection-gap return, and the current invocation actually lost its first review. The old errno-63-only claim remains rejected; this is the changed selection/guard behavior, not a claim that an unavailable assembly is clean.",
+          "text": "[P2; selection authority and review recovery] `skills/super-code/scripts/dispatch-text.mjs:153–224`, `skills/super-code/coordinator.js:2326,2361,2943`, and `skills/super-code/assembler-prompt.md:22–29`: every tracked file named run.md, including archived roast-fixture snapshots, is promoted into current omission authority; any resulting gap then suppresses even a bounded direct-source final review. The actual current assembly selected no slices and returned exit 2 with `review input selection:`; its sidecar retains 5,587 changed paths, 22 archive records, zero omissions and 690 gaps. Its first cause is the captured `...roast-pr-1-stages/evidence-observability/run.md:87` snapshot's missing sibling `reviews/.../clusters.json`. Both Git endpoints and the invocation binding remain available and valid. The first generated final-review attempt then returned UNAVAILABLE without a report, requiring this manual pinned-policy dispatch. Refusing to omit unverified payloads is legitimate, and those 690 claims remain evidence gaps: this finding does not authorize exclusion, archive repair by inference, or a clean verdict. The defect is letting nested historical fixture records govern whether any scoped review of independently available current source can be reported. Keep the refusal/provenance details while distinguishing archival input evidence from review-selection authority and preserving a source-bound, explicitly incomplete review route. A fixture should include an ordinary archived run.md snapshot with unavailable referenced payload plus an independently reviewable product edit; it must neither authorize omission nor erase that edit's review/report opportunity. This is materially new evidence relative to round 1's rejected filename/fallback-materiality candidate: that rejection explicitly relied on working captured-Git direct fallback; this head adds selection-prefix refusal and the unconditional single-review selection-gap return, and the current invocation actually lost its first review. The old errno-63-only claim remains rejected; this is the changed selection/guard behavior, not a claim that an unavailable assembly is clean."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-18",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 1,
+        "key": "Complete source/evidence coverage is not established. The full 5,587-file diff and roughly 1.1 million added lines were not semantically reviewed. Remaining product scope includes complete scheduling/stack/merge execution paths outside the targeted modified hunks, all ordinary-coordinator instructions end to end, complete caller/report/maintenance documentation, all new/changed test bodies, full profiler modeling internals, and the smaller ledger/run digest, close-epic, roast assembly/prompt and upstream-feedback changes. Targeted inspection of adjacent hunks does not clear those entire files. No forced-fit package, filename-based exclusion, or clean whole-branch assertion is made.",
+        "text": "Complete source/evidence coverage is not established. The full 5,587-file diff and roughly 1.1 million added lines were not semantically reviewed. Remaining product scope includes complete scheduling/stack/merge execution paths outside the targeted modified hunks, all ordinary-coordinator instructions end to end, complete caller/report/maintenance documentation, all new/changed test bodies, full profiler modeling internals, and the smaller ledger/run digest, close-epic, roast assembly/prompt and upstream-feedback changes. Targeted inspection of adjacent hunks does not clear those entire files. No forced-fit package, filename-based exclusion, or clean whole-branch assertion is made."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "This current report explicitly leaves substantial product/test/instruction source unreviewed; targeted hunks do not supply complete required review coverage. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "The source expressly identifies product paths, profiler internals, instructions, test bodies and reporting/docs outside the original semantic review. Imported historical frozen coverage cannot establish current whole-epic review. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 134,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Complete source/evidence coverage is not established. The full 5,587-file diff and roughly 1.1 million added lines were not semantically reviewed. Remaining product scope includes complete scheduling/stack/merge execution paths outside the targeted modified hunks, all ordinary-coordinator instructions end to end, complete caller/report/maintenance documentation, all new/changed test bodies, full profiler modeling internals, and the smaller ledger/run digest, close-epic, roast assembly/prompt and upstream-feedback changes. Targeted inspection of adjacent hunks does not clear those entire files. No forced-fit package, filename-based exclusion, or clean whole-branch assertion is made.",
+          "text": "Complete source/evidence coverage is not established. The full 5,587-file diff and roughly 1.1 million added lines were not semantically reviewed. Remaining product scope includes complete scheduling/stack/merge execution paths outside the targeted modified hunks, all ordinary-coordinator instructions end to end, complete caller/report/maintenance documentation, all new/changed test bodies, full profiler modeling internals, and the smaller ledger/run digest, close-epic, roast assembly/prompt and upstream-feedback changes. Targeted inspection of adjacent hunks does not clear those entire files. No forced-fit package, filename-based exclusion, or clean whole-branch assertion is made."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-19",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 2,
+        "key": "All 690 selection/provenance gaps remain unresolved. I inspected the sidecar's aggregate fields and first concrete failure, and the relevant selector implementation; I did not independently validate every gap or every claimed archived payload. No historical file was excluded, repaired, rewritten, or certified complete. This manual direct review does not convert unavailable archival provenance into valid exclusion authority.",
+        "text": "All 690 selection/provenance gaps remain unresolved. I inspected the sidecar's aggregate fields and first concrete failure, and the relevant selector implementation; I did not independently validate every gap or every claimed archived payload. No historical file was excluded, repaired, rewritten, or certified complete. This manual direct review does not convert unavailable archival provenance into valid exclusion authority."
+      },
+      "criteria": [
+        "R1"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "Current review-selection provenance has690 unresolved claims; each must be accounted for at appropriate scope before relying on omissions or complete review. This is not a requirement to repair every historical fixture. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 2
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "Original 690 provenance gaps remain original historical observations; later captured-range availability is separate. Whole-epic coverage and supported source selection are still required, without inventing valid omissions or blanket archive certification. Current concrete path: Reviews use captured Git bounds and independent mutable output ownership. Provenance gaps now permit a separately bound incomplete review, while omission authority and whole-range readiness remain refused.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/scripts/dispatch-text.mjs",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-code/coordinator.js",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 135,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "All 690 selection/provenance gaps remain unresolved. I inspected the sidecar's aggregate fields and first concrete failure, and the relevant selector implementation; I did not independently validate every gap or every claimed archived payload. No historical file was excluded, repaired, rewritten, or certified complete. This manual direct review does not convert unavailable archival provenance into valid exclusion authority.",
+          "text": "All 690 selection/provenance gaps remain unresolved. I inspected the sidecar's aggregate fields and first concrete failure, and the relevant selector implementation; I did not independently validate every gap or every claimed archived payload. No historical file was excluded, repaired, rewritten, or certified complete. This manual direct review does not convert unavailable archival provenance into valid exclusion authority."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-20",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 4,
+        "key": "`SWEEP DEFERRED (caller-owned)` remains the only final-suite status. No required suite, hosted Workflow, live ordinary scheduling/recovery, live verification-only completion, process termination, final parent removal, or native Linux /proc behavior was executed here. Existing focused helper/replay measurements retain their source/kind limits. The in-memory recovery/acceptance probe mocks filesystem and subprocess consumers and supplies synthetic satisfied acceptance facts only for isolation; it neither supplies a human decision nor proves this actual run is eligible.",
+        "text": "`SWEEP DEFERRED (caller-owned)` remains the only final-suite status. No required suite, hosted Workflow, live ordinary scheduling/recovery, live verification-only completion, process termination, final parent removal, or native Linux /proc behavior was executed here. Existing focused helper/replay measurements retain their source/kind limits. The in-memory recovery/acceptance probe mocks filesystem and subprocess consumers and supplies synthetic satisfied acceptance facts only for isolation; it neither supplies a human decision nor proves this actual run is eligible."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-suite",
+        "basis": "The current only final-suite status remains deferred; mocked satisfied controls establish classification, never actual measurement/human acceptance. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-suite",
+        "basis": "The exact historical final source only had SWEEP DEFERRED. Actual current required final commands, owned-root cleanup and representative instruction evidence remain pending. Synthetic satisfied gate prerequisites provide no real human acceptance. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "process",
+          "basis": "Actual final owned caller/review resource inspection and retention outcomes remain parent-owned; old unknown PID cause or platform limits are not reconstructed."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 137,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Untested scope",
+          "position": 4,
+          "key": "`SWEEP DEFERRED (caller-owned)` remains the only final-suite status. No required suite, hosted Workflow, live ordinary scheduling/recovery, live verification-only completion, process termination, final parent removal, or native Linux /proc behavior was executed here. Existing focused helper/replay measurements retain their source/kind limits. The in-memory recovery/acceptance probe mocks filesystem and subprocess consumers and supplies synthetic satisfied acceptance facts only for isolation; it neither supplies a human decision nor proves this actual run is eligible.",
+          "text": "`SWEEP DEFERRED (caller-owned)` remains the only final-suite status. No required suite, hosted Workflow, live ordinary scheduling/recovery, live verification-only completion, process termination, final parent removal, or native Linux /proc behavior was executed here. Existing focused helper/replay measurements retain their source/kind limits. The in-memory recovery/acceptance probe mocks filesystem and subprocess consumers and supplies synthetic satisfied acceptance facts only for isolation; it neither supplies a human decision nor proves this actual run is eligible."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-21",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 7,
+        "key": "Root acceptance, the final reviewed/measured source identity, supported finding dispositions, the separately reserved human decision, and any post-loop combined-tree audit remain caller-owned. Captured run.md has no root-acceptance snapshot; this review does not insert one or close the root. Later main changes were intentionally not absorbed before phase-5 exit and are outside this captured head. Their absence is not attributed as a defect in this branch.",
+        "text": "Root acceptance, the final reviewed/measured source identity, supported finding dispositions, the separately reserved human decision, and any post-loop combined-tree audit remain caller-owned. Captured run.md has no root-acceptance snapshot; this review does not insert one or close the root. Later main changes were intentionally not absorbed before phase-5 exit and are outside this captured head. Their absence is not attributed as a defect in this branch."
+      },
+      "criteria": [
+        "R7"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "Final source identity, supported dispositions and combined-tree review remain caller-owned; main drift is unabsorbed and final review acceptance is unsupported. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "The old source lacked a root snapshot and deliberately excluded later main changes. Current final source identity, supported judgments and reserved human decision remain required; the late current snapshot never becomes a fabricated initial checkpoint. Current concrete path: The caller gate independently checks source-bound review, measurements, producer Recovery facts, exact source population and reserved human decisions. Collection or leaf success does not establish root acceptance; output must drain without a false successful partial JSON result.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task3-review.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-report.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/retained-evidence/task4-review.md"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "human",
+          "basis": "The existing phase-7 human choice remains with the human partner; no new human gate is created by an historical escalation title."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 140,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Untested scope",
+          "position": 7,
+          "key": "Root acceptance, the final reviewed/measured source identity, supported finding dispositions, the separately reserved human decision, and any post-loop combined-tree audit remain caller-owned. Captured run.md has no root-acceptance snapshot; this review does not insert one or close the root. Later main changes were intentionally not absorbed before phase-5 exit and are outside this captured head. Their absence is not attributed as a defect in this branch.",
+          "text": "Root acceptance, the final reviewed/measured source identity, supported finding dispositions, the separately reserved human decision, and any post-loop combined-tree audit remain caller-owned. Captured run.md has no root-acceptance snapshot; this review does not insert one or close the root. Later main changes were intentionally not absorbed before phase-5 exit and are outside this captured head. Their absence is not attributed as a defect in this branch."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-22",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Deferred OK",
+        "position": 1,
+        "key": "Preserve the root-owned deferred behavioral evaluation, platform-coverage qualification and task-2 fixture-teardown concern from the ledger as attributed obligations/limitations. No active recurring-minor or recurring-blocker class was found in the inspected ledger matches. Do not turn a deferred sweep or a disclosed platform limit into an invented code defect, and do not clear the fixture-teardown concern solely from this review's silence.",
+        "text": "Preserve the root-owned deferred behavioral evaluation, platform-coverage qualification and task-2 fixture-teardown concern from the ledger as attributed obligations/limitations. No active recurring-minor or recurring-blocker class was found in the inspected ledger matches. Do not turn a deferred sweep or a disclosed platform limit into an invented code defect, and do not clear the fixture-teardown concern solely from this review's silence."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Deferred OK",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The ledger expressly retains root-owned behavioral evaluation plus attributed fixture-teardown concern; these cannot disappear from silence. Platform qualification alone adds no native-Linux gate. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "section": "Deferred OK",
+          "position": 1
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The cluster requires preserving root-owned evaluations, platform qualifications and the separately attributed fixture teardown concern. Concrete prior teardown evidence may support its narrow historical mechanism; silence cannot clear it and current behavior/sweep remain pending. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 142,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+          "artifact": "reviews/inv-c96916a964634bb0bb5f2bd3b8e1769b/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Preserve the root-owned deferred behavioral evaluation, platform-coverage qualification and task-2 fixture-teardown concern from the ledger as attributed obligations/limitations. No active recurring-minor or recurring-blocker class was found in the inspected ledger matches. Do not turn a deferred sweep or a disclosed platform limit into an invented code defect, and do not clear the fixture-teardown concern solely from this review's silence.",
+          "text": "Preserve the root-owned deferred behavioral evaluation, platform-coverage qualification and task-2 fixture-teardown concern from the ledger as attributed obligations/limitations. No active recurring-minor or recurring-blocker class was found in the inspected ledger matches. Do not turn a deferred sweep or a disclosed platform limit into an invented code defect, and do not clear the fixture-teardown concern solely from this review's silence."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-23",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+        "section": "Untested scope",
+        "position": 7,
+        "key": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design.",
+        "text": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The reviewed live-isolation fixture has no prior actionable/deferred/parked finding; it cannot satisfy the nested explicit fresh-agent interrupted-invocation continuity example. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "This historical fixture contained no prior actionable/deferred/parked item. It cannot demonstrate cross-invocation finding continuity, so the actual representative continuity assessment remains required. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 180,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+          "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+          "section": "Untested scope",
+          "position": 7,
+          "key": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design.",
+          "text": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-24",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-2",
+        "section": "Untested scope",
+        "position": 4,
+        "key": "Replay sections labeled `live-sim`, dryRun scenarios, prompt-content checks, and simulated denied-inspection/fake-signal cases support the reported deterministic/simulated behaviors. They do not establish real independent-agent execution, real denied-operation behavior, or a fresh-agent interrupted-invocation evaluation. The nested design assigns changed-instruction and fresh-agent interruption evaluations to the enclosing coordinator; those evaluations are outside this partition.",
+        "text": "Replay sections labeled `live-sim`, dryRun scenarios, prompt-content checks, and simulated denied-inspection/fake-signal cases support the reported deterministic/simulated behaviors. They do not establish real independent-agent execution, real denied-operation behavior, or a fresh-agent interrupted-invocation evaluation. The nested design assigns changed-instruction and fresh-agent interruption evaluations to the enclosing coordinator; those evaluations are outside this partition."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-2",
+          "section": "Untested scope",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "Nested design explicitly assigns changed-instruction and fresh-agent interruption evaluations to enclosing coordinator; live-sim/prompt checks are not that evidence. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-2",
+          "section": "Untested scope",
+          "position": 4
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "live-sim labels, prompt checks and fake denial/signal records remain simulated mechanics evidence. Current fresh-agent interruption/changed-instruction assessment is required; no new historical live measurement is claimed. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 205,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-2",
+          "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+          "section": "Untested scope",
+          "position": 4,
+          "key": "Replay sections labeled `live-sim`, dryRun scenarios, prompt-content checks, and simulated denied-inspection/fake-signal cases support the reported deterministic/simulated behaviors. They do not establish real independent-agent execution, real denied-operation behavior, or a fresh-agent interrupted-invocation evaluation. The nested design assigns changed-instruction and fresh-agent interruption evaluations to the enclosing coordinator; those evaluations are outside this partition.",
+          "text": "Replay sections labeled `live-sim`, dryRun scenarios, prompt-content checks, and simulated denied-inspection/fake-signal cases support the reported deterministic/simulated behaviors. They do not establish real independent-agent execution, real denied-operation behavior, or a fresh-agent interrupted-invocation evaluation. The nested design assigns changed-instruction and fresh-agent interruption evaluations to the enclosing coordinator; those evaluations are outside this partition."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-25",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+        "section": "Untested scope",
+        "position": 3,
+        "key": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here.",
+        "text": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "section": "Untested scope",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The aggregate expressly leaves nested fresh-agent continuity, changed instructions and acceptance integration unestablished; retained deterministic fixture coverage is narrower. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "section": "Untested scope",
+          "position": 3
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "R15",
+        "basis": "The historical aggregate names unfulfilled finding-continuity/acceptance examples and original scope boundaries. Actual representative continuity, semantic ownership and current final suite/review remain required; other findings are neither reviewed nor disposed here. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "behavior",
+          "basis": "Parent assessment of actual changed instructions and continuity/cleanup/no-change behavior remains pending; preserve strict B4 0 pass/2 fail/3 ambiguous separately from protocol-complete diagnostic results."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 248,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "artifact": "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "section": "Untested scope",
+          "position": 3,
+          "key": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here.",
+          "text": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    },
+    {
+      "id": "old-required-26",
+      "exactOriginalRef": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+        "section": "Untested scope",
+        "position": 7,
+        "key": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report.",
+        "text": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report."
+      },
+      "criteria": [
+        "R15"
+      ],
+      "originalRequiredMapping": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "Historical additive coverage does not provide current whole-epic/final-source acceptance or account for subsequent revisions. At combined tree this carries prior supported relevance only; resolved groups excluded, and sweep/audit silence supplies no disposition.",
+        "evidence": [
+          "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+        ]
+      },
+      "proposedFindingAcceptance": {
+        "ref": {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "section": "Untested scope",
+          "position": 7
+        },
+        "judgment": "supported",
+        "effect": "required",
+        "requirement": "final-review",
+        "basis": "Frozen historical artifact coverage is not current whole-epic review or source-bound final sweep/human acceptance. Subsequent revisions require attributed actual final evidence and every original supported finding/qualification remains preserved. Current concrete path: Focused fixtures, prospective changed-instruction/continuity assessment, actual final suite and independent whole-epic review have separate evidence owners. Historical replay/text/diagnostic passes cannot stand in for the final combined source or human decision.",
+        "evidence": [
+          "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/run-state.md",
+          "/private/tmp/ufz-correction-final-relevance-proposals/frozen-source/skills/super-auto/scripts/report-status"
+        ]
+      },
+      "remainingDependencies": [
+        {
+          "id": "human",
+          "basis": "The existing phase-7 human choice remains with the human partner; no new human gate is created by an historical escalation title."
+        },
+        {
+          "id": "review",
+          "basis": "Independent whole-epic review and supported exact-source coverage remain pending; Task 1–5 scoped reviews, imported historical coverage and complete collection do not supply this."
+        },
+        {
+          "id": "suite",
+          "basis": "Actual final combined-source required suite, with source/environment/command reconciliation and preserved failure history, remains parent-owned and pending."
+        }
+      ],
+      "projectionGroupIndex": 252,
+      "allOriginalGroupOccurrences": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+          "artifact": "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+          "section": "Untested scope",
+          "position": 7,
+          "key": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report.",
+          "text": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report."
+        }
+      ],
+      "proposalOnly": true,
+      "noDispositionApplied": true
+    }
+  ],
+  "retainedRequiredGroupCount": 26,
+  "remainingExisting220NonblockingJudgments": "Not reassessed or rewritten by this task. No whole469-group relevance or present acceptance certification."
+}

@@ -1,0 +1,21 @@
+{
+  "id": "super-plan-ufz.9",
+  "status": "CLEAN",
+  "finding": "",
+  "scope": "Seam-only compatibility review: sibling range 7074121343636addd41f80ef5261de6ffb74ab80..6c332aa22824c185dc474b0fb5055b465cbd1412 and task range 6c332aa22824c185dc474b0fb5055b465cbd1412..9b41133178416096df0b16a390342d81eeb0f690, limited to the nine listed overlaps.",
+  "evidence": [
+    "Recovery validation refactoring retains verification-only basis validation and reconstruction. Typed completion discriminators survive ledger-digest's additive availability markers.",
+    "Finish reconciliation retains verificationCompletions in closure candidates and typed completion lines, and verificationCandidates prevents unsupported tracker closures. Reconciliation and its ledger drain now precede Metrics capture. completedLandings excludes verificationCompletions while the completion tally retains them.",
+    "Ledger retries retain successful Git observations independently from ledger transport and preserve complete review base/head pairs from a single attempt. Failed observations remain qualified gaps.",
+    "Finding metrics remain additive over the accumulated projection. Raw occurrences, actionable groups and retained source populations stay distinct; earlier supported dispositions and outstanding findings survive later clean invocations.",
+    "Review-collection recovery, direct package preservation, pending/gap qualifiers and profile ownership are preserved. New report instructions consume accumulated projection evidence without treating empty keys as clean."
+  ],
+  "testChanges": {
+    "stat": "tests/super-auto/test-scripts.sh: 10 insertions; tests/super-code/replay-harness.mjs: 157 changed lines; tests/super-code/test-run-digest.sh: 15 insertions. Total: 167 insertions, 15 deletions.",
+    "command": "git diff 6c332aa22824c185dc474b0fb5055b465cbd1412..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+    "statCommand": "git diff --stat 6c332aa22824c185dc474b0fb5055b465cbd1412..HEAD -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+    "assessment": "No tests deleted or skipped. Existing fixture markers change to the new explicit availability contract; Metrics expectations preserve numeric checks while allowing additive scope/gap qualifications and asserting concrete IDs. Template count change is documented by deliberate literal removal. Added assertions cover verification-only closure before Metrics, zero fictitious landings, independent retry observations, partial metrics, source availability and raw/actionable populations. Collection continuity assertions remain intact. No vacuous cross-side tests found.",
+    "execution": "No tests run, as requested."
+  },
+  "diffPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-review-seam.diff"
+}

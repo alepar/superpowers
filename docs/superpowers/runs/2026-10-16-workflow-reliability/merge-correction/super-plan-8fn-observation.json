@@ -1,0 +1,11 @@
+{
+  "operation": "bd show super-plan-8fn --json (read only)",
+  "status": "closed",
+  "closeReason": "resolved: task super-plan-ufz.6 merged",
+  "artifactSha256": "17c13806596186eb0838458f7a7366d89c57be2107f09122913925bfffe221c6",
+  "ancestryCheck": {
+    "command": "git merge-base --is-ancestor 0bb280ed 583f2486",
+    "exitCode": 0
+  },
+  "limits": "Current tracker closure corroborates narrow historical rebase bookkeeping; no new product tests, root closure, finding disposition or merge acceptance."
+}

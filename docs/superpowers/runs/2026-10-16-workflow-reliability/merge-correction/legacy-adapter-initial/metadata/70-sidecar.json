@@ -1,0 +1,760 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-8-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-8-report.md",
+  "rawSha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+  "rawByteCount": 11108,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-8-report.md",
+    "durablePath": "task-report-history-r1/raw/task-8-report.md",
+    "sha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+    "byteCount": 11108,
+    "logicalRole": "report",
+    "ordinal": 8,
+    "logicalTaskId": "super-plan-ufz.8.1",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-8-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task super-plan-ufz.8.1 implementation evidence",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.8.1 implementation evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence"
+      ],
+      "lineStart": 1,
+      "lineEnd": 11,
+      "byteStart": 0,
+      "byteEnd": 502,
+      "bodyLineStart": 2,
+      "rawText": "# Task super-plan-ufz.8.1 implementation evidence\n\nStatus: IMPLEMENTED\nInitial base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nFinal base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: e794628a03fac3fbd8cb9619de76cb48cc8380cf\nBranch: task-super-plan-ufz.8.1\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1\nStacked: false\nRebase: completed cleanly onto the integration tip; focused suites rerun there.\n\n",
+      "bodyRawText": "\nStatus: IMPLEMENTED\nInitial base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nFinal base: b635541015f4bc0e037ef8621f8d01135ca2b22b\nHead: e794628a03fac3fbd8cb9619de76cb48cc8380cf\nBranch: task-super-plan-ufz.8.1\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1\nStacked: false\nRebase: completed cleanly onto the integration tip; focused suites rerun there.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\nInitial base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nFinal base: b635541015f4bc0e037ef8621f8d01135ca2b22b\n",
+          "text": "Status: IMPLEMENTED\nInitial base: f1fb23d15eaaa70fff95404a97342cd83fb0bdb7\nFinal base: b635541015f4bc0e037ef8621f8d01135ca2b22b",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 5,
+          "byteStart": 51,
+          "byteEnd": 179
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf\nBranch: task-super-plan-ufz.8.1\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1\nStacked: false\nRebase: completed cleanly onto the integration tip; focused suites rerun there.\n",
+          "text": "Head: e794628a03fac3fbd8cb9619de76cb48cc8380cf\nBranch: task-super-plan-ufz.8.1\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1\nStacked: false\nRebase: completed cleanly onto the integration tip; focused suites rerun there.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 6,
+          "lineEnd": 10,
+          "byteStart": 179,
+          "byteEnd": 501
+        }
+      ]
+    },
+    {
+      "section": "Implemented",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implemented\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Implemented"
+      ],
+      "lineStart": 12,
+      "lineEnd": 31,
+      "byteStart": 502,
+      "byteEnd": 3119,
+      "bodyLineStart": 13,
+      "rawText": "## Implemented\n\nThe existing Launch record now persists invocationId separately from runTag. The Workflow caller may supply a token; an omitted token is minted before Launch. Only explicit unsettled resume reuses a recorded token. A new invocation following a settled return, including a blocked result, mints a new identity even within the same runTag. No new agent dispatch or finding ledger was added.\n\nThe existing launch append now carries an appended:boolean structured-output schema and requests a structured acknowledgment. The coordinator awaits it and requires appended:true before any review assembly or review writer. A null or unconfirmed launch write leaves an explicit unavailable review and reviewPath:null. Other ledger appends retain their prior schema-less contract. Both execution references specify caller mint/resume ownership and persistence behavior.\n\nThe ordinary dispatch builder reads invocationId from the persisted ordinary or Workflow Launch form. Final assembly and all final-review modes reject missing/unsafe identity. --invocation-id must equal the persisted token, so it cannot authorize an unrecorded replacement. Non-review dispatches remain compatible with older Launch records.\n\nExact producer schema for downstream .8 tasks (workspace means the existing plan workspace):\n\n- Launch: args JSON includes invocationId; ordinary Launch includes `· invocationId <token> ·`.\n- Token grammar: /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.\n- Final review, used by single/seam/stub: `<workspace>/final-review-<invocationId>.md`.\n- Direct-input package: `<workspace>/final-review-<invocationId>.md.diff`.\n- Cluster review: `<workspace>/final-review-<invocationId>.cluster-<n>.md`.\n- Assembled final inputs: `<workspace>/assembled/final-review-<invocationId>-final/`.\n- Ordinary review dispatch files: `<workspace>/dispatch/final-review-<invocationId>-single.md`, `-cluster-<n>.md`, `-seam.md`, `-stub.md`; final assembly dispatch: `assemble-final-review-<invocationId>-<instance>.md`.\n\nThe dot before cluster is deliberate: dots are excluded from tokens, preventing the final review of an ID such as inv-a-cluster-1 from aliasing inv-a's cluster artifact. runTag continues to group the enclosing run/processes and non-final-review assembly. Result.reviewPath keeps its existing final-review-only meaning: null when no work landed, identity persistence/capture failed, or no final writer succeeded; non-null for a written single/seam/stub. A stub reply with written:false now correctly leaves null. Existing captured reviewBase/reviewHead handling and caller-preservation contract are retained.\n\n",
+      "bodyRawText": "\nThe existing Launch record now persists invocationId separately from runTag. The Workflow caller may supply a token; an omitted token is minted before Launch. Only explicit unsettled resume reuses a recorded token. A new invocation following a settled return, including a blocked result, mints a new identity even within the same runTag. No new agent dispatch or finding ledger was added.\n\nThe existing launch append now carries an appended:boolean structured-output schema and requests a structured acknowledgment. The coordinator awaits it and requires appended:true before any review assembly or review writer. A null or unconfirmed launch write leaves an explicit unavailable review and reviewPath:null. Other ledger appends retain their prior schema-less contract. Both execution references specify caller mint/resume ownership and persistence behavior.\n\nThe ordinary dispatch builder reads invocationId from the persisted ordinary or Workflow Launch form. Final assembly and all final-review modes reject missing/unsafe identity. --invocation-id must equal the persisted token, so it cannot authorize an unrecorded replacement. Non-review dispatches remain compatible with older Launch records.\n\nExact producer schema for downstream .8 tasks (workspace means the existing plan workspace):\n\n- Launch: args JSON includes invocationId; ordinary Launch includes `· invocationId <token> ·`.\n- Token grammar: /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.\n- Final review, used by single/seam/stub: `<workspace>/final-review-<invocationId>.md`.\n- Direct-input package: `<workspace>/final-review-<invocationId>.md.diff`.\n- Cluster review: `<workspace>/final-review-<invocationId>.cluster-<n>.md`.\n- Assembled final inputs: `<workspace>/assembled/final-review-<invocationId>-final/`.\n- Ordinary review dispatch files: `<workspace>/dispatch/final-review-<invocationId>-single.md`, `-cluster-<n>.md`, `-seam.md`, `-stub.md`; final assembly dispatch: `assemble-final-review-<invocationId>-<instance>.md`.\n\nThe dot before cluster is deliberate: dots are excluded from tokens, preventing the final review of an ID such as inv-a-cluster-1 from aliasing inv-a's cluster artifact. runTag continues to group the enclosing run/processes and non-final-review assembly. Result.reviewPath keeps its existing final-review-only meaning: null when no work landed, identity persistence/capture failed, or no final writer succeeded; non-null for a written single/seam/stub. A stub reply with written:false now correctly leaves null. Existing captured reviewBase/reviewHead handling and caller-preservation contract are retained.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The existing Launch record now persists invocationId separately from runTag. The Workflow caller may supply a token; an omitted token is minted before Launch. Only explicit unsettled resume reuses a recorded token. A new invocation following a settled return, including a blocked result, mints a new identity even within the same runTag. No new agent dispatch or finding ledger was added.\n",
+          "text": "The existing Launch record now persists invocationId separately from runTag. The Workflow caller may supply a token; an omitted token is minted before Launch. Only explicit unsettled resume reuses a recorded token. A new invocation following a settled return, including a blocked result, mints a new identity even within the same runTag. No new agent dispatch or finding ledger was added.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 518,
+          "byteEnd": 907
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The existing launch append now carries an appended:boolean structured-output schema and requests a structured acknowledgment. The coordinator awaits it and requires appended:true before any review assembly or review writer. A null or unconfirmed launch write leaves an explicit unavailable review and reviewPath:null. Other ledger appends retain their prior schema-less contract. Both execution references specify caller mint/resume ownership and persistence behavior.\n",
+          "text": "The existing launch append now carries an appended:boolean structured-output schema and requests a structured acknowledgment. The coordinator awaits it and requires appended:true before any review assembly or review writer. A null or unconfirmed launch write leaves an explicit unavailable review and reviewPath:null. Other ledger appends retain their prior schema-less contract. Both execution references specify caller mint/resume ownership and persistence behavior.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 908,
+          "byteEnd": 1377
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The ordinary dispatch builder reads invocationId from the persisted ordinary or Workflow Launch form. Final assembly and all final-review modes reject missing/unsafe identity. --invocation-id must equal the persisted token, so it cannot authorize an unrecorded replacement. Non-review dispatches remain compatible with older Launch records.\n",
+          "text": "The ordinary dispatch builder reads invocationId from the persisted ordinary or Workflow Launch form. Final assembly and all final-review modes reject missing/unsafe identity. --invocation-id must equal the persisted token, so it cannot authorize an unrecorded replacement. Non-review dispatches remain compatible with older Launch records.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1378,
+          "byteEnd": 1719
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact producer schema for downstream .8 tasks (workspace means the existing plan workspace):\n",
+          "text": "Exact producer schema for downstream .8 tasks (workspace means the existing plan workspace):",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1720,
+          "byteEnd": 1813
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Launch: args JSON includes invocationId; ordinary Launch includes `· invocationId <token> ·`.\n",
+          "text": "Launch: args JSON includes invocationId; ordinary Launch includes `· invocationId <token> ·`.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1814,
+          "byteEnd": 1912
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Token grammar: /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.\n",
+          "text": "Token grammar: /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 1912,
+          "byteEnd": 1966
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Final review, used by single/seam/stub: `<workspace>/final-review-<invocationId>.md`.\n",
+          "text": "Final review, used by single/seam/stub: `<workspace>/final-review-<invocationId>.md`.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 1966,
+          "byteEnd": 2054
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Direct-input package: `<workspace>/final-review-<invocationId>.md.diff`.\n",
+          "text": "Direct-input package: `<workspace>/final-review-<invocationId>.md.diff`.",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2054,
+          "byteEnd": 2129
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Cluster review: `<workspace>/final-review-<invocationId>.cluster-<n>.md`.\n",
+          "text": "Cluster review: `<workspace>/final-review-<invocationId>.cluster-<n>.md`.",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2129,
+          "byteEnd": 2205
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Assembled final inputs: `<workspace>/assembled/final-review-<invocationId>-final/`.\n",
+          "text": "Assembled final inputs: `<workspace>/assembled/final-review-<invocationId>-final/`.",
+          "listMarker": "- ",
+          "positionInSection": 10,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2205,
+          "byteEnd": 2291
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Ordinary review dispatch files: `<workspace>/dispatch/final-review-<invocationId>-single.md`, `-cluster-<n>.md`, `-seam.md`, `-stub.md`; final assembly dispatch: `assemble-final-review-<invocationId>-<instance>.md`.\n",
+          "text": "Ordinary review dispatch files: `<workspace>/dispatch/final-review-<invocationId>-single.md`, `-cluster-<n>.md`, `-seam.md`, `-stub.md`; final assembly dispatch: `assemble-final-review-<invocationId>-<instance>.md`.",
+          "listMarker": "- ",
+          "positionInSection": 11,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 2291,
+          "byteEnd": 2509
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The dot before cluster is deliberate: dots are excluded from tokens, preventing the final review of an ID such as inv-a-cluster-1 from aliasing inv-a's cluster artifact. runTag continues to group the enclosing run/processes and non-final-review assembly. Result.reviewPath keeps its existing final-review-only meaning: null when no work landed, identity persistence/capture failed, or no final writer succeeded; non-null for a written single/seam/stub. A stub reply with written:false now correctly leaves null. Existing captured reviewBase/reviewHead handling and caller-preservation contract are retained.\n",
+          "text": "The dot before cluster is deliberate: dots are excluded from tokens, preventing the final review of an ID such as inv-a-cluster-1 from aliasing inv-a's cluster artifact. runTag continues to group the enclosing run/processes and non-final-review assembly. Result.reviewPath keeps its existing final-review-only meaning: null when no work landed, identity persistence/capture failed, or no final writer succeeded; non-null for a written single/seam/stub. A stub reply with written:false now correctly leaves null. Existing captured reviewBase/reviewHead handling and caller-preservation contract are retained.",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 2510,
+          "byteEnd": 3118
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Files changed"
+      ],
+      "lineStart": 32,
+      "lineEnd": 41,
+      "byteStart": 3119,
+      "byteEnd": 3416,
+      "bodyLineStart": 33,
+      "rawText": "## Files changed\n\n- skills/super-code/SKILL.md\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- skills/super-code/scripts/dispatch-text.mjs\n- tests/super-code/test-dispatch-text.sh\n- tests/super-code/replay-harness.mjs\n\n",
+      "bodyRawText": "\n- skills/super-code/SKILL.md\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- skills/super-code/scripts/dispatch-text.mjs\n- tests/super-code/test-dispatch-text.sh\n- tests/super-code/replay-harness.mjs\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/SKILL.md\n",
+          "text": "skills/super-code/SKILL.md",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 3137,
+          "byteEnd": 3166
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 3166,
+          "byteEnd": 3201
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 3201,
+          "byteEnd": 3245
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3245,
+          "byteEnd": 3290
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/scripts/dispatch-text.mjs\n",
+          "text": "skills/super-code/scripts/dispatch-text.mjs",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 3290,
+          "byteEnd": 3336
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/test-dispatch-text.sh\n",
+          "text": "tests/super-code/test-dispatch-text.sh",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 3336,
+          "byteEnd": 3377
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 3377,
+          "byteEnd": 3415
+        }
+      ]
+    },
+    {
+      "section": "Tests and TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests and TDD evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Tests and TDD evidence"
+      ],
+      "lineStart": 42,
+      "lineEnd": 90,
+      "byteStart": 3416,
+      "byteEnd": 8611,
+      "bodyLineStart": 43,
+      "rawText": "## Tests and TDD evidence\n\nEach command began with an absolute cd to the task worktree above. All test runs used this environment (XDG_STATE_HOME was also set in the final runs):\n\n```bash\nenv TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state\n```\n\nThe full commands for the final rebased runs were:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state bash tests/super-code/test-dispatch-text.sh > .superpowers/task-evidence/super-plan-ufz.8.1/dispatch-final.log 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state node tests/super-code/replay-harness.mjs > .superpowers/task-evidence/super-plan-ufz.8.1/replay-final.log 2>&1\n```\n\nFinal output excerpts (both exited 0):\n\n```text\n[PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs\ndispatch-text: all tests passed\n\n[PASS] 48 agent dispatches (got 48)\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] launch acknowledgment is requested as structured output from the runtime\n[PASS] launch append asks its writer for the structured acknowledgment it consumes\n[PASS] second invocation leaves the earlier synthetic bundle unchanged\n[PASS] single and split bundles have disjoint paths\n[PASS] explicitly resumed invocation reuses its recorded identity\n[PASS] fresh invocation mints its own token instead of copying the last launch\n[PASS] unconfirmed identity persistence suppresses assembly and final review\n[PASS] a writer reporting written false cannot authorize a final-review path\n1916 passed, 0 failed\n```\n\nThe documented dryRun scenarios were executed by replay-harness, preserving their expected counts of 48, 19 and 23. Other final-review split scenarios preserve their documented 22/24/25/23 counts. The inherited review-source/caller-advance fixtures pass. `git diff --check HEAD~1 HEAD` passed and `git status --short` was empty after rebase.\n\nRED evidence, before each corresponding implementation:\n\n1. `bash tests/super-code/test-dispatch-text.sh` (same task test environment): `dispatch-text: 24 failure(s)`. New cases observed final-review-shared-run instead of invocation paths, and accepted unsafe/missing identities and unpersisted override (exit 0 versus expected 2). The fixture's initial Bash empty-array setup error was corrected before this measured RED run.\n2. `node tests/super-code/replay-harness.mjs`: `1784 passed, 21 failed`. It emitted final-review-shared-run.md and assembled/final-review-shared-run-final for distinct IDs. The actual synthetic second write overwrote the first bundle; retention/disjointness/resume/mint/persistence-gap/unsafe-token assertions failed as expected.\n3. A new actual ordinary bundle retention fixture then reproduced the suffix collision: `AssertionError: a later invocation preserves every earlier artifact`, actual `inv-a-cluster-1`, expected `inv-a`. The cluster delimiter was changed only after observing that failure.\n4. Failed-writer RED replay: `1806 passed, 1 failed`; written:false incorrectly returned final-review-inv-failed-writer.md. Requiring written:true fixed that measured case.\n5. Structured acknowledgment RED replay: `1807 passed, 4 failed`; both invocation cases lacked the runtime schema and asked for a text final answer while their result was consumed as structured data. Attaching the schema to the existing launch call and switching that call's final-answer contract fixed it without adding calls.\n\nAn intermediate full run caught a template-span-count change from a newly introduced minting template literal. The mint now uses string concatenation; the established count assertion was retained unchanged. Pre-rebase final verification reached `1811 passed, 0 failed`; the increased final total (`1916`) includes newly inherited cleanup-task checks after rebase.\n\nRaw RED/GREEN logs are retained under the task worktree's git-ignored `.superpowers/task-evidence/super-plan-ufz.8.1/` (dispatch-red.log, replay-red.log, collision-red.log, writer-red.log, ack-red.log, dispatch-green.log, replay-green.log, dispatch-final.log, replay-final.log). They were not added to the commit.\n\n",
+      "bodyRawText": "\nEach command began with an absolute cd to the task worktree above. All test runs used this environment (XDG_STATE_HOME was also set in the final runs):\n\n```bash\nenv TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state\n```\n\nThe full commands for the final rebased runs were:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state bash tests/super-code/test-dispatch-text.sh > .superpowers/task-evidence/super-plan-ufz.8.1/dispatch-final.log 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state node tests/super-code/replay-harness.mjs > .superpowers/task-evidence/super-plan-ufz.8.1/replay-final.log 2>&1\n```\n\nFinal output excerpts (both exited 0):\n\n```text\n[PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs\ndispatch-text: all tests passed\n\n[PASS] 48 agent dispatches (got 48)\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] launch acknowledgment is requested as structured output from the runtime\n[PASS] launch append asks its writer for the structured acknowledgment it consumes\n[PASS] second invocation leaves the earlier synthetic bundle unchanged\n[PASS] single and split bundles have disjoint paths\n[PASS] explicitly resumed invocation reuses its recorded identity\n[PASS] fresh invocation mints its own token instead of copying the last launch\n[PASS] unconfirmed identity persistence suppresses assembly and final review\n[PASS] a writer reporting written false cannot authorize a final-review path\n1916 passed, 0 failed\n```\n\nThe documented dryRun scenarios were executed by replay-harness, preserving their expected counts of 48, 19 and 23. Other final-review split scenarios preserve their documented 22/24/25/23 counts. The inherited review-source/caller-advance fixtures pass. `git diff --check HEAD~1 HEAD` passed and `git status --short` was empty after rebase.\n\nRED evidence, before each corresponding implementation:\n\n1. `bash tests/super-code/test-dispatch-text.sh` (same task test environment): `dispatch-text: 24 failure(s)`. New cases observed final-review-shared-run instead of invocation paths, and accepted unsafe/missing identities and unpersisted override (exit 0 versus expected 2). The fixture's initial Bash empty-array setup error was corrected before this measured RED run.\n2. `node tests/super-code/replay-harness.mjs`: `1784 passed, 21 failed`. It emitted final-review-shared-run.md and assembled/final-review-shared-run-final for distinct IDs. The actual synthetic second write overwrote the first bundle; retention/disjointness/resume/mint/persistence-gap/unsafe-token assertions failed as expected.\n3. A new actual ordinary bundle retention fixture then reproduced the suffix collision: `AssertionError: a later invocation preserves every earlier artifact`, actual `inv-a-cluster-1`, expected `inv-a`. The cluster delimiter was changed only after observing that failure.\n4. Failed-writer RED replay: `1806 passed, 1 failed`; written:false incorrectly returned final-review-inv-failed-writer.md. Requiring written:true fixed that measured case.\n5. Structured acknowledgment RED replay: `1807 passed, 4 failed`; both invocation cases lacked the runtime schema and asked for a text final answer while their result was consumed as structured data. Attaching the schema to the existing launch call and switching that call's final-answer contract fixed it without adding calls.\n\nAn intermediate full run caught a template-span-count change from a newly introduced minting template literal. The mint now uses string concatenation; the established count assertion was retained unchanged. Pre-rebase final verification reached `1811 passed, 0 failed`; the increased final total (`1916`) includes newly inherited cleanup-task checks after rebase.\n\nRaw RED/GREEN logs are retained under the task worktree's git-ignored `.superpowers/task-evidence/super-plan-ufz.8.1/` (dispatch-red.log, replay-red.log, collision-red.log, writer-red.log, ack-red.log, dispatch-green.log, replay-green.log, dispatch-final.log, replay-final.log). They were not added to the commit.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each command began with an absolute cd to the task worktree above. All test runs used this environment (XDG_STATE_HOME was also set in the final runs):\n",
+          "text": "Each command began with an absolute cd to the task worktree above. All test runs used this environment (XDG_STATE_HOME was also set in the final runs):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 3443,
+          "byteEnd": 3595
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nenv TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state\n```\n",
+          "text": "```bash\nenv TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 46,
+          "lineEnd": 48,
+          "byteStart": 3596,
+          "byteEnd": 3929
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The full commands for the final rebased runs were:\n",
+          "text": "The full commands for the final rebased runs were:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 3930,
+          "byteEnd": 3981
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state bash tests/super-code/test-dispatch-text.sh > .superpowers/task-evidence/super-plan-ufz.8.1/dispatch-final.log 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state node tests/super-code/replay-harness.mjs > .superpowers/task-evidence/super-plan-ufz.8.1/replay-final.log 2>&1\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state bash tests/super-code/test-dispatch-text.sh > .superpowers/task-evidence/super-plan-ufz.8.1/dispatch-final.log 2>&1\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.1 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.1/state node tests/super-code/replay-harness.mjs > .superpowers/task-evidence/super-plan-ufz.8.1/replay-final.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 52,
+          "lineEnd": 55,
+          "byteStart": 3982,
+          "byteEnd": 5151
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final output excerpts (both exited 0):\n",
+          "text": "Final output excerpts (both exited 0):",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 57,
+          "lineEnd": 57,
+          "byteStart": 5152,
+          "byteEnd": 5191
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs\ndispatch-text: all tests passed\n\n[PASS] 48 agent dispatches (got 48)\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] launch acknowledgment is requested as structured output from the runtime\n[PASS] launch append asks its writer for the structured acknowledgment it consumes\n[PASS] second invocation leaves the earlier synthetic bundle unchanged\n[PASS] single and split bundles have disjoint paths\n[PASS] explicitly resumed invocation reuses its recorded identity\n[PASS] fresh invocation mints its own token instead of copying the last launch\n[PASS] unconfirmed identity persistence suppresses assembly and final review\n[PASS] a writer reporting written false cannot authorize a final-review path\n1916 passed, 0 failed\n```\n",
+          "text": "```text\n[PASS] distinct ordinary invocation bundles preserve prior artifact contents, including suffix-like IDs\ndispatch-text: all tests passed\n\n[PASS] 48 agent dispatches (got 48)\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\n[PASS] launch acknowledgment is requested as structured output from the runtime\n[PASS] launch append asks its writer for the structured acknowledgment it consumes\n[PASS] second invocation leaves the earlier synthetic bundle unchanged\n[PASS] single and split bundles have disjoint paths\n[PASS] explicitly resumed invocation reuses its recorded identity\n[PASS] fresh invocation mints its own token instead of copying the last launch\n[PASS] unconfirmed identity persistence suppresses assembly and final review\n[PASS] a writer reporting written false cannot authorize a final-review path\n1916 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 59,
+          "lineEnd": 75,
+          "byteStart": 5192,
+          "byteEnd": 6056
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The documented dryRun scenarios were executed by replay-harness, preserving their expected counts of 48, 19 and 23. Other final-review split scenarios preserve their documented 22/24/25/23 counts. The inherited review-source/caller-advance fixtures pass. `git diff --check HEAD~1 HEAD` passed and `git status --short` was empty after rebase.\n",
+          "text": "The documented dryRun scenarios were executed by replay-harness, preserving their expected counts of 48, 19 and 23. Other final-review split scenarios preserve their documented 22/24/25/23 counts. The inherited review-source/caller-advance fixtures pass. `git diff --check HEAD~1 HEAD` passed and `git status --short` was empty after rebase.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 77,
+          "lineEnd": 77,
+          "byteStart": 6057,
+          "byteEnd": 6399
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED evidence, before each corresponding implementation:\n",
+          "text": "RED evidence, before each corresponding implementation:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 79,
+          "lineEnd": 79,
+          "byteStart": 6400,
+          "byteEnd": 6456
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "1. `bash tests/super-code/test-dispatch-text.sh` (same task test environment): `dispatch-text: 24 failure(s)`. New cases observed final-review-shared-run instead of invocation paths, and accepted unsafe/missing identities and unpersisted override (exit 0 versus expected 2). The fixture's initial Bash empty-array setup error was corrected before this measured RED run.\n",
+          "text": "`bash tests/super-code/test-dispatch-text.sh` (same task test environment): `dispatch-text: 24 failure(s)`. New cases observed final-review-shared-run instead of invocation paths, and accepted unsafe/missing identities and unpersisted override (exit 0 versus expected 2). The fixture's initial Bash empty-array setup error was corrected before this measured RED run.",
+          "listMarker": "1. ",
+          "positionInSection": 9,
+          "lineStart": 81,
+          "lineEnd": 81,
+          "byteStart": 6457,
+          "byteEnd": 6827
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "2. `node tests/super-code/replay-harness.mjs`: `1784 passed, 21 failed`. It emitted final-review-shared-run.md and assembled/final-review-shared-run-final for distinct IDs. The actual synthetic second write overwrote the first bundle; retention/disjointness/resume/mint/persistence-gap/unsafe-token assertions failed as expected.\n",
+          "text": "`node tests/super-code/replay-harness.mjs`: `1784 passed, 21 failed`. It emitted final-review-shared-run.md and assembled/final-review-shared-run-final for distinct IDs. The actual synthetic second write overwrote the first bundle; retention/disjointness/resume/mint/persistence-gap/unsafe-token assertions failed as expected.",
+          "listMarker": "2. ",
+          "positionInSection": 10,
+          "lineStart": 82,
+          "lineEnd": 82,
+          "byteStart": 6827,
+          "byteEnd": 7157
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "3. A new actual ordinary bundle retention fixture then reproduced the suffix collision: `AssertionError: a later invocation preserves every earlier artifact`, actual `inv-a-cluster-1`, expected `inv-a`. The cluster delimiter was changed only after observing that failure.\n",
+          "text": "A new actual ordinary bundle retention fixture then reproduced the suffix collision: `AssertionError: a later invocation preserves every earlier artifact`, actual `inv-a-cluster-1`, expected `inv-a`. The cluster delimiter was changed only after observing that failure.",
+          "listMarker": "3. ",
+          "positionInSection": 11,
+          "lineStart": 83,
+          "lineEnd": 83,
+          "byteStart": 7157,
+          "byteEnd": 7429
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "4. Failed-writer RED replay: `1806 passed, 1 failed`; written:false incorrectly returned final-review-inv-failed-writer.md. Requiring written:true fixed that measured case.\n",
+          "text": "Failed-writer RED replay: `1806 passed, 1 failed`; written:false incorrectly returned final-review-inv-failed-writer.md. Requiring written:true fixed that measured case.",
+          "listMarker": "4. ",
+          "positionInSection": 12,
+          "lineStart": 84,
+          "lineEnd": 84,
+          "byteStart": 7429,
+          "byteEnd": 7602
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "5. Structured acknowledgment RED replay: `1807 passed, 4 failed`; both invocation cases lacked the runtime schema and asked for a text final answer while their result was consumed as structured data. Attaching the schema to the existing launch call and switching that call's final-answer contract fixed it without adding calls.\n",
+          "text": "Structured acknowledgment RED replay: `1807 passed, 4 failed`; both invocation cases lacked the runtime schema and asked for a text final answer while their result was consumed as structured data. Attaching the schema to the existing launch call and switching that call's final-answer contract fixed it without adding calls.",
+          "listMarker": "5. ",
+          "positionInSection": 13,
+          "lineStart": 85,
+          "lineEnd": 85,
+          "byteStart": 7602,
+          "byteEnd": 7930
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "An intermediate full run caught a template-span-count change from a newly introduced minting template literal. The mint now uses string concatenation; the established count assertion was retained unchanged. Pre-rebase final verification reached `1811 passed, 0 failed`; the increased final total (`1916`) includes newly inherited cleanup-task checks after rebase.\n",
+          "text": "An intermediate full run caught a template-span-count change from a newly introduced minting template literal. The mint now uses string concatenation; the established count assertion was retained unchanged. Pre-rebase final verification reached `1811 passed, 0 failed`; the increased final total (`1916`) includes newly inherited cleanup-task checks after rebase.",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 87,
+          "lineEnd": 87,
+          "byteStart": 7931,
+          "byteEnd": 8295
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Raw RED/GREEN logs are retained under the task worktree's git-ignored `.superpowers/task-evidence/super-plan-ufz.8.1/` (dispatch-red.log, replay-red.log, collision-red.log, writer-red.log, ack-red.log, dispatch-green.log, replay-green.log, dispatch-final.log, replay-final.log). They were not added to the commit.\n",
+          "text": "Raw RED/GREEN logs are retained under the task worktree's git-ignored `.superpowers/task-evidence/super-plan-ufz.8.1/` (dispatch-red.log, replay-red.log, collision-red.log, writer-red.log, ack-red.log, dispatch-green.log, replay-green.log, dispatch-final.log, replay-final.log). They were not added to the commit.",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 89,
+          "lineEnd": 89,
+          "byteStart": 8296,
+          "byteEnd": 8610
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Test hygiene"
+      ],
+      "lineStart": 91,
+      "lineEnd": 101,
+      "byteStart": 8611,
+      "byteEnd": 9714,
+      "bodyLineStart": 92,
+      "rawText": "## Test hygiene\n\nNone: every completed test-run leak check returned exit 0 with no match lines. The first check was run from the task cwd and correctly refused a root containing its own process; checks were thereafter run from /tmp. The final check and final stop both ran from /tmp using:\n\n```bash\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\n```\n\nBoth exited 0 without matches or survived lines. No background service remains. Test scratch uses the required short temp root; dispatch fixture mktemp explicitly honors TMPDIR.\n\n",
+      "bodyRawText": "\nNone: every completed test-run leak check returned exit 0 with no match lines. The first check was run from the task cwd and correctly refused a root containing its own process; checks were thereafter run from /tmp. The final check and final stop both ran from /tmp using:\n\n```bash\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\n```\n\nBoth exited 0 without matches or survived lines. No background service remains. Test scratch uses the required short temp root; dispatch fixture mktemp explicitly honors TMPDIR.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None: every completed test-run leak check returned exit 0 with no match lines. The first check was run from the task cwd and correctly refused a root containing its own process; checks were thereafter run from /tmp. The final check and final stop both ran from /tmp using:\n",
+          "text": "None: every completed test-run leak check returned exit 0 with no match lines. The first check was run from the task cwd and correctly refused a root containing its own process; checks were thereafter run from /tmp. The final check and final stop both ran from /tmp using:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 93,
+          "lineEnd": 93,
+          "byteStart": 8628,
+          "byteEnd": 8901
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\n```\n",
+          "text": "```bash\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.1 /tmp/sp-bce79baa/super-plan-ufz.8.1\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 95,
+          "lineEnd": 98,
+          "byteStart": 8902,
+          "byteEnd": 9534
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both exited 0 without matches or survived lines. No background service remains. Test scratch uses the required short temp root; dispatch fixture mktemp explicitly honors TMPDIR.\n",
+          "text": "Both exited 0 without matches or survived lines. No background service remains. Test scratch uses the required short temp root; dispatch fixture mktemp explicitly honors TMPDIR.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 100,
+          "lineEnd": 100,
+          "byteStart": 9535,
+          "byteEnd": 9713
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Assumptions"
+      ],
+      "lineStart": 102,
+      "lineEnd": 107,
+      "byteStart": 9714,
+      "byteEnd": 10453,
+      "bodyLineStart": 103,
+      "rawText": "## Assumptions\n\nCurrent bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.\n\nNo dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.\n\n",
+      "bodyRawText": "\nCurrent bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.\n\nNo dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.\n",
+          "text": "Current bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 104,
+          "lineEnd": 104,
+          "byteStart": 9730,
+          "byteEnd": 10214
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.\n",
+          "text": "No dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 106,
+          "lineEnd": 106,
+          "byteStart": 10215,
+          "byteEnd": 10452
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Concerns"
+      ],
+      "lineStart": 108,
+      "lineEnd": 112,
+      "byteStart": 10453,
+      "byteEnd": 11108,
+      "bodyLineStart": 109,
+      "rawText": "## Concerns\n\nFresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.\n\nThis task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.\n",
+      "bodyRawText": "\nFresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.\n\nThis task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.\n",
+          "text": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 10466,
+          "byteEnd": 10869
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.\n",
+          "text": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 112,
+          "lineEnd": 112,
+          "byteStart": 10870,
+          "byteEnd": 11108
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.",
+      "text": "Current bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.",
+      "rawText": "Current bead description/acceptance and comments were read before implementation. There were no comments or amendments overriding the frozen task brief. The nested continuity spec is compatible with this artifact-only producer change; extraction/projection/collection and external roast-ledger policy remain owned by other .8 tasks. Caller-provided identity is fresh for a new invocation or explicitly restored for unsettled resume, as the approved caller-boundary contract requires.\n",
+      "lineStart": 104,
+      "lineEnd": 104,
+      "byteStart": 9730,
+      "byteEnd": 10214,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Assumptions"
+      ],
+      "positionInSection": 2,
+      "key": "No dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.",
+      "text": "No dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.",
+      "rawText": "No dependency install/setup is required for this zero-dependency Node/Bash harness. The harness file and coordinator package-under-test both resolve inside the assigned task worktree; the host Node interpreter is /opt/homebrew/bin/node.\n",
+      "lineStart": 106,
+      "lineEnd": 106,
+      "byteStart": 10215,
+      "byteEnd": 10452,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "section": "Concerns",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.",
+      "text": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.",
+      "rawText": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.\n",
+      "lineStart": 110,
+      "lineEnd": 110,
+      "byteStart": 10466,
+      "byteEnd": 10869,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "section": "Concerns",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Task super-plan-ufz.8.1 implementation evidence",
+        "Concerns"
+      ],
+      "positionInSection": 2,
+      "key": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.",
+      "text": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.",
+      "rawText": "This task does not implement archival collection or finding disposition. Downstream consumers must retain source identity and treat unavailable bundles as evidence gaps; the producer paths and Launch field above are the handoff contract.\n",
+      "lineStart": 112,
+      "lineEnd": 112,
+      "byteStart": 10870,
+      "byteEnd": 11108,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

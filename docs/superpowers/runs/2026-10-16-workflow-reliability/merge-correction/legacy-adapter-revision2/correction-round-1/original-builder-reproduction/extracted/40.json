@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+  "artifact": "legacy-report-adapters-r1/40-task-22-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000021271",
+      "position": 1,
+      "key": "None for this bounded fix. Caller-owned final sweep, changed-instruction evaluations, independent review, root acceptance and human gates remain pending outside this task. Retained logs are in the task worktree's ignored .superpowers/sdd/super-plan-ufz.25-evidence directory; preserve that worktree until review has consumed the evidence. The report also embeds final and RED output for durable review.",
+      "text": "None for this bounded fix. Caller-owned final sweep, changed-instruction evaluations, independent review, root acceptance and human gates remain pending outside this task. Retained logs are in the task worktree's ignored .superpowers/sdd/super-plan-ufz.25-evidence directory; preserve that worktree until review has consumed the evidence. The report also embeds final and RED output for durable review."
+    }
+  ]
+}

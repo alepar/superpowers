@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-seam-findings",
+  "artifact": "legacy-report-adapters-r1/24-task-15-seam-findings.md",
+  "kind": "task-report",
+  "verdict": "NEEDS_FIX",
+  "occurrences": [
+    {
+      "section": "Findings — adapter/review-finding/raw-section-1/raw-byte-000000032",
+      "position": 1,
+      "key": "[rebase-conflict] Metrics source548a0b08d7b02a7fdfcb67f4e6899013b6276b9d conflicts in skills/super-code/coordinator.js rebasing onto integration6c332aa22824c185dc474b0fb5055b465cbd1412. Prior rebase aborted clean. Original STACKED base7074121343636addd41f80ef5261de6ffb74ab80 must be --onto boundary: replay only metrics own commits, never parent projection. Preserve latest verified review fix (independent supported source observations/coherent capture pairs), landed no-change completion and durable recovery, and collection/reporting consumer. Run meaningful combined checks, no broad changes or merge.",
+      "text": "[rebase-conflict] Metrics source548a0b08d7b02a7fdfcb67f4e6899013b6276b9d conflicts in skills/super-code/coordinator.js rebasing onto integration6c332aa22824c185dc474b0fb5055b465cbd1412. Prior rebase aborted clean. Original STACKED base7074121343636addd41f80ef5261de6ffb74ab80 must be --onto boundary: replay only metrics own commits, never parent projection. Preserve latest verified review fix (independent supported source observations/coherent capture pairs), landed no-change completion and durable recovery, and collection/reporting consumer. Run meaningful combined checks, no broad changes or merge."
+    }
+  ]
+}

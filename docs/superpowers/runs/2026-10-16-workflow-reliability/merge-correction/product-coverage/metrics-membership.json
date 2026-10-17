@@ -1,0 +1,43 @@
+{
+  "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "head": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "members": [
+    {
+      "path": "skills/super-code/scripts/ledger-digest",
+      "gitBlob": "ea0310b9994cac7d516230802836e182e5cdf010"
+    },
+    {
+      "path": "skills/super-code/scripts/run-digest",
+      "gitBlob": "ce8ab8c9deb80330a2e9b34f7645886d65c3e255"
+    },
+    {
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "gitBlob": "3ed891e96450432bdbcb726502b8786ad29067d9"
+    },
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "gitBlob": "541a1e02cedf2c97f8c902206afd8b2a55281c3c"
+    },
+    {
+      "path": "tests/super-code/test-run-digest.sh",
+      "gitBlob": "60796d9970299543bbf7d49d0209c5007aae218c"
+    },
+    {
+      "path": "tests/super-code/test-run-profile.sh",
+      "gitBlob": "7c46b1c8ca6218f287fe50344fb31f16ae18f51a"
+    },
+    {
+      "path": "tests/super-code/test-run-profile-in-flight.sh",
+      "gitBlob": "dd45ab1a59c017b6df6ca77dbc2330add96a1e11"
+    },
+    {
+      "path": "tests/super-code/run-profile-fixture.mjs",
+      "gitBlob": "b1046205b308f9e609c333e5cec66a3ece6469fe"
+    },
+    {
+      "path": "tests/super-code/run-profile-ordinary-fixture.mjs",
+      "gitBlob": "a734891e95e39b9191ee194c403d301aab130568"
+    }
+  ],
+  "scope": "Entire changed bodies plus relevant unchanged context; not wholebranch readiness"
+}

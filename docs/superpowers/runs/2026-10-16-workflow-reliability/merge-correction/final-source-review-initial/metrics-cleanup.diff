@@ -1,0 +1,2202 @@
+# Source review metrics-cleanup
+Base 832b051c870ae5c69adfa7f14d770292ab6c1a81
+Head 7b18b0c26b9f19d531c558e112d490743901a13b
+
+ skills/super-code/scripts/ledger-digest            |  67 ++++++--
+ skills/super-code/scripts/remove-task-worktree     |  79 +++++++--
+ skills/super-code/scripts/run-digest               |  22 ++-
+ skills/super-code/scripts/run-profile.mjs          | 179 +++++++++++++++------
+ skills/super-code/scripts/stop-run-processes       | 151 ++++++++++++++---
+ skills/upstream-feedback/SKILL.md                  |  18 ++-
+ skills/upstream-feedback/report-template.md        |  10 +-
+ tests/super-code/run-profile-fixture.mjs           |   1 +
+ tests/super-code/run-profile-ordinary-fixture.mjs  |   2 +-
+ tests/super-code/test-run-digest.sh                |  15 ++
+ tests/super-code/test-run-profile-in-flight.sh     |   3 +-
+ tests/super-code/test-run-profile.sh               | 103 ++++++++++++
+ tests/super-code/test-setup-cleanup.sh             | 132 +++++++++++++++
+ .../test-stop-run-processes-inventory.sh           |  89 ++++++++++
+ .../test-verification-completion-metrics.sh        |  92 +++++++++++
+ 15 files changed, 850 insertions(+), 113 deletions(-)
+
+diff --git a/skills/super-code/scripts/ledger-digest b/skills/super-code/scripts/ledger-digest
+index b17b9ed7..ea0310b9 100755
+--- a/skills/super-code/scripts/ledger-digest
++++ b/skills/super-code/scripts/ledger-digest
+@@ -1,64 +1,107 @@
+ #!/usr/bin/env bash
+ # Reduce a super-code ledger (progress.md) to the lines the coordinator parses, with free text cut.
+ # The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
+ # `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
+ # prints only:
++#   - compact `Recovery:` records, verbatim; a line over 4096 characters becomes
++#     `Recovery gap: <source line number> <ledger path>` (the complete record stays on disk).
++#     Malformed/unknown-version compact records reach the reader for explicit gap reporting;
+ #   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
+ #   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
+ #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
+-#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
++#     tokens: `complete[, verification-only][, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+ #     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
+ #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
+ #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
+-#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
+-# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
++#     becomes `minor [raw class, if any] [recurrence-id: v1-…] [source-line: N]`. The byte
++#     fingerprint keeps unrelated details distinct; N points into this authoritative ledger.
++#     Original finding text stays on disk; process aliases are resolved only by the coordinator.
++# Every other line (header, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+ # The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
+ # an empty ledger from a lost or truncated echo.
+-# Line order is kept: the last line per id wins on resume.
++# Line order is kept: latest Task state wins; Recovery fix history remains append-only.
+ #
+-# Usage: bash ledger-digest LEDGER_PATH
+-# A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
++# Usage: bash ledger-digest [--recovery-line N] LEDGER_PATH
++# Targeted recovery transports that one retained Recovery record verbatim, without the cap.
++# It never projects fields or rewrites the ledger; the coordinator validates the full record.
++# Missing/unreadable ledgers print # ledger-status: <status>; valid empty files print a zero
++# counting header. These observations exit 0; exits 2 on a bad argument.
+ set -euo pipefail
+ 
++recovery_line=0
++if [ "${1:-}" = --recovery-line ]; then
++  if [ $# -ne 3 ] || [[ ! "$2" =~ ^[1-9][0-9]*$ ]]; then
++    echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
++    exit 2
++  fi
++  recovery_line=$2
++  shift 2
++fi
+ if [ $# -ne 1 ]; then
+-  echo "usage: ledger-digest LEDGER_PATH" >&2
++  echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
+   exit 2
+ fi
+-[ -s "$1" ] || exit 0
++if [ ! -e "$1" ]; then echo '# ledger-status: missing'; exit 0; fi
++if [ ! -f "$1" ] || [ ! -r "$1" ]; then echo '# ledger-status: unreadable'; exit 0; fi
+ 
+-awk '
++if digest=$(LC_ALL=C awk -v recovery_line="$recovery_line" '
++BEGIN { for (i = 1; i < 256; i++) ord[sprintf("%c", i)] = i }
++function fingerprint(s, a, b, i, c) {
++  if (match(s, / \[recurrence-id: v1-[0-9]+-[0-9]+-[0-9]+\]$/)) return substr(s, RSTART, RLENGTH)
++  s = trim(s); a = 0; b = 0
++  for (i = 1; i <= length(s); i++) { c = ord[substr(s, i, 1)]; a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }
++  return " [recurrence-id: v1-" length(s) "-" sprintf("%.0f", a) "-" sprintf("%.0f", b) "]"
++}
++function minor(r, text, tag) {
++  text = r; sub(/^minor \(deferred\):[ \t]*/, "", text)
++  tag = match(text, /^\[[A-Za-z0-9][A-Za-z0-9 -]*\]/) ? " " substr(text, RSTART, RLENGTH) : ""
++  return "minor" tag fingerprint(text) " [source-line: " FNR "]"
++}
+ function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+ function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
+ function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
+-function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
++function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) " [source-line: " FNR "]" : "" }
+ {
+   total++
+   line = trim($0)
++  if (recovery_line) {
++    if (FNR == recovery_line && line ~ /^Recovery:/) out[++kept] = line
++    next
++  }
++  if (line ~ /^Recovery:/) {
++    out[++kept] = length(line) > 4096 ? "Recovery gap: " FNR " " FILENAME : line
++    next
++  }
+   if (line ~ /^(Merge|Human action):[ \t]/) { out[++kept] = line; next }
+   if (line ~ /^Edge add:[ \t]/) { e = line; sub(/\)[ \t].*$/, ")", e); out[++kept] = e; next }
+   if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
+   head = line; sub(/\):.*$/, ")", head)            # "Task <n> (<id>)"
+   rest = line; sub(/^[^)]*\):[ \t]*/, "", rest)    # the state text
+   n = split(rest, w, /[ \t]+/)
+   if (rest ~ /^complete/) {
+     s = "complete"
++    if (index(rest, "verification-only")) s = s ", verification-only"
+     if (index(rest, "already merged")) s = s ", already merged"
+     if (index(rest, "review clean")) s = s ", review clean"
+     if (index(rest, "fix pass")) s = s ", fix pass"
+     if (index(rest, "parked")) s = s ", parked"
+     s = s range(rest)
+   } else if (rest ~ /^landed/) s = "landed" range(rest) closure(rest, "review") closure(rest, "blocker") (index(rest, "parked") ? ", parked" : "")
+   else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
+   else if (rest ~ /^BLOCKED/) s = w[1] cause(rest)
+   else if (rest ~ /^cancelled \(/) s = "cancelled ("
+   else if (rest ~ /^cancelled/) s = "cancelled"
+   else if (rest ~ /^stacked on/) s = "stacked on " w[3]
+   else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+-  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
++  else if (rest ~ /^minor \(deferred\):/) s = minor(rest)
+   else next
+   out[++kept] = head ": " s
+ }
+ END {
+   print "# ledger-digest: " kept + 0 " of " total + 0 " lines"
+   for (i = 1; i <= kept; i++) print out[i]
+-}' "$1"
++}' "$1"); then
++  printf '%s\n' "$digest"
++else
++  echo '# ledger-status: unreadable'
++fi
+diff --git a/skills/super-code/scripts/remove-task-worktree b/skills/super-code/scripts/remove-task-worktree
+index 6ac0c1cc..57e75d49 100644
+--- a/skills/super-code/scripts/remove-task-worktree
++++ b/skills/super-code/scripts/remove-task-worktree
+@@ -2,90 +2,127 @@
+ # Remove a finished task's worktree and branch, after stopping the processes started from it.
+ #
+ # Usage:
+ #   bash remove-task-worktree [--keep-branch] [--tmp DIR] WORKTREE BRANCH INTEGRATION_BRANCH
+ #   bash remove-task-worktree --discard [--tmp DIR] WORKTREE BRANCH
+ #   bash remove-task-worktree --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]
+ #
+ # Default mode keeps the worktree (exit 3, nothing changed) when it has uncommitted or untracked
+ # non-ignored files (its .tmp/ is excluded), or when BRANCH is not an ancestor of INTEGRATION_BRANCH.
+ # Otherwise it stops every process belonging to WORKTREE (scripts/stop-run-processes: cwd,
+-# executable, arguments or HOME/TMPDIR under it, plus their children; TERM, then KILL), runs
++# executable, exact HOME/TMPDIR or orphan argument paths under it; TERM, then KILL), runs
+ # `git worktree remove` (never --force) and `git branch -d` (never -D). --keep-branch skips the
+ # branch delete (a task other tasks may still stack on). --discard is for a cancelled task whose
+ # work is abandoned by design: it skips both guards and removes with --force / -D.
+ # --sweep runs the default mode on every worktree under ROOT, then `git branch -d` on each listed
+ # BRANCH that still exists without a worktree.
+ # --tmp DIR names the task's temp root (or, with --sweep, the run's), which must be /tmp/sp-<hex>[/<name>]:
+-# once the worktree is gone (--sweep: once nothing was kept) its processes are stopped and DIR is deleted.
++# worktree and temp processes are verified stopped before any resource is removed. Survivors,
++# unknown inspection or interactive preservation retain all resources checked in that cleanup.
+ #
+ # Output, one fact per line: `stopped:` / `survived: <pid> <command> — <why>`, `removed: <worktree>`,
+ # `deleted: <branch>`, `kept: <worktree-or-branch> — <reason>`.
+-# Exit 0 done, 2 bad input, 3 something was kept.
++# Exit 0 verified done, 2 bad input, 3 something was kept, 4 process inspection unverified.
+ set -euo pipefail
+ 
+ usage() { echo "usage: remove-task-worktree [--keep-branch|--discard] [--tmp DIR] WORKTREE BRANCH [INTEGRATION_BRANCH] | --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]" >&2; exit 2; }
+ 
+ here=$(cd "$(dirname "$0")" && pwd)
+-stop_processes() {  # $1 = absolute worktree path; one implementation, shared with the Finish sweep
+-  bash "$here/stop-run-processes" "$1" || true
++stop_processes() {  # Check all resources together before deleting any of them.
++  local status=0 resource
++  bash "$here/stop-run-processes" "$@" || status=$?
++  [ "$status" = 0 ] && return 0
++  for resource in "$@"; do echo "kept: $resource — process cleanup incomplete (exit $status)"; done
++  return "$status"
+ }
++sweep_verified=
++
+ 
+ exclude_tmp() {  # task temp state lives in <worktree>/.tmp/; it must never read as uncommitted work
+   local ex; ex="$(git -C "$1" rev-parse --git-common-dir)/info/exclude"
+   mkdir -p "$(dirname "$ex")"
+   grep -qx '/.tmp/' "$ex" 2>/dev/null || echo '/.tmp/' >> "$ex"
+ }
+ 
+ integ_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges merged-ness against it
+   git worktree list --porcelain | awk -v b="branch refs/heads/$1" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'
+ }
+ 
++discard_branch() {
++  local branch=$1 listed
++  if ! listed=$(git branch --list "$branch" 2>/dev/null); then
++    echo "unknown: $branch — git branch inspection failed"
++    echo "kept: $branch — branch cleanup unverified"
++    return 4
++  fi
++  [ -n "$listed" ] || return 0  # Successful inspection proved it already absent.
++  if git branch -D "$branch" >/dev/null 2>&1; then echo "deleted: $branch"; return 0; fi
++  echo "kept: $branch — git branch -D refused"
++  return 3
++}
++
+ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration
+   local mode=$1 wt=$2 br=$3 integ=${4:-}
+   if [ ! -d "$wt" ]; then
+     if [ "$mode" = discard ]; then
+-      git worktree prune
+-      git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+-      return 0
++      local status=0
++      if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
++      else stop_processes "$wt" || status=$?; fi
++      [ "$status" = 0 ] || return "$status"
++      if ! git worktree prune; then
++        echo "unknown: $wt — git worktree prune failed"
++        echo "kept: $br — worktree cleanup unverified"
++        return 4
++      fi
++      discard_branch "$br"
++      return $?
+     fi
+     echo "kept: $wt — not a directory (already removed?)"; return 3
+   fi
+   wt=$(cd "$wt" && pwd -P)
+   case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --git-common-dir)/.." ;; esac
+   exclude_tmp "$wt"
+   if [ "$mode" != discard ]; then
+     if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then
+       echo "kept: $wt — uncommitted or untracked changes"; return 3
+     fi
+     if ! git -C "$wt" merge-base --is-ancestor "$br" "$integ" 2>/dev/null; then
+       echo "kept: $wt — $br is not merged into $integ"; return 3
+     fi
+   fi
+-  stop_processes "$wt"
++  if [ -z "$sweep_verified" ]; then
++    local status=0
++    if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
++    else stop_processes "$wt" || status=$?; fi
++    [ "$status" = 0 ] || return "$status"
++  fi
+   if [ "$mode" = discard ]; then
+-    git worktree remove --force "$wt" && echo "removed: $wt"
+-    git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+-    return 0
++    if ! git worktree remove --force "$wt"; then
++      echo "kept: $wt — git worktree remove refused"
++      echo "kept: $br — worktree removal incomplete"
++      return 3
++    fi
++    echo "removed: $wt"
++    discard_branch "$br"
++    return $?
+   fi
+   if ! git worktree remove "$wt" 2>/dev/null; then
+     echo "kept: $wt — git worktree remove refused"; return 3
+   fi
+   echo "removed: $wt"
+   [ "$mode" = keep-branch ] && return 0
+   local idir; idir=$(integ_dir "$integ")
+   if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; return 3; fi
+ }
+ 
+ clean_tmp() {  # $1 = the --tmp DIR (validated); stop what runs under it, then delete it
+   [ -n "$1" ] && [ -e "$1" ] || return 0
+-  stop_processes "$1"
+   rm -rf "$1" && echo "removed: $1"
+ }
+ 
+ mode=default tmp=
+ while [ $# -gt 0 ]; do
+   case "$1" in
+     --keep-branch) mode=keep-branch; shift ;;
+     --discard) mode=discard; shift ;;
+     --sweep) mode=sweep; shift ;;
+     --tmp) [ $# -ge 2 ] || usage; tmp=$2; shift 2
+@@ -93,30 +130,42 @@ while [ $# -gt 0 ]; do
+     -*) usage ;;
+     *) break ;;
+   esac
+ done
+ 
+ if [ "$mode" = sweep ]; then
+   [ $# -ge 2 ] || usage
+   root=$1 integ=$2; shift 2
+   git rev-parse --verify -q "$integ" >/dev/null || { echo "unknown branch: $integ" >&2; exit 2; }
+   rc=0
++  if [ -n "$tmp" ]; then stop_processes "$root" "$tmp" || rc=$?
++  else stop_processes "$root" || rc=$?; fi
++  if [ "$rc" != 0 ]; then
++    while IFS= read -r line; do
++      case "$line" in
++        "worktree "*) retained=${line#worktree }
++          case "$retained/" in "$root"/*) echo "kept: $retained — process cleanup incomplete (exit $rc)" ;; esac ;;
++      esac
++    done < <(git worktree list --porcelain)
++    exit "$rc"
++  fi
++  sweep_verified=1
+   if [ -d "$root" ]; then
+     root=$(cd "$root" && pwd -P)
+     wt="" br=""
+     while IFS= read -r line; do
+       case "$line" in
+         "worktree "*) wt=${line#worktree } br="" ;;
+         "branch refs/heads/"*) br=${line#branch refs/heads/} ;;
+         "")
+           case "$wt/" in
+-            "$root"/*) if [ -n "$br" ]; then remove_one default "$wt" "$br" "$integ" || rc=3
++            "$root"/*) if [ -n "$br" ]; then remove_one default "$wt" "$br" "$integ" || rc=$?
+                        else echo "kept: $wt — detached HEAD"; rc=3; fi ;;
+           esac
+           wt="" br="" ;;
+       esac
+     done < <(git worktree list --porcelain; echo)
+   fi
+   for br in "$@"; do
+     git rev-parse --verify -q "refs/heads/$br" >/dev/null || continue
+     if git worktree list --porcelain | grep -qx "branch refs/heads/$br"; then continue; fi
+     if ! git merge-base --is-ancestor "$br" "$integ"; then echo "kept: $br — not merged into $integ"; rc=3; continue; fi
+@@ -128,13 +177,13 @@ if [ "$mode" = sweep ]; then
+   fi
+   exit $rc
+ fi
+ 
+ if [ "$mode" = discard ]; then [ $# -eq 2 ] || usage; else [ $# -eq 3 ] || usage; fi
+ git rev-parse --verify -q "refs/heads/$2" >/dev/null || { [ "$mode" = discard ] || { echo "unknown branch: $2" >&2; exit 2; }; }
+ [ "$mode" = discard ] || git rev-parse --verify -q "$3" >/dev/null || { echo "unknown branch: $3" >&2; exit 2; }
+ rc=0
+ remove_one "$mode" "$1" "$2" "${3:-}" || rc=$?
+ if [ -n "$tmp" ]; then
+-  if [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
++  if [ "$rc" = 0 ] && [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
+ fi
+ exit $rc
+diff --git a/skills/super-code/scripts/run-digest b/skills/super-code/scripts/run-digest
+index 32762af5..ce2d0bfd 100755
+--- a/skills/super-code/scripts/run-digest
++++ b/skills/super-code/scripts/run-digest
+@@ -80,37 +80,53 @@ build_state() {
+   local want_beads=0 want_flight=0
+   if [ -n "$epic" ]; then want_beads=1; start_src beads src_beads; started="$started beads"; fi
+   if [ -n "$epic" ] && [ -n "$session" ] && [ -n "$harness" ]; then want_flight=1; start_src inflight src_inflight; started="$started inflight"; fi
+   wait_srcs
+ 
+   local ok_ledger=0 ok_beads=0 ok_flight=0
+   [ -n "$ledger" ] && src_ok ledger && ok_ledger=1
+   [ "$want_beads" = 1 ] && src_ok beads && ok_beads=1
+   [ "$want_flight" = 1 ] && src_ok inflight && ok_flight=1
+ 
++  local ledger_unavailable=
++  if [ "$ok_ledger" = 1 ]; then
++    ledger_unavailable=$(awk '/^# ledger-status: (missing|unreadable)$/ { sub(/^# ledger-status: /, ""); print; exit }' "$T/ledger")
++    if [ -z "$ledger_unavailable" ] && ! awk '
++      NR == 1 { if ($0 !~ /^# ledger-digest: [0-9]+ of [0-9]+ lines$/ || $3 > $5) exit 1; kept = $3; next }
++      END { if (NR == 0 || NR - 1 != kept) exit 1 }
++    ' "$T/ledger"; then ledger_unavailable="invalid transport"; fi
++    if [ -n "$ledger_unavailable" ]; then ok_ledger=0; fi
++  fi
++
+   # Ledger: counts and the tail.
+   local ledger_counts tail_lines=() ntail=0 line
+   if [ -z "$ledger" ]; then
+     ledger_counts="ledger: none yet"
+   elif [ "$ok_ledger" = 1 ]; then
+     ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
++      /^Merge: [^ ]+ — / && $0 !~ / → / { merged[$2] = 1 }
+       match($0, /^Task [^ ]+ \([^)]+\): /) {
+         id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
+         st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
+-        if (st ~ /^(complete|landed)/) s = "L"; else if (st ~ /^BLOCKED/) s = "B"
++        if (st ~ /^complete/ && st ~ /verification-only/) s = "V"
++        else if (st ~ /^(complete|landed)/) { s = "L"; merged[id] = 1 }
++        else if (st ~ /^BLOCKED/) s = "B"
+         else if (st ~ /^pending retry/) s = "P"; else if (st ~ /^cancelled/) s = "C"; else next
+         state[id] = s
+       }
+-      END { for (i in state) c[state[i]]++
+-        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
++      END { for (i in state) { c[state[i]]++; if (state[i] == "V" && merged[i]) c["L"]++ }
++        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"]
++        if (c["V"]) printf " · verification-only %d", c["V"] }')
+     while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
+     ntail=${#tail_lines[@]}
++  elif [ -n "$ledger_unavailable" ]; then
++    ledger_counts="ledger: unknown — $ledger_unavailable"
+   else
+     ledger_counts="ledger: unknown"
+   fi
+ 
+   # Open beads.
+   local beads_line_kind beads_total=0 ids=() nids=0
+   if [ -z "$epic" ]; then beads_line_kind=none
+   elif [ "$ok_beads" = 1 ]; then
+     beads_line_kind=ok
+     while IFS= read -r line; do [ -n "$line" ] && ids[${#ids[@]}]=$line; done <"$T/beads"
+diff --git a/skills/super-code/scripts/run-profile.mjs b/skills/super-code/scripts/run-profile.mjs
+index c84390ea..f4779727 100644
+--- a/skills/super-code/scripts/run-profile.mjs
++++ b/skills/super-code/scripts/run-profile.mjs
+@@ -36,22 +36,23 @@ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | -
+   --epic <id>         the root epic (required with --discover; otherwise read from the runs)
+   --in-flight         instead: list one session's dispatches that started and have not finished,
+                       one \`in-flight: <label> · <age>\` line each (nothing in flight: no lines);
+                       scans only --session's own files (--harness claude: CLAUDE_CONFIG_DIR, else
+                       ~/.claude; codex: CODEX_HOME, else ~/.codex); an unreadable root prints
+                       \`in-flight: unknown — <reason>\`
+   --projects <dir>    where --discover looks for Claude Code sessions (default: ~/.claude/projects)
+   --codex-home <dir>  where Codex keeps sessions/ (default: ~/.codex)
+   --ledger <file>     the run's progress.md, for ordinary-subagent runs (default: the one the
+                       coordinator's commands name): merge and task outcomes
+-  --beads <file>      a saved \`bd list --all --json --limit 0\` dump, for ordinary-subagent runs
+-                      (default: run bd in the coordinator's directory): the dependency graph
++  --beads <file>      a saved \`bd list --all --json --limit 0\` dump: creation evidence, and for
++                      ordinary-subagent runs the observed residual dependency graph
++                      (default for ordinary runs: run bd in the coordinator's directory)
+   --cap <N>           the coordinator's slot cap (default: min(concurrency, runtimeSlots - 2) from
+                       the Launch: line; for an ordinary-subagent run, its Launch: concurrency,
+                       else 1; else unlimited)
+   --out <prefix>      also write <prefix>.md (tables, critical path, timeline) and <prefix>.json
+   --include-dry-run   keep invocations launched with dryRun: true (skipped by default)
+   --context-window <N>  the context window of every Claude Code agent, in tokens (default: the
+                       model table; Codex windows always come from the rollout)
+   --context-only      only the context lines, for any session: no coordinator check, epic, ledger,
+                       bd or timing; exit 3 when no transcript has a usage row
+   --session <file>    with --context-only: a Claude Code session transcript, every row, with its
+@@ -298,21 +299,21 @@ function stageOf(kind, suffix) {
+     case 'review': return 'review'
+     case 'fix': return suffix ? 'seam' : 'fix'
+     case 'seam-review': return 'seam'
+     case 'merge': return 'merge'
+     case 'review-bead': return 'split'
+     case 'triage': case 'clarify': case 'notify': case 'missing-blocker': case 'unplanned-blocker': return 'blocker'
+     case 'close-only': case 'close-check': return 'close'
+     case 'reopen': case 'discard': return 'cancel'
+     case 'ledger': case 'ledger-append': case 'read-ledger': return 'ledger'
+     case 'plan': case 'plan-rest': case 'split': case 'close-split': return 'planning'
+-    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': return 'ready'
++    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': case 'resume-check': return 'ready'
+     case 'edge-audit': case 'edge-cuts': case 'edge-add': return 'audit'
+     case 'sweep': case 'final-review': case 'reconcile-buckets': case 'worktree-sweep': case 'assemble': return 'finish'
+     default: return 'other'
+   }
+ }
+ const LANE = new Set(['merge', 'seam'])
+ const IN_SLOT = new Set(['implement', 'review', 'fix', 'blocker', 'close', 'cancel'])
+ 
+ // ---- what a dispatch's tool time went to ----
+ // A Bash call is split into its sub-commands (`&&`, `||`, `;`, `|`, `&`, newlines, outside quotes;
+@@ -482,21 +483,21 @@ function discover(projects, epic) {
+   }
+   return found
+ }
+ 
+ // ---- ordinary-subagent runs (coordinator-subagents.md): Codex rollouts, Claude Code subagent directories ----
+ // Dispatch names follow the label grammar. On Claude Code the Agent description is the label itself
+ // (`impl:<bead>`). Codex task names allow only [a-z0-9_], so there it is `<kind>_<bead>[_<suffix>]`
+ // with every other character of the bead id written `_`, and `__<n>` appended to a repeated name.
+ const normName = s => String(s).toLowerCase().replace(/[^a-z0-9_]/g, '_')
+ const RUN_KINDS = ['plan', 'plan-rest', 'final-review', 'sweep', 'worktree-sweep', 'reconcile-buckets', 'bd-ready', 'close-epics',
+-  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append']
++  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append', 'resume-check']
+ const KINDS_LONGEST_FIRST = [...BEAD_KINDS].sort((a, b) => b.length - a.length)
+ // The label a Codex task name stands for; byNorm maps a normalized bead id to the id (null when two
+ // ids normalize alike). Null when the name does not follow the rule.
+ function codexLabel(name, byNorm) {
+   const n = String(name ?? '').replace(/__\d+$/, '')
+   for (const kind of KINDS_LONGEST_FIRST) {
+     const pre = normName(kind) + '_'
+     if (!n.startsWith(pre)) continue
+     const rest = n.slice(pre.length)
+     let best = null
+@@ -704,35 +705,40 @@ function discoverOrdinary(projects, epic) {
+   const idx = codexIndex()
+   const parents = new Set(idx.map(e => e.parent).filter(Boolean))
+   const codex = [...new Set(idx.filter(e => !e.sub && parents.has(e.id)).filter(e => { try { return readFileSync(e.file, 'utf8').includes(marker) } catch { return false } }).map(e => e.id))]
+   return { subagents, codex }
+ }
+ // The ledger's outcomes: a bead landed on a success `Merge:` line (no ` → blocker|auth-refused|held`)
+ // or a `Task … complete` line, and is blocked on `Task … BLOCKED`.
+ function readLedger(file) {
+   let text
+   try { text = readFileSync(file, 'utf8') } catch { return null }
+-  const landed = new Set(), blocked = new Set(), ids = new Set()
++  const landed = new Set(), verified = new Set(), blocked = new Set(), ids = new Set(), latestStatus = new Map()
+   let epic = null, concurrency = null, earlyUnblock = false
+   for (const line of text.split('\n')) {
+     let m
+     if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) {
+       epic = m[1]
+       concurrency = Number(/ · concurrency (\d+)/.exec(line)?.[1]) || concurrency
+       earlyUnblock = / · earlyUnblock on\b/.test(line)
+     }
+     else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
+     else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
+-    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
++    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) {
++      ids.add(m[1])
++      const status = m[2] === 'BLOCKED' ? 'BLOCKED' : /\bverification-only\b/.test(line) ? 'VERIFIED' : 'IMPLEMENTED'
++      ;(status === 'BLOCKED' ? blocked : status === 'VERIFIED' ? verified : landed).add(m[1])
++      latestStatus.set(m[1], status)
++    }
+     else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
+   }
+-  return { file, epic, concurrency, earlyUnblock, landed, blocked, ids }
++  return { file, epic, concurrency, earlyUnblock, landed, verified, blocked, ids, latestStatus }
+ }
+ function bdDump(cwd) {
+   if (!cwd || !isDir(cwd)) return null
+   try { return JSON.parse(execFileSync('bd', ['list', '--all', '--json', '--limit', '0'], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 1 << 28 })) } catch { return null }
+ }
+ // The epic's leaves and their in-tree blockers, as tree-deps defines them but over every status (the
+ // run is over, so most are closed): in-tree by parent links, not epics, not blocker or review beads.
+ function bdLeaves(dump, epic) {
+   const byId = new Map(dump.filter(b => b?.id).map(b => [b.id, b]))
+   const parents = b => [...(b.dependencies ?? []).filter(d => d.type === 'parent-child').map(d => d.depends_on_id), ...(b.parent ? [b.parent] : [])]
+@@ -845,22 +851,23 @@ if (opt.summarize) {
+   const cat = {}
+   for (const x of ps) for (const [k, v] of Object.entries(x.criticalPath.byCategory)) add(cat, k, v)
+   const ct = sum(Object.values(cat))
+   out.push(`Baseline: critical path — ${Object.entries(cat).sort((a, b) => b[1] - a[1]).filter(([, v]) => v >= 0.005 * ct).map(([k, v]) => `${k} ${pct(v, ct)}%`).join(' · ')} (of ${H(ct)})`)
+   const ver = {}
+   for (const x of ps) add(ver, verdictOf(x), 1)
+   out.push(`Baseline: verdicts — ${Object.entries(ver).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(' · ')}`)
+   const fits = ps.map(x => x.simulation?.fit).filter(f => typeof f === 'number').sort((a, b) => a - b)
+   if (fits.length) out.push(`Baseline: model fit — median ${fits[Math.floor(fits.length / 2)]} · within 10% of actual ${fits.filter(f => f >= 0.9 && f <= 1.1).length} of ${fits.length} · lowest ${fits[0]}`)
+   const w = {}, wn = {}
+-  for (const x of ps) for (const b of x.beads) if (b.landed && b.waitCause !== 'none') { add(w, b.waitCause, b.waitMs); add(wn, b.waitCause, 1) }
+-  out.push(`Baseline: waits, summed per bead (not wall time) — ${Object.keys(w).length ? Object.entries(w).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${wn[k]})`).join(' · ') : 'none past dispatch latency'}`)
++  for (const x of ps) for (const b of x.beads) if (b.landed && b.waitCause !== 'none' && Number.isFinite(b.waitMs)) { add(w, b.waitCause, b.waitMs); add(wn, b.waitCause, 1) }
++  const unknownWaits = sum(ps.map(x => x.beads.filter(b => b.landed && !Number.isFinite(b.waitMs)).length))
++  out.push(`Baseline: waits, summed per bead (not wall time) — ${Object.keys(w).length ? Object.entries(w).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${wn[k]})`).join(' · ') : unknownWaits ? 'none measured past dispatch latency' : 'none past dispatch latency'}${unknownWaits ? ` · unknown readiness for ${unknownWaits} landed bead(s); wait not measured` : ''}`)
+   const rd = {}, rn = {}
+   for (const x of ps) for (const [k, v] of Object.entries(x.criticalPath.redo ?? {})) { add(rd, k, v.ms); add(rn, k, v.beads.length) }
+   if (Object.values(rd).some(v => v >= 1000)) out.push(`Baseline: redo on the critical path, up to — ${Object.entries(rd).filter(([, v]) => v >= 1000).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${rn[k]})`).join(' · ')} (of ${H(sum(ps.map(x => x.window.graphMs)))} task-graph time)`)
+   const withDeps = ps.flatMap(x => x.beads.filter(b => b.landed && b.deps.length))
+   out.push(`Baseline: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${withDeps.filter(b => b.stackParents.length).length} · bounced on a stack conflict ${withDeps.filter(b => b.waitCause === 'stack-conflict').length} · waited for a merge ${withDeps.filter(b => b.waitCause === 'waited-for-merge').length}`)
+   const busy = sum(ps.map(x => x.lane.busyMs)), seam = sum(ps.map(x => x.lane.seamMs))
+   out.push(`Baseline: merge lane — busy ${H(busy)} · seam reviews and fixes ${pct(seam, busy)}% of it · queue wait ${H(sum(ps.map(x => x.lane.queueWaitMs)))} summed · first try not merged ${sum(ps.map(x => x.lane.firstTryFailed))} of ${sum(ps.map(x => x.lane.firstTryKnown ?? x.beads.filter(b => b.landed).length))}`)
+   const tsum = k => sum(ps.map(x => x.tests?.[k] ?? 0))
+   if (tsum('busyMs')) out.push(`Baseline: tests — implementers and fixers, summed: ${H(tsum('testMs'))} running tests and ${H(tsum('pollMs'))} polling background runs, ${pct(tsum('testMs') + tsum('pollMs'), tsum('busyMs'))}% of their ${H(tsum('busyMs'))} · ${tsum('cappedCalls')} Bash call(s) at the 10-minute tool limit`)
+   const st = new Map()
+@@ -930,31 +937,34 @@ if (opt.latest && runs.length > 1) {
+   }
+ }
+ // Every exit path below prints the one context result: before its Profile: unmeasured line, or with
+ // a line of its own where it prints none.
+ const printContext = () => { const c = contextResult(runs); console.log([...c.lines, ...contextUnmeasured(c)].join('\n')) }
+ 
+ // ---- ordinary-subagent runs: labels from dispatch names, outcomes from the ledger, the graph from bd,
+ // and the merges, which the coordinator runs itself, from its own commands ----
+ const ordinary = runs.filter(r => r.source !== 'workflow')
+ const serialRuns = new Set(ordinary.map(r => r.runId))
++let tracker = null
++if (opt.beads) { try { tracker = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
++const timestamp = t => typeof t === 'string' && Number.isFinite(Date.parse(t)) ? Date.parse(t) : null
+ let ledger = null, leaves = null, noLaneTiming = 0
+ if (ordinary.length) {
+   const named = [...new Set(ordinary.flatMap(r => r.callerCalls.flatMap(c => [...c.text.matchAll(LEDGER_RE)].map(m => m[1]))))]
+   const ledgerPath = opt.ledger ?? named.find(f => existsSync(f) && (!opt.epic || f.includes(`/${opt.epic}-plan/`)))
+   ledger = ledgerPath ? readLedger(ledgerPath) : null
+   if (opt.ledger && !ledger) die(2, `cannot read the ledger: ${opt.ledger}`)
+   const ep = opt.epic ?? ledger?.epic
+   if (!ep) { printContext(); die(2, 'an ordinary-subagent run needs --epic <id> (or a --ledger whose Launch: line names it)') }
+-  let dump = null
+-  if (opt.beads) { try { dump = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
+-  else for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
++  let dump = tracker
++  if (!opt.beads) for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
++  tracker = dump
+   leaves = Array.isArray(dump) ? bdLeaves(dump, ep) : null
+   const ids = new Set([...(leaves?.keys() ?? []), ...(ledger?.ids ?? [])])
+   const byNorm = new Map()
+   for (const id of ids) { const k = normName(id); byNorm.set(k, byNorm.has(k) && byNorm.get(k) !== id ? null : id) }
+   for (const r of ordinary) {
+     r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: ledger?.concurrency ?? 1, earlyUnblock: !!ledger?.earlyUnblock } }
+     r.journal = !!ledger
+     for (const a of r.agents.values()) {
+       const label = r.source === 'codex' ? codexLabel(a.name, byNorm) : a.name
+       const p = parseLabel(label ?? '')
+@@ -980,22 +990,22 @@ if (ordinary.length) {
+         while (i < opens.length && opens[i].start < stop) i++
+       }
+     }
+   }
+   if (ledger) {
+     const all = ordinary.flatMap(r => [...r.agents.values()]).filter(a => a.bead && a.start !== undefined).sort((x, y) => x.start - y.start)
+     for (const id of new Set(all.map(a => a.bead))) {
+       const as = all.filter(a => a.bead === id), merges = as.filter(a => a.kind === 'merge'), impls = as.filter(a => a.kind === 'impl')
+       const ok = ledger.landed.has(id)
+       merges.forEach((a, i) => { a.result = { merged: ok && i === merges.length - 1 } })
+-      if (impls.length) impls.at(-1).result = { status: ok ? 'IMPLEMENTED' : ledger.blocked.has(id) ? 'BLOCKED' : null }
+-      if (ok && !merges.length) {
++      if (impls.length) impls.at(-1).result = { status: ledger.latestStatus.get(id) ?? (ok ? 'IMPLEMENTED' : null) }
++      if (ok && !merges.length && ledger.latestStatus.get(id) !== 'VERIFIED') {
+         // Landed, but no merge in the coordinator's log: a zero-length landing where its chain ended.
+         const last = latest(as), r = ordinary.find(x => x.runId === last.run)
+         const m = { id: `${r.runId}:merge:${id}:end`, run: r.runId, label: `merge:${id}`, synthetic: true, mapped: true, start: last.end, end: last.end, dur: 0, toolMs: 0, byCat: {}, calls: [], result: { merged: true } }
+         Object.assign(m, parseLabel(m.label)); m.stage = 'merge'
+         r.agents.set(m.id, m)
+         noLaneTiming++
+       }
+     }
+   }
+ }
+@@ -1011,22 +1021,28 @@ for (const r of runs) for (const a of r.agents.values()) {
+   if (!prev || (prev.start === undefined && a.start !== undefined)) agentById.set(a.id, a)
+ }
+ const allAgents = [...agentById.values()]
+ const realAgents = allAgents.filter(a => !a.synthetic)
+ const timed = allAgents.filter(a => a.start !== undefined && a.label).sort((a, b) => a.start - b.start || a.end - b.end)
+ const untimed = allAgents.filter(a => a.start === undefined)
+ if (!timed.some(a => a.bead) && !timed.some(a => serialRuns.has(a.run))) {
+   const why = !dirs.length && !codexIn.length && !subIn.length ? `no Workflow run directory found${opt.epic ? ` for ${opt.epic}` : ''}, nor an ordinary-subagent coordinator's log (this harness keeps none, or they were cleaned up)`
+     : !runs.length ? `every run given was a dryRun launch (${skippedDry.map(r => r.runId).join(', ')})`
+     : 'no timed task dispatch in the runs given (transcripts missing)'
+-  printContext()
+-  console.log(`Profile: unavailable — ${why}`)
++  const ctx = contextResult(runs)
++  const lines = [...ctx.lines, ...contextUnmeasured(ctx), `Profile: unavailable — ${why}`]
++  console.log(lines.join('\n'))
++  if (opt.out) {
++    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, unavailable: why,
++      invocations: [], context: contextJson(ctx.summary), summary: lines }, null, 2) + '\n')
++    writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '', contextMarkdown(ctx.summary)].join('\n'))
++  }
+   process.exit(3)
+ }
+ const invocations = runs.map(r => {
+   const as = timed.filter(a => a.run === r.runId)
+   return { runId: r.runId, dir: r.dir, source: r.source, journal: r.journal, launch: r.launch, agents: [...r.agents.values()].filter(a => !a.synthetic).length, timed: as.length,
+     start: as.length ? as[0].start : null, end: as.length ? Math.max(...as.map(a => a.end)) : null }
+ }).filter(v => v.start !== null).sort((a, b) => a.start - b.start)
+ const launch = invocations.map(v => v.launch).filter(Boolean).at(-1) ?? null
+ const cfg = launch?.config ?? {}
+ const earlyUnblock = cfg.earlyUnblock !== false
+@@ -1050,21 +1066,21 @@ const runLevel = (() => {
+     n += d; prev = t; peak = Math.max(peak, n)
+   }
+   const kinds = {}
+   for (const a of ds) { const k = kinds[a.kind + (a.mapped ? '' : '?')] ??= { kind: a.kind, mapped: a.mapped, ms: 0, n: 0 }; k.ms += a.dur; k.n++ }
+   const merges = timed.filter(a => a.synthetic && serialRuns.has(a.run))
+   const wall = s1 - s0, busy = unionMs(ds.map(a => [a.start, a.end]))
+   const kt = ks => { ks.sort((x, y) => y.ms - x.ms); const rest = ks.slice(8); return [...ks.slice(0, 8).map(k => `${k.kind} ${fmtDur(k.ms)} (${k.n})`), ...(rest.length ? [`${rest.length} more ${fmtDur(sum(rest.map(k => k.ms)))} (${sum(rest.map(k => k.n))})`] : [])].join(' · ') }
+   const mapped = Object.values(kinds).filter(k => k.mapped), unmapped = Object.values(kinds).filter(k => !k.mapped)
+   return {
+     unmapped: ds.filter(a => !a.mapped).length,
+-    json: { dispatches: ds.length, wallMs: wall, busyMs: busy, byActive, peak, kinds: Object.values(kinds), coordinatorMergeMs: sum(merges.map(a => a.dur)) },
++    json: { scope: 'all-agent concurrency', dispatches: ds.length, wallMs: wall, busyMs: busy, byActive, peak, kinds: Object.values(kinds), coordinatorMergeMs: sum(merges.map(a => a.dur)) },
+     lines: [
+       `Profile: concurrency — ${ds.length} dispatches over ${fmtDur(wall)} · a dispatch running ${fmtDur(busy)} (${pct(busy, wall)}%) · dispatches at once: ${Object.entries(byActive).map(([k, v]) => `${k === '3' ? '3+' : k} for ${pct(v, wall)}%`).join(' · ')} of the time · peak ${peak}`,
+       `Profile: dispatch time by kind, summed — ${[kt(mapped), unmapped.length ? `not named for a bead: ${kt(unmapped)}` : '', merges.length ? `merges run by the coordinator ${fmtDur(sum(merges.map(a => a.dur)))} (${merges.length})` : ''].filter(Boolean).join(' · ')}`,
+     ],
+   }
+ })()
+ const RULE = 'coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code'
+ if (!timed.some(a => a.bead)) {
+   // No dispatch maps to a bead: only the run-level lines.
+   const end = Math.max(...timed.map(a => a.end))
+@@ -1074,55 +1090,60 @@ if (!timed.some(a => a.bead)) {
+     `Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of ${epic} (${RULE})${ctxRes.reasons.length ? `; ${ctxRes.reasons.join('; ')}` : ''}`]
+   console.log(lines.join('\n'))
+   if (opt.out) {
+     writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: new Date(v.start).toISOString(), end: new Date(v.end).toISOString(), agents: v.agents, timed: v.timed })), concurrency: runLevel.json, context: contextJson(ctxRes.summary), summary: lines }, null, 2) + '\n')
+     writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '', contextMarkdown(ctxRes.summary)].join('\n'))
+   }
+   process.exit(0)
+ }
+ 
+ // ---- the graph: every planner row seen, read from journal results (a planner cached on resume has
+-// no transcript). Deps are the open in-tree blockers at that planning, so the union is the run's
+-// graph; plus planner-found missing edges, and applied edge cuts with the time they landed ----
++// no transcript). This union is an observed invocation/residual graph, not reconstructed history;
++// plus planner-found missing edges, and applied edge cuts with the time they landed ----
+ const runStart = new Map(invocations.map(v => [v.runId, v.start]))
+ const doneAt = a => a.end ?? runStart.get(a.run) ?? windowStart
+ const rows = new Map()
+ const cuts = []
+ for (const a of allAgents.filter(x => /^(plan|plan-rest|edge-cuts)$/.test(x.kind ?? '') && x.result).sort((x, y) => doneAt(x) - doneAt(y))) {
+   const at = doneAt(a)
+   const agent = a.start !== undefined ? a : null
+   if (Array.isArray(a.result.mapping)) {
+     for (const m of a.result.mapping) {
+       if (!m || typeof m.id !== 'string') continue
+       const row = rows.get(m.id) ?? { id: m.id, n: m.n, deps: new Set(), files: new Set(), opaque: false, graph: false, mappings: [] }
++      row.createdAt ??= timestamp(m.created_at ?? m.createdAt)
+       for (const d of m.deps ?? []) if (d !== m.id) row.deps.add(d)
+       for (const f of m.files ?? []) row.files.add(f)
+       row.graph ||= Array.isArray(m.deps)
+       row.opaque ||= m.opaque === true
+-      row.mappings.push({ at, agent })
++      row.mappings.push({ at: a.end ?? null, agent })
+       rows.set(m.id, row)
+     }
+     for (const e of a.result.missingEdges ?? []) if (e?.dependent && e?.blocker) rows.get(e.dependent)?.deps.add(e.blocker)
+   }
+   if (a.kind === 'edge-cuts') for (const c of a.result.applied ?? []) if (c?.dependent && c?.blocker) {
+-    cuts.push({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at, agent })
++    cuts.push({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: a.end ?? null, agent })
+     for (const e of c.add ?? []) if (e?.dependent && e?.blocker) rows.get(e.dependent)?.deps.add(e.blocker)
+   }
+ }
+-// An ordinary-subagent run has no planner rows in a journal: its graph is bd's, released when its
+-// first planner returned.
++// Ordinary tracker edges describe the observed residual graph. A timed planner supplies a mapping
++// boundary, not creation or historical dependency releases. Without one the boundary stays unknown.
++const creation = new Map((Array.isArray(tracker) ? tracker : []).map(b => [b.id, timestamp(b.created_at)]))
++const trackerDeps = new Map((Array.isArray(tracker) ? tracker : []).map(b => [b.id,
++  (b.dependencies ?? []).filter(d => d.type === 'blocks').map(d => d.depends_on_id)]))
+ if (leaves) {
+   const plan0 = timed.filter(a => serialRuns.has(a.run) && a.stage === 'planning').sort((x, y) => x.end - y.end)[0] ?? null
+-  for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, mappings: [{ at: plan0 ? plan0.end : windowStart, agent: plan0 }] })
++  for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, residual: true,
++    mappings: plan0 && (creation.get(id) ?? -Infinity) <= plan0.end ? [{ at: plan0.end, agent: plan0 }] : [] })
+ }
+ // The planning a dispatch at time t followed: the bead's latest mapping by then.
+-const mappingFor = (id, t) => { const ms = rows.get(id)?.mappings ?? []; return ms.filter(m => m.at <= t + EPS).at(-1) ?? ms[0] ?? null }
++const mappingFor = (id, t) => (rows.get(id)?.mappings ?? []).filter(m => m.at !== null && m.at <= t + EPS).at(-1) ?? null
+ const cutAt = (dependent, blocker) => cuts.find(c => c.dependent === dependent && c.blocker === blocker)?.at ?? Infinity
+ const depsAt = (id, t) => [...(rows.get(id)?.deps ?? [])].filter(d => rows.has(d) && cutAt(id, d) > t)
+ const dependentsOf = new Map()
+ for (const r of rows.values()) for (const d of r.deps) { if (!dependentsOf.has(d)) dependentsOf.set(d, new Set()); dependentsOf.get(d).add(r.id) }
+ 
+ // ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup),
+ // or with the `brief:` that preceded it in older coordinators ----
+ const beads = new Map()
+ for (const a of timed) if (a.bead) {
+   if (!beads.has(a.bead)) beads.set(a.bead, { id: a.bead, n: rows.get(a.bead)?.n, agents: [], attempts: [] })
+@@ -1138,42 +1159,53 @@ for (const b of beads.values()) {
+     a.attempt = cur
+   }
+   for (const at of b.attempts) {
+     const by = st => at.agents.filter(a => a.stage === st)
+     const head = at.agents[0]
+     at.start = head.start
+     at.run = head.run
+     const implHead = at.agents.find(a => a.kind === 'impl')
+     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
+     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
++    // Workflow verification uses the existing close-only label. Its CLOSED result
++    // settles tracker bookkeeping, not a previously merged branch.
++    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'
++      || at.agents.some(a => a.result?.completionKind === 'verification-only')
++    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly
++      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')
++      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))
++    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
+     at.split = by('split')[0] ?? null
+     at.blocker = by('blocker')
+     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
+     // again after the lane turn.
+     const laneStart = at.lane.length ? at.lane[0].start : Infinity
+     const inSlot = at.agents.filter(a => IN_SLOT.has(a.stage))
+     at.chainEndAgent = latest(inSlot.filter(a => a.end <= laneStart + EPS))
+     at.afterLane = inSlot.filter(a => a.start >= laneStart)
+     // Usable by dependents (early unblock): the end of an implementation that committed.
+     at.implEndAgent = at.status === 'IMPLEMENTED' || (!hasJournal(head.run) && at.impl.length) ? latest(at.impl) : null
+     // The landing: the last merge that reported merged (no journal: the last merge), or a close-only
+     // step that confirmed the branch had already merged.
+     const merges = at.agents.filter(a => a.kind === 'merge')
+     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
+       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
+-      ?? at.agents.filter(a => a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
++      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+   }
+   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
+   // lost) is bookkeeping, counted apart as a re-entry close.
+   b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
+   b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')
+-  b.landed = !!b.final.landing
++  // A prior ledger landing remains a fact even when this invocation only verifies it.
++  // Without a timed merge, do not place that old landing at the verification chain end.
++  b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)
++  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id) || b.attempts.some(at => at.verificationCompleted)
+ }
+ const landingOf = id => beads.get(id)?.final?.landing ?? null
+ const landedBy = (d, t) => beads.get(d)?.attempts.map(at => at.landing).filter(x => x && x.end <= t + EPS).at(-1) ?? null
+ const implementedBy = (d, t) => beads.get(d)?.attempts.map(at => at.implEndAgent).filter(x => x && x.end <= t + EPS).at(-1) ?? null
+ // The earliest event that let dependents use bead d, as of time t: its implementation under early
+ // unblock, else its merge.
+ const usableBy = (d, t) => (earlyUnblock && implementedBy(d, t)) || landedBy(d, t)
+ 
+ // ---- slots and ready queries, for explaining waits ----
+ const hotFileCap = Math.max(1, Number(cfg.hotFileCap) || 3)
+@@ -1203,30 +1235,41 @@ const planners = timed.filter(a => a.stage === 'planning')
+ 
+ // ---- per-bead timeline of the final attempt, and why it started when it did ----
+ const invStartOf = run => runStart.get(run) ?? windowStart
+ for (const b of beads.values()) {
+   const at = b.final
+   const S = at.start
+   const invStart = invStartOf(at.run)
+   const dur = as => sum(as.map(a => a.dur))
+   const deps = depsAt(b.id, S)
+   b.deps = deps
+-  const ready = Math.max(mappingFor(b.id, S)?.at ?? invStart, ...deps.map(d => usableBy(d, S)).filter(Boolean).map(x => x.end))
++  b.createdAt = creation.get(b.id) ?? rows.get(b.id)?.createdAt ?? null
++  b.mappingReadyAt = mappingFor(b.id, S)?.at ?? null
++  // Include external/unobserved blockers too: dropping them from the modeled in-tree graph cannot
++  // establish when they became usable. An empty, known mapping needs no dependency release.
++  const required = [...new Set([...(rows.get(b.id)?.deps ?? []),
++    ...(rows.get(b.id)?.residual ? trackerDeps.get(b.id) ?? [] : [])])].filter(d => d !== b.id && cutAt(b.id, d) > S)
++  const releases = required.map(d => usableBy(d, S)?.end ?? null)
++  b.dependencyReadyAt = !rows.get(b.id)?.graph || releases.some(t => t === null) ? null
++    : required.length ? Math.max(...releases) : b.mappingReadyAt
++  const known = b.mappingReadyAt !== null && b.dependencyReadyAt !== null
++  const ready = known ? Math.max(b.createdAt ?? -Infinity, b.mappingReadyAt, b.dependencyReadyAt) : null
+   // Ready before this invocation began (a relaunch, or the caller's next round): not a wait inside it.
+-  b.carriedMs = Math.max(0, invStart - ready)
+-  b.readyAt = Math.max(ready, invStart)
++  b.carriedMs = ready === null ? null : Math.max(0, invStart - ready)
++  b.readyAt = ready === null ? null : Math.max(ready, invStart)
+   b.dispatchedAt = S
+-  b.waitMs = Math.max(0, S - b.readyAt)
++  b.waitMs = ready === null ? null : Math.max(0, S - b.readyAt)
+   const earlier = b.attempts.filter(x => x !== at && x.start < S)
+   const earlierHere = earlier.filter(x => x.start >= invStart - EPS)
+   const bounced = earlierHere.filter(x => x.status === 'STACK_CONFLICT')
+-  if (b.waitMs <= DISPATCH_GAP) b.waitCause = 'none'
++  if (b.waitMs === null) b.waitCause = 'unknown'
++  else if (b.waitMs <= DISPATCH_GAP) b.waitCause = 'none'
+   else if (bounced.length) b.waitCause = 'stack-conflict'
+   else if (earlierHere.some(x => x.agents.some(a => a.stage === 'cancel'))) b.waitCause = 'cancelled'
+   else if (earlierHere.length) b.waitCause = 'retry'
+   else {
+     const land = deps.map(d => landedBy(d, S)).filter(x => x && x.end >= S - DISPATCH_GAP).at(-1)
+     const rel = slotRelease(b.id, S, b.readyAt)
+     b.waitCause = land ? 'waited-for-merge' : rel?.why === 'slot' ? 'slot' : endedNear(readyQueries, S) ? 'ready-query'
+       : rel?.why === 'hot-file' ? 'hot-file' : endedNear(planners, S) ? 'planning' : 'unexplained'
+   }
+   // Stack conflicts: the bounced attempt's stack parents (implemented, not merged yet) are the ones
+@@ -1248,56 +1291,67 @@ for (const b of beads.values()) {
+   const laneStart = at.lane.length ? at.lane[0].start : null
+   b.laneStart = laneStart
+   b.stackWaitMs = laneStart !== null ? Math.max(0, b.enqueueAt - chainEnd) : 0
+   b.queueWaitMs = laneStart !== null ? Math.max(0, laneStart - b.enqueueAt) : 0
+   b.landedAt = at.landing ? at.landing.end : null
+   b.laneMs = laneStart !== null && b.landedAt !== null ? b.landedAt - laneStart : dur(at.lane)
+   b.seamMs = dur(at.lane.filter(a => a.stage === 'seam'))
+   const first = at.lane[0]?.result
+   b.firstTryMerged = first && typeof first.merged === 'boolean' ? first.merged : null
+ }
+-const landed = [...beads.values()].filter(b => b.landed)
++const verificationCompleted = new Set([...(ledger?.verified ?? []), ...[...beads.values()].filter(b => b.verificationOnlyCompleted).map(b => b.id)])
++const knownLandings = [...beads.values()].filter(b => b.landed)
++const landed = knownLandings.filter(b => b.final.landing) // Only timed landings enter the model.
+ const lastLanding = latest(landed.map(b => b.final.landing))
+ const runEnd = Math.max(...timed.map(a => a.end))
+ // With nothing landed, the task graph ends at its last task step.
+ const lastTaskStep = lastLanding ?? latest(timed.filter(a => a.bead && a.stage !== 'ledger')) ?? latest(timed)
+ const graphEnd = lastTaskStep.end
+ const actualGraphMs = graphEnd - windowStart
++const modelWindow = lastLanding ? 'first dispatch to last landing' : 'first dispatch to last task step'
+ 
+ // ---- merge lane, runtime slots, conflict files ----
+ const laneAgents = timed.filter(a => LANE.has(a.stage))
+ const lane = {
+   busyMs: unionMs(laneAgents.map(a => [a.start, a.end])),
+   seamMs: sum(laneAgents.filter(a => a.stage === 'seam').map(a => a.dur)),
+   spanMs: laneAgents.length ? Math.max(...laneAgents.map(a => a.end)) - laneAgents[0].start : 0,
+   merges: laneAgents.filter(a => a.kind === 'merge').length,
+   firstTryFailed: landed.filter(b => b.firstTryMerged === false).length,
+   firstTryKnown: landed.filter(b => b.firstTryMerged !== null).length,
+   queueWaitMs: sum(landed.map(b => b.queueWaitMs)),
+   stackWaitMs: sum(landed.map(b => b.stackWaitMs)),
+ }
+ {
+   const ev = landed.filter(b => b.laneStart !== null && b.laneStart > b.enqueueAt).flatMap(b => [[b.enqueueAt, 1], [b.laneStart, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
+   let n = 0
+   lane.peakQueue = 0
+   for (const [, d] of ev) { n += d; lane.peakQueue = Math.max(lane.peakQueue, n) }
+ }
+-const runtime = { slots: runtimeSlots, peak: 0, fullMs: 0 }
++const runtime = { scope: 'all-agent concurrency', slots: runtimeSlots, peak: 0, fullMs: 0 }
+ {
+   const ev = timed.filter(a => !a.synthetic).flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
+   let n = 0, prev = null
+   for (const [t, d] of ev) {
+     if (prev !== null && runtimeSlots && n >= runtimeSlots) runtime.fullMs += t - prev
+     n += d; prev = t
+     runtime.peak = Math.max(runtime.peak, n)
+   }
+ }
++const taskSlots = { scope: 'task-slot concurrency', cap: Number.isFinite(cap) ? cap : null, peak: 0, fullMs: 0 }
++{
++  let n = 0, prev = null
++  for (const [t, d] of slotSpans.filter(s => s.end > s.start).flatMap(s => [[s.start, 1], [s.end, -1]]).sort((a, b) => a[0] - b[0] || a[1] - b[1])) {
++    if (prev !== null && n >= cap) taskSlots.fullMs += t - prev
++    n += d; prev = t; taskSlots.peak = Math.max(taskSlots.peak, n)
++  }
++}
+ const FILE_RE = /(?:[\w@.+-]+\/)+[\w@.+-]+\.[A-Za-z0-9]{1,8}\b/g
+ const conflict = new Map()
+ const hit = (f, k) => { const c = conflict.get(f) ?? { file: f, stackConflicts: new Set(), seamOverlaps: 0 }; if (k) c.stackConflicts.add(k); else c.seamOverlaps++; conflict.set(f, c) }
+ for (const b of beads.values()) for (const at of b.attempts) {
+   if (at.status === 'STACK_CONFLICT') for (const f of new Set(String(at.agents[0].result?.finding ?? '').match(FILE_RE) ?? [])) hit(f, b.id)
+   for (const a of at.lane) for (const f of a.result?.seamOverlap ?? []) if (typeof f === 'string') hit(f, null)
+ }
+ const declaredBy = f => [...rows.values()].filter(r => r.files.has(f)).length
+ const hotConflicts = [...conflict.values()].map(c => ({ file: c.file, stackConflicts: c.stackConflicts.size, seamOverlaps: c.seamOverlaps, declaredBy: declaredBy(c.file) }))
+   .sort((x, y) => (y.stackConflicts + y.seamOverlaps) - (x.stackConflicts + x.seamOverlaps) || (x.file < y.file ? -1 : 1))
+@@ -1367,23 +1421,32 @@ const path = []
+ // Segments: each step's own span (clipped so EPS overlaps are not counted twice), the gap before it,
+ // and the lead-in from the run's first dispatch. They sum to the task graph's wall time.
+ const segments = []
+ {
+   let t = windowStart
+   if (path.length && path[0].agent.start > t) { segments.push({ kind: 'startup', bead: null, label: 'run start', start: t, ms: path[0].agent.start - t }); t = path[0].agent.start }
+   for (const step of path) {
+     const a = step.agent
+     const why = step.pred?.why
+     if (step.pred && a.start > t) {
++      const b = beads.get(a.bead)
++      if (why !== 'relaunch' && a.attempt?.agents[0] === a && b?.final === a.attempt) {
++        const end = b.readyAt === null ? a.start : Math.min(a.start, Math.max(t, b.readyAt))
++        if (end > t) {
++          segments.push({ kind: b.readyAt === null ? 'unmeasured-gap' : 'pre-availability', bead: null,
++            label: `${b.readyAt === null ? 'readiness unknown' : 'before availability'} → ${a.label}`, start: t, ms: end - t })
++          t = end
++        }
++      }
+       const gap = a.start - t
+       const kind = why === 'slot' || why === 'hot-file' || why === 'relaunch' ? why : gap <= DISPATCH_GAP ? 'dispatch' : 'wait'
+-      segments.push({ kind, bead: a.bead, label: `${why} → ${a.label}`, start: t, ms: gap })
++      if (gap) segments.push({ kind, bead: a.bead, label: `${why} → ${a.label}`, start: t, ms: gap })
+       t = a.start
+     }
+     const s = Math.max(a.start, t)
+     const ms = Math.max(0, a.end - s)
+     segments.push({ kind: a.stage, bead: a.bead, label: a.label, start: s, ms, agent: a, why })
+     t = s + ms
+   }
+ }
+ const pathMs = sum(segments.map(s => s.ms))
+ const CAT_ORDER = ['implement', 'review', 'fix', 'merge', 'seam', 'split', 'blocker', 'cancel', 'close', 'planning', 'ready', 'audit', 'finish', 'ledger', 'other', 'startup', 'dispatch', 'slot', 'hot-file', 'wait', 'relaunch']
+@@ -1463,23 +1526,30 @@ const shape = shapeOf([...rows.keys()], id => [...(rows.get(id)?.deps ?? [])].fi
+ 
+ // ---- schedule model: the landed beads replayed with their measured times ----
+ // A bead takes a slot for implement + review + fix, then queues for the merge lane once its stack
+ // parents merged; the lane turn includes its seam work. Dependents start at a blocker's
+ // implementation (early unblock), except over the edges where this run's dependent waited for the
+ // merge (a stack conflict, or early unblock not taken): those wait for the blocker's landing.
+ // No planner rows means no graph: no model then. A bead's edges are the ones in force at its dispatch
+ // (a cut that landed later still bound it), and its release is the planning it followed.
+ const simInput = new Map()
+ if (rows.size) for (const b of landed) simInput.set(b.id, { id: b.id, I: b.implMs, R: b.reviewMs + b.fixMs, M: b.laneMs, seam: b.seamMs,
+-  release: (mappingFor(b.id, b.dispatchedAt)?.at ?? invStartOf(b.final.run)) - windowStart, deps: [] })
++  release: Math.max(invStartOf(b.final.run), b.createdAt ?? -Infinity, b.mappingReadyAt ?? b.dispatchedAt,
++    ...(b.readyAt === null ? [b.dispatchedAt] : [])) - windowStart, deps: [] })
+ for (const s of simInput.values()) {
+   const b = beads.get(s.id)
++  // In-model dependencies release dynamically in each scenario. Only releases outside the model
++  // stay fixed to their observed times, or the estimate would erase the benefit of faster parents.
++  for (const d of b.deps.filter(d => !simInput.has(d))) {
++    const u = usableBy(d, b.dispatchedAt)
++    if (u) s.release = Math.max(s.release, u.end - windowStart)
++  }
+   s.deps = b.deps.filter(d => simInput.has(d)).map(d => ({ id: d, late: !earlyUnblock || b.lateEdges.has(d) }))
+ }
+ function simulate(input, { cap = Infinity, lanes = 1 } = {}) {
+   const S = new Map([...input.values()].map(s => [s.id, { ...s, started: null, implEnd: null, chainEnd: null, queued: null, laneStart: null, landed: null, freed: false }]))
+   const all = [...S.values()].sort((a, b) => a.release - b.release || (a.id < b.id ? -1 : 1))
+   const laneFree = Array.from({ length: Number.isFinite(lanes) ? lanes : all.length || 1 }, () => 0)
+   let t = 0, inSlot = 0
+   for (let guard = 0; guard < 1e6; guard++) {
+     let changed = true
+     while (changed) {
+@@ -1533,28 +1603,29 @@ function lowerBoundChain(input) {
+   while (cur && !seen.has(cur)) { seen.add(cur); chain.unshift(cur); cur = memo.get(cur).viaMerge ?? memo.get(cur).by }
+   return { ms, chain }
+ }
+ const withBeads = (fn) => new Map([...simInput].map(([k, v]) => [k, fn(v)]))
+ let sim = null
+ if (simInput.size && !Number.isFinite(simulate(simInput, { cap, lanes: 1 }))) sim = { failed: true, whatIfs: [] }
+ else if (simInput.size) {
+   const base = { cap, lanes: 1 }
+   const asRun = simulate(simInput, base)
+   const s = {
++    estimate: true, window: modelWindow,
+     asRunMs: asRun, actualMs: actualGraphMs, fit: actualGraphMs > 0 ? Math.round(100 * asRun / actualGraphMs) / 100 : null,
+     unlimitedSlotsMs: simulate(simInput, { ...base, cap: Infinity }),
+     unlimitedLanesMs: simulate(simInput, { ...base, lanes: Infinity }),
+     lowerBoundMs: simulate(simInput, { cap: Infinity, lanes: Infinity }),
+     graphChain: lowerBoundChain(simInput).chain,
+     whatIfs: [],
+   }
+-  const push = (kind, target, ms, note) => { if (Number.isFinite(ms) && asRun - ms > Math.max(60000, asRun * 0.01)) s.whatIfs.push({ kind, target, ms, savingMs: asRun - ms, note }) }
++  const push = (kind, target, ms, note) => { if (Number.isFinite(ms) && asRun - ms > Math.max(60000, asRun * 0.01)) s.whatIfs.push({ kind, target, ms, savingMs: asRun - ms, note, estimate: true }) }
+   push('slots', 'unlimited slots', s.unlimitedSlotsMs, 'no slot cap')
+   push('lanes', 'unlimited merge lanes', s.unlimitedLanesMs, 'merges in parallel, each still after its stack parents')
+   if ([...simInput.values()].some(x => x.deps.some(d => d.late))) push('early', 'every early unblock taken', simulate(withBeads(v => ({ ...v, deps: v.deps.map(d => ({ ...d, late: !earlyUnblock })) })), base), 'no stack conflicts: dependents stack on implemented blockers instead of waiting for their merge')
+   if (lane.seamMs > 0) push('seam', 'seam work off the merge lane', simulate(withBeads(v => ({ ...v, R: v.R + v.seam, M: v.M - v.seam })), base), 'rebase and seam review/fix before queueing; the lane only merges (an engine change)')
+   const edges = []
+   for (const x of simInput.values()) for (const d of x.deps) edges.push({ target: `${x.id} <- ${d.id}`, ms: simulate(withBeads(v => (v.id === x.id ? { ...v, deps: v.deps.filter(y => y.id !== d.id) } : v)), base) })
+   for (const e of edges.sort((a, b) => a.ms - b.ms).slice(0, 3)) push('cut', `cut ${e.target}`, e.ms, 'payoff if this edge were cut — whether it can be is a design call')
+   const splits = []
+   for (const x of simInput.values()) {
+     const n = [...simInput.values()].filter(y => y.deps.some(d => d.id === x.id)).length
+@@ -1569,39 +1640,43 @@ else if (simInput.size) {
+   const faster = [...simInput.values()].map(x => ({ id: x.id, ms: simulate(withBeads(v => (v.id === x.id ? { ...v, I: v.I / 2 } : v)), base) }))
+   for (const x of faster.sort((a, b) => a.ms - b.ms).slice(0, 2)) push('faster', `faster ${x.id}`, x.ms, 'its implement time halved')
+   s.whatIfs.sort((a, b) => b.savingMs - a.savingMs)
+   sim = s
+ }
+ 
+ // ---- report ----
+ const lines = []
+ let testTotals = null, slowTests = []
+ const afterMs = Math.max(0, runEnd - graphEnd)
++const diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,
++  dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }
+ const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
+-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
++lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${verificationCompleted.size ? ` · verification-only ${verificationCompleted.size}` : ''}`)
+ const fan = shape.fanOut[0]
++lines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')
+ lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
+ if (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)
+ else if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? (ordinary.length ? 'no dependency graph' : 'no planner rows, so the graph is unknown') : 'nothing landed'}`)
+ else {
+   const above = sim.asRunMs - sim.lowerBoundMs
+   const lanesGain = sim.asRunMs - sim.unlimitedLanesMs, slotsGain = sim.asRunMs - sim.unlimitedSlotsMs
+   const ch = sim.graphChain
+-  sim.verdict = above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'
+-  const verdict = above <= Math.max(60000, 0.1 * sim.asRunMs)
++  sim.verdict = diagnosis.dominant === 'planning' ? 'planning-bound' : above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'
++  const verdict = diagnosis.dominant === 'planning' ? 'planning-bound: planning dominates the measured task window; task parallelism retains this planning time' : above <= Math.max(60000, 0.1 * sim.asRunMs)
+     ? (ch.length <= 1 ? `bead-bound: ${ch[0] ?? 'one bead'} alone set the pace — split it or make it faster` : `graph-bound: the ${ch.length}-bead dependency chain set the pace — reshaping it is the lever`)
+     : lanesGain >= slotsGain ? `merge-lane-bound: ${fmtDur(lanesGain)} of the ${fmtDur(above)} above the graph's bound is the serial merge lane`
+     : `slot-bound: ${fmtDur(slotsGain)} of the ${fmtDur(above)} above the graph's bound is the slot cap`
+   const chainText = ch.length > 1 ? ` along ${ch.length > 8 ? [...ch.slice(0, 3), '…', ...ch.slice(-3)].join(' → ') : ch.join(' → ')}` : ''
+   lines.push(`Profile: bound — graph lower bound ${fmtDur(sim.lowerBoundMs)}${chainText} (unlimited slots and merge lanes) · model of the run ${fmtDur(sim.asRunMs)} (cap ${Number.isFinite(cap) ? cap : '∞'}, one merge lane) vs actual ${fmtDur(actualGraphMs)} (${sim.fit ? `${Math.round(100 * sim.fit)}%` : '?'}) → ${verdict}`)
+ }
+ lines.push(`Profile: critical path — ${fmtDur(pathMs)} = ${catText(byCat)}${laneContentionMs ? ` · of which other beads' merge-lane turns ${fmtDur(laneContentionMs)}` : ''}`)
++lines.push(`Profile: diagnosis — planning ${fmtDur(diagnosis.planningMs)} (${pct(diagnosis.planningMs, actualGraphMs)}% of ${modelWindow})${diagnosis.dominant === 'planning' ? ' · planning dominates; bead bottleneck below covers task work only' : ''}`)
+ {
+   // A bead's consecutive steps collapse into one entry; consecutive lane turns of different beads
+   // into one `merge lane ×N` entry.
+   const parts = []
+   for (const s of segments) {
+     if (!s.agent) continue
+     const who = s.bead ?? s.agent.kind
+     const last = parts.at(-1)
+     const laneStep = LANE.has(s.kind)
+     if (laneStep && last?.lane) { last.beads.add(who); last.ms += s.ms; if (s.kind === 'seam') last.seam += s.ms; continue }
+@@ -1624,37 +1699,37 @@ if (bottleneck) {
+   const implMs = sum(impl.map(a => a.dur)), toolMs = sum(impl.map(a => a.toolMs ?? 0))
+   const cats = {}
+   for (const a of impl) for (const [k, v] of Object.entries(a.byCat ?? {})) cats[k] = (cats[k] ?? 0) + v
+   const tools = impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 2)
+   const implText = implMs >= 1000 ? ` · implement on the path ${fmtDur(implMs)}: ${[catText(cats, TOOL_ORDER), implMs - toolMs >= 1000 ? `model ${fmtDur(implMs - toolMs)}` : ''].filter(Boolean).join(' · ')}${tools.length ? ` (longest: ${tools.map(x => `${x.what ? `"${x.what}"` : x.name} ${fmtDur(x.ms)}`).join(', ')})` : ''}` : ''
+   const f = shape.fanOut.find(x => x.id === id)
+   lines.push(`Profile: bottleneck — ${id}${b.landed ? '' : ' (did not land)'} — ${fmtDur(m.total)} on the critical path (${pct(m.total, pathMs)}%) · ${catText(m.byCat)}${implText}${b.attempts.length > 1 ? ` · ${b.attempts.length} attempts (${b.attempts.map(x => x.status ?? '?').join(', ')})` : ''} · dependents ${f ? `${f.direct} direct, ${f.transitive} transitive` : dependentsOf.get(id)?.size ?? 0}`)
+ }
+ {
+   const causes = {}
+-  for (const b of landed) if (b.waitCause !== 'none') { const c = causes[b.waitCause] ?? { ms: 0, n: 0 }; c.ms += b.waitMs; c.n++; causes[b.waitCause] = c }
++  for (const b of landed) if (b.waitMs !== null && b.waitCause !== 'none') { const c = causes[b.waitCause] ?? { ms: 0, n: 0 }; c.ms += b.waitMs; c.n++; causes[b.waitCause] = c }
+   const order = ['stack-conflict', 'waited-for-merge', 'slot', 'hot-file', 'ready-query', 'planning', 'cancelled', 'retry', 'unexplained']
+   const total = sum(Object.values(causes).map(c => c.ms))
+   const carried = landed.filter(b => b.carriedMs > 0)
+   lines.push(`Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): ${fmtDur(total)} over ${sum(Object.values(causes).map(c => c.n))} of ${landed.length} landed beads${total ? ' — ' + order.filter(k => causes[k]).map(k => `${k} ${fmtDur(causes[k].ms)} (${causes[k].n})`).join(' · ') : ''}${carried.length ? ` · ready before their invocation began, not counted: ${fmtDur(sum(carried.map(b => b.carriedMs)))} (${carried.length})` : ''}`)
+   if (earlyUnblock) {
+     const withDeps = landed.filter(b => b.deps.length)
+     const stacked = withDeps.filter(b => b.stackParents.length).length
+     const bounced = withDeps.filter(b => b.waitCause === 'stack-conflict').length
+     const waited = withDeps.filter(b => b.waitCause === 'waited-for-merge').length
+     lines.push(`Profile: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${stacked} · bounced on a stack conflict then waited for the merge ${bounced} (${fmtDur(sum(withDeps.filter(b => b.waitCause === 'stack-conflict').map(b => b.waitMs)))}) · waited for a merge without one ${waited}`)
+   }
+ }
+ {
+   // Time in attempts that did not land: earlier attempts of landed beads, and beads that never landed.
+   const lost = [...beads.values()].map(b => {
+-    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x))
++    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x) && x.status !== 'VERIFIED')
+     return { id: b.id, ms: sum(atts.map(x => sum(x.agents.filter(a => a.stage !== 'ledger').map(a => a.dur)))), how: atts.map(x => x.status ?? '?').join(', '), landed: b.landed }
+   }).filter(x => x.ms >= 1000).sort((x, y) => y.ms - x.ms)
+   const closes = [...beads.values()].filter(b => b.reentryCloses.length)
+   const closeText = closes.length ? ` · ${closes.length} merged bead(s) re-dispatched only to close (a lost bead close), ${fmtDur(sum(closes.map(b => b.reentryCloses[0].start - b.final.landing.end)))} after their merge` : ''
+   if (lost.length || closes.length) lines.push(`Profile: rework — ${fmtDur(sum(lost.map(x => x.ms)))} of dispatch time in attempts that did not land${lost.length ? ' — ' + lost.slice(0, 3).map(x => `${x.id} ${fmtDur(x.ms)} (${x.how}${x.landed ? '; landed later' : '; never landed'})`).join(' · ') : ''}${lost.length > 3 ? ` · ${lost.length - 3} more` : ''}${closeText}`)
+ }
+ {
+   // Test time across every implementer and fixer (summed: they run at the same time).
+   const coders = timed.filter(a => a.kind === 'impl' || a.kind === 'commit-nudge' || a.kind === 'fix')
+   const busy = sum(coders.map(a => a.dur))
+@@ -1674,27 +1749,31 @@ if (bottleneck) {
+   if (shown.length) lines.push(`Profile: slow tests — ${shown.map(slowTestText).join(' · ')}`)
+ }
+ {
+   const parts = [['stack-conflict', 'stack-conflict re-cuts'], ['retry', 'retries'], ['cancelled', 'cancelled re-dispatches']].filter(([k]) => redo[k].ms >= 1000)
+   if (parts.length) lines.push(`Profile: redo — on the critical path, up to ${parts.map(([k, name]) => `${name} ${fmtDur(redo[k].ms)} (${redo[k].beads.join(', ')})`).join(' · ')} — from a bead's first attempt to its final one; the what-ifs model the real saving`)
+ }
+ lines.push(`Profile: merge lane — busy ${fmtDur(lane.busyMs)} of ${fmtDur(lane.spanMs)} (${pct(lane.busyMs, lane.spanMs)}%) · seam reviews and fixes ${fmtDur(lane.seamMs)} (${pct(lane.seamMs, lane.busyMs)}% of busy) · ${lane.merges} merge dispatches, first try not merged for ${lane.firstTryKnown ? `${lane.firstTryFailed} of ${lane.firstTryKnown}` : 'unknown (no merge results)'} · queue wait ${fmtDur(lane.queueWaitMs)} total, peak ${lane.peakQueue} waiting · stack-parent wait ${fmtDur(lane.stackWaitMs)}`)
+ if (hotConflicts.length) lines.push(`Profile: conflicts — ${hotConflicts.slice(0, 4).map(c => `${c.file} (stack conflicts ${c.stackConflicts}, seam overlaps ${c.seamOverlaps}, declared by ${c.declaredBy})`).join(' · ')}`)
+ if (runLevel) lines.push(...runLevel.lines)
+ lines.push(`Profile: runtime — peak ${runtime.peak} agents at once${runtimeSlots ? ` of ${runtimeSlots} runtime slots · full ${pct(runtime.fullMs, runEnd - windowStart)}% of the run` : ''} · slot cap ${Number.isFinite(cap) ? cap : 'unknown'}`)
+-for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}`)
+-if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}`)
++lines.push(`Profile: concurrency scope — all-agent concurrency peak ${runtime.peak} · task-slot concurrency peak ${taskSlots.peak}, cap ${Number.isFinite(cap) ? cap : 'unknown'} (ordinary chains retain a slot through merge)`)
++for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if estimate — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}; ${modelWindow}, planning retained`)
++if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if estimate — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}; ${modelWindow}, planning retained`)
+ const unmeasured = []
++const unknownReady = [...beads.values()].filter(b => b.readyAt === null)
++if (unknownReady.length) unmeasured.push(`availability/readiness timing unknown for ${unknownReady.length} bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary`)
+ if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
+ const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
+ if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
+ if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
++if (knownLandings.length > landed.length) unmeasured.push(`${knownLandings.length - landed.length} ledger-recorded landing(s) without timing; retained as facts, excluded from the schedule model`)
+ if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
+ if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
+ if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
+ if (skippedDry.length) unmeasured.push(`${skippedDry.length} dryRun invocation(s) skipped`)
+ if (!launch) unmeasured.push(`no Launch: line: cap ${Number.isFinite(cap) ? cap : 'unknown'}, early unblock assumed on`)
+ if (shape.cycles.length) unmeasured.push(`dependency cycle(s) in the planner rows, skipped for the shape: ${shape.cycles.slice(0, 3).join(', ')}`)
+ if (sim?.fit && (sim.fit < 0.75 || sim.fit > 1.25)) unmeasured.push(`the schedule model is ${Math.round(100 * sim.fit)}% of actual, so the what-ifs are rough`)
+ const notLanded = [...beads.values()].filter(b => !b.landed)
+ if (notLanded.length) unmeasured.push(`${notLanded.length} dispatched bead(s) did not land (not in the model): ${notLanded.slice(0, 5).map(b => b.id).join(', ')}${notLanded.length > 5 ? ', …' : ''}`)
+ const ctxRes = contextResult(runs); lines.push(...ctxRes.lines); unmeasured.push(...ctxRes.reasons)
+@@ -1702,51 +1781,53 @@ lines.push(`Profile: unmeasured — ${unmeasured.length ? unmeasured.join('; ')
+ console.log(lines.join('\n'))
+ 
+ if (opt.out) {
+   const T = t => (t === null || t === undefined || !Number.isFinite(t)) ? null : new Date(t).toISOString()
+   const off = t => (t === null || t === undefined) ? '' : `+${fmtDur(t - windowStart)}`
+   const beadRows = [...beads.values()].sort((a, b) => a.dispatchedAt - b.dispatchedAt)
+   const json = {
+     version: 1, epic, cap: Number.isFinite(cap) ? cap : null, earlyUnblock, runtimeSlots,
+     invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: T(v.start), end: T(v.end), agents: v.agents, timed: v.timed, journal: v.journal })),
+     window: { start: T(windowStart), lastLanding: T(lastLanding?.end), end: T(runEnd), graphMs: actualGraphMs, wallMs: runEnd - windowStart },
++    graphScope: 'observed invocation/residual graph', diagnosis,
+     shape, cuts: cuts.map(c => ({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: T(c.at) })),
+-    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed,
++    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed, verificationOnlyCompleted: b.verificationOnlyCompleted,
++      createdAt: T(b.createdAt), mappingReadyAt: T(b.mappingReadyAt), dependencyReadyAt: T(b.dependencyReadyAt),
+       readyAt: T(b.readyAt), dispatchedAt: T(b.dispatchedAt), landedAt: T(b.landedAt), waitMs: b.waitMs, waitCause: b.waitCause, carriedMs: b.carriedMs,
+       implMs: b.implMs, implByTool: b.implByCat, implToolMs: b.implToolMs, reviewMs: b.reviewMs, fixMs: b.fixMs, stackWaitMs: b.stackWaitMs,
+       queueWaitMs: b.queueWaitMs, laneMs: b.laneMs, seamMs: b.seamMs, blockerMs: b.blockerMs, reworkMs: b.reworkMs, criticalMs: b.criticalMs,
+       stackParents: b.stackParents, lateEdges: [...b.lateEdges] })),
+     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
+     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
+       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
+-    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
++    lane, runtime, taskSlots, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
+   }
+   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
+   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
+-  md.push('## Per bead', '', 'Offsets are from the run\'s first dispatch. `wait` is from the moment every blocker was usable (its implementation under early unblock, else its merge) to the implementer starting, with its cause; `stack` is a stacked task waiting for its parents to merge; `queue` is the wait for the single merge lane; `lane` is its lane turn (merge plus seam work).', '')
++  md.push('## Per bead', '', 'Offsets are from the run\'s first dispatch. `wait` starts at evidenced creation/mapping/dependency availability, bounded by invocation start; unknown readiness means unknown wait. Creation, mapping and dependency timestamps stay distinct in JSON. `stack` waits for parents to merge; `queue` waits for the single merge lane; `lane` is its lane turn (merge plus seam work).', '')
+   md.push('| bead | deps | dependents | attempts | wait (cause) | implement | of it: tools | review | fix | stack | queue | lane (seam) | landed | critical |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|')
+   for (const b of beadRows) {
+     const tools = catText(b.implByCat, TOOL_ORDER)
+-    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? off(b.landedAt) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
++    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? (b.landedAt === null ? 'recorded; timing unknown' : off(b.landedAt)) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
+   }
+   md.push('', '## Critical path, step by step', '', '| at | step | kind | via | duration |', '|---|---|---|---|---|')
+   for (const s of segments) md.push(`| ${off(s.start)} | ${s.label} | ${s.kind} | ${s.why ?? ''} | ${fmtDur(s.ms)} |`)
+   if (json.bottleneck?.calls.length) {
+     md.push('', `## Longest tool calls in the bottleneck's implement (${json.bottleneck.bead})`, '', '| tool | category | what | duration |', '|---|---|---|---|')
+     for (const x of json.bottleneck.calls) md.push(`| ${x.name} | ${x.cat} | ${(x.what || '').replace(/\|/g, '\\|')} | ${fmtDur(x.ms)} |`)
+   }
+   if (hotConflicts.length) {
+     md.push('', '## Conflict files', '', 'Files named in stack-conflict findings and in merges\' seam overlaps, with how many planned beads declared them.', '', '| file | stack conflicts | seam overlaps | declared by |', '|---|---|---|---|')
+     for (const c of hotConflicts.slice(0, 15)) md.push(`| ${c.file} | ${c.stackConflicts} | ${c.seamOverlaps} | ${c.declaredBy} |`)
+   }
+   if (sim && !sim.failed) {
+-    md.push('', '## Schedule model', '', `Landed beads replayed with their measured implement, review+fix and lane times; planner timing kept as it ran; dependents start at a blocker's implementation except over edges where this run's dependent waited for the merge. Model of the run: ${fmtDur(sim.asRunMs)} against ${fmtDur(actualGraphMs)} measured. Estimates, not measurements.`, '')
++    md.push('', '## Schedule model', '', `Landed beads replayed with their measured implement, review+fix and lane times; creation, mapping and invocation bounds retained, with dispatch as the conservative release when readiness is unknown. In-model dependencies release at their modeled implementation/merge times; known releases outside the model stay fixed. Window: ${modelWindow}; planning retained. Model of the run: ${fmtDur(sim.asRunMs)} against ${fmtDur(actualGraphMs)} measured. Estimates, not measurements.`, '')
+     md.push('| scenario | makespan | saving |', '|---|---|---|', `| as run (cap ${Number.isFinite(cap) ? cap : '∞'}, one merge lane) | ${fmtDur(sim.asRunMs)} | - |`, `| unlimited slots | ${fmtDur(sim.unlimitedSlotsMs)} | ${fmtDur(sim.asRunMs - sim.unlimitedSlotsMs)} |`, `| unlimited merge lanes | ${fmtDur(sim.unlimitedLanesMs)} | ${fmtDur(sim.asRunMs - sim.unlimitedLanesMs)} |`, `| graph lower bound (both) | ${fmtDur(sim.lowerBoundMs)} | ${fmtDur(sim.asRunMs - sim.lowerBoundMs)} |`)
+     for (const w of sim.whatIfs.filter(w => w.kind !== 'slots' && w.kind !== 'lanes')) md.push(`| ${w.target} | ${fmtDur(w.ms)} | ${fmtDur(w.savingMs)} |`)
+   }
+   const gantt = beadRows.filter(b => b.final.agents.some(a => a.dur > 0)).slice(0, 80)
+   if (gantt.length) {
+     const onPath = new Set(segments.map(s => s.agent).filter(Boolean))
+     md.push('', '## Timeline', '', `${gantt.length < beadRows.length ? `First ${gantt.length} beads by dispatch; ` : ''}each bead's final attempt; critical-path steps are marked crit.`, '', '```mermaid', 'gantt', '  dateFormat x', '  axisFormat %H:%M')
+     for (const b of gantt) {
+       md.push(`  section ${b.id}`)
+       for (const a of b.final.agents.filter(a => a.stage !== 'ledger' && a.dur > 0)) md.push(`  ${a.kind}${a.suffix ? ' ' + a.suffix : ''} :${onPath.has(a) ? 'crit, ' : ''}${Math.round(a.start)}, ${Math.round(a.end)}`)
+diff --git a/skills/super-code/scripts/stop-run-processes b/skills/super-code/scripts/stop-run-processes
+index a6430d5f..afb9d1ec 100644
+--- a/skills/super-code/scripts/stop-run-processes
++++ b/skills/super-code/scripts/stop-run-processes
+@@ -10,23 +10,26 @@
+ # a run directory. A root that is or contains a git worktree with other worktrees nested under it
+ # (an epic/integration worktree, the main checkout) is refused, and so is a root that contains the
+ # working directory of this process or any of its ancestors: those are where a coordinating session
+ # and the user work. This script's own process, its ancestors, its children and PID 1 are never
+ # candidates.
+ #
+ # Usage:
+ #   bash stop-run-processes [--check] ROOT [ROOT...]
+ #
+ # --check lists matches without signalling anything: `match: <pid> <command> — <why>`, exit 3 when
+-# anything matched, 0 when nothing did. Default mode stops each match (TERM, then KILL after 3 s)
++# anything matched or was kept, 0 only after verified discovery found nothing. Default mode stops
++# each match (TERM, then KILL after 3 s)
+ # and prints `stopped: <pid> <command> — <why>` or `survived: <pid> <command> — <why>` (alive after
+-# KILL), exit 3 when anything survived, 0 otherwise. Exit 2 on bad input.
++# KILL), exit 3 when anything survived or was deliberately kept, 0 otherwise.
++# `unknown: <root-or-pid> — <failed inspection>` and exit 4 mean discovery or termination could
++# not be verified. Unknown takes precedence over 3. Exit 2 on bad input.
+ set -euo pipefail
+ 
+ check=
+ if [ "${1:-}" = --check ]; then check=1; shift; fi
+ [ $# -ge 1 ] || { echo "usage: stop-run-processes [--check] ROOT [ROOT...]" >&2; exit 2; }
+ 
+ # Each root in both spellings: as given and physically resolved (/tmp vs /private/tmp on macOS).
+ roots=()
+ for r in "$@"; do
+   case "$r" in /*) ;; *) echo "root must be absolute: $r" >&2; exit 2 ;; esac
+@@ -35,133 +38,212 @@ for r in "$@"; do
+   roots+=("$r")
+   if [ -d "$r" ]; then p=$(cd "$r" && pwd -P); [ "$p" = "$r" ] || roots+=("$p"); fi
+ done
+ 
+ contains() {  # $1 root, $2 path: true when path is the root or inside it
+   case "$2" in "$1"|"$1"/*) return 0 ;; esac; return 1
+ }
+ # Refuse a root holding a parent worktree (one with other worktrees nested under it).
+ for r in "${roots[@]}"; do
+   [ -d "$r" ] || continue
+-  wts=$(git -C "$r" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p' || true)
+-  [ -n "$wts" ] || continue
++  if inventory=$(git -C "$r" worktree list --porcelain 2>/dev/null); then
++    wts=$(sed -n 's/^worktree //p' <<<"$inventory")
++  else
++    # Git's normal nonrepository diagnostic is the only failed lookup that permits a
++    # temp root. Corrupt metadata can produce that same diagnostic, so exclude it.
++    discovery=0
++    detail=$(LC_ALL=C git -C "$r" rev-parse --git-dir 2>&1) || discovery=$?
++    metadata=0
++    parent=$(cd "$r" && pwd -P)
++    while :; do
++      if [ ! -r "$parent" ] || [ ! -x "$parent" ] || [ -e "$parent/.git" ] || [ -L "$parent/.git" ] || { [ -d "$parent/objects" ] && { [ -e "$parent/HEAD" ] || [ -d "$parent/refs" ]; }; }; then metadata=1; break; fi
++      [ "$parent" != / ] || break
++      parent=$(dirname "$parent")
++    done
++    nonrepository=0
++    case "$detail" in
++      'fatal: not a git repository (or any of the parent directories): .git') nonrepository=1 ;;
++      'fatal: not a git repository (or any parent up to mount point '*)
++        first=${detail%%$'\n'*}
++        if [ "$detail" = "$first"$'\n''Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).' ]; then nonrepository=1; fi ;;
++    esac
++    if [ "$discovery" = 128 ] && [ "$metadata" = 0 ] && [ "$nonrepository" = 1 ]; then continue; fi
++    echo "unknown: $r — git worktree inventory failed"
++    exit 4
++  fi
++  [ -n "$wts" ] || { echo "unknown: $r — git worktree inventory empty"; exit 4; }
+   while IFS= read -r w; do
+     [ -n "$w" ] || continue
+     contains "$r" "$w" || continue
+     nested=$(grep -c "^$w/" <<<"$wts" || true)
+     if [ "$nested" -gt 0 ]; then
+       echo "refusing root $r: it holds worktree $w, which has worktrees nested under it (an epic/integration or main checkout); pass task worktrees, the task-worktree directory or run temp dirs instead" >&2
+       exit 2
+     fi
+   done <<<"$wts"
+ done
+ 
+ under() {  # $1 = a path; true when it is a root or inside one
+   local root
+   for root in "${roots[@]}"; do
+     case "$1" in "$root"|"$root"/*) return 0 ;; esac
+   done
+   return 1
+ }
+ 
++unknown=0
++unknown_roots() {
++  local root
++  for root in "${roots[@]}"; do echo "unknown: $root — $1"; done
++  unknown=1
++}
++# ps -p exits 1 for both absence and inspection failure. Only a successful all-PID
++# enumeration without the PID proves disappearance in that case.
++absent() {
++  local all
++  all=$(ps -A -o pid= 2>/dev/null) || return 1
++  ! awk -v p="$1" '$1==p{found=1} END{exit !found}' <<<"$all"
++}
+ uid=$(id -u)
+ # Never this process, its ancestors, its own children (subshells and the ps/lsof it runs carry
+ # the roots in their arguments), or PID 1.
+-ppids=$(ps -A -o pid=,ppid= 2>/dev/null || true)
++if ! ppids=$(ps -A -o pid=,ppid= 2>/dev/null); then unknown_roots "ps ancestry discovery failed"; exit 4; fi
+ ppid_of() {  # from the snapshot, else live (children started after the snapshot)
+   local r; r=$(awk -v p="$1" '$1==p{print $2; exit}' <<<"$ppids")
+-  [ -n "$r" ] || r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ')
++  if [ -z "$r" ]; then r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ') || return 4; fi
++  [ -n "$r" ] || return 4
+   echo "$r"
+ }
+ skip=" 1 $$ "
+ p=$$
+ while [ -n "$p" ] && [ "$p" != 0 ] && [ "$p" != 1 ]; do
+-  p=$(ppid_of "$p")
++  if ! p=$(ppid_of "$p"); then unknown_roots "ps ancestor inspection failed"; exit 4; fi
+   [ -n "$p" ] && skip="$skip$p "
+ done
+ # Refuse a root that contains the working directory of this process or any ancestor.
+ for a in $skip; do
+   [ "$a" = 1 ] && continue
+-  if [ -r "/proc/$a/cwd" ]; then acwd=$(readlink "/proc/$a/cwd" 2>/dev/null || true)
+-  else acwd=$({ lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null || true; } | sed -n 's/^n//p' | head -1); fi
++  if [ -r "/proc/$a/cwd" ]; then
++    if ! acwd=$(readlink "/proc/$a/cwd" 2>/dev/null); then unknown_roots "ancestor $a cwd inspection failed"; exit 4; fi
++  else
++    if ! acwd=$(lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1); then
++      # Privileged launch/login ancestors are outside this user's cleanup candidates and
++      # may hide cwd on macOS. Successful ownership inspection can exclude them.
++      if ancestor_uid=$(ps -o uid= -p "$a" 2>/dev/null | tr -d ' ') && [ -n "$ancestor_uid" ] && [ "$ancestor_uid" != "$uid" ]; then continue; fi
++      unknown_roots "ancestor $a cwd inspection failed"; exit 4
++    fi
++  fi
+   [ -n "$acwd" ] || continue
+   for r in "${roots[@]}"; do
+     if contains "$r" "$acwd"; then echo "refusing root $r: it contains the working directory of this process or an ancestor ($acwd)" >&2; exit 2; fi
+   done
+ done
+ is_ours() {  # $1 pid; true when it descends from this process
+   local q=$1 n=0
+   while [ -n "$q" ] && [ "$q" != 0 ] && [ "$q" != 1 ] && [ $n -lt 64 ]; do
+     [ "$q" = "$$" ] && return 0
+-    q=$(ppid_of "$q"); n=$((n + 1))
++    q=$(ppid_of "$q") || return 4; n=$((n + 1))
+   done
+   return 1
+ }
+ 
+ matches=""
+ add() {  # $1 pid $2 reason
+   case "$skip" in *" $1 "*) return 0 ;; esac
+   case " $matches " in *" $1 "*) return 0 ;; esac
+-  is_ours "$1" && return 0
++  local ancestry=0
++  is_ours "$1" || ancestry=$?
++  [ "$ancestry" != 0 ] || return 0
++  if [ "$ancestry" = 4 ]; then
++    absent "$1" || unknown_roots "process $1 ancestry inspection failed"
++    return 0
++  fi
+   matches="$matches $1"
+   eval "why_$1=\$2"
+ }
+ 
+ if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
+   for d in /proc/[0-9]*; do
+     pid=${d#/proc/}
+-    [ "$(stat -c %u "$d" 2>/dev/null)" = "$uid" ] || continue
+-    path=$(readlink "$d/cwd" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
+-    path=$(readlink "$d/exe" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
+-    env=$(tr '\0' '\n' < "$d/environ" 2>/dev/null | grep -E '^(HOME|TMPDIR)=' || true)
++    if ! owner=$(stat -c %u "$d" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid ownership inspection failed"
++      continue
++    fi
++    [ "$owner" = "$uid" ] || continue
++    if path=$(readlink "$d/cwd" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid cwd inspection failed"; fi
++    if path=$(readlink "$d/exe" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid executable inspection failed"; fi
++    if ! env=$(tr '\0' '\n' 2>/dev/null < "$d/environ"); then
++      absent "$pid" || unknown_roots "process $pid environment inspection failed"
++      continue
++    fi
++    env=$(grep -E '^(HOME|TMPDIR)=' <<<"$env" || true)
+     envhit=""
+     while IFS= read -r kv; do [ -n "$kv" ] && under "${kv#*=}" && envhit="$envhit $kv"; done <<<"$env"
+     [ -n "$envhit" ] && { add "$pid" "env$envhit"; continue; }
+-    if [ "$(awk '{print $4}' "$d/stat" 2>/dev/null)" = 1 ]; then
+-      args=$(tr '\0' '\n' < "$d/cmdline" 2>/dev/null || true)
++    if ! parent=$(awk '{print $4}' "$d/stat" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid parent inspection failed"
++      continue
++    fi
++    if [ "$parent" = 1 ]; then
++      if ! args=$(tr '\0' '\n' 2>/dev/null < "$d/cmdline"); then
++        absent "$pid" || unknown_roots "process $pid argument inspection failed"
++        continue
++      fi
+       while IFS= read -r a; do [ -n "$a" ] && under "${a#*=}" && { add "$pid" "orphan arg $a"; break; }; done <<<"$args"
+     fi
+   done
+ else
+   if command -v lsof >/dev/null 2>&1; then
++    if ! files=$(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null); then
++      unknown_roots "lsof cwd/executable discovery failed"
++    fi
+     pid=""
+     while IFS= read -r line; do
+       case "$line" in
+         p*) pid=${line#p} ;;
+         f*) fd=${line#f} ;;
+         n*) path=${line#n}
+             under "$path" && add "$pid" "$fd $path" ;;
+       esac
+-    done < <(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null || true)
++    done <<<"$files"
++  else
++    unknown_roots "lsof cwd/executable discovery unavailable"
+   fi
+   # Environment: only HOME= and TMPDIR= tokens from `ps -E`, which appends the environment to the
+   # command line. Arguments: only for orphans (PPID 1), one token at a time, path-boundary checked.
++  if ! processes=$(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null); then
++    unknown_roots "ps environment/orphan discovery failed"
++  fi
+   while read -r pid ppid rest; do
+     [ -n "$pid" ] || continue
+     hit=""
+     for tok in $rest; do
+       case "$tok" in HOME=*|TMPDIR=*) under "${tok#*=}" && hit="$hit $tok" ;; esac
+     done
+     if [ -n "$hit" ]; then add "$pid" "env$hit"; continue; fi
+     if [ "$ppid" = 1 ]; then
+       for tok in $rest; do
+         case "$tok" in *=*) continue ;; esac
+         under "$tok" && { add "$pid" "orphan arg $tok"; break; }
+       done
+     fi
+-  done < <(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null || true)
++  done <<<"$processes"
+ fi
+ 
+ # Interactive work is never stopped: a match with a controlling terminal, or one hosting a
+ # terminal (a descendant has one, e.g. a terminal multiplexer server with live panes), is
+ # reported as `kept:` for a human to decide.
+-ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null || true)
++if ! ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null); then unknown_roots "ps interactive-terminal inspection failed"; exit 4; fi
+ has_tty() { local t; t=$(awk -v p="$1" '$1==p{print $3; exit}' <<<"$ptt"); [ -n "$t" ] && [ "$t" != "??" ] && [ "$t" != "?" ]; }
+ hosts_tty() {  # any descendant with a terminal
+   local frontier=" $1 " next q c pp t n=0
+   while [ -n "${frontier// /}" ] && [ $n -lt 32 ]; do
+     next=""
+     while read -r c pp t; do
+       case "$frontier" in *" $pp "*) ;; *) continue ;; esac
+       [ -n "$t" ] && [ "$t" != "??" ] && [ "$t" != "?" ] && return 0
+       next="$next $c "
+     done <<<"$ptt"
+@@ -177,43 +259,60 @@ for pid in $matches; do
+   else keep="$keep $pid"; continue; fi
+ done
+ matches=$keep
+ cmd_of0() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+ while IFS= read -r kl; do
+   [ -n "$kl" ] || continue
+   kp=${kl%% *}; eval "w=\${why_$kp:-}"
+   echo "kept: $kp $(cmd_of0 "$kp") — ${kl#* } ($w)"
+ done <<<"$kept"
+ 
+-[ -n "$matches" ] || exit 0
++if [ -z "$matches" ]; then
++  [ "$unknown" = 0 ] || exit 4
++  [ -z "$kept" ] || exit 3
++  exit 0
++fi
+ w="" c=""
+ cmd_of() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+-alive() {  # running, not a zombie waiting for its parent to reap it
+-  local st; st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' ')
+-  [ -n "$st" ] && [ "${st#Z}" = "$st" ]
++alive() {  # 0 running, 1 verified absent/zombie, 4 unverified
++  local st
++  if st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' '); then
++    case "$st" in Z*) return 1 ;; ?*) return 0 ;; esac
++  fi
++  absent "$1" && return 1
++  return 4
+ }
+ 
+ if [ -n "$check" ]; then
+   for pid in $matches; do eval "w=\$why_$pid"; echo "match: $pid $(cmd_of "$pid") — $w"; done
++  [ "$unknown" = 0 ] || exit 4
+   exit 3
+ fi
+ 
+ live=""
+ for pid in $matches; do
+   eval "w=\$why_$pid"; c=$(cmd_of "$pid")
+   eval "cmd_$pid=\$c"
+-  kill -TERM "$pid" 2>/dev/null && live="$live $pid"
++  kill -TERM "$pid" 2>/dev/null || true
++  live="$live $pid"
+ done
+ for _ in 1 2 3 4 5 6; do
+   any=""
+   for pid in $live; do alive "$pid" && any=1; done
+   [ -n "$any" ] || break
+   sleep 0.5
+ done
+ for pid in $live; do alive "$pid" && kill -KILL "$pid" 2>/dev/null || true; done
+ sleep 0.3
+ rc=0
++[ -z "$kept" ] || rc=3
+ for pid in $matches; do
+   eval "w=\$why_$pid"; eval "c=\${cmd_$pid:-?}"
+-  if alive "$pid"; then echo "survived: $pid $c — $w"; rc=3; else echo "stopped: $pid $c — $w"; fi
++  state=0; alive "$pid" || state=$?
++  case "$state" in
++    0) echo "survived: $pid $c — $w"; rc=3 ;;
++    1) echo "stopped: $pid $c — $w" ;;
++    *) echo "unknown: $pid — ps termination inspection failed ($c — $w)"; unknown=1 ;;
++  esac
+ done
++[ "$unknown" = 0 ] || exit 4
+ exit $rc
+diff --git a/skills/upstream-feedback/SKILL.md b/skills/upstream-feedback/SKILL.md
+index fce8fe5a..541a1e02 100644
+--- a/skills/upstream-feedback/SKILL.md
++++ b/skills/upstream-feedback/SKILL.md
+@@ -50,31 +50,43 @@ append. A standalone run is its own outermost.
+    but no `Detector:` line is unmeasured); roast verdict/`delta vs prior`
+    lines; `run.md`; a graph-shape summary when a bead tree exists (open count, rounds ≈ longest
+    chain, width per round); the installed plugin version (`plugin.json` in the plugin cache).
+    Also gather, for `## Run metrics`:
+    - every roast report's `seat-agreement:` line, together with that report's mode, iteration,
+      and its `independence:` line (the main confounder when comparing agreement across runs);
+    - the ledger's `Merge:` lines (the success path and the `→ blocker` / `→ auth-refused` failure paths) and
+      the four-line `Metrics:` block;
+    - the ledger's `Profile:` lines, one block per coordinator invocation (`super-code`'s run
+      profile: critical path, bottleneck bead, wait causes, merge lane, what-ifs);
+-   - the integration branch's merge count, `git log --merges --first-parent <base>..<branch>`,
+-     against the ledger's success-path `Merge:` lines. A shortfall goes under Merge-back as
+-     `ledger incomplete: <N> merge commits vs <M> Merge: lines`;
++   - task landing identities from `already-merged --landed <branch>` against the ledger's
++     success-path `Merge:`/re-entry IDs and reconciled completed IDs. Report concrete
++     ledger-only/Git-only/completed-only IDs before proposing a cause. `baseAbsorbed` merges
++     contribute zero task landings; duplicate appearances of one task add no landing;
++   - `scope-dispositions --project <run.md>` JSON metrics/gaps when a run record exists.
++     Exit 3 retains supported partial counts. Separate raw occurrences from actionable groups,
++     latest outcomes from durable Recovery fix history, and supported repaired findings from
++     deferred/rejected groups. State missing source populations, including task reviews absent
++     from a roast/final-review-only projection;
+    - each coverage round's `requirements:` line and each fix round's `scope-filter:` line from
+      `run.md`;
+    - a bead-graph dump: `bd list --label sp:<root> --json --status all --limit 0` —
+      **`--limit 0` is required**, since `bd list` defaults to 50 rows and would silently
+      truncate a larger tree. Edges for the graph's dependent/blocker table come from the dump's
+      `dependencies` array (type `blocks`); the reason for each edge comes from the dependent's
+      `blocked-by <id>:` description line, or `unstated` when that line is absent.
+ 
++   Count friction from recorded defects, workarounds and waste. A normal Workflow/ordinary
++   execution-mechanism selection contributes zero friction events. Preserve source scope and
++   transport status before interpretation: an unreadable ledger can leave “known invocation:
++   completed bd-17; run total unavailable,” rather than zero merges or a clean run. Profiles
++   retain their producer's invocation/residual scope, task/all-agent labels and generation owner.
++
+    Gather what exists; name what was unavailable in the report's `## Not established` section
+    rather than silently omitting it. A missing ledger, missing detector lines or missing `Metrics:`
+    lines while merges exist on the branch is itself a candidate finding (the run took a path that
+    skipped them), handed to the analyst as evidence, not rendered as a bare `none`. A subsection of `## Run metrics` with no source renders
+    `none`, with the absent source named in `## Not established` — a missing source never blocks
+    filing. A standalone super-design run (no ledger) renders Fix loop and Merge-back as `none`.
+ 2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus, or the strongest
+    analyst-class model the harness actually offers** (a non-Claude runtime names its own — the
+    requirement is fresh context and the top tier available, not a vendor), with
+    `./analyst-prompt.md` and the gathered inputs. It returns candidate findings or none. Name
+diff --git a/skills/upstream-feedback/report-template.md b/skills/upstream-feedback/report-template.md
+index 7dad720e..4a75fcdb 100644
+--- a/skills/upstream-feedback/report-template.md
++++ b/skills/upstream-feedback/report-template.md
+@@ -21,23 +21,27 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
+      named in `## Not established`. A missing source never blocks filing. A standalone
+      super-design run (no ledger) renders Fix loop and Merge-back as `none`. -->
+ ### Judge panel
+ <!-- one line per roast report: mode, iteration, independence, seat-agreement line -->
+ ### Fix loop
+ <!-- the `Metrics: completions` line (review clean / after fix pass / parked / re-entry closes)
+      and the `Metrics: fix-pass` line (entered / FIXED / BLOCKED) -->
+ ### Merge-back
+ <!-- the `Metrics: merges` line (including check-fails and how many were fixed) and the
+      `ledger-check` line; count of `Merge:` lines with conflict / seam-review fired /
+-     check fail→fixed / check fail / → blocker; `ledger incomplete: <N> merge commits vs <M>
+-     Merge: lines` when the branch's first-parent merge commits outnumber the success-path
+-     `Merge:` lines -->
++     check fail→fixed / check fail / → blocker. Reconcile distinct task IDs from
++     `already-merged --landed <branch>`, success-path `Merge:`/re-entry records, and
++     reconciled completed IDs. List ledger-only, Git-only and completed-only IDs before
++     proposing a cause. `baseAbsorbed` merges contribute zero task landings; duplicate
++     appearances of one task add no landing. Report verification-only completions separately
++     from task landings. Name unavailable sources separately in `Not established`; a raw
++     first-parent merge count does not establish a ledger gap. -->
+ ### Coverage
+ <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
+ ### Timing
+ <!-- per coordinator invocation, the ledger's `Profile:` header, `bound`, `critical path`,
+      `bottleneck`, `waits`, `merge lane` and `what-if` lines (an ordinary-subagent run adds
+      `concurrency`), and its `Profile: context` line and every `Profile: context agent` line
+      (`Profile: context — unavailable — …` when that is what it printed); `Profile: unavailable — …`
+      when that is what the ledger has. What-if lines are a schedule model's estimates, not
+      measurements: quote them with the `bound` line's model-vs-actual figure. Compaction causes
+      (cap, early, idle, manual, unknown) are classified from sizes and gaps, not logged by the
+diff --git a/tests/super-code/run-profile-fixture.mjs b/tests/super-code/run-profile-fixture.mjs
+index 336459d2..b1046205 100644
+--- a/tests/super-code/run-profile-fixture.mjs
++++ b/tests/super-code/run-profile-fixture.mjs
+@@ -13,20 +13,21 @@
+ //   sideAgents: [{ id, label, start, end, context?, compact? }] ordinary subagents of that session.
+ // The `ledger-append:launch` agent's prompt carries `Launch: args <launch>`, as the coordinator's does.
+ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+ import { join, dirname } from 'node:path'
+ 
+ const [scenarioPath, out] = process.argv.slice(2)
+ const sc = JSON.parse(readFileSync(scenarioPath, 'utf8'))
+ mkdirSync(out, { recursive: true })
+ const t0 = Date.parse(sc.t0)
+ const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
++if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
+ const agents = sc.agents.map((a, i) => ({ ...a, id: `a${sc.idPrefix ?? 'f'}${String(i).padStart(4, '0')}` }))
+ const usageRow = (s, ctx, id, model = 'claude-opus-4-6', extra = {}) => ({ type: 'assistant', timestamp: at(s), ...extra,
+   message: { id, model, role: 'assistant', content: [{ type: 'text', text: 'ok' }], usage: { input_tokens: 10, cache_read_input_tokens: ctx - 30, cache_creation_input_tokens: 20, output_tokens: 5 } } })
+ const boundaryRow = (s, trigger, pre, post, extra = {}) => ({ type: 'system', subtype: 'compact_boundary', timestamp: at(s), ...extra, compactMetadata: { trigger, preTokens: pre, postTokens: post } })
+ const byTime = rows => rows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp))
+ const sessionRow = ([kind, s, x, y, z], k) => kind === 'prompt' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: x } }
+   : kind === 'meta' ? { type: 'user', isMeta: true, timestamp: at(s), message: { role: 'user', content: x } }
+   : kind === 'result' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: `tr${k}`, content: x }] } }
+   : kind === 'skill' ? { type: 'assistant', timestamp: at(s), message: { id: `sk${k}`, role: 'assistant', content: [{ type: 'tool_use', id: `sk${k}`, name: 'Skill', input: { skill: x } }] } }
+   : kind === 'usage' ? usageRow(s, x, `s${k}`)
+diff --git a/tests/super-code/run-profile-ordinary-fixture.mjs b/tests/super-code/run-profile-ordinary-fixture.mjs
+index 84a67785..a734891e 100644
+--- a/tests/super-code/run-profile-ordinary-fixture.mjs
++++ b/tests/super-code/run-profile-ordinary-fixture.mjs
+@@ -23,21 +23,21 @@
+ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+ import { join } from 'node:path'
+ 
+ const [scenarioPath, harness, out] = process.argv.slice(2)
+ const sc = JSON.parse(readFileSync(scenarioPath, 'utf8'))
+ const t0 = Date.parse(sc.t0)
+ const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
+ const jsonl = (file, rows) => writeFileSync(file, rows.map(r => JSON.stringify(r)).join('\n') + '\n')
+ mkdirSync(out, { recursive: true })
+ if (sc.ledger) writeFileSync(join(out, 'progress.md'), sc.ledger.join('\n') + '\n')
+-if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads))
++if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
+ const tasksOf = a => a.tasks ?? [[a.start, a.end]]
+ 
+ if (harness === 'codex') {
+   const dir = join(out, 'codex', 'sessions', sc.t0.slice(0, 4), sc.t0.slice(5, 7), sc.t0.slice(8, 10))
+   mkdirSync(dir, { recursive: true })
+   const coord = sc.coordinator ?? '01c0ffee-0000-7000-8000-000000000000'
+   const idOf = a => `01c0ffee-0000-7000-8000-${String(sc.agents.indexOf(a) + 1).padStart(12, '0')}`
+   const file = id => join(dir, `rollout-${sc.t0.slice(0, 19).replace(/:/g, '-')}-${id}.jsonl`)
+   const item = (t, payload) => ({ timestamp: at(t), type: 'response_item', payload })
+   const event = (t, type) => ({ timestamp: at(t), type: 'event_msg', payload: { type } })
+diff --git a/tests/super-code/test-run-digest.sh b/tests/super-code/test-run-digest.sh
+index d0042a21..60796d99 100644
+--- a/tests/super-code/test-run-digest.sh
++++ b/tests/super-code/test-run-digest.sh
+@@ -160,20 +160,35 @@ slow_case() { # label, slow sources (space-separated: ledger bd profile)
+   assert_le "$ms" 4500 "$1: finished in ${ms} ms"
+   case " $2 " in *" ledger "*) assert_has "$out" "ledger: unknown" "$1: ledger unknown" ;; *) assert_hasp "$out" "ledger: landed" "$1: ledger real" ;; esac
+   case " $2 " in *" bd "*) assert_has "$out" "open beads: unknown" "$1: beads unknown" ;; *) assert_hasp "$out" "open beads: 3" "$1: beads real" ;; esac
+   case " $2 " in *" profile "*) assert_has "$out" "in-flight: unknown" "$1: in-flight unknown" ;; *) assert_has "$out" "in-flight: 2" "$1: in-flight real" ;; esac
+ }
+ slow_case "one slow source" "bd"
+ slow_case "two slow sources" "ledger profile"
+ slow_case "three slow sources" "ledger bd profile"
+ cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
+ 
++echo "run-digest: explicit ledger source availability"
++printf '#!/usr/bin/env bash\ncat "$BD_FIXTURE"\n' >"$T/bin/bd"
++set_profile 'echo "in-flight: impl:E.2 · 25m"'
++for status in missing unreadable; do
++  printf '#!/usr/bin/env bash\necho "# ledger-status: %s"\n' "$status" >"$S/ledger-digest"
++  run_digest state 9000 < <(marker progress.md)
++  assert_has "$out" "ledger: unknown — $status" "$status is retained independently from other sources"
++  assert_lacks "$out" "ledger: landed 0" "$status never supplies zero totals"
++  assert_has "$out" "open beads: 3 — E.2, E.3, E.5" "$status preserves available tracker facts"
++done
++printf '#!/usr/bin/env bash\necho "# ledger-digest: 3 of 4 lines"\necho "Task 1 (E.1): complete"\n' >"$S/ledger-digest"
++run_digest state 9000 < <(marker progress.md)
++assert_has "$out" "ledger: unknown — invalid transport" "truncated transport never supplies partial authoritative totals"
++cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
++
+ echo "run-digest: bad arguments"
+ set +e; bash "$S/run-digest" --part nope --budget 9000 </dev/null >/dev/null 2>&1; c1=$?
+ bash "$S/run-digest" --part state </dev/null >/dev/null 2>&1; c2=$?
+ bash "$S/run-digest" --budget 9000 </dev/null >/dev/null 2>&1; c3=$?
+ bash "$S/run-digest" --part state --budget abc </dev/null >/dev/null 2>&1; c4=$?
+ set -e
+ assert_eq "$c1" 2 "bad --part exits 2"
+ assert_eq "$c2" 2 "missing --budget exits 2"
+ assert_eq "$c3" 2 "missing --part exits 2"
+ assert_eq "$c4" 2 "non-numeric --budget exits 2"
+diff --git a/tests/super-code/test-run-profile-in-flight.sh b/tests/super-code/test-run-profile-in-flight.sh
+index fdeb1d6f..dd45ab1a 100755
+--- a/tests/super-code/test-run-profile-in-flight.sh
++++ b/tests/super-code/test-run-profile-in-flight.sh
+@@ -29,21 +29,22 @@ const put = (f, s) => { mkdirSync(join(f, '..'), { recursive: true }); writeFile
+ const asst = (ts, content) => ({ type: 'assistant', timestamp: ts, message: { role: 'assistant', content } })
+ const tool = { type: 'tool_use', id: 't1', name: 'Bash', input: { command: 'ls' } }
+ const text = { type: 'text', text: 'done' }
+ 
+ // Claude: session S1
+ const sub = join(T, 'claude/projects/-w-proj/S1/subagents')
+ const wf1 = join(sub, 'workflows/wf_1')
+ put(join(wf1, 'journal.jsonl'), jl([
+   { type: 'started', agentId: 'a1', label: 'plan' }, { type: 'result', agentId: 'a1', result: {} },
+   { type: 'started', agentId: 'a2', label: 'impl:ep.2' },
+-  { type: 'started', agentId: 'a3', label: 'review:ep.3' },
++  // Creation is not evidence of dispatch start when this in-flight agent has no transcript.
++  { type: 'started', agentId: 'a3', label: 'review:ep.3', created_at: '2026-10-01T00:10:00Z' },
+   { type: 'note', text: 'see /w/.superpowers/sdd/ep-plan/progress.md' },
+ ]))
+ put(join(wf1, 'agent-a2.jsonl'), jl([asst('2026-10-01T00:35:00Z', [tool]), asst('2026-10-01T00:40:00Z', [tool])]))
+ const wf2 = join(sub, 'workflows/wf_2')
+ put(join(wf2, 'journal.jsonl'), jl([
+   { type: 'started', agentId: 'b1', label: 'impl:other.1' },
+   { type: 'note', text: '/w/.superpowers/sdd/other-plan/progress.md' },
+ ]))
+ put(join(sub, 'agent-x.meta.json'), JSON.stringify({ description: 'impl:ep.4' }))
+ put(join(sub, 'agent-x.jsonl'), jl([asst('2026-10-01T00:59:30Z', [tool]), asst('2026-10-01T00:59:40Z', [tool])]))
+diff --git a/tests/super-code/test-run-profile.sh b/tests/super-code/test-run-profile.sh
+index 19c4919f..7c46b1c8 100644
+--- a/tests/super-code/test-run-profile.sh
++++ b/tests/super-code/test-run-profile.sh
+@@ -329,20 +329,52 @@ run bash "$P" --workflow "$T/does-not-exist"
+ assert_eq "$code" 2 "missing directory: exit 2"
+ 
+ echo "run-profile: every coordinator dispatch label is one it knows"
+ # A label kind the profiler does not know would be timed as `other` and drop out of every bead's
+ # timeline. Literal `label:` templates in coordinator.js, plus the labels it builds indirectly.
+ kinds=$( { grep -oE "label: [\`'][a-z][a-z-]*" "$REPO_ROOT/skills/super-code/coordinator.js" | sed -E "s/label: [\`']//"; printf '%s\n' review ledger read-ledger; } | sort -u)
+ missing=""
+ for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
+ assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
+ 
++echo "run-profile: resume observations are run-level readiness work"
++node - "$FX" "$T" <<'JS'
++const fs = require('node:fs'), [FX, T] = process.argv.slice(2)
++const workflow = JSON.parse(fs.readFileSync(`${FX}/chain.json`, 'utf8'))
++const observation = workflow.agents.find(a => a.label === 'bd-ready')
++observation.label = 'resume-check:ep.1'
++observation.phase = 'Resume'
++observation.result = { landed: true, sourceVerified: false, closed: ['ep.1'], open: [] }
++fs.writeFileSync(`${T}/resume-label-workflow.json`, JSON.stringify(workflow))
++const ordinary = JSON.parse(fs.readFileSync(`${FX}/ordinary.json`, 'utf8'))
++ordinary.agents.push({ codex: 'resume_check_cx_1', label: 'resume-check:cx.1', start: 0, end: 10 })
++fs.writeFileSync(`${T}/resume-label-ordinary.json`, JSON.stringify(ordinary))
++JS
++node "$BUILD" "$T/resume-label-workflow.json" "$T/resume-label-workflow"
++run bash "$P" --workflow "$T/resume-label-workflow" --out "$T/resume-label-w"
++assert_eq "$code" 0 "resume observation Workflow profile exits 0"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.criticalPath.segments.filter(s => s.label === 'resume-check:ep.1').map(s => [s.kind,s.bead,s.ms]))")" '[["ready",null,10000]]' "resume observation is run-level ready time"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.beads)")" "$(q "$T/chain-p.json" "JSON.stringify(d.beads)")" "resume observation creates no task attempt or task timing"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/chain-p.json" "JSON.stringify(d.taskSlots)")" "resume observation uses no task slot"
++RC=$(node "$ORD" "$T/resume-label-ordinary.json" codex "$T/resume-label-codex")
++run bash "$P" --codex "$RC" --codex-home "$T/resume-label-codex/codex" --ledger "$T/resume-label-codex/progress.md" --beads "$T/resume-label-codex/beads.json" --out "$T/resume-label-x"
++assert_eq "$code" 0 "resume observation Codex profile exits 0"
++RS=$(node "$ORD" "$T/resume-label-ordinary.json" claude "$T/resume-label-claude")
++run bash "$P" --subagents "$RS" --ledger "$T/resume-label-claude/progress.md" --beads "$T/resume-label-claude/beads.json" --out "$T/resume-label-c"
++assert_eq "$code" 0 "resume observation Claude profile exits 0"
++for pair in 'x ox' 'c oc'; do
++  read -r variant baseline <<< "$pair"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.concurrency.kinds.filter(k => k.kind === 'resume-check').map(k => [k.mapped,k.n,k.ms]))")" '[[true,1,10000]]' "ordinary resume observation is mapped ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.beads)")" "$(q "$T/$baseline.json" "JSON.stringify(d.beads)")" "ordinary resume observation preserves bead population and attempts ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/$baseline.json" "JSON.stringify(d.taskSlots)")" "ordinary resume observation preserves task slots ($variant)"
++done
++
+ echo "run-profile: context-pass module (synthetic rows)"
+ # context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
+ seen=0
+ while IFS= read -r line; do
+   case "$line" in
+     "ok "*) pass "context-pass: ${line#ok }"; seen=$((seen + 1)) ;;
+     "not ok "*) fail "context-pass: ${line#not ok }"; seen=$((seen + 1)) ;;
+     *) echo "$line" ;;
+   esac
+ done < <(node "$SCRIPT_DIR/context-pass-unit.mjs" 2>&1 || echo "not ok context-pass-unit.mjs exited with an error")
+@@ -508,12 +540,83 @@ assert_eq "$code" 0 "multi-rollout --context-only: exits 0"
+ assert_has "$out" "$CRSUM" "multi-rollout --context-only: largest peak, summed compactions"
+ assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'coordinator').map(a => a.peak + ':' + a.compactions.map(c => c.cause).join('+')).sort().join(' ')")" "200000:early 245000:cap" "one coordinator record per rollout, each compaction once"
+ assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'agent').map(a => a.label).sort().join(',')")" "impl_cr_1,impl_cr_2" "children of both rollouts"
+ run bash "$P" --context-only --codex "$CR" --codex "$CR2" --codex-home "$T/cr/codex"
+ assert_has "$out" "$CRSUM" "the thread and its second rollout given both: nothing counted twice"
+ run bash "$P" --codex "$CR" --codex-home "$T/cr/codex" --beads "$T/cr/beads.json" --epic cr --out "$T/crp"
+ assert_eq "$code" 0 "multi-rollout full profile: exits 0"
+ assert_has "$out" "$CRSUM" "multi-rollout full profile: the same coordinator figures"
+ assert_eq "$(q "$T/crp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.summary.coordinator.compactions].join(' ')")" "2 245000 2" "multi-rollout full profile --out JSON: the context key"
+ 
++echo "run-profile: availability evidence and planning diagnosis"
++node - "$T" <<'JS'
++const fs = require('node:fs'), T = process.argv[2]
++const base = { t0: '2026-10-01T00:00:00Z', launch: { epicId: 'av', config: { concurrency: 2, runtimeSlots: 8 } },
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }], agents: [
++    { label: 'ledger-append:launch', start: 0, end: 1 },
++    { label: 'plan', start: 1, end: 60, result: { mapping: [{ id: 'av.1', n: 1, deps: [] }] } },
++    { label: 'impl:av.1', start: 660, end: 690, result: { status: 'IMPLEMENTED' } },
++    { label: 'merge:av.1', start: 690, end: 700, result: { merged: true } }] }
++fs.writeFileSync(`${T}/availability.json`, JSON.stringify(base))
++const planning = structuredClone(base)
++planning.beads[1].created_at = 0
++planning.agents[1].end = 600
++fs.writeFileSync(`${T}/planning.json`, JSON.stringify(planning))
++const unknown = structuredClone(base)
++delete unknown.beads[1].created_at
++unknown.agents[1].result.mapping[0].deps = ['av.2']
++fs.writeFileSync(`${T}/unknown.json`, JSON.stringify(unknown))
++const ord = { t0: base.t0, epic: 'av', cwd: '/w', end: 710,
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }],
++  ledger: ['Launch: mechanism ordinary-subagents · epic av', 'Task 1 (av.1): complete'],
++  agents: [{ codex: 'impl_av_1', label: 'impl:av.1', start: 660, end: 690 }] }
++fs.writeFileSync(`${T}/residual.json`, JSON.stringify(ord))
++const lateOrd = structuredClone(ord)
++lateOrd.agents.unshift({ codex: 'plan', label: 'plan', start: 0, end: 60 })
++fs.writeFileSync(`${T}/late-ordinary.json`, JSON.stringify(lateOrd))
++const extOrd = structuredClone(lateOrd)
++extOrd.beads[1].created_at = 0
++extOrd.beads[1].dependencies = [{ type: 'blocks', depends_on_id: 'outside.1' }]
++fs.writeFileSync(`${T}/external-ordinary.json`, JSON.stringify(extOrd))
++JS
++node "$BUILD" "$T/availability.json" "$T/availability"
++run bash "$P" --workflow "$T/availability" --beads "$T/availability/beads.json" --out "$T/av"
++assert_eq "$code" 0 "late-created Workflow profile exits 0"
++assert_eq "$(q "$T/av.json" "(b => [b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs].join(' '))(d.beads[0])")" "2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0" "creation bounds wait while mapping and dependency evidence retain their times"
++assert_eq "$(q "$T/av.json" "d.simulation.asRunMs")" "640000" "model cannot release the late task before creation"
++assert_eq "$(q "$T/av.json" "[d.criticalPath.byCategory['pre-availability'],d.criticalPath.byCategory.wait].join(' ')")" "540000 60000" "critical path cannot call pre-creation time a task wait"
++node "$BUILD" "$T/unknown.json" "$T/unknown"
++run bash "$P" --workflow "$T/unknown" --beads "$T/unknown/beads.json" --out "$T/un"
++assert_eq "$(q "$T/un.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs,b.waitCause]))(d.beads[0])")" '[null,"2026-10-01T00:01:00.000Z",null,null,null,null,"unknown"]' "unknown external dependency timing cannot become measured readiness"
++assert_has "$out" "availability/readiness timing unknown" "unmeasured timing is explained"
++assert_eq "$(q "$T/un.json" "d.criticalPath.byCategory['unmeasured-gap']")" "600000" "unknown readiness gap remains unmeasured on the critical path"
++run bash "$P" --summarize "$T/un.json"
++assert_has "$out" "unknown readiness for 1 landed bead(s); wait not measured" "baseline keeps unknown waits unmeasured"
++node "$BUILD" "$T/planning.json" "$T/planning"
++run bash "$P" --workflow "$T/planning" --beads "$T/planning/beads.json" --out "$T/pl"
++assert_eq "$(q "$T/pl.json" "[d.diagnosis.dominant,d.diagnosis.planningMs,d.simulation.estimate,d.simulation.window].join(' ')")" "planning 599000 true first dispatch to last landing" "planning-dominated diagnosis and model window"
++assert_has "$out" "planning dominates" "whole-run diagnosis retains planning"
++assert_has "$out" "Profile: what-if estimate" "counterfactual stdout labels estimates"
++assert_has "$(cat "$T/pl.md")" "planning dominates" "Markdown preserves the planning diagnosis"
++assert_has "$out" "observed invocation/residual graph" "graph scope is explicit"
++assert_has "$out" "all-agent concurrency" "overall agents are labeled separately"
++assert_has "$out" "task-slot concurrency" "task-slot occupancy has its own label"
++OC=$(node "$ORD" "$T/residual.json" codex "$T/residual")
++run bash "$P" --codex "$OC" --codex-home "$T/residual/codex" --ledger "$T/residual/progress.md" --beads "$T/residual/beads.json" --out "$T/rs"
++assert_eq "$(q "$T/rs.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs]))(d.beads[0])")" '["2026-10-01T00:10:00.000Z",null,null,null,null,null]' "ordinary residual snapshot without a planner does not invent historical readiness"
++assert_eq "$(q "$T/rs.json" "d.graphScope")" "observed invocation/residual graph" "JSON graph scope"
++assert_eq "$(q "$T/pl.json" "[d.runtime.scope,d.taskSlots.scope].join(' / ')")" "all-agent concurrency / task-slot concurrency" "separate JSON concurrency scopes"
++assert_eq "$(q "$T/chain-p.json" "[d.runtime.peak,d.taskSlots.peak].join(' ')")" "3 2" "all-agent and task-slot peaks are measured independently"
++LC=$(node "$ORD" "$T/late-ordinary.json" codex "$T/late-ordinary")
++run bash "$P" --codex "$LC" --codex-home "$T/late-ordinary/codex" --ledger "$T/late-ordinary/progress.md" --beads "$T/late-ordinary/beads.json" --out "$T/lo"
++assert_eq "$(q "$T/lo.json" "(b => JSON.stringify([b.mappingReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary initial planner cannot establish mapping for a task created later"
++EC=$(node "$ORD" "$T/external-ordinary.json" codex "$T/external-ordinary")
++run bash "$P" --codex "$EC" --codex-home "$T/external-ordinary/codex" --ledger "$T/external-ordinary/progress.md" --beads "$T/external-ordinary/beads.json" --out "$T/eo"
++assert_eq "$(q "$T/eo.json" "(b => JSON.stringify([b.dependencyReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary external dependency timing stays unknown"
++run bash "$P" --discover --epic unavailable --projects "$T/empty" --out "$T/unavailable"
++assert_eq "$code" 3 "unavailable profile retains exit 3"
++if [ -f "$T/unavailable.json" ] && [ -f "$T/unavailable.md" ]; then
++  assert_eq "$(q "$T/unavailable.json" "d.partial && !!d.unavailable && d.window === undefined")" "true" "unavailable artifacts are qualified without invented timings"
++else fail "unavailable stdout also has copyable md/json artifacts"; fi
++
+ echo
+ if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi
+diff --git a/tests/super-code/test-setup-cleanup.sh b/tests/super-code/test-setup-cleanup.sh
+new file mode 100644
+index 00000000..88aac844
+--- /dev/null
++++ b/tests/super-code/test-setup-cleanup.sh
+@@ -0,0 +1,132 @@
++#!/usr/bin/env bash
++# Exercise the generated setup cleanup command and its real removal helper. Process
++# inspection is isolated to a deterministic stop outcome; Git mutates only this fixture.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import json, os, pathlib, re, shutil, subprocess, sys, tempfile, unittest
++ROOT=pathlib.Path(sys.argv.pop())
++GIT=shutil.which('git')
++
++class Cleanup(unittest.TestCase):
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory()
++        self.addCleanup(self.tmp.cleanup)
++        self.d=pathlib.Path(self.tmp.name)
++        self.repo=self.d/'repo'; self.repo.mkdir()
++        self.git('init','-q')
++        self.git('config','gc.auto','0')
++        self.git('config','maintenance.auto','false')
++        self.git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','--allow-empty','-qm','fixture')
++        self.git('branch','-M','integration')
++        self.wt=self.repo/'.worktrees/integration--task-ep.1'
++        self.git('worktree','add','-qb','task-ep.1',str(self.wt))
++        self.scripts=self.d/'scripts'; self.scripts.mkdir()
++        shutil.copy(ROOT/'skills/super-code/scripts/remove-task-worktree',self.scripts)
++        (self.scripts/'stop-run-processes').write_text('echo "stop outcome: ${STOP_CODE:-0}"; exit "${STOP_CODE:-0}"\n')
++        self.bin=self.d/'bin'; self.bin.mkdir()
++        mock=self.bin/'git'
++        mock.write_text('''#!/bin/bash
++case "$*" in
++ 'worktree remove --force '*) if [[ "${DENY_GIT:-}" = remove || "${DENY_GIT:-}" = force ]]; then echo 'fixture worktree remove denied' >&2; exit 1; fi;;
++ 'branch -D '*) if [[ "${DENY_GIT:-}" = branch || "${DENY_GIT:-}" = force ]]; then echo 'fixture branch delete denied' >&2; exit 1; fi;;
++ 'show-ref '*|'branch --list '*) if [ "${DENY_GIT:-}" = discovery ]; then echo 'fixture branch inspection denied' >&2; exit 128; fi;;
++esac
++exec "$REAL_GIT" "$@"
++''')
++        mock.chmod(0o755)
++        self.env=dict(os.environ,PATH=str(self.bin)+os.pathsep+os.environ['PATH'],REAL_GIT=GIT)
++        # Generated task temp paths are stable /tmp/sp-<hash>/<id>; the helpers also
++        # accept an absent temp root. Tests never create/remove another run's temp.
++        self.ledger=self.d/'progress.md'
++        self.ledger.write_text(f'Launch: mechanism ordinary-subagents · epic ep · invocationId fixture · branch integration · integrationWorktree {self.repo} · concurrency 1 · earlyUnblock on · sweep deferred\n')
++
++    def git(self,*args):
++        return subprocess.run([GIT,'-C',str(self.repo),*args],check=True,capture_output=True,text=True)
++
++    def branch_exists(self):
++        return bool(self.git('branch','--list','task-ep.1').stdout.strip())
++
++    def helper(self,expected,deny='',stop=0,command=None):
++        p=subprocess.run(command or ['bash',str(self.scripts/'remove-task-worktree'),'--discard',str(self.wt),'task-ep.1'],
++                         cwd=self.repo,env=dict(self.env,DENY_GIT=deny,STOP_CODE=str(stop)),capture_output=True,text=True)
++        self.assertEqual(p.returncode,expected,p.stdout+p.stderr)
++        return p
++
++    def test_worktree_remove_failure_retains_branch(self):
++        p=self.helper(3,deny='remove')
++        self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++        self.assertIn('kept:',p.stdout)
++
++    def test_branch_delete_failure_is_not_success(self):
++        p=self.helper(3,deny='branch')
++        self.assertFalse(self.wt.exists()); self.assertTrue(self.branch_exists())
++        self.assertIn('kept:',p.stdout)
++
++    def test_absent_worktree_branch_delete_failure(self):
++        self.git('worktree','remove',str(self.wt))
++        self.helper(3,deny='branch')
++        self.assertTrue(self.branch_exists())
++
++    def test_absent_branch_discovery_failure_is_unknown(self):
++        self.git('worktree','remove',str(self.wt))
++        p=self.helper(4,deny='discovery')
++        self.assertTrue(self.branch_exists()); self.assertIn('kept:',p.stdout)
++
++    def test_already_absent_resources_succeed(self):
++        self.git('worktree','remove',str(self.wt)); self.git('branch','-D','task-ep.1')
++        self.helper(0)
++
++    def test_normal_discard(self):
++        self.helper(0)
++        self.assertFalse(self.wt.exists()); self.assertFalse(self.branch_exists())
++
++    def default_command(self):
++        return ['bash',str(self.scripts/'remove-task-worktree'),str(self.wt),'task-ep.1','integration']
++
++    def test_default_cleanup_uses_no_force_commands(self):
++        self.helper(0,deny='force',command=self.default_command())
++        self.assertFalse(self.wt.exists()); self.assertFalse(self.branch_exists())
++
++    def test_default_cleanup_retains_dirty_worktree(self):
++        (self.wt/'retained').write_text('uncommitted work')
++        self.helper(3,command=self.default_command())
++        self.assertEqual((self.wt/'retained').read_text(),'uncommitted work')
++        self.assertTrue(self.branch_exists())
++
++    def test_default_cleanup_retains_unmerged_branch(self):
++        subprocess.run([GIT,'-C',str(self.wt),'-c','user.name=Fixture','-c','user.email=fixture@example.invalid',
++                        'commit','--allow-empty','-qm','unmerged work'],check=True,capture_output=True)
++        self.helper(3,command=self.default_command())
++        self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++    def test_stop_unknown_or_survivor_retains_resources(self):
++        for status in (3,4):
++            with self.subTest(status=status):
++                self.helper(status,stop=status)
++                self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++    def test_generated_setup_uses_guarded_cleanup(self):
++        for mode in (['--recut'],['--parents','ep.0']):
++            with self.subTest(mode=mode):
++                p=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/dispatch-text'),'--ledger',str(self.ledger),
++                                  '--stdout','implement','--id','ep.1','--n','1',*mode],capture_output=True,text=True,check=True)
++                setup=re.search(r'<workspace-setup>(.*?)</workspace-setup>',p.stdout,re.S).group(1)
++                commands=re.findall(r'`(bash [^`]*remove-task-worktree --discard[^`]*)`',setup)
++                self.assertEqual(len(commands),1,setup)
++                self.assertNotIn('git worktree remove --force',setup)
++                self.assertNotIn('git branch -D',setup)
++                self.assertIn('nonzero',setup)
++                self.assertIn('SETUP_FAILED',setup)
++                # Execute the actual emitted command with only the helper location and
++                # absent task temp root changed to this fixture's private namespace.
++                import shlex
++                command=shlex.split(commands[0]); command[1]=str(self.scripts/'remove-task-worktree')
++                ti=command.index('--tmp'); command[ti+1]='/tmp/sp-'+self.d.name.encode().hex()+'/absent-fixture'
++                self.assertEqual(command[-2:],[str(self.wt),'task-ep.1'])
++                for status in (3,4):
++                    self.helper(status,stop=status,command=command)
++                    self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++unittest.main(verbosity=2)
++TEST
+diff --git a/tests/super-code/test-stop-run-processes-inventory.sh b/tests/super-code/test-stop-run-processes-inventory.sh
+new file mode 100644
+index 00000000..eeeae4e4
+--- /dev/null
++++ b/tests/super-code/test-stop-run-processes-inventory.sh
+@@ -0,0 +1,89 @@
++#!/usr/bin/env bash
++# Git inventory failure must precede process matching/signalling. The process view is
++# deterministic; Git owns real disposable repositories and nested-worktree inventory.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import os, pathlib, shutil, subprocess, sys, tempfile, unittest
++ROOT = pathlib.Path(sys.argv.pop())
++GIT = shutil.which('git')
++
++class Inventory(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.tmp.cleanup)
++        self.path = pathlib.Path(self.tmp.name)
++        self.repo = self.path / 'repo'
++        self.repo.mkdir()
++        self.bin = self.path / 'bin'
++        self.bin.mkdir()
++        self.signal = self.path / 'signals'
++        self.env = dict(os.environ, PATH=str(self.bin)+os.pathsep+os.environ['PATH'],
++                        REAL_GIT=GIT, PROBE_ROOT=str(self.repo), SIGNAL_LOG=str(self.signal))
++        self.write('git', '#!/bin/bash\nif [[ "$*" == *"worktree list"* && "${DENY_INVENTORY:-}" == 1 ]]; then echo denied >&2; exit 128; fi\nexec "$REAL_GIT" "$@"\n')
++        self.write('ps', '#!/bin/bash\ncase "$*" in\n "-A -o pid=,ppid="|"-A -o pid=,ppid=,tty=") echo "$PPID 1 ??";;\n "-o ppid= -p "*) echo 1;;\n "-Eww -U "*) :;;\n *) exit 9;;\nesac\n')
++        self.write('lsof', '#!/bin/bash\ncase "$*" in *"-u "*) :;; *) echo n/fixture-outside;; esac\n')
++        bash_env = self.path / 'bash-env'
++        bash_env.write_text('function [ { if [[ "$*" == "-d /proc/self" ]]; then return 1; fi; builtin [ "$@"; }\nkill() { echo "$*" >> "$SIGNAL_LOG"; return 99; }\n')
++        self.env['BASH_ENV'] = str(bash_env)
++
++    def write(self, name, value):
++        f=self.bin/name; f.write_text(value); f.chmod(0o755)
++
++    def git(self, *args):
++        return subprocess.run([GIT, '-C', str(self.repo), *args], check=True, capture_output=True)
++
++    def init(self):
++        self.git('init', '-q')
++        self.git('config', 'gc.auto', '0')
++        self.git('config', 'maintenance.auto', 'false')
++        self.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
++                 'commit', '--allow-empty', '-qm', 'fixture')
++
++    def run_helper(self, expected, deny=False, check=False):
++        env=dict(self.env, DENY_INVENTORY='1' if deny else '0')
++        p=subprocess.run(['bash', str(ROOT/'skills/super-code/scripts/stop-run-processes'),
++                          *(['--check'] if check else []), str(self.repo)], env=env, capture_output=True, text=True)
++        self.assertEqual(p.returncode, expected, p.stdout+p.stderr)
++        self.assertFalse(self.signal.exists(), 'invalid/empty inventory must not signal processes')
++        if expected == 4: self.assertIn('unknown:', p.stdout)
++        return p
++
++    def test_denied_repository_inventory(self):
++        self.init()
++        self.run_helper(4, deny=True)
++        self.run_helper(4, deny=True, check=True)
++
++    def test_verified_nonrepository_temp(self):
++        self.run_helper(0)
++
++    def test_valid_leaf_repository(self):
++        self.init()
++        self.run_helper(0)
++
++    def test_nested_worktree_refused(self):
++        self.init()
++        self.git('worktree', 'add', '-qb', 'child', str(self.repo/'.worktrees/child'))
++        self.run_helper(2)
++
++    def test_corrupt_git_metadata_is_unknown(self):
++        self.init()
++        (self.repo/'.git/HEAD').unlink()
++        self.run_helper(4)
++
++    def test_nonrepository_at_filesystem_boundary(self):
++        # Git uses this diagnostic for an ordinary temp root on a separate mount.
++        self.write('git', '#!/bin/bash\nif [[ "$*" == *"rev-parse --git-dir" ]]; then printf "%s\\n" "fatal: not a git repository (or any parent up to mount point /tmp)" "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." >&2; fi\nexit 128\n')
++        self.run_helper(0)
++
++    def test_corrupt_bare_repository_is_unknown(self):
++        self.git('init', '--bare', '-q')
++        (self.repo/'HEAD').unlink()
++        self.run_helper(4)
++
++    def test_git_unavailable_is_unknown(self):
++        self.write('git', '#!/bin/bash\nexit 127\n')
++        self.run_helper(4)
++
++unittest.main(verbosity=2)
++TEST
+diff --git a/tests/super-code/test-verification-completion-metrics.sh b/tests/super-code/test-verification-completion-metrics.sh
+new file mode 100644
+index 00000000..b6019685
+--- /dev/null
++++ b/tests/super-code/test-verification-completion-metrics.sh
+@@ -0,0 +1,92 @@
++#!/usr/bin/env bash
++# Real ordinary-transcript producer and metric CLIs; verification adds no Git landing.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import json, pathlib, subprocess, sys, tempfile, unittest
++ROOT=pathlib.Path(sys.argv.pop())
++
++class Metrics(unittest.TestCase):
++    def check_case(self, kind):
++        with tempfile.TemporaryDirectory() as tmp:
++            d=pathlib.Path(tmp)
++            verification=kind!='implementation'
++            history=kind in ('earlier-merge','earlier-complete','untimed-earlier-merge')
++            timed_history=history and kind!='untimed-earlier-merge'
++            ledger=['Launch: mechanism ordinary-subagents · epic verify']
++            if history: ledger.append('Merge: verify.1 — merged' if kind!='earlier-complete' else 'Task 1 (verify.1): complete, review clean')
++            ledger.append('Task 1 (verify.1): complete, '+('verification-only, ' if verification else '')+'review clean')
++            agents=[dict(codex='impl_verify_1',label='impl:verify.1',start=10,end=20),
++                    dict(codex='review_verify_1',label='review:verify.1',start=21,end=25)]
++            if history:
++                agents += [dict(codex='impl_verify_1_recheck',label='impl:verify.1',start=60,end=70),
++                           dict(codex='review_verify_1_recheck',label='review:verify.1',start=71,end=80)]
++            sc=dict(t0='2026-10-01T00:00:00Z',epic='verify',cwd=str(d),end=90,ledger=ledger,
++                    beads=[dict(id='verify',issue_type='epic'),dict(id='verify.1',parent='verify',created_at=0)],
++                    agents=agents,caller=[dict(cmd='git merge --no-ff task-verify.1',start=30,end=35)] if timed_history else [])
++            scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
++            made=subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-ordinary-fixture.mjs'),str(scenario),'codex',str(d)],capture_output=True,text=True,check=True)
++            profile=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--codex',made.stdout.strip(),
++                 '--codex-home',str(d/'codex'),'--ledger',str(d/'progress.md'),'--beads',str(d/'beads.json'),'--out',str(d/'profile')],capture_output=True,text=True,check=True)
++            data=json.loads((d/'profile.json').read_text())
++            digest=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/run-digest'),'--part','state','--budget','9000'],
++                 input=f'skill: super-code\nledger: {d}/progress.md\n',capture_output=True,text=True,check=True)
++            landed=history or not verification
++            self.assertIn('ledger: landed '+str(int(landed)),digest.stdout)
++            if verification: self.assertIn('verification-only 1',digest.stdout)
++            bead=data['beads'][0]
++            self.assertEqual(bead['landed'],landed)
++            self.assertEqual(bead['verificationOnlyCompleted'],verification)
++            self.assertEqual(data['lane']['merges'],int(landed and kind!='untimed-earlier-merge'))
++            if verification: self.assertIn('verification-only 1',profile.stdout)
++            if timed_history: self.assertEqual(bead['landedAt'],'2026-10-01T00:00:35.000Z')
++            if kind=='untimed-earlier-merge':
++                self.assertIsNone(bead['landedAt'])
++                self.assertIsNone(data['simulation'])
++            if not landed:
++                self.assertIsNone(bead['landedAt'])
++                self.assertIsNone(data['simulation'])
++                self.assertFalse(any('landed bead(s) with no merge' in line for line in data['unmeasured']))
++                self.assertEqual(bead['attempts'],['VERIFIED'])
++                self.assertFalse(any('rework' in line for line in data['summary']))
++            print(kind+': landing='+str(bead['landed'])+', merges='+str(data['lane']['merges']))
++
++    def test_verification_only(self): self.check_case('verification')
++    def test_prior_landing_without_timing_is_not_synthesized_at_verification(self): self.check_case('untimed-earlier-merge')
++    def test_normal_implementation(self): self.check_case('implementation')
++    def test_earlier_real_merge_survives_verification(self): self.check_case('earlier-merge')
++    def test_earlier_complete_survives_verification(self): self.check_case('earlier-complete')
++
++class WorkflowMetrics(unittest.TestCase):
++    def check_case(self, kind):
++        with tempfile.TemporaryDirectory() as tmp:
++            d=pathlib.Path(tmp)
++            agents=[dict(label='ledger-append:launch',start=0,end=1),
++                    dict(label='plan',start=1,end=2,result=dict(mapping=[dict(id='verify.1',n=1,deps=[])]))]
++            prior=kind=='prior-merge'
++            if prior:
++                agents += [dict(label='impl:verify.1',start=3,end=8,result=dict(status='IMPLEMENTED')),
++                           dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
++            agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
++                       dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
++                       dict(label='close-only:verify.1',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
++            sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
++            scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
++            subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
++            p=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True,text=True)
++            data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
++            self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
++            self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
++            self.assertEqual(data['lane']['merges'],int(prior))
++            self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
++            if kind!='pending': self.assertIn('verification-only 1',p.stdout)
++            else: self.assertNotIn('verification-only 1',p.stdout)
++            if not prior: self.assertIsNone(data['simulation'])
++            print('Workflow '+kind+': landing='+str(bead['landed'])+', verified='+str(bead['verificationOnlyCompleted']))
++
++    def test_workflow_verified_close(self): self.check_case('verified')
++    def test_workflow_pending_close_is_not_completed(self): self.check_case('pending')
++    def test_workflow_prior_merge_survives_verification(self): self.check_case('prior-merge')
++
++unittest.main(verbosity=2)
++TEST

@@ -1,0 +1,820 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-13-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-13-report.md",
+  "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+  "rawByteCount": 18230,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-13-report.md",
+    "durablePath": "task-report-history-r1/raw/task-13-report.md",
+    "sha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+    "byteCount": 18230,
+    "logicalRole": "report",
+    "ordinal": 13,
+    "logicalTaskId": "super-plan-ufz.8.4",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-13-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status:IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "super-plan-ufz.8.4 implementation evidence",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# super-plan-ufz.8.4 implementation evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence"
+      ],
+      "lineStart": 1,
+      "lineEnd": 13,
+      "byteStart": 0,
+      "byteEnd": 456,
+      "bodyLineStart": 2,
+      "rawText": "# super-plan-ufz.8.4 implementation evidence\n\nStatus:IMPLEMENTED\n\nid: super-plan-ufz.8.4\nInitial base: 14444f0c6396a132250741eb45e5bab1cf934184\nFinal base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\nHead: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nBranch: task-super-plan-ufz.8.4\nStacked: false\nReopened: false\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4\n\n",
+      "bodyRawText": "\nStatus:IMPLEMENTED\n\nid: super-plan-ufz.8.4\nInitial base: 14444f0c6396a132250741eb45e5bab1cf934184\nFinal base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\nHead: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nBranch: task-super-plan-ufz.8.4\nStacked: false\nReopened: false\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status:IMPLEMENTED\n",
+          "text": "Status:IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 46,
+          "byteEnd": 65
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "id: super-plan-ufz.8.4\nInitial base: 14444f0c6396a132250741eb45e5bab1cf934184\nFinal base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74\n",
+          "text": "id: super-plan-ufz.8.4\nInitial base: 14444f0c6396a132250741eb45e5bab1cf934184\nFinal base: 0ae5dd86318d7758f441b4d0ad14fee5b9ca6b74",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 5,
+          "lineEnd": 7,
+          "byteStart": 66,
+          "byteEnd": 197
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nBranch: task-super-plan-ufz.8.4\nStacked: false\nReopened: false\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4\n",
+          "text": "Head: ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b\nBranch: task-super-plan-ufz.8.4\nStacked: false\nReopened: false\nWorktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 8,
+          "lineEnd": 12,
+          "byteStart": 197,
+          "byteEnd": 455
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Implementation"
+      ],
+      "lineStart": 14,
+      "lineEnd": 23,
+      "byteStart": 456,
+      "byteEnd": 2338,
+      "bodyLineStart": 15,
+      "rawText": "## Implementation\n\nAdded an independent --project branch to the existing scope-dispositions script, retaining the legacy round/filter/step-back implementation unchanged. Existing approvals records now retain complete extractor JSON, explicit reference links, overlapping owner/fix/deferred facts and supported dispositions. No artifact collector, competing roast ledger, roast triggers, amend workflow or prescribed lifecycle was introduced.\n\nThe projection preserves immutable (source,section,position) identities and original key/text. Archive copies add artifact pointers without adding occurrences. Only explicit links combine appearances; ambiguous identical keys/text remain separate. Conflicting immutable extractions retain variants and prevent the affected findings from being resolved. No retained source is an explicit coverage gap; unavailable source artifacts preserve inline occurrences with a gap.\n\nResolution/rejection requires an existing occurrence reference, explicit supported judgment, nonempty basis and evidence references; resolution additionally requires relevant verification. The owning agent judges semantic support before recording that judgment. Assignment, a fix reference/closed-fix label, success-only unsupported disposition, later ready/silent source or unknown external disposition cannot close a finding. Verified fixes supplied elsewhere and supported rejection do remove findings from the outstanding-deferred view. Key mode is derived from that same view, printing only its distinct original keys; detailed JSON preserves underlying occurrence distinctions.\n\nThe historical 2bf1d53 field and format goldens were preserved byte-for-byte. Contract lint now checks their union with the explicitly approved finding-record additions and still rejects missing legacy/approved fields, changed formats and unapproved extras, with mutation coverage.\n\n",
+      "bodyRawText": "\nAdded an independent --project branch to the existing scope-dispositions script, retaining the legacy round/filter/step-back implementation unchanged. Existing approvals records now retain complete extractor JSON, explicit reference links, overlapping owner/fix/deferred facts and supported dispositions. No artifact collector, competing roast ledger, roast triggers, amend workflow or prescribed lifecycle was introduced.\n\nThe projection preserves immutable (source,section,position) identities and original key/text. Archive copies add artifact pointers without adding occurrences. Only explicit links combine appearances; ambiguous identical keys/text remain separate. Conflicting immutable extractions retain variants and prevent the affected findings from being resolved. No retained source is an explicit coverage gap; unavailable source artifacts preserve inline occurrences with a gap.\n\nResolution/rejection requires an existing occurrence reference, explicit supported judgment, nonempty basis and evidence references; resolution additionally requires relevant verification. The owning agent judges semantic support before recording that judgment. Assignment, a fix reference/closed-fix label, success-only unsupported disposition, later ready/silent source or unknown external disposition cannot close a finding. Verified fixes supplied elsewhere and supported rejection do remove findings from the outstanding-deferred view. Key mode is derived from that same view, printing only its distinct original keys; detailed JSON preserves underlying occurrence distinctions.\n\nThe historical 2bf1d53 field and format goldens were preserved byte-for-byte. Contract lint now checks their union with the explicitly approved finding-record additions and still rejects missing legacy/approved fields, changed formats and unapproved extras, with mutation coverage.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added an independent --project branch to the existing scope-dispositions script, retaining the legacy round/filter/step-back implementation unchanged. Existing approvals records now retain complete extractor JSON, explicit reference links, overlapping owner/fix/deferred facts and supported dispositions. No artifact collector, competing roast ledger, roast triggers, amend workflow or prescribed lifecycle was introduced.\n",
+          "text": "Added an independent --project branch to the existing scope-dispositions script, retaining the legacy round/filter/step-back implementation unchanged. Existing approvals records now retain complete extractor JSON, explicit reference links, overlapping owner/fix/deferred facts and supported dispositions. No artifact collector, competing roast ledger, roast triggers, amend workflow or prescribed lifecycle was introduced.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 475,
+          "byteEnd": 898
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The projection preserves immutable (source,section,position) identities and original key/text. Archive copies add artifact pointers without adding occurrences. Only explicit links combine appearances; ambiguous identical keys/text remain separate. Conflicting immutable extractions retain variants and prevent the affected findings from being resolved. No retained source is an explicit coverage gap; unavailable source artifacts preserve inline occurrences with a gap.\n",
+          "text": "The projection preserves immutable (source,section,position) identities and original key/text. Archive copies add artifact pointers without adding occurrences. Only explicit links combine appearances; ambiguous identical keys/text remain separate. Conflicting immutable extractions retain variants and prevent the affected findings from being resolved. No retained source is an explicit coverage gap; unavailable source artifacts preserve inline occurrences with a gap.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 899,
+          "byteEnd": 1369
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Resolution/rejection requires an existing occurrence reference, explicit supported judgment, nonempty basis and evidence references; resolution additionally requires relevant verification. The owning agent judges semantic support before recording that judgment. Assignment, a fix reference/closed-fix label, success-only unsupported disposition, later ready/silent source or unknown external disposition cannot close a finding. Verified fixes supplied elsewhere and supported rejection do remove findings from the outstanding-deferred view. Key mode is derived from that same view, printing only its distinct original keys; detailed JSON preserves underlying occurrence distinctions.\n",
+          "text": "Resolution/rejection requires an existing occurrence reference, explicit supported judgment, nonempty basis and evidence references; resolution additionally requires relevant verification. The owning agent judges semantic support before recording that judgment. Assignment, a fix reference/closed-fix label, success-only unsupported disposition, later ready/silent source or unknown external disposition cannot close a finding. Verified fixes supplied elsewhere and supported rejection do remove findings from the outstanding-deferred view. Key mode is derived from that same view, printing only its distinct original keys; detailed JSON preserves underlying occurrence distinctions.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1370,
+          "byteEnd": 2054
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The historical 2bf1d53 field and format goldens were preserved byte-for-byte. Contract lint now checks their union with the explicitly approved finding-record additions and still rejects missing legacy/approved fields, changed formats and unapproved extras, with mutation coverage.\n",
+          "text": "The historical 2bf1d53 field and format goldens were preserved byte-for-byte. Contract lint now checks their union with the explicitly approved finding-record additions and still rejects missing legacy/approved fields, changed formats and unapproved extras, with mutation coverage.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2055,
+          "byteEnd": 2337
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Files changed"
+      ],
+      "lineStart": 24,
+      "lineEnd": 32,
+      "byteStart": 2338,
+      "byteEnd": 2652,
+      "bodyLineStart": 25,
+      "rawText": "## Files changed\n\n- skills/super-auto/scripts/scope-dispositions\n- skills/super-auto/run-state.md\n- tests/super-auto/test-scripts.sh\n- tests/super-auto/test-contract-lint.sh\n- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n\n",
+      "bodyRawText": "\n- skills/super-auto/scripts/scope-dispositions\n- skills/super-auto/run-state.md\n- tests/super-auto/test-scripts.sh\n- tests/super-auto/test-contract-lint.sh\n- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/scripts/scope-dispositions\n",
+          "text": "skills/super-auto/scripts/scope-dispositions",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2356,
+          "byteEnd": 2403
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/run-state.md\n",
+          "text": "skills/super-auto/run-state.md",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2403,
+          "byteEnd": 2436
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/test-scripts.sh\n",
+          "text": "tests/super-auto/test-scripts.sh",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 2436,
+          "byteEnd": 2471
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/test-contract-lint.sh\n",
+          "text": "tests/super-auto/test-contract-lint.sh",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2471,
+          "byteEnd": 2512
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n",
+          "text": "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 2512,
+          "byteEnd": 2581
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n",
+          "text": "tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2581,
+          "byteEnd": 2651
+        }
+      ]
+    },
+    {
+      "section": "Tests",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Tests"
+      ],
+      "lineStart": 33,
+      "lineEnd": 108,
+      "byteStart": 2652,
+      "byteEnd": 7495,
+      "bodyLineStart": 34,
+      "rawText": "## Tests\n\nBoth final suites ran on the rebased Head above and exited 0. Exact shell commands (the result/tail wrappers preserve the actual test exit status):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log 2>&1; result=$?; tail -46 .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log; exit \"$result\"\n```\n\nRelevant final script output (all legacy round/filter/step-back/status/no-jq assertions also passed):\n\n```text\nscope-dispositions: outstanding occurrence projection\n  [PASS] projection accepts retained complete extraction and supported dispositions\n  [PASS] ambiguous twins remain separate, archive dedupes and original text survives\n  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded\n  [PASS] explicit reference link accepted\n  [PASS] only explicit references combine source appearances\n  [PASS] unsupported produces an explicit evidence gap\n  [PASS] unsupported cannot delete known open A\n  [PASS] bad-ref produces an explicit evidence gap\n  [PASS] bad-ref cannot delete known open A\n  [PASS] no-basis produces an explicit evidence gap\n  [PASS] no-basis cannot delete known open A\n  [PASS] malformed produces an explicit evidence gap\n  [PASS] malformed cannot delete known open A\n  [PASS] bad-link produces an explicit evidence gap\n  [PASS] bad-link cannot delete known open A\n  [PASS] missing external input reports a gap\n  [PASS] missing external input preserves local open evidence\n  [PASS] external-malformed external input reports a gap\n  [PASS] external-malformed external input preserves local open evidence\n  [PASS] external external input reports a gap\n  [PASS] external external input preserves local open evidence\n  [PASS] supported external verification may resolve explicitly referenced A\n  [PASS] verified fix supplied elsewhere leaves punch list\n  [PASS] silent ready retry is a valid source without dispositions\n  [PASS] assignment, closed fix and later silence retain deferred A\n  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences\n  [PASS] changed immutable source reports a gap\n  [PASS] conflicting source preserves text variants and blocks resolution\n  [PASS] no retained sources is an explicit gap rather than a clean review\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nAll super-auto script tests passed\n```\n\nFinal contract output:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without --keys fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check HEAD~1 HEAD` passed. `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit and rebase.\n\n",
+      "bodyRawText": "\nBoth final suites ran on the rebased Head above and exited 0. Exact shell commands (the result/tail wrappers preserve the actual test exit status):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log 2>&1; result=$?; tail -46 .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log; exit \"$result\"\n```\n\nRelevant final script output (all legacy round/filter/step-back/status/no-jq assertions also passed):\n\n```text\nscope-dispositions: outstanding occurrence projection\n  [PASS] projection accepts retained complete extraction and supported dispositions\n  [PASS] ambiguous twins remain separate, archive dedupes and original text survives\n  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded\n  [PASS] explicit reference link accepted\n  [PASS] only explicit references combine source appearances\n  [PASS] unsupported produces an explicit evidence gap\n  [PASS] unsupported cannot delete known open A\n  [PASS] bad-ref produces an explicit evidence gap\n  [PASS] bad-ref cannot delete known open A\n  [PASS] no-basis produces an explicit evidence gap\n  [PASS] no-basis cannot delete known open A\n  [PASS] malformed produces an explicit evidence gap\n  [PASS] malformed cannot delete known open A\n  [PASS] bad-link produces an explicit evidence gap\n  [PASS] bad-link cannot delete known open A\n  [PASS] missing external input reports a gap\n  [PASS] missing external input preserves local open evidence\n  [PASS] external-malformed external input reports a gap\n  [PASS] external-malformed external input preserves local open evidence\n  [PASS] external external input reports a gap\n  [PASS] external external input preserves local open evidence\n  [PASS] supported external verification may resolve explicitly referenced A\n  [PASS] verified fix supplied elsewhere leaves punch list\n  [PASS] silent ready retry is a valid source without dispositions\n  [PASS] assignment, closed fix and later silence retain deferred A\n  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences\n  [PASS] changed immutable source reports a gap\n  [PASS] conflicting source preserves text variants and blocks resolution\n  [PASS] no retained sources is an explicit gap rather than a clean review\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nAll super-auto script tests passed\n```\n\nFinal contract output:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without --keys fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check HEAD~1 HEAD` passed. `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit and rebase.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both final suites ran on the rebased Head above and exited 0. Exact shell commands (the result/tail wrappers preserve the actual test exit status):\n",
+          "text": "Both final suites ran on the rebased Head above and exited 0. Exact shell commands (the result/tail wrappers preserve the actual test exit status):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 2662,
+          "byteEnd": 2810
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log 2>&1; result=$?; tail -46 .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log; exit \"$result\"\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log 2>&1; result=$?; tail -46 .superpowers/task-evidence/super-plan-ufz.8.4/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.4 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.4/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.4/contract-final.log; exit \"$result\"\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 37,
+          "lineEnd": 40,
+          "byteStart": 2811,
+          "byteEnd": 4176
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Relevant final script output (all legacy round/filter/step-back/status/no-jq assertions also passed):\n",
+          "text": "Relevant final script output (all legacy round/filter/step-back/status/no-jq assertions also passed):",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 4177,
+          "byteEnd": 4279
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nscope-dispositions: outstanding occurrence projection\n  [PASS] projection accepts retained complete extraction and supported dispositions\n  [PASS] ambiguous twins remain separate, archive dedupes and original text survives\n  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded\n  [PASS] explicit reference link accepted\n  [PASS] only explicit references combine source appearances\n  [PASS] unsupported produces an explicit evidence gap\n  [PASS] unsupported cannot delete known open A\n  [PASS] bad-ref produces an explicit evidence gap\n  [PASS] bad-ref cannot delete known open A\n  [PASS] no-basis produces an explicit evidence gap\n  [PASS] no-basis cannot delete known open A\n  [PASS] malformed produces an explicit evidence gap\n  [PASS] malformed cannot delete known open A\n  [PASS] bad-link produces an explicit evidence gap\n  [PASS] bad-link cannot delete known open A\n  [PASS] missing external input reports a gap\n  [PASS] missing external input preserves local open evidence\n  [PASS] external-malformed external input reports a gap\n  [PASS] external-malformed external input preserves local open evidence\n  [PASS] external external input reports a gap\n  [PASS] external external input preserves local open evidence\n  [PASS] supported external verification may resolve explicitly referenced A\n  [PASS] verified fix supplied elsewhere leaves punch list\n  [PASS] silent ready retry is a valid source without dispositions\n  [PASS] assignment, closed fix and later silence retain deferred A\n  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences\n  [PASS] changed immutable source reports a gap\n  [PASS] conflicting source preserves text variants and blocks resolution\n  [PASS] no retained sources is an explicit gap rather than a clean review\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nAll super-auto script tests passed\n```\n",
+          "text": "```text\nscope-dispositions: outstanding occurrence projection\n  [PASS] projection accepts retained complete extraction and supported dispositions\n  [PASS] ambiguous twins remain separate, archive dedupes and original text survives\n  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded\n  [PASS] explicit reference link accepted\n  [PASS] only explicit references combine source appearances\n  [PASS] unsupported produces an explicit evidence gap\n  [PASS] unsupported cannot delete known open A\n  [PASS] bad-ref produces an explicit evidence gap\n  [PASS] bad-ref cannot delete known open A\n  [PASS] no-basis produces an explicit evidence gap\n  [PASS] no-basis cannot delete known open A\n  [PASS] malformed produces an explicit evidence gap\n  [PASS] malformed cannot delete known open A\n  [PASS] bad-link produces an explicit evidence gap\n  [PASS] bad-link cannot delete known open A\n  [PASS] missing external input reports a gap\n  [PASS] missing external input preserves local open evidence\n  [PASS] external-malformed external input reports a gap\n  [PASS] external-malformed external input preserves local open evidence\n  [PASS] external external input reports a gap\n  [PASS] external external input preserves local open evidence\n  [PASS] supported external verification may resolve explicitly referenced A\n  [PASS] verified fix supplied elsewhere leaves punch list\n  [PASS] silent ready retry is a valid source without dispositions\n  [PASS] assignment, closed fix and later silence retain deferred A\n  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences\n  [PASS] changed immutable source reports a gap\n  [PASS] conflicting source preserves text variants and blocks resolution\n  [PASS] no retained sources is an explicit gap rather than a clean review\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nAll super-auto script tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 44,
+          "lineEnd": 82,
+          "byteStart": 4280,
+          "byteEnd": 6470
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final contract output:\n",
+          "text": "Final contract output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 84,
+          "lineEnd": 84,
+          "byteStart": 6471,
+          "byteEnd": 6494
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without --keys fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n",
+          "text": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without --keys fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 86,
+          "lineEnd": 105,
+          "byteStart": 6495,
+          "byteEnd": 7225
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check HEAD~1 HEAD` passed. `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit and rebase.\n",
+          "text": "`git diff --check HEAD~1 HEAD` passed. `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit and rebase.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 107,
+          "lineEnd": 107,
+          "byteStart": 7226,
+          "byteEnd": 7494
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "TDD evidence"
+      ],
+      "lineStart": 109,
+      "lineEnd": 130,
+      "byteStart": 7495,
+      "byteEnd": 9880,
+      "bodyLineStart": 110,
+      "rawText": "## TDD evidence\n\nUsed test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n\nRED 1: the same isolated environment and `bash tests/super-auto/test-scripts.sh`, before helper changes, produced `20 failure(s)`. New valid --project calls returned usage exit 2 and no keys instead of the expected projection/keys; unsupported/missing external cases likewise returned 2 instead of retained results plus gap status 3. Existing assertions passed. The two JSON-dependent assertion bodies were guarded and unmeasured during this RED, then passed during GREEN. An empty-output assertion following a failed status check was not sufficient evidence and was only accepted after the corresponding status check passed in GREEN.\n\n```text\n[FAIL] projection accepts retained complete extraction and supported dispositions\n  expected: 0\n  got:      2\n[FAIL] keys contain deferred A only; verified B, rejected C and active D excluded\n  expected: [Nit] café,format.ts:1 — A\n  got:\n20 failure(s)\n```\n\nRED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n\nRED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n\nRaw RED/GREEN evidence remains git-ignored inside this task worktree under `.superpowers/task-evidence/super-plan-ufz.8.4/`: scripts-red.log, scripts-edge-red.log, scripts-green.log, contract-red.log, scripts-final.log, contract-final.log. Final log files reflect the rebased head. These deterministic fixtures would fail if appearances auto-merged, archive paths created new identities, supported dispositions stayed on the punch list, active nondeferred findings leaked into keys, unsupported input dropped A, source text/positions were lost or unavailable tooling appeared clean.\n\n",
+      "bodyRawText": "\nUsed test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n\nRED 1: the same isolated environment and `bash tests/super-auto/test-scripts.sh`, before helper changes, produced `20 failure(s)`. New valid --project calls returned usage exit 2 and no keys instead of the expected projection/keys; unsupported/missing external cases likewise returned 2 instead of retained results plus gap status 3. Existing assertions passed. The two JSON-dependent assertion bodies were guarded and unmeasured during this RED, then passed during GREEN. An empty-output assertion following a failed status check was not sufficient evidence and was only accepted after the corresponding status check passed in GREEN.\n\n```text\n[FAIL] projection accepts retained complete extraction and supported dispositions\n  expected: 0\n  got:      2\n[FAIL] keys contain deferred A only; verified B, rejected C and active D excluded\n  expected: [Nit] café,format.ts:1 — A\n  got:\n20 failure(s)\n```\n\nRED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n\nRED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n\nRaw RED/GREEN evidence remains git-ignored inside this task worktree under `.superpowers/task-evidence/super-plan-ufz.8.4/`: scripts-red.log, scripts-edge-red.log, scripts-green.log, contract-red.log, scripts-final.log, contract-final.log. Final log files reflect the rebased head. These deterministic fixtures would fail if appearances auto-merged, archive paths created new identities, supported dispositions stayed on the punch list, active nondeferred findings leaked into keys, unsupported input dropped A, source text/positions were lost or unavailable tooling appeared clean.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n",
+          "text": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 7512,
+          "byteEnd": 7659
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED 1: the same isolated environment and `bash tests/super-auto/test-scripts.sh`, before helper changes, produced `20 failure(s)`. New valid --project calls returned usage exit 2 and no keys instead of the expected projection/keys; unsupported/missing external cases likewise returned 2 instead of retained results plus gap status 3. Existing assertions passed. The two JSON-dependent assertion bodies were guarded and unmeasured during this RED, then passed during GREEN. An empty-output assertion following a failed status check was not sufficient evidence and was only accepted after the corresponding status check passed in GREEN.\n",
+          "text": "RED 1: the same isolated environment and `bash tests/super-auto/test-scripts.sh`, before helper changes, produced `20 failure(s)`. New valid --project calls returned usage exit 2 and no keys instead of the expected projection/keys; unsupported/missing external cases likewise returned 2 instead of retained results plus gap status 3. Existing assertions passed. The two JSON-dependent assertion bodies were guarded and unmeasured during this RED, then passed during GREEN. An empty-output assertion following a failed status check was not sufficient evidence and was only accepted after the corresponding status check passed in GREEN.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 113,
+          "lineEnd": 113,
+          "byteStart": 7660,
+          "byteEnd": 8295
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] projection accepts retained complete extraction and supported dispositions\n  expected: 0\n  got:      2\n[FAIL] keys contain deferred A only; verified B, rejected C and active D excluded\n  expected: [Nit] café,format.ts:1 — A\n  got:\n20 failure(s)\n```\n",
+          "text": "```text\n[FAIL] projection accepts retained complete extraction and supported dispositions\n  expected: 0\n  got:      2\n[FAIL] keys contain deferred A only; verified B, rejected C and active D excluded\n  expected: [Nit] café,format.ts:1 — A\n  got:\n20 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 115,
+          "lineEnd": 123,
+          "byteStart": 8296,
+          "byteEnd": 8563
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n",
+          "text": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 125,
+          "lineEnd": 125,
+          "byteStart": 8564,
+          "byteEnd": 8868
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n",
+          "text": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 127,
+          "lineEnd": 127,
+          "byteStart": 8869,
+          "byteEnd": 9295
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Raw RED/GREEN evidence remains git-ignored inside this task worktree under `.superpowers/task-evidence/super-plan-ufz.8.4/`: scripts-red.log, scripts-edge-red.log, scripts-green.log, contract-red.log, scripts-final.log, contract-final.log. Final log files reflect the rebased head. These deterministic fixtures would fail if appearances auto-merged, archive paths created new identities, supported dispositions stayed on the punch list, active nondeferred findings leaked into keys, unsupported input dropped A, source text/positions were lost or unavailable tooling appeared clean.\n",
+          "text": "Raw RED/GREEN evidence remains git-ignored inside this task worktree under `.superpowers/task-evidence/super-plan-ufz.8.4/`: scripts-red.log, scripts-edge-red.log, scripts-green.log, contract-red.log, scripts-final.log, contract-final.log. Final log files reflect the rebased head. These deterministic fixtures would fail if appearances auto-merged, archive paths created new identities, supported dispositions stayed on the punch list, active nondeferred findings leaked into keys, unsupported input dropped A, source text/positions were lost or unavailable tooling appeared clean.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 129,
+          "lineEnd": 129,
+          "byteStart": 9296,
+          "byteEnd": 9879
+        }
+      ]
+    },
+    {
+      "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+      ],
+      "lineStart": 131,
+      "lineEnd": 169,
+      "byteStart": 9880,
+      "byteEnd": 15254,
+      "bodyLineStart": 132,
+      "rawText": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n\nConsume .8.1's persisted invocation token rather than runTag to construct an immutable logical source such as `inv-a/final`; the actual artifact is `final-review-inv-a.md`, with split artifacts such as `final-review-inv-a.cluster-1.md` using a different logical source such as `inv-a/cluster-1`. The exact landed .8.2 producer is:\n\n```bash\nbash skills/super-code/scripts/report-verdict --complete --source 'inv-a/final' '<artifact-path>'\n```\n\nIt returns `{version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}`. Retain all occurrences. When archiving, preserve source/section/position/key/text and update only artifact to the archive copy; relative artifact paths resolve from RUN_MD's directory. This task does not collect artifacts or append records automatically.\n\nAppend these one-line JSON record forms in the existing `approvals:` block (examples are complete producer records, not a separate file format):\n\n```text\napprovals:\n- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-link · {\"refs\":[{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},{\"source\":\"inv-b/final\",\"section\":\"Deferred OK\",\"position\":1}],\"basis\":\"verified same obligation\"}\n- finding-route · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"owner\":\"bd-fix\",\"fix\":\"bd-fix\",\"deferred\":\"outside the current goal\"}\n- finding-disposition · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"disposition\":\"resolved\",\"judgment\":\"supported\",\"basis\":\"another task supplied the relevant fix\",\"evidence\":[\"verification.log @ abc123\"],\"verification\":\"focused reproduction now passes against repaired code\"}\n```\n\nA rejection uses disposition `rejected` with the same supported judgment, basis and nonempty evidence; verification is optional for rejection. A source record's payload is the exact complete extraction object, not a key-only reconstruction. For final reviews, keys retain the full original first finding line; roast keys use the producer's before-em-dash convention. Source/section/position refs remain authoritative independently of the legacy printed key.\n\nCLI:\n\n```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external SUPPLEMENTARY_JSON\n```\n\nJSON output is `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding has first-retained `ref`, original `occurrences` including source/artifact/section/position/key/text, all `artifacts`, conflicting `variants`, explicit `links`, `routes`, retained `dispositions` with validated `supported`, and `outstanding`/`deferred` booleans. Groups and keys are deterministic in source appearance order. Route and disposition records can reference an occurrence appearing anywhere in retained source records; no mandatory event chain is imposed.\n\nExit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.\n\nOptional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.\n\n.8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n\n",
+      "bodyRawText": "\nConsume .8.1's persisted invocation token rather than runTag to construct an immutable logical source such as `inv-a/final`; the actual artifact is `final-review-inv-a.md`, with split artifacts such as `final-review-inv-a.cluster-1.md` using a different logical source such as `inv-a/cluster-1`. The exact landed .8.2 producer is:\n\n```bash\nbash skills/super-code/scripts/report-verdict --complete --source 'inv-a/final' '<artifact-path>'\n```\n\nIt returns `{version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}`. Retain all occurrences. When archiving, preserve source/section/position/key/text and update only artifact to the archive copy; relative artifact paths resolve from RUN_MD's directory. This task does not collect artifacts or append records automatically.\n\nAppend these one-line JSON record forms in the existing `approvals:` block (examples are complete producer records, not a separate file format):\n\n```text\napprovals:\n- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-link · {\"refs\":[{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},{\"source\":\"inv-b/final\",\"section\":\"Deferred OK\",\"position\":1}],\"basis\":\"verified same obligation\"}\n- finding-route · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"owner\":\"bd-fix\",\"fix\":\"bd-fix\",\"deferred\":\"outside the current goal\"}\n- finding-disposition · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"disposition\":\"resolved\",\"judgment\":\"supported\",\"basis\":\"another task supplied the relevant fix\",\"evidence\":[\"verification.log @ abc123\"],\"verification\":\"focused reproduction now passes against repaired code\"}\n```\n\nA rejection uses disposition `rejected` with the same supported judgment, basis and nonempty evidence; verification is optional for rejection. A source record's payload is the exact complete extraction object, not a key-only reconstruction. For final reviews, keys retain the full original first finding line; roast keys use the producer's before-em-dash convention. Source/section/position refs remain authoritative independently of the legacy printed key.\n\nCLI:\n\n```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external SUPPLEMENTARY_JSON\n```\n\nJSON output is `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding has first-retained `ref`, original `occurrences` including source/artifact/section/position/key/text, all `artifacts`, conflicting `variants`, explicit `links`, `routes`, retained `dispositions` with validated `supported`, and `outstanding`/`deferred` booleans. Groups and keys are deterministic in source appearance order. Route and disposition records can reference an occurrence appearing anywhere in retained source records; no mandatory event chain is imposed.\n\nExit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.\n\nOptional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.\n\n.8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Consume .8.1's persisted invocation token rather than runTag to construct an immutable logical source such as `inv-a/final`; the actual artifact is `final-review-inv-a.md`, with split artifacts such as `final-review-inv-a.cluster-1.md` using a different logical source such as `inv-a/cluster-1`. The exact landed .8.2 producer is:\n",
+          "text": "Consume .8.1's persisted invocation token rather than runTag to construct an immutable logical source such as `inv-a/final`; the actual artifact is `final-review-inv-a.md`, with split artifacts such as `final-review-inv-a.cluster-1.md` using a different logical source such as `inv-a/cluster-1`. The exact landed .8.2 producer is:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 9938,
+          "byteEnd": 10269
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nbash skills/super-code/scripts/report-verdict --complete --source 'inv-a/final' '<artifact-path>'\n```\n",
+          "text": "```bash\nbash skills/super-code/scripts/report-verdict --complete --source 'inv-a/final' '<artifact-path>'\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 135,
+          "lineEnd": 137,
+          "byteStart": 10270,
+          "byteEnd": 10380
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "It returns `{version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}`. Retain all occurrences. When archiving, preserve source/section/position/key/text and update only artifact to the archive copy; relative artifact paths resolve from RUN_MD's directory. This task does not collect artifacts or append records automatically.\n",
+          "text": "It returns `{version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}`. Retain all occurrences. When archiving, preserve source/section/position/key/text and update only artifact to the archive copy; relative artifact paths resolve from RUN_MD's directory. This task does not collect artifacts or append records automatically.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 139,
+          "lineEnd": 139,
+          "byteStart": 10381,
+          "byteEnd": 10733
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Append these one-line JSON record forms in the existing `approvals:` block (examples are complete producer records, not a separate file format):\n",
+          "text": "Append these one-line JSON record forms in the existing `approvals:` block (examples are complete producer records, not a separate file format):",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 141,
+          "lineEnd": 141,
+          "byteStart": 10734,
+          "byteEnd": 10879
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\napprovals:\n- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-link · {\"refs\":[{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},{\"source\":\"inv-b/final\",\"section\":\"Deferred OK\",\"position\":1}],\"basis\":\"verified same obligation\"}\n- finding-route · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"owner\":\"bd-fix\",\"fix\":\"bd-fix\",\"deferred\":\"outside the current goal\"}\n- finding-disposition · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"disposition\":\"resolved\",\"judgment\":\"supported\",\"basis\":\"another task supplied the relevant fix\",\"evidence\":[\"verification.log @ abc123\"],\"verification\":\"focused reproduction now passes against repaired code\"}\n```\n",
+          "text": "```text\napprovals:\n- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-link · {\"refs\":[{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},{\"source\":\"inv-b/final\",\"section\":\"Deferred OK\",\"position\":1}],\"basis\":\"verified same obligation\"}\n- finding-route · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"owner\":\"bd-fix\",\"fix\":\"bd-fix\",\"deferred\":\"outside the current goal\"}\n- finding-disposition · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"disposition\":\"resolved\",\"judgment\":\"supported\",\"basis\":\"another task supplied the relevant fix\",\"evidence\":[\"verification.log @ abc123\"],\"verification\":\"focused reproduction now passes against repaired code\"}\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 143,
+          "lineEnd": 150,
+          "byteStart": 10880,
+          "byteEnd": 12140
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "A rejection uses disposition `rejected` with the same supported judgment, basis and nonempty evidence; verification is optional for rejection. A source record's payload is the exact complete extraction object, not a key-only reconstruction. For final reviews, keys retain the full original first finding line; roast keys use the producer's before-em-dash convention. Source/section/position refs remain authoritative independently of the legacy printed key.\n",
+          "text": "A rejection uses disposition `rejected` with the same supported judgment, basis and nonempty evidence; verification is optional for rejection. A source record's payload is the exact complete extraction object, not a key-only reconstruction. For final reviews, keys retain the full original first finding line; roast keys use the producer's before-em-dash convention. Source/section/position refs remain authoritative independently of the legacy printed key.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 152,
+          "lineEnd": 152,
+          "byteStart": 12141,
+          "byteEnd": 12599
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "CLI:\n",
+          "text": "CLI:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 154,
+          "lineEnd": 154,
+          "byteStart": 12600,
+          "byteEnd": 12605
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external SUPPLEMENTARY_JSON\n```\n",
+          "text": "```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external SUPPLEMENTARY_JSON\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 156,
+          "lineEnd": 160,
+          "byteStart": 12606,
+          "byteEnd": 12856
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "JSON output is `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding has first-retained `ref`, original `occurrences` including source/artifact/section/position/key/text, all `artifacts`, conflicting `variants`, explicit `links`, `routes`, retained `dispositions` with validated `supported`, and `outstanding`/`deferred` booleans. Groups and keys are deterministic in source appearance order. Route and disposition records can reference an occurrence appearing anywhere in retained source records; no mandatory event chain is imposed.\n",
+          "text": "JSON output is `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding has first-retained `ref`, original `occurrences` including source/artifact/section/position/key/text, all `artifacts`, conflicting `variants`, explicit `links`, `routes`, retained `dispositions` with validated `supported`, and `outstanding`/`deferred` booleans. Groups and keys are deterministic in source appearance order. Route and disposition records can reference an occurrence appearing anywhere in retained source records; no mandatory event chain is imposed.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 162,
+          "lineEnd": 162,
+          "byteStart": 12857,
+          "byteEnd": 13405
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.\n",
+          "text": "Exit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 164,
+          "lineEnd": 164,
+          "byteStart": 13406,
+          "byteEnd": 14036
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Optional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.\n",
+          "text": "Optional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 166,
+          "lineEnd": 166,
+          "byteStart": 14037,
+          "byteEnd": 14765
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n",
+          "text": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 168,
+          "lineEnd": 168,
+          "byteStart": 14766,
+          "byteEnd": 15253
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Test hygiene"
+      ],
+      "lineStart": 170,
+      "lineEnd": 180,
+      "byteStart": 15254,
+      "byteEnd": 16554,
+      "bodyLineStart": 171,
+      "rawText": "## Test hygiene\n\nNo leaked processes remained after any completed run, and final --check plus stop both exited 0 with no matches or survived lines. No server, daemon or watcher was started. One check was inadvertently issued while the first contract RED run was still active; it listed PIDs 11652, 11664, 25452 and 26614 under that running test's worktree. The test was allowed to complete and the immediate post-completion check was empty; these were active test processes, not surviving test leaks. No unrelated process was stopped.\n\nFinal commands, run from outside the owned roots:\n\n```bash\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\n```\n\n",
+      "bodyRawText": "\nNo leaked processes remained after any completed run, and final --check plus stop both exited 0 with no matches or survived lines. No server, daemon or watcher was started. One check was inadvertently issued while the first contract RED run was still active; it listed PIDs 11652, 11664, 25452 and 26614 under that running test's worktree. The test was allowed to complete and the immediate post-completion check was empty; these were active test processes, not surviving test leaks. No unrelated process was stopped.\n\nFinal commands, run from outside the owned roots:\n\n```bash\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No leaked processes remained after any completed run, and final --check plus stop both exited 0 with no matches or survived lines. No server, daemon or watcher was started. One check was inadvertently issued while the first contract RED run was still active; it listed PIDs 11652, 11664, 25452 and 26614 under that running test's worktree. The test was allowed to complete and the immediate post-completion check was empty; these were active test processes, not surviving test leaks. No unrelated process was stopped.\n",
+          "text": "No leaked processes remained after any completed run, and final --check plus stop both exited 0 with no matches or survived lines. No server, daemon or watcher was started. One check was inadvertently issued while the first contract RED run was still active; it listed PIDs 11652, 11664, 25452 and 26614 under that running test's worktree. The test was allowed to complete and the immediate post-completion check was empty; these were active test processes, not surviving test leaks. No unrelated process was stopped.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 172,
+          "lineEnd": 172,
+          "byteStart": 15271,
+          "byteEnd": 15789
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final commands, run from outside the owned roots:\n",
+          "text": "Final commands, run from outside the owned roots:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 174,
+          "lineEnd": 174,
+          "byteStart": 15790,
+          "byteEnd": 15840
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\n```\n",
+          "text": "```bash\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\ncd /Users/alepar/AleCode/superpowers && bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4 /tmp/sp-bce79baa/super-plan-ufz.8.4\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 176,
+          "lineEnd": 179,
+          "byteStart": 15841,
+          "byteEnd": 16553
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Assumptions"
+      ],
+      "lineStart": 181,
+      "lineEnd": 186,
+      "byteStart": 16554,
+      "byteEnd": 17577,
+      "bodyLineStart": 182,
+      "rawText": "## Assumptions\n\nCurrent bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.\n\nThere is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.\n\n",
+      "bodyRawText": "\nCurrent bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.\n\nThere is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.\n",
+          "text": "Current bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 183,
+          "lineEnd": 183,
+          "byteStart": 16570,
+          "byteEnd": 16902
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "There is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.\n",
+          "text": "There is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 185,
+          "lineEnd": 185,
+          "byteStart": 16903,
+          "byteEnd": 17576
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Concerns"
+      ],
+      "lineStart": 187,
+      "lineEnd": 191,
+      "byteStart": 17577,
+      "byteEnd": 18230,
+      "bodyLineStart": 188,
+      "rawText": "## Concerns\n\nSemantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n\nCoordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "bodyRawText": "\nSemantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n\nCoordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n",
+          "text": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 189,
+          "lineEnd": 189,
+          "byteStart": 17590,
+          "byteEnd": 17866
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+          "text": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 191,
+          "lineEnd": 191,
+          "byteStart": 17867,
+          "byteEnd": 18230
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.",
+      "text": "Current bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.",
+      "rawText": "Current bead description/acceptance and comments were read before the frozen brief. No comments/amendments or unresolved conflicts were present. The nested continuity spec and root invariant are authoritative and compatible. Predecessor task-8/task-9 reports supplied the invocation and occurrence contracts actually consumed here.\n",
+      "lineStart": 183,
+      "lineEnd": 183,
+      "byteStart": 16570,
+      "byteEnd": 16902,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Assumptions"
+      ],
+      "positionInSection": 2,
+      "key": "There is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.",
+      "text": "There is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.",
+      "rawText": "There is no dependency installation/setup for these Node built-in/Bash scripts. The runner `tests/super-auto/test-scripts.sh` and package-under-test `skills/super-auto/scripts/scope-dispositions` both resolved inside /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.4; system Node is /opt/homebrew/bin/node. Tests and product helper invocations used the prescribed TMPDIR plus isolated HOME and all XDG config/data/cache/state homes. Integration and the user's checkout remained read-only; only this report was written outside the task worktree. No subagents or Herdr writes were used.\n",
+      "lineStart": 185,
+      "lineEnd": 185,
+      "byteStart": 16903,
+      "byteEnd": 17576,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.",
+      "text": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.",
+      "rawText": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n",
+      "lineStart": 189,
+      "lineEnd": 189,
+      "byteStart": 17590,
+      "byteEnd": 17866,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.8.4 implementation evidence",
+        "Concerns"
+      ],
+      "positionInSection": 2,
+      "key": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.",
+      "text": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.",
+      "rawText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "lineStart": 191,
+      "lineEnd": 191,
+      "byteStart": 17867,
+      "byteEnd": 18230,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

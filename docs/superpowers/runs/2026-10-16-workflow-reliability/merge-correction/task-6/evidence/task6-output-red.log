@@ -1,0 +1,46 @@
+test_acceptance_closed_pipe (__main__.ProjectionOutput.test_acceptance_closed_pipe) ... FAIL
+test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer) ... ok
+test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe) ... ok
+test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure) ... ok
+test_large_acceptance_transport (__main__.ProjectionOutput.test_large_acceptance_transport) ... FAIL
+test_large_gap_acceptance_transport (__main__.ProjectionOutput.test_large_gap_acceptance_transport) ... FAIL
+test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer) ... ok
+test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe) ... ok
+test_small_acceptance_transport (__main__.ProjectionOutput.test_small_acceptance_transport) ... ok
+test_valid_empty_acceptance_consumer (__main__.ProjectionOutput.test_valid_empty_acceptance_consumer) ... ok
+test_valid_empty_projection_pipe (__main__.ProjectionOutput.test_valid_empty_projection_pipe) ... ok
+
+======================================================================
+FAIL: test_acceptance_closed_pipe (__main__.ProjectionOutput.test_acceptance_closed_pipe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 156, in test_acceptance_closed_pipe
+AssertionError: 0 == 0 : acceptance output failure cannot report success
+
+======================================================================
+FAIL: test_large_acceptance_transport (__main__.ProjectionOutput.test_large_acceptance_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 139, in test_large_acceptance_transport
+  File "<stdin>", line 132, in check_acceptance_transport
+AssertionError: b'{"o[65528 chars]ource' != b'{"o[65528 chars]ource-identity-source-identity-source-identity[34250 chars]]}\n' : acceptance must flush every output byte
+
+======================================================================
+FAIL: test_large_gap_acceptance_transport (__main__.ProjectionOutput.test_large_gap_acceptance_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 142, in test_large_gap_acceptance_transport
+  File "<stdin>", line 132, in check_acceptance_transport
+AssertionError: b'{"o[65536 chars]ource' != b'{"o[65536 chars]ource-identity-source-identity-source-identity[34442 chars]]}\n' : acceptance must flush every output byte
+
+----------------------------------------------------------------------
+Ran 11 tests in 3.444s
+
+FAILED (failures=3)
+acceptance empty=False gap=True: 126 retained refs, exit 3
+projection empty=False gap=True: 204584 bytes, exit 3
+acceptance empty=False gap=False: 126 retained refs, exit 0
+projection empty=False gap=False: 204409 bytes, exit 0
+acceptance transport empty=True gap=False: 143 bytes, exit 0
+acceptance empty=True gap=False: 0 retained refs, exit 0
+projection empty=True gap=False: 381 bytes, exit 0

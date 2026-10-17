@@ -1,0 +1,2 @@
+01/1 passed: bash tests/check.sh
+{"measurementValid": false, "commandGroupsPassed": 1, "commandGroupsFailed": 0, "commandGroupsErrors": 0, "commandGroupsSkipped": 0}

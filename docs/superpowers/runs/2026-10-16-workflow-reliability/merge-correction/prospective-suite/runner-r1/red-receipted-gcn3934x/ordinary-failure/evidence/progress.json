@@ -1,0 +1,76 @@
+{
+  "cases": [
+    {
+      "id": "01",
+      "planCommand": "bash tests/one.sh",
+      "actualArgv": [
+        "/bin/bash",
+        "tests/one.sh"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:58Z",
+      "endUtc": "2026-10-17T21:39:58Z",
+      "durationSeconds": 0.005,
+      "exitCode": 7,
+      "status": "failed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "625103c39eca52aa97742f0207df7d1d32058015",
+      "sourceTree": "f5218c3807b5de3973ae5c376f6be888f7d97d7f",
+      "runner": "/bin/bash",
+      "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-01/stderr.log",
+      "stdoutBytes": 17,
+      "stdoutSha256": "45d606ab6c823de5d02844914001ede96a4d7b84399f3b407bc499c1ec4c7584",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "02",
+      "planCommand": "bash tests/two.sh",
+      "actualArgv": [
+        "/bin/bash",
+        "tests/two.sh"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:58Z",
+      "endUtc": "2026-10-17T21:39:58Z",
+      "durationSeconds": 0.005,
+      "exitCode": 0,
+      "status": "passed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "625103c39eca52aa97742f0207df7d1d32058015",
+      "sourceTree": "f5218c3807b5de3973ae5c376f6be888f7d97d7f",
+      "runner": "/bin/bash",
+      "runnerSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/ordinary-failure/evidence/case-02/stderr.log",
+      "stdoutBytes": 13,
+      "stdoutSha256": "167628e5e4417dd8a23dc38586fb834c7656646407c798b2bc493e93576d1d95",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

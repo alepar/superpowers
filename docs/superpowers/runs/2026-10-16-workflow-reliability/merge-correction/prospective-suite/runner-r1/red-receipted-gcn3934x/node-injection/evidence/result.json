@@ -1,0 +1,65 @@
+{
+  "sourceHead": "4fb1df824523d57665246843d069bdae2341f16d",
+  "sourceTree": "4314366cf6b8f2ea7321a4adc8a269d6308c3e00",
+  "measurementValid": true,
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "toolVersions": {
+    "node": "v26.9.0",
+    "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)"
+  },
+  "planPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/plan.json",
+  "planSha256": "55844c3416aa526bd2afc1422dbd2ec3b6f1ec05252ddf9863cc8f7cdeecf74c",
+  "runnerSha256": "3f29ce968213f484c8a43fed011b27a59d6c7ce34d4eeda8988b67ce7f763e16",
+  "commandCount": 1,
+  "commandGroupsPassed": 1,
+  "commandGroupsFailed": 0,
+  "commandGroupsErrors": 0,
+  "commandGroupsSkipped": 0,
+  "cases": [
+    {
+      "id": "01",
+      "planCommand": "node tests/check.mjs",
+      "actualArgv": [
+        "/opt/homebrew/bin/node",
+        "tests/check.mjs"
+      ],
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/clone",
+      "environment": {
+        "CI": "1",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/tmp",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/home",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/xdg-config",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/xdg-cache",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/xdg-state",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/codex-home"
+      },
+      "startUtc": "2026-10-17T21:39:55Z",
+      "endUtc": "2026-10-17T21:39:55Z",
+      "durationSeconds": 0.071,
+      "exitCode": 0,
+      "status": "passed",
+      "timeout": false,
+      "cause": null,
+      "sourceHead": "4fb1df824523d57665246843d069bdae2341f16d",
+      "sourceTree": "4314366cf6b8f2ea7321a4adc8a269d6308c3e00",
+      "runner": "/opt/homebrew/bin/node",
+      "runnerSha256": "28f0fc07e2b86fc0eae5f9751f34ab14d63bd0132882f89cc4a5b4a44965592e",
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/stdout.log",
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence/case-01/stderr.log",
+      "stdoutBytes": 24,
+      "stdoutSha256": "b282520390f8130fc109580171b764a1bcb5cc48b0d232fc89ee284fe4bc29b2",
+      "stderrBytes": 0,
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "clonePath": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/clone",
+  "finalSourceStatus": "",
+  "finalSourceHead": "4fb1df824523d57665246843d069bdae2341f16d",
+  "finalSourceTree": "4314366cf6b8f2ea7321a4adc8a269d6308c3e00",
+  "resourceRetention": "Clone and per-case roots retained; separate scoped inspection pending.",
+  "limitations": [
+    "Actual test execution; canned external agents in fixtures remain simulations.",
+    "No hosted Workflow, provider-wide reliability or global process-absence claim."
+  ]
+}

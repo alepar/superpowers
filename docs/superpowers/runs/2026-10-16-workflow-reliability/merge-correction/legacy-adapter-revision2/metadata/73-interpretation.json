@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "ordinal": 73,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+  "originalArtifact": "task-report-history-r1/raw/task-9-review.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-9-review.md",
+  "rawSha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+  "rawByteCount": 3083,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        27
+      ]
+    ],
+    "byteScope": [
+      0,
+      3083
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/18",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/73-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "unknown"
+  },
+  "originalVerdictAndStatusFields": [],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/0",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        729,
+        747
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Critical issues explicitly none."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/1",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        747,
+        766
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Important issues explicitly none."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/2",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        766,
+        781
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Minor issues explicitly none."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/3",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        781,
+        819
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Unverified requirement items explicitly none within this review."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/4",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        820,
+        1502
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Plausible report evidence; reviewer ran no tests."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/18/passages/5",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        2303,
+        2939
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Boundary review with downstream integration assigned separately; nonexistent filename search corrected, not a defect finding."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Critical issues explicitly none.",
+      "rawSection": "Issues:",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "**Issues:**\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Issues:"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 729,
+      "byteEnd": 747,
+      "rawText": "- Critical: none.\n",
+      "canonicalAdapterSection": "Issues:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Important issues explicitly none.",
+      "rawSection": "Issues:",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "**Issues:**\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Issues:"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 10,
+      "lineEnd": 10,
+      "byteStart": 747,
+      "byteEnd": 766,
+      "rawText": "- Important: none.\n",
+      "canonicalAdapterSection": "Issues:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Minor issues explicitly none.",
+      "rawSection": "Issues:",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "**Issues:**\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Issues:"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 766,
+      "byteEnd": 781,
+      "rawText": "- Minor: none.\n",
+      "canonicalAdapterSection": "Issues:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Unverified requirement items explicitly none within this review.",
+      "rawSection": "Issues:",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "**Issues:**\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Issues:"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 12,
+      "lineEnd": 12,
+      "byteStart": 781,
+      "byteEnd": 819,
+      "rawText": "- Unverified requirement items: none.\n",
+      "canonicalAdapterSection": "Issues:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Plausible report evidence; reviewer ran no tests.",
+      "rawSection": "Test evidence:",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "**Test evidence:** The report supplies the full isolated-environment command ending in `bash tests/super-code/test-report-verdict.sh`, run from the task worktree after rebasing onto this base, exit 0. It includes relevant pass output for final-review/roast/task extraction, duplicate positions, continuations, Unicode, archive identity, caps, explicit-empty reviews and malformed inputs, ending `report-verdict: all tests passed`. This plausibly covers the changes. The report also records RED evidence, unchanged legacy assertions, a 26-case stdout/stderr/status compatibility probe against the preimplementation helper, and no leaked processes. No tests were rerun during review.\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Test evidence:"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 820,
+      "byteEnd": 1502,
+      "rawText": "**Test evidence:** The report supplies the full isolated-environment command ending in `bash tests/super-code/test-report-verdict.sh`, run from the task worktree after rebasing onto this base, exit 0. It includes relevant pass output for final-review/roast/task extraction, duplicate positions, continuations, Unicode, archive identity, caps, explicit-empty reviews and malformed inputs, ending `report-verdict: all tests passed`. This plausibly covers the changes. The report also records RED evidence, unchanged legacy assertions, a 26-case stdout/stderr/status compatibility probe against the preimplementation helper, and no leaked processes. No tests were rerun during review.\n",
+      "canonicalAdapterSection": "Test evidence:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Boundary review with downstream integration assigned separately; nonexistent filename search corrected, not a defect finding.",
+      "rawSection": "Focused boundary checks:",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "**Focused boundary checks:** Risk: extraction could fail to cover actual source formats or disturb existing recognition/callers. Checked the real final-review and roast fixtures and roast reporter contract against the new relevant-section/parser logic; checked the legacy helper and final-review producer in coordinator.js. The new command reaches the additive branch directly; legacy arguments fall through to unchanged code. A search also named a nonexistent final-review-prompt.md; the actual producer contract was found in coordinator.js and inspected. New consumer integration belongs to downstream .8.4, not this extraction task.\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.8.2 review",
+        "Focused boundary checks:"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 2303,
+      "byteEnd": 2939,
+      "rawText": "**Focused boundary checks:** Risk: extraction could fail to cover actual source formats or disturb existing recognition/callers. Checked the real final-review and roast fixtures and roast reporter contract against the new relevant-section/parser logic; checked the legacy helper and final-review producer in coordinator.js. The new command reaches the additive branch directly; legacy arguments fall through to unchanged code. A search also named a nonexistent final-review-prompt.md; the actual producer contract was found in coordinator.js and inspected. New consumer integration belongs to downstream .8.4, not this extraction task.\n",
+      "canonicalAdapterSection": "Focused boundary checks:",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 820,
+      "byteEnd": 1502,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/18/passages/4"
+      ],
+      "interpretation": "Plausible report evidence; reviewer ran no tests.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000000820",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "coverage_limit"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 820,
+      "rawByteEnd": 1502,
+      "rawLineStart": 14,
+      "rawLineEnd": 14,
+      "originalSections": [
+        {
+          "section": "Test evidence:",
+          "sectionOrdinal": 4,
+          "headingRaw": "**Test evidence:** The report supplies the full isolated-environment command ending in `bash tests/super-code/test-report-verdict.sh`, run from the task worktree after rebasing onto this base, exit 0. It includes relevant pass output for final-review/roast/task extraction, duplicate positions, continuations, Unicode, archive identity, caps, explicit-empty reviews and malformed inputs, ending `report-verdict: all tests passed`. This plausibly covers the changes. The report also records RED evidence, unchanged legacy assertions, a 26-case stdout/stderr/status compatibility probe against the preimplementation helper, and no leaked processes. No tests were rerun during review.\n",
+          "hierarchy": [
+            "Task super-plan-ufz.8.2 review",
+            "Test evidence:"
+          ],
+          "byteStart": 820,
+          "byteEnd": 2303
+        }
+      ],
+      "rawText": "**Test evidence:** The report supplies the full isolated-environment command ending in `bash tests/super-code/test-report-verdict.sh`, run from the task worktree after rebasing onto this base, exit 0. It includes relevant pass output for final-review/roast/task extraction, duplicate positions, continuations, Unicode, archive identity, caps, explicit-empty reviews and malformed inputs, ending `report-verdict: all tests passed`. This plausibly covers the changes. The report also records RED evidence, unchanged legacy assertions, a 26-case stdout/stderr/status compatibility probe against the preimplementation helper, and no leaked processes. No tests were rerun during review.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "**Test evidence:** The report supplies the full isolated-environment command ending in `bash tests/super-code/test-report-verdict.sh`, run from the task worktree after rebasing onto this base, exit 0. It includes relevant pass output for final-review/roast/task extraction, duplicate positions, continuations, Unicode, archive identity, caps, explicit-empty reviews and malformed inputs, ending `report-verdict: all tests passed`. This plausibly covers the changes. The report also records RED evidence, unchanged legacy assertions, a 26-case stdout/stderr/status compatibility probe against the preimplementation helper, and no leaked processes. No tests were rerun during review.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/18/passages/4"
+      ],
+      "interpretation": "Plausible report evidence; reviewer ran no tests."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/73-task-9-review.md",
+  "retainedSha256": "49b63f88e7d6275461bddfd6516c90a7f045815fcfda115632833703307312a7"
+}

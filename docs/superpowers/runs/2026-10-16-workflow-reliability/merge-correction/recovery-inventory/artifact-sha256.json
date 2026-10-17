@@ -1,0 +1,137 @@
+[
+  {
+    "path": "HANDOFF.md",
+    "bytes": 9166,
+    "sha256": "9ae7496e709eb958d813850a4bf60311b0cb209785a6ef831ec6abb37f5ab05f"
+  },
+  {
+    "path": "Recovery-records-actual.json",
+    "bytes": 3904,
+    "sha256": "c4376a288888ef69599b0dd0d3a0de5063e65f75821ffa3f71deade78ec74158"
+  },
+  {
+    "path": "actual-objects-complete.json",
+    "bytes": 2863167,
+    "sha256": "f61c7217ebed74dc429953b1253ab197db109ad77c03d26af6f7ce69d1df0686"
+  },
+  {
+    "path": "context-objects-complete.json",
+    "bytes": 1479618,
+    "sha256": "e7b35f667a472f184dedff313226a80822b4667b9fd70c0af75bb6bb12b3e10a"
+  },
+  {
+    "path": "counts.json",
+    "bytes": 482,
+    "sha256": "f5391e5c79863af067492f67130e525ef981e8ab1634a14eeb250c1a5c41f779"
+  },
+  {
+    "path": "envelopes-all-extracted.json",
+    "bytes": 414260,
+    "sha256": "ce1847c179222ba58ec1e440b6d05df1b23f31d959b280922b438536c7ea9cef"
+  },
+  {
+    "path": "envelopes-classified-complete.json",
+    "bytes": 441389,
+    "sha256": "46ddd928e009d610e85dd17d2f7a1743ae57d9268d92f4b3d2bb37c1c35c745c"
+  },
+  {
+    "path": "examples-excluded-complete.json",
+    "bytes": 21823,
+    "sha256": "ec9ce961bc6024f2853fc721e9daa881e52dddd83b2f1a3219300f943e48f7f1"
+  },
+  {
+    "path": "explicit-empty-fields.json",
+    "bytes": 19645,
+    "sha256": "5fb98b36f792e9639f80e08fdeda5cc92a386b87f1ca013688dcbf0224b1fc7d"
+  },
+  {
+    "path": "failure-attribution-actual.json",
+    "bytes": 54533,
+    "sha256": "fa6ec818da416724ec7f1b66c007dd952d7ee1db96a5e086215047b40233406c"
+  },
+  {
+    "path": "finalize.py",
+    "bytes": 11640,
+    "sha256": "994cfb98f13daadc901c3f10b418e5e6d5dfeb234e01f07339642fc6b13129f4"
+  },
+  {
+    "path": "inventory.py",
+    "bytes": 8969,
+    "sha256": "9535b822a41718e76e606aa1799e4d75aba89dd117f426cbbfbe8188019643af"
+  },
+  {
+    "path": "legacy-runner-attempts-complete.json",
+    "bytes": 31053,
+    "sha256": "b3241432b16ed9c3065156780f6b11834930f77ad105ef8caba7f92bd038723f"
+  },
+  {
+    "path": "limitations.json",
+    "bytes": 2169,
+    "sha256": "caa155c2aca4cfd9f37275aaadf06bd6f9aa0a610ff54b41a706a0c638dc4609"
+  },
+  {
+    "path": "local-path-accounting.json",
+    "bytes": 76129,
+    "sha256": "76c101196e4073761c98a3f733da0ac02588b486c8c0c461a2c9a9725f18b888"
+  },
+  {
+    "path": "manifest.json",
+    "bytes": 4440210,
+    "sha256": "68ef09a6423f5a9492bc3a954c1e20ebaed5b6487dd49d216e6a80a50dd0ef2b"
+  },
+  {
+    "path": "measurement-records.json",
+    "bytes": 625968,
+    "sha256": "5d6918f5297324d90f3460c33b12ebe5e7d7bc9203d66c1dca99fb9e186f1b16"
+  },
+  {
+    "path": "objects-all-extracted.json",
+    "bytes": 4295693,
+    "sha256": "e0f1065d8cee36c1f316178eb071e146103eefac3077b5a3a21d4f47dd22d4d0"
+  },
+  {
+    "path": "objects-classified.json",
+    "bytes": 4364602,
+    "sha256": "55a5add6b34db6a4d540806d7493b119122c4167a4e6ef7576c7d202b8e75291"
+  },
+  {
+    "path": "open-obligations-and-qualifications.json",
+    "bytes": 413480,
+    "sha256": "ba6668fb82091202059cde1876d4035aff6c08a73b707e328d96db1bfbf556c1"
+  },
+  {
+    "path": "prose-evidence-statements.json",
+    "bytes": 4485137,
+    "sha256": "eed33177962754aff9c3eb54a14b1eaddf5f5771ecfd6e2a8fd343fb204cdd0a"
+  },
+  {
+    "path": "reduce.py",
+    "bytes": 11081,
+    "sha256": "8788917fe2163f49aa775dca086a61485117b9ab5ce09ce7c012e296a9c7dec9"
+  },
+  {
+    "path": "reference-manifest.json",
+    "bytes": 376514,
+    "sha256": "887b38cca4f2ed3b53e3a50a3a7b777dd4b96a06c1a509f7603be9f35e36c949"
+  },
+  {
+    "path": "references.py",
+    "bytes": 4452,
+    "sha256": "5a9819708038f8a4b9d3afd9583922c0ed17293ce0ae9e22a9673bf6c8d12851"
+  },
+  {
+    "path": "required-live-checks.json",
+    "bytes": 141590,
+    "sha256": "57ada9cd36ba7701d5b8191104ac47301efaee761edc7eb7fcf7dbc05a6c24ce"
+  },
+  {
+    "path": "return-record-inventory.json",
+    "bytes": 94984,
+    "sha256": "109e0dfbee93e991f60da7aafca8b30a998db4d8ed179cc5be21aa67a5e67bad"
+  },
+  {
+    "path": "term-lines.json",
+    "bytes": 1542210,
+    "sha256": "d6d248e9ac71a05ab46ca1ce8f2bdf91a65743b3d063ef6091750df9ef243719"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "sourceHead": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "observation": "ordinary report-status twice reports finding projection unavailable, while direct scope-dispositions projection succeeds on the same run",
+  "statusCommand": "bash skills/super-auto/scripts/report-status docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+  "statusQualifier": "finding projection unavailable \u2014 retain known findings",
+  "directCommand": "bash skills/super-auto/scripts/scope-dispositions --project docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+  "directExit": 0,
+  "directFindings": 128,
+  "directGaps": [],
+  "directBytes": 155300,
+  "directSha256": "9d985789c62e2f12d5c2cbff8f4c7feeae39928fd4ba145079365008ed4d36ac",
+  "directOutputPath": "/tmp/workflow-reliability-projection.json",
+  "cause": "not established; verify independently"
+}

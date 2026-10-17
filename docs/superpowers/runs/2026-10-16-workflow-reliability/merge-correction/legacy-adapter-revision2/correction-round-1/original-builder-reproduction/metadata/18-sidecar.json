@@ -1,0 +1,1483 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-14-report.md",
+  "rawSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+  "rawByteCount": 24993,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-report.md",
+    "durablePath": "task-report-history-r1/raw/task-14-report.md",
+    "sha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+    "byteCount": 24993,
+    "logicalRole": "report",
+    "ordinal": 14,
+    "logicalTaskId": "super-plan-ufz.8.3",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-14-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator evaluation"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status:IMPLEMENTED"
+    },
+    {
+      "line": 164,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 12,
+      "byteStart": 0,
+      "byteEnd": 475,
+      "bodyLineStart": 1,
+      "rawText": "Status:IMPLEMENTED\n\nid: super-plan-ufz.8.3\nbase: 44a0c1896f7b52095d4d77b2580ff34c84974533\nhead: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none\n\n",
+      "bodyRawText": "Status:IMPLEMENTED\n\nid: super-plan-ufz.8.3\nbase: 44a0c1896f7b52095d4d77b2580ff34c84974533\nhead: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status:IMPLEMENTED\n",
+          "text": "Status:IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 19
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "id: super-plan-ufz.8.3\n",
+          "text": "id: super-plan-ufz.8.3",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 20,
+          "byteEnd": 43
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "base: 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+          "text": "base: 44a0c1896f7b52095d4d77b2580ff34c84974533",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 43,
+          "byteEnd": 90
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "head: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none\n",
+          "text": "head: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 5,
+          "lineEnd": 11,
+          "byteStart": 90,
+          "byteEnd": 474
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Implementation"
+      ],
+      "lineStart": 13,
+      "lineEnd": 22,
+      "byteStart": 475,
+      "byteEnd": 3089,
+      "bodyLineStart": 14,
+      "rawText": "## Implementation\n\nExtended the existing report-status script with an explicit settled-bundle --collect mode and kept ordinary status mode read-only. The orchestration recipe commits collection intent before launch, passes the persisted invocationId to either coordinator mechanism, and collects at the existing profile/friction boundary only after settlement. No immutable producer artifact, result.reviewPath/null contract, roast ledger, redesign trigger, amend workflow or acceptance/metric engine was changed.\n\nCollection appends exact complete extraction objects in existing approvals, changing only artifact to the committed archive pointer. All occurrences retain their original invocation/logical-source, section, position, key and full text. Final/cluster reviews, direct diff when present, assembled inputs and explicitly declared required files are preserved under reviews/ID. Copies use exclusive creation, byte/hash comparison and atomic run-record replacement. Identical replay leaves records and archive bytes unchanged; conflicting destination bytes are untouched and durable gaps name recovery ownership. A completion following a gap is appended even if an identical complete state existed earlier, so repaired evidence can supersede the gap. Complete archives can be verified after source-worktree removal. Inline occurrences survive a missing artifact; source files are retained until preservation is confirmed.\n\nResume reconciles unsettled launches against their ledger/result, recovers collection before another invocation/cleanup, then consumes the predecessor's outstanding projection. Latest codeBuckets.review remains descriptive of its own invocation. Final-review routing, phase-5/post-cap punch-list input, Remaining and status qualifiers use the same projection; key mode is only outstanding deferred input. Empty keys, later ready/silent retries, assignment/task success and blanket sweep success supply no disposition. Supported explicit resolution/rejection removes a group from derived views. A sweep can support only its matched measurement obligation. Null/no-work without artifacts introduces no review; null required reviews and contradictory recoverable partial bundles remain explicit gaps, preserving discoverable sources.\n\nAdded one approvals record kind and its additive current-contract goldens. Historical 2bf1d53 field/format fixtures remain byte-for-byte unchanged. Replaced the stale latest-review --keys lint with complete-extraction, shared-projection and collection-recovery checks; null safety and all existing legacy/approved-addition mutations remain checked.\n\n",
+      "bodyRawText": "\nExtended the existing report-status script with an explicit settled-bundle --collect mode and kept ordinary status mode read-only. The orchestration recipe commits collection intent before launch, passes the persisted invocationId to either coordinator mechanism, and collects at the existing profile/friction boundary only after settlement. No immutable producer artifact, result.reviewPath/null contract, roast ledger, redesign trigger, amend workflow or acceptance/metric engine was changed.\n\nCollection appends exact complete extraction objects in existing approvals, changing only artifact to the committed archive pointer. All occurrences retain their original invocation/logical-source, section, position, key and full text. Final/cluster reviews, direct diff when present, assembled inputs and explicitly declared required files are preserved under reviews/ID. Copies use exclusive creation, byte/hash comparison and atomic run-record replacement. Identical replay leaves records and archive bytes unchanged; conflicting destination bytes are untouched and durable gaps name recovery ownership. A completion following a gap is appended even if an identical complete state existed earlier, so repaired evidence can supersede the gap. Complete archives can be verified after source-worktree removal. Inline occurrences survive a missing artifact; source files are retained until preservation is confirmed.\n\nResume reconciles unsettled launches against their ledger/result, recovers collection before another invocation/cleanup, then consumes the predecessor's outstanding projection. Latest codeBuckets.review remains descriptive of its own invocation. Final-review routing, phase-5/post-cap punch-list input, Remaining and status qualifiers use the same projection; key mode is only outstanding deferred input. Empty keys, later ready/silent retries, assignment/task success and blanket sweep success supply no disposition. Supported explicit resolution/rejection removes a group from derived views. A sweep can support only its matched measurement obligation. Null/no-work without artifacts introduces no review; null required reviews and contradictory recoverable partial bundles remain explicit gaps, preserving discoverable sources.\n\nAdded one approvals record kind and its additive current-contract goldens. Historical 2bf1d53 field/format fixtures remain byte-for-byte unchanged. Replaced the stale latest-review --keys lint with complete-extraction, shared-projection and collection-recovery checks; null safety and all existing legacy/approved-addition mutations remain checked.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Extended the existing report-status script with an explicit settled-bundle --collect mode and kept ordinary status mode read-only. The orchestration recipe commits collection intent before launch, passes the persisted invocationId to either coordinator mechanism, and collects at the existing profile/friction boundary only after settlement. No immutable producer artifact, result.reviewPath/null contract, roast ledger, redesign trigger, amend workflow or acceptance/metric engine was changed.\n",
+          "text": "Extended the existing report-status script with an explicit settled-bundle --collect mode and kept ordinary status mode read-only. The orchestration recipe commits collection intent before launch, passes the persisted invocationId to either coordinator mechanism, and collects at the existing profile/friction boundary only after settlement. No immutable producer artifact, result.reviewPath/null contract, roast ledger, redesign trigger, amend workflow or acceptance/metric engine was changed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 494,
+          "byteEnd": 989
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Collection appends exact complete extraction objects in existing approvals, changing only artifact to the committed archive pointer. All occurrences retain their original invocation/logical-source, section, position, key and full text. Final/cluster reviews, direct diff when present, assembled inputs and explicitly declared required files are preserved under reviews/ID. Copies use exclusive creation, byte/hash comparison and atomic run-record replacement. Identical replay leaves records and archive bytes unchanged; conflicting destination bytes are untouched and durable gaps name recovery ownership. A completion following a gap is appended even if an identical complete state existed earlier, so repaired evidence can supersede the gap. Complete archives can be verified after source-worktree removal. Inline occurrences survive a missing artifact; source files are retained until preservation is confirmed.\n",
+          "text": "Collection appends exact complete extraction objects in existing approvals, changing only artifact to the committed archive pointer. All occurrences retain their original invocation/logical-source, section, position, key and full text. Final/cluster reviews, direct diff when present, assembled inputs and explicitly declared required files are preserved under reviews/ID. Copies use exclusive creation, byte/hash comparison and atomic run-record replacement. Identical replay leaves records and archive bytes unchanged; conflicting destination bytes are untouched and durable gaps name recovery ownership. A completion following a gap is appended even if an identical complete state existed earlier, so repaired evidence can supersede the gap. Complete archives can be verified after source-worktree removal. Inline occurrences survive a missing artifact; source files are retained until preservation is confirmed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 990,
+          "byteEnd": 1906
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Resume reconciles unsettled launches against their ledger/result, recovers collection before another invocation/cleanup, then consumes the predecessor's outstanding projection. Latest codeBuckets.review remains descriptive of its own invocation. Final-review routing, phase-5/post-cap punch-list input, Remaining and status qualifiers use the same projection; key mode is only outstanding deferred input. Empty keys, later ready/silent retries, assignment/task success and blanket sweep success supply no disposition. Supported explicit resolution/rejection removes a group from derived views. A sweep can support only its matched measurement obligation. Null/no-work without artifacts introduces no review; null required reviews and contradictory recoverable partial bundles remain explicit gaps, preserving discoverable sources.\n",
+          "text": "Resume reconciles unsettled launches against their ledger/result, recovers collection before another invocation/cleanup, then consumes the predecessor's outstanding projection. Latest codeBuckets.review remains descriptive of its own invocation. Final-review routing, phase-5/post-cap punch-list input, Remaining and status qualifiers use the same projection; key mode is only outstanding deferred input. Empty keys, later ready/silent retries, assignment/task success and blanket sweep success supply no disposition. Supported explicit resolution/rejection removes a group from derived views. A sweep can support only its matched measurement obligation. Null/no-work without artifacts introduces no review; null required reviews and contradictory recoverable partial bundles remain explicit gaps, preserving discoverable sources.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1907,
+          "byteEnd": 2738
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added one approvals record kind and its additive current-contract goldens. Historical 2bf1d53 field/format fixtures remain byte-for-byte unchanged. Replaced the stale latest-review --keys lint with complete-extraction, shared-projection and collection-recovery checks; null safety and all existing legacy/approved-addition mutations remain checked.\n",
+          "text": "Added one approvals record kind and its additive current-contract goldens. Historical 2bf1d53 field/format fixtures remain byte-for-byte unchanged. Replaced the stale latest-review --keys lint with complete-extraction, shared-projection and collection-recovery checks; null safety and all existing legacy/approved-addition mutations remain checked.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 2739,
+          "byteEnd": 3088
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Files changed"
+      ],
+      "lineStart": 23,
+      "lineEnd": 34,
+      "byteStart": 3089,
+      "byteEnd": 3494,
+      "bodyLineStart": 24,
+      "rawText": "## Files changed\n\n- skills/super-auto/SKILL.md\n- skills/super-auto/resume.md\n- skills/super-auto/report-prompt.md\n- skills/super-auto/scripts/report-status\n- skills/super-auto/run-state.md\n- tests/super-auto/test-scripts.sh\n- tests/super-auto/test-contract-lint.sh\n- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n\n",
+      "bodyRawText": "\n- skills/super-auto/SKILL.md\n- skills/super-auto/resume.md\n- skills/super-auto/report-prompt.md\n- skills/super-auto/scripts/report-status\n- skills/super-auto/run-state.md\n- tests/super-auto/test-scripts.sh\n- tests/super-auto/test-contract-lint.sh\n- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/SKILL.md\n",
+          "text": "skills/super-auto/SKILL.md",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 3107,
+          "byteEnd": 3136
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/resume.md\n",
+          "text": "skills/super-auto/resume.md",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 3136,
+          "byteEnd": 3166
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/report-prompt.md\n",
+          "text": "skills/super-auto/report-prompt.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 3166,
+          "byteEnd": 3203
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/scripts/report-status\n",
+          "text": "skills/super-auto/scripts/report-status",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 3203,
+          "byteEnd": 3245
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/run-state.md\n",
+          "text": "skills/super-auto/run-state.md",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3245,
+          "byteEnd": 3278
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/test-scripts.sh\n",
+          "text": "tests/super-auto/test-scripts.sh",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 3278,
+          "byteEnd": 3313
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/test-contract-lint.sh\n",
+          "text": "tests/super-auto/test-contract-lint.sh",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 3313,
+          "byteEnd": 3354
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt\n",
+          "text": "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 3354,
+          "byteEnd": 3423
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt\n",
+          "text": "tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 3423,
+          "byteEnd": 3493
+        }
+      ]
+    },
+    {
+      "section": "Tests",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Tests\n",
+      "hierarchy": [
+        "Tests"
+      ],
+      "lineStart": 35,
+      "lineEnd": 108,
+      "byteStart": 3494,
+      "byteEnd": 8115,
+      "bodyLineStart": 36,
+      "rawText": "## Tests\n\nBoth final suites exited 0. Exact commands (the final script log includes all legacy tests, predecessor producer/projection cases and new collector consumers):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log 2>&1; result=$?; tail -34 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log; exit \"$result\"\n```\n\nFinal relevant script output:\n\n```text\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nreview collection and caller continuity\n  [PASS] malformed new collection cannot appear clean\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] bundle diff archived byte for byte\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nFinal contract output:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n\n```\n\n`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n\n",
+      "bodyRawText": "\nBoth final suites exited 0. Exact commands (the final script log includes all legacy tests, predecessor producer/projection cases and new collector consumers):\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log 2>&1; result=$?; tail -34 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log; exit \"$result\"\n```\n\nFinal relevant script output:\n\n```text\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nreview collection and caller continuity\n  [PASS] malformed new collection cannot appear clean\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] bundle diff archived byte for byte\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nFinal contract output:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n\n```\n\n`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both final suites exited 0. Exact commands (the final script log includes all legacy tests, predecessor producer/projection cases and new collector consumers):\n",
+          "text": "Both final suites exited 0. Exact commands (the final script log includes all legacy tests, predecessor producer/projection cases and new collector consumers):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3504,
+          "byteEnd": 3664
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log 2>&1; result=$?; tail -34 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log; exit \"$result\"\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log 2>&1; result=$?; tail -34 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-final.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-final.log; exit \"$result\"\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 39,
+          "lineEnd": 42,
+          "byteStart": 3665,
+          "byteEnd": 5030
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final relevant script output:\n",
+          "text": "Final relevant script output:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 5031,
+          "byteEnd": 5061
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nreview collection and caller continuity\n  [PASS] malformed new collection cannot appear clean\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] bundle diff archived byte for byte\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n",
+          "text": "```text\n  [PASS] projection works without jq\n  [PASS] no-jq projection retains identical key output\n  [PASS] missing Node gives unavailable status, never a clean empty result\n  [PASS] manual fallback preserves continuity obligations\n  [PASS] unavailable source artifacts are an explicit gap\n  [PASS] retained occurrences survive unavailable source\nreview collection and caller continuity\n  [PASS] malformed new collection cannot appear clean\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] bundle diff archived byte for byte\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 46,
+          "lineEnd": 81,
+          "byteStart": 5062,
+          "byteEnd": 7079
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final contract output:\n",
+          "text": "Final contract output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 83,
+          "lineEnd": 83,
+          "byteStart": 7080,
+          "byteEnd": 7103
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n\n```\n",
+          "text": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 85,
+          "lineEnd": 105,
+          "byteStart": 7104,
+          "byteEnd": 7839
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n",
+          "text": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 107,
+          "lineEnd": 107,
+          "byteStart": 7840,
+          "byteEnd": 8114
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "TDD evidence"
+      ],
+      "lineStart": 109,
+      "lineEnd": 122,
+      "byteStart": 8115,
+      "byteEnd": 10292,
+      "bodyLineStart": 110,
+      "rawText": "## TDD evidence\n\nUsed test-driven-development, writing-skills and verification-before-completion. All RED runs used the exact isolated environment above with `bash tests/super-auto/test-scripts.sh`, or `bash tests/super-auto/test-contract-lint.sh`, before their corresponding changes. Raw evidence remains git-ignored under the owned task worktree's .superpowers/task-evidence/super-plan-ufz.8.3 directory:\n\n- scripts-red.log: 2 failures; --collect returned usage exit 2 instead of 0. The guarded archive/projection/status assertions were explicitly unmeasured until GREEN.\n- scripts-edge-red.log: archive-only resume returned 3 instead of 0. Its second no-work failure was fixture interference from a deliberately pending preceding case; the cases were reordered to test no-work independently, rather than weakening the expected outcome.\n- scripts-null-red.log: 1 failure; the actual null/no-work settlement was refused against its planned non-null launch path.\n- scripts-partial-null-red.log: 3 failures; contradictory null/no-work with a recoverable bundle returned 0, omitted source extraction and lost discoverable findings.\n- scripts-malformed-red.log: 1 failure; malformed complete-looking collection JSON was omitted from status instead of qualifying a gap.\n- scripts-repair-red.log: 1 failure; repaired archive completion was globally deduplicated against an older completion, leaving the latest record gapped.\n- contract-red.log: 1 failing suite with four live-tree errors: no I8 projection, no retained complete extraction, Remaining not using projection and no resume collection recovery.\n\nEach was observed before its implementation fix; the final GREEN outputs above cover all assertions. The fixtures fail for changed archived bytes, duplicate occurrence identities, missing split/required inputs, lost inline findings, silent resolution, unsupported key clearing, null-clean invention, malformed-clean status, false gaps from valid historical intents or failure to record repaired completion. Tests exercise actual Bash/Node helpers, complete producer extraction and the predecessor projection; no mocks, live tracker mutations or live run artifacts are used.\n\n",
+      "bodyRawText": "\nUsed test-driven-development, writing-skills and verification-before-completion. All RED runs used the exact isolated environment above with `bash tests/super-auto/test-scripts.sh`, or `bash tests/super-auto/test-contract-lint.sh`, before their corresponding changes. Raw evidence remains git-ignored under the owned task worktree's .superpowers/task-evidence/super-plan-ufz.8.3 directory:\n\n- scripts-red.log: 2 failures; --collect returned usage exit 2 instead of 0. The guarded archive/projection/status assertions were explicitly unmeasured until GREEN.\n- scripts-edge-red.log: archive-only resume returned 3 instead of 0. Its second no-work failure was fixture interference from a deliberately pending preceding case; the cases were reordered to test no-work independently, rather than weakening the expected outcome.\n- scripts-null-red.log: 1 failure; the actual null/no-work settlement was refused against its planned non-null launch path.\n- scripts-partial-null-red.log: 3 failures; contradictory null/no-work with a recoverable bundle returned 0, omitted source extraction and lost discoverable findings.\n- scripts-malformed-red.log: 1 failure; malformed complete-looking collection JSON was omitted from status instead of qualifying a gap.\n- scripts-repair-red.log: 1 failure; repaired archive completion was globally deduplicated against an older completion, leaving the latest record gapped.\n- contract-red.log: 1 failing suite with four live-tree errors: no I8 projection, no retained complete extraction, Remaining not using projection and no resume collection recovery.\n\nEach was observed before its implementation fix; the final GREEN outputs above cover all assertions. The fixtures fail for changed archived bytes, duplicate occurrence identities, missing split/required inputs, lost inline findings, silent resolution, unsupported key clearing, null-clean invention, malformed-clean status, false gaps from valid historical intents or failure to record repaired completion. Tests exercise actual Bash/Node helpers, complete producer extraction and the predecessor projection; no mocks, live tracker mutations or live run artifacts are used.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used test-driven-development, writing-skills and verification-before-completion. All RED runs used the exact isolated environment above with `bash tests/super-auto/test-scripts.sh`, or `bash tests/super-auto/test-contract-lint.sh`, before their corresponding changes. Raw evidence remains git-ignored under the owned task worktree's .superpowers/task-evidence/super-plan-ufz.8.3 directory:\n",
+          "text": "Used test-driven-development, writing-skills and verification-before-completion. All RED runs used the exact isolated environment above with `bash tests/super-auto/test-scripts.sh`, or `bash tests/super-auto/test-contract-lint.sh`, before their corresponding changes. Raw evidence remains git-ignored under the owned task worktree's .superpowers/task-evidence/super-plan-ufz.8.3 directory:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 8132,
+          "byteEnd": 8522
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-red.log: 2 failures; --collect returned usage exit 2 instead of 0. The guarded archive/projection/status assertions were explicitly unmeasured until GREEN.\n",
+          "text": "scripts-red.log: 2 failures; --collect returned usage exit 2 instead of 0. The guarded archive/projection/status assertions were explicitly unmeasured until GREEN.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 113,
+          "lineEnd": 113,
+          "byteStart": 8523,
+          "byteEnd": 8689
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-edge-red.log: archive-only resume returned 3 instead of 0. Its second no-work failure was fixture interference from a deliberately pending preceding case; the cases were reordered to test no-work independently, rather than weakening the expected outcome.\n",
+          "text": "scripts-edge-red.log: archive-only resume returned 3 instead of 0. Its second no-work failure was fixture interference from a deliberately pending preceding case; the cases were reordered to test no-work independently, rather than weakening the expected outcome.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 114,
+          "lineEnd": 114,
+          "byteStart": 8689,
+          "byteEnd": 8954
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-null-red.log: 1 failure; the actual null/no-work settlement was refused against its planned non-null launch path.\n",
+          "text": "scripts-null-red.log: 1 failure; the actual null/no-work settlement was refused against its planned non-null launch path.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 115,
+          "lineEnd": 115,
+          "byteStart": 8954,
+          "byteEnd": 9078
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-partial-null-red.log: 3 failures; contradictory null/no-work with a recoverable bundle returned 0, omitted source extraction and lost discoverable findings.\n",
+          "text": "scripts-partial-null-red.log: 3 failures; contradictory null/no-work with a recoverable bundle returned 0, omitted source extraction and lost discoverable findings.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 9078,
+          "byteEnd": 9245
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-malformed-red.log: 1 failure; malformed complete-looking collection JSON was omitted from status instead of qualifying a gap.\n",
+          "text": "scripts-malformed-red.log: 1 failure; malformed complete-looking collection JSON was omitted from status instead of qualifying a gap.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 117,
+          "lineEnd": 117,
+          "byteStart": 9245,
+          "byteEnd": 9381
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- scripts-repair-red.log: 1 failure; repaired archive completion was globally deduplicated against an older completion, leaving the latest record gapped.\n",
+          "text": "scripts-repair-red.log: 1 failure; repaired archive completion was globally deduplicated against an older completion, leaving the latest record gapped.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 118,
+          "lineEnd": 118,
+          "byteStart": 9381,
+          "byteEnd": 9535
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- contract-red.log: 1 failing suite with four live-tree errors: no I8 projection, no retained complete extraction, Remaining not using projection and no resume collection recovery.\n",
+          "text": "contract-red.log: 1 failing suite with four live-tree errors: no I8 projection, no retained complete extraction, Remaining not using projection and no resume collection recovery.",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 119,
+          "lineEnd": 119,
+          "byteStart": 9535,
+          "byteEnd": 9716
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each was observed before its implementation fix; the final GREEN outputs above cover all assertions. The fixtures fail for changed archived bytes, duplicate occurrence identities, missing split/required inputs, lost inline findings, silent resolution, unsupported key clearing, null-clean invention, malformed-clean status, false gaps from valid historical intents or failure to record repaired completion. Tests exercise actual Bash/Node helpers, complete producer extraction and the predecessor projection; no mocks, live tracker mutations or live run artifacts are used.\n",
+          "text": "Each was observed before its implementation fix; the final GREEN outputs above cover all assertions. The fixtures fail for changed archived bytes, duplicate occurrence identities, missing split/required inputs, lost inline findings, silent resolution, unsupported key clearing, null-clean invention, malformed-clean status, false gaps from valid historical intents or failure to record repaired completion. Tests exercise actual Bash/Node helpers, complete producer extraction and the predecessor projection; no mocks, live tracker mutations or live run artifacts are used.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 121,
+          "lineEnd": 121,
+          "byteStart": 9717,
+          "byteEnd": 10291
+        }
+      ]
+    },
+    {
+      "section": "Interface for downstream super-plan-ufz.6",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Interface for downstream super-plan-ufz.6\n",
+      "hierarchy": [
+        "Interface for downstream super-plan-ufz.6"
+      ],
+      "lineStart": 123,
+      "lineEnd": 145,
+      "byteStart": 10292,
+      "byteEnd": 12776,
+      "bodyLineStart": 124,
+      "rawText": "## Interface for downstream super-plan-ufz.6\n\nThe validated predecessor interface remains exactly:\n\n```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external FILE\n```\n\nJSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n\nNew explicit preservation interface:\n\n```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n\nThe caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n\nOrdinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n\n",
+      "bodyRawText": "\nThe validated predecessor interface remains exactly:\n\n```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external FILE\n```\n\nJSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n\nNew explicit preservation interface:\n\n```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n\nThe caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n\nOrdinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The validated predecessor interface remains exactly:\n",
+          "text": "The validated predecessor interface remains exactly:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 125,
+          "lineEnd": 125,
+          "byteStart": 10338,
+          "byteEnd": 10391
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external FILE\n```\n",
+          "text": "```bash\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --keys\nbash skills/super-auto/scripts/scope-dispositions --project RUN_MD --external FILE\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 127,
+          "lineEnd": 131,
+          "byteStart": 10392,
+          "byteEnd": 10628
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "JSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.\n",
+          "text": "JSON retains `{version:1,findings:[...],gaps:[...]}`; metric-task additive fields may coexist. Check each group's `outstanding`/`deferred`, original `ref`, occurrences and supported dispositions; this task does not recompute or replace that engine. Exit 0 validates projection, 3 retains findings plus gaps, 2/4 establishes no projection. Keys alone cannot establish clean acceptance. Full source records retain known occurrences even when their archive pointer is unavailable.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 10629,
+          "byteEnd": 11107
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "New explicit preservation interface:\n",
+          "text": "New explicit preservation interface:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 135,
+          "lineEnd": 135,
+          "byteStart": 11108,
+          "byteEnd": 11145
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```\n",
+          "text": "```bash\nbash skills/super-auto/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review FILE_OR_none --verdict REVIEW [--required RELATIVE_FILE]...\nbash skills/super-auto/scripts/report-status --collect RUN_MD\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 137,
+          "lineEnd": 140,
+          "byteStart": 11146,
+          "byteEnd": 11389
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.\n",
+          "text": "The caller confirms settlement from persisted Launch/result, supplies the exact invocationId and actual reviewPath/null result, and preserves any declared required-input inventory. Collection returns 0 only when preservation is confirmed; 3 retains gaps and blocks later invocation/cleanup; 2/4 means no collection established. The initial intent in approvals contains invocationId/workspace/reviewPath/review/required/settled:false; settled/completion records append facts with complete/files(path,sha256)/gaps. The last record per invocation describes preservation progress only. It never closes a finding or root acceptance obligation. Archived source IDs are ID/final and ID/cluster-N; artifact pointers are reviews/ID/... relative to RUN_MD. Existing finding-route/link/disposition records are preserved.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 142,
+          "lineEnd": 142,
+          "byteStart": 11390,
+          "byteEnd": 12200
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Ordinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n",
+          "text": "Ordinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 144,
+          "lineEnd": 144,
+          "byteStart": 12201,
+          "byteEnd": 12775
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Test hygiene"
+      ],
+      "lineStart": 146,
+      "lineEnd": 149,
+      "byteStart": 12776,
+      "byteEnd": 13347,
+      "bodyLineStart": 147,
+      "rawText": "## Test hygiene\n\nNone. Completed runs were followed by stop-run-processes --check; final --check and stop both exited 0 with no match or survived lines. No background server/daemon/watcher was started and no process was stopped outside the task roots. Tests used TMPDIR plus HOME and XDG_CONFIG_HOME/DATA_HOME/CACHE_HOME/STATE_HOME under /tmp/sp-bce79baa/super-plan-ufz.8.3. The test runner and package-under-test resolved inside the owned worktree; system Node is /opt/homebrew/bin/node. No dependency installation/setup is required for these built-in Node/Bash tools.\n\n",
+      "bodyRawText": "\nNone. Completed runs were followed by stop-run-processes --check; final --check and stop both exited 0 with no match or survived lines. No background server/daemon/watcher was started and no process was stopped outside the task roots. Tests used TMPDIR plus HOME and XDG_CONFIG_HOME/DATA_HOME/CACHE_HOME/STATE_HOME under /tmp/sp-bce79baa/super-plan-ufz.8.3. The test runner and package-under-test resolved inside the owned worktree; system Node is /opt/homebrew/bin/node. No dependency installation/setup is required for these built-in Node/Bash tools.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None. Completed runs were followed by stop-run-processes --check; final --check and stop both exited 0 with no match or survived lines. No background server/daemon/watcher was started and no process was stopped outside the task roots. Tests used TMPDIR plus HOME and XDG_CONFIG_HOME/DATA_HOME/CACHE_HOME/STATE_HOME under /tmp/sp-bce79baa/super-plan-ufz.8.3. The test runner and package-under-test resolved inside the owned worktree; system Node is /opt/homebrew/bin/node. No dependency installation/setup is required for these built-in Node/Bash tools.\n",
+          "text": "None. Completed runs were followed by stop-run-processes --check; final --check and stop both exited 0 with no match or survived lines. No background server/daemon/watcher was started and no process was stopped outside the task roots. Tests used TMPDIR plus HOME and XDG_CONFIG_HOME/DATA_HOME/CACHE_HOME/STATE_HOME under /tmp/sp-bce79baa/super-plan-ufz.8.3. The test runner and package-under-test resolved inside the owned worktree; system Node is /opt/homebrew/bin/node. No dependency installation/setup is required for these built-in Node/Bash tools.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 148,
+          "lineEnd": 148,
+          "byteStart": 12793,
+          "byteEnd": 13346
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Assumptions"
+      ],
+      "lineStart": 150,
+      "lineEnd": 153,
+      "byteStart": 13347,
+      "byteEnd": 13879,
+      "bodyLineStart": 151,
+      "rawText": "## Assumptions\n\nCurrent bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.\n\n",
+      "bodyRawText": "\nCurrent bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.\n",
+          "text": "Current bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 152,
+          "lineEnd": 152,
+          "byteStart": 13363,
+          "byteEnd": 13878
+        }
+      ]
+    },
+    {
+      "section": "Concerns and coordinator evaluation",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and coordinator evaluation\n",
+      "hierarchy": [
+        "Concerns and coordinator evaluation"
+      ],
+      "lineStart": 154,
+      "lineEnd": 161,
+      "byteStart": 13879,
+      "byteEnd": 15532,
+      "bodyLineStart": 155,
+      "rawText": "## Concerns and coordinator evaluation\n\nCoordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.\n\nRepresentative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n\nSemantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n\n",
+      "bodyRawText": "\nCoordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.\n\nRepresentative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n\nSemantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.\n",
+          "text": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 156,
+          "lineEnd": 156,
+          "byteStart": 13919,
+          "byteEnd": 14275
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n",
+          "text": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 158,
+          "lineEnd": 158,
+          "byteStart": 14276,
+          "byteEnd": 14947
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n",
+          "text": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 14948,
+          "byteEnd": 15531
+        }
+      ]
+    },
+    {
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Fix pass\n",
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "lineStart": 162,
+      "lineEnd": 172,
+      "byteStart": 15532,
+      "byteEnd": 16036,
+      "bodyLineStart": 163,
+      "rawText": "## Fix pass\n\nStatus: FIXED\n\n- Task: super-plan-ufz.8.3\n- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n- Commit: fix(super-auto): preserve producer direct review packages\n- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n\n",
+      "bodyRawText": "\nStatus: FIXED\n\n- Task: super-plan-ufz.8.3\n- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n- Commit: fix(super-auto): preserve producer direct review packages\n- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED\n",
+          "text": "Status: FIXED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 164,
+          "lineEnd": 164,
+          "byteStart": 15545,
+          "byteEnd": 15559
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Task: super-plan-ufz.8.3\n",
+          "text": "Task: super-plan-ufz.8.3",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 166,
+          "lineEnd": 166,
+          "byteStart": 15560,
+          "byteEnd": 15587
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+          "text": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 167,
+          "lineEnd": 167,
+          "byteStart": 15587,
+          "byteEnd": 15687
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n",
+          "text": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 168,
+          "lineEnd": 168,
+          "byteStart": 15687,
+          "byteEnd": 15770
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n",
+          "text": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 169,
+          "lineEnd": 169,
+          "byteStart": 15770,
+          "byteEnd": 15825
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Commit: fix(super-auto): preserve producer direct review packages\n",
+          "text": "Commit: fix(super-auto): preserve producer direct review packages",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 170,
+          "lineEnd": 170,
+          "byteStart": 15825,
+          "byteEnd": 15893
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n",
+          "text": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 171,
+          "lineEnd": 171,
+          "byteStart": 15893,
+          "byteEnd": 16035
+        }
+      ]
+    },
+    {
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 10,
+      "headingLevel": 3,
+      "headingRaw": "### Finding and narrow correction\n",
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "lineStart": 173,
+      "lineEnd": 180,
+      "byteStart": 16036,
+      "byteEnd": 17526,
+      "bodyLineStart": 174,
+      "rawText": "### Finding and narrow correction\n\nVerified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n\nThe fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n\nFiles changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n\n",
+      "bodyRawText": "\nVerified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n\nThe fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n\nFiles changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+          "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 175,
+          "lineEnd": 175,
+          "byteStart": 16071,
+          "byteEnd": 16518
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+          "text": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 177,
+          "lineEnd": 177,
+          "byteStart": 16519,
+          "byteEnd": 17344
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n",
+          "text": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 179,
+          "lineEnd": 179,
+          "byteStart": 17345,
+          "byteEnd": 17525
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN evidence",
+      "sectionOrdinal": 11,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN evidence\n",
+      "hierarchy": [
+        "Fix pass",
+        "RED/GREEN evidence"
+      ],
+      "lineStart": 181,
+      "lineEnd": 277,
+      "byteStart": 17526,
+      "byteEnd": 23927,
+      "bodyLineStart": 182,
+      "rawText": "### RED/GREEN evidence\n\nUsed systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n\nExact test commands, run in the owned task worktree with isolated HOME/XDG state:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n\nRED exited 1 before either production edit, with seven expected assertion failures:\n\n```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n\nGREEN script run exited 0; relevant output:\n\n```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nContract lint exited 0:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n\n",
+      "bodyRawText": "\nUsed systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n\nExact test commands, run in the owned task worktree with isolated HOME/XDG state:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n\nRED exited 1 before either production edit, with seven expected assertion failures:\n\n```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n\nGREEN script run exited 0; relevant output:\n\n```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n\nContract lint exited 0:\n\n```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n\n`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Used systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.\n",
+          "text": "Used systematic-debugging, test-driven-development (including writing-good-tests), and verification-before-completion. Read the current bead description/acceptance and comments before changing code; no comments, amendments, or unresolved conflicts were present.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 183,
+          "lineEnd": 183,
+          "byteStart": 17550,
+          "byteEnd": 17812
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact test commands, run in the owned task worktree with isolated HOME/XDG state:\n",
+          "text": "Exact test commands, run in the owned task worktree with isolated HOME/XDG state:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 185,
+          "lineEnd": 185,
+          "byteStart": 17813,
+          "byteEnd": 17895
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```\n",
+          "text": "```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log 2>&1; result=$?; tail -60 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-red.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-scripts.sh > .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log 2>&1; result=$?; tail -54 .superpowers/task-evidence/super-plan-ufz.8.3/scripts-fix-green.log; exit \"$result\"\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3 && env TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.8.3 HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.8.3/state bash tests/super-auto/test-contract-lint.sh > .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log 2>&1; result=$?; cat .superpowers/task-evidence/super-plan-ufz.8.3/contract-fix-green.log; exit \"$result\"\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 187,
+          "lineEnd": 191,
+          "byteStart": 17896,
+          "byteEnd": 19956
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "RED exited 1 before either production edit, with seven expected assertion failures:\n",
+          "text": "RED exited 1 before either production edit, with seven expected assertion failures:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 193,
+          "lineEnd": 193,
+          "byteStart": 19957,
+          "byteEnd": 20041
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```\n",
+          "text": "```text\n  [FAIL] producer direct package archived byte for byte after replay\n  [FAIL] completed collection inventories the producer direct package\n  [FAIL] conflicting direct package blocks collection completion\n    expected: 3\n    got:      0\n  [FAIL] null no-work with only the producer direct package remains a gap\n    expected: 3\n    got:      0\n  [FAIL] null result still archives the recoverable direct package\n  [FAIL] direct-only null bundle records reconciliation and missing review gaps\n  [FAIL] direct-only null gap persists on replay\n    expected: 3\n    got:      0\n7 failure(s)\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 195,
+          "lineEnd": 210,
+          "byteStart": 20042,
+          "byteEnd": 20637
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "GREEN script run exited 0; relevant output:\n",
+          "text": "GREEN script run exited 0; relevant output:",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 212,
+          "lineEnd": 212,
+          "byteStart": 20638,
+          "byteEnd": 20682
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```\n",
+          "text": "```text\n  [PASS] collection resumes after interrupted copy\n  [PASS] resume replays complete collections\n  [PASS] second resume changes no records\n  [PASS] producer direct package archived byte for byte after replay\n  [PASS] completed collection inventories the producer direct package\n  [PASS] conflicting direct package blocks collection completion\n  [PASS] conflicting direct package is never overwritten\n  [PASS] direct package source is preserved through archive conflict\n  [PASS] repaired direct package restores verified completion\n  [PASS] split assembled input archived\n  [PASS] ready silent retry collected independently\n  [PASS] collected producer records validate in predecessor projection\n  [PASS] one occurrence per source identity and supported disposition survives ready retry\n  [PASS] status exposes historical outstanding findings despite latest ready\n  [PASS] settled intent history creates no false collection gaps\n  [PASS] verified complete archive survives source workspace removal\n  [PASS] null review with no work landed preserves null semantics\n  [PASS] null no-work with only the producer direct package remains a gap\n  [PASS] null result still archives the recoverable direct package\n  [PASS] direct-only null bundle records reconciliation and missing review gaps\n  [PASS] direct-only null gap persists on replay\n  [PASS] direct-only null replay changes no records\n  [PASS] null no-work with a partial bundle remains a gap\n  [PASS] unexpected null bundle still retains complete extraction\n  [PASS] null result never erases discoverable findings\n  [PASS] missing declared direct input blocks collection completion\n  [PASS] null required review is a durable evidence gap\n  [PASS] status exposes collection gaps\n  [PASS] missing required bundle remains pending\n  [PASS] conflicting archive is not overwritten on replay\n  [PASS] conflicting archive bytes retained for recovery\n  [PASS] known inline sources remain valid through collection gap\n  [PASS] supported rejected item stays off punch list while active defects stay open\n  [PASS] unrelated missing collections remain gaps after local archive repair\n  [PASS] repaired collection appends completion after an earlier identical completion\nAll super-auto script tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 214,
+          "lineEnd": 251,
+          "byteStart": 20683,
+          "byteEnd": 22936
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Contract lint exited 0:\n",
+          "text": "Contract lint exited 0:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 253,
+          "lineEnd": 253,
+          "byteStart": 22937,
+          "byteEnd": 22961
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```\n",
+          "text": "```text\ncontract lint: live tree\n  [PASS] skills/super-auto has no contract problems\n\ncontract lint: mutations are caught\n  [PASS] a broken § pointer fails\n  [PASS] a mislabelled run-state item pointer fails\n  [PASS] an unknown worked-example field fails\n  [PASS] a worked example missing a codeBuckets bucket fails\n  [PASS] a numeric list count fails\n  [PASS] a renamed field-table field fails the baseline\n  [PASS] I8 without projection fails\n  [PASS] report-prompt without the null reviewPath rule fails\n  [PASS] unapproved added field still fails\n  [PASS] changed legacy line format fails\n  [PASS] dropping an approved added field fails\n  [PASS] changed approved added format fails\n\nAll super-auto contract lint tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 255,
+          "lineEnd": 274,
+          "byteStart": 22962,
+          "byteEnd": 23696
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.\n",
+          "text": "`git diff --check` passed. Comparing both historical 2bf1d53 fixtures against the original stacked base exited 0. Post-commit `git status --short` was empty. No rebase or merge was performed; the original stack base is retained.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 276,
+          "lineEnd": 276,
+          "byteStart": 23697,
+          "byteEnd": 23926
+        }
+      ]
+    },
+    {
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 12,
+      "headingLevel": 3,
+      "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "lineStart": 278,
+      "lineEnd": 282,
+      "byteStart": 23927,
+      "byteEnd": 24993,
+      "bodyLineStart": 279,
+      "rawText": "### Fix-pass test hygiene and remaining evaluation\n\nNo leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n\nThe Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "bodyRawText": "\nNo leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n\nThe Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n",
+          "text": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 280,
+          "lineEnd": 280,
+          "byteStart": 23979,
+          "byteEnd": 24708
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+          "text": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 282,
+          "lineEnd": 282,
+          "byteStart": 24709,
+          "byteEnd": 24993
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status:IMPLEMENTED",
+      "text": "Status:IMPLEMENTED",
+      "rawText": "Status:IMPLEMENTED\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 19,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "id: super-plan-ufz.8.3",
+      "text": "id: super-plan-ufz.8.3",
+      "rawText": "id: super-plan-ufz.8.3\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 20,
+      "byteEnd": 43,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "base: 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "text": "base: 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "rawText": "base: 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 43,
+      "byteEnd": 90,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "head: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+      "text": "head: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none",
+      "rawText": "head: 9095b2667b4a05fc4f229a725ab266211bce26f7\nstacked: true\nreopened: false\nbranch: task-super-plan-ufz.8.3\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.8.3\nstack parent: task-super-plan-ufz.8.4 at 84c0e0cd (includes source ee4f3cfcd20a6eb8ada40f32e821dbbd6895630b)\nhumanAction: none\n",
+      "lineStart": 5,
+      "lineEnd": 11,
+      "byteStart": 90,
+      "byteEnd": 474,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Interface for downstream super-plan-ufz.6",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Interface for downstream super-plan-ufz.6"
+      ],
+      "positionInSection": 7,
+      "key": "Ordinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.",
+      "text": "Ordinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.",
+      "rawText": "Ordinary `report-status RUN_MD [--tip SHA] [--stalled PHASE]` keeps all legacy status forms/output where new data is absent. New records add `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N`, `finding evidence gaps: N`, or an unavailable qualifier. Ordinary status exit 0 is a successfully rendered status, not an acceptance/cleanup approval: task .6 must inspect the projection, collection outcomes and its own caller-owned review/measurement/human obligations. This task deliberately adds no root-closing option or acceptance engine.\n",
+      "lineStart": 144,
+      "lineEnd": 144,
+      "byteStart": 12201,
+      "byteEnd": 12775,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.",
+      "text": "Current bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.",
+      "rawText": "Current bead description/acceptance and comments were read before the frozen brief. No explicit amendments, comments or unresolved requirement conflicts were present. Consumed exact task-13-report interfaces from predecessor .8.4 and the landed .8.1/.8.2 identity/extraction contracts. Integration and the user's checkout remained read-only; only the assigned report was written outside the owned worktree (apart from prescribed isolated temporary test state). No agents were spawned and no Herdr writes were made.\n",
+      "lineStart": 152,
+      "lineEnd": 152,
+      "byteStart": 13363,
+      "byteEnd": 13878,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Concerns and coordinator evaluation",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and coordinator evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.",
+      "text": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.",
+      "rawText": "Coordinator reports the archived paired 30-trial baseline pack (behavior-baseline/report.md, manifest/scores/raw), including F17 retention, no-change validity, source/cleanup, partial metrics and attribution composites. This supports the minimal structural consumer correction. That baseline does not establish behavior of this newly introduced collector.\n",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 13919,
+      "byteEnd": 14275,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Concerns and coordinator evaluation",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and coordinator evaluation"
+      ],
+      "positionInSection": 2,
+      "key": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.",
+      "text": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.",
+      "rawText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n",
+      "lineStart": 158,
+      "lineEnd": 158,
+      "byteStart": 14276,
+      "byteEnd": 14947,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Concerns and coordinator evaluation",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and coordinator evaluation"
+      ],
+      "positionInSection": 3,
+      "key": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.",
+      "text": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.",
+      "rawText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n",
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 14948,
+      "byteEnd": 15531,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED",
+      "text": "Status: FIXED",
+      "rawText": "Status: FIXED\n",
+      "lineStart": 164,
+      "lineEnd": 164,
+      "byteStart": 15545,
+      "byteEnd": 15559,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.8.3",
+      "text": "Task: super-plan-ufz.8.3",
+      "rawText": "- Task: super-plan-ufz.8.3\n",
+      "lineStart": 166,
+      "lineEnd": 166,
+      "byteStart": 15560,
+      "byteEnd": 15587,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 3,
+      "key": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "text": "Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533",
+      "rawText": "- Original stacked base (retained for --onto integration): 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+      "lineStart": 167,
+      "lineEnd": 167,
+      "byteStart": 15587,
+      "byteEnd": 15687,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 4,
+      "key": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+      "text": "Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+      "rawText": "- Pre-fix head / RED production revision: 9095b2667b4a05fc4f229a725ab266211bce26f7\n",
+      "lineStart": 168,
+      "lineEnd": 168,
+      "byteStart": 15687,
+      "byteEnd": 15770,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 5,
+      "key": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+      "text": "Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7",
+      "rawText": "- Fixed head: efec33f6c7ceb333d695a5163b9d4987116c2fc7\n",
+      "lineStart": 169,
+      "lineEnd": 169,
+      "byteStart": 15770,
+      "byteEnd": 15825,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 6,
+      "key": "Commit: fix(super-auto): preserve producer direct review packages",
+      "text": "Commit: fix(super-auto): preserve producer direct review packages",
+      "rawText": "- Commit: fix(super-auto): preserve producer direct review packages\n",
+      "lineStart": 170,
+      "lineEnd": 170,
+      "byteStart": 15825,
+      "byteEnd": 15893,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Fix pass"
+      ],
+      "positionInSection": 7,
+      "key": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+      "text": "Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.",
+      "rawText": "- Interface changes: none. CLI flags, exit meanings, collection record schema, source identities and outstanding projection remain unchanged.\n",
+      "lineStart": 171,
+      "lineEnd": 171,
+      "byteStart": 15893,
+      "byteEnd": 16035,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 1,
+      "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+      "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+      "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+      "lineStart": 175,
+      "lineEnd": 175,
+      "byteStart": 16071,
+      "byteEnd": 16518,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 2,
+      "key": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+      "text": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.",
+      "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+      "lineStart": 177,
+      "lineEnd": 177,
+      "byteStart": 16519,
+      "byteEnd": 17344,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Finding and narrow correction",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Fix pass",
+        "Finding and narrow correction"
+      ],
+      "positionInSection": 3,
+      "key": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+      "text": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).",
+      "rawText": "Files changed in this fix: `skills/super-auto/scripts/report-status` and `tests/super-auto/test-scripts.sh` (two production suffix substitutions plus producer-shaped regressions).\n",
+      "lineStart": 179,
+      "lineEnd": 179,
+      "byteStart": 17345,
+      "byteEnd": 17525,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "positionInSection": 1,
+      "key": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+      "text": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.",
+      "rawText": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n",
+      "lineStart": 280,
+      "lineEnd": 280,
+      "byteStart": 23979,
+      "byteEnd": 24708,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "section": "Fix-pass test hygiene and remaining evaluation",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Fix pass",
+        "Fix-pass test hygiene and remaining evaluation"
+      ],
+      "positionInSection": 2,
+      "key": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "text": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "lineStart": 282,
+      "lineEnd": 282,
+      "byteStart": 24709,
+      "byteEnd": 24993,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

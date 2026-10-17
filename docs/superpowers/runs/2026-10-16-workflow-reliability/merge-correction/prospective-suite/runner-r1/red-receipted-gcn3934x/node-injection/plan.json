@@ -1,0 +1,21 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/node-injection/evidence",
+  "sourceHead": "4fb1df824523d57665246843d069bdae2341f16d",
+  "sourceTree": "4314366cf6b8f2ea7321a4adc8a269d6308c3e00",
+  "commands": [
+    "node tests/check.mjs"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "node tests/check.mjs",
+      "sha256": "f712835e87e7eda6b386fe02387201dcd134833d21f87ec974f281bbb67d8c89",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    }
+  ]
+}

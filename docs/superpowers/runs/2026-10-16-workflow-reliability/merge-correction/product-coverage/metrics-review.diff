@@ -1,0 +1,1733 @@
+ skills/super-code/scripts/ledger-digest           |  67 +++++++++--
+ skills/super-code/scripts/run-digest              |  12 ++
+ skills/super-code/scripts/run-profile.mjs         | 138 ++++++++++++++++------
+ skills/upstream-feedback/SKILL.md                 |  18 ++-
+ tests/super-code/run-profile-fixture.mjs          |   1 +
+ tests/super-code/run-profile-ordinary-fixture.mjs |   2 +-
+ tests/super-code/test-run-digest.sh               |  15 +++
+ tests/super-code/test-run-profile-in-flight.sh    |   3 +-
+ tests/super-code/test-run-profile.sh              | 103 ++++++++++++++++
+ 9 files changed, 304 insertions(+), 55 deletions(-)
+
+
+diff --git a/skills/super-code/scripts/ledger-digest b/skills/super-code/scripts/ledger-digest
+index b17b9ed7..ea0310b9 100755
+--- a/skills/super-code/scripts/ledger-digest
++++ b/skills/super-code/scripts/ledger-digest
+@@ -1,64 +1,107 @@
+ #!/usr/bin/env bash
+ # Reduce a super-code ledger (progress.md) to the lines the coordinator parses, with free text cut.
+ # The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
+ # `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
+ # prints only:
++#   - compact `Recovery:` records, verbatim; a line over 4096 characters becomes
++#     `Recovery gap: <source line number> <ledger path>` (the complete record stays on disk).
++#     Malformed/unknown-version compact records reach the reader for explicit gap reporting;
+ #   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
+ #   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
+ #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
+-#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
++#     tokens: `complete[, verification-only][, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+ #     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
+ #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
+ #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
+-#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
+-# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
++#     becomes `minor [raw class, if any] [recurrence-id: v1-…] [source-line: N]`. The byte
++#     fingerprint keeps unrelated details distinct; N points into this authoritative ledger.
++#     Original finding text stays on disk; process aliases are resolved only by the coordinator.
++# Every other line (header, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+ # The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
+ # an empty ledger from a lost or truncated echo.
+-# Line order is kept: the last line per id wins on resume.
++# Line order is kept: latest Task state wins; Recovery fix history remains append-only.
+ #
+-# Usage: bash ledger-digest LEDGER_PATH
+-# A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
++# Usage: bash ledger-digest [--recovery-line N] LEDGER_PATH
++# Targeted recovery transports that one retained Recovery record verbatim, without the cap.
++# It never projects fields or rewrites the ledger; the coordinator validates the full record.
++# Missing/unreadable ledgers print # ledger-status: <status>; valid empty files print a zero
++# counting header. These observations exit 0; exits 2 on a bad argument.
+ set -euo pipefail
+ 
++recovery_line=0
++if [ "${1:-}" = --recovery-line ]; then
++  if [ $# -ne 3 ] || [[ ! "$2" =~ ^[1-9][0-9]*$ ]]; then
++    echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
++    exit 2
++  fi
++  recovery_line=$2
++  shift 2
++fi
+ if [ $# -ne 1 ]; then
+-  echo "usage: ledger-digest LEDGER_PATH" >&2
++  echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
+   exit 2
+ fi
+-[ -s "$1" ] || exit 0
++if [ ! -e "$1" ]; then echo '# ledger-status: missing'; exit 0; fi
++if [ ! -f "$1" ] || [ ! -r "$1" ]; then echo '# ledger-status: unreadable'; exit 0; fi
+ 
+-awk '
++if digest=$(LC_ALL=C awk -v recovery_line="$recovery_line" '
++BEGIN { for (i = 1; i < 256; i++) ord[sprintf("%c", i)] = i }
++function fingerprint(s, a, b, i, c) {
++  if (match(s, / \[recurrence-id: v1-[0-9]+-[0-9]+-[0-9]+\]$/)) return substr(s, RSTART, RLENGTH)
++  s = trim(s); a = 0; b = 0
++  for (i = 1; i <= length(s); i++) { c = ord[substr(s, i, 1)]; a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }
++  return " [recurrence-id: v1-" length(s) "-" sprintf("%.0f", a) "-" sprintf("%.0f", b) "]"
++}
++function minor(r, text, tag) {
++  text = r; sub(/^minor \(deferred\):[ \t]*/, "", text)
++  tag = match(text, /^\[[A-Za-z0-9][A-Za-z0-9 -]*\]/) ? " " substr(text, RSTART, RLENGTH) : ""
++  return "minor" tag fingerprint(text) " [source-line: " FNR "]"
++}
+ function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+ function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
+ function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
+-function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
++function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) " [source-line: " FNR "]" : "" }
+ {
+   total++
+   line = trim($0)
++  if (recovery_line) {
++    if (FNR == recovery_line && line ~ /^Recovery:/) out[++kept] = line
++    next
++  }
++  if (line ~ /^Recovery:/) {
++    out[++kept] = length(line) > 4096 ? "Recovery gap: " FNR " " FILENAME : line
++    next
++  }
+   if (line ~ /^(Merge|Human action):[ \t]/) { out[++kept] = line; next }
+   if (line ~ /^Edge add:[ \t]/) { e = line; sub(/\)[ \t].*$/, ")", e); out[++kept] = e; next }
+   if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
+   head = line; sub(/\):.*$/, ")", head)            # "Task <n> (<id>)"
+   rest = line; sub(/^[^)]*\):[ \t]*/, "", rest)    # the state text
+   n = split(rest, w, /[ \t]+/)
+   if (rest ~ /^complete/) {
+     s = "complete"
++    if (index(rest, "verification-only")) s = s ", verification-only"
+     if (index(rest, "already merged")) s = s ", already merged"
+     if (index(rest, "review clean")) s = s ", review clean"
+     if (index(rest, "fix pass")) s = s ", fix pass"
+     if (index(rest, "parked")) s = s ", parked"
+     s = s range(rest)
+   } else if (rest ~ /^landed/) s = "landed" range(rest) closure(rest, "review") closure(rest, "blocker") (index(rest, "parked") ? ", parked" : "")
+   else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
+   else if (rest ~ /^BLOCKED/) s = w[1] cause(rest)
+   else if (rest ~ /^cancelled \(/) s = "cancelled ("
+   else if (rest ~ /^cancelled/) s = "cancelled"
+   else if (rest ~ /^stacked on/) s = "stacked on " w[3]
+   else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+-  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
++  else if (rest ~ /^minor \(deferred\):/) s = minor(rest)
+   else next
+   out[++kept] = head ": " s
+ }
+ END {
+   print "# ledger-digest: " kept + 0 " of " total + 0 " lines"
+   for (i = 1; i <= kept; i++) print out[i]
+-}' "$1"
++}' "$1"); then
++  printf '%s\n' "$digest"
++else
++  echo '# ledger-status: unreadable'
++fi
+diff --git a/skills/super-code/scripts/run-digest b/skills/super-code/scripts/run-digest
+index 32762af5..ce8ab8c9 100755
+--- a/skills/super-code/scripts/run-digest
++++ b/skills/super-code/scripts/run-digest
+@@ -65,67 +65,79 @@ build_state() {
+ 
+   # Sources, started together; each writes its own file under $T and exit status to $T/<n>.rc.
+   src_ledger() { bash "$D/ledger-digest" "$ledger"; }
+   src_beads() {
+     cd "${worktree:-.}" || exit 1
+     bd list --all --json --limit 0 >"$T/dump" || exit 1
+     command -v jq >/dev/null 2>&1 || exit 1
+     bash "$D/epic-tree" --from "$T/dump" "$epic" >"$T/tree" || exit 1
+     jq -r '.[] | select(.status != "closed") | .id' "$T/dump" >"$T/open" || exit 1
+     awk -v epic="$epic" 'NR == FNR { t[$0] = 1; next } ($0 in t) && $0 != epic' "$T/tree" "$T/open"
+   }
+   src_inflight() { bash "$D/run-profile" --in-flight --epic "$epic" --session "$session" --harness "$harness"; }
+ 
+   local started=
+   if [ -n "$ledger" ]; then start_src ledger src_ledger; started="$started ledger"; fi
+   local want_beads=0 want_flight=0
+   if [ -n "$epic" ]; then want_beads=1; start_src beads src_beads; started="$started beads"; fi
+   if [ -n "$epic" ] && [ -n "$session" ] && [ -n "$harness" ]; then want_flight=1; start_src inflight src_inflight; started="$started inflight"; fi
+   wait_srcs
+ 
+   local ok_ledger=0 ok_beads=0 ok_flight=0
+   [ -n "$ledger" ] && src_ok ledger && ok_ledger=1
+   [ "$want_beads" = 1 ] && src_ok beads && ok_beads=1
+   [ "$want_flight" = 1 ] && src_ok inflight && ok_flight=1
+ 
++  local ledger_unavailable=
++  if [ "$ok_ledger" = 1 ]; then
++    ledger_unavailable=$(awk '/^# ledger-status: (missing|unreadable)$/ { sub(/^# ledger-status: /, ""); print; exit }' "$T/ledger")
++    if [ -z "$ledger_unavailable" ] && ! awk '
++      NR == 1 { if ($0 !~ /^# ledger-digest: [0-9]+ of [0-9]+ lines$/ || $3 > $5) exit 1; kept = $3; next }
++      END { if (NR == 0 || NR - 1 != kept) exit 1 }
++    ' "$T/ledger"; then ledger_unavailable="invalid transport"; fi
++    if [ -n "$ledger_unavailable" ]; then ok_ledger=0; fi
++  fi
++
+   # Ledger: counts and the tail.
+   local ledger_counts tail_lines=() ntail=0 line
+   if [ -z "$ledger" ]; then
+     ledger_counts="ledger: none yet"
+   elif [ "$ok_ledger" = 1 ]; then
+     ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
+       match($0, /^Task [^ ]+ \([^)]+\): /) {
+         id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
+         st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
+         if (st ~ /^(complete|landed)/) s = "L"; else if (st ~ /^BLOCKED/) s = "B"
+         else if (st ~ /^pending retry/) s = "P"; else if (st ~ /^cancelled/) s = "C"; else next
+         state[id] = s
+       }
+       END { for (i in state) c[state[i]]++
+         printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
+     while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
+     ntail=${#tail_lines[@]}
++  elif [ -n "$ledger_unavailable" ]; then
++    ledger_counts="ledger: unknown — $ledger_unavailable"
+   else
+     ledger_counts="ledger: unknown"
+   fi
+ 
+   # Open beads.
+   local beads_line_kind beads_total=0 ids=() nids=0
+   if [ -z "$epic" ]; then beads_line_kind=none
+   elif [ "$ok_beads" = 1 ]; then
+     beads_line_kind=ok
+     while IFS= read -r line; do [ -n "$line" ] && ids[${#ids[@]}]=$line; done <"$T/beads"
+     beads_total=${#ids[@]}
+     nids=$beads_total; [ "$nids" -gt 40 ] && nids=40
+   else beads_line_kind=unknown; fi
+ 
+   # In-flight.
+   local flight_kind flights=() nfl=0 nflight_total=0
+   if [ "$want_flight" = 0 ]; then flight_kind=lacks
+   elif [ "$ok_flight" = 1 ]; then
+     while IFS= read -r line; do
+       case "$line" in
+         *" · unknown") line="${line% · unknown} · age unknown" ;;
+       esac
+       [ -n "$line" ] && flights[${#flights[@]}]=$line
+     done <"$T/inflight"
+     if [ "${#flights[@]}" -gt 0 ] && [ "${flights[0]#in-flight: unknown}" != "${flights[0]}" ]; then
+diff --git a/skills/super-code/scripts/run-profile.mjs b/skills/super-code/scripts/run-profile.mjs
+index c84390ea..3ed891e9 100644
+--- a/skills/super-code/scripts/run-profile.mjs
++++ b/skills/super-code/scripts/run-profile.mjs
+@@ -21,52 +21,53 @@ import { basename, dirname, join } from 'node:path'
+ import { execFileSync } from 'node:child_process'
+ import { homedir } from 'node:os'
+ import { HARNESSES, summarizeContext, contextLines, contextMarkdown, contextJson, contextBaseline } from './context-pass.mjs'
+ 
+ const USAGE = `usage: run-profile (--workflow <dir>... | --codex <thread>... | --subagents <dir>... | --discover --epic <id>
+                    | --in-flight --epic <id> --session <id> --harness claude|codex) [options]
+        run-profile --context-only (--session <session.jsonl> | --workflow <dir> | --subagents <dir> | --codex <thread>)... [--out <prefix>] [--context-window <N>]
+ 
+   --workflow <dir>    a Workflow run directory (journal.jsonl, agent-*.jsonl); repeat for each
+                       invocation of the same epic (relaunches), in any order
+   --codex <thread>    an ordinary-subagent coordinator on Codex: its thread id, or its rollout file
+   --subagents <dir>   an ordinary-subagent coordinator on Claude Code: the calling session's
+                       <projects>/<project>/<session>/subagents directory
+   --discover          find every run of --epic: Workflow runs whose Launch: line names it, and
+                       ordinary-subagent coordinators whose log names its ledger
+   --epic <id>         the root epic (required with --discover; otherwise read from the runs)
+   --in-flight         instead: list one session's dispatches that started and have not finished,
+                       one \`in-flight: <label> · <age>\` line each (nothing in flight: no lines);
+                       scans only --session's own files (--harness claude: CLAUDE_CONFIG_DIR, else
+                       ~/.claude; codex: CODEX_HOME, else ~/.codex); an unreadable root prints
+                       \`in-flight: unknown — <reason>\`
+   --projects <dir>    where --discover looks for Claude Code sessions (default: ~/.claude/projects)
+   --codex-home <dir>  where Codex keeps sessions/ (default: ~/.codex)
+   --ledger <file>     the run's progress.md, for ordinary-subagent runs (default: the one the
+                       coordinator's commands name): merge and task outcomes
+-  --beads <file>      a saved \`bd list --all --json --limit 0\` dump, for ordinary-subagent runs
+-                      (default: run bd in the coordinator's directory): the dependency graph
++  --beads <file>      a saved \`bd list --all --json --limit 0\` dump: creation evidence, and for
++                      ordinary-subagent runs the observed residual dependency graph
++                      (default for ordinary runs: run bd in the coordinator's directory)
+   --cap <N>           the coordinator's slot cap (default: min(concurrency, runtimeSlots - 2) from
+                       the Launch: line; for an ordinary-subagent run, its Launch: concurrency,
+                       else 1; else unlimited)
+   --out <prefix>      also write <prefix>.md (tables, critical path, timeline) and <prefix>.json
+   --include-dry-run   keep invocations launched with dryRun: true (skipped by default)
+   --context-window <N>  the context window of every Claude Code agent, in tokens (default: the
+                       model table; Codex windows always come from the rollout)
+   --context-only      only the context lines, for any session: no coordinator check, epic, ledger,
+                       bd or timing; exit 3 when no transcript has a usage row
+   --session <file>    with --context-only: a Claude Code session transcript, every row, with its
+                       subagents/agent-*.jsonl and subagents/workflows/*/agent-*.jsonl
+ 
+   --latest            keep only the newest invocation and the relaunches that led into it (an
+                       earlier run that ended under 10 minutes before the next one started)
+   --summarize <json>… instead: aggregate earlier --out profiles (<prefix>.json files) into
+                       \`Baseline:\` lines, to compare runs against each other
+ 
+ Prints the summary on stdout as ledger-ready lines, \`Profile: <epic> · …\` then
+ \`Profile: <key> — …\` for shape, bound, critical path, critical chain, bottleneck, waits, early
+ unblock, rework, tests, slow tests, merge lane, conflicts, runtime, what-if (one line each),
+ context (peak context and compactions by cause, cap, early, idle, manual, over every agent),
+ context agent (each agent that compacted or peaked at 50% or more of its window, at most 10) and
+ unmeasured; an ordinary-subagent run adds concurrency and per-kind dispatch time, and when its
+ dispatch names do not map to the epic's beads, prints only those run-level lines and the context
+ lines. A run whose timing exits early (exit 3, no --epic) still prints its context lines first.`
+@@ -283,51 +284,51 @@ const BEAD_KINDS = new Set(['brief', 'impl', 'commit-nudge', 'review', 'fix', 's
+ function parseLabel(label) {
+   const i = label.indexOf(':')
+   const kind = i < 0 ? label : label.slice(0, i)
+   const rest = i < 0 ? '' : label.slice(i + 1)
+   if (BEAD_KINDS.has(kind) && rest) {
+     const [bead, ...suf] = rest.split(':')
+     return { kind, bead, suffix: suf.join(':') }
+   }
+   return { kind, bead: null, suffix: rest }
+ }
+ // The merge lane is single-flight: a task's merge, its seam review and its seam or merge-check fix
+ // all run inside one lane turn (stages `merge` and `seam`).
+ function stageOf(kind, suffix) {
+   switch (kind) {
+     case 'brief': case 'impl': case 'commit-nudge': return 'implement'  // `brief:` is older coordinators' setup step
+     case 'review': return 'review'
+     case 'fix': return suffix ? 'seam' : 'fix'
+     case 'seam-review': return 'seam'
+     case 'merge': return 'merge'
+     case 'review-bead': return 'split'
+     case 'triage': case 'clarify': case 'notify': case 'missing-blocker': case 'unplanned-blocker': return 'blocker'
+     case 'close-only': case 'close-check': return 'close'
+     case 'reopen': case 'discard': return 'cancel'
+     case 'ledger': case 'ledger-append': case 'read-ledger': return 'ledger'
+     case 'plan': case 'plan-rest': case 'split': case 'close-split': return 'planning'
+-    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': return 'ready'
++    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': case 'resume-check': return 'ready'
+     case 'edge-audit': case 'edge-cuts': case 'edge-add': return 'audit'
+     case 'sweep': case 'final-review': case 'reconcile-buckets': case 'worktree-sweep': case 'assemble': return 'finish'
+     default: return 'other'
+   }
+ }
+ const LANE = new Set(['merge', 'seam'])
+ const IN_SLOT = new Set(['implement', 'review', 'fix', 'blocker', 'close', 'cancel'])
+ 
+ // ---- what a dispatch's tool time went to ----
+ // A Bash call is split into its sub-commands (`&&`, `||`, `;`, `|`, `&`, newlines, outside quotes;
+ // heredoc bodies dropped) and takes the weightiest category among them, so `cd x && cargo test | tail`
+ // is a test, `git add tests/a.py` is git and `./run.sh | tail` is shell. A loop that sleeps, or
+ // `tail -f`, is polling a background run; a test binary under target/*/deps/ run directly is a test.
+ const CMD_PREFIX = /^(?:\s*(?:(?:export\s+|env\s+)?[A-Z_][A-Z0-9_]*=(?:"[^"]*"|'[^']*'|\S*)\s+|(?:nice|ionice)(?:\s+-n\s*-?\d+)?\s+|timeout\s+(?:-\S+\s+)*\d+[smh]?\s+|(?:time|command|exec|then|do|else|sudo)\s+|[({]\s*))+/
+ const TEST_RE = /^(?:cargo\s+(?:\+\S+\s+)?(?:nextest|test|t)\b|(?:npm|pnpm|yarn|bun)\s+(?:(?:-r|-w|--recursive|--filter\s+\S+|workspace\s+\S+)\s+)*(?:run\s+)?(?:test|t)\b|npx\s+(?:jest|vitest|mocha|playwright\s+test|cypress\s+run)\b|(?:python3?\s+-m\s+)?(?:pytest|py\.test|unittest|nose2?|tox|nox)\b|go\s+test\b|(?:jest|vitest|mocha|rspec|phpunit|bats|ctest)\b|(?:mvn|\.?\/?gradlew?)\s+(?:\S+\s+)*?\S*test\b|(?:make|just)\s+(?:-\S+\s+)*\S*(?:test|check)\b|bazel\s+test\b|deno\s+test\b|swift\s+test\b|dotnet\s+test\b|node\s+--test\b|(?:bash|sh|node|python3?|deno|bun|tsx)\s+\S*(?:tests?\/\S+|test[-_][\w.-]*)\.(?:sh|mjs|cjs|js|ts|py)\b|\.?\/?\S*(?:tests?\/\S+|test[-_][\w.-]*)\.sh\b)/
+ const BUILD_RE = /^(?:cargo\s+(?:\+\S+\s+)?(?:build|check|clippy|b)\b|(?:npx\s+)?tsc\b|go\s+(?:build|vet)\b|(?:npm|pnpm|yarn|bun)\s+(?:(?:-r|-w|--recursive|--filter\s+\S+|workspace\s+\S+)\s+)*(?:run\s+)?(?:build|typecheck|lint|compile)\b|(?:mvn|\.?\/?gradlew?)\s+(?:\S+\s+)*?(?:compile|build|package|assemble)\b|swift\s+build\b|dotnet\s+build\b|cmake\b|make\b|ninja\b|bazel\s+build\b)/
+ const INSTALL_RE = /^(?:(?:npm|pnpm|yarn|bun)\s+(?:ci|install|i|add)\b|pip3?\s+install\b|python3?\s+-m\s+pip\s+install\b|uv\s+(?:sync|add|pip\s+install)\b|poetry\s+install\b|cargo\s+(?:fetch|install)\b|bundle\s+install\b|go\s+(?:mod\s+download|get)\b)/
+ const READ_RE = /^(?:rg|grep|egrep|cat|sed|head|tail|less|ls|find|fd|wc|awk|jq|diff|stat|file|tree|sort|uniq|cut|tr)\b/
+ const TRIVIAL_RE = /^(?:cd|export|set|pushd|popd|true|false|:|pwd|source|\.|echo|printf|[0-9]*>\S*|[0-9]+)(?:\s|$)/
+ const CAT_RANK = ['poll', 'test', 'build', 'install', 'shell', 'git', 'bd', 'read']
+ const TEST_BIN_RE = /target\/(?:debug|release)\/deps\//
+ function subCommands(cmd) {
+   const s = String(cmd).replace(/<<-?\s*(['"]?)([A-Za-z_]\w*)\1[^\n]*\n[\s\S]*?\n[ \t]*\2[ \t]*(?=\n|$)/g, '')
+   const parts = []
+   let cur = '', q = null
+@@ -467,51 +468,51 @@ const planEpic = run => {
+ }
+ function discover(projects, epic) {
+   const found = []
+   for (const p of ls(projects)) {
+     const pd = join(projects, p)
+     if (!isDir(pd)) continue
+     for (const s of ls(pd)) {
+       const wf = join(pd, s, 'subagents', 'workflows')
+       for (const w of ls(wf)) {
+         const dir = join(wf, w)
+         if (!w.startsWith('wf_') || !isDir(dir)) continue
+         const run = readRunMeta(dir)
+         if (run.coordinator && (run.launch?.epicId ?? planEpic(run)) === epic) found.push(dir)
+       }
+     }
+   }
+   return found
+ }
+ 
+ // ---- ordinary-subagent runs (coordinator-subagents.md): Codex rollouts, Claude Code subagent directories ----
+ // Dispatch names follow the label grammar. On Claude Code the Agent description is the label itself
+ // (`impl:<bead>`). Codex task names allow only [a-z0-9_], so there it is `<kind>_<bead>[_<suffix>]`
+ // with every other character of the bead id written `_`, and `__<n>` appended to a repeated name.
+ const normName = s => String(s).toLowerCase().replace(/[^a-z0-9_]/g, '_')
+ const RUN_KINDS = ['plan', 'plan-rest', 'final-review', 'sweep', 'worktree-sweep', 'reconcile-buckets', 'bd-ready', 'close-epics',
+-  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append']
++  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append', 'resume-check']
+ const KINDS_LONGEST_FIRST = [...BEAD_KINDS].sort((a, b) => b.length - a.length)
+ // The label a Codex task name stands for; byNorm maps a normalized bead id to the id (null when two
+ // ids normalize alike). Null when the name does not follow the rule.
+ function codexLabel(name, byNorm) {
+   const n = String(name ?? '').replace(/__\d+$/, '')
+   for (const kind of KINDS_LONGEST_FIRST) {
+     const pre = normName(kind) + '_'
+     if (!n.startsWith(pre)) continue
+     const rest = n.slice(pre.length)
+     let best = null
+     for (const [k, id] of byNorm) if (id && (rest === k || rest.startsWith(k + '_')) && (!best || k.length > best[0].length)) best = [k, id]
+     if (best) { const suf = rest.slice(best[0].length + 1); return `${kind}:${best[1]}${suf ? `:${suf}` : ''}` }
+   }
+   for (const kind of RUN_KINDS) { const k = normName(kind); if (n === k || n.startsWith(k + '_')) return n === k ? kind : `${kind}:${n.slice(k.length + 1)}` }
+   return null
+ }
+ // The first line of a (possibly large) JSONL file.
+ function firstRow(file) {
+   let fd
+   try { fd = openSync(file, 'r') } catch { return null }
+   const chunks = [], buf = Buffer.alloc(65536)
+   try {
+     for (let n; (n = readSync(fd, buf, 0, buf.length, null)) > 0;) {
+       const i = buf.subarray(0, n).indexOf(10)
+       chunks.push(Buffer.from(buf.subarray(0, i >= 0 ? i : n)))
+@@ -830,52 +831,53 @@ if (opt.summarize) {
+   const seenRuns = new Set()
+   const ps = loaded.filter((x, i) => {
+     const ids = (x.invocations ?? []).map(v => v.runId)
+     if (ids.length && ids.every(id => seenRuns.has(id))) { process.stderr.write(`run-profile: --summarize: ${opt.summarize[i]} repeats runs already counted; skipped\n`); return false }
+     ids.forEach(id => seenRuns.add(id))
+     return true
+   })
+   const verdictOf = x => x.simulation?.verdict ?? (x.simulation?.failed ? 'model failed' : null)
+     ?? (x.summary ?? []).find(l => l.startsWith('Profile: bound'))?.match(/→ ([a-z-]+):/)?.[1] ?? 'no model'
+   const H = ms => fmtDur(ms)
+   const add = (o, k, v) => { o[k] = (o[k] ?? 0) + v }
+   const out = []
+   const starts = ps.map(x => x.window.start).sort()
+   const nInv = sum(ps.map(x => x.invocations?.length ?? 1))
+   out.push(`Baseline: ${ps.length} profile${ps.length === 1 ? '' : 's'} · ${nInv} invocation${nInv === 1 ? '' : 's'} · ${new Set(ps.map(x => x.epic)).size} epic(s) · ${starts[0].slice(0, 10)} → ${starts.at(-1).slice(0, 10)} · task graph ${H(sum(ps.map(x => x.window.graphMs)))} · landed ${sum(ps.map(x => x.beads.filter(b => b.landed).length))} beads`)
+   const cat = {}
+   for (const x of ps) for (const [k, v] of Object.entries(x.criticalPath.byCategory)) add(cat, k, v)
+   const ct = sum(Object.values(cat))
+   out.push(`Baseline: critical path — ${Object.entries(cat).sort((a, b) => b[1] - a[1]).filter(([, v]) => v >= 0.005 * ct).map(([k, v]) => `${k} ${pct(v, ct)}%`).join(' · ')} (of ${H(ct)})`)
+   const ver = {}
+   for (const x of ps) add(ver, verdictOf(x), 1)
+   out.push(`Baseline: verdicts — ${Object.entries(ver).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(' · ')}`)
+   const fits = ps.map(x => x.simulation?.fit).filter(f => typeof f === 'number').sort((a, b) => a - b)
+   if (fits.length) out.push(`Baseline: model fit — median ${fits[Math.floor(fits.length / 2)]} · within 10% of actual ${fits.filter(f => f >= 0.9 && f <= 1.1).length} of ${fits.length} · lowest ${fits[0]}`)
+   const w = {}, wn = {}
+-  for (const x of ps) for (const b of x.beads) if (b.landed && b.waitCause !== 'none') { add(w, b.waitCause, b.waitMs); add(wn, b.waitCause, 1) }
+-  out.push(`Baseline: waits, summed per bead (not wall time) — ${Object.keys(w).length ? Object.entries(w).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${wn[k]})`).join(' · ') : 'none past dispatch latency'}`)
++  for (const x of ps) for (const b of x.beads) if (b.landed && b.waitCause !== 'none' && Number.isFinite(b.waitMs)) { add(w, b.waitCause, b.waitMs); add(wn, b.waitCause, 1) }
++  const unknownWaits = sum(ps.map(x => x.beads.filter(b => b.landed && !Number.isFinite(b.waitMs)).length))
++  out.push(`Baseline: waits, summed per bead (not wall time) — ${Object.keys(w).length ? Object.entries(w).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${wn[k]})`).join(' · ') : unknownWaits ? 'none measured past dispatch latency' : 'none past dispatch latency'}${unknownWaits ? ` · unknown readiness for ${unknownWaits} landed bead(s); wait not measured` : ''}`)
+   const rd = {}, rn = {}
+   for (const x of ps) for (const [k, v] of Object.entries(x.criticalPath.redo ?? {})) { add(rd, k, v.ms); add(rn, k, v.beads.length) }
+   if (Object.values(rd).some(v => v >= 1000)) out.push(`Baseline: redo on the critical path, up to — ${Object.entries(rd).filter(([, v]) => v >= 1000).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${H(v)} (${rn[k]})`).join(' · ')} (of ${H(sum(ps.map(x => x.window.graphMs)))} task-graph time)`)
+   const withDeps = ps.flatMap(x => x.beads.filter(b => b.landed && b.deps.length))
+   out.push(`Baseline: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${withDeps.filter(b => b.stackParents.length).length} · bounced on a stack conflict ${withDeps.filter(b => b.waitCause === 'stack-conflict').length} · waited for a merge ${withDeps.filter(b => b.waitCause === 'waited-for-merge').length}`)
+   const busy = sum(ps.map(x => x.lane.busyMs)), seam = sum(ps.map(x => x.lane.seamMs))
+   out.push(`Baseline: merge lane — busy ${H(busy)} · seam reviews and fixes ${pct(seam, busy)}% of it · queue wait ${H(sum(ps.map(x => x.lane.queueWaitMs)))} summed · first try not merged ${sum(ps.map(x => x.lane.firstTryFailed))} of ${sum(ps.map(x => x.lane.firstTryKnown ?? x.beads.filter(b => b.landed).length))}`)
+   const tsum = k => sum(ps.map(x => x.tests?.[k] ?? 0))
+   if (tsum('busyMs')) out.push(`Baseline: tests — implementers and fixers, summed: ${H(tsum('testMs'))} running tests and ${H(tsum('pollMs'))} polling background runs, ${pct(tsum('testMs') + tsum('pollMs'), tsum('busyMs'))}% of their ${H(tsum('busyMs'))} · ${tsum('cappedCalls')} Bash call(s) at the 10-minute tool limit`)
+   const st = new Map()
+   for (const e of ps.flatMap(x => x.slowTests ?? [])) {
+     const t = st.get(e.cmd) ?? { cmd: e.cmd, ms: 0, runs: 0, longestMs: 0 }
+     t.ms += e.ms; t.runs += e.runs; t.longestMs = Math.max(t.longestMs, e.longestMs)
+     st.set(e.cmd, t)
+   }
+   const stShown = [...st.values()].filter(e => e.longestMs >= 60000).sort((a, b) => b.ms - a.ms).slice(0, 5)
+   if (stShown.length) out.push(`Baseline: slow tests — ${stShown.map(slowTestText).join(' · ')}`)
+   const tools = {}
+   let implMs = 0
+   for (const x of ps) if (x.bottleneck) { for (const [k, v] of Object.entries(x.bottleneck.implByTool ?? {})) add(tools, k, v); implMs += x.beads.find(b => b.id === x.bottleneck.bead)?.implMs ?? 0 }
+   const tt = sum(Object.values(tools))
+   if (implMs) out.push(`Baseline: bottleneck implement — ${H(implMs)} across ${ps.filter(x => x.bottleneck).length} bottleneck beads: ${Object.entries(tools).sort((a, b) => b[1] - a[1]).filter(([, v]) => v >= 0.01 * implMs).map(([k, v]) => `${k} ${pct(v, implMs)}%`).join(' · ')} · model ${pct(Math.max(0, implMs - tt), implMs)}%`)
+   const wk = {}, ws = {}
+   for (const x of ps) {
+     for (const k of new Set((x.simulation?.whatIfs ?? []).map(y => y.kind))) add(wk, k, 1)
+@@ -915,61 +917,64 @@ const skippedDry = runs.filter(r => r.launch?.dryRun === true && !opt.includeDry
+ runs = runs.filter(r => !skippedDry.includes(r))
+ // One run id can sit under two project directories; keep the copy with the most timed agents.
+ const byRunId = new Map()
+ for (const r of runs) {
+   const n = [...r.agents.values()].filter(a => a.start !== undefined).length
+   if (!byRunId.has(r.runId) || n > byRunId.get(r.runId).n) byRunId.set(r.runId, { run: r, n })
+ }
+ runs = [...byRunId.values()].map(x => x.run)
+ if (opt.latest && runs.length > 1) {
+   const span = r => { const ts = [...r.agents.values()].filter(a => a.start !== undefined); return ts.length ? [Math.min(...ts.map(a => a.start)), Math.max(...ts.map(a => a.end))] : null }
+   const spans = runs.map(r => ({ r, s: span(r) })).filter(x => x.s).sort((a, b) => a.s[0] - b.s[0])
+   if (spans.length) {
+     const keep = [spans.at(-1)]
+     for (let i = spans.length - 2; i >= 0 && keep[0].s[0] - spans[i].s[1] < 600000; i--) keep.unshift(spans[i])
+     runs = keep.map(x => x.r)
+   }
+ }
+ // Every exit path below prints the one context result: before its Profile: unmeasured line, or with
+ // a line of its own where it prints none.
+ const printContext = () => { const c = contextResult(runs); console.log([...c.lines, ...contextUnmeasured(c)].join('\n')) }
+ 
+ // ---- ordinary-subagent runs: labels from dispatch names, outcomes from the ledger, the graph from bd,
+ // and the merges, which the coordinator runs itself, from its own commands ----
+ const ordinary = runs.filter(r => r.source !== 'workflow')
+ const serialRuns = new Set(ordinary.map(r => r.runId))
++let tracker = null
++if (opt.beads) { try { tracker = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
++const timestamp = t => typeof t === 'string' && Number.isFinite(Date.parse(t)) ? Date.parse(t) : null
+ let ledger = null, leaves = null, noLaneTiming = 0
+ if (ordinary.length) {
+   const named = [...new Set(ordinary.flatMap(r => r.callerCalls.flatMap(c => [...c.text.matchAll(LEDGER_RE)].map(m => m[1]))))]
+   const ledgerPath = opt.ledger ?? named.find(f => existsSync(f) && (!opt.epic || f.includes(`/${opt.epic}-plan/`)))
+   ledger = ledgerPath ? readLedger(ledgerPath) : null
+   if (opt.ledger && !ledger) die(2, `cannot read the ledger: ${opt.ledger}`)
+   const ep = opt.epic ?? ledger?.epic
+   if (!ep) { printContext(); die(2, 'an ordinary-subagent run needs --epic <id> (or a --ledger whose Launch: line names it)') }
+-  let dump = null
+-  if (opt.beads) { try { dump = JSON.parse(readFileSync(opt.beads, 'utf8')) } catch { die(2, `not a bd list JSON dump: ${opt.beads}`) } }
+-  else for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
++  let dump = tracker
++  if (!opt.beads) for (const r of ordinary) if ((dump = bdDump(r.cwd))) break
++  tracker = dump
+   leaves = Array.isArray(dump) ? bdLeaves(dump, ep) : null
+   const ids = new Set([...(leaves?.keys() ?? []), ...(ledger?.ids ?? [])])
+   const byNorm = new Map()
+   for (const id of ids) { const k = normName(id); byNorm.set(k, byNorm.has(k) && byNorm.get(k) !== id ? null : id) }
+   for (const r of ordinary) {
+     r.launch = { epicId: ep, mechanism: 'ordinary-subagents', config: { concurrency: ledger?.concurrency ?? 1, earlyUnblock: !!ledger?.earlyUnblock } }
+     r.journal = !!ledger
+     for (const a of r.agents.values()) {
+       const label = r.source === 'codex' ? codexLabel(a.name, byNorm) : a.name
+       const p = parseLabel(label ?? '')
+       a.mapped = !!label && ((!!p.bead && (!ids.size || ids.has(p.bead))) || RUN_KINDS.includes(p.kind))
+       if (a.mapped) { Object.assign(a, { label }, p); a.stage = stageOf(a.kind, a.suffix) }
+       else Object.assign(a, { label: a.name || '(unnamed)', kind: /[a-z0-9]+/i.exec(a.name ?? '')?.[0]?.toLowerCase() ?? '?', bead: null, suffix: '', stage: 'other' })
+     }
+     // A lane turn per bead: from the coordinator's first `git merge|rebase` naming task-<id> to its
+     // last command naming the bead before the next dispatch (a seam review splits it in two).
+     const real = [...r.agents.values()].filter(a => a.start !== undefined)
+     const starts = real.map(a => a.start).sort((x, y) => x - y)
+     for (const id of new Set(real.filter(a => a.bead).map(a => a.bead))) {
+       if (real.some(a => a.bead === id && a.kind === 'merge')) continue
+       const from = Math.min(...real.filter(a => a.bead === id).map(a => a.start))
+       const re = idRe(id), taskRe = idRe(id, 'task-')
+       const opens = r.callerCalls.filter(c => c.start >= from && /\bgit\b[\s\S]*\b(?:merge|rebase)\b/.test(c.text) && taskRe.test(c.text)).sort((x, y) => x.start - y.start)
+       for (let i = 0, k = 0; i < opens.length; k++) {
+         const s = opens[i].start, stop = starts.find(t => t > s) ?? Infinity
+@@ -996,148 +1001,159 @@ if (ordinary.length) {
+         r.agents.set(m.id, m)
+         noLaneTiming++
+       }
+     }
+   }
+ }
+ const epicOf = r => r.launch?.epicId ?? planEpic(r)
+ const epic = opt.epic ?? runs.map(epicOf).find(Boolean) ?? null
+ const foreign = runs.filter(r => epic && epicOf(r) && epicOf(r) !== epic)
+ if (foreign.length) die(2, `runs for another epic were given: ${foreign.map(r => `${r.runId} (${epicOf(r)})`).join(', ')}; expected ${epic}`)
+ 
+ // A resumed run can list a cached agent again under its original agentId: keep the timed copy.
+ const agentById = new Map()
+ for (const r of runs) for (const a of r.agents.values()) {
+   const prev = agentById.get(a.id)
+   if (!prev || (prev.start === undefined && a.start !== undefined)) agentById.set(a.id, a)
+ }
+ const allAgents = [...agentById.values()]
+ const realAgents = allAgents.filter(a => !a.synthetic)
+ const timed = allAgents.filter(a => a.start !== undefined && a.label).sort((a, b) => a.start - b.start || a.end - b.end)
+ const untimed = allAgents.filter(a => a.start === undefined)
+ if (!timed.some(a => a.bead) && !timed.some(a => serialRuns.has(a.run))) {
+   const why = !dirs.length && !codexIn.length && !subIn.length ? `no Workflow run directory found${opt.epic ? ` for ${opt.epic}` : ''}, nor an ordinary-subagent coordinator's log (this harness keeps none, or they were cleaned up)`
+     : !runs.length ? `every run given was a dryRun launch (${skippedDry.map(r => r.runId).join(', ')})`
+     : 'no timed task dispatch in the runs given (transcripts missing)'
+-  printContext()
+-  console.log(`Profile: unavailable — ${why}`)
++  const ctx = contextResult(runs)
++  const lines = [...ctx.lines, ...contextUnmeasured(ctx), `Profile: unavailable — ${why}`]
++  console.log(lines.join('\n'))
++  if (opt.out) {
++    writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, unavailable: why,
++      invocations: [], context: contextJson(ctx.summary), summary: lines }, null, 2) + '\n')
++    writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '', contextMarkdown(ctx.summary)].join('\n'))
++  }
+   process.exit(3)
+ }
+ const invocations = runs.map(r => {
+   const as = timed.filter(a => a.run === r.runId)
+   return { runId: r.runId, dir: r.dir, source: r.source, journal: r.journal, launch: r.launch, agents: [...r.agents.values()].filter(a => !a.synthetic).length, timed: as.length,
+     start: as.length ? as[0].start : null, end: as.length ? Math.max(...as.map(a => a.end)) : null }
+ }).filter(v => v.start !== null).sort((a, b) => a.start - b.start)
+ const launch = invocations.map(v => v.launch).filter(Boolean).at(-1) ?? null
+ const cfg = launch?.config ?? {}
+ const earlyUnblock = cfg.earlyUnblock !== false
+ const runtimeSlots = Number(cfg.runtimeSlots) > 0 ? Number(cfg.runtimeSlots) : null
+ const cap = opt.cap !== undefined ? Number(opt.cap)
+   : Number(cfg.concurrency) > 0 && runtimeSlots > 2 ? Math.min(Number(cfg.concurrency), runtimeSlots - 2)
+   : Number(cfg.concurrency) > 0 ? Number(cfg.concurrency) : Infinity
+ const windowStart = invocations[0].start
+ 
+ // ---- run level, for ordinary-subagent runs: how many dispatches ran at once (3 and more counted
+ // together), and time per kind.
+ // Needs no bead mapping, so it also covers dispatches whose names do not follow the label grammar ----
+ const runLevel = (() => {
+   const ds = timed.filter(a => !a.synthetic && serialRuns.has(a.run))
+   if (!ds.length) return null
+   const s0 = Math.min(...ds.map(a => a.start)), s1 = Math.max(...ds.map(a => a.end))
+   const byActive = {}
+   let n = 0, prev = s0, peak = 0
+   for (const [t, d] of ds.flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])) {
+     if (t > prev) byActive[Math.min(n, 3)] = (byActive[Math.min(n, 3)] ?? 0) + t - prev
+     n += d; prev = t; peak = Math.max(peak, n)
+   }
+   const kinds = {}
+   for (const a of ds) { const k = kinds[a.kind + (a.mapped ? '' : '?')] ??= { kind: a.kind, mapped: a.mapped, ms: 0, n: 0 }; k.ms += a.dur; k.n++ }
+   const merges = timed.filter(a => a.synthetic && serialRuns.has(a.run))
+   const wall = s1 - s0, busy = unionMs(ds.map(a => [a.start, a.end]))
+   const kt = ks => { ks.sort((x, y) => y.ms - x.ms); const rest = ks.slice(8); return [...ks.slice(0, 8).map(k => `${k.kind} ${fmtDur(k.ms)} (${k.n})`), ...(rest.length ? [`${rest.length} more ${fmtDur(sum(rest.map(k => k.ms)))} (${sum(rest.map(k => k.n))})`] : [])].join(' · ') }
+   const mapped = Object.values(kinds).filter(k => k.mapped), unmapped = Object.values(kinds).filter(k => !k.mapped)
+   return {
+     unmapped: ds.filter(a => !a.mapped).length,
+-    json: { dispatches: ds.length, wallMs: wall, busyMs: busy, byActive, peak, kinds: Object.values(kinds), coordinatorMergeMs: sum(merges.map(a => a.dur)) },
++    json: { scope: 'all-agent concurrency', dispatches: ds.length, wallMs: wall, busyMs: busy, byActive, peak, kinds: Object.values(kinds), coordinatorMergeMs: sum(merges.map(a => a.dur)) },
+     lines: [
+       `Profile: concurrency — ${ds.length} dispatches over ${fmtDur(wall)} · a dispatch running ${fmtDur(busy)} (${pct(busy, wall)}%) · dispatches at once: ${Object.entries(byActive).map(([k, v]) => `${k === '3' ? '3+' : k} for ${pct(v, wall)}%`).join(' · ')} of the time · peak ${peak}`,
+       `Profile: dispatch time by kind, summed — ${[kt(mapped), unmapped.length ? `not named for a bead: ${kt(unmapped)}` : '', merges.length ? `merges run by the coordinator ${fmtDur(sum(merges.map(a => a.dur)))} (${merges.length})` : ''].filter(Boolean).join(' · ')}`,
+     ],
+   }
+ })()
+ const RULE = 'coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code'
+ if (!timed.some(a => a.bead)) {
+   // No dispatch maps to a bead: only the run-level lines.
+   const end = Math.max(...timed.map(a => a.end))
+   const ctxRes = contextResult(runs)
+   const lines = [`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(end)} · wall ${fmtDur(end - windowStart)} · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched 0${leaves ? `, planned ${leaves.size}` : ''}`,
+     ...runLevel.lines, ...ctxRes.lines,
+     `Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of ${epic} (${RULE})${ctxRes.reasons.length ? `; ${ctxRes.reasons.join('; ')}` : ''}`]
+   console.log(lines.join('\n'))
+   if (opt.out) {
+     writeFileSync(`${opt.out}.json`, JSON.stringify({ version: 1, epic, partial: true, invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: new Date(v.start).toISOString(), end: new Date(v.end).toISOString(), agents: v.agents, timed: v.timed })), concurrency: runLevel.json, context: contextJson(ctxRes.summary), summary: lines }, null, 2) + '\n')
+     writeFileSync(`${opt.out}.md`, [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '', contextMarkdown(ctxRes.summary)].join('\n'))
+   }
+   process.exit(0)
+ }
+ 
+ // ---- the graph: every planner row seen, read from journal results (a planner cached on resume has
+-// no transcript). Deps are the open in-tree blockers at that planning, so the union is the run's
+-// graph; plus planner-found missing edges, and applied edge cuts with the time they landed ----
++// no transcript). This union is an observed invocation/residual graph, not reconstructed history;
++// plus planner-found missing edges, and applied edge cuts with the time they landed ----
+ const runStart = new Map(invocations.map(v => [v.runId, v.start]))
+ const doneAt = a => a.end ?? runStart.get(a.run) ?? windowStart
+ const rows = new Map()
+ const cuts = []
+ for (const a of allAgents.filter(x => /^(plan|plan-rest|edge-cuts)$/.test(x.kind ?? '') && x.result).sort((x, y) => doneAt(x) - doneAt(y))) {
+   const at = doneAt(a)
+   const agent = a.start !== undefined ? a : null
+   if (Array.isArray(a.result.mapping)) {
+     for (const m of a.result.mapping) {
+       if (!m || typeof m.id !== 'string') continue
+       const row = rows.get(m.id) ?? { id: m.id, n: m.n, deps: new Set(), files: new Set(), opaque: false, graph: false, mappings: [] }
++      row.createdAt ??= timestamp(m.created_at ?? m.createdAt)
+       for (const d of m.deps ?? []) if (d !== m.id) row.deps.add(d)
+       for (const f of m.files ?? []) row.files.add(f)
+       row.graph ||= Array.isArray(m.deps)
+       row.opaque ||= m.opaque === true
+-      row.mappings.push({ at, agent })
++      row.mappings.push({ at: a.end ?? null, agent })
+       rows.set(m.id, row)
+     }
+     for (const e of a.result.missingEdges ?? []) if (e?.dependent && e?.blocker) rows.get(e.dependent)?.deps.add(e.blocker)
+   }
+   if (a.kind === 'edge-cuts') for (const c of a.result.applied ?? []) if (c?.dependent && c?.blocker) {
+-    cuts.push({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at, agent })
++    cuts.push({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: a.end ?? null, agent })
+     for (const e of c.add ?? []) if (e?.dependent && e?.blocker) rows.get(e.dependent)?.deps.add(e.blocker)
+   }
+ }
+-// An ordinary-subagent run has no planner rows in a journal: its graph is bd's, released when its
+-// first planner returned.
++// Ordinary tracker edges describe the observed residual graph. A timed planner supplies a mapping
++// boundary, not creation or historical dependency releases. Without one the boundary stays unknown.
++const creation = new Map((Array.isArray(tracker) ? tracker : []).map(b => [b.id, timestamp(b.created_at)]))
++const trackerDeps = new Map((Array.isArray(tracker) ? tracker : []).map(b => [b.id,
++  (b.dependencies ?? []).filter(d => d.type === 'blocks').map(d => d.depends_on_id)]))
+ if (leaves) {
+   const plan0 = timed.filter(a => serialRuns.has(a.run) && a.stage === 'planning').sort((x, y) => x.end - y.end)[0] ?? null
+-  for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, mappings: [{ at: plan0 ? plan0.end : windowStart, agent: plan0 }] })
++  for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, residual: true,
++    mappings: plan0 && (creation.get(id) ?? -Infinity) <= plan0.end ? [{ at: plan0.end, agent: plan0 }] : [] })
+ }
+ // The planning a dispatch at time t followed: the bead's latest mapping by then.
+-const mappingFor = (id, t) => { const ms = rows.get(id)?.mappings ?? []; return ms.filter(m => m.at <= t + EPS).at(-1) ?? ms[0] ?? null }
++const mappingFor = (id, t) => (rows.get(id)?.mappings ?? []).filter(m => m.at !== null && m.at <= t + EPS).at(-1) ?? null
+ const cutAt = (dependent, blocker) => cuts.find(c => c.dependent === dependent && c.blocker === blocker)?.at ?? Infinity
+ const depsAt = (id, t) => [...(rows.get(id)?.deps ?? [])].filter(d => rows.has(d) && cutAt(id, d) > t)
+ const dependentsOf = new Map()
+ for (const r of rows.values()) for (const d of r.deps) { if (!dependentsOf.has(d)) dependentsOf.set(d, new Set()); dependentsOf.get(d).add(r.id) }
+ 
+ // ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup),
+ // or with the `brief:` that preceded it in older coordinators ----
+ const beads = new Map()
+ for (const a of timed) if (a.bead) {
+   if (!beads.has(a.bead)) beads.set(a.bead, { id: a.bead, n: rows.get(a.bead)?.n, agents: [], attempts: [] })
+   beads.get(a.bead).agents.push(a)
+ }
+ const hasJournal = run => runs.find(r => r.runId === run)?.journal
+ for (const b of beads.values()) {
+   let cur = null
+   for (const a of b.agents) {
+     const afterBrief = cur && cur.agents.at(-1)?.kind === 'brief'
+     if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief)) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
+     cur.agents.push(a)
+     a.attempt = cur
+   }
+   for (const at of b.attempts) {
+     const by = st => at.agents.filter(a => a.stage === st)
+     const head = at.agents[0]
+     at.start = head.start
+@@ -1188,131 +1204,151 @@ const slotSpans = [...beads.values()].flatMap(b => b.attempts.flatMap(at => {
+ // What freed the start of bead `id` at `start`: a chain ending just before it while every slot was
+ // busy, or while `hotFileCap` in-flight chains declared a file it shares.
+ function slotRelease(id, start, after) {
+   const rel = latest(slotSpans.filter(s => s.bead !== id && s.end <= start + EPS && s.end >= start - DISPATCH_GAP && s.end > after + EPS))
+   if (!rel) return null
+   const live = slotSpans.filter(s => s.bead !== id && s.start < rel.end - 1 && s.end >= rel.end - 1)
+   if (Number.isFinite(cap) && live.length >= cap) return { agent: rel.agent, why: 'slot' }
+   const mine = rows.get(id)?.files ?? new Set()
+   const shared = [...(rows.get(rel.bead)?.files ?? [])].filter(f => mine.has(f))
+   if (shared.some(f => live.filter(s => rows.get(s.bead)?.files.has(f)).length >= hotFileCap)) return { agent: rel.agent, why: 'hot-file' }
+   return null
+ }
+ const endedNear = (xs, start) => latest(xs.filter(x => x.start < start && x.end <= start + EPS && x.end >= start - DISPATCH_GAP))
+ const readyQueries = timed.filter(a => a.stage === 'ready')
+ const planners = timed.filter(a => a.stage === 'planning')
+ 
+ // ---- per-bead timeline of the final attempt, and why it started when it did ----
+ const invStartOf = run => runStart.get(run) ?? windowStart
+ for (const b of beads.values()) {
+   const at = b.final
+   const S = at.start
+   const invStart = invStartOf(at.run)
+   const dur = as => sum(as.map(a => a.dur))
+   const deps = depsAt(b.id, S)
+   b.deps = deps
+-  const ready = Math.max(mappingFor(b.id, S)?.at ?? invStart, ...deps.map(d => usableBy(d, S)).filter(Boolean).map(x => x.end))
++  b.createdAt = creation.get(b.id) ?? rows.get(b.id)?.createdAt ?? null
++  b.mappingReadyAt = mappingFor(b.id, S)?.at ?? null
++  // Include external/unobserved blockers too: dropping them from the modeled in-tree graph cannot
++  // establish when they became usable. An empty, known mapping needs no dependency release.
++  const required = [...new Set([...(rows.get(b.id)?.deps ?? []),
++    ...(rows.get(b.id)?.residual ? trackerDeps.get(b.id) ?? [] : [])])].filter(d => d !== b.id && cutAt(b.id, d) > S)
++  const releases = required.map(d => usableBy(d, S)?.end ?? null)
++  b.dependencyReadyAt = !rows.get(b.id)?.graph || releases.some(t => t === null) ? null
++    : required.length ? Math.max(...releases) : b.mappingReadyAt
++  const known = b.mappingReadyAt !== null && b.dependencyReadyAt !== null
++  const ready = known ? Math.max(b.createdAt ?? -Infinity, b.mappingReadyAt, b.dependencyReadyAt) : null
+   // Ready before this invocation began (a relaunch, or the caller's next round): not a wait inside it.
+-  b.carriedMs = Math.max(0, invStart - ready)
+-  b.readyAt = Math.max(ready, invStart)
++  b.carriedMs = ready === null ? null : Math.max(0, invStart - ready)
++  b.readyAt = ready === null ? null : Math.max(ready, invStart)
+   b.dispatchedAt = S
+-  b.waitMs = Math.max(0, S - b.readyAt)
++  b.waitMs = ready === null ? null : Math.max(0, S - b.readyAt)
+   const earlier = b.attempts.filter(x => x !== at && x.start < S)
+   const earlierHere = earlier.filter(x => x.start >= invStart - EPS)
+   const bounced = earlierHere.filter(x => x.status === 'STACK_CONFLICT')
+-  if (b.waitMs <= DISPATCH_GAP) b.waitCause = 'none'
++  if (b.waitMs === null) b.waitCause = 'unknown'
++  else if (b.waitMs <= DISPATCH_GAP) b.waitCause = 'none'
+   else if (bounced.length) b.waitCause = 'stack-conflict'
+   else if (earlierHere.some(x => x.agents.some(a => a.stage === 'cancel'))) b.waitCause = 'cancelled'
+   else if (earlierHere.length) b.waitCause = 'retry'
+   else {
+     const land = deps.map(d => landedBy(d, S)).filter(x => x && x.end >= S - DISPATCH_GAP).at(-1)
+     const rel = slotRelease(b.id, S, b.readyAt)
+     b.waitCause = land ? 'waited-for-merge' : rel?.why === 'slot' ? 'slot' : endedNear(readyQueries, S) ? 'ready-query'
+       : rel?.why === 'hot-file' ? 'hot-file' : endedNear(planners, S) ? 'planning' : 'unexplained'
+   }
+   // Stack conflicts: the bounced attempt's stack parents (implemented, not merged yet) are the ones
+   // this bead then waited on.
+   b.lateEdges = new Set()
+   if (bounced.length) for (const d of deps) { const l = landedBy(d, S); if (l && l.end > bounced[0].start + EPS) b.lateEdges.add(d) }
+   if (b.waitCause === 'waited-for-merge') for (const d of deps) { const l = landedBy(d, S); if (l && l.end >= S - DISPATCH_GAP) b.lateEdges.add(d) }
+   b.stackConflictMs = bounced.length ? Math.max(0, S - bounced[0].start) : 0
+   b.implMs = dur(at.impl); b.reviewMs = dur(at.review); b.fixMs = dur(at.fix)
+   b.implByCat = {}
+   for (const a of at.impl) for (const [k, v] of Object.entries(a.byCat ?? {})) b.implByCat[k] = (b.implByCat[k] ?? 0) + v
+   b.implToolMs = sum(at.impl.map(a => a.toolMs ?? 0))
+   b.blockerMs = sum(b.attempts.map(x => dur(x.blocker)))
+   b.reworkMs = sum(earlier.map(x => dur(x.agents.filter(a => a.stage !== 'ledger'))))
+   const chainEnd = at.chainEndAgent ? at.chainEndAgent.end : S
+   // A stacked task merges only after every task it was cut on merged; a split task after its split.
+   b.stackParents = deps.filter(d => { const l = landingOf(d); return l && l.end > S + EPS })
+   b.enqueueAt = Math.max(chainEnd, ...b.stackParents.map(d => landingOf(d).end), at.split ? at.split.end : -Infinity)
+   const laneStart = at.lane.length ? at.lane[0].start : null
+   b.laneStart = laneStart
+   b.stackWaitMs = laneStart !== null ? Math.max(0, b.enqueueAt - chainEnd) : 0
+   b.queueWaitMs = laneStart !== null ? Math.max(0, laneStart - b.enqueueAt) : 0
+   b.landedAt = at.landing ? at.landing.end : null
+   b.laneMs = laneStart !== null && b.landedAt !== null ? b.landedAt - laneStart : dur(at.lane)
+   b.seamMs = dur(at.lane.filter(a => a.stage === 'seam'))
+   const first = at.lane[0]?.result
+   b.firstTryMerged = first && typeof first.merged === 'boolean' ? first.merged : null
+ }
+ const landed = [...beads.values()].filter(b => b.landed)
+ const lastLanding = latest(landed.map(b => b.final.landing))
+ const runEnd = Math.max(...timed.map(a => a.end))
+ // With nothing landed, the task graph ends at its last task step.
+ const lastTaskStep = lastLanding ?? latest(timed.filter(a => a.bead && a.stage !== 'ledger')) ?? latest(timed)
+ const graphEnd = lastTaskStep.end
+ const actualGraphMs = graphEnd - windowStart
++const modelWindow = lastLanding ? 'first dispatch to last landing' : 'first dispatch to last task step'
+ 
+ // ---- merge lane, runtime slots, conflict files ----
+ const laneAgents = timed.filter(a => LANE.has(a.stage))
+ const lane = {
+   busyMs: unionMs(laneAgents.map(a => [a.start, a.end])),
+   seamMs: sum(laneAgents.filter(a => a.stage === 'seam').map(a => a.dur)),
+   spanMs: laneAgents.length ? Math.max(...laneAgents.map(a => a.end)) - laneAgents[0].start : 0,
+   merges: laneAgents.filter(a => a.kind === 'merge').length,
+   firstTryFailed: landed.filter(b => b.firstTryMerged === false).length,
+   firstTryKnown: landed.filter(b => b.firstTryMerged !== null).length,
+   queueWaitMs: sum(landed.map(b => b.queueWaitMs)),
+   stackWaitMs: sum(landed.map(b => b.stackWaitMs)),
+ }
+ {
+   const ev = landed.filter(b => b.laneStart !== null && b.laneStart > b.enqueueAt).flatMap(b => [[b.enqueueAt, 1], [b.laneStart, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
+   let n = 0
+   lane.peakQueue = 0
+   for (const [, d] of ev) { n += d; lane.peakQueue = Math.max(lane.peakQueue, n) }
+ }
+-const runtime = { slots: runtimeSlots, peak: 0, fullMs: 0 }
++const runtime = { scope: 'all-agent concurrency', slots: runtimeSlots, peak: 0, fullMs: 0 }
+ {
+   const ev = timed.filter(a => !a.synthetic).flatMap(a => [[a.start, 1], [a.end, -1]]).sort((x, y) => x[0] - y[0] || x[1] - y[1])
+   let n = 0, prev = null
+   for (const [t, d] of ev) {
+     if (prev !== null && runtimeSlots && n >= runtimeSlots) runtime.fullMs += t - prev
+     n += d; prev = t
+     runtime.peak = Math.max(runtime.peak, n)
+   }
+ }
++const taskSlots = { scope: 'task-slot concurrency', cap: Number.isFinite(cap) ? cap : null, peak: 0, fullMs: 0 }
++{
++  let n = 0, prev = null
++  for (const [t, d] of slotSpans.filter(s => s.end > s.start).flatMap(s => [[s.start, 1], [s.end, -1]]).sort((a, b) => a[0] - b[0] || a[1] - b[1])) {
++    if (prev !== null && n >= cap) taskSlots.fullMs += t - prev
++    n += d; prev = t; taskSlots.peak = Math.max(taskSlots.peak, n)
++  }
++}
+ const FILE_RE = /(?:[\w@.+-]+\/)+[\w@.+-]+\.[A-Za-z0-9]{1,8}\b/g
+ const conflict = new Map()
+ const hit = (f, k) => { const c = conflict.get(f) ?? { file: f, stackConflicts: new Set(), seamOverlaps: 0 }; if (k) c.stackConflicts.add(k); else c.seamOverlaps++; conflict.set(f, c) }
+ for (const b of beads.values()) for (const at of b.attempts) {
+   if (at.status === 'STACK_CONFLICT') for (const f of new Set(String(at.agents[0].result?.finding ?? '').match(FILE_RE) ?? [])) hit(f, b.id)
+   for (const a of at.lane) for (const f of a.result?.seamOverlap ?? []) if (typeof f === 'string') hit(f, null)
+ }
+ const declaredBy = f => [...rows.values()].filter(r => r.files.has(f)).length
+ const hotConflicts = [...conflict.values()].map(c => ({ file: c.file, stackConflicts: c.stackConflicts.size, seamOverlaps: c.seamOverlaps, declaredBy: declaredBy(c.file) }))
+   .sort((x, y) => (y.stackConflicts + y.seamOverlaps) - (x.stackConflicts + x.seamOverlaps) || (x.file < y.file ? -1 : 1))
+ 
+ // ---- realized critical path: walk back from the last landing through each step's binding predecessor ----
+ // A predecessor started strictly before the step and ended by its start (EPS of clock slack); among
+ // the candidates the one that ended last binds. Starts strictly decrease, so the walk cannot cycle.
+ const WHY_RANK = ['stack-conflict', 'dep', 'stack-parent', 'chain', 'split', 'planned', 'retry', 'edge-cut', 'merge-lane', 'slot', 'hot-file', 'ready-query', 'previous', 'relaunch']
+ const before = (x, a) => x && x !== a && x.start < a.start && x.end <= a.start + EPS
+ const latestBefore = (xs, a) => latest(xs.filter(x => x.stage !== 'ledger' && before(x, a)))
+ const lanePrev = a => latest(laneAgents.filter(x => x.bead !== a.bead && before(x, a)))
+ function predecessors(a) {
+   const out = []
+   const add = (agent, why) => { if (before(agent, a)) out.push({ agent, why }) }
+   const at = a.attempt
+   if (a.bead && at && at.agents[0] === a) {
+     // An attempt's head: its blockers, its planning, the attempt before it, an edge cut, and — when
+     // those leave a gap — a freed slot, a ready query or a planner that just returned.
+@@ -1352,53 +1388,62 @@ function predecessors(a) {
+   return out
+ }
+ const path = []
+ {
+   let cur = lastTaskStep
+   const seen = new Set()
+   while (cur && !seen.has(cur)) {
+     seen.add(cur)
+     const p = predecessors(cur).filter(x => !seen.has(x.agent))
+       .sort((x, y) => y.agent.end - x.agent.end || WHY_RANK.indexOf(x.why) - WHY_RANK.indexOf(y.why))[0] ?? null
+     path.push({ agent: cur, pred: p })
+     cur = p?.agent ?? null
+   }
+   path.reverse()
+ }
+ // Segments: each step's own span (clipped so EPS overlaps are not counted twice), the gap before it,
+ // and the lead-in from the run's first dispatch. They sum to the task graph's wall time.
+ const segments = []
+ {
+   let t = windowStart
+   if (path.length && path[0].agent.start > t) { segments.push({ kind: 'startup', bead: null, label: 'run start', start: t, ms: path[0].agent.start - t }); t = path[0].agent.start }
+   for (const step of path) {
+     const a = step.agent
+     const why = step.pred?.why
+     if (step.pred && a.start > t) {
++      const b = beads.get(a.bead)
++      if (why !== 'relaunch' && a.attempt?.agents[0] === a && b?.final === a.attempt) {
++        const end = b.readyAt === null ? a.start : Math.min(a.start, Math.max(t, b.readyAt))
++        if (end > t) {
++          segments.push({ kind: b.readyAt === null ? 'unmeasured-gap' : 'pre-availability', bead: null,
++            label: `${b.readyAt === null ? 'readiness unknown' : 'before availability'} → ${a.label}`, start: t, ms: end - t })
++          t = end
++        }
++      }
+       const gap = a.start - t
+       const kind = why === 'slot' || why === 'hot-file' || why === 'relaunch' ? why : gap <= DISPATCH_GAP ? 'dispatch' : 'wait'
+-      segments.push({ kind, bead: a.bead, label: `${why} → ${a.label}`, start: t, ms: gap })
++      if (gap) segments.push({ kind, bead: a.bead, label: `${why} → ${a.label}`, start: t, ms: gap })
+       t = a.start
+     }
+     const s = Math.max(a.start, t)
+     const ms = Math.max(0, a.end - s)
+     segments.push({ kind: a.stage, bead: a.bead, label: a.label, start: s, ms, agent: a, why })
+     t = s + ms
+   }
+ }
+ const pathMs = sum(segments.map(s => s.ms))
+ const CAT_ORDER = ['implement', 'review', 'fix', 'merge', 'seam', 'split', 'blocker', 'cancel', 'close', 'planning', 'ready', 'audit', 'finish', 'ledger', 'other', 'startup', 'dispatch', 'slot', 'hot-file', 'wait', 'relaunch']
+ const byCat = {}
+ for (const s of segments) byCat[s.kind] = (byCat[s.kind] ?? 0) + s.ms
+ const crit = new Map()
+ for (const s of segments) if (s.bead) {
+   const m = crit.get(s.bead) ?? { total: 0, byCat: {}, agents: [] }
+   m.total += s.ms
+   m.byCat[s.kind] = (m.byCat[s.kind] ?? 0) + s.ms
+   if (s.agent) m.agents.push(s.agent)
+   crit.set(s.bead, m)
+ }
+ for (const b of beads.values()) b.criticalMs = crit.get(b.id)?.total ?? 0
+ // Lane contention: a lane turn the next step waited behind only because the lane was busy (the
+ // next lane agent's predecessor is this turn's last agent, via `merge-lane`), counted whole.
+ let laneContentionMs = 0
+ {
+@@ -1448,53 +1493,60 @@ function shapeOf(ids, depsFn) {
+     return lv
+   }
+   for (const id of set) visit(id)
+   const depth = Math.max(0, ...level.values())
+   const levels = Array.from({ length: depth }, (_, i) => [...level.values()].filter(l => l === i + 1).length)
+   let tail = [...set].filter(id => level.get(id) === depth).sort((x, y) => (beads.get(y)?.implMs ?? 0) - (beads.get(x)?.implMs ?? 0))[0]
+   const chain = []
+   while (tail && !chain.includes(tail)) { chain.unshift(tail); tail = via.get(tail) }
+   const transitive = id => { const seen = new Set(), q = [id]; while (q.length) for (const y of dependentsOf.get(q.pop()) ?? []) if (set.has(y) && !seen.has(y)) { seen.add(y); q.push(y) } return seen.size }
+   const fanOut = [...set].map(id => ({ id, direct: [...(dependentsOf.get(id) ?? [])].filter(y => set.has(y)).length, transitive: transitive(id) }))
+     .filter(f => f.direct > 0).sort((x, y) => y.transitive - x.transitive || y.direct - x.direct || (x.id < y.id ? -1 : 1)).slice(0, 5)
+   return { beads: set.size, edges: sum([...set].map(id => depsFn(id).filter(d => set.has(d)).length)), depth,
+     width: depth ? Math.round(10 * set.size / depth) / 10 : 0, levels, criticalPath: chain, fanOut, cycles: [...cycles] }
+ }
+ const shape = shapeOf([...rows.keys()], id => [...(rows.get(id)?.deps ?? [])].filter(d => cutAt(id, d) === Infinity))
+ 
+ // ---- schedule model: the landed beads replayed with their measured times ----
+ // A bead takes a slot for implement + review + fix, then queues for the merge lane once its stack
+ // parents merged; the lane turn includes its seam work. Dependents start at a blocker's
+ // implementation (early unblock), except over the edges where this run's dependent waited for the
+ // merge (a stack conflict, or early unblock not taken): those wait for the blocker's landing.
+ // No planner rows means no graph: no model then. A bead's edges are the ones in force at its dispatch
+ // (a cut that landed later still bound it), and its release is the planning it followed.
+ const simInput = new Map()
+ if (rows.size) for (const b of landed) simInput.set(b.id, { id: b.id, I: b.implMs, R: b.reviewMs + b.fixMs, M: b.laneMs, seam: b.seamMs,
+-  release: (mappingFor(b.id, b.dispatchedAt)?.at ?? invStartOf(b.final.run)) - windowStart, deps: [] })
++  release: Math.max(invStartOf(b.final.run), b.createdAt ?? -Infinity, b.mappingReadyAt ?? b.dispatchedAt,
++    ...(b.readyAt === null ? [b.dispatchedAt] : [])) - windowStart, deps: [] })
+ for (const s of simInput.values()) {
+   const b = beads.get(s.id)
++  // In-model dependencies release dynamically in each scenario. Only releases outside the model
++  // stay fixed to their observed times, or the estimate would erase the benefit of faster parents.
++  for (const d of b.deps.filter(d => !simInput.has(d))) {
++    const u = usableBy(d, b.dispatchedAt)
++    if (u) s.release = Math.max(s.release, u.end - windowStart)
++  }
+   s.deps = b.deps.filter(d => simInput.has(d)).map(d => ({ id: d, late: !earlyUnblock || b.lateEdges.has(d) }))
+ }
+ function simulate(input, { cap = Infinity, lanes = 1 } = {}) {
+   const S = new Map([...input.values()].map(s => [s.id, { ...s, started: null, implEnd: null, chainEnd: null, queued: null, laneStart: null, landed: null, freed: false }]))
+   const all = [...S.values()].sort((a, b) => a.release - b.release || (a.id < b.id ? -1 : 1))
+   const laneFree = Array.from({ length: Number.isFinite(lanes) ? lanes : all.length || 1 }, () => 0)
+   let t = 0, inSlot = 0
+   for (let guard = 0; guard < 1e6; guard++) {
+     let changed = true
+     while (changed) {
+       changed = false
+       for (const s of all) if (s.started !== null && !s.freed && s.chainEnd <= t) { s.freed = true; inSlot--; changed = true }
+       for (const s of all) if (s.chainEnd !== null && s.chainEnd <= t && s.queued === null) {
+         const parents = s.deps.map(d => S.get(d.id)).filter(p => p.landed === null || p.landed > s.started)
+         if (parents.every(p => p.landed !== null && p.landed <= t)) { s.queued = t; changed = true }
+       }
+       for (const s of all.filter(x => x.queued !== null && x.laneStart === null).sort((a, b) => a.queued - b.queued || (a.id < b.id ? -1 : 1))) {
+         const k = laneFree.findIndex(f => f <= t)
+         if (k < 0) break
+         s.laneStart = t; s.landed = t + s.M; laneFree[k] = s.landed; changed = true
+       }
+       for (const s of all) {
+         if (s.started !== null || s.release > t || inSlot >= cap) continue
+         if (!s.deps.every(d => { const p = S.get(d.id); return d.late ? p.landed !== null && p.landed <= t : p.implEnd !== null && p.implEnd <= t })) continue
+         s.started = t; s.implEnd = t + s.I; s.chainEnd = t + s.I + s.R; inSlot++; changed = true
+@@ -1518,242 +1570,252 @@ function lowerBoundChain(input) {
+     const s = input.get(id)
+     let start = s.release, by = null
+     for (const d of s.deps) { const p = at(d.id); if (!p) continue; const t = d.late ? p.landed : p.implEnd; if (t > start) { start = t; by = d.id } }
+     const chainEnd = start + s.I + s.R
+     let queued = chainEnd, viaMerge = null
+     for (const d of s.deps) { const p = at(d.id); if (p && !d.late && p.landed > start && p.landed > queued) { queued = p.landed; viaMerge = d.id } }
+     const r = { implEnd: start + s.I, landed: queued + s.M, by, viaMerge }
+     memo.set(id, r)
+     return r
+   }
+   for (const id of input.keys()) at(id)
+   let cur = [...input.keys()].reduce((x, y) => (x === null || memo.get(y).landed > memo.get(x).landed ? y : x), null)
+   const ms = cur === null ? 0 : memo.get(cur).landed
+   const chain = []
+   const seen = new Set()
+   while (cur && !seen.has(cur)) { seen.add(cur); chain.unshift(cur); cur = memo.get(cur).viaMerge ?? memo.get(cur).by }
+   return { ms, chain }
+ }
+ const withBeads = (fn) => new Map([...simInput].map(([k, v]) => [k, fn(v)]))
+ let sim = null
+ if (simInput.size && !Number.isFinite(simulate(simInput, { cap, lanes: 1 }))) sim = { failed: true, whatIfs: [] }
+ else if (simInput.size) {
+   const base = { cap, lanes: 1 }
+   const asRun = simulate(simInput, base)
+   const s = {
++    estimate: true, window: modelWindow,
+     asRunMs: asRun, actualMs: actualGraphMs, fit: actualGraphMs > 0 ? Math.round(100 * asRun / actualGraphMs) / 100 : null,
+     unlimitedSlotsMs: simulate(simInput, { ...base, cap: Infinity }),
+     unlimitedLanesMs: simulate(simInput, { ...base, lanes: Infinity }),
+     lowerBoundMs: simulate(simInput, { cap: Infinity, lanes: Infinity }),
+     graphChain: lowerBoundChain(simInput).chain,
+     whatIfs: [],
+   }
+-  const push = (kind, target, ms, note) => { if (Number.isFinite(ms) && asRun - ms > Math.max(60000, asRun * 0.01)) s.whatIfs.push({ kind, target, ms, savingMs: asRun - ms, note }) }
++  const push = (kind, target, ms, note) => { if (Number.isFinite(ms) && asRun - ms > Math.max(60000, asRun * 0.01)) s.whatIfs.push({ kind, target, ms, savingMs: asRun - ms, note, estimate: true }) }
+   push('slots', 'unlimited slots', s.unlimitedSlotsMs, 'no slot cap')
+   push('lanes', 'unlimited merge lanes', s.unlimitedLanesMs, 'merges in parallel, each still after its stack parents')
+   if ([...simInput.values()].some(x => x.deps.some(d => d.late))) push('early', 'every early unblock taken', simulate(withBeads(v => ({ ...v, deps: v.deps.map(d => ({ ...d, late: !earlyUnblock })) })), base), 'no stack conflicts: dependents stack on implemented blockers instead of waiting for their merge')
+   if (lane.seamMs > 0) push('seam', 'seam work off the merge lane', simulate(withBeads(v => ({ ...v, R: v.R + v.seam, M: v.M - v.seam })), base), 'rebase and seam review/fix before queueing; the lane only merges (an engine change)')
+   const edges = []
+   for (const x of simInput.values()) for (const d of x.deps) edges.push({ target: `${x.id} <- ${d.id}`, ms: simulate(withBeads(v => (v.id === x.id ? { ...v, deps: v.deps.filter(y => y.id !== d.id) } : v)), base) })
+   for (const e of edges.sort((a, b) => a.ms - b.ms).slice(0, 3)) push('cut', `cut ${e.target}`, e.ms, 'payoff if this edge were cut — whether it can be is a design call')
+   const splits = []
+   for (const x of simInput.values()) {
+     const n = [...simInput.values()].filter(y => y.deps.some(d => d.id === x.id)).length
+     if (!n || x.I < 120000) continue
+     const head = { id: `${x.id}#contract`, I: 0.3 * x.I, R: 0.5 * x.R, M: Math.max(0, x.M - x.seam), seam: 0, release: x.release, deps: x.deps }
+     const trial = withBeads(v => (v.id === x.id ? { ...v, I: 0.7 * v.I, deps: [...v.deps, { id: head.id, late: false }] }
+       : { ...v, deps: v.deps.map(d => (d.id === x.id ? { ...d, id: head.id } : d)) }))
+     trial.set(head.id, head)
+     splits.push({ id: x.id, n, ms: simulate(trial, base) })
+   }
+   for (const x of splits.sort((a, b) => a.ms - b.ms).slice(0, 2)) push('split', `split ${x.id}`, x.ms, `its ${x.n} dependent(s) wait only for a contract slice ≈30% of its implement time`)
+   const faster = [...simInput.values()].map(x => ({ id: x.id, ms: simulate(withBeads(v => (v.id === x.id ? { ...v, I: v.I / 2 } : v)), base) }))
+   for (const x of faster.sort((a, b) => a.ms - b.ms).slice(0, 2)) push('faster', `faster ${x.id}`, x.ms, 'its implement time halved')
+   s.whatIfs.sort((a, b) => b.savingMs - a.savingMs)
+   sim = s
+ }
+ 
+ // ---- report ----
+ const lines = []
+ let testTotals = null, slowTests = []
+ const afterMs = Math.max(0, runEnd - graphEnd)
++const diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,
++  dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }
+ const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
+ lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
+ const fan = shape.fanOut[0]
++lines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')
+ lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
+ if (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)
+ else if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? (ordinary.length ? 'no dependency graph' : 'no planner rows, so the graph is unknown') : 'nothing landed'}`)
+ else {
+   const above = sim.asRunMs - sim.lowerBoundMs
+   const lanesGain = sim.asRunMs - sim.unlimitedLanesMs, slotsGain = sim.asRunMs - sim.unlimitedSlotsMs
+   const ch = sim.graphChain
+-  sim.verdict = above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'
+-  const verdict = above <= Math.max(60000, 0.1 * sim.asRunMs)
++  sim.verdict = diagnosis.dominant === 'planning' ? 'planning-bound' : above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'
++  const verdict = diagnosis.dominant === 'planning' ? 'planning-bound: planning dominates the measured task window; task parallelism retains this planning time' : above <= Math.max(60000, 0.1 * sim.asRunMs)
+     ? (ch.length <= 1 ? `bead-bound: ${ch[0] ?? 'one bead'} alone set the pace — split it or make it faster` : `graph-bound: the ${ch.length}-bead dependency chain set the pace — reshaping it is the lever`)
+     : lanesGain >= slotsGain ? `merge-lane-bound: ${fmtDur(lanesGain)} of the ${fmtDur(above)} above the graph's bound is the serial merge lane`
+     : `slot-bound: ${fmtDur(slotsGain)} of the ${fmtDur(above)} above the graph's bound is the slot cap`
+   const chainText = ch.length > 1 ? ` along ${ch.length > 8 ? [...ch.slice(0, 3), '…', ...ch.slice(-3)].join(' → ') : ch.join(' → ')}` : ''
+   lines.push(`Profile: bound — graph lower bound ${fmtDur(sim.lowerBoundMs)}${chainText} (unlimited slots and merge lanes) · model of the run ${fmtDur(sim.asRunMs)} (cap ${Number.isFinite(cap) ? cap : '∞'}, one merge lane) vs actual ${fmtDur(actualGraphMs)} (${sim.fit ? `${Math.round(100 * sim.fit)}%` : '?'}) → ${verdict}`)
+ }
+ lines.push(`Profile: critical path — ${fmtDur(pathMs)} = ${catText(byCat)}${laneContentionMs ? ` · of which other beads' merge-lane turns ${fmtDur(laneContentionMs)}` : ''}`)
++lines.push(`Profile: diagnosis — planning ${fmtDur(diagnosis.planningMs)} (${pct(diagnosis.planningMs, actualGraphMs)}% of ${modelWindow})${diagnosis.dominant === 'planning' ? ' · planning dominates; bead bottleneck below covers task work only' : ''}`)
+ {
+   // A bead's consecutive steps collapse into one entry; consecutive lane turns of different beads
+   // into one `merge lane ×N` entry.
+   const parts = []
+   for (const s of segments) {
+     if (!s.agent) continue
+     const who = s.bead ?? s.agent.kind
+     const last = parts.at(-1)
+     const laneStep = LANE.has(s.kind)
+     if (laneStep && last?.lane) { last.beads.add(who); last.ms += s.ms; if (s.kind === 'seam') last.seam += s.ms; continue }
+     if (laneStep && last && !last.lane && last.who !== who && last.kinds.some(k => LANE.has(k))) {
+       parts.push({ lane: true, beads: new Set([who]), ms: s.ms, seam: s.kind === 'seam' ? s.ms : 0 }); continue
+     }
+     if (last && !last.lane && last.who === who) { if (!last.kinds.includes(s.kind)) last.kinds.push(s.kind); last.ms += s.ms; continue }
+     parts.push({ who, kinds: [s.kind], ms: s.ms })
+   }
+   const text = parts.map(p => p.lane ? `merge lane ×${p.beads.size} ${fmtDur(p.ms)}${p.seam ? ` (seam ${fmtDur(p.seam)})` : ''}` : `${p.who} ${p.kinds.join('+')} ${fmtDur(p.ms)}`)
+   const shown = text.length > 14 ? [...text.slice(0, 6), `… ${text.length - 12} more …`, ...text.slice(-6)] : text
+   lines.push(`Profile: critical chain — ${shown.join(' → ')}`)
+ }
+ const TOOL_ORDER = ['test', 'poll', 'build', 'install', 'git', 'bd', 'read', 'edit', 'shell', 'subagent', 'other']
+ if (bottleneck) {
+   const [id, m] = bottleneck
+   const b = beads.get(id)
+   // What its implement steps on the path spent their time on (tool categories, then model time).
+   const impl = m.agents.filter(a => a.stage === 'implement')
+   const implMs = sum(impl.map(a => a.dur)), toolMs = sum(impl.map(a => a.toolMs ?? 0))
+   const cats = {}
+   for (const a of impl) for (const [k, v] of Object.entries(a.byCat ?? {})) cats[k] = (cats[k] ?? 0) + v
+   const tools = impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 2)
+   const implText = implMs >= 1000 ? ` · implement on the path ${fmtDur(implMs)}: ${[catText(cats, TOOL_ORDER), implMs - toolMs >= 1000 ? `model ${fmtDur(implMs - toolMs)}` : ''].filter(Boolean).join(' · ')}${tools.length ? ` (longest: ${tools.map(x => `${x.what ? `"${x.what}"` : x.name} ${fmtDur(x.ms)}`).join(', ')})` : ''}` : ''
+   const f = shape.fanOut.find(x => x.id === id)
+   lines.push(`Profile: bottleneck — ${id}${b.landed ? '' : ' (did not land)'} — ${fmtDur(m.total)} on the critical path (${pct(m.total, pathMs)}%) · ${catText(m.byCat)}${implText}${b.attempts.length > 1 ? ` · ${b.attempts.length} attempts (${b.attempts.map(x => x.status ?? '?').join(', ')})` : ''} · dependents ${f ? `${f.direct} direct, ${f.transitive} transitive` : dependentsOf.get(id)?.size ?? 0}`)
+ }
+ {
+   const causes = {}
+-  for (const b of landed) if (b.waitCause !== 'none') { const c = causes[b.waitCause] ?? { ms: 0, n: 0 }; c.ms += b.waitMs; c.n++; causes[b.waitCause] = c }
++  for (const b of landed) if (b.waitMs !== null && b.waitCause !== 'none') { const c = causes[b.waitCause] ?? { ms: 0, n: 0 }; c.ms += b.waitMs; c.n++; causes[b.waitCause] = c }
+   const order = ['stack-conflict', 'waited-for-merge', 'slot', 'hot-file', 'ready-query', 'planning', 'cancelled', 'retry', 'unexplained']
+   const total = sum(Object.values(causes).map(c => c.ms))
+   const carried = landed.filter(b => b.carriedMs > 0)
+   lines.push(`Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): ${fmtDur(total)} over ${sum(Object.values(causes).map(c => c.n))} of ${landed.length} landed beads${total ? ' — ' + order.filter(k => causes[k]).map(k => `${k} ${fmtDur(causes[k].ms)} (${causes[k].n})`).join(' · ') : ''}${carried.length ? ` · ready before their invocation began, not counted: ${fmtDur(sum(carried.map(b => b.carriedMs)))} (${carried.length})` : ''}`)
+   if (earlyUnblock) {
+     const withDeps = landed.filter(b => b.deps.length)
+     const stacked = withDeps.filter(b => b.stackParents.length).length
+     const bounced = withDeps.filter(b => b.waitCause === 'stack-conflict').length
+     const waited = withDeps.filter(b => b.waitCause === 'waited-for-merge').length
+     lines.push(`Profile: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${stacked} · bounced on a stack conflict then waited for the merge ${bounced} (${fmtDur(sum(withDeps.filter(b => b.waitCause === 'stack-conflict').map(b => b.waitMs)))}) · waited for a merge without one ${waited}`)
+   }
+ }
+ {
+   // Time in attempts that did not land: earlier attempts of landed beads, and beads that never landed.
+   const lost = [...beads.values()].map(b => {
+     const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x))
+     return { id: b.id, ms: sum(atts.map(x => sum(x.agents.filter(a => a.stage !== 'ledger').map(a => a.dur)))), how: atts.map(x => x.status ?? '?').join(', '), landed: b.landed }
+   }).filter(x => x.ms >= 1000).sort((x, y) => y.ms - x.ms)
+   const closes = [...beads.values()].filter(b => b.reentryCloses.length)
+   const closeText = closes.length ? ` · ${closes.length} merged bead(s) re-dispatched only to close (a lost bead close), ${fmtDur(sum(closes.map(b => b.reentryCloses[0].start - b.final.landing.end)))} after their merge` : ''
+   if (lost.length || closes.length) lines.push(`Profile: rework — ${fmtDur(sum(lost.map(x => x.ms)))} of dispatch time in attempts that did not land${lost.length ? ' — ' + lost.slice(0, 3).map(x => `${x.id} ${fmtDur(x.ms)} (${x.how}${x.landed ? '; landed later' : '; never landed'})`).join(' · ') : ''}${lost.length > 3 ? ` · ${lost.length - 3} more` : ''}${closeText}`)
+ }
+ {
+   // Test time across every implementer and fixer (summed: they run at the same time).
+   const coders = timed.filter(a => a.kind === 'impl' || a.kind === 'commit-nudge' || a.kind === 'fix')
+   const busy = sum(coders.map(a => a.dur))
+   const test = sum(coders.map(a => a.byCat?.test ?? 0)), poll = sum(coders.map(a => a.byCat?.poll ?? 0))
+   const capped = coders.flatMap(a => a.calls ?? []).filter(x => x.name === 'Bash' && x.ms >= 595000)
+   if (busy >= 1000) lines.push(`Profile: tests — implementers and fixers, summed: ${fmtDur(test)} running tests and ${fmtDur(poll)} polling background runs, ${pct(test + poll, busy)}% of their ${fmtDur(busy)} · ${capped.length} Bash call(s) ran into the 10-minute tool limit`)
+   testTotals = { busyMs: busy, testMs: test, pollMs: poll, cappedCalls: capped.length }
+   // The test commands that cost the most, summed over every implementer and fixer run of them.
+   const byCmd = new Map()
+   for (const x of coders.flatMap(a => a.calls ?? []).filter(x => x.test)) {
+     const e = byCmd.get(x.test) ?? { cmd: x.test, ms: 0, runs: 0, longestMs: 0 }
+     e.ms += x.ms; e.runs++; e.longestMs = Math.max(e.longestMs, x.ms)
+     byCmd.set(x.test, e)
+   }
+   slowTests = [...byCmd.values()].sort((a, b) => b.ms - a.ms).slice(0, 20)
+   const shown = slowTests.filter(e => e.longestMs >= 60000).slice(0, 5)
+   if (shown.length) lines.push(`Profile: slow tests — ${shown.map(slowTestText).join(' · ')}`)
+ }
+ {
+   const parts = [['stack-conflict', 'stack-conflict re-cuts'], ['retry', 'retries'], ['cancelled', 'cancelled re-dispatches']].filter(([k]) => redo[k].ms >= 1000)
+   if (parts.length) lines.push(`Profile: redo — on the critical path, up to ${parts.map(([k, name]) => `${name} ${fmtDur(redo[k].ms)} (${redo[k].beads.join(', ')})`).join(' · ')} — from a bead's first attempt to its final one; the what-ifs model the real saving`)
+ }
+ lines.push(`Profile: merge lane — busy ${fmtDur(lane.busyMs)} of ${fmtDur(lane.spanMs)} (${pct(lane.busyMs, lane.spanMs)}%) · seam reviews and fixes ${fmtDur(lane.seamMs)} (${pct(lane.seamMs, lane.busyMs)}% of busy) · ${lane.merges} merge dispatches, first try not merged for ${lane.firstTryKnown ? `${lane.firstTryFailed} of ${lane.firstTryKnown}` : 'unknown (no merge results)'} · queue wait ${fmtDur(lane.queueWaitMs)} total, peak ${lane.peakQueue} waiting · stack-parent wait ${fmtDur(lane.stackWaitMs)}`)
+ if (hotConflicts.length) lines.push(`Profile: conflicts — ${hotConflicts.slice(0, 4).map(c => `${c.file} (stack conflicts ${c.stackConflicts}, seam overlaps ${c.seamOverlaps}, declared by ${c.declaredBy})`).join(' · ')}`)
+ if (runLevel) lines.push(...runLevel.lines)
+ lines.push(`Profile: runtime — peak ${runtime.peak} agents at once${runtimeSlots ? ` of ${runtimeSlots} runtime slots · full ${pct(runtime.fullMs, runEnd - windowStart)}% of the run` : ''} · slot cap ${Number.isFinite(cap) ? cap : 'unknown'}`)
+-for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}`)
+-if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}`)
++lines.push(`Profile: concurrency scope — all-agent concurrency peak ${runtime.peak} · task-slot concurrency peak ${taskSlots.peak}, cap ${Number.isFinite(cap) ? cap : 'unknown'} (ordinary chains retain a slot through merge)`)
++for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if estimate — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}; ${modelWindow}, planning retained`)
++if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if estimate — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}; ${modelWindow}, planning retained`)
+ const unmeasured = []
++const unknownReady = [...beads.values()].filter(b => b.readyAt === null)
++if (unknownReady.length) unmeasured.push(`availability/readiness timing unknown for ${unknownReady.length} bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary`)
+ if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
+ const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
+ if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
+ if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
+ if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
+ if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
+ if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
+ if (skippedDry.length) unmeasured.push(`${skippedDry.length} dryRun invocation(s) skipped`)
+ if (!launch) unmeasured.push(`no Launch: line: cap ${Number.isFinite(cap) ? cap : 'unknown'}, early unblock assumed on`)
+ if (shape.cycles.length) unmeasured.push(`dependency cycle(s) in the planner rows, skipped for the shape: ${shape.cycles.slice(0, 3).join(', ')}`)
+ if (sim?.fit && (sim.fit < 0.75 || sim.fit > 1.25)) unmeasured.push(`the schedule model is ${Math.round(100 * sim.fit)}% of actual, so the what-ifs are rough`)
+ const notLanded = [...beads.values()].filter(b => !b.landed)
+ if (notLanded.length) unmeasured.push(`${notLanded.length} dispatched bead(s) did not land (not in the model): ${notLanded.slice(0, 5).map(b => b.id).join(', ')}${notLanded.length > 5 ? ', …' : ''}`)
+ const ctxRes = contextResult(runs); lines.push(...ctxRes.lines); unmeasured.push(...ctxRes.reasons)
+ lines.push(`Profile: unmeasured — ${unmeasured.length ? unmeasured.join('; ') : 'none'}`)
+ console.log(lines.join('\n'))
+ 
+ if (opt.out) {
+   const T = t => (t === null || t === undefined || !Number.isFinite(t)) ? null : new Date(t).toISOString()
+   const off = t => (t === null || t === undefined) ? '' : `+${fmtDur(t - windowStart)}`
+   const beadRows = [...beads.values()].sort((a, b) => a.dispatchedAt - b.dispatchedAt)
+   const json = {
+     version: 1, epic, cap: Number.isFinite(cap) ? cap : null, earlyUnblock, runtimeSlots,
+     invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: T(v.start), end: T(v.end), agents: v.agents, timed: v.timed, journal: v.journal })),
+     window: { start: T(windowStart), lastLanding: T(lastLanding?.end), end: T(runEnd), graphMs: actualGraphMs, wallMs: runEnd - windowStart },
++    graphScope: 'observed invocation/residual graph', diagnosis,
+     shape, cuts: cuts.map(c => ({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: T(c.at) })),
+     beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed,
++      createdAt: T(b.createdAt), mappingReadyAt: T(b.mappingReadyAt), dependencyReadyAt: T(b.dependencyReadyAt),
+       readyAt: T(b.readyAt), dispatchedAt: T(b.dispatchedAt), landedAt: T(b.landedAt), waitMs: b.waitMs, waitCause: b.waitCause, carriedMs: b.carriedMs,
+       implMs: b.implMs, implByTool: b.implByCat, implToolMs: b.implToolMs, reviewMs: b.reviewMs, fixMs: b.fixMs, stackWaitMs: b.stackWaitMs,
+       queueWaitMs: b.queueWaitMs, laneMs: b.laneMs, seamMs: b.seamMs, blockerMs: b.blockerMs, reworkMs: b.reworkMs, criticalMs: b.criticalMs,
+       stackParents: b.stackParents, lateEdges: [...b.lateEdges] })),
+     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
+     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
+       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
+-    lane, runtime, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
++    lane, runtime, taskSlots, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
+   }
+   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
+   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
+-  md.push('## Per bead', '', 'Offsets are from the run\'s first dispatch. `wait` is from the moment every blocker was usable (its implementation under early unblock, else its merge) to the implementer starting, with its cause; `stack` is a stacked task waiting for its parents to merge; `queue` is the wait for the single merge lane; `lane` is its lane turn (merge plus seam work).', '')
++  md.push('## Per bead', '', 'Offsets are from the run\'s first dispatch. `wait` starts at evidenced creation/mapping/dependency availability, bounded by invocation start; unknown readiness means unknown wait. Creation, mapping and dependency timestamps stay distinct in JSON. `stack` waits for parents to merge; `queue` waits for the single merge lane; `lane` is its lane turn (merge plus seam work).', '')
+   md.push('| bead | deps | dependents | attempts | wait (cause) | implement | of it: tools | review | fix | stack | queue | lane (seam) | landed | critical |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|')
+   for (const b of beadRows) {
+     const tools = catText(b.implByCat, TOOL_ORDER)
+-    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? off(b.landedAt) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
++    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? off(b.landedAt) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
+   }
+   md.push('', '## Critical path, step by step', '', '| at | step | kind | via | duration |', '|---|---|---|---|---|')
+   for (const s of segments) md.push(`| ${off(s.start)} | ${s.label} | ${s.kind} | ${s.why ?? ''} | ${fmtDur(s.ms)} |`)
+   if (json.bottleneck?.calls.length) {
+     md.push('', `## Longest tool calls in the bottleneck's implement (${json.bottleneck.bead})`, '', '| tool | category | what | duration |', '|---|---|---|---|')
+     for (const x of json.bottleneck.calls) md.push(`| ${x.name} | ${x.cat} | ${(x.what || '').replace(/\|/g, '\\|')} | ${fmtDur(x.ms)} |`)
+   }
+   if (hotConflicts.length) {
+     md.push('', '## Conflict files', '', 'Files named in stack-conflict findings and in merges\' seam overlaps, with how many planned beads declared them.', '', '| file | stack conflicts | seam overlaps | declared by |', '|---|---|---|---|')
+     for (const c of hotConflicts.slice(0, 15)) md.push(`| ${c.file} | ${c.stackConflicts} | ${c.seamOverlaps} | ${c.declaredBy} |`)
+   }
+   if (sim && !sim.failed) {
+-    md.push('', '## Schedule model', '', `Landed beads replayed with their measured implement, review+fix and lane times; planner timing kept as it ran; dependents start at a blocker's implementation except over edges where this run's dependent waited for the merge. Model of the run: ${fmtDur(sim.asRunMs)} against ${fmtDur(actualGraphMs)} measured. Estimates, not measurements.`, '')
++    md.push('', '## Schedule model', '', `Landed beads replayed with their measured implement, review+fix and lane times; creation, mapping and invocation bounds retained, with dispatch as the conservative release when readiness is unknown. In-model dependencies release at their modeled implementation/merge times; known releases outside the model stay fixed. Window: ${modelWindow}; planning retained. Model of the run: ${fmtDur(sim.asRunMs)} against ${fmtDur(actualGraphMs)} measured. Estimates, not measurements.`, '')
+     md.push('| scenario | makespan | saving |', '|---|---|---|', `| as run (cap ${Number.isFinite(cap) ? cap : '∞'}, one merge lane) | ${fmtDur(sim.asRunMs)} | - |`, `| unlimited slots | ${fmtDur(sim.unlimitedSlotsMs)} | ${fmtDur(sim.asRunMs - sim.unlimitedSlotsMs)} |`, `| unlimited merge lanes | ${fmtDur(sim.unlimitedLanesMs)} | ${fmtDur(sim.asRunMs - sim.unlimitedLanesMs)} |`, `| graph lower bound (both) | ${fmtDur(sim.lowerBoundMs)} | ${fmtDur(sim.asRunMs - sim.lowerBoundMs)} |`)
+     for (const w of sim.whatIfs.filter(w => w.kind !== 'slots' && w.kind !== 'lanes')) md.push(`| ${w.target} | ${fmtDur(w.ms)} | ${fmtDur(w.savingMs)} |`)
+   }
+   const gantt = beadRows.filter(b => b.final.agents.some(a => a.dur > 0)).slice(0, 80)
+   if (gantt.length) {
+     const onPath = new Set(segments.map(s => s.agent).filter(Boolean))
+     md.push('', '## Timeline', '', `${gantt.length < beadRows.length ? `First ${gantt.length} beads by dispatch; ` : ''}each bead's final attempt; critical-path steps are marked crit.`, '', '```mermaid', 'gantt', '  dateFormat x', '  axisFormat %H:%M')
+     for (const b of gantt) {
+       md.push(`  section ${b.id}`)
+       for (const a of b.final.agents.filter(a => a.stage !== 'ledger' && a.dur > 0)) md.push(`  ${a.kind}${a.suffix ? ' ' + a.suffix : ''} :${onPath.has(a) ? 'crit, ' : ''}${Math.round(a.start)}, ${Math.round(a.end)}`)
+     }
+     md.push('```')
+   }
+   md.push('', ...contextMarkdown(ctxRes.summary).trimEnd().split('\n'))
+   if (unmeasured.length) md.push('', '## Unmeasured', '', ...unmeasured.map(u => `- ${u}`))
+   writeFileSync(`${opt.out}.md`, md.join('\n') + '\n')
+ }
+diff --git a/skills/upstream-feedback/SKILL.md b/skills/upstream-feedback/SKILL.md
+index fce8fe5a..541a1e02 100644
+--- a/skills/upstream-feedback/SKILL.md
++++ b/skills/upstream-feedback/SKILL.md
+@@ -35,61 +35,73 @@ friction was recorded before the destruction. That is a stated limitation of sta
+ not a surprise to debug. Log on: a
+ defect hit in skill machinery or guidance, a workaround applied, guidance that read wrong or
+ ambiguous when followed literally, a visible stall or waste, an adaptation forced to diverge.
+ Bar: "this surprised me or cost me something." No analysis at write time — the finish pass
+ discards noise; it cannot recover unrecorded moments.
+ 
+ **Only the OUTERMOST super-* invocation runs this skill's analysis** — inner invocations only
+ append. A standalone run is its own outermost.
+ 
+ ## The Process
+ 
+ 1. **Gather** (no dispatch): the friction log (a missing file is `not recorded`; a file holding
+    only its header line is `none recorded` — never conflate the two); the run ledger (when available — a standalone
+    super-design run has none); the parallelism detector lines — the ledger's `Detector: round N — …`
+    lines, with its `Slowness:`, `Edge audit:` and `Edge cut:` lines (a round with `complete` lines
+    but no `Detector:` line is unmeasured); roast verdict/`delta vs prior`
+    lines; `run.md`; a graph-shape summary when a bead tree exists (open count, rounds ≈ longest
+    chain, width per round); the installed plugin version (`plugin.json` in the plugin cache).
+    Also gather, for `## Run metrics`:
+    - every roast report's `seat-agreement:` line, together with that report's mode, iteration,
+      and its `independence:` line (the main confounder when comparing agreement across runs);
+    - the ledger's `Merge:` lines (the success path and the `→ blocker` / `→ auth-refused` failure paths) and
+      the four-line `Metrics:` block;
+    - the ledger's `Profile:` lines, one block per coordinator invocation (`super-code`'s run
+      profile: critical path, bottleneck bead, wait causes, merge lane, what-ifs);
+-   - the integration branch's merge count, `git log --merges --first-parent <base>..<branch>`,
+-     against the ledger's success-path `Merge:` lines. A shortfall goes under Merge-back as
+-     `ledger incomplete: <N> merge commits vs <M> Merge: lines`;
++   - task landing identities from `already-merged --landed <branch>` against the ledger's
++     success-path `Merge:`/re-entry IDs and reconciled completed IDs. Report concrete
++     ledger-only/Git-only/completed-only IDs before proposing a cause. `baseAbsorbed` merges
++     contribute zero task landings; duplicate appearances of one task add no landing;
++   - `scope-dispositions --project <run.md>` JSON metrics/gaps when a run record exists.
++     Exit 3 retains supported partial counts. Separate raw occurrences from actionable groups,
++     latest outcomes from durable Recovery fix history, and supported repaired findings from
++     deferred/rejected groups. State missing source populations, including task reviews absent
++     from a roast/final-review-only projection;
+    - each coverage round's `requirements:` line and each fix round's `scope-filter:` line from
+      `run.md`;
+    - a bead-graph dump: `bd list --label sp:<root> --json --status all --limit 0` —
+      **`--limit 0` is required**, since `bd list` defaults to 50 rows and would silently
+      truncate a larger tree. Edges for the graph's dependent/blocker table come from the dump's
+      `dependencies` array (type `blocks`); the reason for each edge comes from the dependent's
+      `blocked-by <id>:` description line, or `unstated` when that line is absent.
+ 
++   Count friction from recorded defects, workarounds and waste. A normal Workflow/ordinary
++   execution-mechanism selection contributes zero friction events. Preserve source scope and
++   transport status before interpretation: an unreadable ledger can leave “known invocation:
++   completed bd-17; run total unavailable,” rather than zero merges or a clean run. Profiles
++   retain their producer's invocation/residual scope, task/all-agent labels and generation owner.
++
+    Gather what exists; name what was unavailable in the report's `## Not established` section
+    rather than silently omitting it. A missing ledger, missing detector lines or missing `Metrics:`
+    lines while merges exist on the branch is itself a candidate finding (the run took a path that
+    skipped them), handed to the analyst as evidence, not rendered as a bare `none`. A subsection of `## Run metrics` with no source renders
+    `none`, with the absent source named in `## Not established` — a missing source never blocks
+    filing. A standalone super-design run (no ledger) renders Fix loop and Merge-back as `none`.
+ 2. **Analyze** — dispatch ONE fresh-context subagent, **model: opus, or the strongest
+    analyst-class model the harness actually offers** (a non-Claude runtime names its own — the
+    requirement is fresh context and the top tier available, not a vendor), with
+    `./analyst-prompt.md` and the gathered inputs. It returns candidate findings or none. Name
+    the model that ran in the report's `## Not established` section when it was not opus.
+ 3. **Triage** — drop anything failing the worthiness bar (it is in the analyst prompt, but the
+    analyst errs toward recall; you err toward precision): generalizes beyond this project,
+    actionable upstream, evidence from this run. **Zero survivors → say "no upstream-worthy
+    findings this run" and stop.** Do not manufacture findings to appear useful.
+ 4. **Draft** the report per `./report-template.md` — one rollup document for the whole run.
+ 5. **Propose** to the user: the findings summary, the target repo (the providing plugin's
+    `plugin.json` `repository` field — typically `alepar/superpowers` — overridable here), and
+    two questions: file it? scrub it? **In an autonomous run, do not interrupt:** park the draft
+    in the run's friction-log directory (per the Locations above) and commit it with the run's
+    other writes — worktree removal must not destroy it — then present this proposal at the run's
+    finish menu.
+ 6. **Scrub** (only if the user opted in): replace project/repo names, domain nouns, file paths,
+    bead ids, and human names with role-generic equivalents ("a shared adapter file four tail
+    beads touch"). Keep counts, timings, graph shapes, percentages, skill/mechanism/config names,
+diff --git a/tests/super-code/run-profile-fixture.mjs b/tests/super-code/run-profile-fixture.mjs
+index 336459d2..b1046205 100644
+--- a/tests/super-code/run-profile-fixture.mjs
++++ b/tests/super-code/run-profile-fixture.mjs
+@@ -1,47 +1,48 @@
+ // run-profile-fixture.mjs — write a synthetic Workflow run directory (journal.jsonl, agent-<id>.jsonl
+ // transcripts, agent-<id>.meta.json) from a compact scenario, for test-run-profile.sh.
+ // Usage: node run-profile-fixture.mjs <scenario.json> <out dir>
+ // Scenario: { t0: ISO, idPrefix, launch?: <Launch args>, journal?: false, transcripts?: false,
+ //   agents: [{ label, phase?, start, end (seconds after t0), result?, failed?,
+ //              tools?: [{ name, command?, description?, start, end }] }] }
+ // Context rows (optional): agents[].context: [[s, ctx]…] assistant usage rows whose input side sums
+ //   to ctx; agents[].compact: [[s, trigger, pre, post]…] compact_boundary rows; agents[].model
+ //   (usage rows' model, default claude-opus-4-6). session: [[kind, s, …]…] writes the owning session
+ //   <out>/../../..jsonl (out is <session>/subagents/workflows/wf_<id>), rows in the order given:
+ //   ["prompt", s, text] · ["meta", s, text] (isMeta) · ["result", s, text] (a tool_result) ·
+ //   ["skill", s, name] (a Skill tool use) · ["usage", s, ctx] · ["compact", s, trigger, pre, post].
+ //   sideAgents: [{ id, label, start, end, context?, compact? }] ordinary subagents of that session.
+ // The `ledger-append:launch` agent's prompt carries `Launch: args <launch>`, as the coordinator's does.
+ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+ import { join, dirname } from 'node:path'
+ 
+ const [scenarioPath, out] = process.argv.slice(2)
+ const sc = JSON.parse(readFileSync(scenarioPath, 'utf8'))
+ mkdirSync(out, { recursive: true })
+ const t0 = Date.parse(sc.t0)
+ const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
++if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
+ const agents = sc.agents.map((a, i) => ({ ...a, id: `a${sc.idPrefix ?? 'f'}${String(i).padStart(4, '0')}` }))
+ const usageRow = (s, ctx, id, model = 'claude-opus-4-6', extra = {}) => ({ type: 'assistant', timestamp: at(s), ...extra,
+   message: { id, model, role: 'assistant', content: [{ type: 'text', text: 'ok' }], usage: { input_tokens: 10, cache_read_input_tokens: ctx - 30, cache_creation_input_tokens: 20, output_tokens: 5 } } })
+ const boundaryRow = (s, trigger, pre, post, extra = {}) => ({ type: 'system', subtype: 'compact_boundary', timestamp: at(s), ...extra, compactMetadata: { trigger, preTokens: pre, postTokens: post } })
+ const byTime = rows => rows.sort((x, y) => Date.parse(x.timestamp) - Date.parse(y.timestamp))
+ const sessionRow = ([kind, s, x, y, z], k) => kind === 'prompt' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: x } }
+   : kind === 'meta' ? { type: 'user', isMeta: true, timestamp: at(s), message: { role: 'user', content: x } }
+   : kind === 'result' ? { type: 'user', timestamp: at(s), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: `tr${k}`, content: x }] } }
+   : kind === 'skill' ? { type: 'assistant', timestamp: at(s), message: { id: `sk${k}`, role: 'assistant', content: [{ type: 'tool_use', id: `sk${k}`, name: 'Skill', input: { skill: x } }] } }
+   : kind === 'usage' ? usageRow(s, x, `s${k}`)
+   : kind === 'compact' ? boundaryRow(s, x, y, z)
+   : (() => { throw new Error(`unknown session row kind: ${kind}`) })()
+ 
+ if (sc.journal !== false) {
+   const rows = [{ type: 'launched' }]
+   for (const a of [...agents].sort((x, y) => x.start - y.start)) rows.push({ type: 'started', key: `v2:${a.id}`, agentId: a.id, label: a.label, phase: a.phase ?? 'Implement' })
+   for (const a of [...agents].sort((x, y) => x.end - y.end)) rows.push(a.failed ? { type: 'failed', key: `v2:${a.id}`, agentId: a.id } : { type: 'result', key: `v2:${a.id}`, agentId: a.id, result: a.result ?? {} })
+   writeFileSync(join(out, 'journal.jsonl'), rows.map(r => JSON.stringify(r)).join('\n') + '\n')
+ }
+ for (const a of agents) {
+   writeFileSync(join(out, `agent-${a.id}.meta.json`), JSON.stringify({ agentType: 'workflow-subagent', description: a.label, workflowPhase: a.phase ?? 'Implement', model: 'sonnet' }))
+   if (sc.transcripts === false) continue
+   const row = (t, type, content) => ({ type, timestamp: at(t), agentId: a.id, isSidechain: true, message: { role: type, content } })
+   const rows = [row(a.start, 'user', '[Workflow harness — user request] fixture run')]
+   if (a.label === 'ledger-append:launch' && sc.launch) rows.push(row(a.start, 'user', `In /w, append to /w/progress.md:\n<ledger-line>Launch: args ${JSON.stringify(sc.launch)}</ledger-line>`))
+diff --git a/tests/super-code/run-profile-ordinary-fixture.mjs b/tests/super-code/run-profile-ordinary-fixture.mjs
+index 84a67785..a734891e 100644
+--- a/tests/super-code/run-profile-ordinary-fixture.mjs
++++ b/tests/super-code/run-profile-ordinary-fixture.mjs
+@@ -8,51 +8,51 @@
+ //   agents: [{ codex: <task name>, label: <Agent description>, start, end, tasks?: [[s, e]…],
+ //              tools?: [{ kind: exec|apply_patch|write_stdin, cmd?, start, end }],
+ //              inherited?: true (a forked child: a replayed call at its spawn instant),
+ //              parent?: <codex name of another agent> (a grandchild), guardian?: true }] }
+ // Context rows (optional). Claude: agents[].context: [[s, ctx]…], agents[].compact: [[s, trigger, pre,
+ //   post]…]; coord: [[kind, s, …]…] extra rows in the session transcript, kinds as in
+ //   run-profile-fixture.mjs's session. Codex: agents[].context: [[s, input, window]…] token_count rows,
+ //   agents[].compact: [[s, pre]…] compacted rows, agents[].forkCompacted: pre (with inherited: a
+ //   replayed compacted row, and the child's own rows start at session_meta's
+ //   subagent_history_start_ordinal); coord: [["prompt", s, text] | ["usage", s, input, window] |
+ //   ["record", s, input] | ["compacted", s, pre]…] extra rows in the coordinator's rollout.
+ //   resume?: { at, end, caller?, coord? } (Codex) a second rollout of the coordinator's thread (a resumed
+ //   session) from `at` to `end`, with its own caller commands and coord rows; agents[].rollout: 2 spawns
+ //   that agent from it.
+ // Times are seconds after t0. On Claude Code each task is its own agent.
+ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+ import { join } from 'node:path'
+ 
+ const [scenarioPath, harness, out] = process.argv.slice(2)
+ const sc = JSON.parse(readFileSync(scenarioPath, 'utf8'))
+ const t0 = Date.parse(sc.t0)
+ const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
+ const jsonl = (file, rows) => writeFileSync(file, rows.map(r => JSON.stringify(r)).join('\n') + '\n')
+ mkdirSync(out, { recursive: true })
+ if (sc.ledger) writeFileSync(join(out, 'progress.md'), sc.ledger.join('\n') + '\n')
+-if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads))
++if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
+ const tasksOf = a => a.tasks ?? [[a.start, a.end]]
+ 
+ if (harness === 'codex') {
+   const dir = join(out, 'codex', 'sessions', sc.t0.slice(0, 4), sc.t0.slice(5, 7), sc.t0.slice(8, 10))
+   mkdirSync(dir, { recursive: true })
+   const coord = sc.coordinator ?? '01c0ffee-0000-7000-8000-000000000000'
+   const idOf = a => `01c0ffee-0000-7000-8000-${String(sc.agents.indexOf(a) + 1).padStart(12, '0')}`
+   const file = id => join(dir, `rollout-${sc.t0.slice(0, 19).replace(/:/g, '-')}-${id}.jsonl`)
+   const item = (t, payload) => ({ timestamp: at(t), type: 'response_item', payload })
+   const event = (t, type) => ({ timestamp: at(t), type: 'event_msg', payload: { type } })
+   let n = 0
+   const call = (start, end, name, input) => {
+     const id = `call_${n++}`
+     return [item(start, { type: 'custom_tool_call', call_id: id, name, input }), item(end, { type: 'custom_tool_call_output', call_id: id, output: [{ type: 'input_text', text: 'Script completed' }] })]
+   }
+   const exec = x => x.kind === 'apply_patch' ? 'text(await tools.apply_patch("*** Begin Patch\\n*** End Patch"));'
+     : x.kind === 'write_stdin' ? 'text(await tools.write_stdin({session_id:3,chars:""}));'
+     : `text(await tools.exec_command({cmd:${JSON.stringify(x.cmd)},max_output_tokens:4000}));`
+   const codexRow = ([kind, s, x, y]) => kind === 'prompt' ? item(s, { type: 'message', role: 'user', content: [{ type: 'input_text', text: x }] })
+     : kind === 'usage' ? { timestamp: at(s), type: 'event_msg', payload: { type: 'token_count', info: { last_token_usage: { input_tokens: x }, total_token_usage: { input_tokens: x }, ...(y ? { model_context_window: y } : {}) } } }
+     : kind === 'record' ? { timestamp: at(s), type: 'token_usage_record', payload: { usage: { input_tokens: x } } }
+     : kind === 'compacted' ? { timestamp: at(s), type: 'compacted', payload: { message: '', latest_token_usage_record: { usage: { input_tokens: x } } } }
+     : (() => { throw new Error(`unknown codex row kind: ${kind}`) })()
+   const crows = [{ timestamp: at(-100), type: 'session_meta', payload: { id: coord, session_id: coord, cwd: sc.cwd, source: 'cli', cli_version: '0.160.1' } }, event(-100, 'task_started')]
+   for (const c of sc.caller ?? []) crows.push(...call(c.start, c.end, 'exec', exec({ kind: 'exec', cmd: c.cmd })))
+diff --git a/tests/super-code/test-run-digest.sh b/tests/super-code/test-run-digest.sh
+index d0042a21..60796d99 100644
+--- a/tests/super-code/test-run-digest.sh
++++ b/tests/super-code/test-run-digest.sh
+@@ -145,50 +145,65 @@ slow_case() { # label, slow sources (space-separated: ledger bd profile)
+   cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
+   printf '#!/usr/bin/env bash\ncat "$BD_FIXTURE"\n' >"$T/bin/bd"
+   set_profile 'echo "in-flight: impl:E.2 · 25m"; echo "in-flight: review:E.3 · unknown"'
+   for s in $2; do
+     case "$s" in
+       ledger) printf '#!/usr/bin/env bash\nsleep 10\n' >"$S/ledger-digest" ;;
+       bd) printf '#!/usr/bin/env bash\nsleep 10\n' >"$T/bin/bd" ;;
+       profile) set_profile 'sleep 10' ;;
+     esac
+   done
+   local t0 t1
+   t0=$(now_ms)
+   run_digest state 9000 < <(marker progress.md)
+   t1=$(now_ms)
+   local ms=$((t1 - t0))
+   assert_le "$ms" 4500 "$1: finished in ${ms} ms"
+   case " $2 " in *" ledger "*) assert_has "$out" "ledger: unknown" "$1: ledger unknown" ;; *) assert_hasp "$out" "ledger: landed" "$1: ledger real" ;; esac
+   case " $2 " in *" bd "*) assert_has "$out" "open beads: unknown" "$1: beads unknown" ;; *) assert_hasp "$out" "open beads: 3" "$1: beads real" ;; esac
+   case " $2 " in *" profile "*) assert_has "$out" "in-flight: unknown" "$1: in-flight unknown" ;; *) assert_has "$out" "in-flight: 2" "$1: in-flight real" ;; esac
+ }
+ slow_case "one slow source" "bd"
+ slow_case "two slow sources" "ledger profile"
+ slow_case "three slow sources" "ledger bd profile"
+ cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
+ 
++echo "run-digest: explicit ledger source availability"
++printf '#!/usr/bin/env bash\ncat "$BD_FIXTURE"\n' >"$T/bin/bd"
++set_profile 'echo "in-flight: impl:E.2 · 25m"'
++for status in missing unreadable; do
++  printf '#!/usr/bin/env bash\necho "# ledger-status: %s"\n' "$status" >"$S/ledger-digest"
++  run_digest state 9000 < <(marker progress.md)
++  assert_has "$out" "ledger: unknown — $status" "$status is retained independently from other sources"
++  assert_lacks "$out" "ledger: landed 0" "$status never supplies zero totals"
++  assert_has "$out" "open beads: 3 — E.2, E.3, E.5" "$status preserves available tracker facts"
++done
++printf '#!/usr/bin/env bash\necho "# ledger-digest: 3 of 4 lines"\necho "Task 1 (E.1): complete"\n' >"$S/ledger-digest"
++run_digest state 9000 < <(marker progress.md)
++assert_has "$out" "ledger: unknown — invalid transport" "truncated transport never supplies partial authoritative totals"
++cp "$SC/scripts/ledger-digest" "$S/ledger-digest"
++
+ echo "run-digest: bad arguments"
+ set +e; bash "$S/run-digest" --part nope --budget 9000 </dev/null >/dev/null 2>&1; c1=$?
+ bash "$S/run-digest" --part state </dev/null >/dev/null 2>&1; c2=$?
+ bash "$S/run-digest" --budget 9000 </dev/null >/dev/null 2>&1; c3=$?
+ bash "$S/run-digest" --part state --budget abc </dev/null >/dev/null 2>&1; c4=$?
+ set -e
+ assert_eq "$c1" 2 "bad --part exits 2"
+ assert_eq "$c2" 2 "missing --budget exits 2"
+ assert_eq "$c3" 2 "missing --part exits 2"
+ assert_eq "$c4" 2 "non-numeric --budget exits 2"
+ 
+ echo "coordinator-card: size and contents"
+ REAL="$SC/coordinator-card.md"
+ size=$(wc -c <"$REAL" | tr -d ' ')
+ if [ "$size" -ge 6000 ] && [ "$size" -le 9000 ]; then pass "card is $size bytes (6000-9000)"; else fail "card is $size bytes, outside 6000-9000"; fi
+ assert_eq "$(head -n 1 "$REAL")" "# Coordinator card (re-injected after compaction)" "card heading"
+ for needle in run_in_background 'sleep 2700' 'Claude Code only' wait_agent list_agents report-verdict ledger-digest run-digest \
+   ready-in-tree epic-tree run-marker 'one merge' refill 'early unblock' 'fresh agent' 'one fresh agent, one job' run-state.md \
+   'never re-invoke super-auto' '§Phase 5' '§Final-review items' '§Finish'; do
+   if grep -qF -- "$needle" "$REAL"; then pass "card mentions: $needle"; else fail "card lacks: $needle"; fi
+ done
+ KEEPALIVE='**Workflow keepalive (Claude Code only).** While a coordinator or roast Workflow runs, keep one `run_in_background` `sleep 2700` armed. When it fires before the Workflow'"'"'s notification, take one cheap progress look (the newest ledger lines), refresh the run marker with the same `run-marker register` command the run registered with, and re-arm. Do not re-arm once the Workflow has returned. No idle trigger is known on Codex: there, block on `wait_agent` in 5–10 minute stretches and never poll `list_agents`.'
+ READRULE='**Read rule.** Read only what you need to route work: the ledger through `ledger-digest`; run state through `run-digest` or `run.md`'"'"'s fields; child and roast reports through `report-verdict <file>` (verdict, blocking items, path). Plans, specs, source, diffs and full child reports are read by children, never by you to route.'
+ if grep -qxF -- "$KEEPALIVE" "$REAL"; then pass "keepalive paragraph verbatim"; else fail "keepalive paragraph differs"; fi
+ if grep -qxF -- "$READRULE" "$REAL"; then pass "read rule paragraph verbatim"; else fail "read rule paragraph differs"; fi
+diff --git a/tests/super-code/test-run-profile-in-flight.sh b/tests/super-code/test-run-profile-in-flight.sh
+index fdeb1d6f..dd45ab1a 100755
+--- a/tests/super-code/test-run-profile-in-flight.sh
++++ b/tests/super-code/test-run-profile-in-flight.sh
+@@ -14,51 +14,52 @@ export RUN_PROFILE_NOW=2026-10-01T01:00:00Z
+ FAILURES=0
+ 
+ pass() { echo "  [PASS] $1"; }
+ fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
+ assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
+ assert_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fail "$3"; echo "    missing: $2"; echo "    in: $1"; fi; }
+ run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
+ 
+ # ---- fixtures ----
+ node - "$T" <<'JS'
+ const { mkdirSync, writeFileSync } = require('node:fs')
+ const { join } = require('node:path')
+ const T = process.argv[2]
+ const jl = rows => rows.map(r => JSON.stringify(r)).join('\n') + '\n'
+ const put = (f, s) => { mkdirSync(join(f, '..'), { recursive: true }); writeFileSync(f, s) }
+ const asst = (ts, content) => ({ type: 'assistant', timestamp: ts, message: { role: 'assistant', content } })
+ const tool = { type: 'tool_use', id: 't1', name: 'Bash', input: { command: 'ls' } }
+ const text = { type: 'text', text: 'done' }
+ 
+ // Claude: session S1
+ const sub = join(T, 'claude/projects/-w-proj/S1/subagents')
+ const wf1 = join(sub, 'workflows/wf_1')
+ put(join(wf1, 'journal.jsonl'), jl([
+   { type: 'started', agentId: 'a1', label: 'plan' }, { type: 'result', agentId: 'a1', result: {} },
+   { type: 'started', agentId: 'a2', label: 'impl:ep.2' },
+-  { type: 'started', agentId: 'a3', label: 'review:ep.3' },
++  // Creation is not evidence of dispatch start when this in-flight agent has no transcript.
++  { type: 'started', agentId: 'a3', label: 'review:ep.3', created_at: '2026-10-01T00:10:00Z' },
+   { type: 'note', text: 'see /w/.superpowers/sdd/ep-plan/progress.md' },
+ ]))
+ put(join(wf1, 'agent-a2.jsonl'), jl([asst('2026-10-01T00:35:00Z', [tool]), asst('2026-10-01T00:40:00Z', [tool])]))
+ const wf2 = join(sub, 'workflows/wf_2')
+ put(join(wf2, 'journal.jsonl'), jl([
+   { type: 'started', agentId: 'b1', label: 'impl:other.1' },
+   { type: 'note', text: '/w/.superpowers/sdd/other-plan/progress.md' },
+ ]))
+ put(join(sub, 'agent-x.meta.json'), JSON.stringify({ description: 'impl:ep.4' }))
+ put(join(sub, 'agent-x.jsonl'), jl([asst('2026-10-01T00:59:30Z', [tool]), asst('2026-10-01T00:59:40Z', [tool])]))
+ put(join(sub, 'agent-y.meta.json'), JSON.stringify({ description: 'impl:ep.5' }))
+ put(join(sub, 'agent-y.jsonl'), jl([asst('2026-10-01T00:50:00Z', [tool]), asst('2026-10-01T00:55:00Z', [text])]))
+ 
+ // Claude: 3000 unrelated sessions
+ for (let i = 0; i < 3000; i++) put(join(T, `claude/projects/-p${i}/Z${i}/subagents/workflows/wf_x/journal.jsonl`), jl([{ type: 'started', agentId: 'q', label: 'impl:z' }]))
+ 
+ // Codex
+ const meta = (ts, id, parent, path) => ({ timestamp: ts, type: 'session_meta', payload: { id, source: parent ? { subagent: { thread_spawn: { parent_thread_id: parent, agent_path: path } } } : 'cli' } })
+ const ev = (ts, type) => ({ timestamp: ts, type: 'event_msg', payload: { type } })
+ const day = join(T, 'codex/sessions/2026/10/01')
+ put(join(day, 'rollout-2026-10-01T00-00-00-C1.jsonl'), jl([meta('2026-10-01T00:00:00Z', 'C1'), ev('2026-10-01T00:00:00Z', 'task_started')]))
+ put(join(day, 'rollout-2026-10-01T00-40-00-A.jsonl'), jl([meta('2026-10-01T00:40:00Z', 'A', 'C1', '/root/impl_ep_2'), ev('2026-10-01T00:40:00Z', 'task_started'), ev('2026-10-01T00:45:00Z', 'task_complete'), ev('2026-10-01T00:50:00Z', 'task_started')]))
+ put(join(day, 'rollout-2026-10-01T00-41-00-B.jsonl'), jl([meta('2026-10-01T00:41:00Z', 'B', 'C1', '/root/impl_ep_3'), ev('2026-10-01T00:41:00Z', 'task_started'), ev('2026-10-01T00:55:00Z', 'task_complete')]))
+ put(join(day, 'rollout-2026-10-01T00-42-00-C.jsonl'), jl([meta('2026-10-01T00:42:00Z', 'C', 'C9', '/root/impl_ep_4'), ev('2026-10-01T00:42:00Z', 'task_started')]))
+ // Codex: 3000 unrelated rollouts, older days and the same day
+diff --git a/tests/super-code/test-run-profile.sh b/tests/super-code/test-run-profile.sh
+index 19c4919f..7c46b1c8 100644
+--- a/tests/super-code/test-run-profile.sh
++++ b/tests/super-code/test-run-profile.sh
+@@ -314,50 +314,82 @@ assert_eq "$code" 0 "exits 0 with the run-level lines"
+ assert_has "$out" "Profile: concurrency — 4 dispatches over 8m · a dispatch running 7m (80%) · dispatches at once: 0 for 20% · 1 for 74% · 2 for 6% of the time · peak 2" "concurrency"
+ assert_has "$out" "Profile: dispatch time by kind, summed — not named for a bead: implement 5m (2) · adapter 2m (1) · review 50s (1)" "time per name's first word"
+ assert_has "$out" "Profile: unmeasured — no per-bead profile: no dispatch is named for a bead of cx" "and why there is no more"
+ assert_eq "$(q "$T/ah.json" "d.partial + ' ' + JSON.stringify(d.concurrency.byActive)")" 'true {"0":100000,"1":370000,"2":30000}' "a partial --out profile"
+ run bash "$P" --summarize "$T/ah.json"
+ assert_eq "$code" 2 "a partial profile cannot join a baseline"
+ 
+ echo "run-profile: arguments"
+ run bash "$P" --help
+ assert_eq "$code" 0 "--help exits 0"
+ run bash "$P"
+ assert_eq "$code" 2 "no input: exit 2"
+ run bash "$P" --discover
+ assert_eq "$code" 2 "--discover without --epic: exit 2"
+ run bash "$P" --workflow "$T/does-not-exist"
+ assert_eq "$code" 2 "missing directory: exit 2"
+ 
+ echo "run-profile: every coordinator dispatch label is one it knows"
+ # A label kind the profiler does not know would be timed as `other` and drop out of every bead's
+ # timeline. Literal `label:` templates in coordinator.js, plus the labels it builds indirectly.
+ kinds=$( { grep -oE "label: [\`'][a-z][a-z-]*" "$REPO_ROOT/skills/super-code/coordinator.js" | sed -E "s/label: [\`']//"; printf '%s\n' review ledger read-ledger; } | sort -u)
+ missing=""
+ for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
+ assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
+ 
++echo "run-profile: resume observations are run-level readiness work"
++node - "$FX" "$T" <<'JS'
++const fs = require('node:fs'), [FX, T] = process.argv.slice(2)
++const workflow = JSON.parse(fs.readFileSync(`${FX}/chain.json`, 'utf8'))
++const observation = workflow.agents.find(a => a.label === 'bd-ready')
++observation.label = 'resume-check:ep.1'
++observation.phase = 'Resume'
++observation.result = { landed: true, sourceVerified: false, closed: ['ep.1'], open: [] }
++fs.writeFileSync(`${T}/resume-label-workflow.json`, JSON.stringify(workflow))
++const ordinary = JSON.parse(fs.readFileSync(`${FX}/ordinary.json`, 'utf8'))
++ordinary.agents.push({ codex: 'resume_check_cx_1', label: 'resume-check:cx.1', start: 0, end: 10 })
++fs.writeFileSync(`${T}/resume-label-ordinary.json`, JSON.stringify(ordinary))
++JS
++node "$BUILD" "$T/resume-label-workflow.json" "$T/resume-label-workflow"
++run bash "$P" --workflow "$T/resume-label-workflow" --out "$T/resume-label-w"
++assert_eq "$code" 0 "resume observation Workflow profile exits 0"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.criticalPath.segments.filter(s => s.label === 'resume-check:ep.1').map(s => [s.kind,s.bead,s.ms]))")" '[["ready",null,10000]]' "resume observation is run-level ready time"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.beads)")" "$(q "$T/chain-p.json" "JSON.stringify(d.beads)")" "resume observation creates no task attempt or task timing"
++assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/chain-p.json" "JSON.stringify(d.taskSlots)")" "resume observation uses no task slot"
++RC=$(node "$ORD" "$T/resume-label-ordinary.json" codex "$T/resume-label-codex")
++run bash "$P" --codex "$RC" --codex-home "$T/resume-label-codex/codex" --ledger "$T/resume-label-codex/progress.md" --beads "$T/resume-label-codex/beads.json" --out "$T/resume-label-x"
++assert_eq "$code" 0 "resume observation Codex profile exits 0"
++RS=$(node "$ORD" "$T/resume-label-ordinary.json" claude "$T/resume-label-claude")
++run bash "$P" --subagents "$RS" --ledger "$T/resume-label-claude/progress.md" --beads "$T/resume-label-claude/beads.json" --out "$T/resume-label-c"
++assert_eq "$code" 0 "resume observation Claude profile exits 0"
++for pair in 'x ox' 'c oc'; do
++  read -r variant baseline <<< "$pair"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.concurrency.kinds.filter(k => k.kind === 'resume-check').map(k => [k.mapped,k.n,k.ms]))")" '[[true,1,10000]]' "ordinary resume observation is mapped ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.beads)")" "$(q "$T/$baseline.json" "JSON.stringify(d.beads)")" "ordinary resume observation preserves bead population and attempts ($variant)"
++  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/$baseline.json" "JSON.stringify(d.taskSlots)")" "ordinary resume observation preserves task slots ($variant)"
++done
++
+ echo "run-profile: context-pass module (synthetic rows)"
+ # context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
+ seen=0
+ while IFS= read -r line; do
+   case "$line" in
+     "ok "*) pass "context-pass: ${line#ok }"; seen=$((seen + 1)) ;;
+     "not ok "*) fail "context-pass: ${line#not ok }"; seen=$((seen + 1)) ;;
+     *) echo "$line" ;;
+   esac
+ done < <(node "$SCRIPT_DIR/context-pass-unit.mjs" 2>&1 || echo "not ok context-pass-unit.mjs exited with an error")
+ [ "$seen" -gt 0 ] || fail "context-pass: the unit driver ran no checks"
+ 
+ echo "run-profile: context pass end to end (Workflow, ordinary subagents, Codex, context-only)"
+ assert_not_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+ # yes when the first line starting $2 comes before the first line starting $3
+ before() { printf '%s\n' "$1" | awk -v a="$2" -v b="$3" 'index($0, a) == 1 && !x { x = NR } index($0, b) == 1 && !y { y = NR } END { print (x && y && x < y) ? "yes" : "no" }'; }
+ # Workflow: two run directories of session s9. Session rows 0–2 are an earlier super-auto run, row 3 the
+ # profiled run's super-auto (wf_ca's window [3, 12) from T0 = its first agent), row 12 its resume
+ # (wf_cb's [12, 17) from T0 = 4000s), row 17 the next run; the coordinator reads their union [3, 17):
+ # peak 164K, a cap compaction (160K ≥ 95% of 167K) and an idle one (55 minutes after the last request).
+ # Row 5 (a tool_result quoting /super-code), row 6 (an isMeta row quoting /super-auto) and row 7 (a
+ # phase-3 Skill super-code use) move nothing: first 30K is row 4's.
+ CW="$T/cw/p/-w/s9/subagents/workflows"
+ build ctx-wf-a "$CW/wf_ca"
+ build ctx-wf-b "$CW/wf_cb"
+@@ -493,27 +525,98 @@ assert_not_has "$out" "impl:cz.low" "an agent at 49% gets no line"
+ assert_has "$(cat "$T/czp.md")" "| impl:cz.low | agent |" "every agent is in the --out table"
+ # --context-window reaches every Claude record and its compactions' windows.
+ run bash "$P" --context-only --workflow "$CW/wf_ca" --context-window 300000 --out "$T/cwo"
+ assert_eq "$(q "$T/cwo.json" "[...new Set(d.context.agents.filter(a => a.peak !== null).flatMap(a => [a.window, a.windowSource, ...a.compactions.map(c => c.window)]))].join(',')")" "300000,override" "--context-window sets every measured Claude record's window and every compaction's"
+ 
+ echo "run-profile: multi-rollout Codex coordinator (a resumed thread)"
+ # One thread, two rollouts: the first from its $super-auto prompt (a 245K cap compaction, the larger
+ # peak) and the resumed one with no invocation of its own (a 150K early compaction), each spawning one
+ # child. The coordinator summary takes the largest peak and the summed compactions; giving the thread
+ # and its second rollout file both, or the full profile, counts no rollout twice.
+ CR=$(node "$ORD" "$FX/ctx-codex-resume.json" codex "$T/cr")
+ CR2=$(ls "$T"/cr/codex/sessions/*/*/*/rollout-2026-10-13T06-33-20-"$CR".jsonl)
+ CRSUM="Profile: context — agents 4 (measured 4) · peak≥80% 1 · compacted 2 agents, 2 compactions (cap 1 · early 1) · coordinator 245K/258K (95%), 2 compactions"
+ run bash "$P" --context-only --codex "$CR" --codex-home "$T/cr/codex" --out "$T/crc"
+ assert_eq "$code" 0 "multi-rollout --context-only: exits 0"
+ assert_has "$out" "$CRSUM" "multi-rollout --context-only: largest peak, summed compactions"
+ assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'coordinator').map(a => a.peak + ':' + a.compactions.map(c => c.cause).join('+')).sort().join(' ')")" "200000:early 245000:cap" "one coordinator record per rollout, each compaction once"
+ assert_eq "$(q "$T/crc.json" "d.context.agents.filter(a => a.role === 'agent').map(a => a.label).sort().join(',')")" "impl_cr_1,impl_cr_2" "children of both rollouts"
+ run bash "$P" --context-only --codex "$CR" --codex "$CR2" --codex-home "$T/cr/codex"
+ assert_has "$out" "$CRSUM" "the thread and its second rollout given both: nothing counted twice"
+ run bash "$P" --codex "$CR" --codex-home "$T/cr/codex" --beads "$T/cr/beads.json" --epic cr --out "$T/crp"
+ assert_eq "$code" 0 "multi-rollout full profile: exits 0"
+ assert_has "$out" "$CRSUM" "multi-rollout full profile: the same coordinator figures"
+ assert_eq "$(q "$T/crp.json" "[d.context.summary.compactions, d.context.summary.coordinator.peak, d.context.summary.coordinator.compactions].join(' ')")" "2 245000 2" "multi-rollout full profile --out JSON: the context key"
+ 
++echo "run-profile: availability evidence and planning diagnosis"
++node - "$T" <<'JS'
++const fs = require('node:fs'), T = process.argv[2]
++const base = { t0: '2026-10-01T00:00:00Z', launch: { epicId: 'av', config: { concurrency: 2, runtimeSlots: 8 } },
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }], agents: [
++    { label: 'ledger-append:launch', start: 0, end: 1 },
++    { label: 'plan', start: 1, end: 60, result: { mapping: [{ id: 'av.1', n: 1, deps: [] }] } },
++    { label: 'impl:av.1', start: 660, end: 690, result: { status: 'IMPLEMENTED' } },
++    { label: 'merge:av.1', start: 690, end: 700, result: { merged: true } }] }
++fs.writeFileSync(`${T}/availability.json`, JSON.stringify(base))
++const planning = structuredClone(base)
++planning.beads[1].created_at = 0
++planning.agents[1].end = 600
++fs.writeFileSync(`${T}/planning.json`, JSON.stringify(planning))
++const unknown = structuredClone(base)
++delete unknown.beads[1].created_at
++unknown.agents[1].result.mapping[0].deps = ['av.2']
++fs.writeFileSync(`${T}/unknown.json`, JSON.stringify(unknown))
++const ord = { t0: base.t0, epic: 'av', cwd: '/w', end: 710,
++  beads: [{ id: 'av', issue_type: 'epic' }, { id: 'av.1', parent: 'av', created_at: 600 }],
++  ledger: ['Launch: mechanism ordinary-subagents · epic av', 'Task 1 (av.1): complete'],
++  agents: [{ codex: 'impl_av_1', label: 'impl:av.1', start: 660, end: 690 }] }
++fs.writeFileSync(`${T}/residual.json`, JSON.stringify(ord))
++const lateOrd = structuredClone(ord)
++lateOrd.agents.unshift({ codex: 'plan', label: 'plan', start: 0, end: 60 })
++fs.writeFileSync(`${T}/late-ordinary.json`, JSON.stringify(lateOrd))
++const extOrd = structuredClone(lateOrd)
++extOrd.beads[1].created_at = 0
++extOrd.beads[1].dependencies = [{ type: 'blocks', depends_on_id: 'outside.1' }]
++fs.writeFileSync(`${T}/external-ordinary.json`, JSON.stringify(extOrd))
++JS
++node "$BUILD" "$T/availability.json" "$T/availability"
++run bash "$P" --workflow "$T/availability" --beads "$T/availability/beads.json" --out "$T/av"
++assert_eq "$code" 0 "late-created Workflow profile exits 0"
++assert_eq "$(q "$T/av.json" "(b => [b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs].join(' '))(d.beads[0])")" "2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0" "creation bounds wait while mapping and dependency evidence retain their times"
++assert_eq "$(q "$T/av.json" "d.simulation.asRunMs")" "640000" "model cannot release the late task before creation"
++assert_eq "$(q "$T/av.json" "[d.criticalPath.byCategory['pre-availability'],d.criticalPath.byCategory.wait].join(' ')")" "540000 60000" "critical path cannot call pre-creation time a task wait"
++node "$BUILD" "$T/unknown.json" "$T/unknown"
++run bash "$P" --workflow "$T/unknown" --beads "$T/unknown/beads.json" --out "$T/un"
++assert_eq "$(q "$T/un.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs,b.waitCause]))(d.beads[0])")" '[null,"2026-10-01T00:01:00.000Z",null,null,null,null,"unknown"]' "unknown external dependency timing cannot become measured readiness"
++assert_has "$out" "availability/readiness timing unknown" "unmeasured timing is explained"
++assert_eq "$(q "$T/un.json" "d.criticalPath.byCategory['unmeasured-gap']")" "600000" "unknown readiness gap remains unmeasured on the critical path"
++run bash "$P" --summarize "$T/un.json"
++assert_has "$out" "unknown readiness for 1 landed bead(s); wait not measured" "baseline keeps unknown waits unmeasured"
++node "$BUILD" "$T/planning.json" "$T/planning"
++run bash "$P" --workflow "$T/planning" --beads "$T/planning/beads.json" --out "$T/pl"
++assert_eq "$(q "$T/pl.json" "[d.diagnosis.dominant,d.diagnosis.planningMs,d.simulation.estimate,d.simulation.window].join(' ')")" "planning 599000 true first dispatch to last landing" "planning-dominated diagnosis and model window"
++assert_has "$out" "planning dominates" "whole-run diagnosis retains planning"
++assert_has "$out" "Profile: what-if estimate" "counterfactual stdout labels estimates"
++assert_has "$(cat "$T/pl.md")" "planning dominates" "Markdown preserves the planning diagnosis"
++assert_has "$out" "observed invocation/residual graph" "graph scope is explicit"
++assert_has "$out" "all-agent concurrency" "overall agents are labeled separately"
++assert_has "$out" "task-slot concurrency" "task-slot occupancy has its own label"
++OC=$(node "$ORD" "$T/residual.json" codex "$T/residual")
++run bash "$P" --codex "$OC" --codex-home "$T/residual/codex" --ledger "$T/residual/progress.md" --beads "$T/residual/beads.json" --out "$T/rs"
++assert_eq "$(q "$T/rs.json" "(b => JSON.stringify([b.createdAt,b.mappingReadyAt,b.dependencyReadyAt,b.readyAt,b.waitMs,b.carriedMs]))(d.beads[0])")" '["2026-10-01T00:10:00.000Z",null,null,null,null,null]' "ordinary residual snapshot without a planner does not invent historical readiness"
++assert_eq "$(q "$T/rs.json" "d.graphScope")" "observed invocation/residual graph" "JSON graph scope"
++assert_eq "$(q "$T/pl.json" "[d.runtime.scope,d.taskSlots.scope].join(' / ')")" "all-agent concurrency / task-slot concurrency" "separate JSON concurrency scopes"
++assert_eq "$(q "$T/chain-p.json" "[d.runtime.peak,d.taskSlots.peak].join(' ')")" "3 2" "all-agent and task-slot peaks are measured independently"
++LC=$(node "$ORD" "$T/late-ordinary.json" codex "$T/late-ordinary")
++run bash "$P" --codex "$LC" --codex-home "$T/late-ordinary/codex" --ledger "$T/late-ordinary/progress.md" --beads "$T/late-ordinary/beads.json" --out "$T/lo"
++assert_eq "$(q "$T/lo.json" "(b => JSON.stringify([b.mappingReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary initial planner cannot establish mapping for a task created later"
++EC=$(node "$ORD" "$T/external-ordinary.json" codex "$T/external-ordinary")
++run bash "$P" --codex "$EC" --codex-home "$T/external-ordinary/codex" --ledger "$T/external-ordinary/progress.md" --beads "$T/external-ordinary/beads.json" --out "$T/eo"
++assert_eq "$(q "$T/eo.json" "(b => JSON.stringify([b.dependencyReadyAt,b.readyAt,b.waitMs]))(d.beads[0])")" '[null,null,null]' "ordinary external dependency timing stays unknown"
++run bash "$P" --discover --epic unavailable --projects "$T/empty" --out "$T/unavailable"
++assert_eq "$code" 3 "unavailable profile retains exit 3"
++if [ -f "$T/unavailable.json" ] && [ -f "$T/unavailable.md" ]; then
++  assert_eq "$(q "$T/unavailable.json" "d.partial && !!d.unavailable && d.window === undefined")" "true" "unavailable artifacts are qualified without invented timings"
++else fail "unavailable stdout also has copyable md/json artifacts"; fi
++
+ echo
+ if [ "$FAILURES" -eq 0 ]; then echo "run-profile: all tests passed"; else echo "run-profile: $FAILURES failure(s)"; exit 1; fi

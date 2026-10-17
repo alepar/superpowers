@@ -1,0 +1,328 @@
+{
+  "28": {
+    "summary": "One actual Important rebase-conflict finding; NEEDS_FIX is status context, not a second finding. Original STACKED boundary, reviewed acceptance behavior, blocker continuity, combined checks/base/head and no real acceptance are parts of the finding.",
+    "empty": false,
+    "concepts": [
+      "[rebase-conflict]"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "29": {
+    "summary": "Explicit no Critical/Important/Minor task-local issues, qualified by a separate outstanding parent-owned phase-6 measurement/behavior/whole-epic review/human-acceptance obligation. Spec-compliance paragraph also preserves Linux and live-isolation limitations; focused Risk paragraphs are reviewed hypothetical risks, not newly asserted defects.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Parent-owned final phase-6",
+      "verification.md preserves"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "30": {
+    "summary": "Explicit No concerns only within task-local self-review. Parent-owned broader final sweep/root acceptance remain pending, including earlier test-results disclaimer. Baseline missing resume-check/misclassification is a historical defect with repair claims and RED/GREEN context, not an unresolved newly reviewed issue. Failed first hygiene invocation is corrected procedural context.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "No concerns.",
+      "No full-23 sweep",
+      "Expected RED:",
+      "Checked task17's advisory"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "31": {
+    "summary": "Headerless Issues explicitly declares Critical/Important/Minor/Unverified requirements none. Reachability Risk items report checked risks, not asserted findings. Corrected review-package permission problem states no remaining review gap. This supports a local empty finding declaration, not root acceptance.",
+    "empty": "local-only",
+    "concepts": [
+      "Issues:",
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Unverified requirements: none."
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "32": {
+    "summary": "Actual Important/Missing fixture amendment finding and four bounded required-fix bullets. Initial spec noncompliance and failing replay/coverage absence are substantive reiterations. JSON finding is structured reiteration of this report finding; minors [] is local empty. Supplied evidence records, attribution and provenance are supporting context. Source explicitly separates base probe from run-start/pinned-base coverage. Task19 same-byte pairs correction applies; do not infer differing bytes from this prose.",
+    "empty": false,
+    "concepts": [
+      "❌ The current",
+      "Important / Missing",
+      "Required bounded fix:",
+      "Preserve line 603",
+      "Add a recovered",
+      "Separately use",
+      "Add ready replay",
+      "Run exactly",
+      "The focused hold scenarios",
+      "No verification index exists:"
+    ],
+    "ambiguities": [
+      "JSON/prose same-source appearances remain separately located; no cross-source identity merge."
+    ],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "33": {
+    "summary": "Concerns section assigns fresh-agent before/after evaluation, native Linux /proc and final sweep/integrated pressure evaluation to coordinator. Denied-inspection scenario is prepared coverage, not acceptance. Intermediate leaks and defects retain exact historical evidence and repair claims; not surviving-process claims.",
+    "empty": false,
+    "concepts": [
+      "Fresh-agent before/after",
+      "Prepared denied-inspection",
+      "Actual process integration",
+      "The failed intermediate replay run"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "34": {
+    "summary": "Headerless explicit finding: none supports local seam-review empty finding declaration. Remaining paragraphs describe seam compatibility/test inspection; external artifact denial followed by temp save is procedural context, not a product finding.",
+    "empty": "local-only",
+    "concepts": [
+      "finding: none"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "35": {
+    "summary": "Actual Minor requiring independent failure-path teardown of real-process fixtures. Separate warning/deferred obligations: Linux /proc unmeasured and coordinator-owned fresh-agent instruction acceptance. Critical/Important none declarations are local only. Intermediate leaks were stopped; do not turn teardown defect into a surviving daemon claim.",
+    "empty": false,
+    "concepts": [
+      "⚠️ tests/",
+      "⚠️ skills/",
+      "Critical: none.",
+      "Important: none.",
+      "Minor: tests/"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "37": {
+    "summary": "Actual Important ordinary builder/Resume identity incompatibility, with bounded fix constraints, plus explicit Minor/deferred caller-owned fresh-agent changed-instruction evaluation. Root sweep/human acceptance pending also explicit. JSON finding/minors are report reiterations, not illustrative fixtures. Tests/failure attribution reiterate real caller suite failure, unmeasured tail and missing baselines/fix verification. Critical None is qualified empty severity.",
+    "empty": false,
+    "concepts": [
+      "❌ The global",
+      "⚠️ Fresh-agent",
+      "None.",
+      "New required Resume",
+      "The report itself acknowledges",
+      "[missing-evidence]",
+      "No fix verification exists"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "38": {
+    "summary": "Explicit task-local Concerns None qualified by caller-owned final sweep/review/instruction/root/human acceptance. Separate symlink containment .27 scope retained. Implementation/TDD archive-integrity defect and fixture failure are historical repair/test context. JSON evidence and logged synthetic findings are illustrative/measured data, not additional review findings.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "None within this task.",
+      "Symlink containment remains separately owned"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "39": {
+    "summary": "Headerless explicit Critical/Important/Minor/Unverified requirement none; local empty. Final-component symlinks handled but ancestor containment remains separately .27 owned. Root final sweep/human acceptance caller-owned. JSON finding empty/minors [] reiterate local empty; fixture/evidence failures do not assert separate review findings.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical issues: none.",
+      "Important issues: none.",
+      "Minor issues: none.",
+      "Unverified requirement items: none.",
+      "ancestor symlink containment",
+      "Root final sweep and human acceptance"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "40": {
+    "summary": "Explicit bounded-fix Concerns None qualified by caller-owned final sweep/instruction evaluation/review/root/human gates and preserve-worktree-until-review obligation. Historical stdout truncation/closed-pipe defect and drain-only intermediate failure are repair/test context; synthetic logged projection findings are illustrative.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "None for this bounded fix."
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "41": {
+    "summary": "Explicit Critical/Important/Minor/Warning none supports task-local empty. Failure attribution denies discharge of other owners/caller acceptance and lacks run-start full-suite baseline; preserve qualifier. Risk paragraphs are checked potential risks, historical RED/intermediate failures repair context.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Warning items: none.",
+      "not an evidenced run-start"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated (source 38 re-read in two bounded chunks after batched display truncation)"
+  },
+  "42": {
+    "summary": "Explicit Critical/Important/Minor none, but Pending caller obligations section retains fresh-agent changed-instruction evaluation, final sweep/whole-run review/human-root acceptance and .27 closure. Rejected measurement/fallback materiality remains contextual disposition claim; not reopened. Risk paragraphs are checked risks, historical baseline-recipe failures support repair claim and do not establish final-operation baseline.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Fresh-agent changed-instruction evaluation remains explicitly pending"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "43": {
+    "summary": "Actual integration concern: preserve separately owned .26 selection together with containment across overlap. Present in prose Concerns and JSON concerns (structured reiteration). Caller/root acceptance/final sweep pending earlier. No broad privilege/concurrent filesystem-mutation guarantee is claimed. Historical RED symlink escapes and GREEN repair are supporting context, not automatic finding discharge.",
+    "empty": false,
+    "concepts": [
+      "Task .26 separately edits collector input selection",
+      "Caller/root acceptance and final sweep remain pending"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "44": {
+    "summary": "Explicit Critical/Important/Minor none supports bounded local empty. Separately owned .26 selection absent/not assumed and no broader privilege/concurrent mutation guarantee are coverage qualifiers. Reviewed Risk paragraphs are checked risks, not new findings. No global ownership/behavior discharge follows.",
+    "empty": "local-only",
+    "concepts": [
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "The separately owned .26 recursive selection work",
+      "no broader filesystem privilege"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "45": {
+    "summary": "Explicit bounded fixture-repair Concerns None qualified by caller final sweep/task review/behavior/root-human acceptance. Initial two unidentified cwd matches have unproven test attribution; corrected hygiene checks no surviving leak claim. Tests historical path-normalization defect/repair context.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "None for this bounded fixture repair.",
+      "attribution to the test is unproven"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "46": {
+    "summary": "Explicit Critical/Important/Minor none and no unresolved task acceptance items. Failure attribution preserves lack of measured rebased-base/run-start result, .27 closure hold and caller root-final acceptance. Initial inherited raw-log header limitation explicitly scoped, not new blocker. JSON finding empty/minors [] reiterate local empty.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical: none. Important: none. Minor: none.",
+      "Task .27's closure hold",
+      "initial inherited raw log lacks"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "47": {
+    "summary": "Explicit pending caller work: fresh-agent changed-instruction evaluation, final sweep/independent review/native-platform/root-human acceptance. Existing partial outputs remain unavailable and need fresh identity for new source, operational caveat rather than false success. Prior missing source-binding defect is history with repair claims.",
+    "empty": false,
+    "concepts": [
+      "The brief explicitly leaves bounded fresh-agent"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "48": {
+    "summary": "Explicit Critical/Important/Minor none, qualified by caller fresh-agent evaluation/final/root acceptance; separate combined startup-builder seam assessment remains applicable and unvalidated. JSON finding empty/minors [] same-source empty reiteration. Source/fixture risk checks not findings; repair claims do not discharge other sources.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Fresh live changed-instruction evaluation",
+      "separate combined-tree startup-builder seam assessment"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "49": {
+    "summary": "Historical causal/lower-bound defect and numeric contradiction are preserved as claim-focused RED context with qualification repair claims. Concerns retains no new live measurement/final sweep/changed instruction/review/human acceptance. Assumptions retain unknown historical graph enforcement and cause. JSON concerns reiterates pending obligations; empty humanAction [] is not finding-empty.",
+    "empty": false,
+    "concepts": [
+      "The conflict is directly supported:",
+      "The retained final/residual graph",
+      "This delivers historical claim qualification only."
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "50": {
+    "summary": "Explicit no warning/Critical/Important/Minor task-local issues; final acceptance boundary retains .27 closure hold and caller sweep/eval/reviews/root-human acceptance. Statement original finding resolved is review repair claim, not a disposition for historical occurrences. No new measurement is claimed.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "No ⚠️ items.",
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Caller final sweep, changed-instruction evaluation"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "51": {
+    "summary": "Explicit no remaining retention gaps applies to 81/81 archival identities only; original single-run/source/assembler-transition/task-review-policy/process-inspection limitations plus caller sweeps/behavior/review/root-human acceptance remain. Restoration repair claims do not certify historical/current behavior. Test script and JSON missing [] are audit data, not global no-findings declarations.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "No remaining retention gaps:"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "52": {
+    "summary": "Explicit Critical/Important/Minor none and no warnings/unverified acceptance within bounded retention scope; preserves full historical limitations and caller sweeps/behavior/wider review/human acceptance plus .27 hold. JSON finding empty/minors [] same-source declaration reiteration. No behavior failure discharged.",
+    "empty": "qualified-local-only",
+    "concepts": [
+      "Historical limitations remain explicit:",
+      "Critical: none.",
+      "Important: none.",
+      "Minor: none.",
+      "Warnings/unverified acceptance items: none within"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "53": {
+    "summary": "Pending independent fresh-agent evaluation, review/final integrated sweep/root-human choices plus native Linux discovery/termination unmeasured. Claims live/simulated fixture coverage are appropriately split; historical dirty-child loss/fixture spelling failure are retained repair context. No explicit no-concerns declaration; requiredLiveChecks [] is structured check-list metadata, not findings empty.",
+    "empty": false,
+    "concepts": [
+      "The independent fresh-agent instruction evaluation is pending"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "54": {
+    "summary": "Actual Minor/deferred-evaluation obligation pending with coordinator; warning paragraph also retains native Linux unmeasured. Critical/Important None are severity-specific declarations. JSON finding empty is main blocking finding only; nonempty minors reiterate deferred warning. No root acceptance inference from CLEAN.",
+    "empty": false,
+    "concepts": [
+      "⚠ `evidence/",
+      "None.",
+      "[deferred-evaluation]",
+      "Current acceptance and brief agree:"
+    ],
+    "ambiguities": [],
+    "readScope": "complete raw bytes displayed untruncated in bounded chunks"
+  },
+  "36": {
+    "summary": "Actual historical confirmed ordinary-subagent caller defect in original report Concerns (and failing verification paragraph/status). Separate pending fresh-agent evaluation, .29 captured-source binding and caller sweep/review/root/human obligations. Appended Fix pass verifies prior finding and claims bounded repair; FIXED/superseding language is a repair/disposition claim only and cannot erase original concern or review finding. Fix limits and structured knownLimits retain pending live Workflow/fresh-agent/baseline gaps. Complete raw archived test logs are test-output/fixture context (including synthetic finding-like labels/JSON), not new report findings. In-flight hygiene matches are explicitly distinguished from post-test leaks. No explicit global empty finding declaration.",
+    "empty": false,
+    "concepts": [
+      "Status: IMPLEMENTED, with a confirmed",
+      "FAIL, retained concern:",
+      "Combined mechanical pressure scenarios",
+      "Confirmed ordinary-subagent caller seam",
+      "Fresh-agent changed-instruction evaluation is caller-owned",
+      "Captured-source binding is task .29-owned",
+      "Status: FIXED in",
+      "The Important finding was verified:",
+      "Fresh-agent changed-instruction evaluation remains caller-owned/pending;"
+    ],
+    "ambiguities": [
+      "Do not use fix-pass FIXED/superseding assertion as resolution of original source-local concern or any other source occurrence."
+    ],
+    "readScope": "complete raw bytes displayed in 16 bounded overlapping chunks: [0,126000), [125963,140018), [139909,154028), [153981,168074), [167968,182004), [181938,196087), [195999,210008), [209978,214271). Initial 126000:140000 decode failed with no raw output and was re-read on newline boundaries."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+  "artifact": "legacy-report-adapters-r1/46-task-25-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000005084",
+      "position": 1,
+      "key": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.",
+      "text": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched."
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "scope": "These retained paths stay fully reviewable. Their producer/role was not established by this bounded content/record inspection. No clean or omission inference is permitted.",
+  "records": [
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/base-absorption/main-absorption-r1.json",
+      "sha256": "7381e3d328ddb32c1dede6fbc733d62741a7df14e01ad21679f13b99d06243d1",
+      "bytes": 31635,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-acceptance-accounting/applied-carry-links.json",
+      "sha256": "5096b9e5bf2c096a8707a752961e586ae32e73f995cfa31a75d4e06864c9ac7d",
+      "bytes": 9845,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-acceptance-accounting/artifact-manifest.json",
+      "sha256": "2576aaba486a7300a36389739ee2ee767eb6e245efc5d129f32bf05c9573241d",
+      "bytes": 3025,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-acceptance-accounting/caller-gate-result.json",
+      "sha256": "08a960dc19d2f097401ad70da7fb244c397fd04ca071803886e2373d249c2d65",
+      "bytes": 31099,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-sweep-combined-1/caller-verified-result.json",
+      "sha256": "509d249fd3677196dee68905070cef3b5722f2be7c224d6a68187444cf07fe41",
+      "bytes": 69523,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/final-verification.json",
+      "sha256": "f47217c4ff65000aec4de56db36c813b37c4a077f1be4b4bba13fa48f9199786",
+      "bytes": 895,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/large-roast-diff-packaging-r2.initial.json",
+      "sha256": "1c507bc2825510b8e7f9792a86ae3fc88743a310928d0a7d02fc26e9f4df0cb8",
+      "bytes": 1735,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff-historical-addendum/large-roast-diff-packaging-r2.json",
+      "sha256": "0dc0939114178490adca4f128f6588e5df3697af08430a88bd27a29b9779a652",
+      "bytes": 1983,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/post-cap-audit-checkpoint/assemble-post-cap-audit-result.json",
+      "sha256": "de9418ba9b358f4ee6e717726fc848d0abc199e0eff5bdd702bc584ef3181cdc",
+      "bytes": 635,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/post-cap-audit-checkpoint/final-design-record.json",
+      "sha256": "f57d0fdcbff20849ed1bb5a703973fe00b9b09c598717b8d94cd4c8fcd54495d",
+      "bytes": 660,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/post-loop-r2-checkpoint/assemble-roast-pr-r2-result.json",
+      "sha256": "e1d0b9b81a37c4f88d4fca3e156cfaf5c612aa7e04afd3a48137c1931006eb21",
+      "bytes": 728,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/bead-graph.json",
+      "sha256": "39d10c66c09833ba26385a57e9e88dedb45c246439b27ada5b2ebb1592cf0a0d",
+      "bytes": 180058,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/first-parent-merges.txt",
+      "sha256": "5e2815405edfd4331ba259f30b01c8c4ac6e7ed06b3590b9ada6738da51dcae5",
+      "bytes": 3459,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/gather.json",
+      "sha256": "f6c7644ce0948a542c93950c5cde3dca6adb3fefc3248729b2a810fccae23ea8",
+      "bytes": 553,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/graph-summary.json",
+      "sha256": "b250d66609531ea10ae3288dc8e61f9c7020d154b7c0ba7d8cc96ec185dc21ac",
+      "bytes": 23721,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/installed-plugin-manifests.json",
+      "sha256": "b39bec21ca12bb0715513e49e3a6e84cbdf0206cb29a90d216c0dcf3bcda0025",
+      "bytes": 337,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/roast-lines.json",
+      "sha256": "c918da9825ab1bb64ae51455f2c9824379944419638ae6045f1b819a5461713b",
+      "bytes": 4796,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/upstream-feedback/triage.json",
+      "sha256": "1293cff58be89f0d49785c43a053410e6ad3e385a83a6a7031c3d730c5487d71",
+      "bytes": 1291,
+      "role": "retained-reviewable-content-role-not-established",
+      "hasRecordReferences": false,
+      "hasHashMatchedClaim": false
+    }
+  ]
+}

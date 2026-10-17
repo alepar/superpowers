@@ -1,0 +1,1776 @@
+{
+  "version": 1,
+  "ordinal": 77,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+  "originalArtifact": "task-report-history-r1/raw/task-19-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-19-report.md",
+  "rawSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+  "rawByteCount": 47192,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        170
+      ],
+      [
+        171,
+        350
+      ],
+      [
+        351,
+        572
+      ]
+    ],
+    "byteScope": [
+      0,
+      47192
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/22",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/77-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    },
+    {
+      "line": 164,
+      "rawText": "  \"status\": \"IMPLEMENTED\","
+    },
+    {
+      "line": 165,
+      "rawText": "  \"completionKind\": \"implementation\","
+    },
+    {
+      "line": 308,
+      "rawText": "Exit status: 0"
+    },
+    {
+      "line": 312,
+      "rawText": "Exit status: 0"
+    },
+    {
+      "line": 316,
+      "rawText": "Exit status: 0"
+    },
+    {
+      "line": 320,
+      "rawText": "Exit status: 0"
+    },
+    {
+      "line": 324,
+      "rawText": "Exit status: 0"
+    },
+    {
+      "line": 366,
+      "rawText": "  \"status\": \"FIXED\","
+    },
+    {
+      "line": 368,
+      "rawText": "  \"completionKind\": \"implementation\","
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/0",
+      "roles": [
+        "author_repair_claim"
+      ],
+      "span": [
+        44,
+        602
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Latest FIXED summary plus caller acceptance pending; does not erase preserved failed report."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/1",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        699,
+        1030
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original delivery explicitly pending with single replay failure and assigned fresh fix pass."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/2",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        1031,
+        2340
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Complete targeted record retrieval, safe unresolved hold and same-call-set contract; not disposition proof."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/3",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        3561,
+        4377
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Bounded same-bead amendment/fresh fixer ownership; no assertion amended cases passed in original implementation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/4",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        4378,
+        4668
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Missing new-run source distinct from unresolved known pointer; no neighboring-source scope guessing."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/5",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        4714,
+        5017
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Actual test/helper execution with simulated agents is not real-model compliance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/6",
+      "roles": [
+        "historical_defect_context"
+      ],
+      "span": [
+        6127,
+        8449
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original scoped hold defect RED plus changed ready-reentry failure attributable to task and recorded fixture amendment. No run-start exoneration."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/7",
+      "roles": [
+        "historical_defect_context"
+      ],
+      "span": [
+        8680,
+        9202
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original final replay2294/1 is explicitly not clean task acceptance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/8",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        9334,
+        9777
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Early digest failure retained without full tree; no blanket pre-existing/flaky attribution."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/9",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        12064,
+        12260
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict1: failed ready reentry replay retained."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/10",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        12260,
+        12474
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict2: bounded fixture replacement left to fresh fix pass."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/11",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        12474,
+        12613
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict3: changed instructions/sweep/review/task/root/human acceptance pending."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/12",
+      "roles": [
+        "scope_concern"
+      ],
+      "span": [
+        12613,
+        12828
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict4: large unknown/additive payload and conservative hold on failed transport."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/13",
+      "roles": [
+        "author_status_assertion"
+      ],
+      "span": [
+        13497,
+        13526
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Structured original acceptancePending:true is context, not empty declaration."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/14",
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "span": [
+        13542,
+        13743
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "JSON /concerns/0 repeats prose154; distinct appearance, no automatic link/merge."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/15",
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "span": [
+        13743,
+        13962
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "JSON /concerns/1 repeats prose155; distinct appearance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/16",
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "span": [
+        13962,
+        14106
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "JSON /concerns/2 repeats prose156; distinct appearance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/17",
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "span": [
+        14106,
+        14325
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "JSON /concerns/3 repeats prose157; distinct appearance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/18",
+      "roles": [
+        "evidence_contract_context"
+      ],
+      "span": [
+        14330,
+        20829
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Source-bound evidence and required checks, including failed observations; actual command execution kind live does not imply live agent behavior."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/19",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        20829,
+        20849
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original structured humanAction empty array; no acceptance inference."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/20",
+      "roles": [
+        "author_repair_claim"
+      ],
+      "span": [
+        20870,
+        21158
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "FIXED/Important-Missing repair and no-decline/no-evidence-only claims require separate semantic review; not a new current disposition."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/21",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        21195,
+        21916
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Exact named fixture amendment and preserved guards/negative cases."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/22",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        22490,
+        25233
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Detailed claimed fixture changes and actual-vs-canned boundary; preserve without adjudicating sufficiency."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/23",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        25277,
+        27013
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Reproduced2294/1 plus two draft setup errors and claimed final corrected source; failures are historical observations, not new current defects."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/24",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        28273,
+        28563
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No full repository suite or real-model evaluation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/25",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        29504,
+        30623
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Original failed records retained and verification indices linked by author; no failing record reclassified; do not adopt as disposition."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/26",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        31040,
+        31339
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Fixer task-root cleanup/no authorization refusal/no human action only."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/27",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        31377,
+        31799
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Final sweep/independent final/root/human acceptance pending; deterministic agents simulated."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/28",
+      "roles": [
+        "author_status_assertion"
+      ],
+      "span": [
+        32321,
+        32351
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "acceptancePending:false applies structured task fix claim; coexists with explicit caller/root pending and cannot establish root acceptance."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/29",
+      "roles": [
+        "structured_repair_claim"
+      ],
+      "span": [
+        32351,
+        32697
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "findingsFixed describes bounded fixture amendment, not an extra raw finding or supported resolution."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/30",
+      "roles": [
+        "evidence_contract_context"
+      ],
+      "span": [
+        32903,
+        46345
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Retained original/new evidence, required commands and author failureAttribution links; no automatic identity or disposition."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/31",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        46849,
+        46935
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Structured leaked/survived arrays empty and cleanup exits0, scoped task hygiene."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/32",
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "span": [
+        46956,
+        47161
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "New final concern retains caller acceptance/live-compliance limits; distinct from original four."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/22/passages/33",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        47166,
+        47186
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Final humanAction empty array, not granted human acceptance."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "author_repair_claim",
+      "interpretation": "Latest FIXED summary plus caller acceptance pending; does not erase preserved failed report.",
+      "rawSection": "Latest Task 19 fix status",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "# Latest Task 19 fix status\n",
+      "rawSectionHierarchy": [
+        "Latest Task 19 fix status"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 44,
+      "byteEnd": 602,
+      "rawText": "Committed d604b8a7cf305bddd29ff1ddd0c42c01a108c2bb on task-super-plan-ufz.22, based on 7c3fec35b9e8039576677ff8a5b91ee5135c76e8; tested tree 0c1a61d28b20d557e0664056906edbafaed34d36. Required checks pass: hold-scope 16 scenarios, full replay 2329 passed / 0 failed, digest all tests passed. Invocation 16 startups and startup/builder 126 checks also pass. Full fix details and structured evidence follow the preserved original report in `## Fix pass` below; task-19-fix-evidence-r1 retains complete raw outputs. Caller final/root acceptance remains pending.\n",
+      "canonicalAdapterSection": "Latest Task 19 fix status",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original delivery explicitly pending with single replay failure and assigned fresh fix pass.",
+      "rawSection": "Delivery and remaining acceptance",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Delivery and remaining acceptance\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Delivery and remaining acceptance"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 699,
+      "byteEnd": 1030,
+      "rawText": "Implemented the scoped recovery transport repair and committed it on task-super-plan-ufz.22. This is code delivery with acceptance pending, not an assertion that all required checks pass. The unchanged replay fixture still has its recorded single failure; a fresh review/fix pass owns the now-recorded same-bead fixture amendment.\n",
+      "canonicalAdapterSection": "Delivery and remaining acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Complete targeted record retrieval, safe unresolved hold and same-call-set contract; not disposition proof.",
+      "rawSection": "Delivery and remaining acceptance",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Delivery and remaining acceptance\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Delivery and remaining acceptance"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 15,
+      "lineEnd": 17,
+      "byteStart": 1031,
+      "byteEnd": 2340,
+      "rawText": "ledger-digest keeps its existing compact 4096-byte cap and source pointers. Its new --recovery-line N option reads the requested authoritative Recovery record verbatim with a counting header, retaining additive and unknown fields. The existing read-ledger mechanical response can carry recoveryRecords with exact source/line associations and complete counted payloads. Resume validates ownership, association, transport and the existing Recovery schema before reconstructing obligations in ledger order. No additional agent dispatch, role or engine was added. Missing, empty, truncated, malformed, unknown-version or otherwise unresolved payloads leave a visible gap and an admission hold when task scope cannot safely be recovered. A malformed pointer itself also holds admission. Supported matching clears retain their existing semantics.\n\nThe focused fixture uses the existing replay driver and executes the emitted real helper command from the existing reader prompt. It proves 173-byte and 5173-byte task-scoped holds behave identically, preserves full additive records, tests a later matching release, malformed clear, affectedIds, unrelated work after scoped recovery, source status distinctions, and unresolved retrieval cases. The oversized and compact controls have exactly the same agent-call set.\n",
+      "canonicalAdapterSection": "Delivery and remaining acceptance",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Bounded same-bead amendment/fresh fixer ownership; no assertion amended cases passed in original implementation.",
+      "rawSection": "Assumptions and amendments",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Assumptions and amendments\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Assumptions and amendments"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 32,
+      "lineEnd": 32,
+      "byteStart": 3561,
+      "byteEnd": 4377,
+      "rawText": "Read the current bead description/acceptance and comments before implementation; there were initially no amendments or comments. Re-read the bead after the coordinator recorded recovery-fixture-amendment-r1.json and recovery-fixture-assessment-r1.md in the plan workspace. The current bead permits only the specifically named oversized verification-basis fixture and adjacent replacement cases to change. The coordinator explicitly assigned those amendments to a fresh review/fix pass and directed this pass to return its implementation and exact known failure without editing replay-harness.mjs. No blocker bead is required for that already-recorded same-task fix obligation. This pass used that ownership clarification only; it did not claim the amendment's new acceptance cases have been implemented or verified.\n",
+      "canonicalAdapterSection": "Assumptions and amendments",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Missing new-run source distinct from unresolved known pointer; no neighboring-source scope guessing.",
+      "rawSection": "Assumptions and amendments",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Assumptions and amendments\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Assumptions and amendments"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 34,
+      "lineEnd": 34,
+      "byteStart": 4378,
+      "byteEnd": 4668,
+      "rawText": "A missing source on a genuinely new run retains the existing normal admission behavior. Missing/truncated targeted transport for a known retained Recovery pointer is not equivalent to that new-run state and remains held. No scope is guessed from neighboring Task lines or a foreign source.\n",
+      "canonicalAdapterSection": "Assumptions and amendments",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Actual test/helper execution with simulated agents is not real-model compliance.",
+      "rawSection": "Verification commands and source capture",
+      "rawSectionOrdinal": 6,
+      "rawSectionHeading": "## Verification commands and source capture\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Verification commands and source capture"
+      ],
+      "rawSectionsSpanned": [
+        6
+      ],
+      "lineStart": 38,
+      "lineEnd": 38,
+      "byteStart": 4714,
+      "byteEnd": 5017,
+      "rawText": "Every final command ran from the absolute task worktree with the environment below. Required tests were not skipped or weakened. Runtime agents are simulated by these deterministic tests; these records mean live execution of the test commands and helper programs, not real-model instruction compliance.\n",
+      "canonicalAdapterSection": "Verification commands and source capture",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_defect_context",
+      "interpretation": "Original scoped hold defect RED plus changed ready-reentry failure attributable to task and recorded fixture amendment. No run-start exoneration.",
+      "rawSection": "TDD RED",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## TDD RED\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "TDD RED"
+      ],
+      "rawSectionsSpanned": [
+        7,
+        8
+      ],
+      "lineStart": 55,
+      "lineEnd": 85,
+      "byteStart": 6127,
+      "byteEnd": 8449,
+      "rawText": "## TDD RED\n\nCommand: node tests/super-code/recovery-hold-scope-r1.mjs, base product plus regression, source tree 92e6d342ee8cc4ebe4428497be5f9400b9699f65, exit 1.\n\n```text\n173-byte hold preserves its task scope\nAssertionError [ERR_ASSERTION]: held task must not dispatch\n1 !== 0\n```\n\nThe compact control passed and the 5173-byte hold dispatched: the exact reported defect. The original before-fix run also failed with this assertion. A later separate RED run added malformed-pointer coverage before its five-line decoder fix; it failed at broken-pointer admission with the same 1 !== 0 assertion. That intermediate RED did not have a separately captured full tree, so it is not presented as a source-bound check record. Assertions after the initial failing assertion did not execute in RED; GREEN below measures them.\n\n## Legacy fixture attribution\n\nThe original fixture at replay-harness.mjs:594–610 digests a temporary foreign ledger, deletes it, then supplies only a pointer and expects fresh implementation/review. Its missing payload cannot establish whether that pointer contains a scoped hold, a closure or another obligation. No safe inference permits release. The coordinator's retained assessment confirms the narrow fixture defect and records the required replacement cases.\n\nA retained probe extracts the unchanged verification-only scenario from the original replay harness, uses its normal driver/functions and selects product source from the explicit working directory. The exact same probe command was run against original base and task source:\n\n```sh\nnode /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\n```\n\n```text\nOriginal task base tree 90e37bbfed5bfa419d9708d83c73c048aaf3924b:\n72 passed, 0 failed\nTask tree 7941bd301896a6e28d6bc0909563cfd315a3d0eb:\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n71 passed, 1 failed\n```\n\nThis is an observed change in behavior caused by the conservative admission repair, not a claim that the failure predates the task. The original task-base comparison is not a run-start baseline measurement. The amended legacy fixture remains unmodified here and acceptance remains pending.\n",
+      "canonicalAdapterSection": "TDD RED",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_defect_context",
+      "interpretation": "Original final replay2294/1 is explicitly not clean task acceptance.",
+      "rawSection": "Replay final",
+      "rawSectionOrdinal": 10,
+      "rawSectionHeading": "## Replay final\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Replay final"
+      ],
+      "rawSectionsSpanned": [
+        10
+      ],
+      "lineStart": 97,
+      "lineEnd": 106,
+      "byteStart": 8680,
+      "byteEnd": 9202,
+      "rawText": "## Replay final\n\nCommand: node tests/super-code/replay-harness.mjs. Final tree, exit 1.\n\n```text\n[FAIL] ready reentry with missing basis obtains independent verification review before closure\n2294 passed, 1 failed\n```\n\nThe suite also executes its documented canonical, fix-pass-blocked and parked dryRun scenarios; they passed without changed snapshot/count assertions. The pre-rebase version reported 2276 passed, 1 failed; after .23 composition it reports 2294 passed, 1 failed. Neither result is clean task acceptance.\n",
+      "canonicalAdapterSection": "Replay final",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Early digest failure retained without full tree; no blanket pre-existing/flaky attribution.",
+      "rawSection": "Digest final",
+      "rawSectionOrdinal": 11,
+      "rawSectionHeading": "## Digest final\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Digest final"
+      ],
+      "rawSectionsSpanned": [
+        11
+      ],
+      "lineStart": 116,
+      "lineEnd": 116,
+      "byteStart": 9334,
+      "byteEnd": 9777,
+      "rawText": "One early unchanged digest run missed its initial expected open-beads line. The same command passed at original task base, passed on task-source repetition, passed after final pre-rebase changes and passed after rebase. No digest test or related product code was changed to affect that line. The earliest failing run lacked a complete captured tree; its log is retained, and no causal or blanket pre-existing/flaky classification is asserted.\n",
+      "canonicalAdapterSection": "Digest final",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original strict1: failed ready reentry replay retained.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 17,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        17
+      ],
+      "lineStart": 154,
+      "lineEnd": 154,
+      "byteStart": 12064,
+      "byteEnd": 12260,
+      "rawText": "- The unchanged rebased replay suite reports 2294 passed, 1 failed: ready reentry with missing basis obtains independent verification review before closure. This is not clean completion evidence.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Original strict2: bounded fixture replacement left to fresh fix pass.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 17,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        17
+      ],
+      "lineStart": 155,
+      "lineEnd": 155,
+      "byteStart": 12260,
+      "byteEnd": 12474,
+      "rawText": "- The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Original strict3: changed instructions/sweep/review/task/root/human acceptance pending.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 17,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        17
+      ],
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 12474,
+      "byteEnd": 12613,
+      "rawText": "- Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "scope_concern",
+      "interpretation": "Original strict4: large unknown/additive payload and conservative hold on failed transport.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 17,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        17
+      ],
+      "lineStart": 157,
+      "lineEnd": 157,
+      "byteStart": 12613,
+      "byteEnd": 12828,
+      "rawText": "- Targeted Recovery payloads preserve complete unknown/additive fields and may remain large. If their existing-reader transport fails, admission remains conservatively held; no extra reader agent dispatch is added.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "author_status_assertion",
+      "interpretation": "Structured original acceptancePending:true is context, not empty declaration.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 177,
+      "lineEnd": 177,
+      "byteStart": 13497,
+      "byteEnd": 13526,
+      "rawText": "  \"acceptancePending\": true,\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "structured_concern_rendition",
+      "interpretation": "JSON /concerns/0 repeats prose154; distinct appearance, no automatic link/merge.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 179,
+      "lineEnd": 179,
+      "byteStart": 13542,
+      "byteEnd": 13743,
+      "rawText": "    \"The unchanged rebased replay suite reports 2294 passed, 1 failed: ready reentry with missing basis obtains independent verification review before closure. This is not clean completion evidence.\",\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "structured_concern_rendition",
+      "interpretation": "JSON /concerns/1 repeats prose155; distinct appearance.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 180,
+      "lineEnd": 180,
+      "byteStart": 13743,
+      "byteEnd": 13962,
+      "rawText": "    \"The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs.\",\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "structured_concern_rendition",
+      "interpretation": "JSON /concerns/2 repeats prose156; distinct appearance.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 181,
+      "lineEnd": 181,
+      "byteStart": 13962,
+      "byteEnd": 14106,
+      "rawText": "    \"Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending.\",\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "structured_concern_rendition",
+      "interpretation": "JSON /concerns/3 repeats prose157; distinct appearance.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 182,
+      "lineEnd": 182,
+      "byteStart": 14106,
+      "byteEnd": 14325,
+      "rawText": "    \"Targeted Recovery payloads preserve complete unknown/additive fields and may remain large. If their existing-reader transport fails, admission remains conservatively held; no extra reader agent dispatch is added.\"\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 5
+    },
+    {
+      "classification": "evidence_contract_context",
+      "interpretation": "Source-bound evidence and required checks, including failed observations; actual command execution kind live does not imply live agent behavior.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 184,
+      "lineEnd": 266,
+      "byteStart": 14330,
+      "byteEnd": 20829,
+      "rawText": "  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 6
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Original structured humanAction empty array; no acceptance inference.",
+      "rawSection": "Complete structured result and source-bound records",
+      "rawSectionOrdinal": 18,
+      "rawSectionHeading": "## Complete structured result and source-bound records\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Complete structured result and source-bound records"
+      ],
+      "rawSectionsSpanned": [
+        18
+      ],
+      "lineStart": 267,
+      "lineEnd": 267,
+      "byteStart": 20829,
+      "byteEnd": 20849,
+      "rawText": "  \"humanAction\": []\n",
+      "canonicalAdapterSection": "Complete structured result and source-bound records",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 7
+    },
+    {
+      "classification": "author_repair_claim",
+      "interpretation": "FIXED/Important-Missing repair and no-decline/no-evidence-only claims require separate semantic review; not a new current disposition.",
+      "rawSection": "Fix pass",
+      "rawSectionOrdinal": 19,
+      "rawSectionHeading": "## Fix pass\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass"
+      ],
+      "rawSectionsSpanned": [
+        19
+      ],
+      "lineStart": 274,
+      "lineEnd": 276,
+      "byteStart": 20870,
+      "byteEnd": 21158,
+      "rawText": "canonicalStatus: FIXED\n\nResolved the independent review's one Important / Missing finding in the specifically named replay fixture and adjacent cases. The source repair delivered by the original implementation remains unchanged. No finding was declined or resolved only through evidence.\n",
+      "canonicalAdapterSection": "Fix pass",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Exact named fixture amendment and preserved guards/negative cases.",
+      "rawSection": "Current requirements and scope",
+      "rawSectionOrdinal": 20,
+      "rawSectionHeading": "### Current requirements and scope\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Current requirements and scope"
+      ],
+      "rawSectionsSpanned": [
+        20
+      ],
+      "lineStart": 280,
+      "lineEnd": 280,
+      "byteStart": 21195,
+      "byteEnd": 21916,
+      "rawText": "Read current `bd show super-plan-ufz.22 --json` (including description and acceptance), `bd comments super-plan-ufz.22` (none), the amended Task 19 brief, the prior report and review, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded replay exception settles the old unchanged-suite conflict. No schema, scope inference, unknown hold, verification discriminator, source validation, digest-suite, snapshot, specification or historical evidence change was made. The original not-ready missing-basis assertion and pending-closure source/tracker failure assertions remain; their missing-basis input now contains only the valid counted typed completion it actually claims to test.\n",
+      "canonicalAdapterSection": "Current requirements and scope",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Detailed claimed fixture changes and actual-vs-canned boundary; preserve without adjudicating sufficiency.",
+      "rawSection": "Fixture repair",
+      "rawSectionOrdinal": 21,
+      "rawSectionHeading": "### Fixture repair\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Fixture repair"
+      ],
+      "rawSectionsSpanned": [
+        21
+      ],
+      "lineStart": 286,
+      "lineEnd": 291,
+      "byteStart": 22490,
+      "byteEnd": 25233,
+      "rawText": "- Kept the real capped helper assertion: actual source-line pointer, typed verification-only discriminator and absence of evidence/live.log in compact text. Kept its deleted foreign-ledger input and added ready replays with no payload and with supplied complete foreign-source payload; both admit zero implementation/review/merge/close-only calls, exclude completion, retain the exact unresolved source/line and stop recovery-held.\n- Added an owned integrationWorktree fixture using its actual .superpowers/sdd/bd-100-plan/progress.md. The real helper produces compact and complete counted --recovery-line 1 text while this ledger exists. The existing read-ledger response associates that exact pointer source/line with all original oversized pending-closure bytes, 30 live evidence records, required live checks and additive top-level/nested fields. The reader prompt targets the owned ledger using its legitimate relative path, names the absolute source and adds no recovery dispatch.\n- Supplied exact retained source/tracker observations for the only required bead, bd-101: sourceVerified true, landed false, closed [], open [bd-101]. Asserted the captured commit/tree and required bead set in resume-check, reconciliation before close-only, zero impl/review/merge, one close-only, observed closure before completion, preserved evidence/source identity and no remaining resolved transport gap. Unconfirmed closure retains the entire original oversized record. Unavailable, mismatching source, unavailable tracker and contradictory tracker observations retain that record and prevent admission/closure even when a Finish reconciliation claims the bead closed.\n- Separated genuinely missing-basis reentry using a valid counted ledger with only `Task 1 (bd-101): complete, verification-only`. Fresh implementation and independent reviewer keep the original source-bound live evidence and requiredLiveChecks. Asserted one implementation, one review, zero merge, one close-only, independent tracker confirmation and durable writing of the newly reviewed basis before closure. An unconfirmed tracker observation cannot complete it; the not-ready missing-basis case retains its evidence gap without inferred completion.\n\nThe assertions reject concrete observable breaks: admission with unresolved/foreign payloads; repeated implementation/review after valid recovery; missing/reordered source reconciliation; wrong required bead set; lost retained evidence/additive/source fields; missing durable basis before closure; completion without observed closure; unreleased resolved gaps; and rewriting authoritative ledger bytes. They drive the actual coordinator and real helper, with canned Workflow dispatch responses at the external agent boundary.\n",
+      "canonicalAdapterSection": "Fixture repair",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Reproduced2294/1 plus two draft setup errors and claimed final corrected source; failures are historical observations, not new current defects.",
+      "rawSection": "Verification and exact source capture",
+      "rawSectionOrdinal": 22,
+      "rawSectionHeading": "### Verification and exact source capture\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Verification and exact source capture"
+      ],
+      "rawSectionsSpanned": [
+        22
+      ],
+      "lineStart": 295,
+      "lineEnd": 299,
+      "byteStart": 25277,
+      "byteEnd": 27013,
+      "rawText": "Before edits, the full replay on the rebased source reproduced the recorded defect: 2294 passed, 1 failed (exit 1). The complete log is retained as fix-replay-before-r1.log. This is a measured rebased task source, not a run-start or task-base exoneration.\n\nThe first amended-fixture draft (tree d7e35e1983bede9f930e96dbf1735da94829b134) focused run reported 86 passed, 20 failed (exit 1). It exposed two fixture setup mistakes: the targeted helper truthfully counts the two-line source as `1 of 2`, and the canned planner still reported the default foreign workspace after integrationWorktree was explicitly configured. Corrected the fixture's hand-counted header and planner path, without changing production behavior. The next focused verification-only scenario reported 106 passed, 0 failed (exit 0). Both complete outputs are retained. Later assertions are measured only in that passing focused run and final full replay.\n\nCapture commands in the task worktree were `git add tests/super-code/replay-harness.mjs` and `git write-tree`. They produced draft d7e35e1983bede9f930e96dbf1735da94829b134 and final tested tree 0c1a61d28b20d557e0664056906edbafaed34d36. The real index staged only the named fixture file. After verification, committed d604b8a7cf305bddd29ff1ddd0c42c01a108c2bb and checked `git rev-parse HEAD^{tree}` equals that final tested tree. `git status --short` is empty; `git diff --cached --check` passed before commit. No source was changed after final measurements. The complete fix-only diff is retained as task-19-fixture-fix-r1.diff (74 additions, 5 deletions in one named fixture file); full task source versus the rebased integration consists of the original three-file repair and this one-file test correction.\n",
+      "canonicalAdapterSection": "Verification and exact source capture",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "No full repository suite or real-model evaluation.",
+      "rawSection": "Verification and exact source capture",
+      "rawSectionOrdinal": 22,
+      "rawSectionHeading": "### Verification and exact source capture\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Verification and exact source capture"
+      ],
+      "rawSectionsSpanned": [
+        22
+      ],
+      "lineStart": 327,
+      "lineEnd": 327,
+      "byteStart": 28273,
+      "byteEnd": 28563,
+      "rawText": "The full replay covers the existing task/final review source binding and its documented dryRun scenarios without changing their counts or baselines. The two startup seams additionally confirm inherited .23 composition. No full repository suite or real-model instruction evaluation was run.\n",
+      "canonicalAdapterSection": "Verification and exact source capture",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Original failed records retained and verification indices linked by author; no failing record reclassified; do not adopt as disposition.",
+      "rawSection": "Failure attribution and immutable history",
+      "rawSectionOrdinal": 23,
+      "rawSectionHeading": "### Failure attribution and immutable history\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Failure attribution and immutable history"
+      ],
+      "rawSectionsSpanned": [
+        23
+      ],
+      "lineStart": 341,
+      "lineEnd": 345,
+      "byteStart": 29504,
+      "byteEnd": 30623,
+      "rawText": "### Failure attribution and immutable history\n\nThe original eight source-bound evidence records are copied unchanged into the result below. Original report text and its prior IMPLEMENTED/acceptance-pending claims are preserved below the new latest-status header as history. The original raw failed/passing logs were copied before any worktree cleanup to task-19-original-evidence-r1; task-19-fix-evidence-r1 also retains them alongside every new output and cleanup log.\n\nThe recorded .22 failure retains its established owner. The original narrow probe's observed failure remains at evidence index 2, with no invented same-command verification or measured run-start/task-base association. The original full replay observed index 4 now links to the actual same-command passing fix at index 12. The newly reproduced rebased full replay observed index 8 also links to verification 12. No failing record was reclassified as pass, simulated evidence, pre-existing or exonerated. Draft fixture setup failure index 9 and passing focused probe index 10 are separately retained; they do not substitute for any required command.\n",
+      "canonicalAdapterSection": "Failure attribution and immutable history",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Fixer task-root cleanup/no authorization refusal/no human action only.",
+      "rawSection": "Test hygiene",
+      "rawSectionOrdinal": 24,
+      "rawSectionHeading": "### Test hygiene\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Test hygiene"
+      ],
+      "rawSectionsSpanned": [
+        24
+      ],
+      "lineStart": 355,
+      "lineEnd": 355,
+      "byteStart": 31040,
+      "byteEnd": 31339,
+      "rawText": "All checks returned exit 0 with no match lines. The final same-root helper without --check also returned 0 with no survived lines. No background process remains owned by this fixer. Final check/stop results are retained in fix-hygiene-final-r1.log. No authorization refusal or human action remains.\n",
+      "canonicalAdapterSection": "Test hygiene",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Final sweep/independent final/root/human acceptance pending; deterministic agents simulated.",
+      "rawSection": "Files, assumptions and concerns",
+      "rawSectionOrdinal": 25,
+      "rawSectionHeading": "### Files, assumptions and concerns\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Files, assumptions and concerns"
+      ],
+      "rawSectionsSpanned": [
+        25
+      ],
+      "lineStart": 359,
+      "lineEnd": 359,
+      "byteStart": 31377,
+      "byteEnd": 31799,
+      "rawText": "Fix-only tracked change: tests/super-code/replay-harness.mjs. No product function changed in this pass. The current task amendment explicitly authorizes this named fixture correction. No further assumption was needed. Caller-owned final sweep, independent final acceptance and root/human acceptance remain pending; passing deterministic agent simulations do not claim real-model instruction compliance or root completion.\n",
+      "canonicalAdapterSection": "Files, assumptions and concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "author_status_assertion",
+      "interpretation": "acceptancePending:false applies structured task fix claim; coexists with explicit caller/root pending and cannot establish root acceptance.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 376,
+      "lineEnd": 376,
+      "byteStart": 32321,
+      "byteEnd": 32351,
+      "rawText": "  \"acceptancePending\": false,\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "structured_repair_claim",
+      "interpretation": "findingsFixed describes bounded fixture amendment, not an extra raw finding or supported resolution.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 377,
+      "lineEnd": 379,
+      "byteStart": 32351,
+      "byteEnd": 32697,
+      "rawText": "  \"findingsFixed\": [\n    \"Implemented the bounded oversized verification-basis fixture amendment: authoritative pending-closure reuse, valid missing-basis independent review, unrecoverable-pointer admission hold and supplied foreign-source rejection; preserved helper cap/source discriminator and original negative source/tracker coverage.\"\n  ],\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "evidence_contract_context",
+      "interpretation": "Retained original/new evidence, required commands and author failureAttribution links; no automatic identity or disposition.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 386,
+      "lineEnd": 557,
+      "byteStart": 32903,
+      "byteEnd": 46345,
+      "rawText": "  \"evidence\": [\n    {\n      \"sourceTree\": \"92e6d342ee8cc4ebe4428497be5f9400b9699f65\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#tdd-red\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"90e37bbfed5bfa419d9708d83c73c048aaf3924b\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"7941bd301896a6e28d6bc0909563cfd315a3d0eb\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#focused-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#digest-final\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#invocation-start-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"dba2b60460893a3ffa6658ab79d8419e3e58f73f\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#startup-builder-seam\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1442e3ffcde702efdae8789ae56513896333dd0e\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d7e35e1983bede9f930e96dbf1735da94829b134\",\n      \"command\": \"node --input-type=module\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents; stdin=verification-only scenario extraction retained in task-19-report.md Fix pass\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-verification-fixture-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node --input-type=module\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents; stdin=verification-only scenario extraction retained in task-19-report.md Fix pass\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-verification-fixture-r2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-focused-final-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-digest-final-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-invocation-final-r1.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-startup-final-r1.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/recovery-hold-scope-r1.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-run-digest.sh\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 2,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 4,\n      \"introducedBy\": \"super-plan-ufz.22\",\n      \"verification\": 12\n    },\n    {\n      \"failure\": \"ready reentry with missing basis obtains independent verification review before closure\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents\",\n      \"observed\": 8,\n      \"verification\": 12,\n      \"introducedBy\": \"super-plan-ufz.22\"\n    }\n  ],\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Structured leaked/survived arrays empty and cleanup exits0, scoped task hygiene.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 562,
+      "lineEnd": 565,
+      "byteStart": 46849,
+      "byteEnd": 46935,
+      "rawText": "    \"leaked\": [],\n    \"survived\": [],\n    \"finalCheckExit\": 0,\n    \"finalStopExit\": 0\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "structured_concern_rendition",
+      "interpretation": "New final concern retains caller acceptance/live-compliance limits; distinct from original four.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 568,
+      "lineEnd": 568,
+      "byteStart": 46956,
+      "byteEnd": 47161,
+      "rawText": "    \"Caller-owned final sweep, independent final acceptance and root/human acceptance remain pending. Deterministic replay uses simulated Workflow agents; no real-model instruction compliance is claimed.\"\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 5
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Final humanAction empty array, not granted human acceptance.",
+      "rawSection": "Full fix result",
+      "rawSectionOrdinal": 26,
+      "rawSectionHeading": "### Full fix result\n",
+      "rawSectionHierarchy": [
+        "Task 19 / super-plan-ufz.22 implementation report",
+        "Fix pass",
+        "Full fix result"
+      ],
+      "rawSectionsSpanned": [
+        26
+      ],
+      "lineStart": 570,
+      "lineEnd": 570,
+      "byteStart": 47166,
+      "byteEnd": 47186,
+      "rawText": "  \"humanAction\": []\n",
+      "canonicalAdapterSection": "Full fix result",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 6
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 699,
+      "byteEnd": 1030,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/1"
+      ],
+      "interpretation": "Original delivery explicitly pending with single replay failure and assigned fresh fix pass.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 1031,
+      "byteEnd": 2340,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/2"
+      ],
+      "interpretation": "Complete targeted record retrieval, safe unresolved hold and same-call-set contract; not disposition proof.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3561,
+      "byteEnd": 4377,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/3"
+      ],
+      "interpretation": "Bounded same-bead amendment/fresh fixer ownership; no assertion amended cases passed in original implementation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 4378,
+      "byteEnd": 4668,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/4"
+      ],
+      "interpretation": "Missing new-run source distinct from unresolved known pointer; no neighboring-source scope guessing.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 4714,
+      "byteEnd": 5017,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/5"
+      ],
+      "interpretation": "Actual test/helper execution with simulated agents is not real-model compliance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9334,
+      "byteEnd": 9777,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/8"
+      ],
+      "interpretation": "Early digest failure retained without full tree; no blanket pre-existing/flaky attribution.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 12064,
+      "byteEnd": 12260,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/9"
+      ],
+      "interpretation": "Original strict1: failed ready reentry replay retained.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 12260,
+      "byteEnd": 12474,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/10"
+      ],
+      "interpretation": "Original strict2: bounded fixture replacement left to fresh fix pass.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 12474,
+      "byteEnd": 12613,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/11"
+      ],
+      "interpretation": "Original strict3: changed instructions/sweep/review/task/root/human acceptance pending.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 12613,
+      "byteEnd": 12828,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/12"
+      ],
+      "interpretation": "Original strict4: large unknown/additive payload and conservative hold on failed transport.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13542,
+      "byteEnd": 13743,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/14"
+      ],
+      "interpretation": "JSON /concerns/0 repeats prose154; distinct appearance, no automatic link/merge.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13743,
+      "byteEnd": 13962,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/15"
+      ],
+      "interpretation": "JSON /concerns/1 repeats prose155; distinct appearance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13962,
+      "byteEnd": 14106,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/16"
+      ],
+      "interpretation": "JSON /concerns/2 repeats prose156; distinct appearance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14106,
+      "byteEnd": 14325,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/17"
+      ],
+      "interpretation": "JSON /concerns/3 repeats prose157; distinct appearance.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 21195,
+      "byteEnd": 21916,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/21"
+      ],
+      "interpretation": "Exact named fixture amendment and preserved guards/negative cases.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 28273,
+      "byteEnd": 28563,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/24"
+      ],
+      "interpretation": "No full repository suite or real-model evaluation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 31377,
+      "byteEnd": 31799,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/27"
+      ],
+      "interpretation": "Final sweep/independent final/root/human acceptance pending; deterministic agents simulated.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 46956,
+      "byteEnd": 47161,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/32"
+      ],
+      "interpretation": "New final concern retains caller acceptance/live-compliance limits; distinct from original four.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [
+    "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope.",
+    "Structured acceptancePending:false is a task-fix assertion while caller/root acceptance remains expressly pending; neither overwrites the other.",
+    "The same-byte Task19 retained/canonical pairs establish byte equality only, not finding identity or disposition."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "supplementalQualifications": [
+    {
+      "byteStart": 699,
+      "byteEnd": 1030,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/1"
+      ],
+      "interpretation": "Original delivery explicitly pending with single replay failure and assigned fresh fix pass.",
+      "jsonPointer": null,
+      "rawText": "Implemented the scoped recovery transport repair and committed it on task-super-plan-ufz.22. This is code delivery with acceptance pending, not an assertion that all required checks pass. The unchanged replay fixture still has its recorded single failure; a fresh review/fix pass owns the now-recorded same-bead fixture amendment.\n",
+      "lineStart": 13,
+      "lineEnd": 13
+    },
+    {
+      "byteStart": 1031,
+      "byteEnd": 2340,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/2"
+      ],
+      "interpretation": "Complete targeted record retrieval, safe unresolved hold and same-call-set contract; not disposition proof.",
+      "jsonPointer": null,
+      "rawText": "ledger-digest keeps its existing compact 4096-byte cap and source pointers. Its new --recovery-line N option reads the requested authoritative Recovery record verbatim with a counting header, retaining additive and unknown fields. The existing read-ledger mechanical response can carry recoveryRecords with exact source/line associations and complete counted payloads. Resume validates ownership, association, transport and the existing Recovery schema before reconstructing obligations in ledger order. No additional agent dispatch, role or engine was added. Missing, empty, truncated, malformed, unknown-version or otherwise unresolved payloads leave a visible gap and an admission hold when task scope cannot safely be recovered. A malformed pointer itself also holds admission. Supported matching clears retain their existing semantics.\n\nThe focused fixture uses the existing replay driver and executes the emitted real helper command from the existing reader prompt. It proves 173-byte and 5173-byte task-scoped holds behave identically, preserves full additive records, tests a later matching release, malformed clear, affectedIds, unrelated work after scoped recovery, source status distinctions, and unresolved retrieval cases. The oversized and compact controls have exactly the same agent-call set.\n",
+      "lineStart": 15,
+      "lineEnd": 17
+    },
+    {
+      "byteStart": 3561,
+      "byteEnd": 4377,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/3"
+      ],
+      "interpretation": "Bounded same-bead amendment/fresh fixer ownership; no assertion amended cases passed in original implementation.",
+      "jsonPointer": null,
+      "rawText": "Read the current bead description/acceptance and comments before implementation; there were initially no amendments or comments. Re-read the bead after the coordinator recorded recovery-fixture-amendment-r1.json and recovery-fixture-assessment-r1.md in the plan workspace. The current bead permits only the specifically named oversized verification-basis fixture and adjacent replacement cases to change. The coordinator explicitly assigned those amendments to a fresh review/fix pass and directed this pass to return its implementation and exact known failure without editing replay-harness.mjs. No blocker bead is required for that already-recorded same-task fix obligation. This pass used that ownership clarification only; it did not claim the amendment's new acceptance cases have been implemented or verified.\n",
+      "lineStart": 32,
+      "lineEnd": 32
+    },
+    {
+      "byteStart": 4378,
+      "byteEnd": 4668,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/4"
+      ],
+      "interpretation": "Missing new-run source distinct from unresolved known pointer; no neighboring-source scope guessing.",
+      "jsonPointer": null,
+      "rawText": "A missing source on a genuinely new run retains the existing normal admission behavior. Missing/truncated targeted transport for a known retained Recovery pointer is not equivalent to that new-run state and remains held. No scope is guessed from neighboring Task lines or a foreign source.\n",
+      "lineStart": 34,
+      "lineEnd": 34
+    },
+    {
+      "byteStart": 4714,
+      "byteEnd": 5017,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/5"
+      ],
+      "interpretation": "Actual test/helper execution with simulated agents is not real-model compliance.",
+      "jsonPointer": null,
+      "rawText": "Every final command ran from the absolute task worktree with the environment below. Required tests were not skipped or weakened. Runtime agents are simulated by these deterministic tests; these records mean live execution of the test commands and helper programs, not real-model instruction compliance.\n",
+      "lineStart": 38,
+      "lineEnd": 38
+    },
+    {
+      "byteStart": 9334,
+      "byteEnd": 9777,
+      "roles": [
+        "scope_concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/8"
+      ],
+      "interpretation": "Early digest failure retained without full tree; no blanket pre-existing/flaky attribution.",
+      "jsonPointer": null,
+      "rawText": "One early unchanged digest run missed its initial expected open-beads line. The same command passed at original task base, passed on task-source repetition, passed after final pre-rebase changes and passed after rebase. No digest test or related product code was changed to affect that line. The earliest failing run lacked a complete captured tree; its log is retained, and no causal or blanket pre-existing/flaky classification is asserted.\n",
+      "lineStart": 116,
+      "lineEnd": 116
+    },
+    {
+      "byteStart": 13542,
+      "byteEnd": 13743,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/14"
+      ],
+      "interpretation": "JSON /concerns/0 repeats prose154; distinct appearance, no automatic link/merge.",
+      "jsonPointer": null,
+      "rawText": "    \"The unchanged rebased replay suite reports 2294 passed, 1 failed: ready reentry with missing basis obtains independent verification review before closure. This is not clean completion evidence.\",\n",
+      "lineStart": 179,
+      "lineEnd": 179
+    },
+    {
+      "byteStart": 13743,
+      "byteEnd": 13962,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/15"
+      ],
+      "interpretation": "JSON /concerns/1 repeats prose155; distinct appearance.",
+      "jsonPointer": null,
+      "rawText": "    \"The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs.\",\n",
+      "lineStart": 180,
+      "lineEnd": 180
+    },
+    {
+      "byteStart": 13962,
+      "byteEnd": 14106,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/16"
+      ],
+      "interpretation": "JSON /concerns/2 repeats prose156; distinct appearance.",
+      "jsonPointer": null,
+      "rawText": "    \"Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending.\",\n",
+      "lineStart": 181,
+      "lineEnd": 181
+    },
+    {
+      "byteStart": 14106,
+      "byteEnd": 14325,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/17"
+      ],
+      "interpretation": "JSON /concerns/3 repeats prose157; distinct appearance.",
+      "jsonPointer": null,
+      "rawText": "    \"Targeted Recovery payloads preserve complete unknown/additive fields and may remain large. If their existing-reader transport fails, admission remains conservatively held; no extra reader agent dispatch is added.\"\n",
+      "lineStart": 182,
+      "lineEnd": 182
+    },
+    {
+      "byteStart": 21195,
+      "byteEnd": 21916,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/21"
+      ],
+      "interpretation": "Exact named fixture amendment and preserved guards/negative cases.",
+      "jsonPointer": null,
+      "rawText": "Read current `bd show super-plan-ufz.22 --json` (including description and acceptance), `bd comments super-plan-ufz.22` (none), the amended Task 19 brief, the prior report and review, recovery-fixture-assessment-r1.md and recovery-fixture-amendment-r1.json. The explicit bounded replay exception settles the old unchanged-suite conflict. No schema, scope inference, unknown hold, verification discriminator, source validation, digest-suite, snapshot, specification or historical evidence change was made. The original not-ready missing-basis assertion and pending-closure source/tracker failure assertions remain; their missing-basis input now contains only the valid counted typed completion it actually claims to test.\n",
+      "lineStart": 280,
+      "lineEnd": 280
+    },
+    {
+      "byteStart": 28273,
+      "byteEnd": 28563,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/24"
+      ],
+      "interpretation": "No full repository suite or real-model evaluation.",
+      "jsonPointer": null,
+      "rawText": "The full replay covers the existing task/final review source binding and its documented dryRun scenarios without changing their counts or baselines. The two startup seams additionally confirm inherited .23 composition. No full repository suite or real-model instruction evaluation was run.\n",
+      "lineStart": 327,
+      "lineEnd": 327
+    },
+    {
+      "byteStart": 31377,
+      "byteEnd": 31799,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/27"
+      ],
+      "interpretation": "Final sweep/independent final/root/human acceptance pending; deterministic agents simulated.",
+      "jsonPointer": null,
+      "rawText": "Fix-only tracked change: tests/super-code/replay-harness.mjs. No product function changed in this pass. The current task amendment explicitly authorizes this named fixture correction. No further assumption was needed. Caller-owned final sweep, independent final acceptance and root/human acceptance remain pending; passing deterministic agent simulations do not claim real-model instruction compliance or root completion.\n",
+      "lineStart": 359,
+      "lineEnd": 359
+    },
+    {
+      "byteStart": 46956,
+      "byteEnd": 47161,
+      "roles": [
+        "structured_concern_rendition"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/22/passages/32"
+      ],
+      "interpretation": "New final concern retains caller acceptance/live-compliance limits; distinct from original four.",
+      "jsonPointer": null,
+      "rawText": "    \"Caller-owned final sweep, independent final acceptance and root/human acceptance remain pending. Deterministic replay uses simulated Workflow agents; no real-model instruction compliance is claimed.\"\n",
+      "lineStart": 568,
+      "lineEnd": 568
+    }
+  ],
+  "retainedArtifact": "task-report-history-r1/raw/task-19-report.md",
+  "retainedSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e"
+}

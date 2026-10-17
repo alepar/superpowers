@@ -1,0 +1,789 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-27-report.md",
+  "rawSha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+  "rawByteCount": 22592,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md",
+    "durablePath": "task-report-history-r1/raw/task-27-report.md",
+    "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+    "byteCount": 22592,
+    "logicalRole": "report",
+    "ordinal": 27,
+    "logicalTaskId": "super-plan-ufz.30",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-27-report.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+    "error": "report-verdict: --complete: unrecognized finding source"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 27 / super-plan-ufz.30 implementation report",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 27 / super-plan-ufz.30 implementation report\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report"
+      ],
+      "lineStart": 1,
+      "lineEnd": 2,
+      "byteStart": 0,
+      "byteEnd": 53,
+      "bodyLineStart": 2,
+      "rawText": "# Task 27 / super-plan-ufz.30 implementation report\n\n",
+      "bodyRawText": "\n",
+      "units": []
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Implementation"
+      ],
+      "lineStart": 3,
+      "lineEnd": 8,
+      "byteStart": 53,
+      "byteEnd": 965,
+      "bodyLineStart": 4,
+      "rawText": "## Implementation\n\nQualified the historical Markdown bound and corresponding JSON simulation/summary claims. The 17h58m result is now a model-only minimum, not an established historical lower bound; simulation.verdict is inconclusive and diagnosis.dominant is unknown. The retained legacy lowerBoundMs numeric field is explicitly explained. Both representations retain observed timing, unknown readiness, graph-scope limitations, planning context and distinct all-agent/task-slot scope. Counterfactual savings are relative to the modeled baseline. The .14 task-path contribution is distinguished from an established whole-run cause.\n\nThe task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.\n\n",
+      "bodyRawText": "\nQualified the historical Markdown bound and corresponding JSON simulation/summary claims. The 17h58m result is now a model-only minimum, not an established historical lower bound; simulation.verdict is inconclusive and diagnosis.dominant is unknown. The retained legacy lowerBoundMs numeric field is explicitly explained. Both representations retain observed timing, unknown readiness, graph-scope limitations, planning context and distinct all-agent/task-slot scope. Counterfactual savings are relative to the modeled baseline. The .14 task-path contribution is distinguished from an established whole-run cause.\n\nThe task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Qualified the historical Markdown bound and corresponding JSON simulation/summary claims. The 17h58m result is now a model-only minimum, not an established historical lower bound; simulation.verdict is inconclusive and diagnosis.dominant is unknown. The retained legacy lowerBoundMs numeric field is explicitly explained. Both representations retain observed timing, unknown readiness, graph-scope limitations, planning context and distinct all-agent/task-slot scope. Counterfactual savings are relative to the modeled baseline. The .14 task-path contribution is distinguished from an established whole-run cause.\n",
+          "text": "Qualified the historical Markdown bound and corresponding JSON simulation/summary claims. The 17h58m result is now a model-only minimum, not an established historical lower bound; simulation.verdict is inconclusive and diagnosis.dominant is unknown. The retained legacy lowerBoundMs numeric field is explicitly explained. Both representations retain observed timing, unknown readiness, graph-scope limitations, planning context and distinct all-agent/task-slot scope. Counterfactual savings are relative to the modeled baseline. The .14 task-path contribution is distinguished from an established whole-run cause.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 72,
+          "byteEnd": 686
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.\n",
+          "text": "The task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 687,
+          "byteEnd": 964
+        }
+      ]
+    },
+    {
+      "section": "Requirements and source judgment",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Requirements and source judgment\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Requirements and source judgment"
+      ],
+      "lineStart": 9,
+      "lineEnd": 14,
+      "byteStart": 965,
+      "byteEnd": 2058,
+      "bodyLineStart": 10,
+      "rawText": "## Requirements and source judgment\n\nRead current `bd show super-plan-ufz.30 --json` and `bd comments super-plan-ufz.30` before editing; there are no amendments or comments. The frozen task-27 brief and current acceptance agree. Read the approved workflow reliability spec (especially §5), finding-continuity design, captured cluster-16 review, roast step-back and the profiler's model/diagnosis producer source. Judgment remains bounded by those captured records; rejected measurement-classification and direct frozen-Git fallback materiality findings are not reopened.\n\nThe original implementation source was clean c3fac4369c7c737e2e7f9f7250fd253b21442d12. A fresh task worktree and task-super-plan-ufz.30 branch were cut after already-merged returned false. There is no install/setup script or package dependency for this data-only comparison. The comparison runner is the task-local `.superpowers/task-30/compare-profile.mjs`; both artifacts resolve inside this task worktree. Native Node is `/opt/homebrew/bin/node`, an interpreter rather than an installed product/test-runner package.\n\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.30 --json` and `bd comments super-plan-ufz.30` before editing; there are no amendments or comments. The frozen task-27 brief and current acceptance agree. Read the approved workflow reliability spec (especially §5), finding-continuity design, captured cluster-16 review, roast step-back and the profiler's model/diagnosis producer source. Judgment remains bounded by those captured records; rejected measurement-classification and direct frozen-Git fallback materiality findings are not reopened.\n\nThe original implementation source was clean c3fac4369c7c737e2e7f9f7250fd253b21442d12. A fresh task worktree and task-super-plan-ufz.30 branch were cut after already-merged returned false. There is no install/setup script or package dependency for this data-only comparison. The comparison runner is the task-local `.superpowers/task-30/compare-profile.mjs`; both artifacts resolve inside this task worktree. Native Node is `/opt/homebrew/bin/node`, an interpreter rather than an installed product/test-runner package.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.30 --json` and `bd comments super-plan-ufz.30` before editing; there are no amendments or comments. The frozen task-27 brief and current acceptance agree. Read the approved workflow reliability spec (especially §5), finding-continuity design, captured cluster-16 review, roast step-back and the profiler's model/diagnosis producer source. Judgment remains bounded by those captured records; rejected measurement-classification and direct frozen-Git fallback materiality findings are not reopened.\n",
+          "text": "Read current `bd show super-plan-ufz.30 --json` and `bd comments super-plan-ufz.30` before editing; there are no amendments or comments. The frozen task-27 brief and current acceptance agree. Read the approved workflow reliability spec (especially §5), finding-continuity design, captured cluster-16 review, roast step-back and the profiler's model/diagnosis producer source. Judgment remains bounded by those captured records; rejected measurement-classification and direct frozen-Git fallback materiality findings are not reopened.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 1002,
+          "byteEnd": 1537
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The original implementation source was clean c3fac4369c7c737e2e7f9f7250fd253b21442d12. A fresh task worktree and task-super-plan-ufz.30 branch were cut after already-merged returned false. There is no install/setup script or package dependency for this data-only comparison. The comparison runner is the task-local `.superpowers/task-30/compare-profile.mjs`; both artifacts resolve inside this task worktree. Native Node is `/opt/homebrew/bin/node`, an interpreter rather than an installed product/test-runner package.\n",
+          "text": "The original implementation source was clean c3fac4369c7c737e2e7f9f7250fd253b21442d12. A fresh task worktree and task-super-plan-ufz.30 branch were cut after already-merged returned false. There is no install/setup script or package dependency for this data-only comparison. The comparison runner is the task-local `.superpowers/task-30/compare-profile.mjs`; both artifacts resolve inside this task worktree. Native Node is `/opt/homebrew/bin/node`, an interpreter rather than an installed product/test-runner package.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 1538,
+          "byteEnd": 2057
+        }
+      ]
+    },
+    {
+      "section": "Claim-focused RED assessment",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Claim-focused RED assessment\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Claim-focused RED assessment"
+      ],
+      "lineStart": 15,
+      "lineEnd": 37,
+      "byteStart": 2058,
+      "byteEnd": 4513,
+      "bodyLineStart": 16,
+      "rawText": "## Claim-focused RED assessment\n\nThis was a pre-edit evidence comparison, not a failing product test or newly added test suite. Its complete retained output follows:\n\n\n```text\nClaim-focused RED assessment (not a product test):\nProfile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing)\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained\nsimulation.verdict: graph-bound diagnosis.dominant: task graph\nModeled lowerBoundMs: 64688059 observed graphMs: 63785002 excess ms: 903057\n{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\n{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\nLong wait: {\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476}\nConcurrency: {\"wallMs\":63998871,\"byActive\":{\"0\":53097429,\"1\":2549996,\"2\":4549103,\"3\":3802343}}\nRED: model exceeds observed graph window; final residual edge does not establish historical ordering; readiness and waits remain unknown; 14h26m wait and rounded 83% no-agent time preclude established task-parallelism diagnosis.\n```\n\nThe conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.\n\n",
+      "bodyRawText": "\nThis was a pre-edit evidence comparison, not a failing product test or newly added test suite. Its complete retained output follows:\n\n\n```text\nClaim-focused RED assessment (not a product test):\nProfile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing)\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained\nsimulation.verdict: graph-bound diagnosis.dominant: task graph\nModeled lowerBoundMs: 64688059 observed graphMs: 63785002 excess ms: 903057\n{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\n{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\nLong wait: {\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476}\nConcurrency: {\"wallMs\":63998871,\"byActive\":{\"0\":53097429,\"1\":2549996,\"2\":4549103,\"3\":3802343}}\nRED: model exceeds observed graph window; final residual edge does not establish historical ordering; readiness and waits remain unknown; 14h26m wait and rounded 83% no-agent time preclude established task-parallelism diagnosis.\n```\n\nThe conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "This was a pre-edit evidence comparison, not a failing product test or newly added test suite. Its complete retained output follows:\n",
+          "text": "This was a pre-edit evidence comparison, not a failing product test or newly added test suite. Its complete retained output follows:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 2091,
+          "byteEnd": 2224
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nClaim-focused RED assessment (not a product test):\nProfile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing)\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained\nsimulation.verdict: graph-bound diagnosis.dominant: task graph\nModeled lowerBoundMs: 64688059 observed graphMs: 63785002 excess ms: 903057\n{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\n{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\nLong wait: {\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476}\nConcurrency: {\"wallMs\":63998871,\"byActive\":{\"0\":53097429,\"1\":2549996,\"2\":4549103,\"3\":3802343}}\nRED: model exceeds observed graph window; final residual edge does not establish historical ordering; readiness and waits remain unknown; 14h26m wait and rounded 83% no-agent time preclude established task-parallelism diagnosis.\n```\n",
+          "text": "```text\nClaim-focused RED assessment (not a product test):\nProfile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing)\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained\nsimulation.verdict: graph-bound diagnosis.dominant: task graph\nModeled lowerBoundMs: 64688059 observed graphMs: 63785002 excess ms: 903057\n{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\n{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"dependencyReadyAt\":null,\"waitMs\":null,\"lateEdges\":[]}\nLong wait: {\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476}\nConcurrency: {\"wallMs\":63998871,\"byActive\":{\"0\":53097429,\"1\":2549996,\"2\":4549103,\"3\":3802343}}\nRED: model exceeds observed graph window; final residual edge does not establish historical ordering; readiness and waits remain unknown; 14h26m wait and rounded 83% no-agent time preclude established task-parallelism diagnosis.\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 34,
+          "byteStart": 2226,
+          "byteEnd": 4151
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.\n",
+          "text": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 4152,
+          "byteEnd": 4512
+        }
+      ]
+    },
+    {
+      "section": "Verification command",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Verification command\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Verification command"
+      ],
+      "lineStart": 38,
+      "lineEnd": 46,
+      "byteStart": 4513,
+      "byteEnd": 5054,
+      "bodyLineStart": 39,
+      "rawText": "## Verification command\n\nExecuted once after the final edits (exit 0, about 0.46 seconds); no edits or source changes followed. The task branch rebase was a no-op because integration remained at the original base.\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\n```\n\n",
+      "bodyRawText": "\nExecuted once after the final edits (exit 0, about 0.46 seconds); no edits or source changes followed. The task branch rebase was a no-op because integration remained at the original base.\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Executed once after the final edits (exit 0, about 0.46 seconds); no edits or source changes followed. The task branch rebase was a no-op because integration remained at the original base.\n",
+          "text": "Executed once after the final edits (exit 0, about 0.46 seconds); no edits or source changes followed. The task branch rebase was a no-op because integration remained at the original base.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 4538,
+          "byteEnd": 4727
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 43,
+          "lineEnd": 45,
+          "byteStart": 4729,
+          "byteEnd": 5053
+        }
+      ]
+    },
+    {
+      "section": "One-off comparison source",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## One-off comparison source\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "One-off comparison source"
+      ],
+      "lineStart": 47,
+      "lineEnd": 96,
+      "byteStart": 5054,
+      "byteEnd": 9878,
+      "bodyLineStart": 48,
+      "rawText": "## One-off comparison source\n\nThis ignored local evidence helper only reads the two profiles and Git source; it is not a delivered product test or a prose-mirroring regression test. Every assertion can fail on changed raw/numeric source, an unexpected interpretation field, a changed timeline/table, a mismatched summary or unsupported timestamp ordering. It prints qualified prose for semantic self-review rather than asserting expected sentences.\n\n```js\nimport fs from 'node:fs';\nimport assert from 'node:assert/strict';\nimport {execFileSync} from 'node:child_process';\nconst base='c3fac4369c7c737e2e7f9f7250fd253b21442d12';\nconst root='docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation';\nconst oldText=ext=>execFileSync('git',['show',`${base}:${root}.${ext}`],{encoding:'utf8'});\nconst before=JSON.parse(oldText('json'));\nconst after=JSON.parse(fs.readFileSync(`${root}.json`,'utf8'));\nconst mdBefore=oldText('md'),mdAfter=fs.readFileSync(`${root}.md`,'utf8');\nconst flatten=(v,path='',out={})=>{if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))flatten(x,`${path}/${k}`,out);}else out[path]=v;return out;};\nconst b=flatten(before),a=flatten(after);\nconst changed=[...new Set([...Object.keys(b),...Object.keys(a)])].filter(k=>!Object.is(b[k],a[k]));\nconst allowed=['/diagnosis/dominant','/simulation/verdict','/simulation/qualification','/simulation/whatIfs/0/note','/simulation/whatIfs/1/note',...[3,5,7,12,18,19].map(i=>`/summary/${i}`)];\nassert.deepEqual(changed.sort(),allowed.sort());\nconst numeric=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>typeof v==='number'));\nassert.deepEqual(numeric(a),numeric(b));\nlet rawCount=0;\nfor(const key of Object.keys(before))if(!['diagnosis','simulation','summary'].includes(key)){assert.deepEqual(after[key],before[key]);rawCount++;}\nfor(const key of ['planningMs','windowMs'])assert.equal(after.diagnosis[key],before.diagnosis[key]);\nconst rawSimulation=o=>{const x=structuredClone(o);delete x.verdict;delete x.qualification;for(const w of x.whatIfs)delete w.note;return x;};\nassert.deepEqual(rawSimulation(after.simulation),rawSimulation(before.simulation));\nconst middle=s=>s.slice(s.indexOf('## Per bead'),s.indexOf('## Schedule model'));\nconst tail=s=>s.slice(s.indexOf('## Timeline'));\nassert.equal(middle(mdAfter),middle(mdBefore));assert.equal(tail(mdAfter),tail(mdBefore));\nconst scenarios=s=>s.slice(s.indexOf('| scenario |'),s.indexOf('## Timeline')).trim().split('\\n').map(r=>r.split('|').slice(2));\nassert.deepEqual(scenarios(mdAfter),scenarios(mdBefore));\nassert.deepEqual(mdAfter.split('```')[1].trim().split('\\n'),after.summary);\nconst late=after.beads.filter(x=>['super-plan-ufz.14','super-plan-ufz.20'].includes(x.id));\nconst a14=late.find(x=>x.id.endsWith('.14')),a20=late.find(x=>x.id.endsWith('.20'));\nassert.ok(Date.parse(a14.dispatchedAt)<Date.parse(a20.createdAt));\nfor(const x of late){assert.equal(x.readyAt,null);assert.equal(x.waitMs,null);}\nconst changedFiles=execFileSync('git',['diff','--name-only',base],{encoding:'utf8'}).trim().split('\\n').sort();\nassert.deepEqual(changedFiles,[`${root}.json`,`${root}.md`].sort());\nconsole.log(`PASS: JSON parses; ${Object.keys(numeric(a)).length} numeric leaves unchanged; ${rawCount} complete raw top-level subtrees, diagnosis timings and simulation results unchanged.`);\nconsole.log('PASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.');\nconsole.log(`PASS: ${after.summary.length} Markdown/JSON summary lines identical; only ${changed.length} authorized interpretation leaves changed; only the two named tracked files changed.`);\nconsole.log('Observed support:',JSON.stringify({modelMs:after.simulation.lowerBoundMs,graphMs:after.window.graphMs,excessMs:after.simulation.lowerBoundMs-after.window.graphMs,planningMs:after.diagnosis.planningMs,longWait:after.criticalPath.segments.find(s=>s.ms>14*3600000),noAgentPercent:Math.round(after.concurrency.byActive['0']/after.concurrency.wallMs*100),wallMs:after.concurrency.wallMs,allAgentPeak:after.concurrency.peak,taskSlotPeak:after.taskSlots.peak,taskSlotCap:after.taskSlots.cap}));\nconsole.log('Late task records:',JSON.stringify(late.map(x=>({id:x.id,createdAt:x.createdAt,dispatchedAt:x.dispatchedAt,readyAt:x.readyAt,waitMs:x.waitMs,lateEdges:x.lateEdges,stackParents:x.stackParents}))));\nconsole.log('Qualified interpretations for semantic self-review:');\nconsole.log('diagnosis.dominant:',after.diagnosis.dominant,'simulation.verdict:',after.simulation.verdict);\nconsole.log(after.simulation.qualification);\nfor(const i of [3,5,7,12,18,19])console.log(after.summary[i]);\nconsole.log('PASS: bounded historical qualification comparison complete; no product code or behavior tests run.');\n```\n\n",
+      "bodyRawText": "\nThis ignored local evidence helper only reads the two profiles and Git source; it is not a delivered product test or a prose-mirroring regression test. Every assertion can fail on changed raw/numeric source, an unexpected interpretation field, a changed timeline/table, a mismatched summary or unsupported timestamp ordering. It prints qualified prose for semantic self-review rather than asserting expected sentences.\n\n```js\nimport fs from 'node:fs';\nimport assert from 'node:assert/strict';\nimport {execFileSync} from 'node:child_process';\nconst base='c3fac4369c7c737e2e7f9f7250fd253b21442d12';\nconst root='docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation';\nconst oldText=ext=>execFileSync('git',['show',`${base}:${root}.${ext}`],{encoding:'utf8'});\nconst before=JSON.parse(oldText('json'));\nconst after=JSON.parse(fs.readFileSync(`${root}.json`,'utf8'));\nconst mdBefore=oldText('md'),mdAfter=fs.readFileSync(`${root}.md`,'utf8');\nconst flatten=(v,path='',out={})=>{if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))flatten(x,`${path}/${k}`,out);}else out[path]=v;return out;};\nconst b=flatten(before),a=flatten(after);\nconst changed=[...new Set([...Object.keys(b),...Object.keys(a)])].filter(k=>!Object.is(b[k],a[k]));\nconst allowed=['/diagnosis/dominant','/simulation/verdict','/simulation/qualification','/simulation/whatIfs/0/note','/simulation/whatIfs/1/note',...[3,5,7,12,18,19].map(i=>`/summary/${i}`)];\nassert.deepEqual(changed.sort(),allowed.sort());\nconst numeric=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>typeof v==='number'));\nassert.deepEqual(numeric(a),numeric(b));\nlet rawCount=0;\nfor(const key of Object.keys(before))if(!['diagnosis','simulation','summary'].includes(key)){assert.deepEqual(after[key],before[key]);rawCount++;}\nfor(const key of ['planningMs','windowMs'])assert.equal(after.diagnosis[key],before.diagnosis[key]);\nconst rawSimulation=o=>{const x=structuredClone(o);delete x.verdict;delete x.qualification;for(const w of x.whatIfs)delete w.note;return x;};\nassert.deepEqual(rawSimulation(after.simulation),rawSimulation(before.simulation));\nconst middle=s=>s.slice(s.indexOf('## Per bead'),s.indexOf('## Schedule model'));\nconst tail=s=>s.slice(s.indexOf('## Timeline'));\nassert.equal(middle(mdAfter),middle(mdBefore));assert.equal(tail(mdAfter),tail(mdBefore));\nconst scenarios=s=>s.slice(s.indexOf('| scenario |'),s.indexOf('## Timeline')).trim().split('\\n').map(r=>r.split('|').slice(2));\nassert.deepEqual(scenarios(mdAfter),scenarios(mdBefore));\nassert.deepEqual(mdAfter.split('```')[1].trim().split('\\n'),after.summary);\nconst late=after.beads.filter(x=>['super-plan-ufz.14','super-plan-ufz.20'].includes(x.id));\nconst a14=late.find(x=>x.id.endsWith('.14')),a20=late.find(x=>x.id.endsWith('.20'));\nassert.ok(Date.parse(a14.dispatchedAt)<Date.parse(a20.createdAt));\nfor(const x of late){assert.equal(x.readyAt,null);assert.equal(x.waitMs,null);}\nconst changedFiles=execFileSync('git',['diff','--name-only',base],{encoding:'utf8'}).trim().split('\\n').sort();\nassert.deepEqual(changedFiles,[`${root}.json`,`${root}.md`].sort());\nconsole.log(`PASS: JSON parses; ${Object.keys(numeric(a)).length} numeric leaves unchanged; ${rawCount} complete raw top-level subtrees, diagnosis timings and simulation results unchanged.`);\nconsole.log('PASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.');\nconsole.log(`PASS: ${after.summary.length} Markdown/JSON summary lines identical; only ${changed.length} authorized interpretation leaves changed; only the two named tracked files changed.`);\nconsole.log('Observed support:',JSON.stringify({modelMs:after.simulation.lowerBoundMs,graphMs:after.window.graphMs,excessMs:after.simulation.lowerBoundMs-after.window.graphMs,planningMs:after.diagnosis.planningMs,longWait:after.criticalPath.segments.find(s=>s.ms>14*3600000),noAgentPercent:Math.round(after.concurrency.byActive['0']/after.concurrency.wallMs*100),wallMs:after.concurrency.wallMs,allAgentPeak:after.concurrency.peak,taskSlotPeak:after.taskSlots.peak,taskSlotCap:after.taskSlots.cap}));\nconsole.log('Late task records:',JSON.stringify(late.map(x=>({id:x.id,createdAt:x.createdAt,dispatchedAt:x.dispatchedAt,readyAt:x.readyAt,waitMs:x.waitMs,lateEdges:x.lateEdges,stackParents:x.stackParents}))));\nconsole.log('Qualified interpretations for semantic self-review:');\nconsole.log('diagnosis.dominant:',after.diagnosis.dominant,'simulation.verdict:',after.simulation.verdict);\nconsole.log(after.simulation.qualification);\nfor(const i of [3,5,7,12,18,19])console.log(after.summary[i]);\nconsole.log('PASS: bounded historical qualification comparison complete; no product code or behavior tests run.');\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "This ignored local evidence helper only reads the two profiles and Git source; it is not a delivered product test or a prose-mirroring regression test. Every assertion can fail on changed raw/numeric source, an unexpected interpretation field, a changed timeline/table, a mismatched summary or unsupported timestamp ordering. It prints qualified prose for semantic self-review rather than asserting expected sentences.\n",
+          "text": "This ignored local evidence helper only reads the two profiles and Git source; it is not a delivered product test or a prose-mirroring regression test. Every assertion can fail on changed raw/numeric source, an unexpected interpretation field, a changed timeline/table, a mismatched summary or unsupported timestamp ordering. It prints qualified prose for semantic self-review rather than asserting expected sentences.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 49,
+          "lineEnd": 49,
+          "byteStart": 5084,
+          "byteEnd": 5503
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```js\nimport fs from 'node:fs';\nimport assert from 'node:assert/strict';\nimport {execFileSync} from 'node:child_process';\nconst base='c3fac4369c7c737e2e7f9f7250fd253b21442d12';\nconst root='docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation';\nconst oldText=ext=>execFileSync('git',['show',`${base}:${root}.${ext}`],{encoding:'utf8'});\nconst before=JSON.parse(oldText('json'));\nconst after=JSON.parse(fs.readFileSync(`${root}.json`,'utf8'));\nconst mdBefore=oldText('md'),mdAfter=fs.readFileSync(`${root}.md`,'utf8');\nconst flatten=(v,path='',out={})=>{if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))flatten(x,`${path}/${k}`,out);}else out[path]=v;return out;};\nconst b=flatten(before),a=flatten(after);\nconst changed=[...new Set([...Object.keys(b),...Object.keys(a)])].filter(k=>!Object.is(b[k],a[k]));\nconst allowed=['/diagnosis/dominant','/simulation/verdict','/simulation/qualification','/simulation/whatIfs/0/note','/simulation/whatIfs/1/note',...[3,5,7,12,18,19].map(i=>`/summary/${i}`)];\nassert.deepEqual(changed.sort(),allowed.sort());\nconst numeric=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>typeof v==='number'));\nassert.deepEqual(numeric(a),numeric(b));\nlet rawCount=0;\nfor(const key of Object.keys(before))if(!['diagnosis','simulation','summary'].includes(key)){assert.deepEqual(after[key],before[key]);rawCount++;}\nfor(const key of ['planningMs','windowMs'])assert.equal(after.diagnosis[key],before.diagnosis[key]);\nconst rawSimulation=o=>{const x=structuredClone(o);delete x.verdict;delete x.qualification;for(const w of x.whatIfs)delete w.note;return x;};\nassert.deepEqual(rawSimulation(after.simulation),rawSimulation(before.simulation));\nconst middle=s=>s.slice(s.indexOf('## Per bead'),s.indexOf('## Schedule model'));\nconst tail=s=>s.slice(s.indexOf('## Timeline'));\nassert.equal(middle(mdAfter),middle(mdBefore));assert.equal(tail(mdAfter),tail(mdBefore));\nconst scenarios=s=>s.slice(s.indexOf('| scenario |'),s.indexOf('## Timeline')).trim().split('\\n').map(r=>r.split('|').slice(2));\nassert.deepEqual(scenarios(mdAfter),scenarios(mdBefore));\nassert.deepEqual(mdAfter.split('```')[1].trim().split('\\n'),after.summary);\nconst late=after.beads.filter(x=>['super-plan-ufz.14','super-plan-ufz.20'].includes(x.id));\nconst a14=late.find(x=>x.id.endsWith('.14')),a20=late.find(x=>x.id.endsWith('.20'));\nassert.ok(Date.parse(a14.dispatchedAt)<Date.parse(a20.createdAt));\nfor(const x of late){assert.equal(x.readyAt,null);assert.equal(x.waitMs,null);}\nconst changedFiles=execFileSync('git',['diff','--name-only',base],{encoding:'utf8'}).trim().split('\\n').sort();\nassert.deepEqual(changedFiles,[`${root}.json`,`${root}.md`].sort());\nconsole.log(`PASS: JSON parses; ${Object.keys(numeric(a)).length} numeric leaves unchanged; ${rawCount} complete raw top-level subtrees, diagnosis timings and simulation results unchanged.`);\nconsole.log('PASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.');\nconsole.log(`PASS: ${after.summary.length} Markdown/JSON summary lines identical; only ${changed.length} authorized interpretation leaves changed; only the two named tracked files changed.`);\nconsole.log('Observed support:',JSON.stringify({modelMs:after.simulation.lowerBoundMs,graphMs:after.window.graphMs,excessMs:after.simulation.lowerBoundMs-after.window.graphMs,planningMs:after.diagnosis.planningMs,longWait:after.criticalPath.segments.find(s=>s.ms>14*3600000),noAgentPercent:Math.round(after.concurrency.byActive['0']/after.concurrency.wallMs*100),wallMs:after.concurrency.wallMs,allAgentPeak:after.concurrency.peak,taskSlotPeak:after.taskSlots.peak,taskSlotCap:after.taskSlots.cap}));\nconsole.log('Late task records:',JSON.stringify(late.map(x=>({id:x.id,createdAt:x.createdAt,dispatchedAt:x.dispatchedAt,readyAt:x.readyAt,waitMs:x.waitMs,lateEdges:x.lateEdges,stackParents:x.stackParents}))));\nconsole.log('Qualified interpretations for semantic self-review:');\nconsole.log('diagnosis.dominant:',after.diagnosis.dominant,'simulation.verdict:',after.simulation.verdict);\nconsole.log(after.simulation.qualification);\nfor(const i of [3,5,7,12,18,19])console.log(after.summary[i]);\nconsole.log('PASS: bounded historical qualification comparison complete; no product code or behavior tests run.');\n```\n",
+          "text": "```js\nimport fs from 'node:fs';\nimport assert from 'node:assert/strict';\nimport {execFileSync} from 'node:child_process';\nconst base='c3fac4369c7c737e2e7f9f7250fd253b21442d12';\nconst root='docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation';\nconst oldText=ext=>execFileSync('git',['show',`${base}:${root}.${ext}`],{encoding:'utf8'});\nconst before=JSON.parse(oldText('json'));\nconst after=JSON.parse(fs.readFileSync(`${root}.json`,'utf8'));\nconst mdBefore=oldText('md'),mdAfter=fs.readFileSync(`${root}.md`,'utf8');\nconst flatten=(v,path='',out={})=>{if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))flatten(x,`${path}/${k}`,out);}else out[path]=v;return out;};\nconst b=flatten(before),a=flatten(after);\nconst changed=[...new Set([...Object.keys(b),...Object.keys(a)])].filter(k=>!Object.is(b[k],a[k]));\nconst allowed=['/diagnosis/dominant','/simulation/verdict','/simulation/qualification','/simulation/whatIfs/0/note','/simulation/whatIfs/1/note',...[3,5,7,12,18,19].map(i=>`/summary/${i}`)];\nassert.deepEqual(changed.sort(),allowed.sort());\nconst numeric=o=>Object.fromEntries(Object.entries(o).filter(([,v])=>typeof v==='number'));\nassert.deepEqual(numeric(a),numeric(b));\nlet rawCount=0;\nfor(const key of Object.keys(before))if(!['diagnosis','simulation','summary'].includes(key)){assert.deepEqual(after[key],before[key]);rawCount++;}\nfor(const key of ['planningMs','windowMs'])assert.equal(after.diagnosis[key],before.diagnosis[key]);\nconst rawSimulation=o=>{const x=structuredClone(o);delete x.verdict;delete x.qualification;for(const w of x.whatIfs)delete w.note;return x;};\nassert.deepEqual(rawSimulation(after.simulation),rawSimulation(before.simulation));\nconst middle=s=>s.slice(s.indexOf('## Per bead'),s.indexOf('## Schedule model'));\nconst tail=s=>s.slice(s.indexOf('## Timeline'));\nassert.equal(middle(mdAfter),middle(mdBefore));assert.equal(tail(mdAfter),tail(mdBefore));\nconst scenarios=s=>s.slice(s.indexOf('| scenario |'),s.indexOf('## Timeline')).trim().split('\\n').map(r=>r.split('|').slice(2));\nassert.deepEqual(scenarios(mdAfter),scenarios(mdBefore));\nassert.deepEqual(mdAfter.split('```')[1].trim().split('\\n'),after.summary);\nconst late=after.beads.filter(x=>['super-plan-ufz.14','super-plan-ufz.20'].includes(x.id));\nconst a14=late.find(x=>x.id.endsWith('.14')),a20=late.find(x=>x.id.endsWith('.20'));\nassert.ok(Date.parse(a14.dispatchedAt)<Date.parse(a20.createdAt));\nfor(const x of late){assert.equal(x.readyAt,null);assert.equal(x.waitMs,null);}\nconst changedFiles=execFileSync('git',['diff','--name-only',base],{encoding:'utf8'}).trim().split('\\n').sort();\nassert.deepEqual(changedFiles,[`${root}.json`,`${root}.md`].sort());\nconsole.log(`PASS: JSON parses; ${Object.keys(numeric(a)).length} numeric leaves unchanged; ${rawCount} complete raw top-level subtrees, diagnosis timings and simulation results unchanged.`);\nconsole.log('PASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.');\nconsole.log(`PASS: ${after.summary.length} Markdown/JSON summary lines identical; only ${changed.length} authorized interpretation leaves changed; only the two named tracked files changed.`);\nconsole.log('Observed support:',JSON.stringify({modelMs:after.simulation.lowerBoundMs,graphMs:after.window.graphMs,excessMs:after.simulation.lowerBoundMs-after.window.graphMs,planningMs:after.diagnosis.planningMs,longWait:after.criticalPath.segments.find(s=>s.ms>14*3600000),noAgentPercent:Math.round(after.concurrency.byActive['0']/after.concurrency.wallMs*100),wallMs:after.concurrency.wallMs,allAgentPeak:after.concurrency.peak,taskSlotPeak:after.taskSlots.peak,taskSlotCap:after.taskSlots.cap}));\nconsole.log('Late task records:',JSON.stringify(late.map(x=>({id:x.id,createdAt:x.createdAt,dispatchedAt:x.dispatchedAt,readyAt:x.readyAt,waitMs:x.waitMs,lateEdges:x.lateEdges,stackParents:x.stackParents}))));\nconsole.log('Qualified interpretations for semantic self-review:');\nconsole.log('diagnosis.dominant:',after.diagnosis.dominant,'simulation.verdict:',after.simulation.verdict);\nconsole.log(after.simulation.qualification);\nfor(const i of [3,5,7,12,18,19])console.log(after.summary[i]);\nconsole.log('PASS: bounded historical qualification comparison complete; no product code or behavior tests run.');\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 51,
+          "lineEnd": 95,
+          "byteStart": 5504,
+          "byteEnd": 9877
+        }
+      ]
+    },
+    {
+      "section": "Verification output",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Verification output\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Verification output"
+      ],
+      "lineStart": 97,
+      "lineEnd": 116,
+      "byteStart": 9878,
+      "byteEnd": 13890,
+      "bodyLineStart": 98,
+      "rawText": "## Verification output\n\n```text\nPASS: JSON parses; 1818 numeric leaves unchanged; 22 complete raw top-level subtrees, diagnosis timings and simulation results unchanged.\nPASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.\nPASS: 24 Markdown/JSON summary lines identical; only 11 authorized interpretation leaves changed; only the two named tracked files changed.\nObserved support: {\"modelMs\":64688059,\"graphMs\":63785002,\"excessMs\":903057,\"planningMs\":285704,\"longWait\":{\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476},\"noAgentPercent\":83,\"wallMs\":63998871,\"allAgentPeak\":6,\"taskSlotPeak\":3,\"taskSlotCap\":3}\nLate task records: [{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[\"super-plan-ufz.20\"]},{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[]}]\nQualified interpretations for semantic self-review:\ndiagnosis.dominant: unknown simulation.verdict: inconclusive\nModel-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions.\nProfile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy\nProfile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained\nPASS: bounded historical qualification comparison complete; no product code or behavior tests run.\n```\n\n",
+      "bodyRawText": "\n```text\nPASS: JSON parses; 1818 numeric leaves unchanged; 22 complete raw top-level subtrees, diagnosis timings and simulation results unchanged.\nPASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.\nPASS: 24 Markdown/JSON summary lines identical; only 11 authorized interpretation leaves changed; only the two named tracked files changed.\nObserved support: {\"modelMs\":64688059,\"graphMs\":63785002,\"excessMs\":903057,\"planningMs\":285704,\"longWait\":{\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476},\"noAgentPercent\":83,\"wallMs\":63998871,\"allAgentPeak\":6,\"taskSlotPeak\":3,\"taskSlotCap\":3}\nLate task records: [{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[\"super-plan-ufz.20\"]},{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[]}]\nQualified interpretations for semantic self-review:\ndiagnosis.dominant: unknown simulation.verdict: inconclusive\nModel-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions.\nProfile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy\nProfile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained\nPASS: bounded historical qualification comparison complete; no product code or behavior tests run.\n```\n\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nPASS: JSON parses; 1818 numeric leaves unchanged; 22 complete raw top-level subtrees, diagnosis timings and simulation results unchanged.\nPASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.\nPASS: 24 Markdown/JSON summary lines identical; only 11 authorized interpretation leaves changed; only the two named tracked files changed.\nObserved support: {\"modelMs\":64688059,\"graphMs\":63785002,\"excessMs\":903057,\"planningMs\":285704,\"longWait\":{\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476},\"noAgentPercent\":83,\"wallMs\":63998871,\"allAgentPeak\":6,\"taskSlotPeak\":3,\"taskSlotCap\":3}\nLate task records: [{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[\"super-plan-ufz.20\"]},{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[]}]\nQualified interpretations for semantic self-review:\ndiagnosis.dominant: unknown simulation.verdict: inconclusive\nModel-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions.\nProfile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy\nProfile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained\nPASS: bounded historical qualification comparison complete; no product code or behavior tests run.\n```\n",
+          "text": "```text\nPASS: JSON parses; 1818 numeric leaves unchanged; 22 complete raw top-level subtrees, diagnosis timings and simulation results unchanged.\nPASS: Markdown raw per-bead/critical-path/tool sections and entire timeline/context/unmeasured suffix are byte-identical; schedule table numeric columns unchanged.\nPASS: 24 Markdown/JSON summary lines identical; only 11 authorized interpretation leaves changed; only the two named tracked files changed.\nObserved support: {\"modelMs\":64688059,\"graphMs\":63785002,\"excessMs\":903057,\"planningMs\":285704,\"longWait\":{\"kind\":\"wait\",\"bead\":null,\"label\":\"previous → reliability_design\",\"via\":null,\"start\":\"2026-10-16T15:19:02.530Z\",\"ms\":51989476},\"noAgentPercent\":83,\"wallMs\":63998871,\"allAgentPeak\":6,\"taskSlotPeak\":3,\"taskSlotCap\":3}\nLate task records: [{\"id\":\"super-plan-ufz.14\",\"createdAt\":\"2026-10-17T06:01:16.000Z\",\"dispatchedAt\":\"2026-10-17T08:19:58.131Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[\"super-plan-ufz.20\"]},{\"id\":\"super-plan-ufz.20\",\"createdAt\":\"2026-10-17T08:27:13.000Z\",\"dispatchedAt\":\"2026-10-17T08:31:40.461Z\",\"readyAt\":null,\"waitMs\":null,\"lateEdges\":[],\"stackParents\":[]}]\nQualified interpretations for semantic self-review:\ndiagnosis.dominant: unknown simulation.verdict: inconclusive\nModel-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions.\nProfile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck\nProfile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy\nProfile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0\nProfile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings\nProfile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained\nProfile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained\nPASS: bounded historical qualification comparison complete; no product code or behavior tests run.\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 99,
+          "lineEnd": 115,
+          "byteStart": 9902,
+          "byteEnd": 13889
+        }
+      ]
+    },
+    {
+      "section": "Source-tree capture",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Source-tree capture\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Source-tree capture"
+      ],
+      "lineStart": 117,
+      "lineEnd": 130,
+      "byteStart": 13890,
+      "byteEnd": 14794,
+      "bodyLineStart": 118,
+      "rawText": "## Source-tree capture\n\nBefore verification the tested dirty source was captured through a temporary index, preserving the real index:\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git add docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git write-tree\n```\n\nOutput: `d807eeb58c5aefe49829da9e56d36cf16ee0f6a4`. After commit and no-op rebase, `git rev-parse HEAD^{tree}` returned exactly the same tree. `git diff --check` passed. `git status --short` was empty after commit/rebase.\n\n",
+      "bodyRawText": "\nBefore verification the tested dirty source was captured through a temporary index, preserving the real index:\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git add docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git write-tree\n```\n\nOutput: `d807eeb58c5aefe49829da9e56d36cf16ee0f6a4`. After commit and no-op rebase, `git rev-parse HEAD^{tree}` returned exactly the same tree. `git diff --check` passed. `git status --short` was empty after commit/rebase.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before verification the tested dirty source was captured through a temporary index, preserving the real index:\n",
+          "text": "Before verification the tested dirty source was captured through a temporary index, preserving the real index:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 119,
+          "lineEnd": 119,
+          "byteStart": 13914,
+          "byteEnd": 14025
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git add docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git write-tree\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git read-tree HEAD\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git add docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\nGIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.30/source.index git write-tree\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 122,
+          "lineEnd": 127,
+          "byteStart": 14027,
+          "byteEnd": 14570
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Output: `d807eeb58c5aefe49829da9e56d36cf16ee0f6a4`. After commit and no-op rebase, `git rev-parse HEAD^{tree}` returned exactly the same tree. `git diff --check` passed. `git status --short` was empty after commit/rebase.\n",
+          "text": "Output: `d807eeb58c5aefe49829da9e56d36cf16ee0f6a4`. After commit and no-op rebase, `git rev-parse HEAD^{tree}` returned exactly the same tree. `git diff --check` passed. `git status --short` was empty after commit/rebase.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 129,
+          "lineEnd": 129,
+          "byteStart": 14571,
+          "byteEnd": 14793
+        }
+      ]
+    },
+    {
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Self-review and acceptance coverage\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "lineStart": 131,
+      "lineEnd": 138,
+      "byteStart": 14794,
+      "byteEnd": 15990,
+      "bodyLineStart": 132,
+      "rawText": "## Self-review and acceptance coverage\n\n- The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.\n- Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.\n- The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.\n- All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.\n- The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.\n\n",
+      "bodyRawText": "\n- The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.\n- Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.\n- The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.\n- All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.\n- The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.\n",
+          "text": "The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 14834,
+          "byteEnd": 14979
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.\n",
+          "text": "Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 134,
+          "lineEnd": 134,
+          "byteStart": 14979,
+          "byteEnd": 15223
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.\n",
+          "text": "The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 135,
+          "lineEnd": 135,
+          "byteStart": 15223,
+          "byteEnd": 15402
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.\n",
+          "text": "All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 136,
+          "lineEnd": 136,
+          "byteStart": 15402,
+          "byteEnd": 15773
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.\n",
+          "text": "The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 137,
+          "lineEnd": 137,
+          "byteStart": 15773,
+          "byteEnd": 15989
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 10,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Test hygiene"
+      ],
+      "lineStart": 139,
+      "lineEnd": 149,
+      "byteStart": 15990,
+      "byteEnd": 17526,
+      "bodyLineStart": 140,
+      "rawText": "## Test hygiene\n\nNo servers, daemons, watchers or background processes were started. The first hygiene invocation from inside the target worktree exited 2 with `refusing root ...: it contains the working directory of this process or an ancestor`; that was a helper guard, not proof of a clean process state. The check was then run from the read-only integration cwd, outside the target roots:\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\n```\n\nExit 0; output empty, no `match:` lines. Final `stop-run-processes` without `--check` ran from the same outside cwd against these same task-only roots and exited 0 with no output or `survived:` lines. No process leak was observed. No resources from other tasks were targeted. No permission refusal occurred. A null-unaware exploratory key listing initially errored on null runtimeSlots; it was corrected for inspection and was not used as verification evidence.\n\n",
+      "bodyRawText": "\nNo servers, daemons, watchers or background processes were started. The first hygiene invocation from inside the target worktree exited 2 with `refusing root ...: it contains the working directory of this process or an ancestor`; that was a helper guard, not proof of a clean process state. The check was then run from the read-only integration cwd, outside the target roots:\n\n\n```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\n```\n\nExit 0; output empty, no `match:` lines. Final `stop-run-processes` without `--check` ran from the same outside cwd against these same task-only roots and exited 0 with no output or `survived:` lines. No process leak was observed. No resources from other tasks were targeted. No permission refusal occurred. A null-unaware exploratory key listing initially errored on null runtimeSlots; it was corrected for inspection and was not used as verification evidence.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No servers, daemons, watchers or background processes were started. The first hygiene invocation from inside the target worktree exited 2 with `refusing root ...: it contains the working directory of this process or an ancestor`; that was a helper guard, not proof of a clean process state. The check was then run from the read-only integration cwd, outside the target roots:\n",
+          "text": "No servers, daemons, watchers or background processes were started. The first hygiene invocation from inside the target worktree exited 2 with `refusing root ...: it contains the working directory of this process or an ancestor`; that was a helper guard, not proof of a clean process state. The check was then run from the read-only integration cwd, outside the target roots:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 141,
+          "lineEnd": 141,
+          "byteStart": 16007,
+          "byteEnd": 16383
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\n```\n",
+          "text": "```sh\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 144,
+          "lineEnd": 146,
+          "byteStart": 16385,
+          "byteEnd": 17062
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0; output empty, no `match:` lines. Final `stop-run-processes` without `--check` ran from the same outside cwd against these same task-only roots and exited 0 with no output or `survived:` lines. No process leak was observed. No resources from other tasks were targeted. No permission refusal occurred. A null-unaware exploratory key listing initially errored on null runtimeSlots; it was corrected for inspection and was not used as verification evidence.\n",
+          "text": "Exit 0; output empty, no `match:` lines. Final `stop-run-processes` without `--check` ran from the same outside cwd against these same task-only roots and exited 0 with no output or `survived:` lines. No process leak was observed. No resources from other tasks were targeted. No permission refusal occurred. A null-unaware exploratory key listing initially errored on null runtimeSlots; it was corrected for inspection and was not used as verification evidence.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 148,
+          "lineEnd": 148,
+          "byteStart": 17063,
+          "byteEnd": 17525
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 11,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Assumptions"
+      ],
+      "lineStart": 150,
+      "lineEnd": 153,
+      "byteStart": 17526,
+      "byteEnd": 17922,
+      "bodyLineStart": 151,
+      "rawText": "## Assumptions\n\nThe retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.\n\n",
+      "bodyRawText": "\nThe retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.\n",
+          "text": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 152,
+          "lineEnd": 152,
+          "byteStart": 17542,
+          "byteEnd": 17921
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 12,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Concerns"
+      ],
+      "lineStart": 154,
+      "lineEnd": 157,
+      "byteStart": 17922,
+      "byteEnd": 18256,
+      "bodyLineStart": 155,
+      "rawText": "## Concerns\n\nThis delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.\n\n",
+      "bodyRawText": "\nThis delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.\n",
+          "text": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 156,
+          "lineEnd": 156,
+          "byteStart": 17935,
+          "byteEnd": 18255
+        }
+      ]
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 13,
+      "headingLevel": 2,
+      "headingRaw": "## Structured result\n",
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Structured result"
+      ],
+      "lineStart": 158,
+      "lineEnd": 212,
+      "byteStart": 18256,
+      "byteEnd": 22592,
+      "bodyLineStart": 159,
+      "rawText": "## Structured result\n\n\n```json\n{\n  \"id\": \"super-plan-ufz.30\",\n  \"status\": \"IMPLEMENTED\",\n  \"canonicalStatus\": \"IMPLEMENTED\",\n  \"completionKind\": \"implementation\",\n  \"files\": [\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md\",\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\"\n  ],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"0b3ff13eb7894c36625e4320eb426fc366b4953c\",\n  \"stacked\": false,\n  \"reopened\": false,\n  \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\"\n    }\n  ],\n  \"humanAction\": [],\n  \"concerns\": [\n    \"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"\n  ]\n}\n```\n",
+      "bodyRawText": "\n\n```json\n{\n  \"id\": \"super-plan-ufz.30\",\n  \"status\": \"IMPLEMENTED\",\n  \"canonicalStatus\": \"IMPLEMENTED\",\n  \"completionKind\": \"implementation\",\n  \"files\": [\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md\",\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\"\n  ],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"0b3ff13eb7894c36625e4320eb426fc366b4953c\",\n  \"stacked\": false,\n  \"reopened\": false,\n  \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\"\n    }\n  ],\n  \"humanAction\": [],\n  \"concerns\": [\n    \"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"\n  ]\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.30\",\n  \"status\": \"IMPLEMENTED\",\n  \"canonicalStatus\": \"IMPLEMENTED\",\n  \"completionKind\": \"implementation\",\n  \"files\": [\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md\",\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\"\n  ],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"0b3ff13eb7894c36625e4320eb426fc366b4953c\",\n  \"stacked\": false,\n  \"reopened\": false,\n  \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\"\n    }\n  ],\n  \"humanAction\": [],\n  \"concerns\": [\n    \"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"\n  ]\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.30\",\n  \"status\": \"IMPLEMENTED\",\n  \"canonicalStatus\": \"IMPLEMENTED\",\n  \"completionKind\": \"implementation\",\n  \"files\": [\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md\",\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\"\n  ],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"0b3ff13eb7894c36625e4320eb426fc366b4953c\",\n  \"stacked\": false,\n  \"reopened\": false,\n  \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\"\n    }\n  ],\n  \"humanAction\": [],\n  \"concerns\": [\n    \"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"\n  ]\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 161,
+          "lineEnd": 212,
+          "byteStart": 18279,
+          "byteEnd": 22592
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Claim-focused RED assessment",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Claim-focused RED assessment"
+      ],
+      "positionInSection": 3,
+      "key": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.",
+      "text": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.",
+      "rawText": "The conflict is directly supported: 64,688,059 ms modeled versus 63,785,002 ms observed; .14 dispatch precedes .20 creation by 434,869 ms. Unknown readiness and null waitMs remain unknown. The retained 51,989,476 ms wait rounds to 14h26m, and zero-agent occupancy rounds to 83% of the 63,998,871 ms wall window. No cause is inferred from the idle observation.\n",
+      "lineStart": 36,
+      "lineEnd": 36,
+      "byteStart": 4152,
+      "byteEnd": 4512,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "positionInSection": 1,
+      "key": "The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.",
+      "text": "The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.",
+      "rawText": "- The modeled minimum is explicitly inconsistent with the observed window, and both Markdown and JSON qualify the lower-bound and causal claims.\n",
+      "lineStart": 133,
+      "lineEnd": 133,
+      "byteStart": 14834,
+      "byteEnd": 14979,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "positionInSection": 2,
+      "key": "Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.",
+      "text": "Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.",
+      "rawText": "- Exact .14 dispatch and .20 creation timestamps and .20 dispatch remain explicit. Unknown readiness/waits, residual edge, stack-parent and late-edge records are preserved; no historical dependency enforcement or pre-creation wait is inferred.\n",
+      "lineStart": 134,
+      "lineEnd": 134,
+      "byteStart": 14979,
+      "byteEnd": 15223,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "positionInSection": 3,
+      "key": "The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.",
+      "text": "The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.",
+      "rawText": "- The 14h26m wait, 83% no-agent time and 5m planning observation remain, with wall/graph windows and agent/slot scopes distinguished. Cause and parallelism remedy remain unknown.\n",
+      "lineStart": 135,
+      "lineEnd": 135,
+      "byteStart": 15223,
+      "byteEnd": 15402,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "positionInSection": 4,
+      "key": "All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.",
+      "text": "All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.",
+      "rawText": "- All 1,818 numerical JSON leaves, 22 complete raw top-level subtrees, diagnosis timing fields, simulation numeric results and topology are unchanged. Markdown raw sections/timeline are byte-identical, and schedule table values are unchanged. Raw JSON equality covers source/provenance/context and historical records. Only the 11 enumerated interpretation leaves differ.\n",
+      "lineStart": 136,
+      "lineEnd": 136,
+      "byteStart": 15402,
+      "byteEnd": 15773,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Self-review and acceptance coverage",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Self-review and acceptance coverage"
+      ],
+      "positionInSection": 5,
+      "key": "The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.",
+      "text": "The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.",
+      "rawText": "- The Markdown summary and JSON summary have the same 24 lines. All altered claims were read side by side against the recorded raw facts; the full comparison output is retained above for independent semantic review.\n",
+      "lineStart": 137,
+      "lineEnd": 137,
+      "byteStart": 15773,
+      "byteEnd": 15989,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 11,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.",
+      "text": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.",
+      "rawText": "The retained final/residual graph and dispatch release boundaries are model assumptions, not historical graph reconstruction. Legacy numeric keys and all raw observations are preserved, while the expressly named interpretation fields may be qualified. Native data comparison is sufficient for this documentation-only scope; no product code or agent instruction behavior changed.\n",
+      "lineStart": 152,
+      "lineEnd": 152,
+      "byteStart": 17542,
+      "byteEnd": 17921,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "section": "Concerns",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Task 27 / super-plan-ufz.30 implementation report",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.",
+      "text": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.",
+      "rawText": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.\n",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 17935,
+      "byteEnd": 18255,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 13,
+      "field": "concerns",
+      "jsonPointer": "/concerns/0",
+      "fieldValue": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+      "text": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.30\",\n  \"status\": \"IMPLEMENTED\",\n  \"canonicalStatus\": \"IMPLEMENTED\",\n  \"completionKind\": \"implementation\",\n  \"files\": [\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md\",\n    \"docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json\"\n  ],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"0b3ff13eb7894c36625e4320eb426fc366b4953c\",\n  \"stacked\": false,\n  \"reopened\": false,\n  \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n  \"report\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log\",\n      \"configuration\": \"baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution\"\n    },\n    {\n      \"sourceTree\": \"d807eeb58c5aefe49829da9e56d36cf16ee0f6a4\",\n      \"command\": \"cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log\",\n      \"configuration\": \"exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots\"\n    }\n  ],\n  \"humanAction\": [],\n  \"concerns\": [\n    \"Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.\"\n  ]\n}\n```\n",
+      "lineStart": 161,
+      "lineEnd": 212,
+      "byteStart": 18279,
+      "byteEnd": 22592,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

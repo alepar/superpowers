@@ -1,0 +1,420 @@
+{
+  "version": 1,
+  "ordinal": 65,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+  "originalArtifact": "task-report-history-r1/raw/task-6-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-6-report.md",
+  "rawSha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+  "rawByteCount": 13960,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        166
+      ]
+    ],
+    "byteScope": [
+      0,
+      13960
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/10",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/65-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/0",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        1870,
+        2246
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed residual topology only; no reconstruction of historical topology/timestamps."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/1",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        7109,
+        10711
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed timing/model/unknown-readiness RED defects and claimed GREEN verification; not fresh review findings."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/2",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        12219,
+        12578
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Initial-planner mapping boundary does not manufacture creation/dependency timestamps."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/3",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        12579,
+        12869
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Intermediate freezing error and claimed correction, not a new requirement."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/4",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        12870,
+        13438
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Inline deterministic interpretation cases and coordinator ownership, no fresh-agent run claim."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/10/passages/5",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        13477,
+        13960
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interpretation, live ordinary behavior, integrated review and full sweep not run; other task owners retain metrics/identity contracts."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Observed residual topology only; no reconstruction of historical topology/timestamps.",
+      "rawSection": "Implementation",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Implementation\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Implementation"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1870,
+      "byteEnd": 2246,
+      "rawText": "Ordinary tracker topology is explicitly an observed residual snapshot. An absent timed planner stays unknown; the initial planner cannot supply a mapping timestamp for a task evidenced as created later. Planner rows cached without a transcript do not acquire a guessed mapping time. Untimed edge cuts keep unknown timestamps as well. Historical topology is not reconstructed.\n",
+      "canonicalAdapterSection": "Implementation",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Observed timing/model/unknown-readiness RED defects and claimed GREEN verification; not fresh review findings.",
+      "rawSection": "TDD evidence",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## TDD evidence\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "TDD evidence"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 81,
+      "lineEnd": 134,
+      "byteStart": 7109,
+      "byteEnd": 10711,
+      "rawText": "## TDD evidence\n\nUsed test-driven-development for deterministic mechanics and writing-skills for the protocol/source changes. Before changing production calculations, added synthetic scenarios to the existing shell suite and ran:\n\n```bash\ncd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.10 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.10 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.10/cache bash tests/super-code/test-run-profile.sh\n```\n\nRED exited 1 with `run-profile: 14 failure(s)`. Existing checks passed; representative new failures:\n\n```text\n[FAIL] creation bounds wait while mapping and dependency evidence retain their times\n  expected: 2026-10-01T00:10:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:01:00.000Z 2026-10-01T00:10:00.000Z 60000 0\n  got:         2026-10-01T00:01:00.000Z 600000 0\n[FAIL] model cannot release the late task before creation\n  expected: 640000\n  got:      100000\n[FAIL] unknown external dependency timing cannot become measured readiness\n  expected: [null,\"2026-10-01T00:01:00.000Z\",null,null,null,null,\"unknown\"]\n  got:      [null,null,null,\"2026-10-01T00:01:00.000Z\",600000,0,\"unexplained\"]\n[FAIL] ordinary residual snapshot without a planner does not invent historical readiness\n  expected: [\"2026-10-01T00:10:00.000Z\",null,null,null,null,null]\n  got:      [null,null,null,\"2026-10-01T00:11:00.000Z\",0,0]\n```\n\nThese demonstrate the original incorrect pre-creation wait/model release and fabricated known readiness. The absent diagnosis and task-slot objects also produced assertion-evaluation errors during this initial RED run; those missing objects were not counted as measured green assertions.\n\nTwo additional critical-path assertions were then run before implementing their gap split. RED exited 1 with exactly these failures:\n\n```text\n[FAIL] critical path cannot call pre-creation time a task wait\n  expected: 540000 60000\n  got:       600000\n[FAIL] unknown readiness gap remains unmeasured on the critical path\n  expected: 600000\n  got:      undefined\nrun-profile: 2 failure(s)\n```\n\nThe unavailable-artifact probe also ran before its implementation: `run-profile --discover --epic unavailable --projects /tmp/sp-bce79baa/super-plan-ufz.10/empty --out /tmp/sp-bce79baa/super-plan-ufz.10/unavailable-red`, with isolated HOME/XDG paths. It printed `Profile: unavailable` and produced no JSON, so the subsequent file-existence check exited 1.\n\nFinally, the baseline-unknown, late-created ordinary-planner and external-ordinary-dependency cases were added and run before their fixes. RED exited 1 with `run-profile: 3 failure(s)`:\n\n```text\n[FAIL] baseline keeps unknown waits unmeasured\n[FAIL] ordinary initial planner cannot establish mapping for a task created later\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:10:00.000Z\",60000]\n[FAIL] ordinary external dependency timing stays unknown\n  expected: [null,null,null]\n  got:      [\"2026-10-01T00:01:00.000Z\",\"2026-10-01T00:01:00.000Z\",600000]\n```\n\nTheir filtered RED commands used the same environment, runner and `set -o pipefail` as final verification, retaining `[FAIL]`, expected/got and the failure summary. Final GREEN evidence above exercises all these checks. A value such as 600000 wait instead of 60000, a guessed nonnull timestamp, equal 3/3 concurrency peaks instead of 3/2, or task-only diagnosis instead of planning would fail the corresponding assertions.\n",
+      "canonicalAdapterSection": "TDD evidence",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Initial-planner mapping boundary does not manufacture creation/dependency timestamps.",
+      "rawSection": "Assumptions and amendments",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 158,
+      "lineEnd": 158,
+      "byteStart": 12219,
+      "byteEnd": 12578,
+      "rawText": "The ordinary path retains its existing initial timed-planner boundary for tasks not evidenced as newer than that planner, preserving historical fixtures. That timestamp means mapping availability, never task creation; it does not supply missing dependency releases. A task created after that planner remains unknown without further per-bead mapping evidence.\n",
+      "canonicalAdapterSection": "Assumptions and amendments",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Intermediate freezing error and claimed correction, not a new requirement.",
+      "rawSection": "Assumptions and amendments",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 160,
+      "lineEnd": 160,
+      "byteStart": 12579,
+      "byteEnd": 12869,
+      "rawText": "In-model dependencies must release dynamically in counterfactuals rather than freezing every observed parent completion. An intermediate GREEN attempt that froze those completions failed existing chain/bound/counterfactual assertions; the corrected model passed the unchanged expectations.\n",
+      "canonicalAdapterSection": "Assumptions and amendments",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Inline deterministic interpretation cases and coordinator ownership, no fresh-agent run claim.",
+      "rawSection": "Assumptions and amendments",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions and amendments\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Assumptions and amendments"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 162,
+      "lineEnd": 162,
+      "byteStart": 12870,
+      "byteEnd": 13438,
+      "rawText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n",
+      "canonicalAdapterSection": "Assumptions and amendments",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Fresh-agent interpretation, live ordinary behavior, integrated review and full sweep not run; other task owners retain metrics/identity contracts.",
+      "rawSection": "Concerns and remaining evaluation",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Concerns and remaining evaluation\n",
+      "rawSectionHierarchy": [
+        "super-plan-ufz.10 — implementation evidence",
+        "Concerns and remaining evaluation"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 166,
+      "lineEnd": 166,
+      "byteStart": 13477,
+      "byteEnd": 13960,
+      "rawText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "canonicalAdapterSection": "Concerns and remaining evaluation",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 12870,
+      "byteEnd": 13438,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/10/passages/4"
+      ],
+      "interpretation": "Inline deterministic interpretation cases and coordinator ownership, no fresh-agent run claim.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13477,
+      "byteEnd": 13960,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/10/passages/5"
+      ],
+      "interpretation": "Fresh-agent interpretation, live ordinary behavior, integrated review and full sweep not run; other task owners retain metrics/identity contracts.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "scopedEmptySupported": false,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000012870",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawByteStart": 12870,
+      "rawByteEnd": 13438,
+      "rawLineStart": 162,
+      "rawLineEnd": 162,
+      "originalSections": [
+        {
+          "section": "Assumptions and amendments",
+          "sectionOrdinal": 7,
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "super-plan-ufz.10 — implementation evidence",
+            "Assumptions and amendments"
+          ],
+          "byteStart": 11951,
+          "byteEnd": 13439
+        }
+      ],
+      "rawText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/10/passages/4"
+      ],
+      "interpretation": "Inline deterministic interpretation cases and coordinator ownership, no fresh-agent run claim."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000013477",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawByteStart": 13477,
+      "rawByteEnd": 13960,
+      "rawLineStart": 166,
+      "rawLineEnd": 166,
+      "originalSections": [
+        {
+          "section": "Concerns and remaining evaluation",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Concerns and remaining evaluation\n",
+          "hierarchy": [
+            "super-plan-ufz.10 — implementation evidence",
+            "Concerns and remaining evaluation"
+          ],
+          "byteStart": 13439,
+          "byteEnd": 13960
+        }
+      ],
+      "rawText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/10/passages/5"
+      ],
+      "interpretation": "Fresh-agent interpretation, live ordinary behavior, integrated review and full sweep not run; other task owners retain metrics/identity contracts."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/65-task-6-report.md",
+  "retainedSha256": "9eba458c966142a47644aea43d7fd5372af14c633279e7d4ca6358f6ab4bf2f1"
+}

@@ -1,0 +1,28 @@
+{
+  "helperSha256": "ad81889b839875520be411a2b5e618a30ba5a21cefe9aac6e4949b90b3a06a82",
+  "reviewedPin": "87166167a4414189497d4b8877fdc44eb71e76a6",
+  "occurrenceCount": 250,
+  "command": [
+    "bash",
+    "/private/tmp/ufz-task3-review-8g12hjc7/skills/super-auto/scripts/report-status",
+    "--acceptance",
+    "/private/tmp/ufz-acceptance-output-probe-lcf_jte0/run.md"
+  ],
+  "results": {
+    "regular": {
+      "exitCode": 0,
+      "stdoutBytes": 84284,
+      "validJson": true,
+      "eligible": true,
+      "nonblockingCount": 250,
+      "gaps": []
+    },
+    "pipe": {
+      "exitCode": 0,
+      "stdoutBytes": 65536,
+      "validJson": false,
+      "parseError": "Unterminated string starting at: line 1 column 65530 (char 65529)"
+    }
+  },
+  "limits": "Synthetic source-bound fixture, read-only real acceptance helper. No actual-run gate or source mutation."
+}

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Persisted immutable review-source bindings are reconstructed as deferred measurement obligations, making caller root acceptance fail after a coordinator resume even when every actual acceptance requirement is satisfied.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+      "category": "data-migrations",
+      "external": false,
+      "evidence": "bind-review-source writes kind:\"deferred\", operation:\"record\", data:{reviewSource:{invocationId,base,head}}. On resume coordinator.js:447-448 inserts this record into recoveryObligations and :2424 returns it unchanged; super-auto/run-state.md:227 requires preserving those returned obligations. report-status:132-139 interprets every deferred obligation without runFailure as a measurement and calls measure(r.data), whose sourceTree/command/configuration identity is absent for this provenance-only record. Frozen-source probe /tmp/ufz-pr2-controller/evidence-data-migrations/probe.mjs executes the real binding command, ledger-digest and coordinator replay, then supplies the actual reconstructed binding to an otherwise eligible acceptance fixture. receipt.json records control exit 0 eligible:true, and withBinding exit 3 eligible:false with the sole gap \"review-source:bd-100: measurement identity unavailable\". No matching measurement identity exists in the produced binding, and no consumer exemption or provenance-specific clearing is implemented.",
+      "kind": "ISSUE"
+    }
+  ]
+}

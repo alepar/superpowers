@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/private/tmp/ufz-correction-suite-runner-r1/original-v0/runner.py", line 32, in <module>
+    assert plan['commands'] and len(set(plan['commands'])) == len(plan['commands'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,21 @@
+{
+  "findings": [
+    {
+      "claim": "The new immutable review-source binding is recovered as a deferred live measurement obligation, causing root acceptance to reject an otherwise satisfied resumed run.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+      "category": "regression",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "Introduced by post-round-1 commit 7db21aae: bind-review-source emits kind:\"deferred\" with data.reviewSource only. coordinator.js:432-448 accepts and retains that actual record in recoveryObligations; report-status:135-143 treats non-runFailure deferred records as measurements, requiring sourceTree/command/configuration the producer never supplies. Independent frozen-head probe /tmp/ufz-pr2-controller/evidence-regression/probe.cjs invokes the real binding CLI on a scratch ledger, passes its emitted line through the actual readRecovery function, then executes the actual acceptance code with independently satisfied synthetic review/live-check/human prerequisites and mocked empty projection/clean status. Control: exit 0, eligible:true. Adding only the produced-and-recovered binding: exit 3, eligible:false, gap \"review-source:regression-probe: measurement identity unavailable\". Receipt: /tmp/ufz-pr2-controller/evidence-regression/binding-receipt.json. This isolates producer/consumer classification; it does not claim the current actual run has met its other acceptance prerequisites. Required final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md, its complete evidence package and final-review-fix-r1.complete.json independently retain the same source obligation; fix-r1-handoff/source/task-26-report.md identifies the binding fix and its narrower deterministic coverage."
+    },
+    {
+      "claim": "The new selector promotes nested historical run.md snapshots into current selection authority and suppresses direct review of available product edits when those snapshots lack relocated archive payloads.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:154",
+      "category": "regression",
+      "external": false,
+      "kind": "ISSUE",
+      "previouslyRejected": true,
+      "evidence": "Commit e4c809c9, the fix for recursive archive collection, adds basename(run)==='run.md' discovery across the entire captured tree, resolves each snapshot's archive relative to that snapshot, and suppresses all slices on any gap (dispatch-text.mjs:154-155,187-214,235-248). Independent frozen-head fixture /tmp/ufz-pr2-controller/evidence-regression/probe.cjs creates a valid ordinary archived snapshot at docs/run/reviews/historical-probe/snapshots/run.md plus a separately reviewable one-line product.js edit. Actual review-inputs returns exit 3, zero omissions and zero slices, retaining product.js in changed, solely because it searches snapshots/reviews/archived-inv/final-review-archived-inv.md. Product-only positive control returns exit 0 and one slice. Receipt /tmp/ufz-pr2-controller/evidence-regression/nested-receipt.json retains outputs and execution of the exact new Finish refusal condition. assembler-prompt.md:26-29 converts this result to exit 2 with cause 'review input selection:'; coordinator.js:2326,2361 skips the direct review dispatch, and its actual generated single-review prompt (evidence-regression/direct-review-prompt.md) independently says to return unavailable without a verdict or direct package. The prior rejection depended specifically on working captured-Git fallback for a filename-length assembly failure. Changed evidence is e4c809c9's added selection-prefix refusal and unconditional selection-gap return, not another filename-limit claim. This also occurred in the actual required final review: final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md.diff retains 690 gaps, zero slices/omissions, and the lost first review; fix-r1-handoff/verification.json explicitly preserves reviewCoverageComplete:false and selectionProvenanceGapsUnresolved:690. Retaining the archival gap is correct; that gap need not prevent an explicitly incomplete report on independently available source."
+    }
+  ]
+}

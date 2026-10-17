@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "epic": "super-plan-ufz",
+  "runTag": "workflow-reliability-20261017T054545",
+  "invocationId": "inv-mvc60k41-xt8p35rk04d",
+  "tasks": {
+    "mapped": 18,
+    "closed": 18,
+    "landedLedger": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "landedGitVerified": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "completed": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "rootStatus": "open",
+    "rootAcceptance": "caller",
+    "nestedEpicClosed": true,
+    "nestedEpicsClosed": [
+      "super-plan-ufz.8"
+    ]
+  },
+  "cleanup": {
+    "closeInTreeEpics": {
+      "exitCode": 0,
+      "rootClosed": false,
+      "closedThisRun": [
+        "super-plan-ufz.8"
+      ]
+    },
+    "taskSweep": {
+      "exitCode": 0,
+      "output": [
+        "removed: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6",
+        "deleted: task-super-plan-ufz.6",
+        "deleted: task-super-plan-ufz.1",
+        "deleted: task-super-plan-ufz.2",
+        "deleted: task-super-plan-ufz.4",
+        "deleted: task-super-plan-ufz.5",
+        "deleted: task-super-plan-ufz.8.1",
+        "deleted: task-super-plan-ufz.8.2",
+        "deleted: task-super-plan-ufz.8.3",
+        "deleted: task-super-plan-ufz.8.4",
+        "deleted: task-super-plan-ufz.20",
+        "removed: /tmp/sp-bce79baa"
+      ]
+    },
+    "processSweep": {
+      "preSweep": {
+        "exitCode": 0,
+        "output": []
+      },
+      "sweepScript": {
+        "exitCode": 0,
+        "processOutput": []
+      },
+      "roots": [
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees",
+        "/tmp/sp-bce79baa",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability"
+      ],
+      "stopped": 0,
+      "survived": 0,
+      "unknown": 0,
+      "kept": 0
+    }
+  },
+  "metrics": {
+    "mergeCount": 18,
+    "mergeFailures": 0,
+    "rebaseConflictMerges": 4,
+    "rebaseConflictFiles": 5,
+    "seamReviews": 10,
+    "seamReviewsFixed": 5,
+    "checkFailures": 0,
+    "checkFailuresFixed": 0,
+    "cleanReviewCompletions": 14,
+    "fixPassCompletions": 4,
+    "parked": 0,
+    "reentryCloses": 0,
+    "dispatchedEarly": 4,
+    "cancelled": 0,
+    "legacyFixPassEvents": 4,
+    "legacyFixPassFixed": 4,
+    "durableFixAttempts": 0,
+    "durableFixHistory": "no Recovery records observed",
+    "landedIds": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "completedIds": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "gitLandedIds": [
+      "super-plan-ufz.1",
+      "super-plan-ufz.10",
+      "super-plan-ufz.11",
+      "super-plan-ufz.12",
+      "super-plan-ufz.13",
+      "super-plan-ufz.14",
+      "super-plan-ufz.2",
+      "super-plan-ufz.20",
+      "super-plan-ufz.3",
+      "super-plan-ufz.4",
+      "super-plan-ufz.5",
+      "super-plan-ufz.6",
+      "super-plan-ufz.7",
+      "super-plan-ufz.8.1",
+      "super-plan-ufz.8.2",
+      "super-plan-ufz.8.3",
+      "super-plan-ufz.8.4",
+      "super-plan-ufz.9"
+    ],
+    "ledgerChecks": "landed, completed, and verified Git identity sets agree for 18 mapped beads",
+    "appendFailed": null,
+    "appendRetried": null,
+    "appendFailureGap": "Unavailable outside a coordinator Finish invocation",
+    "lines": [
+      "Metrics: merges 18 · merge-failed 0 · rebase-conflicts 4 · seam-reviews 10 (fixed 5) · check-fails 0 (fixed 0)",
+      "Metrics: completions — review clean 14 · after fix pass 4 · parked 0 · re-entry closes 0 · dispatched early 4 · cancelled 0",
+      "Metrics: fix-pass — entered 4 · FIXED 4 · BLOCKED 0 (legacy event lines); durable attempts 0 · historical FIXED 0; no Recovery records observed · repaired findings unavailable (use scope-dispositions --project)",
+      "Metrics: ledger-check ok · append-failed unknown · append-retried unknown · scope: observed ledger; landed 18 · completed 18 · Git-verified 18 · gaps: append retry/failure counts unavailable outside a coordinator Finish invocation; profile graph historical topology unknown; readiness timing unknown for 2 beads; 27 dispatches not bead-named; coordinator rows counted from session start"
+    ]
+  },
+  "git": {
+    "branch": "super-auto/workflow-reliability",
+    "provisionalBase": "3f4fdba3dfb4825246c57c8ec01cb14a388885fa",
+    "provisionalHead": "ecd3b908af4b757eb861038fa2abe7dbd8653a6a",
+    "worktreeHasParentOwnedMetadataChanges": true
+  },
+  "profile": {
+    "stdoutPath": "/tmp/workflow-reliability-profile.log",
+    "reportMarkdown": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/profile-finish.md",
+    "reportJson": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/profile-finish.json",
+    "summary": [
+      "Profile: super-plan-ufz · 1 invocation · 2026-10-16T15:11Z → 2026-10-17T08:57Z · wall 17h47m (task graph 17h43m, after the last landing 4m) · agents 110 (timed 110) · beads dispatched 18, landed 18, planned 18",
+      "Profile: graph scope — observed invocation/residual graph; historical topology is unknown",
+      "Profile: shape — 18 beads · 29 edges · depth 5 · width 3.6 · beads per level 10/4/2/1/1 · widest fan-out super-plan-ufz.4 (5 direct, 5 transitive dependents)",
+      "Profile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever",
+      "Profile: critical path — 17h43m = implement 1h42m · review 7m · fix 6m · merge 9m · seam 4m · planning 5m · other 17m · startup 2m · dispatch 5m · slot 39s · wait 15h05m · unmeasured-gap 57s · of which other beads' merge-lane turns 3m",
+      "Profile: diagnosis — planning 5m (0% of first dispatch to last landing)",
+      "Profile: critical chain — legacy other 6m → reliability other 3m → continuity other 2m → coverage other 45s → design other 5m → reliability other 20s → … 3 more … → super-plan-ufz.5 implement+review+merge+seam 12m → super-plan-ufz.7 implement+review+fix+merge+seam 21m → super-plan-ufz.8.4 implement 9m → super-plan-ufz.8.3 implement 12m → super-plan-ufz.6 implement+review+merge+seam 22m → super-plan-ufz.14 implement+review+merge 33m",
+      "Profile: bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0",
+      "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 4h12m over 13 of 18 landed beads — waited-for-merge 5m (1) · slot 3h30m (7) · unexplained 37m (5)",
+      "Profile: early unblock — 8 landed beads had in-run blockers · stacked on an implementation 4 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 1",
+      "Profile: rework — 45s of dispatch time in attempts that did not land — super-plan-ufz.14 45s (?; landed later)",
+      "Profile: tests — implementers and fixers, summed: 11m running tests and 21m polling background runs, 13% of their 3h59m · 0 Bash call(s) ran into the 10-minute tool limit",
+      "Profile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving",
+      "Profile: merge lane — busy 30m of 2h33m (20%) · seam reviews and fixes 9m (30% of busy) · 28 merge dispatches, first try not merged for 10 of 18 · queue wait 31m total, peak 2 waiting · stack-parent wait 0s",
+      "Profile: concurrency — 110 dispatches over 17h47m · a dispatch running 3h02m (17%) · dispatches at once: 0 for 83% · 1 for 4% · 2 for 7% · 3+ for 6% of the time · peak 6",
+      "Profile: dispatch time by kind, summed — impl 3h39m (19) · review 22m (18) · merge 21m (28) · fix 20m (4) · plan 14m (3) · seam-review 9m (11) · not named for a bead: seam 23m (5) · baseline 12m (1) · legacy 11m (2) · older 7m (1) · nochange 6m (1) · design 5m (2) · after 5m (1) · cross 4m (1) · 8 more 20m (13)",
+      "Profile: runtime — peak 6 agents at once · slot cap 3",
+      "Profile: concurrency scope — all-agent concurrency peak 6 · task-slot concurrency peak 3, cap 3 (ordinary chains retain a slot through merge)",
+      "Profile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained",
+      "Profile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained",
+      "Profile: context — agents 196 (measured 196) · peak≥80% 0 · tasks>1 2 · compacted 1 agents, 3 compactions (cap 1 · early 2) · coordinator 330K/475K (69%), 3 compactions · max coordinator 69%",
+      "Profile: context agent — coordinator peak 330K/475K (69%) · first 20K · compactions 3 (cap 1, early 2)",
+      "Profile: context agent — impl_super_plan_ufz_14_integrated peak 277K/475K (58%) · first 21K · compactions 0",
+      "Profile: unmeasured — availability/readiness timing unknown for 2 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary; 27 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code); coordinator rows counted from the session start (no invocation found)"
+    ],
+    "unknowns": [
+      "availability/readiness timing unknown for 2 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary",
+      "27 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code)",
+      "coordinator rows counted from the session start (no invocation found)"
+    ]
+  },
+  "gaps": [
+    "Root acceptance remains caller-owned and must stay open until separately satisfied.",
+    "Profile scope is observed invocation/residual graph; historical topology is unknown.",
+    "Readiness timing is unknown for 2 beads; 27 dispatches were not named for this epic; coordinator rows were counted from session start.",
+    "Append failure/retry counts are unavailable outside a coordinator Finish invocation.",
+    "Task-level repaired finding population is unavailable; use scope-dispositions --project.",
+    "Provisional Git head predates parent-owned run metadata/profile commit; parent must capture reviewBase/reviewHead after that commit."
+  ],
+  "createdAtUtc": "2026-10-17T09:00:05.675813+00:00"
+}

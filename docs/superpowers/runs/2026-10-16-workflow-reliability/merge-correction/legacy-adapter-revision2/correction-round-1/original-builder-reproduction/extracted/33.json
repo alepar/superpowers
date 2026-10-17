@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+  "artifact": "legacy-report-adapters-r1/33-task-2-report.md",
+  "kind": "task-report",
+  "verdict": "IMPLEMENTED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000011297",
+      "position": 1,
+      "key": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.",
+      "text": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000012062",
+      "position": 1,
+      "key": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.",
+      "text": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched."
+    }
+  ]
+}

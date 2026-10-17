@@ -1,0 +1,2296 @@
+{
+  "version": 1,
+  "sourceScope": "All 79 independent source interpretations, all reviewed passages expressly classified deferred/obligation/separate human gate; structured obligations separately preserved in adapter maps.",
+  "reviewedObligationPassageCount": 105,
+  "unrepresentedReviewedObligationPassages": 0,
+  "qualifications": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 5,
+      "rawLineEnd": 5,
+      "rawByteStart": 151,
+      "rawByteEnd": 519,
+      "originalFullRawText": "- Current requirements: `bd show super-plan-ufz.1 --json` and `bd comments super-plan-ufz.1` read. No amendments or comments. Current task description assigns fresh-agent pressure evaluation to the coordinator; the implementer prepares fixtures and the acceptance scenario. Early task closure is not merge approval; review bead super-plan-ufz.15 remains parent-owned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000000151",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-01/raw-byte-151",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 16,
+      "rawLineEnd": 16,
+      "rawByteStart": 1579,
+      "rawByteEnd": 1925,
+      "originalFullRawText": "⚠ Parent-owned fresh-agent behavioral acceptance remains outstanding: task-1-report.md, “Parent-owned behavioral acceptance scenario.” The report explicitly distinguishes deterministic fixtures and simulated Workflow evidence from actual independent agent adherence. Complete and record that evaluation before accepting the enclosing epic.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001579",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-01/raw-byte-1579",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "explicit-empty",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 24,
+      "rawLineEnd": 24,
+      "rawByteStart": 1972,
+      "rawByteEnd": 2102,
+      "originalFullRawText": "Minor: none. The outstanding parent evaluation is recorded above as unverified acceptance scope, not an implementer test failure.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000001972",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-01/raw-byte-1972",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 97,
+      "rawLineEnd": 97,
+      "rawByteStart": 7210,
+      "rawByteEnd": 7526,
+      "originalFullRawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000007210",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-02/raw-byte-7210",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 177,
+      "rawLineEnd": 177,
+      "rawByteStart": 13879,
+      "rawByteEnd": 14531,
+      "originalFullRawText": "Read current bd show super-plan-ufz.7 --json and bd comments super-plan-ufz.7 before implementation: description/acceptance matched the frozen task, with no comments/amendments. Read the landed task-4/task-5 reports and their actual code contracts. Applied compatible .4 Recovery and .5 source-bound checkEvidence interfaces. No replacement engine or finding-ledger lifecycle was introduced. The parent dispatch explicitly assigns fresh-agent attribution evaluation and the broad sweep to the coordinator; this agent owns deterministic fixtures and changed examples. Applied writing-skills, TDD and verification-before-completion within that boundary.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000013879",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-03/raw-byte-13879",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "rawLineStart": 183,
+      "rawLineEnd": 194,
+      "rawByteStart": 14896,
+      "rawByteEnd": 17436,
+      "originalFullRawText": "The executable A/B, pre-run and absent-baseline artifacts are in tests/super-code/replay-harness.mjs under the scenario `run attribution retains introducing owner independently of task-base exoneration`. The existing temporary run.md caller fixture is in tests/super-auto/test-scripts.sh under `run attribution: caller retention`. These use synthetic tree identities and canned agent replies: even a fixture record whose kind is live is simulated test input, not a real live product measurement.\n\nConcrete scenario for a fresh reviewer/coordinator evaluation:\n\n1. The same exact command `node smoke.mjs --case F` and configuration `target=staging` passes at recorded run-start source a*40, fails after task A at b*40, and fails at task B's base b*40 and head c*40. Retain original output locations run-start.log/A.log/B-base.log/B.log and the reviewed A source range. B can be CLEAN/exonerated against its base while run owner bd-A remains open and assigned for repair.\n2. Re-enter with those Recovery records and a clean latest task result or replacement code buckets. The same introducing owner remains. A missing baseline in B's new local comparison is an explicit gap, not an erasure of earlier evidence.\n3. Change the recorded run-start outcome to live/fail: this failure is pre-run and must not automatically create a goal repair assignment. Remove usable run-start evidence instead: report an attribution gap and invent neither a passing baseline nor exoneration of a known owner.\n4. Reuse display key F with a different command or target=local: it cannot inherit the staging owner's identity. Supply simulated/pass instead of live/pass fixed-source evidence: it cannot discharge the live repair. Supply linked live/pass evidence at reviewed fixed source e*40: verified while retaining the A history.\n\nThe actual fixture association is {failure:'F',command:'node smoke.mjs --case F',configuration:'target=staging',observed:1,runBaseline:0,introducedBy:'bd-A'} beside [run-start live/pass, A live/fail]. The later B association references its own [B-base live/fail, B-head live/fail] array with observed:1 and taskBase:0, leaving runBaseline/introducedBy omitted. This is sufficient to reproduce the deterministic case without machine paths.\n\nFresh-agent evaluation, ordinary-agent compliance under pressure, and the enclosing whole-run sweep remain parent-owned and unmeasured here. All required task-local deterministic checks passed; no failed/unavailable deterministic check, permission rejection, blocker or humanAction remains.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+          "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-10/raw-byte-000014896",
+          "position": 1
+        },
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000017145",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-03/raw-byte-14896",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "reviewedPassageIndex": 11,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 293,
+      "rawLineEnd": 293,
+      "rawByteStart": 24648,
+      "rawByteEnd": 24964,
+      "originalFullRawText": "These are deterministic simulated Workflow fixtures, including synthetic records labeled live; they establish reducer/caller mechanics, not actual agent behavior or live product measurement. The pending fresh-agent attribution evaluation and whole-run acceptance remain parent-owned and unmeasured by this fix pass.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-15/raw-byte-000024648",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-03/raw-byte-24648",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 12,
+      "rawLineEnd": 12,
+      "rawByteStart": 742,
+      "rawByteEnd": 964,
+      "originalFullRawText": "Current bd show/acceptance and bd comments were read; there are no amendments or triage comments. The coordinator owns the pending fresh-agent evaluation; its absence from implementer evidence is not a task-local failure.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000000742",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-05/raw-byte-742",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "rawLineStart": 60,
+      "rawLineEnd": 60,
+      "rawByteStart": 4799,
+      "rawByteEnd": 5266,
+      "originalFullRawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000004799",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-06/raw-byte-4799",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "rawLineStart": 137,
+      "rawLineEnd": 137,
+      "rawByteStart": 10014,
+      "rawByteEnd": 10603,
+      "originalFullRawText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000010014",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-07/raw-byte-10014",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "reviewedPassageIndex": 6,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 141,
+      "rawLineEnd": 141,
+      "rawByteStart": 10617,
+      "rawByteEnd": 11181,
+      "originalFullRawText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000010617",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-07/raw-byte-10617",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "reviewedPassageIndex": 11,
+      "roles": [
+        "deferred-coverage",
+        "disposition-boundary"
+      ],
+      "rawLineStart": 202,
+      "rawLineEnd": 202,
+      "rawByteStart": 15981,
+      "rawByteEnd": 16448,
+      "originalFullRawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000015981",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-07/raw-byte-15981",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "reviewedPassageIndex": 15,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 275,
+      "rawLineEnd": 275,
+      "rawByteStart": 22959,
+      "rawByteEnd": 23500,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-16/raw-byte-000022959",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-07/raw-byte-22959",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "coverage-concern",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 21,
+      "rawLineEnd": 21,
+      "rawByteStart": 3064,
+      "rawByteEnd": 3683,
+      "originalFullRawText": "Test evidence: Implementer reports TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs (2074 passed, 0 failed) and TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh (all tests passed), both exit 0 at reviewed HEAD. Commands, pass counts, targeted RED evidence, and process hygiene are plausible. No tests were run by this reviewer. The interrupted-append fixture covers only the initially all-closed fast path, leaving the partial-close durability failure uncovered. Parent-owned fresh-agent evaluation remains explicitly deferred by the brief/report.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-0/raw-byte-000003064",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-10/raw-byte-3064",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "reviewedPassageIndex": 2,
+      "roles": [
+        "historical-finding",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 80,
+      "rawLineEnd": 80,
+      "rawByteStart": 8773,
+      "rawByteEnd": 9310,
+      "originalFullRawText": "Used writing-skills and test-driven-development. Parent supplied the prior fresh-agent baseline at docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md: valid verification-only completion failed 3/5 installed-guidance trials versus 0/5 controls. The supplied traces attribute the failure to unconditional empty-diff INVALID instructions. The change is a conditional protocol/mechanism for that evidence-backed contrast, rather than stronger general judgment prose. Parent owns the same-pack post evaluation.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000008773",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-11/raw-byte-8773",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "reviewedPassageIndex": 6,
+      "roles": [
+        "explicit-empty-qualified",
+        "deferred-coverage",
+        "scope-concern"
+      ],
+      "rawLineStart": 153,
+      "rawLineEnd": 153,
+      "rawByteStart": 14405,
+      "rawByteEnd": 14942,
+      "originalFullRawText": "No unresolved deterministic failures. Fresh-agent no-change/implementation contrast and the same-pack post behavior evaluation remain parent-owned, as do independent root acceptance and final integration review/sweep. The change deliberately leaves oversized or missing accepted-basis records as gaps; a retained source pointer or ready reentry is required to recover review coverage, and no evidence body is forced through the compact transport limit. Legacy complete lines without a verification discriminator retain legacy semantics.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014405",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-11/raw-byte-14405",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "reviewedPassageIndex": 10,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 210,
+      "rawLineEnd": 210,
+      "rawByteStart": 20830,
+      "rawByteEnd": 21456,
+      "originalFullRawText": "Replay exercises all internal callers of the additive queueLedger/flushLedger confirmation option, confirmClosure, and resumeCheckPrompt; an rg call-site search found no callers outside coordinator.js. Dispatch and digest suites cover the ordinary execution/evidence transport and typed durable reduction. These remain deterministic fixtures, not fresh-agent behavior evals. Parent-owned no-change/implementation behavior evaluation remains unchanged. `git diff --check` passed, rebase completed successfully, and final `git status --short` was empty. The rebase continuation committed the tested bytes without changing them.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000020830",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-11/raw-byte-20830",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "reviewedPassageIndex": 11,
+      "roles": [
+        "execution-context",
+        "explicit-empty-qualified",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 218,
+      "rawLineEnd": 218,
+      "rawByteStart": 22076,
+      "rawByteEnd": 22639,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.13 --json` and `bd comments super-plan-ufz.13`; there were no comments or requirement amendments. The named standalone seam-review diff file was absent, so this pass used the exact rebase-conflict finding embedded in the dispatch. No declined findings. No integration/source checkout writes, branch merges, tracker mutations, subagents or Herdr writes. Only the task worktree and this authorized report were changed. No unresolved deterministic failures; fresh-agent evaluation and integration acceptance remain parent-owned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000022076",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-11/raw-byte-22076",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 17,
+      "rawLineEnd": 17,
+      "rawByteStart": 1698,
+      "rawByteEnd": 1953,
+      "originalFullRawText": "⚠ Parent-owned same-pack fresh-agent after-evaluation remains pending. Deterministic fixture success is not live behavior evidence; the implementer correctly distinguishes those claims. This does not defer implementation scope to an unnamed later task.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001698",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-13/raw-byte-1698",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 111,
+      "rawLineEnd": 111,
+      "rawByteStart": 7512,
+      "rawByteEnd": 7659,
+      "originalFullRawText": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000007512",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-15/raw-byte-7512",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "deferred-integration-scope"
+      ],
+      "rawLineStart": 168,
+      "rawLineEnd": 168,
+      "rawByteStart": 14766,
+      "rawByteEnd": 15253,
+      "originalFullRawText": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-6/raw-byte-000014766",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-15/raw-byte-14766",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "reviewedPassageIndex": 10,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 191,
+      "rawLineEnd": 191,
+      "rawByteStart": 17867,
+      "rawByteEnd": 18230,
+      "originalFullRawText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000017867",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-15/raw-byte-17867",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-integration-scope",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 39,
+      "rawLineEnd": 39,
+      "rawByteStart": 3565,
+      "rawByteEnd": 4143,
+      "originalFullRawText": "Reachability: documented `scope-dispositions --project RUN_MD` enters the existing script’s new branch, validates retained records, and derives JSON/keys from the same groups. Searched existing scope-dispositions callers in SKILL.md/resume.md and the documented new record/CLI references. Production collection, resume/status routing and replacement of those legacy callers are explicitly assigned to super-plan-ufz.8.3, outside this task. Fresh-agent behavior evaluation remains coordinator-owned, as explicitly deferred in the brief; this review makes no claim that it ran.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000003565",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-16/raw-byte-3565",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 121,
+      "rawLineEnd": 121,
+      "rawByteStart": 9177,
+      "rawByteEnd": 9461,
+      "originalFullRawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+          "section": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000009177",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-17/raw-byte-9177",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 107,
+      "rawLineEnd": 107,
+      "rawByteStart": 7840,
+      "rawByteEnd": 8114,
+      "originalFullRawText": "`git diff --check` and `git diff --exit-code -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` passed. `git status --short` was empty after commit. No full-epic sweep was run here.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000007840",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-18/raw-byte-7840",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage",
+        "illustrative-fixture"
+      ],
+      "rawLineStart": 158,
+      "rawLineEnd": 158,
+      "rawByteStart": 14276,
+      "rawByteEnd": 14947,
+      "originalFullRawText": "Representative fresh-agent post behavior evaluation is REQUIRED and remains coordinator-owned/pending, as does integrated same-pack after/live-isolation evidence. This implementer cannot spawn agents per dispatch. Deterministic RED/GREEN helper fixtures are not claimed as fresh-agent behavior verification. Recommended post scenario: I1 blocked with an active and deferred finding, I2 ready/silent, interrupted copy before completion; fresh resume twice must preserve bytes/refs/dispositions, expose I1, keep I2 separately ready and refuse cleanup for missing/partial/null-required evidence. Also cover null/no-work with no artifact and contradictory partial artifacts.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014276",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-18/raw-byte-14276",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "scope-concern",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 160,
+      "rawLineEnd": 160,
+      "rawByteStart": 14948,
+      "rawByteEnd": 15531,
+      "originalFullRawText": "Semantic sufficiency of a fix/rejection remains the owning agent's judgment before recording supported disposition; structural fields alone are not a semantic oracle. The collector cannot infer a missing optional direct input from absence alone, so callers must declare known required direct inputs with --required; split manifest and discovered assembled files are checked mechanically. Collection must run after confirmed settlement and serially with run.md writes, as the operative recipe specifies. Acceptance ownership, metrics and the full epic sweep remain outside this task.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014948",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-18/raw-byte-14948",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 282,
+      "rawLineEnd": 282,
+      "rawByteStart": 24709,
+      "rawByteEnd": 24993,
+      "originalFullRawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000024709",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-18/raw-byte-24709",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 14,
+      "rawLineEnd": 14,
+      "rawByteStart": 708,
+      "rawByteEnd": 926,
+      "originalFullRawText": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000708",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-19/raw-byte-708",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "review-finding",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 30,
+      "rawLineEnd": 30,
+      "rawByteStart": 2012,
+      "rawByteEnd": 2180,
+      "originalFullRawText": "- [pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+          "section": "Findings — adapter/review-finding/raw-section-6/raw-byte-000002012",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-19/raw-byte-2012",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "rawLineStart": 81,
+      "rawLineEnd": 81,
+      "rawByteStart": 7728,
+      "rawByteEnd": 8168,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000007728",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-20/raw-byte-7728",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 139,
+      "rawLineEnd": 139,
+      "rawByteStart": 10763,
+      "rawByteEnd": 11504,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9`: no comments or conflicting current amendments. Consumed the exact task-13-report.md Interfaces: supported projection exit 3 retains results plus gaps; --keys has no clean-result authority; explicit links/support remain the source of finding identity and disposition. Consumed task .4's durable Recovery contract, preserving history independently from latest status. The parent explicitly assigned fresh-agent interpretation evaluation to the coordinator and supplied a passing baseline control; guidance therefore stays a compact positive source/count contract rather than adding behavioral prohibitions. No agents were spawned and no Herdr writes occurred.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000010763",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-21/raw-byte-10763",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 145,
+      "rawLineEnd": 145,
+      "rawByteStart": 11658,
+      "rawByteEnd": 11972,
+      "originalFullRawText": "Fresh-agent report interpretation/pressure evaluation belongs to the coordinator and was not run here. Concrete generated examples and qualified summary candidates are committed at evidence/super-plan-ufz.9/metrics-examples.md. Deterministic producer/consumer checks are complete independently of that evaluation.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000011658",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-21/raw-byte-11658",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "reviewedPassageIndex": 9,
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "rawLineStart": 241,
+      "rawLineEnd": 241,
+      "rawByteStart": 21100,
+      "rawByteEnd": 21540,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-15/raw-byte-000021100",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-21/raw-byte-21100",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "reviewedPassageIndex": 13,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 346,
+      "rawLineEnd": 346,
+      "rawByteStart": 28356,
+      "rawByteEnd": 28689,
+      "originalFullRawText": "`git diff --check` exited 0. The final base is verified by `git merge-base 6c332aa22824c185dc474b0fb5055b465cbd1412 HEAD`. Only the original two own commits plus the narrow seam test commit are above that base. No broader suite or fresh-agent report interpretation evaluation was run; the latter remains coordinator-owned as before.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-19/raw-byte-000028356",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-21/raw-byte-28356",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 11,
+      "rawLineEnd": 11,
+      "rawByteStart": 440,
+      "rawByteEnd": 1141,
+      "originalFullRawText": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000440",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-23/raw-byte-440",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 65,
+      "rawLineEnd": 67,
+      "rawByteStart": 4464,
+      "rawByteEnd": 4731,
+      "originalFullRawText": "The live epic and task were not accepted or closed. All acceptance testing used disposable\nfixtures. Post-change behavior evaluation, final reviews and the enclosing full sweep remain\ncoordinator-owned prerequisites; this implementation does not claim them complete.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000004464",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-25/raw-byte-4464",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage",
+        "historical-finding-context"
+      ],
+      "rawLineStart": 232,
+      "rawLineEnd": 237,
+      "rawByteStart": 13549,
+      "rawByteEnd": 14109,
+      "originalFullRawText": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the\ncoordinator-owned post-change evaluation. Required live behavior evaluation, whole-epic final\nreviews, final sweep and actual human acceptance remain outstanding at the enclosing run level.\nThe coordinator reported a separate task-8.3 collection diff-suffix correction in progress; this\ntask neither duplicates that fix nor replays its parent commits. No other deterministic check is\nfailed or unavailable. No integration worktree/user-checkout edits were made.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000013549",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-25/raw-byte-13549",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "deferred-integration-scope"
+      ],
+      "rawLineStart": 244,
+      "rawLineEnd": 258,
+      "rawByteStart": 14138,
+      "rawByteEnd": 15094,
+      "originalFullRawText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000015015",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-25/raw-byte-14138",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "reviewedPassageIndex": 7,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 338,
+      "rawLineEnd": 339,
+      "rawByteStart": 19067,
+      "rawByteEnd": 19234,
+      "originalFullRawText": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent\nbehavior evaluation. Coordinator-owned live evaluations remain outstanding.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-11/raw-byte-000019067",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-25/raw-byte-19067",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "execution-context",
+        "deferred-coverage"
+      ],
+      "rawLineStart": 356,
+      "rawLineEnd": 362,
+      "rawByteStart": 19973,
+      "rawByteEnd": 20563,
+      "originalFullRawText": "Current bead and comments were reread; no amendments/comments exist. The named seam-review\nfile does not exist on disk, so the complete quoted `[rebase-conflict]` finding in the dispatch\nwas used. This did not prevent reproducing and resolving the exact reported single conflict.\nWriting-skills and verification-before-completion guidance were applied without changing\nreviewed behavior or spawning agents; fresh-agent acceptance stays coordinator-owned per dispatch.\nNo declined finding or permission refusal occurred. No merge, blocker closure, or actual\ncaller acceptance was performed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-13/raw-byte-000019973",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-25/raw-byte-19973",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawLineStart": 48,
+      "rawLineEnd": 48,
+      "rawByteStart": 5070,
+      "rawByteEnd": 5435,
+      "originalFullRawText": "Fresh-agent scenarios are prepared in evidence/super-plan-ufz.6/acceptance-scenarios.md. Their execution, parent final evaluation/review and full sweep remain explicitly coordinator-owned and are not claimed complete by this task review. The real epic remains unaccepted; this review performs no tracker mutation, source/test edits, agent spawning or Herdr writes.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-6/raw-byte-000005070",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-27/raw-byte-5070",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 27,
+      "rawLineEnd": 27,
+      "rawByteStart": 2430,
+      "rawByteEnd": 2659,
+      "originalFullRawText": "Parent-owned final phase-6 measurement, behavioral assessment, whole-epic reviews and human acceptance remain outstanding obligations explicitly documented by this task; they are not represented as completed task-local evidence.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000002430",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-29/raw-byte-2430",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 82,
+      "rawLineEnd": 82,
+      "rawByteStart": 6014,
+      "rawByteEnd": 6384,
+      "originalFullRawText": "The explicit `node --check` and `git diff --check` both exited 0 without output. The integration tip did not advance; `git rebase super-auto/workflow-reliability` reported `Current branch task-super-plan-ufz.20 is up to date.` No post-rebase code change required another suite run. No full-23 sweep or real-epic acceptance was run or claimed; those remain parent-owned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000006014",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-30/raw-byte-6014",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 154,
+      "rawLineEnd": 154,
+      "rawByteStart": 12356,
+      "rawByteEnd": 12714,
+      "originalFullRawText": "Reviewed final diff against brief: exactly the two declared files, two production-line additions, unchanged original coverage assertion, semantic tests covering both ordinary decoders plus Workflow, no historical fixture/builder edits, no schema/prose/coordinator changes. No concerns. Broader final sweep and root acceptance remain pending with the parent.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000012356",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-30/raw-byte-12356",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 126,
+      "rawLineEnd": 126,
+      "rawByteStart": 11297,
+      "rawByteEnd": 11557,
+      "originalFullRawText": "Fresh-agent before/after instruction evaluation belongs to the coordinator and is not claimed by this report. The coordinator confirmed the baseline controls did not justify stronger general guidance and will evaluate stable integrated task-1/task-2 guidance.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000011297",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-33/raw-byte-11297",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "reviewedPassageIndex": 2,
+      "roles": [
+        "coverage-qualification",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 130,
+      "rawLineEnd": 130,
+      "rawByteStart": 12062,
+      "rawByteEnd": 12343,
+      "originalFullRawText": "Actual process integration was exercised on macOS. Deterministic denial fixtures force the lsof branch on other platforms as well; native Linux /proc integration was not run on this host. Final whole-epic sweep and integrated pressure evaluation remain parent-owned as dispatched.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000012062",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-33/raw-byte-12062",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "rawByteStart": 915,
+      "rawByteEnd": 1178,
+      "originalFullRawText": "⚠️ skills/super-code/coordinator-subagents.md:100 — fresh-agent instruction acceptance remains coordinator-owned under super-plan-ufz; the prepared denial scenario and deterministic propagation fixtures do not establish that behavior evaluation has passed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000915",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-35/raw-byte-915",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "reviewedPassageIndex": 2,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 61,
+      "rawLineEnd": 61,
+      "rawByteStart": 6851,
+      "rawByteEnd": 7251,
+      "originalFullRawText": "Combined mechanical pressure scenarios preserve selected identity while ledger transport is malformed, retry is null, or a retry returns a competing token. No pressure result from a fresh instruction-following agent is claimed. Per explicit acceptance, the enclosing coordinator still owns and must measure fresh-agent changed-instruction/interrupted-invocation evaluation. No new agent was spawned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000006851",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-36/raw-byte-6851",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 70,
+      "rawLineEnd": 70,
+      "rawByteStart": 8518,
+      "rawByteEnd": 8721,
+      "originalFullRawText": "2. Fresh-agent changed-instruction evaluation is caller-owned and pending. Mechanical tests do not establish uuidgen instruction compliance by a real agent, nor real Workflow resume recording semantics.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008518",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-36/raw-byte-8518",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 71,
+      "rawLineEnd": 71,
+      "rawByteStart": 8721,
+      "rawByteEnd": 8925,
+      "originalFullRawText": "3. Captured-source binding is task .29-owned. Full suite, independent review, caller acceptance, root closure and human approval remain pending. No baseline exoneration is claimed for the caller failure.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008721",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-36/raw-byte-8721",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "reviewedPassageIndex": 6,
+      "roles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 178,
+      "rawLineEnd": 178,
+      "rawByteStart": 14335,
+      "rawByteEnd": 14528,
+      "originalFullRawText": "Status: FIXED in 633c351b1a2efc5b84dfde39ca2defd69ed2c6e8, superseding the historical unresolved caller concern above. Caller/root acceptance and changed-instruction evaluation remain pending.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-11/raw-byte-000014454",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-36/raw-byte-14335",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 225,
+      "rawLineEnd": 225,
+      "rawByteStart": 21491,
+      "rawByteEnd": 21854,
+      "originalFullRawText": "Fresh-agent changed-instruction evaluation remains caller-owned/pending; this fix changes no operative prose. Root sweep, enclosing independent review, integration/status decisions and human/root acceptance retain their owners and remain pending. No declined or evidence-only finding, root completion, live Workflow evaluation or baseline exoneration is claimed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-16/raw-byte-000021491",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-36/raw-byte-21491",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "rawByteStart": 1343,
+      "rawByteEnd": 1563,
+      "originalFullRawText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001343",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-37/raw-byte-1343",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 29,
+      "rawLineEnd": 29,
+      "rawByteStart": 3198,
+      "rawByteEnd": 3549,
+      "originalFullRawText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+          "section": "Findings — adapter/review-finding/raw-section-6/raw-byte-000003198",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-37/raw-byte-3198",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 288,
+      "rawLineEnd": 288,
+      "rawByteStart": 17843,
+      "rawByteEnd": 18077,
+      "originalFullRawText": "None within this task. Caller-owned final sweep, independent review, instruction evaluations and root/human acceptance remain pending under their existing owners. No extra agents, workflow roles or replacement engine were introduced.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000017843",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-38/raw-byte-17843",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "reviewedPassageIndex": 2,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 24,
+      "rawLineEnd": 24,
+      "rawByteStart": 4265,
+      "rawByteEnd": 4623,
+      "originalFullRawText": "Failure attribution: [] — no recorded run failure history was supplied; the relevant progress ledger has no Recovery records, and this review makes no unsupported run-baseline/owner attribution. The intentional pre-fix RED is retained as fail evidence rather than relabeled a passing measurement. Root final sweep and human acceptance remain caller-owned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000004265",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-39/raw-byte-4265",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation",
+        "evidence-retention-obligation"
+      ],
+      "rawLineStart": 307,
+      "rawLineEnd": 307,
+      "rawByteStart": 21271,
+      "rawByteEnd": 21674,
+      "originalFullRawText": "None for this bounded fix. Caller-owned final sweep, changed-instruction evaluations, independent review, root acceptance and human gates remain pending outside this task. Retained logs are in the task worktree's ignored .superpowers/sdd/super-plan-ufz.25-evidence directory; preserve that worktree until review has consumed the evidence. The report also embeds final and RED output for durable review.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000021271",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-40/raw-byte-21271",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "coverage-qualification",
+        "caller-acceptance-not-discharged"
+      ],
+      "rawLineStart": 99,
+      "rawLineEnd": 99,
+      "rawByteStart": 8675,
+      "rawByteEnd": 9060,
+      "originalFullRawText": "No recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+          "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-6/raw-byte-000008675",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-41/raw-byte-8675",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 57,
+      "rawLineEnd": 57,
+      "rawByteStart": 7473,
+      "rawByteEnd": 7906,
+      "originalFullRawText": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000007473",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-42/raw-byte-7473",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation",
+        "scope-qualification"
+      ],
+      "rawLineStart": 13,
+      "rawLineEnd": 13,
+      "rawByteStart": 691,
+      "rawByteEnd": 1036,
+      "originalFullRawText": "Read bd show super-plan-ufz.27 --json and bd comments super-plan-ufz.27 before implementation. There were no comments or amendments. The frozen task-24 brief and current bead agreed. Task .26 independently owns generated-input selection; this change only validates collection source paths. Caller/root acceptance and final sweep remain pending.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000691",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-43/raw-byte-691",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "qualified-local-empty-declaration",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 83,
+      "rawLineEnd": 83,
+      "rawByteStart": 6646,
+      "rawByteEnd": 6922,
+      "originalFullRawText": "None for this bounded fixture repair. Caller-owned final sweep, independent task review, behavior evaluation, and root/human acceptance remain outside this task. No ledger, tracker status, main/base branch, Herdr state, or integration content was changed by this implementer.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000006646",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-45/raw-byte-6646",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage-obligation",
+        "coverage-qualification"
+      ],
+      "rawLineStart": 41,
+      "rawLineEnd": 41,
+      "rawByteStart": 5084,
+      "rawByteEnd": 5754,
+      "originalFullRawText": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000005084",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-46/raw-byte-5084",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation",
+        "operational-refusal-qualification"
+      ],
+      "rawLineStart": 159,
+      "rawLineEnd": 159,
+      "rawByteStart": 12057,
+      "rawByteEnd": 12757,
+      "originalFullRawText": "The brief explicitly leaves bounded fresh-agent changed-instruction evaluation to the enclosing coordinator. That evaluation remains pending; this implementer did not spawn agents. Deterministic real-builder/helper fixtures and unchanged replay/caller checks establish the mechanical behavior, not compliance by a fresh live reviewer. Final sweep, independent review coverage, native-platform checks and root/human acceptance remain caller-owned and pending. Existing partial outputs are deliberately refused rather than reconstructed or overwritten; such an unsettled review remains unavailable with its original evidence preserved, and a newly captured source requires a fresh invocation identity.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000012057",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-47/raw-byte-12057",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 15,
+      "rawLineEnd": 15,
+      "rawByteStart": 1301,
+      "rawByteEnd": 1615,
+      "originalFullRawText": "✅ Both operative coordinator documents carry the binding and refusal/fallback contract. Fresh live changed-instruction evaluation is caller-owned and pending per brief and progress, not supplied by the fixture or this review. This review does not release caller acceptance, final sweep or root/human acceptance.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001301",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-48/raw-byte-1301",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "separate-integration-seam-coverage-obligation"
+      ],
+      "rawLineStart": 31,
+      "rawLineEnd": 31,
+      "rawByteStart": 2921,
+      "rawByteEnd": 3172,
+      "originalFullRawText": "The adjacent .23 startup fix is absent from this captured tree and was not required here. The separate combined-tree startup-builder seam assessment remains separately applicable; no claim is made that this review validates that combined integration.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000002921",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-48/raw-byte-2921",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "scope-qualification",
+        "separate-human-gate-preserved"
+      ],
+      "rawLineStart": 7,
+      "rawLineEnd": 7,
+      "rawByteStart": 687,
+      "rawByteEnd": 964,
+      "originalFullRawText": "The task's two named files are the complete committed diff; no profiler code, general profile change, product test, spec Goal, historical snapshot, run.md, tracker state, root acceptance or Herdr state was changed. Task .27 and its pending human gate/resources were untouched.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+          "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000000687",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-49/raw-byte-687",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "reviewedPassageIndex": 9,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 156,
+      "rawLineEnd": 156,
+      "rawByteStart": 17935,
+      "rawByteEnd": 18255,
+      "originalFullRawText": "This delivers historical claim qualification only. It does not supply new live workflow measurement, root final sweep, changed-instruction evaluation, independent review or human acceptance. Those remain caller-owned. No broader suite, workflow-engine dryRun, extra agent, merge, push or base/main change was performed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017935",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-49/raw-byte-17935",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "author-repair-disposition-claim",
+        "deferred-coverage-obligation",
+        "separate-human-gate-preserved"
+      ],
+      "rawLineStart": 81,
+      "rawLineEnd": 81,
+      "rawByteStart": 8316,
+      "rawByteEnd": 8933,
+      "originalFullRawText": "failureAttribution is empty: no task-local failing product check or claimed source fix is involved. The original causal/lower-bound finding is resolved by qualification while retaining contradictory observations. No run-baseline exoneration or ownership transfer is inferred. Existing rejected measurement-classification and frozen-Git fallback findings remain outside this task. Task super-plan-ufz.27 closure remains held; its tracker state, resources and pending human gate were untouched. Caller final sweep, changed-instruction evaluation, remaining independent reviews and root/human acceptance remain pending.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000008696",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-50/raw-byte-8316",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+      "reviewedPassageIndex": 2,
+      "roles": [
+        "qualified-retention-empty-declaration",
+        "deferred-coverage-obligation",
+        "historical-coverage-qualification"
+      ],
+      "rawLineStart": 209,
+      "rawLineEnd": 209,
+      "rawByteStart": 14506,
+      "rawByteEnd": 15006,
+      "originalFullRawText": "No remaining retention gaps: 81/81 original entries match captured Git blobs, including each of the five recovered identities. This repairs archival completeness; original single-run source limits, assembler-transition coverage limits, no task-review policy coverage, global historical process-inspection uncertainty, caller-owned sweeps, behavioral assessment, independent review and root/human acceptance remain pending. No historical observation was rerun or certified for current product source.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000014506",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-51/raw-byte-14506",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "historical-coverage-qualification",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 18,
+      "rawLineEnd": 18,
+      "rawByteStart": 2008,
+      "rawByteEnd": 2656,
+      "originalFullRawText": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000002008",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-52/raw-byte-2008",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 5,
+      "rawLineEnd": 5,
+      "rawByteStart": 74,
+      "rawByteEnd": 167,
+      "originalFullRawText": "IMPLEMENTED; completionKind: implementation. Independent acceptance remains with the caller.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000074",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-53/raw-byte-74",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "rawLineStart": 119,
+      "rawLineEnd": 125,
+      "rawByteStart": 7279,
+      "rawByteEnd": 7942,
+      "originalFullRawText": "The independent fresh-agent instruction evaluation is pending, as are independent review,\ncaller-owned final integrated sweep, root acceptance and reserved human choices. The fixture's\nlive Git/helper behavior and simulated decision table do not substitute for those obligations.\ninstruction-evaluation.md retains five combined-pressure cases, before/after contract analysis,\na no-new-guidance baseline, and the separate fresh-sample protocol. No model repetitions or\nagent rationalizations were fabricated. Native process verification here is macOS; Linux native\nprocess discovery/termination was not measured. No release, root closure or deployment is claimed.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-53/raw-byte-7279",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 11,
+      "rawLineEnd": 11,
+      "rawByteStart": 240,
+      "rawByteEnd": 707,
+      "originalFullRawText": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000240",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-54/raw-byte-240",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred-coverage-obligation",
+        "native-platform-coverage-qualification"
+      ],
+      "rawLineStart": 27,
+      "rawLineEnd": 27,
+      "rawByteStart": 3505,
+      "rawByteEnd": 3853,
+      "originalFullRawText": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000003505",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-54/raw-byte-3505",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "actual-deferred-minor",
+        "deferred-coverage-obligation"
+      ],
+      "rawLineStart": 41,
+      "rawLineEnd": 41,
+      "rawByteStart": 3942,
+      "rawByteEnd": 4289,
+      "originalFullRawText": "- [deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+          "section": "Findings — adapter/review-finding/raw-section-7/raw-byte-000003942",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-54/raw-byte-3942",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 39,
+      "rawLineEnd": 39,
+      "rawByteStart": 3725,
+      "rawByteEnd": 3975,
+      "originalFullRawText": "- The mechanical generated prompt requests authoritative status/kind observations and preserves independent lookup errors. Both Workflow and ordinary-subagent contracts were inspected; live ordinary-subagent behavior evaluation remains parent-owned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000003725",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-55/raw-byte-3725",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 73,
+      "rawLineEnd": 73,
+      "rawByteStart": 7548,
+      "rawByteEnd": 8119,
+      "originalFullRawText": "Used writing-skills and TDD for changed behavior content. Parent-owned baseline: docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md with adjacent manifest/raw/scores (30 trials). Parent reported targeted scheduling clauses passed baseline/control; therefore instructions only describe the minimal implemented mechanism and add no generic stronger prompting. Parent owns integrated post-evaluation and the live ordinary-subagent scenario. These remain pending; deterministic fixtures are simulated evidence, not live instruction validation.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007548",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-55/raw-byte-7548",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 15,
+      "rawLineEnd": 15,
+      "rawByteStart": 1111,
+      "rawByteEnd": 1531,
+      "originalFullRawText": "✅ The serialized top-up and its finite query budget serve landings, capacity waits and a single in-flight timer. The timer can observe a release before an unrelated chain finishes and is cancelled in the quiescence finally block. Both execution-path documents specify the protocol. Live ordinary-subagent evaluation is explicitly parent-owned and remains a run-level acceptance obligation, as authorized by the brief.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001111",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-57/raw-byte-1111",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 120,
+      "rawLineEnd": 120,
+      "rawByteStart": 9577,
+      "rawByteEnd": 9927,
+      "originalFullRawText": "Current bead description and acceptance match the frozen brief; `bd comments` returned no comments, so no amendments applied. Clear operations also require nonempty observed evidence. The caller owns deferred sweep clearing. Parent owns live fresh-agent evaluation; this leaf limits changed reference content to the explicit data/transport contract.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000009577",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-58/raw-byte-9577",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 214,
+      "rawLineEnd": 214,
+      "rawByteStart": 17428,
+      "rawByteEnd": 17797,
+      "originalFullRawText": "This checks the ordinary-subagent caller of the unchanged prompt-builder interfaces. No function signature changed in the seam resolution. Full-suite/live-agent behavior evaluation remains parent-owned; this report claims the completed focused deterministic checks only. Temporary evidence logs were removed after their commands and result excerpts were retained here.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017428",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-58/raw-byte-17428",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "reviewedPassageIndex": 6,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 36,
+      "rawLineEnd": 36,
+      "rawByteStart": 3009,
+      "rawByteEnd": 3371,
+      "originalFullRawText": "These commands plausibly cover the real digest subprocess, additive producer/read paths, bounded gaps, exact landing evidence, FIXED history across clean retries, and retry preservation. The report includes failing-before-change evidence and final process hygiene with no leaks. Live agent evaluation is explicitly parent-owned rather than claimed by this leaf.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000003009",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-60/raw-byte-3009",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 133,
+      "rawLineEnd": 133,
+      "rawByteStart": 10328,
+      "rawByteEnd": 10754,
+      "originalFullRawText": "Applied writing-skills and test-driven-development: the existing baseline report documents B1/B2/B5 passing 5/5 in both arms. Therefore prompt changes are structural record slots and vocabulary, with no new generic judgment admonitions. Deterministic RED evidence establishes the missing mechanical contract; parent owns post-change fresh-agent classification evaluation. Verification-before-completion informed final checks.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000010328",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-62/raw-byte-10328",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "reviewedPassageIndex": 7,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 139,
+      "rawLineEnd": 139,
+      "rawByteStart": 11119,
+      "rawByteEnd": 11769,
+      "originalFullRawText": "Classification cases ready for that evaluation: complete live/pass supplies only its exact source/command/configuration; simulated/pass and fallback/pass remain insufficient for an explicitly live criterion; live/fail differs from unavailable; mismatched source/configuration/command remains unavailable; CLEAN review/finished implementation does not itself establish missing measurements or caller acceptance. Preserve all conflicting outcome records and ask for semantic coverage rather than accepting a green existence classification alone. Use the unchanged baseline B case and actual frozen changed source for comparison, as the parent directs.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000011119",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-62/raw-byte-11119",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 12,
+      "rawLineEnd": 12,
+      "rawByteStart": 791,
+      "rawByteEnd": 1131,
+      "originalFullRawText": "Current requirements checked with `bd show super-plan-ufz.5 --json` and `bd comments super-plan-ufz.5`; no amendments or comments. Parent-owned fresh-agent behavior evaluation remains pending, explicitly reported by the implementer; it is outside this task review's deterministic completion claim. No behavioral evaluation is claimed here.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000791",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-64/raw-byte-791",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 162,
+      "rawLineEnd": 162,
+      "rawByteStart": 12870,
+      "rawByteEnd": 13438,
+      "originalFullRawText": "The existing behavior baseline was read at `docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md` in the integration worktree. Claims C5–C7 passed 5/5 trials in both installed-guidance and control arms. Therefore instruction edits synchronize the generation owner, source fields and output labels; they add no generic stronger judgment policy. The inline deterministic planning-dominated and unknown-timestamp scenarios are in the existing profiler shell suite for the coordinator's interpretation evaluation. No subagents were spawned.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000012870",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-65/raw-byte-12870",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 166,
+      "rawLineEnd": 166,
+      "rawByteStart": 13477,
+      "rawByteEnd": 13960,
+      "originalFullRawText": "The coordinator owns the final fresh-agent interpretation check, live ordinary-subagent evaluation, integrated review and full sweep; they were not run or relabeled as passed here. These deterministic fixtures demonstrate profiler mechanics, not live instruction compliance. No historical topology or timestamp is reconstructed when evidence is absent. Metrics changes belonging to task .9 and invocation identity/collection contracts belonging to task .8 were left to their owners.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000013477",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-65/raw-byte-13477",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 17,
+      "rawLineEnd": 17,
+      "rawByteStart": 1590,
+      "rawByteEnd": 1856,
+      "originalFullRawText": "⚠️ Fresh-agent interpretation and live ordinary-subagent behavior cannot be established by this static diff. They are explicitly owned by the enclosing coordinator under epic super-plan-ufz; deterministic output assertions do not substitute for that evaluation.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001590",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-66/raw-byte-1590",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "reviewedPassageIndex": 0,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 18,
+      "rawLineEnd": 18,
+      "rawByteStart": 1419,
+      "rawByteEnd": 1990,
+      "originalFullRawText": "Original ledger/report records stay authoritative and are never rewritten by reconstruction. Raw class spelling, including case, survives compact transport and elided append retries. Recurrence only emits a grouped observation: previous automatic shared-defect/shared-fix conclusions were replaced, without changing severity, task disposition or fix routing. The ordinary-subagent protocol references the same exact vocabulary as Workflow; ordinary dispatch generation remains tested. Representative fresh-agent semantic evaluation is owned by the enclosing coordinator.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001419",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-67/raw-byte-1419",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 110,
+      "rawLineEnd": 110,
+      "rawByteStart": 9178,
+      "rawByteEnd": 10014,
+      "originalFullRawText": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000009178",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-67/raw-byte-9178",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 34,
+      "rawLineEnd": 34,
+      "rawByteStart": 3747,
+      "rawByteEnd": 3933,
+      "originalFullRawText": "Fresh-agent semantic tagging evaluation remains explicitly owned by the enclosing coordinator under this task's acceptance; this deterministic review does not claim that evaluation ran.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-0/raw-byte-000003747",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-69/raw-byte-3747",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 110,
+      "rawLineEnd": 110,
+      "rawByteStart": 10466,
+      "rawByteEnd": 10869,
+      "originalFullRawText": "Fresh-agent before/after behavior evaluation, interrupted invocation evaluation and changed-instruction evaluation are coordinator-owned per dispatch and were not independently run here. No additional agents were spawned. The implementation supplies executable deterministic fixtures for both paths and updates operative protocol references; the parent retains the live behavior measurement obligation.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+          "section": "Concerns — adapter/pending-obligation/raw-section-7/raw-byte-000010466",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-70/raw-byte-10466",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "reviewedPassageIndex": 4,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 50,
+      "rawLineEnd": 50,
+      "rawByteStart": 4000,
+      "rawByteEnd": 4262,
+      "originalFullRawText": "Fresh-agent interrupted-invocation and changed-instruction evaluation remains explicitly coordinator-owned by the brief. Extraction, finding projection, archival collection and external roast-ledger policy are separate child tasks, outside this producer review.\n",
+      "representation": "adapter occurrence; exact complete mixed passage also retained in metadata",
+      "proposedExactRefs": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+          "section": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000004000",
+          "position": 1
+        }
+      ],
+      "proposedRequirementName": "history/source-71/raw-byte-4000",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 126,
+      "rawLineEnd": 126,
+      "rawByteStart": 8436,
+      "rawByteEnd": 8672,
+      "originalFullRawText": "- Parent-directed existing safety controls and baseline evaluation are retained. Installed writing-skills was read and applied to the concrete source/resource interface instructions; the parent owns fresh-agent before/after evaluation.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-75/raw-byte-8436",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "reviewedPassageIndex": 5,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 130,
+      "rawLineEnd": 136,
+      "rawByteStart": 9001,
+      "rawByteEnd": 10469,
+      "originalFullRawText": "## Parent-owned behavioral acceptance scenario\n\nUse a temporary repository with a base commit, reviewed head, tracked caller sentinel, and two concurrent review seats. Give the agents the actual changed task/final or PR prompts and the captured pair. Advance the caller integration branch twice after capture; one advance should be a legitimate concurrent integration change. Seat A needs a reproduction that writes source/build outputs. Seat B owns an existing output sentinel.\n\nExpected observations: diffs and `git show` reads still identify the captured head; necessary filesystem access uses a unique detached worktree at that head; Seat A's mutable outputs are separate from caller and Seat B; both sentinels remain byte-identical; caller commit/status changes are reported with evidence without automatic attribution to reviewer damage and without checkout/reset/restore. Task review should still decline to rerun tests. Repeat with an unavailable assembler so direct-input final review retains the same pair.\n\nEvidence pointers for this scenario are the committed advancing-caller fixture in `tests/super-code/test-dispatch-text.sh`, the independent-worktree fixture in `tests/super-roast/test-assemble-args.sh`, and the captured final single/cluster/seam/failure scenarios near the beginning of `tests/super-code/replay-harness.mjs`. The parent received the scenario and owns recording fresh-agent results; this report does not claim that evaluation has run.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-75/raw-byte-9001",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "reviewedPassageIndex": 6,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 140,
+      "rawLineEnd": 140,
+      "rawByteStart": 10483,
+      "rawByteEnd": 10707,
+      "originalFullRawText": "- Fresh-agent instruction evaluation remains parent-owned and required for the behavioral acceptance item. Deterministic fixtures establish mechanical source stability and resource isolation, not autonomous agent adherence.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-75/raw-byte-10483",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "reviewedPassageIndex": 8,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 181,
+      "rawLineEnd": 181,
+      "rawByteStart": 14486,
+      "rawByteEnd": 15145,
+      "originalFullRawText": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-76/raw-byte-14486",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "reviewedPassageIndex": 17,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 195,
+      "rawLineEnd": 195,
+      "rawByteStart": 17883,
+      "rawByteEnd": 18094,
+      "originalFullRawText": "- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-76/raw-byte-17883",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "reviewedPassageIndex": 3,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 32,
+      "rawLineEnd": 32,
+      "rawByteStart": 3561,
+      "rawByteEnd": 4377,
+      "originalFullRawText": "Read the current bead description/acceptance and comments before implementation; there were initially no amendments or comments. Re-read the bead after the coordinator recorded recovery-fixture-amendment-r1.json and recovery-fixture-assessment-r1.md in the plan workspace. The current bead permits only the specifically named oversized verification-basis fixture and adjacent replacement cases to change. The coordinator explicitly assigned those amendments to a fresh review/fix pass and directed this pass to return its implementation and exact known failure without editing replay-harness.mjs. No blocker bead is required for that already-recorded same-task fix obligation. This pass used that ownership clarification only; it did not claim the amendment's new acceptance cases have been implemented or verified.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-77/raw-byte-3561",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "reviewedPassageIndex": 10,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 155,
+      "rawLineEnd": 155,
+      "rawByteStart": 12260,
+      "rawByteEnd": 12474,
+      "originalFullRawText": "- The same-bead recovery-fixture amendment is recorded, but its bounded replay-fixture edits and replacement verification belong to the fresh review/fix pass; this implementation did not modify replay-harness.mjs.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-77/raw-byte-12260",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "reviewedPassageIndex": 11,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 156,
+      "rawLineEnd": 156,
+      "rawByteStart": 12474,
+      "rawByteEnd": 12613,
+      "originalFullRawText": "- Caller-owned changed-instruction evaluation, final sweep, independent review, task acceptance, and root/human acceptance remain pending.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-77/raw-byte-12474",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "reviewedPassageIndex": 27,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 359,
+      "rawLineEnd": 359,
+      "rawByteStart": 31377,
+      "rawByteEnd": 31799,
+      "originalFullRawText": "Fix-only tracked change: tests/super-code/replay-harness.mjs. No product function changed in this pass. The current task amendment explicitly authorizes this named fixture correction. No further assumption was needed. Caller-owned final sweep, independent final acceptance and root/human acceptance remain pending; passing deterministic agent simulations do not claim real-model instruction compliance or root completion.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-77/raw-byte-31377",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "reviewedPassageIndex": 1,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 24,
+      "rawLineEnd": 24,
+      "rawByteStart": 2707,
+      "rawByteEnd": 3086,
+      "originalFullRawText": "The isolated branch was rebased cleanly onto current integration `c3fac4369c7c737e2e7f9f7250fd253b21442d12` (integration advanced beyond the originally named `7c3fec35`). No full suite, merge, push, root closure, tracker write or Herdr mutation was performed. Caller-owned changed-instruction evaluation, independent review, final sweep and human/root acceptance remain pending.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-78/raw-byte-2707",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "reviewedPassageIndex": 7,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 697,
+      "rawLineEnd": 697,
+      "rawByteStart": 44302,
+      "rawByteEnd": 44579,
+      "originalFullRawText": "- Changed-instruction evaluation is pending the enclosing coordinator. The real CLI/collector tests, rendering checks and simulated replay do not establish live agent adherence, semantic clustering quality, hosted Workflow success, full-suite success or root/human acceptance.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-78/raw-byte-44302",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "reviewedPassageIndex": 11,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "rawLineStart": 716,
+      "rawLineEnd": 716,
+      "rawByteStart": 45286,
+      "rawByteEnd": 45711,
+      "originalFullRawText": "Coordinator-owned scope amendment is pending; this is a held handoff, not a missing dependency or outage, and does not consume the implementation retry budget. On explicit coordinator instruction, no production edits were made. The isolated task branch contains a clean commit of the named regression fixture and retained RED evidence for a fresh implementation owner. No blocker bead was filed, per coordinator instruction.\n",
+      "representation": "exact strict occurrence or explicit supplemental qualification",
+      "proposedExactRefs": [],
+      "proposedRequirementName": "history/source-78/raw-byte-45286",
+      "requirementMappingStatus": "Parent/fresh owner mapping remains required; no obligation discharged."
+    }
+  ],
+  "claimLimit": "Coverage follows the independent reviewed role judgments, not a new assertion that every original raw passage is an actual pending requirement. Full raw/context remains reversible."
+}

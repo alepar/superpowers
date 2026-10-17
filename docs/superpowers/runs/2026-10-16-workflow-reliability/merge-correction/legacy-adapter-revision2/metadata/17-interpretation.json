@@ -1,0 +1,430 @@
+{
+  "version": 1,
+  "ordinal": 17,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+  "originalArtifact": "task-report-history-r1/raw/task-14-report-fix.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-14-report-fix.md",
+  "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+  "rawByteCount": 9461,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 121,
+    "byteStart": 0,
+    "byteEnd": 9461,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/16",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/17-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/16/interpretedPassages/0",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        539,
+        986
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Direct producer .md.diff path mismatched collector .diff discovery/hasBundle; two substitutions claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/16/interpretedPassages/1",
+      "roles": [
+        "illustrative-fixture",
+        "repair-evidence-scope"
+      ],
+      "span": [
+        987,
+        1812
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Producer-shaped archive/idempotence/conflict/null/no-work fixture behavior described, not agent/live acceptance."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/16/interpretedPassages/2",
+      "roles": [
+        "execution-context"
+      ],
+      "span": [
+        8447,
+        9176
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Sandbox logging denial/inside-root guard refusal are setup failures; completed tests claim no leak."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/16/interpretedPassages/3",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        9177,
+        9461
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Actual Minor pending-behavior-eval explicitly remains deferred; fresh-agent/integrated live isolation/root acceptance/metrics parent-owned."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-17-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Direct producer .md.diff path mismatched collector .diff discovery/hasBundle; two substitutions claimed.",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 539,
+      "byteEnd": 986,
+      "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Finding and narrow correction",
+          "headingRaw": "### Finding and narrow correction\n",
+          "hierarchy": [
+            "Fix pass",
+            "Finding and narrow correction"
+          ],
+          "sectionByteStart": 504,
+          "sectionByteEnd": 1994,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 36
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-17-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "roles": [
+        "illustrative-fixture",
+        "repair-evidence-scope"
+      ],
+      "interpretation": "Producer-shaped archive/idempotence/conflict/null/no-work fixture behavior described, not agent/live acceptance.",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 987,
+      "byteEnd": 1812,
+      "rawText": "The fixture now uses that producer filename. Added behavior checks prove that completion inventories it, repeated collection preserves exact bytes and records, an archive conflict returns 3 without overwriting either archive or source, and repair permits completion. A null/no-work result with only that direct package returns 3, archives the available bytes, records both reconciliation and missing-review gaps, and remains idempotently gapped on replay. Existing interrupted-copy, split-input, source-workspace-removal, immutable source/extraction, retained finding and other gap cases still pass. The new assertions catch an omitted package/inventory, incorrect complete result, overwritten source/destination bytes, lost reconciliation/missing-review gaps, or non-idempotent records; none depend on source-text matching.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Finding and narrow correction",
+          "headingRaw": "### Finding and narrow correction\n",
+          "hierarchy": [
+            "Fix pass",
+            "Finding and narrow correction"
+          ],
+          "sectionByteStart": 504,
+          "sectionByteEnd": 1994,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 484
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-17-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "roles": [
+        "execution-context"
+      ],
+      "interpretation": "Sandbox logging denial/inside-root guard refusal are setup failures; completed tests claim no leak.",
+      "lineStart": 119,
+      "lineEnd": 119,
+      "byteStart": 8447,
+      "byteEnd": 9176,
+      "rawText": "No leaked processes were found after RED, GREEN script, or contract-lint runs: each completed outside-root `stop-run-processes --check` exited 0 with no output. The final `stop-run-processes` stop also exited 0 with no output; no match or survived lines occurred, and no background process was started. The first RED launch could not redirect its log under the sandbox and did not execute tests; the authorized escalation then produced the RED evidence above. An initial leak check from inside the target worktree returned its protective exit 2; rerunning from outside the task roots returned 0 with no output. All completed test runs use the prescribed isolated temp state. No agents were spawned and no Herdr writes were made.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Fix-pass test hygiene and remaining evaluation",
+          "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+          "hierarchy": [
+            "Fix pass",
+            "Fix-pass test hygiene and remaining evaluation"
+          ],
+          "sectionByteStart": 8395,
+          "sectionByteEnd": 9461,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 53
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-17-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Actual Minor pending-behavior-eval explicitly remains deferred; fresh-agent/integrated live isolation/root acceptance/metrics parent-owned.",
+      "lineStart": 121,
+      "lineEnd": 121,
+      "byteStart": 9177,
+      "byteEnd": 9461,
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Fix-pass test hygiene and remaining evaluation",
+          "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+          "hierarchy": [
+            "Fix pass",
+            "Fix-pass test hygiene and remaining evaluation"
+          ],
+          "sectionByteStart": 8395,
+          "sectionByteEnd": 9461,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 783
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 539,
+      "byteEnd": 986,
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/16/interpretedPassages/0"
+      ],
+      "interpretation": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction. Claimed repair, present applicability and cross-source identity remain unadjudicated.",
+      "jsonPointer": null,
+      "passageJudgment": {
+        "ordinal": 17,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+        "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+        "byteStart": 539,
+        "byteEnd": 986,
+        "lineStart": 14,
+        "lineEnd": 14,
+        "selection": "full-original-passage",
+        "assertionQuote": "The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`.",
+        "repairClaimQuote": "Both now recognize the actual `final-review-ID.md.diff` filename.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      }
+    },
+    {
+      "byteStart": 9177,
+      "byteEnd": 9461,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/16/interpretedPassages/3"
+      ],
+      "interpretation": "Actual Minor pending-behavior-eval explicitly remains deferred; fresh-agent/integrated live isolation/root acceptance/metrics parent-owned.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": true,
+    "proposedReview": "Central suffix defect/claimed fix and deferred Minor supported. No report-only supported resolution; preserve exact producer filename.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-2/raw-byte-000000539",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "passageJudgment": {
+        "ordinal": 17,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+        "rawSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+        "byteStart": 539,
+        "byteEnd": 986,
+        "lineStart": 14,
+        "lineEnd": 14,
+        "selection": "full-original-passage",
+        "assertionQuote": "The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`.",
+        "repairClaimQuote": "Both now recognize the actual `final-review-ID.md.diff` filename.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      },
+      "representationChoice": null,
+      "rawByteStart": 539,
+      "rawByteEnd": 986,
+      "rawLineStart": 14,
+      "rawLineEnd": 14,
+      "originalSections": [
+        {
+          "section": "Finding and narrow correction",
+          "sectionOrdinal": 2,
+          "headingRaw": "### Finding and narrow correction\n",
+          "hierarchy": [
+            "Fix pass",
+            "Finding and narrow correction"
+          ],
+          "byteStart": 504,
+          "byteEnd": 1994
+        }
+      ],
+      "rawText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/16/interpretedPassages/0"
+      ],
+      "interpretation": "The source explicitly verifies the Important producer/collector suffix mismatch and then claims two substitutions. The finding assertion remains an appearance even though its author reports correction. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-4/raw-byte-000009177",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 9177,
+      "rawByteEnd": 9461,
+      "rawLineStart": 121,
+      "rawLineEnd": 121,
+      "originalSections": [
+        {
+          "section": "Fix-pass test hygiene and remaining evaluation",
+          "sectionOrdinal": 4,
+          "headingRaw": "### Fix-pass test hygiene and remaining evaluation\n",
+          "hierarchy": [
+            "Fix pass",
+            "Fix-pass test hygiene and remaining evaluation"
+          ],
+          "byteStart": 8395,
+          "byteEnd": 9461
+        }
+      ],
+      "rawText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The Minor pending-behavior-eval finding remains deferred to the coordinator as instructed. Fresh-agent post evaluation, integrated after/live-isolation evidence, root acceptance and metric decisions remain coordinator-owned; these deterministic tests make no claim to establish them.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/16/interpretedPassages/3"
+      ],
+      "interpretation": "Actual Minor pending-behavior-eval explicitly remains deferred; fresh-agent/integrated live isolation/root acceptance/metrics parent-owned."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/17-task-14-report-fix.md",
+  "retainedSha256": "f1b4e0cffd3a6df697dc0f7b45129b56ac6a53835ac75dfc05949561a14e763a"
+}

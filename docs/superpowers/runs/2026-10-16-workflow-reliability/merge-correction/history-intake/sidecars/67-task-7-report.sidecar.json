@@ -1,0 +1,696 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-7-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-7-report.md",
+  "rawSha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+  "rawByteCount": 10563,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-report.md",
+    "durablePath": "task-report-history-r1/raw/task-7-report.md",
+    "sha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+    "byteCount": 10563,
+    "logicalRole": "report",
+    "ordinal": 7,
+    "logicalTaskId": "super-plan-ufz.11",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-7-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 2,
+      "byteStart": 0,
+      "byteEnd": 21,
+      "bodyLineStart": 1,
+      "rawText": "Status: IMPLEMENTED\n\n",
+      "bodyRawText": "Status: IMPLEMENTED\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 20
+        }
+      ]
+    },
+    {
+      "section": "super-plan-ufz.11 — IMPLEMENTED",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# super-plan-ufz.11 — IMPLEMENTED\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED"
+      ],
+      "lineStart": 3,
+      "lineEnd": 11,
+      "byteStart": 21,
+      "byteEnd": 507,
+      "bodyLineStart": 4,
+      "rawText": "# super-plan-ufz.11 — IMPLEMENTED\n\n- Branch: `task-super-plan-ufz.11`\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11`\n- Initial base: `599b30303e6cf43e154ee7fd55c9f57cb9f114cf`\n- Final base after clean rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n- Head tested and submitted: `a5b8f0c6f9caff12fa184ef607743431ff969be1`\n- Stacked: false. Reopened: false. Working tree clean.\n\n",
+      "bodyRawText": "\n- Branch: `task-super-plan-ufz.11`\n- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11`\n- Initial base: `599b30303e6cf43e154ee7fd55c9f57cb9f114cf`\n- Final base after clean rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n- Head tested and submitted: `a5b8f0c6f9caff12fa184ef607743431ff969be1`\n- Stacked: false. Reopened: false. Working tree clean.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Branch: `task-super-plan-ufz.11`\n",
+          "text": "Branch: `task-super-plan-ufz.11`",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 58,
+          "byteEnd": 93
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11`\n",
+          "text": "Worktree: `/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 93,
+          "byteEnd": 244
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Initial base: `599b30303e6cf43e154ee7fd55c9f57cb9f114cf`\n",
+          "text": "Initial base: `599b30303e6cf43e154ee7fd55c9f57cb9f114cf`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 244,
+          "byteEnd": 303
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Final base after clean rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`\n",
+          "text": "Final base after clean rebase: `c70245ce4e73d3895062cdc42515c05a50a38844`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 303,
+          "byteEnd": 379
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Head tested and submitted: `a5b8f0c6f9caff12fa184ef607743431ff969be1`\n",
+          "text": "Head tested and submitted: `a5b8f0c6f9caff12fa184ef607743431ff969be1`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 379,
+          "byteEnd": 451
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Stacked: false. Reopened: false. Working tree clean.\n",
+          "text": "Stacked: false. Reopened: false. Working tree clean.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 451,
+          "byteEnd": 506
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "lineStart": 12,
+      "lineEnd": 19,
+      "byteStart": 507,
+      "byteEnd": 1991,
+      "bodyLineStart": 13,
+      "rawText": "## Implementation\n\nA seven-entry exact process-tag lookup groups `cleanup-inspection`, `cleanup-inspection-denied`, and `process-inspection-refused` under `cleanup-inspection`; `missing-evidence`, `evidence-missing`, and `test-evidence-missing` under `missing-evidence`; and preserves the existing `suite-not-run` process class. Live and resumed recurrence both use the same `recurrenceSig` lookup. The blocker cause field accepts the same exact values. No substring, fuzzy category, termination-failure, survived-process or failed-live-measurement matching was added. Ambiguous `cleanup-denied` remains distinct.\n\nUnknown tags and free text now retain numeric/path/assertion distinctions through an exact-text UTF-8 fingerprint. The existing specific untagged `review-package resolved HEAD in <path> (<N> bytes)` process message retains bounded legacy normalization. No other free text loses numbers or paths.\n\nOriginal ledger/report records stay authoritative and are never rewritten by reconstruction. Raw class spelling, including case, survives compact transport and elided append retries. Recurrence only emits a grouped observation: previous automatic shared-defect/shared-fix conclusions were replaced, without changing severity, task disposition or fix routing. The ordinary-subagent protocol references the same exact vocabulary as Workflow; ordinary dispatch generation remains tested. Representative fresh-agent semantic evaluation is owned by the enclosing coordinator.\n\n",
+      "bodyRawText": "\nA seven-entry exact process-tag lookup groups `cleanup-inspection`, `cleanup-inspection-denied`, and `process-inspection-refused` under `cleanup-inspection`; `missing-evidence`, `evidence-missing`, and `test-evidence-missing` under `missing-evidence`; and preserves the existing `suite-not-run` process class. Live and resumed recurrence both use the same `recurrenceSig` lookup. The blocker cause field accepts the same exact values. No substring, fuzzy category, termination-failure, survived-process or failed-live-measurement matching was added. Ambiguous `cleanup-denied` remains distinct.\n\nUnknown tags and free text now retain numeric/path/assertion distinctions through an exact-text UTF-8 fingerprint. The existing specific untagged `review-package resolved HEAD in <path> (<N> bytes)` process message retains bounded legacy normalization. No other free text loses numbers or paths.\n\nOriginal ledger/report records stay authoritative and are never rewritten by reconstruction. Raw class spelling, including case, survives compact transport and elided append retries. Recurrence only emits a grouped observation: previous automatic shared-defect/shared-fix conclusions were replaced, without changing severity, task disposition or fix routing. The ordinary-subagent protocol references the same exact vocabulary as Workflow; ordinary dispatch generation remains tested. Representative fresh-agent semantic evaluation is owned by the enclosing coordinator.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "A seven-entry exact process-tag lookup groups `cleanup-inspection`, `cleanup-inspection-denied`, and `process-inspection-refused` under `cleanup-inspection`; `missing-evidence`, `evidence-missing`, and `test-evidence-missing` under `missing-evidence`; and preserves the existing `suite-not-run` process class. Live and resumed recurrence both use the same `recurrenceSig` lookup. The blocker cause field accepts the same exact values. No substring, fuzzy category, termination-failure, survived-process or failed-live-measurement matching was added. Ambiguous `cleanup-denied` remains distinct.\n",
+          "text": "A seven-entry exact process-tag lookup groups `cleanup-inspection`, `cleanup-inspection-denied`, and `process-inspection-refused` under `cleanup-inspection`; `missing-evidence`, `evidence-missing`, and `test-evidence-missing` under `missing-evidence`; and preserves the existing `suite-not-run` process class. Live and resumed recurrence both use the same `recurrenceSig` lookup. The blocker cause field accepts the same exact values. No substring, fuzzy category, termination-failure, survived-process or failed-live-measurement matching was added. Ambiguous `cleanup-denied` remains distinct.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 526,
+          "byteEnd": 1121
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Unknown tags and free text now retain numeric/path/assertion distinctions through an exact-text UTF-8 fingerprint. The existing specific untagged `review-package resolved HEAD in <path> (<N> bytes)` process message retains bounded legacy normalization. No other free text loses numbers or paths.\n",
+          "text": "Unknown tags and free text now retain numeric/path/assertion distinctions through an exact-text UTF-8 fingerprint. The existing specific untagged `review-package resolved HEAD in <path> (<N> bytes)` process message retains bounded legacy normalization. No other free text loses numbers or paths.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1122,
+          "byteEnd": 1418
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Original ledger/report records stay authoritative and are never rewritten by reconstruction. Raw class spelling, including case, survives compact transport and elided append retries. Recurrence only emits a grouped observation: previous automatic shared-defect/shared-fix conclusions were replaced, without changing severity, task disposition or fix routing. The ordinary-subagent protocol references the same exact vocabulary as Workflow; ordinary dispatch generation remains tested. Representative fresh-agent semantic evaluation is owned by the enclosing coordinator.\n",
+          "text": "Original ledger/report records stay authoritative and are never rewritten by reconstruction. Raw class spelling, including case, survives compact transport and elided append retries. Recurrence only emits a grouped observation: previous automatic shared-defect/shared-fix conclusions were replaced, without changing severity, task disposition or fix routing. The ordinary-subagent protocol references the same exact vocabulary as Workflow; ordinary dispatch generation remains tested. Representative fresh-agent semantic evaluation is owned by the enclosing coordinator.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1419,
+          "byteEnd": 1990
+        }
+      ]
+    },
+    {
+      "section": "Compact fields and provenance",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Compact fields and provenance\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Compact fields and provenance"
+      ],
+      "lineStart": 20,
+      "lineEnd": 29,
+      "byteStart": 1991,
+      "byteEnd": 3312,
+      "bodyLineStart": 21,
+      "rawText": "## Compact fields and provenance\n\nThe digest transports a minor as `Task N (ID): minor [RAW-TAG, when present] [recurrence-id: v1-BYTES-HASH-HASH] [source-line: L]`.\n\n- `recurrence-id` is bounded transport metadata: byte length plus two polynomial byte hashes modulo 2147483647 and 2147483629, with bases 31 and 131. AWK runs with `LC_ALL=C`; the coordinator hashes the same UTF-8 bytes. It preserves exact-text distinctions without echoing prose and survives elided append retries. It is not an authoritative finding ID.\n- `source-line` is the physical line in the source ledger supplied to `ledger-digest`; the retained Task ID and that ledger/line identify the original record. Blocker cause records retain their raw cause plus this same line pointer.\n- `process-class` appears only on a `Recurring minor:`/`Recurring blocker:` observation as an additional canonical grouping fact. It changes no original tag or audit identity.\n\nThese suffixes occur after the original class/state fields and contain colons, so the original leading `[class]` matcher cannot consume them as process labels. Replay verifies that Task status remains unchanged. Unknown untagged minors now transport a compact fingerprint/source pointer instead of disappearing from resume. No finding database or general-purpose record schema was added.\n\n",
+      "bodyRawText": "\nThe digest transports a minor as `Task N (ID): minor [RAW-TAG, when present] [recurrence-id: v1-BYTES-HASH-HASH] [source-line: L]`.\n\n- `recurrence-id` is bounded transport metadata: byte length plus two polynomial byte hashes modulo 2147483647 and 2147483629, with bases 31 and 131. AWK runs with `LC_ALL=C`; the coordinator hashes the same UTF-8 bytes. It preserves exact-text distinctions without echoing prose and survives elided append retries. It is not an authoritative finding ID.\n- `source-line` is the physical line in the source ledger supplied to `ledger-digest`; the retained Task ID and that ledger/line identify the original record. Blocker cause records retain their raw cause plus this same line pointer.\n- `process-class` appears only on a `Recurring minor:`/`Recurring blocker:` observation as an additional canonical grouping fact. It changes no original tag or audit identity.\n\nThese suffixes occur after the original class/state fields and contain colons, so the original leading `[class]` matcher cannot consume them as process labels. Replay verifies that Task status remains unchanged. Unknown untagged minors now transport a compact fingerprint/source pointer instead of disappearing from resume. No finding database or general-purpose record schema was added.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The digest transports a minor as `Task N (ID): minor [RAW-TAG, when present] [recurrence-id: v1-BYTES-HASH-HASH] [source-line: L]`.\n",
+          "text": "The digest transports a minor as `Task N (ID): minor [RAW-TAG, when present] [recurrence-id: v1-BYTES-HASH-HASH] [source-line: L]`.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2025,
+          "byteEnd": 2157
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `recurrence-id` is bounded transport metadata: byte length plus two polynomial byte hashes modulo 2147483647 and 2147483629, with bases 31 and 131. AWK runs with `LC_ALL=C`; the coordinator hashes the same UTF-8 bytes. It preserves exact-text distinctions without echoing prose and survives elided append retries. It is not an authoritative finding ID.\n",
+          "text": "`recurrence-id` is bounded transport metadata: byte length plus two polynomial byte hashes modulo 2147483647 and 2147483629, with bases 31 and 131. AWK runs with `LC_ALL=C`; the coordinator hashes the same UTF-8 bytes. It preserves exact-text distinctions without echoing prose and survives elided append retries. It is not an authoritative finding ID.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2158,
+          "byteEnd": 2513
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `source-line` is the physical line in the source ledger supplied to `ledger-digest`; the retained Task ID and that ledger/line identify the original record. Blocker cause records retain their raw cause plus this same line pointer.\n",
+          "text": "`source-line` is the physical line in the source ledger supplied to `ledger-digest`; the retained Task ID and that ledger/line identify the original record. Blocker cause records retain their raw cause plus this same line pointer.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2513,
+          "byteEnd": 2746
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `process-class` appears only on a `Recurring minor:`/`Recurring blocker:` observation as an additional canonical grouping fact. It changes no original tag or audit identity.\n",
+          "text": "`process-class` appears only on a `Recurring minor:`/`Recurring blocker:` observation as an additional canonical grouping fact. It changes no original tag or audit identity.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2746,
+          "byteEnd": 2922
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These suffixes occur after the original class/state fields and contain colons, so the original leading `[class]` matcher cannot consume them as process labels. Replay verifies that Task status remains unchanged. Unknown untagged minors now transport a compact fingerprint/source pointer instead of disappearing from resume. No finding database or general-purpose record schema was added.\n",
+          "text": "These suffixes occur after the original class/state fields and contain colons, so the original leading `[class]` matcher cannot consume them as process labels. Replay verifies that Task status remains unchanged. Unknown untagged minors now transport a compact fingerprint/source pointer instead of disappearing from resume. No finding database or general-purpose record schema was added.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 28,
+          "lineEnd": 28,
+          "byteStart": 2923,
+          "byteEnd": 3311
+        }
+      ]
+    },
+    {
+      "section": "Tests",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Tests"
+      ],
+      "lineStart": 30,
+      "lineEnd": 80,
+      "byteStart": 3312,
+      "byteEnd": 6452,
+      "bodyLineStart": 31,
+      "rawText": "## Tests\n\nFinal commands ran at the exact submitted head, after rebasing onto current integration (including source-bound check evidence):\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 node tests/super-code/replay-harness.mjs\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-run-digest.sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-dispatch-text.sh\n```\n\nFinal output (all exit 0):\n\n```text\n2007 passed, 0 failed\nrun-digest: all tests passed\ndispatch-text: all tests passed\n```\n\nThe replay command includes the documented dryRun scenarios and their agent-count expectations. `git diff --check HEAD^ HEAD` also passed. The repository has no dependency install step for these zero-dependency runners. `/opt/homebrew/bin/node` is the system interpreter; both the replay runner and resolved coordinator source are inside this task worktree.\n\nTask-focused excerpt from the final replay:\n\n```text\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] cleanup-inspection: each original finding and task survives\n[PASS] cleanup-inspection: threshold creates no fix scope or severity change\n[PASS] cleanup-inspection: counts do not assert shared defect identity\n[PASS] cleanup-inspection: digest retains raw labels and source line provenance\n[PASS] cleanup-inspection: digest/resume reconstructs canonical count and task provenance\n[PASS] cleanup-inspection: compact reconstruction never rewrites original evidence\n[PASS] missing-evidence: live aliases share exactly one count\n[PASS] missing-evidence: each original finding and task survives\n[PASS] missing-evidence: threshold creates no fix scope or severity change\n[PASS] missing-evidence: digest/resume reconstructs canonical count and task provenance\n[PASS] distinct details remain distinct after resume: [test-failure] expected 101 in src/a.test.js\n[PASS] distinct details remain distinct after resume: [unknown-tag] product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: [cleanup-denied] termination denied\n[PASS] distinct details remain distinct after resume: [evidence-missing] command absent\n[PASS] raw causes and live triage reconstruct one process class\n[PASS] raw blocker tags, tasks and original line pointers survive\n[PASS] grouping neither overrides triage nor creates shared fix scope\n[PASS] same exact identity reconstructs after raw append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after raw append: missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: missing café evidence ⚠️ at src/é.js:12\n[PASS] source pointers do not alter Task status or manufacture a defect\n```\n\nFull final logs are retained, git-ignored, in this task worktree under `.superpowers/evidence/super-plan-ufz.11/`: `replay-rebased.txt`, `run-digest-rebased.txt`, and `dispatch-text-rebased.txt`.\n\n",
+      "bodyRawText": "\nFinal commands ran at the exact submitted head, after rebasing onto current integration (including source-bound check evidence):\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 node tests/super-code/replay-harness.mjs\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-run-digest.sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-dispatch-text.sh\n```\n\nFinal output (all exit 0):\n\n```text\n2007 passed, 0 failed\nrun-digest: all tests passed\ndispatch-text: all tests passed\n```\n\nThe replay command includes the documented dryRun scenarios and their agent-count expectations. `git diff --check HEAD^ HEAD` also passed. The repository has no dependency install step for these zero-dependency runners. `/opt/homebrew/bin/node` is the system interpreter; both the replay runner and resolved coordinator source are inside this task worktree.\n\nTask-focused excerpt from the final replay:\n\n```text\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] cleanup-inspection: each original finding and task survives\n[PASS] cleanup-inspection: threshold creates no fix scope or severity change\n[PASS] cleanup-inspection: counts do not assert shared defect identity\n[PASS] cleanup-inspection: digest retains raw labels and source line provenance\n[PASS] cleanup-inspection: digest/resume reconstructs canonical count and task provenance\n[PASS] cleanup-inspection: compact reconstruction never rewrites original evidence\n[PASS] missing-evidence: live aliases share exactly one count\n[PASS] missing-evidence: each original finding and task survives\n[PASS] missing-evidence: threshold creates no fix scope or severity change\n[PASS] missing-evidence: digest/resume reconstructs canonical count and task provenance\n[PASS] distinct details remain distinct after resume: [test-failure] expected 101 in src/a.test.js\n[PASS] distinct details remain distinct after resume: [unknown-tag] product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: [cleanup-denied] termination denied\n[PASS] distinct details remain distinct after resume: [evidence-missing] command absent\n[PASS] raw causes and live triage reconstruct one process class\n[PASS] raw blocker tags, tasks and original line pointers survive\n[PASS] grouping neither overrides triage nor creates shared fix scope\n[PASS] same exact identity reconstructs after raw append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after raw append: missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: missing café evidence ⚠️ at src/é.js:12\n[PASS] source pointers do not alter Task status or manufacture a defect\n```\n\nFull final logs are retained, git-ignored, in this task worktree under `.superpowers/evidence/super-plan-ufz.11/`: `replay-rebased.txt`, `run-digest-rebased.txt`, and `dispatch-text-rebased.txt`.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final commands ran at the exact submitted head, after rebasing onto current integration (including source-bound check evidence):\n",
+          "text": "Final commands ran at the exact submitted head, after rebasing onto current integration (including source-bound check evidence):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 3322,
+          "byteEnd": 3451
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 node tests/super-code/replay-harness.mjs\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-run-digest.sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-dispatch-text.sh\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 node tests/super-code/replay-harness.mjs\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-run-digest.sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.11 bash tests/super-code/test-dispatch-text.sh\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 34,
+          "lineEnd": 38,
+          "byteStart": 3452,
+          "byteEnd": 3714
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final output (all exit 0):\n",
+          "text": "Final output (all exit 0):",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 3715,
+          "byteEnd": 3742
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n2007 passed, 0 failed\nrun-digest: all tests passed\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n2007 passed, 0 failed\nrun-digest: all tests passed\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 42,
+          "lineEnd": 46,
+          "byteStart": 3743,
+          "byteEnd": 3838
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The replay command includes the documented dryRun scenarios and their agent-count expectations. `git diff --check HEAD^ HEAD` also passed. The repository has no dependency install step for these zero-dependency runners. `/opt/homebrew/bin/node` is the system interpreter; both the replay runner and resolved coordinator source are inside this task worktree.\n",
+          "text": "The replay command includes the documented dryRun scenarios and their agent-count expectations. `git diff --check HEAD^ HEAD` also passed. The repository has no dependency install step for these zero-dependency runners. `/opt/homebrew/bin/node` is the system interpreter; both the replay runner and resolved coordinator source are inside this task worktree.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 48,
+          "lineEnd": 48,
+          "byteStart": 3839,
+          "byteEnd": 4197
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task-focused excerpt from the final replay:\n",
+          "text": "Task-focused excerpt from the final replay:",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 4198,
+          "byteEnd": 4242
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] cleanup-inspection: each original finding and task survives\n[PASS] cleanup-inspection: threshold creates no fix scope or severity change\n[PASS] cleanup-inspection: counts do not assert shared defect identity\n[PASS] cleanup-inspection: digest retains raw labels and source line provenance\n[PASS] cleanup-inspection: digest/resume reconstructs canonical count and task provenance\n[PASS] cleanup-inspection: compact reconstruction never rewrites original evidence\n[PASS] missing-evidence: live aliases share exactly one count\n[PASS] missing-evidence: each original finding and task survives\n[PASS] missing-evidence: threshold creates no fix scope or severity change\n[PASS] missing-evidence: digest/resume reconstructs canonical count and task provenance\n[PASS] distinct details remain distinct after resume: [test-failure] expected 101 in src/a.test.js\n[PASS] distinct details remain distinct after resume: [unknown-tag] product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: [cleanup-denied] termination denied\n[PASS] distinct details remain distinct after resume: [evidence-missing] command absent\n[PASS] raw causes and live triage reconstruct one process class\n[PASS] raw blocker tags, tasks and original line pointers survive\n[PASS] grouping neither overrides triage nor creates shared fix scope\n[PASS] same exact identity reconstructs after raw append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after raw append: missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: missing café evidence ⚠️ at src/é.js:12\n[PASS] source pointers do not alter Task status or manufacture a defect\n```\n",
+          "text": "```text\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] cleanup-inspection: each original finding and task survives\n[PASS] cleanup-inspection: threshold creates no fix scope or severity change\n[PASS] cleanup-inspection: counts do not assert shared defect identity\n[PASS] cleanup-inspection: digest retains raw labels and source line provenance\n[PASS] cleanup-inspection: digest/resume reconstructs canonical count and task provenance\n[PASS] cleanup-inspection: compact reconstruction never rewrites original evidence\n[PASS] missing-evidence: live aliases share exactly one count\n[PASS] missing-evidence: each original finding and task survives\n[PASS] missing-evidence: threshold creates no fix scope or severity change\n[PASS] missing-evidence: digest/resume reconstructs canonical count and task provenance\n[PASS] distinct details remain distinct after resume: [test-failure] expected 101 in src/a.test.js\n[PASS] distinct details remain distinct after resume: [unknown-tag] product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: product bug 101 in src/a.js\n[PASS] distinct details remain distinct after resume: [cleanup-denied] termination denied\n[PASS] distinct details remain distinct after resume: [evidence-missing] command absent\n[PASS] raw causes and live triage reconstruct one process class\n[PASS] raw blocker tags, tasks and original line pointers survive\n[PASS] grouping neither overrides triage nor creates shared fix scope\n[PASS] same exact identity reconstructs after raw append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: [unknown-tag] missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after raw append: missing café evidence ⚠️ at src/é.js:12\n[PASS] same exact identity reconstructs after elided append: missing café evidence ⚠️ at src/é.js:12\n[PASS] source pointers do not alter Task status or manufacture a defect\n```",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 52,
+          "lineEnd": 77,
+          "byteStart": 4243,
+          "byteEnd": 6254
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Full final logs are retained, git-ignored, in this task worktree under `.superpowers/evidence/super-plan-ufz.11/`: `replay-rebased.txt`, `run-digest-rebased.txt`, and `dispatch-text-rebased.txt`.\n",
+          "text": "Full final logs are retained, git-ignored, in this task worktree under `.superpowers/evidence/super-plan-ufz.11/`: `replay-rebased.txt`, `run-digest-rebased.txt`, and `dispatch-text-rebased.txt`.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 79,
+          "lineEnd": 79,
+          "byteStart": 6255,
+          "byteEnd": 6451
+        }
+      ]
+    },
+    {
+      "section": "TDD evidence",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## TDD evidence\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "TDD evidence"
+      ],
+      "lineStart": 81,
+      "lineEnd": 86,
+      "byteStart": 6452,
+      "byteEnd": 7704,
+      "bodyLineStart": 82,
+      "rawText": "## TDD evidence\n\nBefore production changes, the same replay command exited 1 with `1959 passed, 11 failed`. The expected failures were the two process alias groups failing to share live/resumed counts, missing raw-tag/source-line transport, and catch-all grouping of distinct `[test-failure]`, `[unknown-tag]`, and untagged numeric/path details. These exposed missing aliases and excessive normalization rather than missing tooling. The original RED log is `.superpowers/evidence/super-plan-ufz.11/evidence-red.txt`.\n\nAfter implementation, focused fixtures also exposed an untagged compact-ID parser bug (the fingerprint began at column zero after removing `minor `); the corrected parser accepts both that position and a suffix after a raw class. UTF-8 and elided-retry positive reconstruction now pass. One intermediate added fixture had a syntax error; that run exercised no product behavior and was corrected before the final passing runs. The deliberately changed digest expectation now includes raw case, source pointers, and the previously omitted untagged fingerprint. The template-literal baseline changed by exactly -1 because Resume consumes the whole compact record instead of rebuilding a tag literal; no existing assertion was weakened.\n\n",
+      "bodyRawText": "\nBefore production changes, the same replay command exited 1 with `1959 passed, 11 failed`. The expected failures were the two process alias groups failing to share live/resumed counts, missing raw-tag/source-line transport, and catch-all grouping of distinct `[test-failure]`, `[unknown-tag]`, and untagged numeric/path details. These exposed missing aliases and excessive normalization rather than missing tooling. The original RED log is `.superpowers/evidence/super-plan-ufz.11/evidence-red.txt`.\n\nAfter implementation, focused fixtures also exposed an untagged compact-ID parser bug (the fingerprint began at column zero after removing `minor `); the corrected parser accepts both that position and a suffix after a raw class. UTF-8 and elided-retry positive reconstruction now pass. One intermediate added fixture had a syntax error; that run exercised no product behavior and was corrected before the final passing runs. The deliberately changed digest expectation now includes raw case, source pointers, and the previously omitted untagged fingerprint. The template-literal baseline changed by exactly -1 because Resume consumes the whole compact record instead of rebuilding a tag literal; no existing assertion was weakened.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Before production changes, the same replay command exited 1 with `1959 passed, 11 failed`. The expected failures were the two process alias groups failing to share live/resumed counts, missing raw-tag/source-line transport, and catch-all grouping of distinct `[test-failure]`, `[unknown-tag]`, and untagged numeric/path details. These exposed missing aliases and excessive normalization rather than missing tooling. The original RED log is `.superpowers/evidence/super-plan-ufz.11/evidence-red.txt`.\n",
+          "text": "Before production changes, the same replay command exited 1 with `1959 passed, 11 failed`. The expected failures were the two process alias groups failing to share live/resumed counts, missing raw-tag/source-line transport, and catch-all grouping of distinct `[test-failure]`, `[unknown-tag]`, and untagged numeric/path details. These exposed missing aliases and excessive normalization rather than missing tooling. The original RED log is `.superpowers/evidence/super-plan-ufz.11/evidence-red.txt`.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 83,
+          "lineEnd": 83,
+          "byteStart": 6469,
+          "byteEnd": 6969
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "After implementation, focused fixtures also exposed an untagged compact-ID parser bug (the fingerprint began at column zero after removing `minor `); the corrected parser accepts both that position and a suffix after a raw class. UTF-8 and elided-retry positive reconstruction now pass. One intermediate added fixture had a syntax error; that run exercised no product behavior and was corrected before the final passing runs. The deliberately changed digest expectation now includes raw case, source pointers, and the previously omitted untagged fingerprint. The template-literal baseline changed by exactly -1 because Resume consumes the whole compact record instead of rebuilding a tag literal; no existing assertion was weakened.\n",
+          "text": "After implementation, focused fixtures also exposed an untagged compact-ID parser bug (the fingerprint began at column zero after removing `minor `); the corrected parser accepts both that position and a suffix after a raw class. UTF-8 and elided-retry positive reconstruction now pass. One intermediate added fixture had a syntax error; that run exercised no product behavior and was corrected before the final passing runs. The deliberately changed digest expectation now includes raw case, source pointers, and the previously omitted untagged fingerprint. The template-literal baseline changed by exactly -1 because Resume consumes the whole compact record instead of rebuilding a tag literal; no existing assertion was weakened.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 85,
+          "lineEnd": 85,
+          "byteStart": 6970,
+          "byteEnd": 7703
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Files changed"
+      ],
+      "lineStart": 87,
+      "lineEnd": 95,
+      "byteStart": 7704,
+      "byteEnd": 7983,
+      "bodyLineStart": 88,
+      "rawText": "## Files changed\n\n- `skills/super-code/coordinator.js`\n- `skills/super-code/scripts/ledger-digest`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/task-reviewer-prompt.md`\n- `tests/super-code/replay-harness.mjs`\n\n",
+      "bodyRawText": "\n- `skills/super-code/coordinator.js`\n- `skills/super-code/scripts/ledger-digest`\n- `skills/super-code/coordinator-workflow.md`\n- `skills/super-code/coordinator-subagents.md`\n- `skills/super-code/task-reviewer-prompt.md`\n- `tests/super-code/replay-harness.mjs`\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js`\n",
+          "text": "`skills/super-code/coordinator.js`",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 89,
+          "lineEnd": 89,
+          "byteStart": 7722,
+          "byteEnd": 7759
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/scripts/ledger-digest`\n",
+          "text": "`skills/super-code/scripts/ledger-digest`",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 90,
+          "lineEnd": 90,
+          "byteStart": 7759,
+          "byteEnd": 7803
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-workflow.md`\n",
+          "text": "`skills/super-code/coordinator-workflow.md`",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 91,
+          "lineEnd": 91,
+          "byteStart": 7803,
+          "byteEnd": 7849
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator-subagents.md`\n",
+          "text": "`skills/super-code/coordinator-subagents.md`",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 92,
+          "lineEnd": 92,
+          "byteStart": 7849,
+          "byteEnd": 7896
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/task-reviewer-prompt.md`\n",
+          "text": "`skills/super-code/task-reviewer-prompt.md`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 93,
+          "lineEnd": 93,
+          "byteStart": 7896,
+          "byteEnd": 7942
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+          "text": "`tests/super-code/replay-harness.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 94,
+          "lineEnd": 94,
+          "byteStart": 7942,
+          "byteEnd": 7982
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Test hygiene"
+      ],
+      "lineStart": 96,
+      "lineEnd": 107,
+      "byteStart": 7983,
+      "byteEnd": 9147,
+      "bodyLineStart": 97,
+      "rawText": "## Test hygiene\n\nNone: neutral-directory checks after test runs returned 0 with no `match:` lines. The final ownership-scoped stop command also returned 0 with no `survived:` lines. No background processes remain. One initial check was refused by the helper because its cwd was inside the checked root; repeating it from `/private/tmp` performed the actual successful inspection. All test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.11`; evidence files remain inside the task worktree.\n\nFinal check/stop used:\n\n```sh\ncd /private/tmp\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\n```\n\n",
+      "bodyRawText": "\nNone: neutral-directory checks after test runs returned 0 with no `match:` lines. The final ownership-scoped stop command also returned 0 with no `survived:` lines. No background processes remain. One initial check was refused by the helper because its cwd was inside the checked root; repeating it from `/private/tmp` performed the actual successful inspection. All test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.11`; evidence files remain inside the task worktree.\n\nFinal check/stop used:\n\n```sh\ncd /private/tmp\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None: neutral-directory checks after test runs returned 0 with no `match:` lines. The final ownership-scoped stop command also returned 0 with no `survived:` lines. No background processes remain. One initial check was refused by the helper because its cwd was inside the checked root; repeating it from `/private/tmp` performed the actual successful inspection. All test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.11`; evidence files remain inside the task worktree.\n",
+          "text": "None: neutral-directory checks after test runs returned 0 with no `match:` lines. The final ownership-scoped stop command also returned 0 with no `survived:` lines. No background processes remain. One initial check was refused by the helper because its cwd was inside the checked root; repeating it from `/private/tmp` performed the actual successful inspection. All test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.11`; evidence files remain inside the task worktree.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 98,
+          "lineEnd": 98,
+          "byteStart": 8000,
+          "byteEnd": 8479
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final check/stop used:\n",
+          "text": "Final check/stop used:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 100,
+          "lineEnd": 100,
+          "byteStart": 8480,
+          "byteEnd": 8503
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /private/tmp\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\n```\n",
+          "text": "```sh\ncd /private/tmp\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.11 /tmp/sp-bce79baa/super-plan-ufz.11\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 102,
+          "lineEnd": 106,
+          "byteStart": 8504,
+          "byteEnd": 9146
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Assumptions and amendments"
+      ],
+      "lineStart": 108,
+      "lineEnd": 111,
+      "byteStart": 9147,
+      "byteEnd": 10015,
+      "bodyLineStart": 109,
+      "rawText": "## Assumptions and amendments\n\nCurrent bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.\n\n",
+      "bodyRawText": "\nCurrent bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.\n",
+          "text": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 9178,
+          "byteEnd": 10014
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "lineStart": 112,
+      "lineEnd": 114,
+      "byteStart": 10015,
+      "byteEnd": 10563,
+      "bodyLineStart": 113,
+      "rawText": "## Concerns\n\nNo unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.\n",
+      "bodyRawText": "\nNo unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.\n",
+          "text": "No unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 114,
+          "lineEnd": 114,
+          "byteStart": 10028,
+          "byteEnd": 10563
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: IMPLEMENTED",
+      "text": "Status: IMPLEMENTED",
+      "rawText": "Status: IMPLEMENTED\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 20,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "section": "Assumptions and amendments",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Assumptions and amendments"
+      ],
+      "positionInSection": 1,
+      "key": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.",
+      "text": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.",
+      "rawText": "Current bead and comments were read before implementation; there were no bead amendments or comments. The coordinator explicitly clarified: exact process-tag aliases only, ambiguous cleanup denial must not be conflated with inspection denial, raw label/task/line provenance must remain, and the smallest additive compact fingerprint/provenance suffix is allowed. Those clarifications narrow the frozen brief's illustrative `cleanup-denied` candidate: that candidate stays distinct. The coordinator owns integrated sweep and fresh-agent semantic evaluation. The supplied behavior baseline passed process-alias judgment in both arms, so prompt edits are limited to the operative vocabulary/transport reference and replacement of the existing automatic shared-defect conclusion; no generic judgment prompting or new agent round was added.\n",
+      "lineStart": 110,
+      "lineEnd": 110,
+      "byteStart": 9178,
+      "byteEnd": 10014,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "super-plan-ufz.11 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "No unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.",
+      "text": "No unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.",
+      "rawText": "No unresolved deterministic failures. Live ordinary-subagent process tagging and the enclosing after-implementation behavior evaluation were not run here; those remain explicitly parent-owned. Old compact digests that already discarded unknown finding prose cannot recover that lost exact text; regeneration from the authoritative raw ledger supplies the new fingerprint/provenance fields. The bounded legacy untagged review-package normalization remains an existing special case; the new process alias guarantee uses documented tags.\n",
+      "lineStart": 114,
+      "lineEnd": 114,
+      "byteStart": 10028,
+      "byteEnd": 10563,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

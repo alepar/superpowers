@@ -1,0 +1,38 @@
+[
+  {
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-auto/SKILL.md",
+    "sourcePath": "skills/super-auto/SKILL.md",
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "generatedBytes": 37532,
+    "generatedSha256": "5db808c6a1e314d71f0ec22060ce3a80551fd6f81222af152dfbe4a13cc442f2",
+    "matches": true
+  },
+  {
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-code/SKILL.md",
+    "sourcePath": "skills/super-code/SKILL.md",
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "generatedBytes": 10004,
+    "generatedSha256": "a79b6432abe3d71bbe989679f7fdc1e44dc242290fe0b08032ece0549d08b0b9",
+    "matches": true
+  },
+  {
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/super-roast/SKILL.md",
+    "sourcePath": "skills/super-roast/SKILL.md",
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "generatedBytes": 1717,
+    "generatedSha256": "fad46484a45fc23e63b2fff94ce07a9572b1a569559527af383ff2405b131a16",
+    "matches": true
+  },
+  {
+    "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-premortem/diff/skills/upstream-feedback/SKILL.md",
+    "sourcePath": "skills/upstream-feedback/SKILL.md",
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "generatedBytes": 2735,
+    "generatedSha256": "649eb6f89664f15cb59384ec4bda475f67d7b6e958a6811afb547128a56748b5",
+    "matches": true
+  }
+]

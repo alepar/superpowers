@@ -1,0 +1,25 @@
+{
+  "operation": "register reviewed complete historical source representations only",
+  "parentJudgment": "Full raw interpretations plus initial review and scoped correction re-review support complete qualified representation. Unknown original outcomes remain unknown; no applicability, links, dispositions, source-correspondence approval or root acceptance follows.",
+  "beforeRunSha256": "146ecea08d9164d1f0d62db48eb52fa58c6deb3fccdb18a0325cf9ea43333ffd",
+  "afterRunSha256": "7662110ffd52707be9e80e8a2fb69078c4d3e4a217c204b7e7ede4327f890828",
+  "preservedOriginalSources": 73,
+  "registeredHistoricalSources": 79,
+  "historicalOccurrences": 213,
+  "review": "merge-correction/legacy-adapter-correction-round-1-rereview.md",
+  "manifestSha256": "d759bee75ac79d3952540ff325f13f422848b8c26ed5a599d4a47cca4066e262",
+  "recordProposalsSha256": "c04593efb7ffd0b9414222ee39c1337e1b3e5d2722356d11fe2de0dfd5e7b9ee",
+  "projectionExitCode": 0,
+  "projectionSha256": "95dca328905aa127067f464243637a54622c7822af03bbc4da4f43ae1fe0384c",
+  "projectionCounts": {
+    "findings": 469,
+    "gaps": 0
+  },
+  "projectionGaps": [],
+  "preservedLimitations": [
+    "No applied identity links or finding dispositions.",
+    "Five unknown historical verdicts retained as unknown, not adapter NEEDS_CONTEXT original outcomes.",
+    "29 strict supplements and35 source gaps retain explicit separate accounting.",
+    "All original policy counters/failures/snapshots remain unchanged."
+  ]
+}

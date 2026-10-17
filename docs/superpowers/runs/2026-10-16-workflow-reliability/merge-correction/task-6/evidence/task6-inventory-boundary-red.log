@@ -1,0 +1,30 @@
+test_corrupt_bare_repository_is_unknown (__main__.Inventory.test_corrupt_bare_repository_is_unknown) ... FAIL
+test_corrupt_git_metadata_is_unknown (__main__.Inventory.test_corrupt_git_metadata_is_unknown) ... ok
+test_denied_repository_inventory (__main__.Inventory.test_denied_repository_inventory) ... ok
+test_git_unavailable_is_unknown (__main__.Inventory.test_git_unavailable_is_unknown) ... ok
+test_nested_worktree_refused (__main__.Inventory.test_nested_worktree_refused) ... ok
+test_nonrepository_at_filesystem_boundary (__main__.Inventory.test_nonrepository_at_filesystem_boundary) ... FAIL
+test_valid_leaf_repository (__main__.Inventory.test_valid_leaf_repository) ... ok
+test_verified_nonrepository_temp (__main__.Inventory.test_verified_nonrepository_temp) ... ok
+
+======================================================================
+FAIL: test_corrupt_bare_repository_is_unknown (__main__.Inventory.test_corrupt_bare_repository_is_unknown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 76, in test_corrupt_bare_repository_is_unknown
+  File "<stdin>", line 41, in run_helper
+AssertionError: 0 != 4 : 
+
+======================================================================
+FAIL: test_nonrepository_at_filesystem_boundary (__main__.Inventory.test_nonrepository_at_filesystem_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 71, in test_nonrepository_at_filesystem_boundary
+  File "<stdin>", line 41, in run_helper
+AssertionError: 4 != 0 : unknown: /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmpe_oz2_il/repo — git worktree inventory failed
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.551s
+
+FAILED (failures=2)

@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync.",
+      "location": "skills/super-auto/resume.md:68",
+      "category": "hygiene-docs",
+      "external": false,
+      "evidence": "The new Amend Mode step 3 in skills/super-design/SKILL.md:905-907 orders \"Commit the specs; state specs-committed\" before \"Then run the Key Abstractions sync\". A session interruption between those operations is therefore persisted as specs-committed. The code-loop replay at resume.md:68 only files missing work items; synchronization appears only in the amend-checked branch at line 67. The code loop runs Amend Mode inline (super-auto/SKILL.md, Redesign cycle step 1), so it does not re-enter the complete super-design process whose general re-entry runs the sync. Consequently this supported interruption can launch the amendment beads with the old root Global Constraints digest and old owner descriptions: super-design/SKILL.md:305-335 defines the sync as the operation that replaces those derived copies from committed amended sections. The base has no Amend Mode or specs-committed replay, so this interruption gap is introduced by the captured delta.",
+      "kind": "ISSUE"
+    }
+  ]
+}

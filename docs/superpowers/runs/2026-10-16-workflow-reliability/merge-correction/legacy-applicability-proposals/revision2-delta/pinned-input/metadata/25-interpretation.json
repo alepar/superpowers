@@ -1,0 +1,965 @@
+{
+  "version": 1,
+  "ordinal": 25,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+  "originalArtifact": "task-report-history-r1/raw/task-16-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-16-report.md",
+  "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+  "rawByteCount": 20563,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 362,
+    "byteStart": 0,
+    "byteEnd": 20563,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/24",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/25-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status:FIXED"
+    },
+    {
+      "line": 242,
+      "rawText": "Status:FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/0",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        4464,
+        4731
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Real epic/task not accepted/closed; post behavior, final reviews and whole sweep are coordinator prerequisites."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/1",
+      "roles": [
+        "historical-regression-evidence",
+        "execution-context"
+      ],
+      "span": [
+        6474,
+        7246
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Absent acceptance mode and caller flag produced RED; raced setup and mistaken new Ready fixture explicitly distinguished from product issue."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/2",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        7247,
+        7805
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Self-review found verified run-owned failure with retained source-history gap wrongly eligible; retained attribution gaps correction claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/3",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        12982,
+        13548
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Supported nonblocking relevance preserves original findings; durable Recovery/check facts must be reconciled before caller changes."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/4",
+      "roles": [
+        "deferred-coverage",
+        "historical-finding-context"
+      ],
+      "span": [
+        13549,
+        14109
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent/live behavior, whole final reviews/sweep/human acceptance outstanding; separate collector suffix correction acknowledged, not duplicated."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/5",
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "deferred-integration-scope"
+      ],
+      "span": [
+        14138,
+        15094
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Rebase-conflict claimed repaired with exact own-commit replay and verbatim paragraphs; blocker super-plan-8fn remains parent-owned to close after verified merge."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/6",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        15291,
+        15529
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Earlier report sections refer to original stacked implementation source, not final rebased source."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/7",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        19067,
+        19234
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Combined deterministic checks not real epic acceptance or fresh-agent evaluation; live evaluation outstanding."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/24/interpretedPassages/8",
+      "roles": [
+        "execution-context",
+        "deferred-coverage"
+      ],
+      "span": [
+        19973,
+        20563
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Named seam file absent; complete dispatch quote used. Fresh-agent acceptance remains parent-owned; no blocker closure/actual acceptance performed."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-25-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Real epic/task not accepted/closed; post behavior, final reviews and whole sweep are coordinator prerequisites.",
+      "lineStart": 65,
+      "lineEnd": 67,
+      "byteStart": 4464,
+      "byteEnd": 4731,
+      "rawText": "The live epic and task were not accepted or closed. All acceptance testing used disposable\nfixtures. Post-change behavior evaluation, final reviews and the enclosing full sweep remain\ncoordinator-owned prerequisites; this implementation does not claim them complete.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Final acceptance gate semantics",
+          "headingRaw": "## Final acceptance gate semantics\n",
+          "hierarchy": [
+            "Final acceptance gate semantics"
+          ],
+          "sectionByteStart": 1815,
+          "sectionByteEnd": 4732,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 2650
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "historical-regression-evidence",
+        "execution-context"
+      ],
+      "interpretation": "Absent acceptance mode and caller flag produced RED; raced setup and mistaken new Ready fixture explicitly distinguished from product issue.",
+      "lineStart": 100,
+      "lineEnd": 114,
+      "byteStart": 6474,
+      "byteEnd": 7246,
+      "rawText": "Expected: caller ownership/flag did not exist. The standalone fixture still passed. RED status\ncommand: `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.6 bash tests/super-auto/test-scripts.sh`:\n\n```text\n[FAIL] source-bound required reviews, measurements, recovery and human gates control caller root acceptance\n  expected: 0\n  got:      1\n1 failure(s)\n```\n\nThe new acceptance mode was absent. Baseline contract lint passed after creating the task temp\nroot (the first parallel lint launch raced that mkdir and had no test result). During GREEN an\nadded call-site test wrongly assumed Ready itself closed epics; inspecting the actual builders\ncorrected the new fixture to assert both real closure callers and read-only Ready/recheck.\nNo existing assertion was removed or weakened.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "TDD evidence"
+          ],
+          "sectionByteStart": 5868,
+          "sectionByteEnd": 7806,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 607
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Self-review found verified run-owned failure with retained source-history gap wrongly eligible; retained attribution gaps correction claimed.",
+      "lineStart": 116,
+      "lineEnd": 126,
+      "byteStart": 7247,
+      "byteEnd": 7805,
+      "rawText": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "TDD evidence"
+          ],
+          "sectionByteStart": 5868,
+          "sectionByteEnd": 7806,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1380
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Supported nonblocking relevance preserves original findings; durable Recovery/check facts must be reconciled before caller changes.",
+      "lineStart": 225,
+      "lineEnd": 230,
+      "byteStart": 12982,
+      "byteEnd": 13548,
+      "rawText": "No conflicting bead amendment was found. Coordinator clarification was applied: disclose and\npreserve nonblocking deferred findings rather than requiring zero outstanding items; supported\nacceptance relevance belongs to the existing caller assessment, one judgment per linked group,\nwith genuinely human decisions remaining human-owned. The new snapshot is an additive consumer\nrecord under existing approvals, not a replacement recovery/finding engine. Canonical current\nRecovery/check facts are reconciled from durable source records before a caller changes them.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Assumptions, clarifications and remaining evaluation",
+          "headingRaw": "## Assumptions, clarifications and remaining evaluation\n",
+          "hierarchy": [
+            "Assumptions, clarifications and remaining evaluation"
+          ],
+          "sectionByteStart": 12925,
+          "sectionByteEnd": 14111,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 58
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "deferred-coverage",
+        "historical-finding-context"
+      ],
+      "interpretation": "Fresh-agent/live behavior, whole final reviews/sweep/human acceptance outstanding; separate collector suffix correction acknowledged, not duplicated.",
+      "lineStart": 232,
+      "lineEnd": 237,
+      "byteStart": 13549,
+      "byteEnd": 14109,
+      "rawText": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the\ncoordinator-owned post-change evaluation. Required live behavior evaluation, whole-epic final\nreviews, final sweep and actual human acceptance remain outstanding at the enclosing run level.\nThe coordinator reported a separate task-8.3 collection diff-suffix correction in progress; this\ntask neither duplicates that fix nor replays its parent commits. No other deterministic check is\nfailed or unavailable. No integration worktree/user-checkout edits were made.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Assumptions, clarifications and remaining evaluation",
+          "headingRaw": "## Assumptions, clarifications and remaining evaluation\n",
+          "hierarchy": [
+            "Assumptions, clarifications and remaining evaluation"
+          ],
+          "sectionByteStart": 12925,
+          "sectionByteEnd": 14111,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 625
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "deferred-integration-scope"
+      ],
+      "interpretation": "Rebase-conflict claimed repaired with exact own-commit replay and verbatim paragraphs; blocker super-plan-8fn remains parent-owned to close after verified merge.",
+      "lineStart": 244,
+      "lineEnd": 258,
+      "byteStart": 14138,
+      "byteEnd": 15094,
+      "rawText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Seam fix"
+          ],
+          "sectionByteStart": 14111,
+          "sectionByteEnd": 16145,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 28
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "Earlier report sections refer to original stacked implementation source, not final rebased source.",
+      "lineStart": 263,
+      "lineEnd": 265,
+      "byteStart": 15291,
+      "byteEnd": 15529,
+      "rawText": "The original implementation source was `232d3ca4adefafd4d757e8930fc10260159bafae`\n(tree `4ebd490346563cdddf4144587934298550ecf1d5`) above stack base\n`bee2526cd249be60632281f092ab48e1667b8747`; earlier report sections describe that round.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 10,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Seam fix"
+          ],
+          "sectionByteStart": 14111,
+          "sectionByteEnd": 16145,
+          "canonicalSectionAlias": "legacy-raw-section/10",
+          "positionByteInSection": 1181
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Combined deterministic checks not real epic acceptance or fresh-agent evaluation; live evaluation outstanding.",
+      "lineStart": 338,
+      "lineEnd": 339,
+      "byteStart": 19067,
+      "byteEnd": 19234,
+      "rawText": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent\nbehavior evaluation. Coordinator-owned live evaluations remain outstanding.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 11,
+          "section": "Combined verification",
+          "headingRaw": "### Combined verification\n",
+          "hierarchy": [
+            "Seam fix",
+            "Combined verification"
+          ],
+          "sectionByteStart": 16145,
+          "sectionByteEnd": 19235,
+          "canonicalSectionAlias": "legacy-raw-section/11",
+          "positionByteInSection": 2923
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-25-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "roles": [
+        "execution-context",
+        "deferred-coverage"
+      ],
+      "interpretation": "Named seam file absent; complete dispatch quote used. Fresh-agent acceptance remains parent-owned; no blocker closure/actual acceptance performed.",
+      "lineStart": 356,
+      "lineEnd": 362,
+      "byteStart": 19973,
+      "byteEnd": 20563,
+      "rawText": "Current bead and comments were reread; no amendments/comments exist. The named seam-review\nfile does not exist on disk, so the complete quoted `[rebase-conflict]` finding in the dispatch\nwas used. This did not prevent reproducing and resolving the exact reported single conflict.\nWriting-skills and verification-before-completion guidance were applied without changing\nreviewed behavior or spawning agents; fresh-agent acceptance stays coordinator-owned per dispatch.\nNo declined finding or permission refusal occurred. No merge, blocker closure, or actual\ncaller acceptance was performed.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "Assumptions and concerns",
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Seam fix",
+            "Assumptions and concerns"
+          ],
+          "sectionByteStart": 19943,
+          "sectionByteEnd": 20563,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 31
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 4464,
+      "byteEnd": 4731,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/0"
+      ],
+      "interpretation": "Real epic/task not accepted/closed; post behavior, final reviews and whole sweep are coordinator prerequisites.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 7247,
+      "byteEnd": 7805,
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/2"
+      ],
+      "interpretation": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated. Claimed repair, present applicability and cross-source identity remain unadjudicated.",
+      "jsonPointer": null,
+      "passageJudgment": {
+        "ordinal": 25,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "byteStart": 7247,
+        "byteEnd": 7805,
+        "lineStart": 116,
+        "lineEnd": 126,
+        "selection": "full-original-passage",
+        "assertionQuote": "`gaps:[\"conflicting source history\"]` incorrectly returned:",
+        "repairClaimQuote": "Retaining those run-owned attribution gaps fixed it;",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      }
+    },
+    {
+      "byteStart": 12982,
+      "byteEnd": 13548,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/3"
+      ],
+      "interpretation": "Supported nonblocking relevance preserves original findings; durable Recovery/check facts must be reconciled before caller changes.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13549,
+      "byteEnd": 14109,
+      "roles": [
+        "deferred-coverage",
+        "historical-finding-context"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/4"
+      ],
+      "interpretation": "Fresh-agent/live behavior, whole final reviews/sweep/human acceptance outstanding; separate collector suffix correction acknowledged, not duplicated.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14138,
+      "byteEnd": 15094,
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "deferred-integration-scope"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/5"
+      ],
+      "interpretation": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link. Claimed repair, present applicability and cross-source identity remain unadjudicated.",
+      "jsonPointer": null,
+      "passageJudgment": {
+        "ordinal": 25,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "byteStart": 14138,
+        "byteEnd": 15094,
+        "lineStart": 244,
+        "lineEnd": 258,
+        "selection": "full-original-passage",
+        "assertionQuote": "The single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph",
+        "repairClaimQuote": "Resolved `[rebase-conflict]` by running exactly:",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      }
+    },
+    {
+      "byteStart": 19067,
+      "byteEnd": 19234,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/7"
+      ],
+      "interpretation": "Combined deterministic checks not real epic acceptance or fresh-agent evaluation; live evaluation outstanding.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 19973,
+      "byteEnd": 20563,
+      "roles": [
+        "execution-context",
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/8"
+      ],
+      "interpretation": "Named seam file absent; complete dispatch quote used. Fresh-agent acceptance remains parent-owned; no blocker closure/actual acceptance performed.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Interpreted extraction omits actual self-review verified-with-gaps defect L116–126 and original pending scope L65–67; retain missing-diff caveat and blocker ownership L258 alongside claimed conflict repair.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Earlier report sections describe different original source; named seam file absent. Preserve exact separate revisions and quoted-dispatch qualification."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000004464",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 4464,
+      "rawByteEnd": 4731,
+      "rawLineStart": 65,
+      "rawLineEnd": 67,
+      "originalSections": [
+        {
+          "section": "Final acceptance gate semantics",
+          "sectionOrdinal": 2,
+          "headingRaw": "## Final acceptance gate semantics\n",
+          "hierarchy": [
+            "Final acceptance gate semantics"
+          ],
+          "byteStart": 1815,
+          "byteEnd": 4732
+        }
+      ],
+      "rawText": "The live epic and task were not accepted or closed. All acceptance testing used disposable\nfixtures. Post-change behavior evaluation, final reviews and the enclosing full sweep remain\ncoordinator-owned prerequisites; this implementation does not claim them complete.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The live epic and task were not accepted or closed. All acceptance testing used disposable\nfixtures. Post-change behavior evaluation, final reviews and the enclosing full sweep remain\ncoordinator-owned prerequisites; this implementation does not claim them complete.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/0"
+      ],
+      "interpretation": "Real epic/task not accepted/closed; post behavior, final reviews and whole sweep are coordinator prerequisites."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "passageJudgment": {
+        "ordinal": 25,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "byteStart": 7247,
+        "byteEnd": 7805,
+        "lineStart": 116,
+        "lineEnd": 126,
+        "selection": "full-original-passage",
+        "assertionQuote": "`gaps:[\"conflicting source history\"]` incorrectly returned:",
+        "repairClaimQuote": "Retaining those run-owned attribution gaps fixed it;",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      },
+      "representationChoice": null,
+      "rawByteStart": 7247,
+      "rawByteEnd": 7805,
+      "rawLineStart": 116,
+      "rawLineEnd": 126,
+      "originalSections": [
+        {
+          "section": "TDD evidence",
+          "sectionOrdinal": 4,
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "TDD evidence"
+          ],
+          "byteStart": 5868,
+          "byteEnd": 7806
+        }
+      ],
+      "rawText": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/2"
+      ],
+      "interpretation": "The source explicitly reports incorrect eligibility for a verified run-owned failure retaining attribution gaps. The assertion/output supports one historical appearance; the claimed correction remains unadjudicated. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000012982",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 12982,
+      "rawByteEnd": 13548,
+      "rawLineStart": 225,
+      "rawLineEnd": 230,
+      "originalSections": [
+        {
+          "section": "Assumptions, clarifications and remaining evaluation",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Assumptions, clarifications and remaining evaluation\n",
+          "hierarchy": [
+            "Assumptions, clarifications and remaining evaluation"
+          ],
+          "byteStart": 12925,
+          "byteEnd": 14111
+        }
+      ],
+      "rawText": "No conflicting bead amendment was found. Coordinator clarification was applied: disclose and\npreserve nonblocking deferred findings rather than requiring zero outstanding items; supported\nacceptance relevance belongs to the existing caller assessment, one judgment per linked group,\nwith genuinely human decisions remaining human-owned. The new snapshot is an additive consumer\nrecord under existing approvals, not a replacement recovery/finding engine. Canonical current\nRecovery/check facts are reconciled from durable source records before a caller changes them.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "No conflicting bead amendment was found. Coordinator clarification was applied: disclose and\npreserve nonblocking deferred findings rather than requiring zero outstanding items; supported\nacceptance relevance belongs to the existing caller assessment, one judgment per linked group,\nwith genuinely human decisions remaining human-owned. The new snapshot is an additive consumer\nrecord under existing approvals, not a replacement recovery/finding engine. Canonical current\nRecovery/check facts are reconciled from durable source records before a caller changes them.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/3"
+      ],
+      "interpretation": "Supported nonblocking relevance preserves original findings; durable Recovery/check facts must be reconciled before caller changes."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000013549",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "historical-finding-context"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 13549,
+      "rawByteEnd": 14109,
+      "rawLineStart": 232,
+      "rawLineEnd": 237,
+      "originalSections": [
+        {
+          "section": "Assumptions, clarifications and remaining evaluation",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Assumptions, clarifications and remaining evaluation\n",
+          "hierarchy": [
+            "Assumptions, clarifications and remaining evaluation"
+          ],
+          "byteStart": 12925,
+          "byteEnd": 14111
+        }
+      ],
+      "rawText": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the\ncoordinator-owned post-change evaluation. Required live behavior evaluation, whole-epic final\nreviews, final sweep and actual human acceptance remain outstanding at the enclosing run level.\nThe coordinator reported a separate task-8.3 collection diff-suffix correction in progress; this\ntask neither duplicates that fix nor replays its parent commits. No other deterministic check is\nfailed or unavailable. No integration worktree/user-checkout edits were made.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the\ncoordinator-owned post-change evaluation. Required live behavior evaluation, whole-epic final\nreviews, final sweep and actual human acceptance remain outstanding at the enclosing run level.\nThe coordinator reported a separate task-8.3 collection diff-suffix correction in progress; this\ntask neither duplicates that fix nor replays its parent commits. No other deterministic check is\nfailed or unavailable. No integration worktree/user-checkout edits were made.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/4"
+      ],
+      "interpretation": "Fresh-agent/live behavior, whole final reviews/sweep/human acceptance outstanding; separate collector suffix correction acknowledged, not duplicated."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "deferred-integration-scope"
+      ],
+      "passageJudgment": {
+        "ordinal": 25,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "rawSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+        "byteStart": 14138,
+        "byteEnd": 15094,
+        "lineStart": 244,
+        "lineEnd": 258,
+        "selection": "full-original-passage",
+        "assertionQuote": "The single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph",
+        "repairClaimQuote": "Resolved `[rebase-conflict]` by running exactly:",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      },
+      "representationChoice": null,
+      "rawByteStart": 14138,
+      "rawByteEnd": 15094,
+      "rawLineStart": 244,
+      "rawLineEnd": 258,
+      "originalSections": [
+        {
+          "section": "Seam fix",
+          "sectionOrdinal": 10,
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "Seam fix"
+          ],
+          "byteStart": 14111,
+          "byteEnd": 16145
+        }
+      ],
+      "rawText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/5"
+      ],
+      "interpretation": "The source asserts the actual single rebase conflict and describes a claimed resolution. Keep the whole passage, including unchanged-scope qualifications and the parent-owned blocker closure obligation. This supersedes only the adapter's narrower blocker-only representation; it does not discharge that blocker or apply a finding identity link. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-11/raw-byte-000019067",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 19067,
+      "rawByteEnd": 19234,
+      "rawLineStart": 338,
+      "rawLineEnd": 339,
+      "originalSections": [
+        {
+          "section": "Combined verification",
+          "sectionOrdinal": 11,
+          "headingRaw": "### Combined verification\n",
+          "hierarchy": [
+            "Seam fix",
+            "Combined verification"
+          ],
+          "byteStart": 16145,
+          "byteEnd": 19235
+        }
+      ],
+      "rawText": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent\nbehavior evaluation. Coordinator-owned live evaluations remain outstanding.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent\nbehavior evaluation. Coordinator-owned live evaluations remain outstanding.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/7"
+      ],
+      "interpretation": "Combined deterministic checks not real epic acceptance or fresh-agent evaluation; live evaluation outstanding."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-13/raw-byte-000019973",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "execution-context",
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 19973,
+      "rawByteEnd": 20563,
+      "rawLineStart": 356,
+      "rawLineEnd": 362,
+      "originalSections": [
+        {
+          "section": "Assumptions and concerns",
+          "sectionOrdinal": 13,
+          "headingRaw": "### Assumptions and concerns\n",
+          "hierarchy": [
+            "Seam fix",
+            "Assumptions and concerns"
+          ],
+          "byteStart": 19943,
+          "byteEnd": 20563
+        }
+      ],
+      "rawText": "Current bead and comments were reread; no amendments/comments exist. The named seam-review\nfile does not exist on disk, so the complete quoted `[rebase-conflict]` finding in the dispatch\nwas used. This did not prevent reproducing and resolving the exact reported single conflict.\nWriting-skills and verification-before-completion guidance were applied without changing\nreviewed behavior or spawning agents; fresh-agent acceptance stays coordinator-owned per dispatch.\nNo declined finding or permission refusal occurred. No merge, blocker closure, or actual\ncaller acceptance was performed.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Current bead and comments were reread; no amendments/comments exist. The named seam-review\nfile does not exist on disk, so the complete quoted `[rebase-conflict]` finding in the dispatch\nwas used. This did not prevent reproducing and resolving the exact reported single conflict.\nWriting-skills and verification-before-completion guidance were applied without changing\nreviewed behavior or spawning agents; fresh-agent acceptance stays coordinator-owned per dispatch.\nNo declined finding or permission refusal occurred. No merge, blocker closure, or actual\ncaller acceptance was performed.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/24/interpretedPassages/8"
+      ],
+      "interpretation": "Named seam file absent; complete dispatch quote used. Fresh-agent acceptance remains parent-owned; no blocker closure/actual acceptance performed."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/25-task-16-report.md",
+  "retainedSha256": "cd3b8d9591794ad954d530005cf5ea232f10ea1e9f7b431ee6266a90b44916f2"
+}

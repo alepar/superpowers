@@ -1,0 +1,63 @@
+{
+  "base": "9e4e057136d449348135bfc18d1f084cb6e4c303",
+  "head": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "tree": "9d74c04d6a465e02439dc08e2076395d8e791583",
+  "diffSha256": "0cba1e6c2f4e1ddca6544fad5d2e517ed4fc32fa030603388e98b894a7957d36",
+  "paths": [
+    {
+      "path": "skills/super-auto/scripts/collection-records.cjs",
+      "bytes": 2956,
+      "sha256": "fa444c243485404d761eb59ab53ca6b4bd7c97218dfc5521cc527fe5414def4f"
+    },
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "bytes": 50113,
+      "sha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963"
+    },
+    {
+      "path": "skills/super-code/SKILL.md",
+      "bytes": 46686,
+      "sha256": "fdd8596017bf2a5b6660721145eb9aff07a039a390f35bdde99de5940a261c64"
+    },
+    {
+      "path": "skills/super-code/coordinator.js",
+      "bytes": 308121,
+      "sha256": "154bd1069d2e20eaeb24c460c09360c7e281de6a1f8ff74824db089bb53dafa1"
+    },
+    {
+      "path": "tests/super-auto/acceptance-population-correction.mjs",
+      "bytes": 22596,
+      "sha256": "bc8c9fcb9eb35044d81f0b3f7798e38b5625841e756f97c7f3c79220346542a4"
+    },
+    {
+      "path": "tests/super-auto/collection-recovery-correction.sh",
+      "bytes": 10050,
+      "sha256": "885c3384c95fa896771bdf1c071bf68958de2ce9c81ccc9fee8de1d948e2122c"
+    },
+    {
+      "path": "tests/super-code/fixture-liveness-final-wave.mjs",
+      "bytes": 1677,
+      "sha256": "a9c532101fbe784cf437362ede92bc414f79814e42e8507f265bb42451954882"
+    },
+    {
+      "path": "tests/super-code/invocation-source-binding-r1.mjs",
+      "bytes": 15311,
+      "sha256": "32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826"
+    },
+    {
+      "path": "tests/super-code/recovery-hold-scope-r1.mjs",
+      "bytes": 9843,
+      "sha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f"
+    },
+    {
+      "path": "tests/super-code/replay-harness.mjs",
+      "bytes": 440250,
+      "sha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc"
+    },
+    {
+      "path": "tests/super-code/unplanned-admission-final-wave.mjs",
+      "bytes": 4230,
+      "sha256": "7e5993760cf853d5477e2c82f1610b1147a3333389ed1e11c3e55fe4fcff0998"
+    }
+  ]
+}

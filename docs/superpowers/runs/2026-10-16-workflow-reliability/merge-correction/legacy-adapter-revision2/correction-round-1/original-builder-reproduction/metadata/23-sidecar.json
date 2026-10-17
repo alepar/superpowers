@@ -1,0 +1,584 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-15-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-15-review.md",
+  "rawSha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+  "rawByteCount": 5177,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-review.md",
+    "durablePath": "task-report-history-r1/raw/task-15-review.md",
+    "sha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+    "byteCount": 5177,
+    "logicalRole": "review",
+    "ordinal": 15,
+    "logicalTaskId": "super-plan-ufz.9",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-15-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: NEEDS_FIX"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task review: super-plan-ufz.9",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task review: super-plan-ufz.9\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9"
+      ],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 146,
+      "bodyLineStart": 2,
+      "rawText": "# Task review: super-plan-ufz.9\n\nStatus: NEEDS_FIX\nBase: 7074121343636addd41f80ef5261de6ffb74ab80\nHead: c3bfd1f9e3109f136b091f843d270455b367cad9\n\n",
+      "bodyRawText": "\nStatus: NEEDS_FIX\nBase: 7074121343636addd41f80ef5261de6ffb74ab80\nHead: c3bfd1f9e3109f136b091f843d270455b367cad9\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: NEEDS_FIX\n",
+          "text": "Status: NEEDS_FIX",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 33,
+          "byteEnd": 51
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 7074121343636addd41f80ef5261de6ffb74ab80\n",
+          "text": "Base: 7074121343636addd41f80ef5261de6ffb74ab80",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 51,
+          "byteEnd": 98
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: c3bfd1f9e3109f136b091f843d270455b367cad9\n",
+          "text": "Head: c3bfd1f9e3109f136b091f843d270455b367cad9",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 98,
+          "byteEnd": 145
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 12,
+      "byteStart": 146,
+      "byteEnd": 1142,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n\n❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).\n\n✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.\n\n",
+      "bodyRawText": "\n❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).\n\n✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).\n",
+          "text": "❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 166,
+          "byteEnd": 439
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.\n",
+          "text": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 440,
+          "byteEnd": 1141
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues"
+      ],
+      "lineStart": 13,
+      "lineEnd": 14,
+      "byteStart": 1142,
+      "byteEnd": 1153,
+      "bodyLineStart": 14,
+      "rawText": "## Issues\n\n",
+      "bodyRawText": "\n",
+      "units": []
+    },
+    {
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Critical\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Critical"
+      ],
+      "lineStart": 15,
+      "lineEnd": 18,
+      "byteStart": 1153,
+      "byteEnd": 1174,
+      "bodyLineStart": 16,
+      "rawText": "### Critical\n\nNone.\n\n",
+      "bodyRawText": "\nNone.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None.\n",
+          "text": "None.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1167,
+          "byteEnd": 1173
+        }
+      ]
+    },
+    {
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "headingLevel": 3,
+      "headingRaw": "### Important\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Important"
+      ],
+      "lineStart": 19,
+      "lineEnd": 22,
+      "byteStart": 1174,
+      "byteEnd": 2359,
+      "bodyLineStart": 20,
+      "rawText": "### Important\n\n- `skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.\n\n",
+      "bodyRawText": "\n- `skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.\n",
+          "text": "`skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1189,
+          "byteEnd": 2358
+        }
+      ]
+    },
+    {
+      "section": "Minor",
+      "sectionOrdinal": 6,
+      "headingLevel": 3,
+      "headingRaw": "### Minor\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Minor"
+      ],
+      "lineStart": 23,
+      "lineEnd": 26,
+      "byteStart": 2359,
+      "byteEnd": 2377,
+      "bodyLineStart": 24,
+      "rawText": "### Minor\n\nNone.\n\n",
+      "bodyRawText": "\nNone.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None.\n",
+          "text": "None.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2370,
+          "byteEnd": 2376
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Test evidence"
+      ],
+      "lineStart": 27,
+      "lineEnd": 40,
+      "byteStart": 2377,
+      "byteEnd": 3861,
+      "bodyLineStart": 28,
+      "rawText": "## Test evidence\n\nThe implementer reports final commands from the owned worktree with isolated HOME/XDG/TMPDIR:\n\n- `node tests/super-code/replay-harness.mjs`: 2152 passed, 0 failed, exit 0.\n- `bash tests/super-auto/test-scripts.sh`: all script tests passed, exit 0; supported metrics, raw/actionable distinction, linked identities and exit-3 cases shown.\n- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, exit 0, including legacy/additive mutation checks.\n- `bash tests/super-code/test-run-digest.sh`: all tests passed, exit 0, including source-status and truncated-transport cases.\n- Optional invocation lint and `git diff --check` also report exit 0. Hygiene reports no leaked processes.\n\nThis evidence plausibly covers the changed deterministic producers and consumers. No tests were run during this review. The new replay cases exercise simultaneous repeated source outcomes, not the alternating independent-source outcomes identified above.\n\nTest changes inspected using both `git diff --stat BASE..HEAD -- TEST_PATHSPECS` and `git diff BASE..HEAD -- TEST_PATHSPECS`, where BASE/HEAD are the immutable revisions above and TEST_PATHSPECS are the full supplied tests/test/spec globs. Commands exited 0: three files, 107 insertions and 15 deletions. Existing expectations change for the requested transport markers, labelled fix-event metrics, exact identity discrepancy output and additive qualification. No unjustified deleted/skipped tests found.\n\n",
+      "bodyRawText": "\nThe implementer reports final commands from the owned worktree with isolated HOME/XDG/TMPDIR:\n\n- `node tests/super-code/replay-harness.mjs`: 2152 passed, 0 failed, exit 0.\n- `bash tests/super-auto/test-scripts.sh`: all script tests passed, exit 0; supported metrics, raw/actionable distinction, linked identities and exit-3 cases shown.\n- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, exit 0, including legacy/additive mutation checks.\n- `bash tests/super-code/test-run-digest.sh`: all tests passed, exit 0, including source-status and truncated-transport cases.\n- Optional invocation lint and `git diff --check` also report exit 0. Hygiene reports no leaked processes.\n\nThis evidence plausibly covers the changed deterministic producers and consumers. No tests were run during this review. The new replay cases exercise simultaneous repeated source outcomes, not the alternating independent-source outcomes identified above.\n\nTest changes inspected using both `git diff --stat BASE..HEAD -- TEST_PATHSPECS` and `git diff BASE..HEAD -- TEST_PATHSPECS`, where BASE/HEAD are the immutable revisions above and TEST_PATHSPECS are the full supplied tests/test/spec globs. Commands exited 0: three files, 107 insertions and 15 deletions. Existing expectations change for the requested transport markers, labelled fix-event metrics, exact identity discrepancy output and additive qualification. No unjustified deleted/skipped tests found.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The implementer reports final commands from the owned worktree with isolated HOME/XDG/TMPDIR:\n",
+          "text": "The implementer reports final commands from the owned worktree with isolated HOME/XDG/TMPDIR:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2395,
+          "byteEnd": 2489
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/replay-harness.mjs`: 2152 passed, 0 failed, exit 0.\n",
+          "text": "`node tests/super-code/replay-harness.mjs`: 2152 passed, 0 failed, exit 0.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 2490,
+          "byteEnd": 2567
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-auto/test-scripts.sh`: all script tests passed, exit 0; supported metrics, raw/actionable distinction, linked identities and exit-3 cases shown.\n",
+          "text": "`bash tests/super-auto/test-scripts.sh`: all script tests passed, exit 0; supported metrics, raw/actionable distinction, linked identities and exit-3 cases shown.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 2567,
+          "byteEnd": 2732
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, exit 0, including legacy/additive mutation checks.\n",
+          "text": "`bash tests/super-auto/test-contract-lint.sh`: all contract lint tests passed, exit 0, including legacy/additive mutation checks.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 2732,
+          "byteEnd": 2864
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-code/test-run-digest.sh`: all tests passed, exit 0, including source-status and truncated-transport cases.\n",
+          "text": "`bash tests/super-code/test-run-digest.sh`: all tests passed, exit 0, including source-status and truncated-transport cases.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 2864,
+          "byteEnd": 2991
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Optional invocation lint and `git diff --check` also report exit 0. Hygiene reports no leaked processes.\n",
+          "text": "Optional invocation lint and `git diff --check` also report exit 0. Hygiene reports no leaked processes.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 2991,
+          "byteEnd": 3098
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "This evidence plausibly covers the changed deterministic producers and consumers. No tests were run during this review. The new replay cases exercise simultaneous repeated source outcomes, not the alternating independent-source outcomes identified above.\n",
+          "text": "This evidence plausibly covers the changed deterministic producers and consumers. No tests were run during this review. The new replay cases exercise simultaneous repeated source outcomes, not the alternating independent-source outcomes identified above.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 3099,
+          "byteEnd": 3354
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes inspected using both `git diff --stat BASE..HEAD -- TEST_PATHSPECS` and `git diff BASE..HEAD -- TEST_PATHSPECS`, where BASE/HEAD are the immutable revisions above and TEST_PATHSPECS are the full supplied tests/test/spec globs. Commands exited 0: three files, 107 insertions and 15 deletions. Existing expectations change for the requested transport markers, labelled fix-event metrics, exact identity discrepancy output and additive qualification. No unjustified deleted/skipped tests found.\n",
+          "text": "Test changes inspected using both `git diff --stat BASE..HEAD -- TEST_PATHSPECS` and `git diff BASE..HEAD -- TEST_PATHSPECS`, where BASE/HEAD are the immutable revisions above and TEST_PATHSPECS are the full supplied tests/test/spec globs. Commands exited 0: three files, 107 insertions and 15 deletions. Existing expectations change for the requested transport markers, labelled fix-event metrics, exact identity discrepancy output and additive qualification. No unjustified deleted/skipped tests found.",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 3355,
+          "byteEnd": 3860
+        }
+      ]
+    },
+    {
+      "section": "Reachability and focused checks",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Reachability and focused checks\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Reachability and focused checks"
+      ],
+      "lineStart": 41,
+      "lineEnd": 47,
+      "byteStart": 3861,
+      "byteEnd": 4870,
+      "bodyLineStart": 42,
+      "rawText": "## Reachability and focused checks\n\n- Traced Finish through `readLedger`, `metricsEvidence` and `finalSource` into final review dispatch: independently captured revisions remain consumed when ledger transport fails on both reads, but retry selection has the Important gap above.\n- Checked Resume’s `readRecovery` and Finish’s use of the same validator for the concrete risk of unsupported or oversized records silently dropping history/gaps. The shared validation and gap paths are present.\n- Checked `report-verdict --complete` section names against projection actionable groups for the concrete risk of counting raw Rejected/Not verified sections as actionable. Those raw occurrences remain separate while the full projection retains their evidence.\n- Searched sibling `ledger-digest` callers: the runtime `run-digest` consumer now validates transport and preserves independent tracker/profile observations; ordinary coordinator instructions use the same contract. Projection exit 3 remains unchanged.\n\n",
+      "bodyRawText": "\n- Traced Finish through `readLedger`, `metricsEvidence` and `finalSource` into final review dispatch: independently captured revisions remain consumed when ledger transport fails on both reads, but retry selection has the Important gap above.\n- Checked Resume’s `readRecovery` and Finish’s use of the same validator for the concrete risk of unsupported or oversized records silently dropping history/gaps. The shared validation and gap paths are present.\n- Checked `report-verdict --complete` section names against projection actionable groups for the concrete risk of counting raw Rejected/Not verified sections as actionable. Those raw occurrences remain separate while the full projection retains their evidence.\n- Searched sibling `ledger-digest` callers: the runtime `run-digest` consumer now validates transport and preserves independent tracker/profile observations; ordinary coordinator instructions use the same contract. Projection exit 3 remains unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Traced Finish through `readLedger`, `metricsEvidence` and `finalSource` into final review dispatch: independently captured revisions remain consumed when ledger transport fails on both reads, but retry selection has the Important gap above.\n",
+          "text": "Traced Finish through `readLedger`, `metricsEvidence` and `finalSource` into final review dispatch: independently captured revisions remain consumed when ledger transport fails on both reads, but retry selection has the Important gap above.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 43,
+          "lineEnd": 43,
+          "byteStart": 3897,
+          "byteEnd": 4140
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Checked Resume’s `readRecovery` and Finish’s use of the same validator for the concrete risk of unsupported or oversized records silently dropping history/gaps. The shared validation and gap paths are present.\n",
+          "text": "Checked Resume’s `readRecovery` and Finish’s use of the same validator for the concrete risk of unsupported or oversized records silently dropping history/gaps. The shared validation and gap paths are present.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 4140,
+          "byteEnd": 4356
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Checked `report-verdict --complete` section names against projection actionable groups for the concrete risk of counting raw Rejected/Not verified sections as actionable. Those raw occurrences remain separate while the full projection retains their evidence.\n",
+          "text": "Checked `report-verdict --complete` section names against projection actionable groups for the concrete risk of counting raw Rejected/Not verified sections as actionable. Those raw occurrences remain separate while the full projection retains their evidence.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 45,
+          "lineEnd": 45,
+          "byteStart": 4356,
+          "byteEnd": 4617
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Searched sibling `ledger-digest` callers: the runtime `run-digest` consumer now validates transport and preserves independent tracker/profile observations; ordinary coordinator instructions use the same contract. Projection exit 3 remains unchanged.\n",
+          "text": "Searched sibling `ledger-digest` callers: the runtime `run-digest` consumer now validates transport and preserves independent tracker/profile observations; ordinary coordinator instructions use the same contract. Projection exit 3 remains unchanged.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 4617,
+          "byteEnd": 4869
+        }
+      ]
+    },
+    {
+      "section": "Strengths",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Strengths\n",
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Strengths"
+      ],
+      "lineStart": 48,
+      "lineEnd": 50,
+      "byteStart": 4870,
+      "byteEnd": 5177,
+      "bodyLineStart": 49,
+      "rawText": "## Strengths\n\nThe change clearly separates observed counts, units, source populations and unknown totals. Concrete discrepant IDs replace unsupported causal guesses, and historical fixes survive later clean outcomes. Historical contract fixtures need no edits because no run.md field/format was introduced.\n",
+      "bodyRawText": "\nThe change clearly separates observed counts, units, source populations and unknown totals. Concrete discrepant IDs replace unsupported causal guesses, and historical fixes survive later clean outcomes. Historical contract fixtures need no edits because no run.md field/format was introduced.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The change clearly separates observed counts, units, source populations and unknown totals. Concrete discrepant IDs replace unsupported causal guesses, and historical fixes survive later clean outcomes. Historical contract fixtures need no edits because no run.md field/format was introduced.\n",
+          "text": "The change clearly separates observed counts, units, source populations and unknown totals. Concrete discrepant IDs replace unsupported causal guesses, and historical fixes survive later clean outcomes. Historical contract fixtures need no edits because no run.md field/format was introduced.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 4884,
+          "byteEnd": 5177
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).",
+      "text": "❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).",
+      "rawText": "❌ Preserve independently successful source observations across a ledger retry. `readLedger` can discard the first attempt’s successful Git landing lookup and coherent captured review revision pair when only the ledger transport needs retrying (coordinator.js:195-198).\n",
+      "lineStart": 9,
+      "lineEnd": 9,
+      "byteStart": 166,
+      "byteEnd": 439,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Spec compliance"
+      ],
+      "positionInSection": 2,
+      "key": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.",
+      "text": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.",
+      "rawText": "✅ Explicit missing/unreadable/valid-empty/malformed/truncated transport; known-appends validation; qualified partial metrics; Finish reconciliation before counting; unique landing IDs and actual discrepancy IDs; latest completion versus durable history; supported disposition metrics; occurrence/group distinction; projection exit 3; report and run-digest propagation. Base absorption and execution selection do not inflate the stated units. Current bead and comments were read: no amendments/comments changed the supplied requirements. Coordinator-owned fresh-agent interpretation remains pending and is explicitly outside this deterministic task’s verification; committed examples are provided.\n",
+      "lineStart": 11,
+      "lineEnd": 11,
+      "byteStart": 440,
+      "byteEnd": 1141,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Critical"
+      ],
+      "positionInSection": 1,
+      "key": "None.",
+      "text": "None.",
+      "rawText": "None.\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1167,
+      "byteEnd": 1173,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Important"
+      ],
+      "positionInSection": 1,
+      "key": "`skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.",
+      "text": "`skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.",
+      "rawText": "- `skills/super-code/coordinator.js:195-198` — Merge retry results per independent source instead of selecting/spreading whole dispatch objects. For example, the first Finish dispatch can return unavailable ledger transport but a successful `landed` list and complete `reviewBase`/`reviewHead`. If the retry returns valid ledger transport but `landedError` and `reviewError`, line 195 returns only the retry: the successful landing evidence and captured revision pair disappear. Final review then becomes unavailable despite the previously captured immutable source, and metrics loses supported Git evidence. If both ledger transports are unavailable, line 198 can instead retain first.landed alongside retry.landedError; the metrics caller rejects that successful list because of the error. This contradicts the explicit partial-results/independent-source retention contract. Retain each successful Git observation and each coherent complete review pair independently of ledger status, keep failed attempts as qualified gaps, and avoid combining half revision pairs. Add targeted replay cases with success/failure alternating independently across the three sources.\n",
+      "lineStart": 21,
+      "lineEnd": 21,
+      "byteStart": 1189,
+      "byteEnd": 2358,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "section": "Minor",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task review: super-plan-ufz.9",
+        "Issues",
+        "Minor"
+      ],
+      "positionInSection": 1,
+      "key": "None.",
+      "text": "None.",
+      "rawText": "None.\n",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 2370,
+      "byteEnd": 2376,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

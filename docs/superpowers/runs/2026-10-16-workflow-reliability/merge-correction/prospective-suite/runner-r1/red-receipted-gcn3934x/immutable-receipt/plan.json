@@ -1,0 +1,21 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/immutable-receipt/evidence",
+  "sourceHead": "1ebc6affde90d4de63bf3dfc7aede648c825a592",
+  "sourceTree": "58809cb2af3fff21ca7aa85411a560416150a7ab",
+  "commands": [
+    "bash tests/check.sh"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/check.sh",
+      "sha256": "b51a0ac85061338ad79b9a1c099db752bff3c6eb4a1e4d470ff66632792606a2",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    }
+  ]
+}

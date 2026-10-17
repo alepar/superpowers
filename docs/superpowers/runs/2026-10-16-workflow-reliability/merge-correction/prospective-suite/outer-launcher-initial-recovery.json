@@ -1,0 +1,8 @@
+{
+  "artifact": "outer-launcher-initial.py",
+  "bytes": 4790,
+  "sha256": "533b597e572eb9c049b343857e5dc6e732c17aa25c4dccb89cc6665c94d79250",
+  "recoveryMethod": "Reconstructed after corrective edit from the exact original creation text in retained tool context, matching the original pre-edit review hash and4790byte count. Not a claim of an earlier separately frozen disk snapshot.",
+  "execution": "Never executed; initial and fixed source received static/syntax review only.",
+  "originalFinding": "One Important setup/final-read failure-receipt gap; original review retained; fixed R1 reviewed clean."
+}

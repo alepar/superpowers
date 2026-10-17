@@ -1,0 +1,51 @@
+[PASS] null settlement cannot satisfy independently declared acceptance
+[PASS] plain replay cannot promote a null result from file presence
+[PASS] ordinary settlement cannot replace a settled null result
+[PASS] explicit recovered report collects with unchanged invocation and inputs
+[PASS] recovery retains original unavailable events and binds their exact predecessor
+[PASS] repeated explicit recovery and plain replay are byte-idempotent
+[PASS] valid recovery supports read-only acceptance with independent prerequisites
+[FAIL] readers reject unretained predecessor: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects unretained predecessor
+[FAIL] readers reject different unavailable verdict: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects different unavailable verdict
+[FAIL] readers reject unsupported recovery kind: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects unsupported recovery kind
+[FAIL] readers reject changed recovered bundle: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects changed recovered bundle
+[FAIL] readers reject all omitted recovery markers: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects all omitted recovery markers
+[FAIL] readers reject omitted final snapshot recovery marker: The input did not match the regular expression /qualifier: .*review collection gaps/. Input:
+
+'status: clean\n'
+
+[PASS] replay rejects omitted final snapshot recovery marker
+[PASS] recovered archive remains useful after intentional source removal
+[PASS] recovery rejects workspace without replacing null history
+[PASS] recovery rejects required-inputs without replacing null history
+[PASS] recovery rejects unexpected-review-path without replacing null history
+[PASS] recovery rejects null-again without replacing null history
+[PASS] recovery rejects missing-invocation without replacing null history
+[PASS] recovery rejects verdict-mismatch without replacing null history
+[PASS] recovery rejects missing report before rebinding
+[PASS] recovery rejects symlink report before rebinding
+[PASS] recovery rejects malformed report before rebinding
+[PASS] ordinary non-null collection replay needs no recovery marker
+[PASS] recovery cannot relabel already settled non-null source
+[PASS] changed settled source bytes never replace archived source
+26 passed, 6 failed

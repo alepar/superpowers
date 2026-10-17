@@ -1,0 +1,1140 @@
+{
+  "version": 1,
+  "ordinal": 21,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+  "originalArtifact": "task-report-history-r1/raw/task-15-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-15-report.md",
+  "rawSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+  "rawByteCount": 29301,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 350,
+    "byteStart": 0,
+    "byteEnd": 29301,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/20",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    }
+  ],
+  "rawSidecar": "metadata/21-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "Status:IMPLEMENTED"
+    },
+    {
+      "line": 8,
+      "rawText": "- status: IMPLEMENTED"
+    },
+    {
+      "line": 163,
+      "rawText": "Status: FIXED"
+    },
+    {
+      "line": 245,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/0",
+      "roles": [
+        "evidence-scope"
+      ],
+      "span": [
+        527,
+        896
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Stacked original source tested; no future rebased source claim."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/1",
+      "roles": [
+        "illustrative-json",
+        "scope-concern"
+      ],
+      "span": [
+        5322,
+        5840
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Emitted projection metrics are generated fixture example, not actual run totals. Absent task-report coverage explicitly not zero run-wide review count."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/2",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "span": [
+        7476,
+        9544
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed defects: empty/invalid transport accepted, old/duplicate completion counting, lost history/discrepant IDs, metrics before Finish; absent availability markers; raw/actionable conflation; partial Finish lost fix history; run-digest invented zeros/truncated totals; Finish-only invalid/oversized records lost gaps. Earlier stale-mock fixture corrected before RED accepted."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/3",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        10763,
+        11504
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interpretation assigned parent; no agents run."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/4",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        11658,
+        11972
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interpretation/pressure evaluation not run; generated examples do not replace it."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/5",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        11973,
+        12443
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Units/populations distinct; absent reports/unavailable sources cannot establish run-wide totals. Zero-friction assertion is unit interpretation, not a new live metric."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/6",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "span": [
+        13400,
+        13582
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Independent retry source-retention finding acknowledged in appended fix; no report-only resolution."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/7",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        14070,
+        14816
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Independent source selection, coherent same-attempt review pair, gaps retained."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/8",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "span": [
+        16173,
+        17541
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Independent retry RED demonstrates mixed-pair/drop behavior before claimed fix."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/9",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "span": [
+        21100,
+        21540
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interpretation remains external; no new concerns asserted."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/10",
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "execution-context"
+      ],
+      "span": [
+        21569,
+        21919
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Rebase-conflict finding claimed resolved; named diff absent and dispatch finding used."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/11",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        22809,
+        23569
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Conflict resolution preserving independent retry, verification closure/recovery/metrics composition claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/12",
+      "roles": [
+        "execution-context"
+      ],
+      "span": [
+        26425,
+        26947
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "New assertion helper ReferenceError caused incomplete run; corrected complete run is separately claimed, no verdict inferred from incomplete run."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/13",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        28356,
+        28689
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "No fresh-agent interpretation eval or broader suite here; parent-owned evaluation retained."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/20/interpretedPassages/14",
+      "roles": [
+        "explicit-empty-qualified",
+        "execution-context"
+      ],
+      "span": [
+        28734,
+        29301
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No new concerns/declined/evidence-only findings asserted; settled process checks claimed."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-21-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "evidence-scope"
+      ],
+      "interpretation": "Stacked original source tested; no future rebased source claim.",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 527,
+      "byteEnd": 896,
+      "rawText": "- tested rebased base: not applicable; no rebased source was tested here. The parent reported .8.4 landed at 84c0e0cd via 10b7c509, and the integration ref observed before commit was 8ed4be9e1a63c0d52273dd2772e65097c43b7797. The coordinator owns eventual --onto integration handling from the original stacked base; these results make no claim about that future source.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Result and source revisions",
+          "headingRaw": "## Result and source revisions\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Result and source revisions"
+          ],
+          "sectionByteStart": 77,
+          "sectionByteEnd": 1035,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 451
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "illustrative-json",
+        "scope-concern"
+      ],
+      "interpretation": "Emitted projection metrics are generated fixture example, not actual run totals. Absent task-report coverage explicitly not zero run-wide review count.",
+      "lineStart": 64,
+      "lineEnd": 70,
+      "byteStart": 5322,
+      "byteEnd": 5840,
+      "rawText": "Actual emitted projection example:\n\n```json\n{\"scope\":\"retained sources\",\"sources\":3,\"sourceKinds\":[\"final-review\",\"roast\"],\"occurrences\":7,\"occurrenceGroups\":7,\"findings\":5,\"otherSectionGroups\":2,\"sections\":[\"Must fix\",\"Deferred OK\",\"Rejected\",\"Not verified\"],\"repaired\":1,\"rejected\":1,\"outstanding\":3,\"deferred\":1,\"gaps\":0}\n```\n\nTask-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 4,
+          "section": "Tests — final commands and output",
+          "headingRaw": "## Tests — final commands and output\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Tests — final commands and output"
+          ],
+          "sectionByteStart": 3557,
+          "sectionByteEnd": 7459,
+          "canonicalSectionAlias": "legacy-raw-section/4",
+          "positionByteInSection": 1766
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "historical-regression-evidence",
+        "claimed-repair"
+      ],
+      "interpretation": "Observed defects: empty/invalid transport accepted, old/duplicate completion counting, lost history/discrepant IDs, metrics before Finish; absent availability markers; raw/actionable conflation; partial Finish lost fix history; run-digest invented zeros/truncated totals; Finish-only invalid/oversized records lost gaps. Earlier stale-mock fixture corrected before RED accepted.",
+      "lineStart": 109,
+      "lineEnd": 114,
+      "byteStart": 7476,
+      "byteEnd": 9544,
+      "rawText": "- Initial replay before producer changes: `node tests/super-code/replay-harness.mjs` with the same isolated environment produced `2134 passed, 11 failed`. It reproduced accepted empty/invalid transport, duplicate/old completion counting, missing durable historical counts, absent discrepant IDs, and Finish reconciliation occurring after metrics. All failures were expected new requirement fixtures.\n- With explicit missing/empty/unreadable producer fixtures added, unchanged producers produced `2133 passed, 14 failed`. Inert awk failure returned no explicit unreadable status; missing/empty outputs were indistinguishable. No permissions were changed or bypassed.\n- `bash tests/super-auto/test-scripts.sh` before projection metrics produced `3 failure(s)` for missing deterministic metric output. Adding raw Rejected/Not verified sources then produced `1 failure(s)` until raw occurrence/group counts were separated from actionable populations. Final GREEN is shown above.\n- Known partial history fixture produced `2149 passed, 1 failed`: unreadable Finish transport dropped metricsEvidence.fixHistory even though Resume retained a supported FIXED record. Final GREEN retains the historical result with explicit partial scope.\n- `bash tests/super-code/test-run-digest.sh` produced `run-digest: 5 failure(s)` with correct independent tracker fixture setup: missing/unreadable statuses supplied landed-zero, and truncated transport supplied counts. Final GREEN is shown above. An earlier new-fixture setup retained the preceding slow-source mock; that fixture error was corrected before accepting RED evidence.\n- A narrow executable probe using the existing replay runner before the last shared-validator correction printed `FAIL: Finish-only unsupported/oversized recovery records silently lose evidence gaps`, exit 1. After the correction it printed `PASS: Finish-only unsupported/oversized recovery gaps retained`, exit 0. The corresponding case is committed in the official replay and passed in the final 2152/0 run. The disposable probe is removed before return.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 7459,
+          "sectionByteEnd": 9545,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 18
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Fresh-agent interpretation assigned parent; no agents run.",
+      "lineStart": 139,
+      "lineEnd": 139,
+      "byteStart": 10763,
+      "byteEnd": 11504,
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9`: no comments or conflicting current amendments. Consumed the exact task-13-report.md Interfaces: supported projection exit 3 retains results plus gaps; --keys has no clean-result authority; explicit links/support remain the source of finding identity and disposition. Consumed task .4's durable Recovery contract, preserving history independently from latest status. The parent explicitly assigned fresh-agent interpretation evaluation to the coordinator and supplied a passing baseline control; guidance therefore stays a compact positive source/count contract rather than adding behavioral prohibitions. No agents were spawned and no Herdr writes occurred.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 8,
+          "section": "Assumptions and amendments",
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Assumptions and amendments"
+          ],
+          "sectionByteStart": 10732,
+          "sectionByteEnd": 11634,
+          "canonicalSectionAlias": "legacy-raw-section/8",
+          "positionByteInSection": 32
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Fresh-agent interpretation/pressure evaluation not run; generated examples do not replace it.",
+      "lineStart": 145,
+      "lineEnd": 145,
+      "byteStart": 11658,
+      "byteEnd": 11972,
+      "rawText": "Fresh-agent report interpretation/pressure evaluation belongs to the coordinator and was not run here. Concrete generated examples and qualified summary candidates are committed at evidence/super-plan-ufz.9/metrics-examples.md. Deterministic producer/consumer checks are complete independently of that evaluation.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Concerns and limits",
+          "headingRaw": "## Concerns and limits\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Concerns and limits"
+          ],
+          "sectionByteStart": 11634,
+          "sectionByteEnd": 12444,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 25
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Units/populations distinct; absent reports/unavailable sources cannot establish run-wide totals. Zero-friction assertion is unit interpretation, not a new live metric.",
+      "lineStart": 147,
+      "lineEnd": 147,
+      "byteStart": 11973,
+      "byteEnd": 12443,
+      "rawText": "Counts retain their observed units and populations: legacy fix lines are event lines; durable history counts retained records; supported repaired groups require the separate disposition projection. Absent task reports or unavailable ledger sources cannot establish run-wide totals. Ordinary execution metadata has no friction event producer here; its zero-friction interpretation is stated in the relevant consumers. Profiler generation remains with its existing owner.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Concerns and limits",
+          "headingRaw": "## Concerns and limits\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Concerns and limits"
+          ],
+          "sectionByteStart": 11634,
+          "sectionByteEnd": 12444,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 340
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "interpretation": "Independent retry source-retention finding acknowledged in appended fix; no report-only resolution.",
+      "lineStart": 165,
+      "lineEnd": 165,
+      "byteStart": 13400,
+      "byteEnd": 13582,
+      "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 11,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass"
+          ],
+          "sectionByteStart": 13372,
+          "sectionByteEnd": 14042,
+          "canonicalSectionAlias": "legacy-raw-section/11",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Independent source selection, coherent same-attempt review pair, gaps retained.",
+      "lineStart": 173,
+      "lineEnd": 173,
+      "byteStart": 14070,
+      "byteEnd": 14816,
+      "rawText": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 12,
+          "section": "Change and self-review",
+          "headingRaw": "### Change and self-review\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass",
+            "Change and self-review"
+          ],
+          "sectionByteStart": 14042,
+          "sectionByteEnd": 15532,
+          "canonicalSectionAlias": "legacy-raw-section/12",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "interpretation": "Independent retry RED demonstrates mixed-pair/drop behavior before claimed fix.",
+      "lineStart": 191,
+      "lineEnd": 202,
+      "byteStart": 16173,
+      "byteEnd": 17541,
+      "rawText": "1. RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.\n2. RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:\n\n```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 13,
+          "section": "RED/GREEN evidence and final verification",
+          "headingRaw": "### RED/GREEN evidence and final verification\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass",
+            "RED/GREEN evidence and final verification"
+          ],
+          "sectionByteStart": 15532,
+          "sectionByteEnd": 19641,
+          "canonicalSectionAlias": "legacy-raw-section/13",
+          "positionByteInSection": 642
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p10",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "interpretation": "Fresh-agent interpretation remains external; no new concerns asserted.",
+      "lineStart": 241,
+      "lineEnd": 241,
+      "byteStart": 21100,
+      "byteEnd": 21540,
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 15,
+          "section": "Assumptions, amendments and concerns",
+          "headingRaw": "### Assumptions, amendments and concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass",
+            "Assumptions, amendments and concerns"
+          ],
+          "sectionByteStart": 21058,
+          "sectionByteEnd": 21541,
+          "canonicalSectionAlias": "legacy-raw-section/15",
+          "positionByteInSection": 43
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p11",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair",
+        "execution-context"
+      ],
+      "interpretation": "Rebase-conflict finding claimed resolved; named diff absent and dispatch finding used.",
+      "lineStart": 247,
+      "lineEnd": 247,
+      "byteStart": 21569,
+      "byteEnd": 21919,
+      "rawText": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 16,
+          "section": "Seam fix",
+          "headingRaw": "## Seam fix\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix"
+          ],
+          "sectionByteStart": 21541,
+          "sectionByteEnd": 21920,
+          "canonicalSectionAlias": "legacy-raw-section/16",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p12",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Conflict resolution preserving independent retry, verification closure/recovery/metrics composition claimed.",
+      "lineStart": 260,
+      "lineEnd": 260,
+      "byteStart": 22809,
+      "byteEnd": 23569,
+      "rawText": "Only `skills/super-code/coordinator.js` conflicted. Its explicit hunk resolution preserves independent successful Git observations and coherent complete review capture pairs, including failed-attempt gaps, from the latest verified retry fix. The shared recovery validator retains the landed verification-completion basis checks for both Resume and Finish. The guarded verification-aware tracker reconciliation now runs before metrics; rejected/unaccepted verification still cannot complete from tracker closure alone. Latest per-task metrics retain verification-only completion counts while landing discrepancies compare only completed tasks with actual Git landings. Durable fix history and concrete discrepancy IDs remain independent from latest task state.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 18,
+          "section": "Resolution and overlapping files",
+          "headingRaw": "### Resolution and overlapping files\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix",
+            "Resolution and overlapping files"
+          ],
+          "sectionByteStart": 22771,
+          "sectionByteEnd": 24765,
+          "canonicalSectionAlias": "legacy-raw-section/18",
+          "positionByteInSection": 39
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p13",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "execution-context"
+      ],
+      "interpretation": "New assertion helper ReferenceError caused incomplete run; corrected complete run is separately claimed, no verdict inferred from incomplete run.",
+      "lineStart": 309,
+      "lineEnd": 309,
+      "byteStart": 26425,
+      "byteEnd": 26947,
+      "rawText": "This exercises both readLedger callers (Resume/Finish), both recoveryProblem callers, Metrics/final-review consumers, landed no-change and durable recovery cases, and all three documented dryRun scenarios (48/19/23). An initial run stopped before the full suite with `ReferenceError: same is not defined` in the new seam assertion; the helper is scoped elsewhere. Replaced it with explicit JSON comparisons, then ran the entire suite to the passing verdict above. The initial incomplete run supplies no full-suite result.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 19,
+          "section": "Final combined verification",
+          "headingRaw": "### Final combined verification\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix",
+            "Final combined verification"
+          ],
+          "sectionByteStart": 24765,
+          "sectionByteEnd": 28690,
+          "canonicalSectionAlias": "legacy-raw-section/19",
+          "positionByteInSection": 1661
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p14",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "No fresh-agent interpretation eval or broader suite here; parent-owned evaluation retained.",
+      "lineStart": 346,
+      "lineEnd": 346,
+      "byteStart": 28356,
+      "byteEnd": 28689,
+      "rawText": "`git diff --check` exited 0. The final base is verified by `git merge-base 6c332aa22824c185dc474b0fb5055b465cbd1412 HEAD`. Only the original two own commits plus the narrow seam test commit are above that base. No broader suite or fresh-agent report interpretation evaluation was run; the latter remains coordinator-owned as before.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 19,
+          "section": "Final combined verification",
+          "headingRaw": "### Final combined verification\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix",
+            "Final combined verification"
+          ],
+          "sectionByteStart": 24765,
+          "sectionByteEnd": 28690,
+          "canonicalSectionAlias": "legacy-raw-section/19",
+          "positionByteInSection": 3592
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-21-p15",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "roles": [
+        "explicit-empty-qualified",
+        "execution-context"
+      ],
+      "interpretation": "No new concerns/declined/evidence-only findings asserted; settled process checks claimed.",
+      "lineStart": 350,
+      "lineEnd": 350,
+      "byteStart": 28734,
+      "byteEnd": 29301,
+      "rawText": "After every completed or stopped test command, ran the prescribed `stop-run-processes --check` from `/Users/alepar/AleCode/superpowers`, outside both owned roots. Every check exited 0 with empty output: no `match:` lines. Final check and final stop also exited 0 with no output and no `survived:` lines. No background server/daemon/watcher was started. Scratch test logs were removed after their output was recorded here. All complete test runs reached their own verdict; none was timed out or killed. No declined findings or evidence-only findings; no new concerns.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 20,
+          "section": "Test hygiene, assumptions and concerns",
+          "headingRaw": "### Test hygiene, assumptions and concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix",
+            "Test hygiene, assumptions and concerns"
+          ],
+          "sectionByteStart": 28690,
+          "sectionByteEnd": 29301,
+          "canonicalSectionAlias": "legacy-raw-section/20",
+          "positionByteInSection": 45
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 5358,
+      "byteEnd": 5650,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/1"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10763,
+      "byteEnd": 11504,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/3"
+      ],
+      "interpretation": "Fresh-agent interpretation assigned parent; no agents run.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 11658,
+      "byteEnd": 11972,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/4"
+      ],
+      "interpretation": "Fresh-agent interpretation/pressure evaluation not run; generated examples do not replace it.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 11973,
+      "byteEnd": 12443,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/5"
+      ],
+      "interpretation": "Units/populations distinct; absent reports/unavailable sources cannot establish run-wide totals. Zero-friction assertion is unit interpretation, not a new live metric.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 13400,
+      "byteEnd": 13582,
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/6"
+      ],
+      "interpretation": "Independent retry source-retention finding acknowledged in appended fix; no report-only resolution.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 21100,
+      "byteEnd": 21540,
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/9"
+      ],
+      "interpretation": "Fresh-agent interpretation remains external; no new concerns asserted.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 28356,
+      "byteEnd": 28689,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/13"
+      ],
+      "interpretation": "No fresh-agent interpretation eval or broader suite here; parent-owned evaluation retained.",
+      "jsonPointer": null
+    }
+  ],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Incomplete interpreted coverage: L109–114 historical producer/consumer defects, L165/173 independent retry defect/repair, and L260 seam composition repair need explicit preservation; L67 JSON is fixture metrics, not finding or actual run totals.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Generated projection populations exclude task reports and cannot establish run-wide totals; named seam artifact absent, quoted dispatch used."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005358",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 5358,
+      "rawByteEnd": 5650,
+      "rawLineStart": 66,
+      "rawLineEnd": 68,
+      "originalSections": [
+        {
+          "section": "Tests — final commands and output",
+          "sectionOrdinal": 4,
+          "headingRaw": "## Tests — final commands and output\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Tests — final commands and output"
+          ],
+          "byteStart": 3557,
+          "byteEnd": 7459
+        }
+      ],
+      "rawText": "```json\n{\"scope\":\"retained sources\",\"sources\":3,\"sourceKinds\":[\"final-review\",\"roast\"],\"occurrences\":7,\"occurrenceGroups\":7,\"findings\":5,\"otherSectionGroups\":2,\"sections\":[\"Must fix\",\"Deferred OK\",\"Rejected\",\"Not verified\"],\"repaired\":1,\"rejected\":1,\"outstanding\":3,\"deferred\":1,\"gaps\":0}\n```",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "```json\n{\"scope\":\"retained sources\",\"sources\":3,\"sourceKinds\":[\"final-review\",\"roast\"],\"occurrences\":7,\"occurrenceGroups\":7,\"findings\":5,\"otherSectionGroups\":2,\"sections\":[\"Must fix\",\"Deferred OK\",\"Rejected\",\"Not verified\"],\"repaired\":1,\"rejected\":1,\"outstanding\":3,\"deferred\":1,\"gaps\":0}\n```",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/1"
+      ],
+      "interpretation": "Adapter selection isolates substantive qualification/obligation from a mixed illustrative or repair passage; complete original remains in metadata/raw."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000010763",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 10763,
+      "rawByteEnd": 11504,
+      "rawLineStart": 139,
+      "rawLineEnd": 139,
+      "originalSections": [
+        {
+          "section": "Assumptions and amendments",
+          "sectionOrdinal": 8,
+          "headingRaw": "## Assumptions and amendments\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Assumptions and amendments"
+          ],
+          "byteStart": 10732,
+          "byteEnd": 11634
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9`: no comments or conflicting current amendments. Consumed the exact task-13-report.md Interfaces: supported projection exit 3 retains results plus gaps; --keys has no clean-result authority; explicit links/support remain the source of finding identity and disposition. Consumed task .4's durable Recovery contract, preserving history independently from latest status. The parent explicitly assigned fresh-agent interpretation evaluation to the coordinator and supplied a passing baseline control; guidance therefore stays a compact positive source/count contract rather than adding behavioral prohibitions. No agents were spawned and no Herdr writes occurred.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9`: no comments or conflicting current amendments. Consumed the exact task-13-report.md Interfaces: supported projection exit 3 retains results plus gaps; --keys has no clean-result authority; explicit links/support remain the source of finding identity and disposition. Consumed task .4's durable Recovery contract, preserving history independently from latest status. The parent explicitly assigned fresh-agent interpretation evaluation to the coordinator and supplied a passing baseline control; guidance therefore stays a compact positive source/count contract rather than adding behavioral prohibitions. No agents were spawned and no Herdr writes occurred.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/3"
+      ],
+      "interpretation": "Fresh-agent interpretation assigned parent; no agents run."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000011658",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 11658,
+      "rawByteEnd": 11972,
+      "rawLineStart": 145,
+      "rawLineEnd": 145,
+      "originalSections": [
+        {
+          "section": "Concerns and limits",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns and limits\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Concerns and limits"
+          ],
+          "byteStart": 11634,
+          "byteEnd": 12444
+        }
+      ],
+      "rawText": "Fresh-agent report interpretation/pressure evaluation belongs to the coordinator and was not run here. Concrete generated examples and qualified summary candidates are committed at evidence/super-plan-ufz.9/metrics-examples.md. Deterministic producer/consumer checks are complete independently of that evaluation.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Fresh-agent report interpretation/pressure evaluation belongs to the coordinator and was not run here. Concrete generated examples and qualified summary candidates are committed at evidence/super-plan-ufz.9/metrics-examples.md. Deterministic producer/consumer checks are complete independently of that evaluation.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/4"
+      ],
+      "interpretation": "Fresh-agent interpretation/pressure evaluation not run; generated examples do not replace it."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000011973",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "rawByteStart": 11973,
+      "rawByteEnd": 12443,
+      "rawLineStart": 147,
+      "rawLineEnd": 147,
+      "originalSections": [
+        {
+          "section": "Concerns and limits",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns and limits\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Concerns and limits"
+          ],
+          "byteStart": 11634,
+          "byteEnd": 12444
+        }
+      ],
+      "rawText": "Counts retain their observed units and populations: legacy fix lines are event lines; durable history counts retained records; supported repaired groups require the separate disposition projection. Absent task reports or unavailable ledger sources cannot establish run-wide totals. Ordinary execution metadata has no friction event producer here; its zero-friction interpretation is stated in the relevant consumers. Profiler generation remains with its existing owner.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Counts retain their observed units and populations: legacy fix lines are event lines; durable history counts retained records; supported repaired groups require the separate disposition projection. Absent task reports or unavailable ledger sources cannot establish run-wide totals. Ordinary execution metadata has no friction event producer here; its zero-friction interpretation is stated in the relevant consumers. Profiler generation remains with its existing owner.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/5"
+      ],
+      "interpretation": "Units/populations distinct; absent reports/unavailable sources cannot establish run-wide totals. Zero-friction assertion is unit interpretation, not a new live metric."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-11/raw-byte-000013400",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "rawByteStart": 13400,
+      "rawByteEnd": 13582,
+      "rawLineStart": 165,
+      "rawLineEnd": 165,
+      "originalSections": [
+        {
+          "section": "Fix pass",
+          "sectionOrdinal": 11,
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass"
+          ],
+          "byteStart": 13372,
+          "byteEnd": 14042
+        }
+      ],
+      "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/6"
+      ],
+      "interpretation": "Independent retry source-retention finding acknowledged in appended fix; no report-only resolution."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-15/raw-byte-000021100",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "rawByteStart": 21100,
+      "rawByteEnd": 21540,
+      "rawLineStart": 241,
+      "rawLineEnd": 241,
+      "originalSections": [
+        {
+          "section": "Assumptions, amendments and concerns",
+          "sectionOrdinal": 15,
+          "headingRaw": "### Assumptions, amendments and concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Fix pass",
+            "Assumptions, amendments and concerns"
+          ],
+          "byteStart": 21058,
+          "byteEnd": 21541
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/9"
+      ],
+      "interpretation": "Fresh-agent interpretation remains external; no new concerns asserted."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-19/raw-byte-000028356",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "rawByteStart": 28356,
+      "rawByteEnd": 28689,
+      "rawLineStart": 346,
+      "rawLineEnd": 346,
+      "originalSections": [
+        {
+          "section": "Final combined verification",
+          "sectionOrdinal": 19,
+          "headingRaw": "### Final combined verification\n",
+          "hierarchy": [
+            "super-plan-ufz.9 — deterministic reconciled metrics",
+            "Seam fix",
+            "Final combined verification"
+          ],
+          "byteStart": 24765,
+          "byteEnd": 28690
+        }
+      ],
+      "rawText": "`git diff --check` exited 0. The final base is verified by `git merge-base 6c332aa22824c185dc474b0fb5055b465cbd1412 HEAD`. Only the original two own commits plus the narrow seam test commit are above that base. No broader suite or fresh-agent report interpretation evaluation was run; the latter remains coordinator-owned as before.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "`git diff --check` exited 0. The final base is verified by `git merge-base 6c332aa22824c185dc474b0fb5055b465cbd1412 HEAD`. Only the original two own commits plus the narrow seam test commit are above that base. No broader suite or fresh-agent report interpretation evaluation was run; the latter remains coordinator-owned as before.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/20/interpretedPassages/13"
+      ],
+      "interpretation": "No fresh-agent interpretation eval or broader suite here; parent-owned evaluation retained."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/21-task-15-report.md",
+  "retainedSha256": "ffc346f7d4eb604986d78ef52d7aeb8fb36b23e161759c53b635f07842332ccb"
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "label": "cluster:1",
+    "variant": "before",
+    "exit": 0,
+    "expected": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-before-cluster-1-mutation.log"
+  },
+  {
+    "label": "cluster:1",
+    "variant": "after",
+    "exit": 1,
+    "expected": 1,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-after-cluster-1-mutation.log"
+  },
+  {
+    "label": "seam",
+    "variant": "before",
+    "exit": 0,
+    "expected": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-before-seam-mutation.log"
+  },
+  {
+    "label": "seam",
+    "variant": "after",
+    "exit": 1,
+    "expected": 1,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-after-seam-mutation.log"
+  },
+  {
+    "label": "stub",
+    "variant": "before",
+    "exit": 0,
+    "expected": 0,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-before-stub-mutation.log"
+  },
+  {
+    "label": "stub",
+    "variant": "after",
+    "exit": 1,
+    "expected": 1,
+    "log": "/private/tmp/ufz-correction-final-fix-wave-logs/H1-after-stub-mutation.log"
+  }
+]

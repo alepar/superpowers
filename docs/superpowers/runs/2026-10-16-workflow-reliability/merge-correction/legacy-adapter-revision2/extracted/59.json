@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+  "artifact": "legacy-report-adapters-r1/59-task-4-review-seam.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000003427",
+      "position": 1,
+      "key": "No tests rerun. No source, branch, tracker or Herdr mutations performed.",
+      "text": "No tests rerun. No source, branch, tracker or Herdr mutations performed."
+    }
+  ]
+}

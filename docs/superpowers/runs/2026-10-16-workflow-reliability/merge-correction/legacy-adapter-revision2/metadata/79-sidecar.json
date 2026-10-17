@@ -1,0 +1,600 @@
+{
+  "sidecarVersion": 1,
+  "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1.md",
+  "rawArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+  "rawSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+  "rawByteCount": 4873,
+  "originalMetadata": {
+    "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+    "rawArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+    "parsedSourceJSON": "task-report-history-r1/parsed/2026-10-16-workflow-reliability-roast-design-1.md.complete.json",
+    "kind": "roast",
+    "verdict": "Should-fix (1 confirmed)",
+    "occurrences": 4,
+    "rawSourceAlreadyDurable": true,
+    "rawPath": "2026-10-16-workflow-reliability-roast-design-1.md"
+  },
+  "classification": "historical-roast-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "super-roast verdict: Should-fix (1 confirmed)"
+    }
+  ],
+  "sourceDisposition": "existing strict extraction retained unchanged; augmented exact-section sidecar",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 9,
+      "byteStart": 0,
+      "byteEnd": 1229,
+      "bodyLineStart": 1,
+      "rawText": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0\n\n",
+      "bodyRawText": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0\n",
+          "text": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 8,
+          "byteStart": 0,
+          "byteEnd": 1228
+        }
+      ]
+    },
+    {
+      "section": "Confirmed findings",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Confirmed findings\n",
+      "hierarchy": [
+        "Confirmed findings"
+      ],
+      "lineStart": 10,
+      "lineEnd": 15,
+      "byteStart": 1229,
+      "byteEnd": 2753,
+      "bodyLineStart": 11,
+      "rawText": "## Confirmed findings\n- [Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.\n\n",
+      "bodyRawText": "- [Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- [Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.\n",
+          "text": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 11,
+          "lineEnd": 14,
+          "byteStart": 1251,
+          "byteEnd": 2752
+        }
+      ]
+    },
+    {
+      "section": "Not verified (beyond panel cap)",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Not verified (beyond panel cap)\n",
+      "hierarchy": [
+        "Not verified (beyond panel cap)"
+      ],
+      "lineStart": 16,
+      "lineEnd": 18,
+      "byteStart": 2753,
+      "byteEnd": 2796,
+      "bodyLineStart": 17,
+      "rawText": "## Not verified (beyond panel cap)\n- none\n\n",
+      "bodyRawText": "- none\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- none\n",
+          "text": "none",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 2788,
+          "byteEnd": 2795
+        }
+      ]
+    },
+    {
+      "section": "Not verified (dedupe failed or judge lost)",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Not verified (dedupe failed or judge lost)\n",
+      "hierarchy": [
+        "Not verified (dedupe failed or judge lost)"
+      ],
+      "lineStart": 19,
+      "lineEnd": 21,
+      "byteStart": 2796,
+      "byteEnd": 2850,
+      "bodyLineStart": 20,
+      "rawText": "## Not verified (dedupe failed or judge lost)\n- none\n\n",
+      "bodyRawText": "- none\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- none\n",
+          "text": "none",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 2842,
+          "byteEnd": 2849
+        }
+      ]
+    },
+    {
+      "section": "Beyond remainder cap (count only)",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Beyond remainder cap (count only)\n",
+      "hierarchy": [
+        "Beyond remainder cap (count only)"
+      ],
+      "lineStart": 22,
+      "lineEnd": 24,
+      "byteStart": 2850,
+      "byteEnd": 2895,
+      "bodyLineStart": 23,
+      "rawText": "## Beyond remainder cap (count only)\n- none\n\n",
+      "bodyRawText": "- none\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- none\n",
+          "text": "none",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2887,
+          "byteEnd": 2894
+        }
+      ]
+    },
+    {
+      "section": "Rejected (with reason)",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Rejected (with reason)\n",
+      "hierarchy": [
+        "Rejected (with reason)"
+      ],
+      "lineStart": 25,
+      "lineEnd": 32,
+      "byteStart": 2895,
+      "byteEnd": 4796,
+      "bodyLineStart": 26,
+      "rawText": "## Rejected (with reason)\n- Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.\n- docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.\n- docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.\n\n",
+      "bodyRawText": "- Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.\n- docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.\n- docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.\n",
+          "text": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 26,
+          "lineEnd": 27,
+          "byteStart": 2921,
+          "byteEnd": 3505
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.\n",
+          "text": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 28,
+          "lineEnd": 29,
+          "byteStart": 3505,
+          "byteEnd": 4146
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.\n",
+          "text": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 30,
+          "lineEnd": 31,
+          "byteStart": 4146,
+          "byteEnd": 4795
+        }
+      ]
+    },
+    {
+      "section": "Unverified nits (spot-checked)",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Unverified nits (spot-checked)\n",
+      "hierarchy": [
+        "Unverified nits (spot-checked)"
+      ],
+      "lineStart": 33,
+      "lineEnd": 35,
+      "byteStart": 4796,
+      "byteEnd": 4838,
+      "bodyLineStart": 34,
+      "rawText": "## Unverified nits (spot-checked)\n- none\n\n",
+      "bodyRawText": "- none\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- none\n",
+          "text": "none",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4830,
+          "byteEnd": 4837
+        }
+      ]
+    },
+    {
+      "section": "Escalations (need human)",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Escalations (need human)\n",
+      "hierarchy": [
+        "Escalations (need human)"
+      ],
+      "lineStart": 36,
+      "lineEnd": 37,
+      "byteStart": 4838,
+      "byteEnd": 4873,
+      "bodyLineStart": 37,
+      "rawText": "## Escalations (need human)\n- none\n",
+      "bodyRawText": "- none\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- none\n",
+          "text": "none",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 4866,
+          "byteEnd": 4873
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "super-roast verdict: Should-fix (1 confirmed)",
+      "text": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0",
+      "rawText": "super-roast verdict: Should-fix (1 confirmed)\nmode: design        iteration: 1 of 3\nprofile (assumed): Internal local developer tooling. Failures risk developer work and review evidence; no production service or privileged third-party surface is introduced. Stated-purpose and real-data loss severity floors apply.\ninputs: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md + nested finding-continuity spec + settled-tree.json @ e0109aa8\ncoverage: scouts 8/8 (premortem, completeness, yagni, failure-mode, feasibility, domain:workflow-orchestration, domain:distributed-systems, domain:data-pipeline) · raw 6 → deduped 4 → panel 4 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0\nindependence: same-family (OpenAI GPT) — seat-differentiated panel · rung: manual fan-out\nseat-agreement: panels 4 · rr 1.00 · rg 1.00 · fg 1.00 · unanimous 1.00 · ground-loo 1.00 (n=4) · reproduce 1/3/0 · refute 1/3/0 · ground 1/3/0\nlane-yield (found/confirmed/unique/refuted): premortem 2/1/0/1 · completeness 0/0/0/0 · yagni 0/0/0/0 · failure-mode 2/1/0/1 · feasibility 0/0/0/0 · domain:workflow-orchestration 1/0/0/1 · domain:distributed-systems 1/1/0/0 · domain:data-pipeline 0/0/0/0\n",
+      "lineStart": 1,
+      "lineEnd": 8,
+      "byteStart": 0,
+      "byteEnd": 1228,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Confirmed findings",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Confirmed findings"
+      ],
+      "positionInSection": 1,
+      "key": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]",
+      "text": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.",
+      "rawText": "- [Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.\n",
+      "lineStart": 11,
+      "lineEnd": 14,
+      "byteStart": 1251,
+      "byteEnd": 2752,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Not verified (beyond panel cap)",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Not verified (beyond panel cap)"
+      ],
+      "positionInSection": 1,
+      "key": "none",
+      "text": "none",
+      "rawText": "- none\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 2788,
+      "byteEnd": 2795,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Not verified (dedupe failed or judge lost)",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Not verified (dedupe failed or judge lost)"
+      ],
+      "positionInSection": 1,
+      "key": "none",
+      "text": "none",
+      "rawText": "- none\n",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 2842,
+      "byteEnd": 2849,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Beyond remainder cap (count only)",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Beyond remainder cap (count only)"
+      ],
+      "positionInSection": 1,
+      "key": "none",
+      "text": "none",
+      "rawText": "- none\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2887,
+      "byteEnd": 2894,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Rejected (with reason)",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Rejected (with reason)"
+      ],
+      "positionInSection": 1,
+      "key": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.",
+      "text": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.",
+      "rawText": "- Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.\n",
+      "lineStart": 26,
+      "lineEnd": 27,
+      "byteStart": 2921,
+      "byteEnd": 3505,
+      "appearanceClass": "historically-rejected-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Rejected (with reason)",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Rejected (with reason)"
+      ],
+      "positionInSection": 2,
+      "key": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.",
+      "text": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.",
+      "rawText": "- docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.\n",
+      "lineStart": 28,
+      "lineEnd": 29,
+      "byteStart": 3505,
+      "byteEnd": 4146,
+      "appearanceClass": "historically-rejected-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Rejected (with reason)",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Rejected (with reason)"
+      ],
+      "positionInSection": 3,
+      "key": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.",
+      "text": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.",
+      "rawText": "- docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.\n",
+      "lineStart": 30,
+      "lineEnd": 31,
+      "byteStart": 4146,
+      "byteEnd": 4795,
+      "appearanceClass": "historically-rejected-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Unverified nits (spot-checked)",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Unverified nits (spot-checked)"
+      ],
+      "positionInSection": 1,
+      "key": "none",
+      "text": "none",
+      "rawText": "- none\n",
+      "lineStart": 34,
+      "lineEnd": 34,
+      "byteStart": 4830,
+      "byteEnd": 4837,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "section": "Escalations (need human)",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Escalations (need human)"
+      ],
+      "positionInSection": 1,
+      "key": "none",
+      "text": "none",
+      "rawText": "- none\n",
+      "lineStart": 37,
+      "lineEnd": 37,
+      "byteStart": 4866,
+      "byteEnd": 4873,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": false,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  },
+  "existingStrictExtraction": {
+    "version": 1,
+    "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+    "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-design-1.md",
+    "kind": "roast",
+    "verdict": "Should-fix (1 confirmed)",
+    "occurrences": [
+      {
+        "section": "Confirmed findings",
+        "position": 1,
+        "key": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance",
+        "text": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture."
+      },
+      {
+        "section": "Rejected (with reason)",
+        "position": 1,
+        "key": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12",
+        "text": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope."
+      },
+      {
+        "section": "Rejected (with reason)",
+        "position": 2,
+        "key": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14",
+        "text": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement."
+      },
+      {
+        "section": "Rejected (with reason)",
+        "position": 3,
+        "key": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4",
+        "text": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior."
+      }
+    ]
+  },
+  "existingOccurrencesWithLocators": [
+    {
+      "section": "Confirmed findings",
+      "position": 1,
+      "key": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance",
+      "text": "[Should-fix] docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance — Task .8.4 requires inclusion of verified fixes supplied elsewhere, contradicting the governing specifications’ removal rule after supported resolution. [lanes: premortem, failure-mode, domain:distributed-systems]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: All three seats confirm that .8.4 requires output that “contains outstanding deferred findings, including verified fixes supplied elsewhere.” Root §4 instead says an item fixed elsewhere “leaves the punch list after verification.” The nested specification and parent task .8 require removal after supported resolution. The refute seat confirms that these criteria prescribe opposite membership for the same supported external fix. The conflicting criterion affects the projection consumed by resume, Remaining and status.\n  fix-shape hint: Make .8.4 explicitly require exclusion after supported resolution, including verified fixes supplied elsewhere, and align its acceptance fixture.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 11,
+          "lineEnd": 14
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Rejected (with reason)",
+      "position": 1,
+      "key": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12",
+      "text": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12 — Resumed admission lacks a survivor-handling rule.\n  reason: All three seats reject the claimed gap. Resource preservation, uncertainty reporting and reconciliation already constrain recovery. The failure story additionally assumes conflicting workspace reuse or competing result acceptance, neither required by the artifact. Waiting, holding affected work or isolating a replacement remain compatible implementations under the approved minimal-mechanism scope.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 26,
+          "lineEnd": 27
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Rejected (with reason)",
+      "position": 2,
+      "key": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14",
+      "text": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14 — Integration can advance beyond a pinned review without a general review-invalidation rule.\n  reason: All three seats reject the claimed gap. Source-bound reviews remain attributable, required reviews retain their acceptance ownership, and integrated-tree measurements are separate evidence. The finding identifies no required review that the artifact actually misattributes or permits measurements to replace. A universal invalidation policy is an additional requirement.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 28,
+          "lineEnd": 29
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Rejected (with reason)",
+      "position": 3,
+      "key": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4",
+      "text": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; settled-tree.json task super-plan-ufz.8.4 — A later linked actionable occurrence may inherit an earlier resolution.\n  reason: All three seats reject the claimed gap. Immutable occurrence identities and semantic support judgments already require a supported disposition to account for actionable evidence. A historical fix does not establish support for resolving a later recurrence. Automatic inheritance despite new actionable evidence would violate the existing contract; the finding establishes no requirement that produces that behavior.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 30,
+          "lineEnd": 31
+        }
+      ],
+      "locatorAmbiguous": false
+    }
+  ]
+}

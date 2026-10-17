@@ -1,0 +1,223 @@
+{
+  "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "head": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "scope": "Entire changed bodies plus relevant unchanged context; not wholebranch readiness",
+  "verdict": "QUALIFIED: current cleanup invariant has two residual inherited gaps; no new regression established in member blobs",
+  "members": [
+    {
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "gitBlob": "57e6ffc1d062bd7d7d272701e358a9b60ce384d3",
+      "verifiedGitBlob": "57e6ffc1d062bd7d7d272701e358a9b60ce384d3",
+      "lineCount": 294,
+      "coverage": "complete body read at pinned commit",
+      "unreadRanges": [],
+      "verdict": "qualified-current-contract-gaps",
+      "findings": [
+        "CLEANUP-01"
+      ]
+    },
+    {
+      "path": "skills/super-code/scripts/remove-task-worktree",
+      "gitBlob": "0d9db1337f21949715c16ad3075de1cc83fabe28",
+      "verifiedGitBlob": "0d9db1337f21949715c16ad3075de1cc83fabe28",
+      "lineCount": 167,
+      "coverage": "complete body read at pinned commit",
+      "unreadRanges": [],
+      "verdict": "no-member-local-regression-established",
+      "findings": []
+    },
+    {
+      "path": "skills/finishing-a-development-branch/SKILL.md",
+      "gitBlob": "44a2aae37a55eba5042473e85f6f9b92c68c87f7",
+      "verifiedGitBlob": "44a2aae37a55eba5042473e85f6f9b92c68c87f7",
+      "lineCount": 306,
+      "coverage": "complete body read at pinned commit",
+      "unreadRanges": [],
+      "verdict": "no-member-local-regression-established",
+      "findings": []
+    },
+    {
+      "path": "tests/super-auto/outer-cleanup-r1.sh",
+      "gitBlob": "1c26a0c4f7642f31fc9c145f3ec7c18b7cf4abbb",
+      "verifiedGitBlob": "1c26a0c4f7642f31fc9c145f3ec7c18b7cf4abbb",
+      "lineCount": 175,
+      "coverage": "complete body read at pinned commit",
+      "unreadRanges": [],
+      "verdict": "no-member-local-regression-established",
+      "findings": []
+    }
+  ],
+  "supplementalReads": [
+    {
+      "path": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+      "gitBlob": "4aa399cd6537fb5d43e407e0c47f4962d96b792a",
+      "coverage": "complete file",
+      "readLineRanges": [
+        [
+          1,
+          94
+        ]
+      ],
+      "unread": "none"
+    },
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "gitBlob": "ca2090a06c61ac75fa4d82959f4222ec025cb72d",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          178,
+          245
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "gitBlob": "dfbc73f7bfdb92516878bfd49ff0c233f4eb44a9",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          468,
+          492
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    },
+    {
+      "path": "skills/super-auto/report-prompt.md",
+      "gitBlob": "f6f917ea2bd08c94762cfb51172502131b15467f",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          78,
+          102
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    },
+    {
+      "path": "skills/super-code/coordinator.js",
+      "gitBlob": "1d6c710f943c4f52c65cba9373f2bfb958417b5d",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          2443,
+          2445
+        ],
+        [
+          2471,
+          2476
+        ],
+        [
+          2498,
+          2505
+        ],
+        [
+          2575,
+          2630
+        ],
+        [
+          2650,
+          2666
+        ],
+        [
+          2800,
+          2825
+        ],
+        [
+          2878,
+          2918
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    },
+    {
+      "path": "skills/super-code/implementer-prompt.md",
+      "gitBlob": "7a2129971c280aad79b9ecd97b44702af8f90ef1",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          46,
+          63
+        ],
+        [
+          175,
+          200
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    },
+    {
+      "path": "tests/super-code/replay-harness.mjs",
+      "gitBlob": "ed4527e7f59790fd323d8cc5e30fe020d3475b79",
+      "coverage": "selected caller/test sections only",
+      "readLineRanges": [
+        [
+          3910,
+          3995
+        ],
+        [
+          4820,
+          5038
+        ]
+      ],
+      "unread": "all lines outside listed ranges"
+    }
+  ],
+  "findings": [
+    {
+      "id": "CLEANUP-01",
+      "severity": "Should-fix",
+      "title": "Denied Git worktree discovery bypasses nested-root safety guard",
+      "attribution": "inherited from baseline; current-contract coverage gap, not introduced regression",
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "lines": [
+        48,
+        49
+      ],
+      "evidence": [
+        "cleanup-source-evidence.txt",
+        "cleanup-probe/result.json"
+      ],
+      "proof": "Pinned script --check with mocked inventory: successful nested inventory -> exit 2 refusal; failed inventory -> exit 3 match, without unknown."
+    },
+    {
+      "id": "CLEANUP-02",
+      "severity": "Should-fix",
+      "title": "Setup conflict/recut cleanup bypasses fail-closed removal helper",
+      "attribution": "inherited caller seam; outside four-member membership but directly calls changed helper",
+      "path": "skills/super-code/coordinator.js",
+      "lines": [
+        2589,
+        2593,
+        2618
+      ],
+      "evidence": [
+        "cleanup-source-evidence.txt"
+      ],
+      "proof": "Static pinned prompt: stop-run-processes followed by direct git worktree remove --force and git branch -D, with no outcome gate; implementPrompt omits cleanupOutcomeRule. No fresh-agent behavior claim."
+    }
+  ],
+  "diff": {
+    "path": "/private/tmp/ufz-correction-coverage/cleanup-review.diff",
+    "sha256": "b624c064c2015130d030d49db7549c8cd38fe025fd17f45868b19b5797f3cd8c",
+    "note": "Requested COMPLETEcleanup-review.diff was absent; actual cleanup-review.diff was read."
+  },
+  "execution": {
+    "kind": "private targeted mocked --check probe only",
+    "probe": "/private/tmp/ufz-correction-coverage/cleanup-probe/result.json",
+    "broadSuitesRun": false,
+    "realSignalsSent": false,
+    "sourceMutated": false,
+    "gitIndexOrHeadMutated": false
+  },
+  "limits": [
+    "No whole-branch readiness or acceptance conclusion",
+    "Pending scheduler/collector/acceptance repairs excluded",
+    "Existing suites inspected, not rerun",
+    "No fresh-agent finisher compliance eval",
+    "Historical review and test pass claims not independently verified or adopted",
+    "No native Linux procfs execution; mock probe uses lsof branch"
+  ]
+}

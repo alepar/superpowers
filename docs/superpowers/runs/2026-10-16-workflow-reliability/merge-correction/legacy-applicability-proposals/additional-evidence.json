@@ -1,0 +1,80 @@
+{
+  "no-change-baseline": {
+    "artifacts": [
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md",
+        "sha256": "41d0cec478db1cc157b945457a2579d66410ac0e74706f3fa2d535fdcd69ecc6",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/report.md"
+      },
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/claim-summary.json",
+        "sha256": "b6bfae17cd437ac09e7e358147fc0e6c6c5cf6465ad6779b809b6660a9f6169b",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/claim-summary.json"
+      },
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/scores.json",
+        "sha256": "b7aa332a71d38aa795208df3ed413d55a6a7d50d441015537d0f896373600dfa",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline/scores.json"
+      }
+    ],
+    "testsExecutedByThisTask": false,
+    "observedB4": {
+      "baseline": {
+        "pass": 2,
+        "fail": 3
+      },
+      "control": {
+        "pass": 5,
+        "fail": 0
+      }
+    },
+    "limits": "Historical small-sample manually scored supplied-fact text decisions; strict AFTER failure/ambiguity remains and no supported repair disposition is proposed from baseline alone."
+  },
+  "historical-profile-qualification": {
+    "artifacts": [
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-report.md",
+        "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-27-report.md"
+      },
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json",
+        "sha256": "e66abc6a91772371a233d0988b15b6d9b7165301e7483846173b7d2b83665ea6",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json"
+      },
+      {
+        "revision": "87166167a4414189497d4b8877fdc44eb71e76a6",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md",
+        "sha256": "81e61cbcd5775ba7e475bfc545ed31e34340a919c13aadae6b87647ef07569ff",
+        "retained": "additional-evidence/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md"
+      }
+    ],
+    "testsExecutedByThisTask": false,
+    "observedFields": {
+      "graphScope": "observed invocation/residual graph",
+      "diagnosis": {
+        "planningMs": 285704,
+        "windowMs": 63785002,
+        "dominant": "unknown"
+      },
+      "window": {
+        "start": "2026-10-16T15:11:02.184Z",
+        "lastLanding": "2026-10-17T08:54:07.186Z",
+        "end": "2026-10-17T08:57:41.055Z",
+        "graphMs": 63785002,
+        "wallMs": 63998871
+      }
+    },
+    "simulation": {
+      "lowerBoundMs": 64688059,
+      "verdict": "inconclusive",
+      "qualification": "Model-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions."
+    },
+    "limits": "Historical executed one-off comparison is retained in the raw report; this task inspected actual frozen qualified artifacts without executing it. No causal or historical dependency reconstruction."
+  }
+}

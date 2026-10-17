@@ -1,0 +1,17 @@
+fatal: not a git repository: '/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/git-injection/does-not-exist'
+Traceback (most recent call last):
+  File "/private/tmp/ufz-correction-suite-runner-r1/original-v0/runner.py", line 28, in <module>
+    source_head, source_tree = git('rev-parse', 'HEAD'), git('rev-parse', 'HEAD^{tree}')
+                               ~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/ufz-correction-suite-runner-r1/original-v0/runner.py", line 26, in git
+    return subprocess.check_output(['git', '-C', str(root), *args], text=True).strip()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 473, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', '-C', '/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/git-injection/clone', 'rev-parse', 'HEAD']' returned non-zero exit status 128.

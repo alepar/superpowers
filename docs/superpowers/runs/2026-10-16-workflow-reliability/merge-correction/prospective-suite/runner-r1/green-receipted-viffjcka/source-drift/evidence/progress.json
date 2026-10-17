@@ -1,0 +1,225 @@
+{
+  "cases": [
+    {
+      "actualArgv": [
+        "/bin/bash",
+        "tests/one.sh"
+      ],
+      "afterSource": {
+        "clean": false,
+        "environment": {
+          "CI": "1",
+          "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/codex-home",
+          "GIT_CONFIG_GLOBAL": "/dev/null",
+          "GIT_CONFIG_NOSYSTEM": "1",
+          "GIT_CONFIG_SYSTEM": "/dev/null",
+          "GIT_OPTIONAL_LOCKS": "0",
+          "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/home",
+          "LANG": "C",
+          "LC_ALL": "C",
+          "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/tmp",
+          "TZ": "UTC",
+          "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-cache",
+          "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-config",
+          "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-data",
+          "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-state"
+        },
+        "head": "46b4f067e76f400fcf26291a5fabaed5ffab9134",
+        "probes": {
+          "head": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "rev-parse",
+              "HEAD"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": "NDZiNGYwNjdlNzZmNDAwZmNmMjYyOTFhNWZhYmFlZDVmZmFiOTEzNAo="
+          },
+          "status": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "status",
+              "--porcelain=v1",
+              "-z",
+              "--untracked-files=all",
+              "--ignore-submodules=none"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": "IE0gdHJhY2tlZAA="
+          },
+          "tree": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "rev-parse",
+              "HEAD^{tree}"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": "ZTAwMDRhZGJkODg0MzgyNjNmNTIxYjEyMWViNTdmYTRjNDJmM2M0Zgo="
+          }
+        },
+        "probesSucceeded": true,
+        "rawStatusBase64": "IE0gdHJhY2tlZAA=",
+        "tree": "e0004adbd88438263f521b121eb57fa4c42f3c4f"
+      },
+      "beforeSource": {
+        "clean": true,
+        "environment": {
+          "CI": "1",
+          "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/codex-home",
+          "GIT_CONFIG_GLOBAL": "/dev/null",
+          "GIT_CONFIG_NOSYSTEM": "1",
+          "GIT_CONFIG_SYSTEM": "/dev/null",
+          "GIT_OPTIONAL_LOCKS": "0",
+          "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/home",
+          "LANG": "C",
+          "LC_ALL": "C",
+          "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/tmp",
+          "TZ": "UTC",
+          "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-cache",
+          "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-config",
+          "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-data",
+          "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/control/xdg-state"
+        },
+        "head": "46b4f067e76f400fcf26291a5fabaed5ffab9134",
+        "probes": {
+          "head": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "rev-parse",
+              "HEAD"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": "NDZiNGYwNjdlNzZmNDAwZmNmMjYyOTFhNWZhYmFlZDVmZmFiOTEzNAo="
+          },
+          "status": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "status",
+              "--porcelain=v1",
+              "-z",
+              "--untracked-files=all",
+              "--ignore-submodules=none"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": ""
+          },
+          "tree": {
+            "actualArgv": [
+              "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+              "-C",
+              "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "rev-parse",
+              "HEAD^{tree}"
+            ],
+            "exitCode": 0,
+            "stderrBase64": "",
+            "stdoutBase64": "ZTAwMDRhZGJkODg0MzgyNjNmNTIxYjEyMWViNTdmYTRjNDJmM2M0Zgo="
+          }
+        },
+        "probesSucceeded": true,
+        "rawStatusBase64": "",
+        "tree": "e0004adbd88438263f521b121eb57fa4c42f3c4f"
+      },
+      "cause": null,
+      "configurationSha256": "f85bc0d43fc2434038e86fac3a47df894eb74b21b62d0787fcb6d4e1c3e98fd6",
+      "cwd": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/clone",
+      "durationSeconds": 0.049,
+      "endUtc": "2026-10-17T21:40:01Z",
+      "entrypointSha256": "d3c497c03c601b2babe16d692256451c8d36ccebf804a2b1f95a7db29f7e0ea1",
+      "environment": {
+        "CI": "1",
+        "CODEX_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/codex-home",
+        "GIT_CONFIG_GLOBAL": "/dev/null",
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_CONFIG_SYSTEM": "/dev/null",
+        "GIT_OPTIONAL_LOCKS": "0",
+        "HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/home",
+        "LANG": "C",
+        "LC_ALL": "C",
+        "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "TMPDIR": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/tmp",
+        "TZ": "UTC",
+        "XDG_CACHE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/xdg-cache",
+        "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/xdg-config",
+        "XDG_DATA_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/xdg-data",
+        "XDG_STATE_HOME": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/xdg-state"
+      },
+      "executable": {
+        "bytes": 1290128,
+        "name": "bash",
+        "path": "/bin/bash",
+        "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+        "versionArgv": [
+          "/bin/bash",
+          "--version"
+        ],
+        "versionExitCode": 0,
+        "versionStderr": "",
+        "versionStdout": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc.\n"
+      },
+      "exitCode": 0,
+      "id": "01",
+      "planCommand": "bash tests/one.sh",
+      "planSha256": "9f809dac47e2fd8261e8b3b050e03538c8f277f72f7848d60a49e9d67c4bdb33",
+      "requirementIds": [
+        "fixture-0"
+      ],
+      "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+      "sourceHead": "46b4f067e76f400fcf26291a5fabaed5ffab9134",
+      "sourceTree": "e0004adbd88438263f521b121eb57fa4c42f3c4f",
+      "startUtc": "2026-10-17T21:40:01Z",
+      "status": "passed",
+      "stderrBytes": 0,
+      "stderrPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/stderr.log",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutBytes": 0,
+      "stdoutPath": "/private/tmp/ufz-correction-suite-runner-r1/green-receipted-viffjcka/source-drift/evidence/case-01/stdout.log",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timeout": false
+    }
+  ],
+  "configurationSha256": "f85bc0d43fc2434038e86fac3a47df894eb74b21b62d0787fcb6d4e1c3e98fd6",
+  "planSha256": "9f809dac47e2fd8261e8b3b050e03538c8f277f72f7848d60a49e9d67c4bdb33",
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d"
+}

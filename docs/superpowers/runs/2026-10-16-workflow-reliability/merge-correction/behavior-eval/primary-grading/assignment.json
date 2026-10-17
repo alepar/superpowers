@@ -1,0 +1,42 @@
+[
+  {
+    "response": "response-01.md",
+    "operativeGuide": "operative-guide-2.md"
+  },
+  {
+    "response": "response-02.md",
+    "operativeGuide": "operative-guide-2.md"
+  },
+  {
+    "response": "response-03.md",
+    "operativeGuide": "operative-guide-1.md"
+  },
+  {
+    "response": "response-04.md",
+    "operativeGuide": "operative-guide-1.md"
+  },
+  {
+    "response": "response-05.md",
+    "operativeGuide": "operative-guide-2.md"
+  },
+  {
+    "response": "response-06.md",
+    "operativeGuide": "operative-guide-1.md"
+  },
+  {
+    "response": "response-07.md",
+    "operativeGuide": "operative-guide-1.md"
+  },
+  {
+    "response": "response-08.md",
+    "operativeGuide": "operative-guide-1.md"
+  },
+  {
+    "response": "response-09.md",
+    "operativeGuide": "operative-guide-2.md"
+  },
+  {
+    "response": "response-10.md",
+    "operativeGuide": "operative-guide-2.md"
+  }
+]

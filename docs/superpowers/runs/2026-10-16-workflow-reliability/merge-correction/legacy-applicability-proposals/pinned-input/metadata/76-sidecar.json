@@ -1,0 +1,1383 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-17-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-17-report.md",
+  "rawSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+  "rawByteCount": 18094,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-17-report.md",
+    "durablePath": "task-report-history-r1/raw/task-17-report.md",
+    "sha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+    "byteCount": 18094,
+    "logicalRole": "report",
+    "ordinal": 17,
+    "logicalTaskId": "super-plan-ufz.14",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+    "rawArtifact": "task-report-history-r1/raw/task-17-report.md",
+    "parsedSourceJSON": "task-report-history-r1/parsed/task-17-report.md.complete.json",
+    "kind": "task-report",
+    "verdict": "IMPLEMENTED",
+    "occurrences": 7,
+    "rawPath": "task-report-history-r1/raw/task-17-report.md"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status:IMPLEMENTED"
+    }
+  ],
+  "sourceDisposition": "existing strict extraction retained unchanged; augmented exact-section sidecar",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 16,
+      "byteStart": 0,
+      "byteEnd": 601,
+      "bodyLineStart": 1,
+      "rawText": "Status:IMPLEMENTED\n\nid: super-plan-ufz.14\nbase: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5\nhead: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14\n\n",
+      "bodyRawText": "Status:IMPLEMENTED\n\nid: super-plan-ufz.14\nbase: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5\nhead: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status:IMPLEMENTED\n",
+          "text": "Status:IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 19
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "id: super-plan-ufz.14\n",
+          "text": "id: super-plan-ufz.14",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 20,
+          "byteEnd": 42
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "base: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5\n",
+          "text": "base: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 42,
+          "byteEnd": 89
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "head: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14\n",
+          "text": "head: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 5,
+          "lineEnd": 15,
+          "byteStart": 89,
+          "byteEnd": 600
+        }
+      ]
+    },
+    {
+      "section": "Implemented",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Implemented\n",
+      "hierarchy": [
+        "Implemented"
+      ],
+      "lineStart": 17,
+      "lineEnd": 30,
+      "byteStart": 601,
+      "byteEnd": 3468,
+      "bodyLineStart": 18,
+      "rawText": "## Implemented\n\nThe two real-process replay fixtures now immediately register their positive owned child/orphan PIDs and use independent finally teardown. Teardown signals only those recorded PIDs, skips already observed exited children, waits for child exit events and removes fixture state after process cleanup. Missing ps stdout or another explicit inspection error gives an inspection-unavailable exception instead of a null.trim crash. The implementation preserves every existing ownership, no-kinship-expansion, stop/no-stop, dirty/unmerged and retention assertion. This addresses the task 2 [test-process-leak] and task 5 [test-process-cleanup] minors.\n\nAdded a cross-boundary replay check that feeds actual denied remove-task-worktree output into Workflow Finish, preserving its unknown fact and both actual retained resource identities while completed delivery and the caller's deferred measurement remain independent.\n\nAdded a real CLI integration fixture consuming settled original/ready-retry collection history through ordinary dispatch-text check-evidence, report-status --acceptance, scope-dispositions --project/--keys, and repeat report-status --collect. Simulated success retains the required live measurement; matching live-kind fixture evidence clears only that obligation; the historical finding still blocks acceptance until an explicit supported elsewhere-fixed disposition. Its key then leaves the punch list, repaired/rejected/outstanding counts become 1/1/2, original occurrence count is preserved and collection replay leaves bytes unchanged. Smoke measurements, support judgments and human decisions are explicit fixture data, not an actual smoke execution or human approval.\n\nFixed the existing report-verdict producer/parser fixture by adding its required persisted Launch invocationId. No assertion or production missing-ID guard was weakened.\n\nAdded verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.\n\nThe required suite found a real earlier integration gap: the new resume-check dispatch was unclassified by run-profile. The parent routed it to super-plan-ufz.20, reviewed CLEAN and landed e5672164 via c7cdaf40. After committing this task's verified changes, I rebased cleanly onto integration 566f0a63 and reran affected checks. The exact refresh source delta is only run-profile.mjs plus test-run-profile.sh. The fix correctly treats this as run-level readiness observation, preserving label/suffix without inventing a task attempt or occupied slot; my earlier per-bead-association advisory was investigated and is not an additional requirement.\n\n",
+      "bodyRawText": "\nThe two real-process replay fixtures now immediately register their positive owned child/orphan PIDs and use independent finally teardown. Teardown signals only those recorded PIDs, skips already observed exited children, waits for child exit events and removes fixture state after process cleanup. Missing ps stdout or another explicit inspection error gives an inspection-unavailable exception instead of a null.trim crash. The implementation preserves every existing ownership, no-kinship-expansion, stop/no-stop, dirty/unmerged and retention assertion. This addresses the task 2 [test-process-leak] and task 5 [test-process-cleanup] minors.\n\nAdded a cross-boundary replay check that feeds actual denied remove-task-worktree output into Workflow Finish, preserving its unknown fact and both actual retained resource identities while completed delivery and the caller's deferred measurement remain independent.\n\nAdded a real CLI integration fixture consuming settled original/ready-retry collection history through ordinary dispatch-text check-evidence, report-status --acceptance, scope-dispositions --project/--keys, and repeat report-status --collect. Simulated success retains the required live measurement; matching live-kind fixture evidence clears only that obligation; the historical finding still blocks acceptance until an explicit supported elsewhere-fixed disposition. Its key then leaves the punch list, repaired/rejected/outstanding counts become 1/1/2, original occurrence count is preserved and collection replay leaves bytes unchanged. Smoke measurements, support judgments and human decisions are explicit fixture data, not an actual smoke execution or human approval.\n\nFixed the existing report-verdict producer/parser fixture by adding its required persisted Launch invocationId. No assertion or production missing-ID guard was weakened.\n\nAdded verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.\n\nThe required suite found a real earlier integration gap: the new resume-check dispatch was unclassified by run-profile. The parent routed it to super-plan-ufz.20, reviewed CLEAN and landed e5672164 via c7cdaf40. After committing this task's verified changes, I rebased cleanly onto integration 566f0a63 and reran affected checks. The exact refresh source delta is only run-profile.mjs plus test-run-profile.sh. The fix correctly treats this as run-level readiness observation, preserving label/suffix without inventing a task attempt or occupied slot; my earlier per-bead-association advisory was investigated and is not an additional requirement.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The two real-process replay fixtures now immediately register their positive owned child/orphan PIDs and use independent finally teardown. Teardown signals only those recorded PIDs, skips already observed exited children, waits for child exit events and removes fixture state after process cleanup. Missing ps stdout or another explicit inspection error gives an inspection-unavailable exception instead of a null.trim crash. The implementation preserves every existing ownership, no-kinship-expansion, stop/no-stop, dirty/unmerged and retention assertion. This addresses the task 2 [test-process-leak] and task 5 [test-process-cleanup] minors.\n",
+          "text": "The two real-process replay fixtures now immediately register their positive owned child/orphan PIDs and use independent finally teardown. Teardown signals only those recorded PIDs, skips already observed exited children, waits for child exit events and removes fixture state after process cleanup. Missing ps stdout or another explicit inspection error gives an inspection-unavailable exception instead of a null.trim crash. The implementation preserves every existing ownership, no-kinship-expansion, stop/no-stop, dirty/unmerged and retention assertion. This addresses the task 2 [test-process-leak] and task 5 [test-process-cleanup] minors.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 617,
+          "byteEnd": 1262
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added a cross-boundary replay check that feeds actual denied remove-task-worktree output into Workflow Finish, preserving its unknown fact and both actual retained resource identities while completed delivery and the caller's deferred measurement remain independent.\n",
+          "text": "Added a cross-boundary replay check that feeds actual denied remove-task-worktree output into Workflow Finish, preserving its unknown fact and both actual retained resource identities while completed delivery and the caller's deferred measurement remain independent.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1263,
+          "byteEnd": 1530
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added a real CLI integration fixture consuming settled original/ready-retry collection history through ordinary dispatch-text check-evidence, report-status --acceptance, scope-dispositions --project/--keys, and repeat report-status --collect. Simulated success retains the required live measurement; matching live-kind fixture evidence clears only that obligation; the historical finding still blocks acceptance until an explicit supported elsewhere-fixed disposition. Its key then leaves the punch list, repaired/rejected/outstanding counts become 1/1/2, original occurrence count is preserved and collection replay leaves bytes unchanged. Smoke measurements, support judgments and human decisions are explicit fixture data, not an actual smoke execution or human approval.\n",
+          "text": "Added a real CLI integration fixture consuming settled original/ready-retry collection history through ordinary dispatch-text check-evidence, report-status --acceptance, scope-dispositions --project/--keys, and repeat report-status --collect. Simulated success retains the required live measurement; matching live-kind fixture evidence clears only that obligation; the historical finding still blocks acceptance until an explicit supported elsewhere-fixed disposition. Its key then leaves the punch list, repaired/rejected/outstanding counts become 1/1/2, original occurrence count is preserved and collection replay leaves bytes unchanged. Smoke measurements, support judgments and human decisions are explicit fixture data, not an actual smoke execution or human approval.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 1531,
+          "byteEnd": 2306
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fixed the existing report-verdict producer/parser fixture by adding its required persisted Launch invocationId. No assertion or production missing-ID guard was weakened.\n",
+          "text": "Fixed the existing report-verdict producer/parser fixture by adding its required persisted Launch invocationId. No assertion or production missing-ID guard was weakened.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2307,
+          "byteEnd": 2477
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Added verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.\n",
+          "text": "Added verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2478,
+          "byteEnd": 2818
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The required suite found a real earlier integration gap: the new resume-check dispatch was unclassified by run-profile. The parent routed it to super-plan-ufz.20, reviewed CLEAN and landed e5672164 via c7cdaf40. After committing this task's verified changes, I rebased cleanly onto integration 566f0a63 and reran affected checks. The exact refresh source delta is only run-profile.mjs plus test-run-profile.sh. The fix correctly treats this as run-level readiness observation, preserving label/suffix without inventing a task attempt or occupied slot; my earlier per-bead-association advisory was investigated and is not an additional requirement.\n",
+          "text": "The required suite found a real earlier integration gap: the new resume-check dispatch was unclassified by run-profile. The parent routed it to super-plan-ufz.20, reviewed CLEAN and landed e5672164 via c7cdaf40. After committing this task's verified changes, I rebased cleanly onto integration 566f0a63 and reran affected checks. The exact refresh source delta is only run-profile.mjs plus test-run-profile.sh. The fix correctly treats this as run-level readiness observation, preserving label/suffix without inventing a task attempt or occupied slot; my earlier per-bead-association advisory was investigated and is not an additional requirement.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2819,
+          "byteEnd": 3467
+        }
+      ]
+    },
+    {
+      "section": "Exact tests and output",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Exact tests and output\n",
+      "hierarchy": [
+        "Exact tests and output"
+      ],
+      "lineStart": 31,
+      "lineEnd": 90,
+      "byteStart": 3468,
+      "byteEnd": 6685,
+      "bodyLineStart": 32,
+      "rawText": "## Exact tests and output\n\nAll commands below start in the task worktree unless another cwd is stated. The runner executes each named test with that absolute cwd and this environment:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.14\nHOME=/tmp/sp-bce79baa/super-plan-ufz.14/home\nXDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/config\nXDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/data\nXDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/cache\nXDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/state\n```\n\nFinal refreshed command:\n\n```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs tests/super-code/replay-harness.mjs tests/super-code/test-run-profile.sh tests/super-code/test-dispatch-text.sh tests/super-code/test-run-profile-in-flight.sh tests/super-code/test-report-verdict.sh tests/super-code/test-run-digest.sh\n```\n\nExit 0. Complete commands/exits/timings/log pointers: evidence/super-plan-ufz.14/final-required-results.json. Relevant output:\n\n```text\n2277 passed, 0 failed\n[PASS] 48 agent dispatches (got 48) — the doc's Expected dispatch count arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\nrun-profile: all tests passed                      # 325 PASS / 0 FAIL\ndispatch-text: all tests passed\nrun-profile-in-flight: all tests passed           # 14 PASS / 0 FAIL\nreport-verdict: all tests passed                    # 153 PASS / 0 FAIL\nrun-digest: all tests passed\nrequired suites: 6/6 passed; hygiene: 6/6 verified empty\n```\n\nIndividual final suite durations: replay 26.401s, profile 17.339s, dispatch 10.170s, in-flight 5.237s, verdict 2.697s, digest 14.416s. Raw final-*.log files retain exact output formatting and all assertions; annotations above are explicit PASS-line counts, not combined independent test totals.\n\nFull first required run:\n\n```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs\n```\n\nThis executed all 23 required repository commands sequentially, retaining exact commands and complete outputs in evidence/super-plan-ufz.14/required-results.json and its log pointers. Result: 20/23 suites passed; 23/23 post-suite hygiene checks verified empty. Failures were profiler(1 assertion), verdict producer fixture(5 assertions) and packaging exit 9 described below. The Bash helper invocation audit passed after 559.911s; it was the only command taking several minutes and was not interrupted or replaced. Historical 1770 evidence was not relabeled as current.\n\nThe new auto integration fixture was also run directly with the environment above:\n\n```sh\nbash tests/super-auto/test-scripts.sh > evidence/super-plan-ufz.14/focused-auto.log 2>&1\n```\n\nExit 0; the same suite passed again in the required run, 34.101s:\n\n```text\nintegrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed\n[PASS] integrated ready retry retains measurement and findings until independently supported outcomes\nAll super-auto script tests passed\n```\n\nAfter final documentation/evidence-only changes, all 331 skill/test source hashes still match the measured snapshot: evidence/super-plan-ufz.14/final-source-stability.json. No code changed after final measurements. Final git status --short was empty and git diff --check passed.\n\n",
+      "bodyRawText": "\nAll commands below start in the task worktree unless another cwd is stated. The runner executes each named test with that absolute cwd and this environment:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.14\nHOME=/tmp/sp-bce79baa/super-plan-ufz.14/home\nXDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/config\nXDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/data\nXDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/cache\nXDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/state\n```\n\nFinal refreshed command:\n\n```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs tests/super-code/replay-harness.mjs tests/super-code/test-run-profile.sh tests/super-code/test-dispatch-text.sh tests/super-code/test-run-profile-in-flight.sh tests/super-code/test-report-verdict.sh tests/super-code/test-run-digest.sh\n```\n\nExit 0. Complete commands/exits/timings/log pointers: evidence/super-plan-ufz.14/final-required-results.json. Relevant output:\n\n```text\n2277 passed, 0 failed\n[PASS] 48 agent dispatches (got 48) — the doc's Expected dispatch count arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\nrun-profile: all tests passed                      # 325 PASS / 0 FAIL\ndispatch-text: all tests passed\nrun-profile-in-flight: all tests passed           # 14 PASS / 0 FAIL\nreport-verdict: all tests passed                    # 153 PASS / 0 FAIL\nrun-digest: all tests passed\nrequired suites: 6/6 passed; hygiene: 6/6 verified empty\n```\n\nIndividual final suite durations: replay 26.401s, profile 17.339s, dispatch 10.170s, in-flight 5.237s, verdict 2.697s, digest 14.416s. Raw final-*.log files retain exact output formatting and all assertions; annotations above are explicit PASS-line counts, not combined independent test totals.\n\nFull first required run:\n\n```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs\n```\n\nThis executed all 23 required repository commands sequentially, retaining exact commands and complete outputs in evidence/super-plan-ufz.14/required-results.json and its log pointers. Result: 20/23 suites passed; 23/23 post-suite hygiene checks verified empty. Failures were profiler(1 assertion), verdict producer fixture(5 assertions) and packaging exit 9 described below. The Bash helper invocation audit passed after 559.911s; it was the only command taking several minutes and was not interrupted or replaced. Historical 1770 evidence was not relabeled as current.\n\nThe new auto integration fixture was also run directly with the environment above:\n\n```sh\nbash tests/super-auto/test-scripts.sh > evidence/super-plan-ufz.14/focused-auto.log 2>&1\n```\n\nExit 0; the same suite passed again in the required run, 34.101s:\n\n```text\nintegrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed\n[PASS] integrated ready retry retains measurement and findings until independently supported outcomes\nAll super-auto script tests passed\n```\n\nAfter final documentation/evidence-only changes, all 331 skill/test source hashes still match the measured snapshot: evidence/super-plan-ufz.14/final-source-stability.json. No code changed after final measurements. Final git status --short was empty and git diff --check passed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands below start in the task worktree unless another cwd is stated. The runner executes each named test with that absolute cwd and this environment:\n",
+          "text": "All commands below start in the task worktree unless another cwd is stated. The runner executes each named test with that absolute cwd and this environment:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 3495,
+          "byteEnd": 3652
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.14\nHOME=/tmp/sp-bce79baa/super-plan-ufz.14/home\nXDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/config\nXDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/data\nXDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/cache\nXDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/state\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.14\nHOME=/tmp/sp-bce79baa/super-plan-ufz.14/home\nXDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/config\nXDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/data\nXDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/cache\nXDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.14/state\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 35,
+          "lineEnd": 42,
+          "byteStart": 3653,
+          "byteEnd": 3974
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final refreshed command:\n",
+          "text": "Final refreshed command:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 3975,
+          "byteEnd": 4000
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs tests/super-code/replay-harness.mjs tests/super-code/test-run-profile.sh tests/super-code/test-dispatch-text.sh tests/super-code/test-run-profile-in-flight.sh tests/super-code/test-report-verdict.sh tests/super-code/test-run-digest.sh\n```\n",
+          "text": "```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs tests/super-code/replay-harness.mjs tests/super-code/test-run-profile.sh tests/super-code/test-dispatch-text.sh tests/super-code/test-run-profile-in-flight.sh tests/super-code/test-report-verdict.sh tests/super-code/test-run-digest.sh\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 46,
+          "lineEnd": 48,
+          "byteStart": 4001,
+          "byteEnd": 4302
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0. Complete commands/exits/timings/log pointers: evidence/super-plan-ufz.14/final-required-results.json. Relevant output:\n",
+          "text": "Exit 0. Complete commands/exits/timings/log pointers: evidence/super-plan-ufz.14/final-required-results.json. Relevant output:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 4303,
+          "byteEnd": 4430
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n2277 passed, 0 failed\n[PASS] 48 agent dispatches (got 48) — the doc's Expected dispatch count arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\nrun-profile: all tests passed                      # 325 PASS / 0 FAIL\ndispatch-text: all tests passed\nrun-profile-in-flight: all tests passed           # 14 PASS / 0 FAIL\nreport-verdict: all tests passed                    # 153 PASS / 0 FAIL\nrun-digest: all tests passed\nrequired suites: 6/6 passed; hygiene: 6/6 verified empty\n```\n",
+          "text": "```text\n2277 passed, 0 failed\n[PASS] 48 agent dispatches (got 48) — the doc's Expected dispatch count arithmetic\n[PASS] 19 agent dispatches (got 19)\n[PASS] 23 agent dispatches (got 23)\nrun-profile: all tests passed                      # 325 PASS / 0 FAIL\ndispatch-text: all tests passed\nrun-profile-in-flight: all tests passed           # 14 PASS / 0 FAIL\nreport-verdict: all tests passed                    # 153 PASS / 0 FAIL\nrun-digest: all tests passed\nrequired suites: 6/6 passed; hygiene: 6/6 verified empty\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 52,
+          "lineEnd": 63,
+          "byteStart": 4431,
+          "byteEnd": 4952
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Individual final suite durations: replay 26.401s, profile 17.339s, dispatch 10.170s, in-flight 5.237s, verdict 2.697s, digest 14.416s. Raw final-*.log files retain exact output formatting and all assertions; annotations above are explicit PASS-line counts, not combined independent test totals.\n",
+          "text": "Individual final suite durations: replay 26.401s, profile 17.339s, dispatch 10.170s, in-flight 5.237s, verdict 2.697s, digest 14.416s. Raw final-*.log files retain exact output formatting and all assertions; annotations above are explicit PASS-line counts, not combined independent test totals.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 65,
+          "lineEnd": 65,
+          "byteStart": 4953,
+          "byteEnd": 5248
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Full first required run:\n",
+          "text": "Full first required run:",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 67,
+          "lineEnd": 67,
+          "byteStart": 5249,
+          "byteEnd": 5274
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs\n```\n",
+          "text": "```sh\nnode evidence/super-plan-ufz.14/run-required-suites.mjs\n```",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 69,
+          "lineEnd": 71,
+          "byteStart": 5275,
+          "byteEnd": 5341
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "This executed all 23 required repository commands sequentially, retaining exact commands and complete outputs in evidence/super-plan-ufz.14/required-results.json and its log pointers. Result: 20/23 suites passed; 23/23 post-suite hygiene checks verified empty. Failures were profiler(1 assertion), verdict producer fixture(5 assertions) and packaging exit 9 described below. The Bash helper invocation audit passed after 559.911s; it was the only command taking several minutes and was not interrupted or replaced. Historical 1770 evidence was not relabeled as current.\n",
+          "text": "This executed all 23 required repository commands sequentially, retaining exact commands and complete outputs in evidence/super-plan-ufz.14/required-results.json and its log pointers. Result: 20/23 suites passed; 23/23 post-suite hygiene checks verified empty. Failures were profiler(1 assertion), verdict producer fixture(5 assertions) and packaging exit 9 described below. The Bash helper invocation audit passed after 559.911s; it was the only command taking several minutes and was not interrupted or replaced. Historical 1770 evidence was not relabeled as current.",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 73,
+          "lineEnd": 73,
+          "byteStart": 5342,
+          "byteEnd": 5912
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The new auto integration fixture was also run directly with the environment above:\n",
+          "text": "The new auto integration fixture was also run directly with the environment above:",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 75,
+          "lineEnd": 75,
+          "byteStart": 5913,
+          "byteEnd": 5996
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash tests/super-auto/test-scripts.sh > evidence/super-plan-ufz.14/focused-auto.log 2>&1\n```\n",
+          "text": "```sh\nbash tests/super-auto/test-scripts.sh > evidence/super-plan-ufz.14/focused-auto.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 77,
+          "lineEnd": 79,
+          "byteStart": 5997,
+          "byteEnd": 6096
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0; the same suite passed again in the required run, 34.101s:\n",
+          "text": "Exit 0; the same suite passed again in the required run, 34.101s:",
+          "listMarker": null,
+          "positionInSection": 13,
+          "lineStart": 81,
+          "lineEnd": 81,
+          "byteStart": 6097,
+          "byteEnd": 6163
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nintegrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed\n[PASS] integrated ready retry retains measurement and findings until independently supported outcomes\nAll super-auto script tests passed\n```\n",
+          "text": "```text\nintegrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed\n[PASS] integrated ready retry retains measurement and findings until independently supported outcomes\nAll super-auto script tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 83,
+          "lineEnd": 87,
+          "byteStart": 6164,
+          "byteEnd": 6404
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "After final documentation/evidence-only changes, all 331 skill/test source hashes still match the measured snapshot: evidence/super-plan-ufz.14/final-source-stability.json. No code changed after final measurements. Final git status --short was empty and git diff --check passed.\n",
+          "text": "After final documentation/evidence-only changes, all 331 skill/test source hashes still match the measured snapshot: evidence/super-plan-ufz.14/final-source-stability.json. No code changed after final measurements. Final git status --short was empty and git diff --check passed.",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 89,
+          "lineEnd": 89,
+          "byteStart": 6405,
+          "byteEnd": 6684
+        }
+      ]
+    },
+    {
+      "section": "Packaging qualification",
+      "sectionOrdinal": 3,
+      "headingLevel": 3,
+      "headingRaw": "### Packaging qualification\n",
+      "hierarchy": [
+        "Exact tests and output",
+        "Packaging qualification"
+      ],
+      "lineStart": 91,
+      "lineEnd": 105,
+      "byteStart": 6685,
+      "byteEnd": 8172,
+      "bodyLineStart": 92,
+      "rawText": "### Packaging qualification\n\nThe unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.\n\nCreated a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:\n\n```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```\n\nExit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.\n\nCombined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.\n\n",
+      "bodyRawText": "\nThe unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.\n\nCreated a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:\n\n```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```\n\nExit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.\n\nCombined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.\n",
+          "text": "The unchanged package script requires a .git directory and rejects linked worktrees' .git files before producing an archive. Both scripts/package-codex-plugin.sh and tests/codex/test-package-codex-plugin.sh are byte-identical to run baseline d84541ae; the provenance record contains their hashes. The initial linked-worktree exit 9 remains a failure, not a waived worktree pass.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 93,
+          "lineEnd": 93,
+          "byteStart": 6714,
+          "byteEnd": 7093
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Created a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:\n",
+          "text": "Created a self-owned local standalone clone of exact tested commit 68a1e742 under /tmp/sp-bce79baa/super-plan-ufz.14/package-source, verified HEAD/tree/skills-tree equality, then ran with the same isolated environment:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 95,
+          "lineEnd": 95,
+          "byteStart": 7094,
+          "byteEnd": 7313
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```\n",
+          "text": "```sh\ncd /tmp/sp-bce79baa/super-plan-ufz.14/package-source\nbash tests/codex/test-package-codex-plugin.sh > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14/evidence/super-plan-ufz.14/standalone-package.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 97,
+          "lineEnd": 100,
+          "byteStart": 7314,
+          "byteEnd": 7617
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.\n",
+          "text": "Exit 0, `All Codex package archive tests passed`. Post-test canonical hygiene exited0 with empty output. The owned clone was removed afterward. See standalone-package-result.json and standalone-package.hygiene.log.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 102,
+          "lineEnd": 102,
+          "byteStart": 7618,
+          "byteEnd": 7833
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Combined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.\n",
+          "text": "Combined evidence therefore supplies passing measurements for all 23 named commands: 16 unaffected initial suites, six refreshed affected suites, and package testing in a standalone checkout. This is not a claim that a fresh single 23-suite run passed in a linked worktree at the final commit. Parent phase 6 still owns its final sweep.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 104,
+          "lineEnd": 104,
+          "byteStart": 7834,
+          "byteEnd": 8171
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN and baseline reproduction",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## RED/GREEN and baseline reproduction\n",
+      "hierarchy": [
+        "RED/GREEN and baseline reproduction"
+      ],
+      "lineStart": 106,
+      "lineEnd": 157,
+      "byteStart": 8172,
+      "byteEnd": 12350,
+      "bodyLineStart": 107,
+      "rawText": "## RED/GREEN and baseline reproduction\n\nDefinitive RED used a detached throwaway checkout at 3968cd7bd703518023cdafc618cc65faa7a94cd7 under assigned temp/base, then removed it after checks. The final probe extracts the actual old fixture bodies, injects a helper exception or ps stdout unavailability, records owned PIDs independently, verifies an unregistered sentinel survives, and independently stops its own processes.\n\nWith the environment above, from the task worktree:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs /tmp/sp-bce79baa/super-plan-ufz.14/base > evidence/super-plan-ufz.14/fixture-base-red.log 2>&1\n```\n\nExit 1, expected:\n\n```text\nFAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nFAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nfixture failure probe: 0 passed, 4 failed\n```\n\nThis is the real fixture failure being fixed, not a fabricated cleanup-helper failure claim. An earlier pre-fix RED observed the same 1/1/6/6 leaks and is retained in fixture-red.log. The first prototype probe had an invalid Function parameter from spreading the fs namespace; it created no fixture-body processes, was corrected before the retained RED, and is not counted as defect evidence.\n\nFinal GREEN against committed changed fixture bodies at 68a1e742:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs > evidence/super-plan-ufz.14/fixture-final-green.log 2>&1\n```\n\nExit 0:\n\n```text\nPASS worktree/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS worktree/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12202\nPASS processes/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS processes/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12429\nfixture failure probe: 4 passed, 0 failed\n```\n\nRaw logs contain exact PID spacing and assertions-before-error counts. Each assertion can fail on a concrete defect: an owned sleeper still alive, a fixture directory retained, a sentinel killed, an unexpected/missing exception, a dropped/changed unknown fact or resource path, lost deferred obligation, a silent retry clearing history, simulated evidence discharging live requirements, unsupported disposition clearing a key, wrong repaired/rejected counts, or non-idempotent collection bytes.\n\nThe three required-run failures were each repeated at exact task base with these commands (same environment, cwd temp/base):\n\n```sh\nbash tests/super-code/test-run-profile.sh\nbash tests/super-code/test-report-verdict.sh\nbash tests/codex/test-package-codex-plugin.sh\n```\n\nOutputs retained as base-profile.log(exit 1,1 failure), base-verdict.log(exit 1,5 failures) and base-package.log(exit 9,.git-directory guard). Reproducing the profiler issue at this task base exonerates only this task; the earlier run introduction remained owned and was repaired by parent task 20. The verdict fixture's first required failure is its RED evidence; final 153/0 is GREEN after adding invocation identity. No original assertion was deleted or loosened.\n\nAn intermediate new helper-output-to-Finish assertion expected the `unknown:` prefix in the already-classified result array and failed 2276/1. Source tracing showed the existing classifier strips only that prefix. The new assertion now compares the exact fact after that documented normalization; corrected pre-rebase replay passed 2277/0, then passed again after refresh. The intermediate output is preserved in pre-rebase-super-code--replay-harness.mjs.log.\n\n",
+      "bodyRawText": "\nDefinitive RED used a detached throwaway checkout at 3968cd7bd703518023cdafc618cc65faa7a94cd7 under assigned temp/base, then removed it after checks. The final probe extracts the actual old fixture bodies, injects a helper exception or ps stdout unavailability, records owned PIDs independently, verifies an unregistered sentinel survives, and independently stops its own processes.\n\nWith the environment above, from the task worktree:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs /tmp/sp-bce79baa/super-plan-ufz.14/base > evidence/super-plan-ufz.14/fixture-base-red.log 2>&1\n```\n\nExit 1, expected:\n\n```text\nFAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nFAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nfixture failure probe: 0 passed, 4 failed\n```\n\nThis is the real fixture failure being fixed, not a fabricated cleanup-helper failure claim. An earlier pre-fix RED observed the same 1/1/6/6 leaks and is retained in fixture-red.log. The first prototype probe had an invalid Function parameter from spreading the fs namespace; it created no fixture-body processes, was corrected before the retained RED, and is not counted as defect evidence.\n\nFinal GREEN against committed changed fixture bodies at 68a1e742:\n\n```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs > evidence/super-plan-ufz.14/fixture-final-green.log 2>&1\n```\n\nExit 0:\n\n```text\nPASS worktree/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS worktree/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12202\nPASS processes/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS processes/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12429\nfixture failure probe: 4 passed, 0 failed\n```\n\nRaw logs contain exact PID spacing and assertions-before-error counts. Each assertion can fail on a concrete defect: an owned sleeper still alive, a fixture directory retained, a sentinel killed, an unexpected/missing exception, a dropped/changed unknown fact or resource path, lost deferred obligation, a silent retry clearing history, simulated evidence discharging live requirements, unsupported disposition clearing a key, wrong repaired/rejected counts, or non-idempotent collection bytes.\n\nThe three required-run failures were each repeated at exact task base with these commands (same environment, cwd temp/base):\n\n```sh\nbash tests/super-code/test-run-profile.sh\nbash tests/super-code/test-report-verdict.sh\nbash tests/codex/test-package-codex-plugin.sh\n```\n\nOutputs retained as base-profile.log(exit 1,1 failure), base-verdict.log(exit 1,5 failures) and base-package.log(exit 9,.git-directory guard). Reproducing the profiler issue at this task base exonerates only this task; the earlier run introduction remained owned and was repaired by parent task 20. The verdict fixture's first required failure is its RED evidence; final 153/0 is GREEN after adding invocation identity. No original assertion was deleted or loosened.\n\nAn intermediate new helper-output-to-Finish assertion expected the `unknown:` prefix in the already-classified result array and failed 2276/1. Source tracing showed the existing classifier strips only that prefix. The new assertion now compares the exact fact after that documented normalization; corrected pre-rebase replay passed 2277/0, then passed again after refresh. The intermediate output is preserved in pre-rebase-super-code--replay-harness.mjs.log.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Definitive RED used a detached throwaway checkout at 3968cd7bd703518023cdafc618cc65faa7a94cd7 under assigned temp/base, then removed it after checks. The final probe extracts the actual old fixture bodies, injects a helper exception or ps stdout unavailability, records owned PIDs independently, verifies an unregistered sentinel survives, and independently stops its own processes.\n",
+          "text": "Definitive RED used a detached throwaway checkout at 3968cd7bd703518023cdafc618cc65faa7a94cd7 under assigned temp/base, then removed it after checks. The final probe extracts the actual old fixture bodies, injects a helper exception or ps stdout unavailability, records owned PIDs independently, verifies an unregistered sentinel survives, and independently stops its own processes.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 108,
+          "lineEnd": 108,
+          "byteStart": 8212,
+          "byteEnd": 8595
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "With the environment above, from the task worktree:\n",
+          "text": "With the environment above, from the task worktree:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 8596,
+          "byteEnd": 8648
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs /tmp/sp-bce79baa/super-plan-ufz.14/base > evidence/super-plan-ufz.14/fixture-base-red.log 2>&1\n```\n",
+          "text": "```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs /tmp/sp-bce79baa/super-plan-ufz.14/base > evidence/super-plan-ufz.14/fixture-base-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 112,
+          "lineEnd": 114,
+          "byteStart": 8649,
+          "byteEnd": 8812
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, expected:\n",
+          "text": "Exit 1, expected:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 8813,
+          "byteEnd": 8831
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nFAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nFAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nfixture failure probe: 0 passed, 4 failed\n```\n",
+          "text": "```text\nFAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nFAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure\nFAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim')\nfixture failure probe: 0 passed, 4 failed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 118,
+          "lineEnd": 124,
+          "byteStart": 8832,
+          "byteEnd": 9472
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "This is the real fixture failure being fixed, not a fabricated cleanup-helper failure claim. An earlier pre-fix RED observed the same 1/1/6/6 leaks and is retained in fixture-red.log. The first prototype probe had an invalid Function parameter from spreading the fs namespace; it created no fixture-body processes, was corrected before the retained RED, and is not counted as defect evidence.\n",
+          "text": "This is the real fixture failure being fixed, not a fabricated cleanup-helper failure claim. An earlier pre-fix RED observed the same 1/1/6/6 leaks and is retained in fixture-red.log. The first prototype probe had an invalid Function parameter from spreading the fs namespace; it created no fixture-body processes, was corrected before the retained RED, and is not counted as defect evidence.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 126,
+          "lineEnd": 126,
+          "byteStart": 9473,
+          "byteEnd": 9866
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final GREEN against committed changed fixture bodies at 68a1e742:\n",
+          "text": "Final GREEN against committed changed fixture bodies at 68a1e742:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 128,
+          "lineEnd": 128,
+          "byteStart": 9867,
+          "byteEnd": 9933
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs > evidence/super-plan-ufz.14/fixture-final-green.log 2>&1\n```\n",
+          "text": "```sh\nnode evidence/super-plan-ufz.14/fixture-failure-probe.mjs > evidence/super-plan-ufz.14/fixture-final-green.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 130,
+          "lineEnd": 132,
+          "byteStart": 9934,
+          "byteEnd": 10060
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 0:\n",
+          "text": "Exit 0:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 134,
+          "lineEnd": 134,
+          "byteStart": 10061,
+          "byteEnd": 10069
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\nPASS worktree/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS worktree/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12202\nPASS processes/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS processes/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12429\nfixture failure probe: 4 passed, 0 failed\n```\n",
+          "text": "```text\nPASS worktree/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS worktree/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12202\nPASS processes/helper-throws: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=injected helper failure\nPASS processes/ps-unavailable: leaked=[] retained-fixture-dirs=0 sentinel-preserved=true error=process inspection unavailable for fixture PID 12429\nfixture failure probe: 4 passed, 0 failed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 136,
+          "lineEnd": 142,
+          "byteStart": 10070,
+          "byteEnd": 10654
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Raw logs contain exact PID spacing and assertions-before-error counts. Each assertion can fail on a concrete defect: an owned sleeper still alive, a fixture directory retained, a sentinel killed, an unexpected/missing exception, a dropped/changed unknown fact or resource path, lost deferred obligation, a silent retry clearing history, simulated evidence discharging live requirements, unsupported disposition clearing a key, wrong repaired/rejected counts, or non-idempotent collection bytes.\n",
+          "text": "Raw logs contain exact PID spacing and assertions-before-error counts. Each assertion can fail on a concrete defect: an owned sleeper still alive, a fixture directory retained, a sentinel killed, an unexpected/missing exception, a dropped/changed unknown fact or resource path, lost deferred obligation, a silent retry clearing history, simulated evidence discharging live requirements, unsupported disposition clearing a key, wrong repaired/rejected counts, or non-idempotent collection bytes.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 144,
+          "lineEnd": 144,
+          "byteStart": 10655,
+          "byteEnd": 11150
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The three required-run failures were each repeated at exact task base with these commands (same environment, cwd temp/base):\n",
+          "text": "The three required-run failures were each repeated at exact task base with these commands (same environment, cwd temp/base):",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 146,
+          "lineEnd": 146,
+          "byteStart": 11151,
+          "byteEnd": 11276
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash tests/super-code/test-run-profile.sh\nbash tests/super-code/test-report-verdict.sh\nbash tests/codex/test-package-codex-plugin.sh\n```\n",
+          "text": "```sh\nbash tests/super-code/test-run-profile.sh\nbash tests/super-code/test-report-verdict.sh\nbash tests/codex/test-package-codex-plugin.sh\n```",
+          "listMarker": null,
+          "positionInSection": 13,
+          "lineStart": 148,
+          "lineEnd": 152,
+          "byteStart": 11277,
+          "byteEnd": 11420
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Outputs retained as base-profile.log(exit 1,1 failure), base-verdict.log(exit 1,5 failures) and base-package.log(exit 9,.git-directory guard). Reproducing the profiler issue at this task base exonerates only this task; the earlier run introduction remained owned and was repaired by parent task 20. The verdict fixture's first required failure is its RED evidence; final 153/0 is GREEN after adding invocation identity. No original assertion was deleted or loosened.\n",
+          "text": "Outputs retained as base-profile.log(exit 1,1 failure), base-verdict.log(exit 1,5 failures) and base-package.log(exit 9,.git-directory guard). Reproducing the profiler issue at this task base exonerates only this task; the earlier run introduction remained owned and was repaired by parent task 20. The verdict fixture's first required failure is its RED evidence; final 153/0 is GREEN after adding invocation identity. No original assertion was deleted or loosened.",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 154,
+          "lineEnd": 154,
+          "byteStart": 11421,
+          "byteEnd": 11888
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "An intermediate new helper-output-to-Finish assertion expected the `unknown:` prefix in the already-classified result array and failed 2276/1. Source tracing showed the existing classifier strips only that prefix. The new assertion now compares the exact fact after that documented normalization; corrected pre-rebase replay passed 2277/0, then passed again after refresh. The intermediate output is preserved in pre-rebase-super-code--replay-harness.mjs.log.\n",
+          "text": "An intermediate new helper-output-to-Finish assertion expected the `unknown:` prefix in the already-classified result array and failed 2276/1. Source tracing showed the existing classifier strips only that prefix. The new assertion now compares the exact fact after that documented normalization; corrected pre-rebase replay passed 2277/0, then passed again after refresh. The intermediate output is preserved in pre-rebase-super-code--replay-harness.mjs.log.",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 156,
+          "lineEnd": 156,
+          "byteStart": 11889,
+          "byteEnd": 12349
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Files changed"
+      ],
+      "lineStart": 158,
+      "lineEnd": 165,
+      "byteStart": 12350,
+      "byteEnd": 12890,
+      "bodyLineStart": 159,
+      "rawText": "## Files changed\n\n- tests/super-code/replay-harness.mjs\n- tests/super-auto/test-scripts.sh\n- tests/super-code/test-report-verdict.sh\n- docs/superpowers/runs/2026-10-16-workflow-reliability/verification.md\n- evidence/super-plan-ufz.14/: four executable evidence utilities, source/hash/provenance JSON, complete initial/base/intermediate/final test logs and empty canonical hygiene logs. 98 total changed files including these preserved artifacts; product source changes from parent task 20 are already in base and are not this task's diff.\n\n",
+      "bodyRawText": "\n- tests/super-code/replay-harness.mjs\n- tests/super-auto/test-scripts.sh\n- tests/super-code/test-report-verdict.sh\n- docs/superpowers/runs/2026-10-16-workflow-reliability/verification.md\n- evidence/super-plan-ufz.14/: four executable evidence utilities, source/hash/provenance JSON, complete initial/base/intermediate/final test logs and empty canonical hygiene logs. 98 total changed files including these preserved artifacts; product source changes from parent task 20 are already in base and are not this task's diff.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 12368,
+          "byteEnd": 12406
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-auto/test-scripts.sh\n",
+          "text": "tests/super-auto/test-scripts.sh",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 161,
+          "lineEnd": 161,
+          "byteStart": 12406,
+          "byteEnd": 12441
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/test-report-verdict.sh\n",
+          "text": "tests/super-code/test-report-verdict.sh",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 162,
+          "lineEnd": 162,
+          "byteStart": 12441,
+          "byteEnd": 12483
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- docs/superpowers/runs/2026-10-16-workflow-reliability/verification.md\n",
+          "text": "docs/superpowers/runs/2026-10-16-workflow-reliability/verification.md",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 163,
+          "lineEnd": 163,
+          "byteStart": 12483,
+          "byteEnd": 12555
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- evidence/super-plan-ufz.14/: four executable evidence utilities, source/hash/provenance JSON, complete initial/base/intermediate/final test logs and empty canonical hygiene logs. 98 total changed files including these preserved artifacts; product source changes from parent task 20 are already in base and are not this task's diff.\n",
+          "text": "evidence/super-plan-ufz.14/: four executable evidence utilities, source/hash/provenance JSON, complete initial/base/intermediate/final test logs and empty canonical hygiene logs. 98 total changed files including these preserved artifacts; product source changes from parent task 20 are already in base and are not this task's diff.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 164,
+          "lineEnd": 164,
+          "byteStart": 12555,
+          "byteEnd": 12889
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Test hygiene"
+      ],
+      "lineStart": 166,
+      "lineEnd": 178,
+      "byteStart": 12890,
+      "byteEnd": 14450,
+      "bodyLineStart": 167,
+      "rawText": "## Test hygiene\n\nCanonical post-suite leak checks found no match: lines. The initial 23 and final 6 checks all exited0 with empty output. Independent probe oracles intentionally observed pre-fix leaks (14 PIDs in each retained RED run) and stopped every PID they explicitly created; PID lists are in the RED logs. These processes did not survive their probe command or reach the following canonical check. All final GREEN probe cases had zero live fixtures and zero retained fixture dirs, preserving the external sentinel until its owning oracle stopped it.\n\nFinal commands, from /tmp:\n\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\n```\n\nBoth exit 0, empty output, recorded in final-stop.log and final-hygiene.log. survived: lines: none. Remaining owned background processes: none discovered under assigned roots. No process name/pattern kill or unrelated PID signal was used. The baseline worktree and standalone clone were removed. The task worktree is retained for parent review.\n\n",
+      "bodyRawText": "\nCanonical post-suite leak checks found no match: lines. The initial 23 and final 6 checks all exited0 with empty output. Independent probe oracles intentionally observed pre-fix leaks (14 PIDs in each retained RED run) and stopped every PID they explicitly created; PID lists are in the RED logs. These processes did not survive their probe command or reach the following canonical check. All final GREEN probe cases had zero live fixtures and zero retained fixture dirs, preserving the external sentinel until its owning oracle stopped it.\n\nFinal commands, from /tmp:\n\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\n```\n\nBoth exit 0, empty output, recorded in final-stop.log and final-hygiene.log. survived: lines: none. Remaining owned background processes: none discovered under assigned roots. No process name/pattern kill or unrelated PID signal was used. The baseline worktree and standalone clone were removed. The task worktree is retained for parent review.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Canonical post-suite leak checks found no match: lines. The initial 23 and final 6 checks all exited0 with empty output. Independent probe oracles intentionally observed pre-fix leaks (14 PIDs in each retained RED run) and stopped every PID they explicitly created; PID lists are in the RED logs. These processes did not survive their probe command or reach the following canonical check. All final GREEN probe cases had zero live fixtures and zero retained fixture dirs, preserving the external sentinel until its owning oracle stopped it.\n",
+          "text": "Canonical post-suite leak checks found no match: lines. The initial 23 and final 6 checks all exited0 with empty output. Independent probe oracles intentionally observed pre-fix leaks (14 PIDs in each retained RED run) and stopped every PID they explicitly created; PID lists are in the RED logs. These processes did not survive their probe command or reach the following canonical check. All final GREEN probe cases had zero live fixtures and zero retained fixture dirs, preserving the external sentinel until its owning oracle stopped it.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 168,
+          "lineEnd": 168,
+          "byteStart": 12907,
+          "byteEnd": 13448
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final commands, from /tmp:\n",
+          "text": "Final commands, from /tmp:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 170,
+          "lineEnd": 170,
+          "byteStart": 13449,
+          "byteEnd": 13476
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\n```\n",
+          "text": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14 /tmp/sp-bce79baa/super-plan-ufz.14\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 172,
+          "lineEnd": 175,
+          "byteStart": 13477,
+          "byteEnd": 14103
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both exit 0, empty output, recorded in final-stop.log and final-hygiene.log. survived: lines: none. Remaining owned background processes: none discovered under assigned roots. No process name/pattern kill or unrelated PID signal was used. The baseline worktree and standalone clone were removed. The task worktree is retained for parent review.\n",
+          "text": "Both exit 0, empty output, recorded in final-stop.log and final-hygiene.log. survived: lines: none. Remaining owned background processes: none discovered under assigned roots. No process name/pattern kill or unrelated PID signal was used. The baseline worktree and standalone clone were removed. The task worktree is retained for parent review.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 177,
+          "lineEnd": 177,
+          "byteStart": 14104,
+          "byteEnd": 14449
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and amendments used",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions and amendments used\n",
+      "hierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "lineStart": 179,
+      "lineEnd": 186,
+      "byteStart": 14450,
+      "byteEnd": 16093,
+      "bodyLineStart": 180,
+      "rawText": "## Assumptions and amendments used\n\nRead current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n\nAll tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n\nNo setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n\n",
+      "bodyRawText": "\nRead current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n\nAll tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n\nNo setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n",
+          "text": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 181,
+          "lineEnd": 181,
+          "byteStart": 14486,
+          "byteEnd": 15145
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n",
+          "text": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 183,
+          "lineEnd": 183,
+          "byteStart": 15146,
+          "byteEnd": 15715
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n",
+          "text": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 185,
+          "lineEnd": 185,
+          "byteStart": 15716,
+          "byteEnd": 16092
+        }
+      ]
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns and parent-owned acceptance\n",
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "lineStart": 187,
+      "lineEnd": 195,
+      "byteStart": 16093,
+      "byteEnd": 18094,
+      "bodyLineStart": 188,
+      "rawText": "## Concerns and parent-owned acceptance\n\n- Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.\n- Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.\n- Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.\n- Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.\n- Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.\n- Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.\n- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+      "bodyRawText": "\n- Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.\n- Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.\n- Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.\n- Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.\n- Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.\n- Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.\n- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.\n",
+          "text": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 189,
+          "lineEnd": 189,
+          "byteStart": 16134,
+          "byteEnd": 16292
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.\n",
+          "text": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 190,
+          "lineEnd": 190,
+          "byteStart": 16292,
+          "byteEnd": 16564
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.\n",
+          "text": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 191,
+          "lineEnd": 191,
+          "byteStart": 16564,
+          "byteEnd": 17134
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.\n",
+          "text": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 192,
+          "lineEnd": 192,
+          "byteStart": 17134,
+          "byteEnd": 17463
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.\n",
+          "text": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 193,
+          "lineEnd": 193,
+          "byteStart": 17463,
+          "byteEnd": 17704
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.\n",
+          "text": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 194,
+          "lineEnd": 194,
+          "byteStart": 17704,
+          "byteEnd": 17883
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+          "text": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 195,
+          "lineEnd": 195,
+          "byteStart": 17883,
+          "byteEnd": 18094
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status:IMPLEMENTED",
+      "text": "Status:IMPLEMENTED",
+      "rawText": "Status:IMPLEMENTED\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 19,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "id: super-plan-ufz.14",
+      "text": "id: super-plan-ufz.14",
+      "rawText": "id: super-plan-ufz.14\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 20,
+      "byteEnd": 42,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "base: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5",
+      "text": "base: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5",
+      "rawText": "base: 566f0a639c4cad8960bdeff7d62db219f9c1e8f5\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 42,
+      "byteEnd": 89,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "head: 0a215b65a7847ff6e936de90e648be0306c90a2f",
+      "text": "head: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14",
+      "rawText": "head: 0a215b65a7847ff6e936de90e648be0306c90a2f\ninitialBase: 3968cd7bd703518023cdafc618cc65faa7a94cd7\ntestedHead: 68a1e7425ec3fe238fa51a7c02b5050b40b09095\ntestedTree: e308a5638d3a8cd1d096707d31162c5c0b47db66\ntestedSkillsTree: 200b0bc1eb2af88c3604aefcbe86a173075952fc\nbranch: task-super-plan-ufz.14\nstacked: false\nreopened: false\nblockerBead: none\nhumanAction: none\nworktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.14\n",
+      "lineStart": 5,
+      "lineEnd": 15,
+      "byteStart": 89,
+      "byteEnd": 600,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Implemented",
+      "sectionOrdinal": 1,
+      "hierarchy": [
+        "Implemented"
+      ],
+      "positionInSection": 5,
+      "key": "Added verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.",
+      "text": "Added verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.",
+      "rawText": "Added verification.md with spec sections 1–5 mapped to actual producer/consumer evidence, Workflow simulation versus ordinary CLI execution, caller/standalone acceptance ownership, coordinator-owned behavior evidence, exact source identities and remaining limitations. No product source or behavior-shaping prose was edited by this task.\n",
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 2478,
+      "byteEnd": 2818,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Assumptions and amendments used",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "positionInSection": 1,
+      "key": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.",
+      "text": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.",
+      "rawText": "Read current bd show/comments and frozen Task 17 before implementation; current bead explicitly assigns task 2 failure-teardown follow-through. Parent additionally assigned task 5's same minor, fresh clean integrated base3968, no unmerged stack parents, preservation of all assertions/historical baselines, macOS/Linux qualification, and parent ownership of behavioral evaluation/final phase 6/code roast/review/acceptance. These compatible requirements were applied together. Later parent steering explicitly approved the scoped invocationId test-fixture correction and separately routed the profiler source fix; no out-of-surface source edit was made here.\n",
+      "lineStart": 181,
+      "lineEnd": 181,
+      "byteStart": 14486,
+      "byteEnd": 15145,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Assumptions and amendments used",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "positionInSection": 2,
+      "key": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.",
+      "text": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.",
+      "rawText": "All tests launched with assigned TMPDIR/HOME/XDG. The existing --tmp-validator fixtures retain unique /tmp/sp-<hex>[/child] paths, as the earlier task 2 report records parent approval for their interface-compatible layout; this task makes their teardown reliable without widening the validator. Existing untemplated native mktemp in the unchanged packaging test used Darwin per-user temp despite assigned TMPDIR, as its original failure log shows; its own EXIT trap removes that transient test root. No global process-absence claim is made beyond observed owned roots.\n",
+      "lineStart": 183,
+      "lineEnd": 183,
+      "byteStart": 15146,
+      "byteEnd": 15715,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Assumptions and amendments used",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Assumptions and amendments used"
+      ],
+      "positionInSection": 3,
+      "key": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.",
+      "text": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.",
+      "rawText": "No setup/install step exists; no dependencies were installed. Node interpreter is /opt/homebrew/bin/node. Runner/helper/package source resolution is inside the assigned worktree, and standalone packaging uses the exact committed clone of it. No agents were spawned; no Herdr/tracker membership, acceptance, ACK or state mutation was performed. No actual root epic was closed.\n",
+      "lineStart": 185,
+      "lineEnd": 185,
+      "byteStart": 15716,
+      "byteEnd": 16092,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 1,
+      "key": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+      "text": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+      "rawText": "- Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.\n",
+      "lineStart": 189,
+      "lineEnd": 189,
+      "byteStart": 16134,
+      "byteEnd": 16292,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 2,
+      "key": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+      "text": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+      "rawText": "- Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.\n",
+      "lineStart": 190,
+      "lineEnd": 190,
+      "byteStart": 16292,
+      "byteEnd": 16564,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 3,
+      "key": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+      "text": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+      "rawText": "- Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.\n",
+      "lineStart": 191,
+      "lineEnd": 191,
+      "byteStart": 16564,
+      "byteEnd": 17134,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 4,
+      "key": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+      "text": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+      "rawText": "- Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.\n",
+      "lineStart": 192,
+      "lineEnd": 192,
+      "byteStart": 17134,
+      "byteEnd": 17463,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 5,
+      "key": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+      "text": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+      "rawText": "- Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.\n",
+      "lineStart": 193,
+      "lineEnd": 193,
+      "byteStart": 17463,
+      "byteEnd": 17704,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 6,
+      "key": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+      "text": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+      "rawText": "- Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.\n",
+      "lineStart": 194,
+      "lineEnd": 194,
+      "byteStart": 17704,
+      "byteEnd": 17883,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "section": "Concerns and parent-owned acceptance",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Concerns and parent-owned acceptance"
+      ],
+      "positionInSection": 7,
+      "key": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+      "text": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+      "rawText": "- Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.\n",
+      "lineStart": 195,
+      "lineEnd": 195,
+      "byteStart": 17883,
+      "byteEnd": 18094,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  },
+  "existingStrictExtraction": {
+    "version": 1,
+    "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+    "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-17-report.md",
+    "kind": "task-report",
+    "verdict": "IMPLEMENTED",
+    "occurrences": [
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 1,
+        "key": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+        "text": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 2,
+        "key": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+        "text": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 3,
+        "key": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+        "text": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 4,
+        "key": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+        "text": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 5,
+        "key": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+        "text": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 6,
+        "key": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+        "text": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed."
+      },
+      {
+        "section": "Concerns and parent-owned acceptance",
+        "position": 7,
+        "key": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+        "text": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations."
+      }
+    ]
+  },
+  "existingOccurrencesWithLocators": [
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 1,
+      "key": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+      "text": "Native Linux /proc integration was not run on this macOS host. Deterministic forced-lsof denial fixtures do not establish native Linux process integration.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 189,
+          "lineEnd": 189
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 2,
+      "key": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+      "text": "Hosted Workflow and end-to-end live ordinary coordination were not run by this task. Replay is a simulated runtime; ordinary fixtures execute real helpers with controlled records/tracker replies. Synthetic live-kind smoke records are not actual live smoke measurements.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 190,
+          "lineEnd": 190
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 3,
+      "key": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+      "text": "Frozen behavioral AFTER remains 0 pass / 2 fail / 3 ambiguous for strict B4; its other 17 claims passed 5/5 each. Separate protocol-complete diagnostic final/control arms accept V9/refuse mismatched V10/reject artificial commits 5/5; installed guidance accepts V9 0/5. Original scores are unchanged, not pooled or relabeled. The supplement is a post-outcome diagnostic with fictional supplied observations, small samples and manual unblinded scoring, retaining its collateral answer errors. It does not prove live no-change completion or exact workflow-stage routing.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 191,
+          "lineEnd": 191
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 4,
+      "key": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+      "text": "Parent live review isolation is DONE_WITH_CONCERNS: observed owned Git/file/worktree checks passed 24/24; global ps observation was denied there, arbitrary detached-descendant absence is not established, assembler failure was controlled and task-review no-test policy was not exercised. These limits remain in verification.md.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 192,
+          "lineEnd": 192
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 5,
+      "key": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+      "text": "Selected frozen behavior full-file/excerpt entries were rechecked after profiler refresh: 17/17 match (eval-source-recheck.json). The exact profiler module/test hash delta is separately recorded, not hidden by a blanket equivalence claim.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 193,
+          "lineEnd": 193
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 6,
+      "key": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+      "text": "Packaging retains the pre-run linked-worktree limitation. Its exact-source standalone pass is qualified separately; no fresh single 23-suite linked-worktree success is claimed.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 194,
+          "lineEnd": 194
+        }
+      ],
+      "locatorAmbiguous": false
+    },
+    {
+      "section": "Concerns and parent-owned acceptance",
+      "position": 7,
+      "key": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+      "text": "Parent still owns final phase 6 sweep, whole-epic review/code roast, semantic evaluation assessment and required human acceptance. This task provides integration evidence and does not close those obligations.",
+      "exactFullTextMatches": [
+        {
+          "lineStart": 195,
+          "lineEnd": 195
+        }
+      ],
+      "locatorAmbiguous": false
+    }
+  ]
+}

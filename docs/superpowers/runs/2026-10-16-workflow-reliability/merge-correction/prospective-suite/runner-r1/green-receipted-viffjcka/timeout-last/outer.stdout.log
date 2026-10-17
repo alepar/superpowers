@@ -1,0 +1,2 @@
+01/1 error: bash tests/check.sh
+{"status": "invalid", "measurementValid": false, "completed": false, "commandGroupsPassed": 0, "commandGroupsFailed": 0, "commandGroupsErrors": 1, "commandGroupsSkipped": 0}

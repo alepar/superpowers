@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "ordinal": 20,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+  "originalArtifact": "task-report-history-r1/raw/task-15-report-fix.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-15-report-fix.md",
+  "rawSha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+  "rawByteCount": 8168,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 81,
+    "byteStart": 0,
+    "byteEnd": 8168,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/19",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/20-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "FIXED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: FIXED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/0",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "span": [
+        28,
+        210
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Independent source observations dropped across retry; author claims reproduced/fixed but explicitly not resolved by report alone."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/1",
+      "roles": [
+        "claimed-repair"
+      ],
+      "span": [
+        698,
+        1444
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Independent ledger/Git/coherent review-pair selection and failed-attempt gaps claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/2",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "span": [
+        1539,
+        2159
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Alternating source and half-pair fixture cases/anti-vacuity description."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/3",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "span": [
+        2801,
+        4169
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Observed RED dropped independent successful observations and gaps; repeated-unavailable-ledger spread fabricated mixed review pair. Not live user run data."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/4",
+      "roles": [
+        "repair-evidence-scope"
+      ],
+      "span": [
+        5635,
+        6268
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Both callers and final consumers exercised on stacked task source, not future rebase."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/19/interpretedPassages/5",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "span": [
+        7728,
+        8168
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interpretation evaluation remains outside deterministic fix; no new concerns asserted."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-20-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "interpretation": "Independent source observations dropped across retry; author claims reproduced/fixed but explicitly not resolved by report alone.",
+      "lineStart": 5,
+      "lineEnd": 5,
+      "byteStart": 28,
+      "byteEnd": 210,
+      "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 1,
+          "section": "Fix pass",
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "sectionByteStart": 0,
+          "sectionByteEnd": 670,
+          "canonicalSectionAlias": "legacy-raw-section/1",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-20-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "claimed-repair"
+      ],
+      "interpretation": "Independent ledger/Git/coherent review-pair selection and failed-attempt gaps claimed.",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 698,
+      "byteEnd": 1444,
+      "rawText": "`readLedger` now selects the ledger transport, successful Git landing observation, and successful complete review revision pair independently after its one bounded retry. The retry's successful source is preferred when both attempts succeed. A successful empty Git list is retained, and no failed attempt's `landedError` or `reviewError` is attached to a retained successful source. Review base/head must come together from one successful capture and pass the existing full-commit shape check; opposite partial captures cannot create a review source. Failed ledger/Git/review attempts, including null dispatches, remain labelled source gaps. Finish's `metricsEvidence.gaps` includes those retained observations from both Resume and Finish reads.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Change and self-review",
+          "headingRaw": "### Change and self-review\n",
+          "hierarchy": [
+            "Fix pass",
+            "Change and self-review"
+          ],
+          "sectionByteStart": 670,
+          "sectionByteEnd": 2160,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 29
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-20-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "illustrative-fixture"
+      ],
+      "interpretation": "Alternating source and half-pair fixture cases/anti-vacuity description.",
+      "lineStart": 20,
+      "lineEnd": 20,
+      "byteStart": 1539,
+      "byteEnd": 2159,
+      "rawText": "The replay covers ledger recovery and repeated ledger failure independently from Git/review success, failures alternating in both directions, opposite half revision pairs, a partial retry following a complete capture, a complete retry following a partial capture, and a null retry following successful empty Git/review capture. The Git fixture uses `bd-999` so fallback to this invocation's confirmed `bd-101` cannot satisfy the assertion. Review assertions inspect the dispatched immutable capture, rather than merely the presence of response fields. Existing assertions were not changed, removed, skipped or loosened.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 2,
+          "section": "Change and self-review",
+          "headingRaw": "### Change and self-review\n",
+          "hierarchy": [
+            "Fix pass",
+            "Change and self-review"
+          ],
+          "sectionByteStart": 670,
+          "sectionByteEnd": 2160,
+          "canonicalSectionAlias": "legacy-raw-section/2",
+          "positionByteInSection": 870
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-20-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "interpretation": "Observed RED dropped independent successful observations and gaps; repeated-unavailable-ledger spread fabricated mixed review pair. Not live user run data.",
+      "lineStart": 31,
+      "lineEnd": 42,
+      "byteStart": 2801,
+      "byteEnd": 4169,
+      "rawText": "1. RED, unchanged coordinator, full replay: exit 1, about 99 seconds, `2179 passed, 12 failed`. New assertions reproduced dropped Git/review observations and lost failed-attempt gaps; the existing replay checks stayed green. This initial full run had the partial-review fixtures on the recovered-ledger branch.\n2. RED, unchanged coordinator, exact new scenario extracted into a disposable `tests/super-code/.retry-replay.mjs`: same environment prefix followed by `node tests/super-code/.retry-replay.mjs`; exit 1, `26 passed, 13 failed`. Before this focused run, the partial-review fixtures were narrowed to repeated ledger failure so the previous object-spread branch demonstrably fabricated a mixed review pair. Relevant output:\n\n```text\n[FAIL] ledger recovers; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] ledger recovers; first Git and review succeed: final review uses the complete successful capture\n[FAIL] ledger stays unavailable; first Git and review succeed: successful Git source survives without a failed attempt error\n[FAIL] both independent sources recover with unavailable ledger: successful Git source survives without a failed attempt error\n[FAIL] opposite half pairs: no mixed-attempt review pair\n[FAIL] partial retry after complete capture: no mixed-attempt review pair\n26 passed, 13 failed\n```\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "RED/GREEN evidence and final verification",
+          "headingRaw": "### RED/GREEN evidence and final verification\n",
+          "hierarchy": [
+            "Fix pass",
+            "RED/GREEN evidence and final verification"
+          ],
+          "sectionByteStart": 2160,
+          "sectionByteEnd": 6269,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 642
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-20-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "repair-evidence-scope"
+      ],
+      "interpretation": "Both callers and final consumers exercised on stacked task source, not future rebase.",
+      "lineStart": 65,
+      "lineEnd": 65,
+      "byteStart": 5635,
+      "byteEnd": 6268,
+      "rawText": "The replay exercises both `readLedger` callers (Resume and Finish), downstream Metrics and final review dispatch, and all three documented dryRun scenarios. Canonical/fix-blocked/parked expected counts stay 48/19/23. No producer script or operative skill prose changed in this fix pass, so the earlier script/contract evidence remains as recorded above. `git diff --check` exited 0 with no output. After commit, `git status --short` was empty and `git merge-base --is-ancestor 7074121343636addd41f80ef5261de6ffb74ab80 HEAD` exited 0. Disposable extraction and scratch logs were removed after their relevant output was recorded here.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 3,
+          "section": "RED/GREEN evidence and final verification",
+          "headingRaw": "### RED/GREEN evidence and final verification\n",
+          "hierarchy": [
+            "Fix pass",
+            "RED/GREEN evidence and final verification"
+          ],
+          "sectionByteStart": 2160,
+          "sectionByteEnd": 6269,
+          "canonicalSectionAlias": "legacy-raw-section/3",
+          "positionByteInSection": 3476
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-20-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "interpretation": "Fresh-agent interpretation evaluation remains outside deterministic fix; no new concerns asserted.",
+      "lineStart": 81,
+      "lineEnd": 81,
+      "byteStart": 7728,
+      "byteEnd": 8168,
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "Assumptions, amendments and concerns",
+          "headingRaw": "### Assumptions, amendments and concerns\n",
+          "hierarchy": [
+            "Fix pass",
+            "Assumptions, amendments and concerns"
+          ],
+          "sectionByteStart": 7686,
+          "sectionByteEnd": 8168,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 43
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 28,
+      "byteEnd": 210,
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/19/interpretedPassages/0"
+      ],
+      "interpretation": "Independent source observations dropped across retry; author claims reproduced/fixed but explicitly not resolved by report alone.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 7728,
+      "byteEnd": 8168,
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/19/interpretedPassages/5"
+      ],
+      "interpretation": "Fresh-agent interpretation evaluation remains outside deterministic fix; no new concerns asserted.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Projected repair list omits substantive correction L13 and observed mixed review-pair fabrication L31–42; line5 acknowledgment alone is incomplete repair history.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "No future rebased source was tested in this historical fix report; its test claims cannot silently transfer to another tree."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-1/raw-byte-000000028",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "disposition-boundary"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 28,
+      "rawByteEnd": 210,
+      "rawLineStart": 5,
+      "rawLineEnd": 5,
+      "originalSections": [
+        {
+          "section": "Fix pass",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Fix pass\n",
+          "hierarchy": [
+            "Fix pass"
+          ],
+          "byteStart": 0,
+          "byteEnd": 670
+        }
+      ],
+      "rawText": "- Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Finding: task15-review Important, independent source observations across the bounded ledger retry. Reproduced and fixed; no findings declined or resolved by report evidence alone.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/19/interpretedPassages/0"
+      ],
+      "interpretation": "Independent source observations dropped across retry; author claims reproduced/fixed but explicitly not resolved by report alone."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000007728",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage",
+        "explicit-empty-qualified"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 7728,
+      "rawByteEnd": 8168,
+      "rawLineStart": 81,
+      "rawLineEnd": 81,
+      "originalSections": [
+        {
+          "section": "Assumptions, amendments and concerns",
+          "sectionOrdinal": 5,
+          "headingRaw": "### Assumptions, amendments and concerns\n",
+          "hierarchy": [
+            "Fix pass",
+            "Assumptions, amendments and concerns"
+          ],
+          "byteStart": 7686,
+          "byteEnd": 8168
+        }
+      ],
+      "rawText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Read current `bd show super-plan-ufz.9 --json` and `bd comments super-plan-ufz.9` before changing anything: no amendments or comments change the requirements. The review finding agrees with the independent supported-partial-results contract. No additional behavior or workflow policy was introduced. Coordinator-owned fresh-agent interpretation evaluation remains outside this deterministic fix, as already recorded above. No new concerns.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/19/interpretedPassages/5"
+      ],
+      "interpretation": "Fresh-agent interpretation evaluation remains outside deterministic fix; no new concerns asserted."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/20-task-15-report-fix.md",
+  "retainedSha256": "c29e807a3c50935becfff0d8dc5f62fe18943fbf031ae98b20202a2d308bfa93"
+}

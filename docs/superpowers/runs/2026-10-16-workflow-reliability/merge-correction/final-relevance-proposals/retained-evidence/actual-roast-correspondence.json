@@ -1,0 +1,32 @@
+{
+  "operation": "approve exact raw declared roast to reviewed complete retained interpretation",
+  "association": {
+    "version": 1,
+    "artifact": "2026-10-16-workflow-reliability-roast-pr-1.md",
+    "sha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+    "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+    "retainedArtifact": "legacy-report-adapters-r1/74-2026-10-16-workflow-reliability-roast-pr-1.md",
+    "retainedSha256": "820f1185bc6dd01411b4f0f99674e1c087495f355c1df393d7267d2384f55c7c",
+    "basis": "Parent reviewed independent full raw interpretation, initial fidelity failure and clean scoped correction review: this exact original roast has a strict none-marker/prose format failure; complete reversible interpreted extraction preserves original compact kind/verdict and every qualified source appearance. This associates transport only, not finding identity or resolution.",
+    "evidence": [
+      "merge-correction/legacy-adapter-revision2/reversible-manifest.json",
+      "merge-correction/legacy-adapter-initial-review.md",
+      "merge-correction/legacy-adapter-correction-round-1-rereview.md",
+      "merge-correction/source-interpretation/part-3-review.json"
+    ],
+    "interpretation": {
+      "kind": "legacy-adapter",
+      "originalVerdict": "Blocking (7 confirmed)",
+      "limitations": [
+        "Original recognizable roast marker copied exactly; not a new historical outcome.",
+        "No identity links, source merges, repair or rejection dispositions applied.",
+        "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+        "Pure contextual/example/repair-only passages remain metadata; explicit mixed finding/repair assertions retain both roles without supported disposition."
+      ]
+    },
+    "judgment": "supported"
+  },
+  "beforeRunSha256": "7662110ffd52707be9e80e8a2fb69078c4d3e4a217c204b7e7ede4327f890828",
+  "afterRunSha256": "b466fd6810673fce663552bed897b68b8f40f4d81ca58014b658f6d5f6099380",
+  "limits": "No other69draft approvals applied; unknown verdicts remain unknown. No finding resolution, relevance or root acceptance."
+}

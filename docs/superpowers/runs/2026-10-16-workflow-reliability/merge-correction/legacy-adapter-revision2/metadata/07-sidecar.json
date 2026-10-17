@@ -1,0 +1,1778 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-11-report.md",
+  "rawArtifact": "task-report-history-r1/raw/task-11-report.md",
+  "rawSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+  "rawByteCount": 23500,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-report.md",
+    "durablePath": "task-report-history-r1/raw/task-11-report.md",
+    "sha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+    "byteCount": 23500,
+    "logicalRole": "report",
+    "ordinal": 11,
+    "logicalTaskId": "super-plan-ufz.12",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-11-report.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+    "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+  },
+  "classification": "legacy-task-report",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: IMPLEMENTED"
+    },
+    {
+      "line": 6,
+      "rawText": "- status: IMPLEMENTED"
+    },
+    {
+      "line": 145,
+      "rawText": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed."
+    },
+    {
+      "line": 206,
+      "rawText": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 2,
+      "byteStart": 0,
+      "byteEnd": 21,
+      "bodyLineStart": 1,
+      "rawText": "Status: IMPLEMENTED\n\n",
+      "bodyRawText": "Status: IMPLEMENTED\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: IMPLEMENTED\n",
+          "text": "Status: IMPLEMENTED",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 20
+        }
+      ]
+    },
+    {
+      "section": "Task super-plan-ufz.12 — IMPLEMENTED",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task super-plan-ufz.12 — IMPLEMENTED\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED"
+      ],
+      "lineStart": 3,
+      "lineEnd": 15,
+      "byteStart": 21,
+      "byteEnd": 503,
+      "bodyLineStart": 4,
+      "rawText": "# Task super-plan-ufz.12 — IMPLEMENTED\n\n- id: super-plan-ufz.12\n- status: IMPLEMENTED\n- base: caf187cef8d1769da6184de42332a31bc7e30dcb\n- head: 26cc469e06bab7b6dad98cb726326f949d1c486f\n- original base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\n- stacked: false\n- reopened: false\n- branch: task-super-plan-ufz.12\n- worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12\n- blockerBead: none\n\n",
+      "bodyRawText": "\n- id: super-plan-ufz.12\n- status: IMPLEMENTED\n- base: caf187cef8d1769da6184de42332a31bc7e30dcb\n- head: 26cc469e06bab7b6dad98cb726326f949d1c486f\n- original base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\n- stacked: false\n- reopened: false\n- branch: task-super-plan-ufz.12\n- worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12\n- blockerBead: none\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- id: super-plan-ufz.12\n",
+          "text": "id: super-plan-ufz.12",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 63,
+          "byteEnd": 87
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- status: IMPLEMENTED\n",
+          "text": "status: IMPLEMENTED",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 87,
+          "byteEnd": 109
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- base: caf187cef8d1769da6184de42332a31bc7e30dcb\n",
+          "text": "base: caf187cef8d1769da6184de42332a31bc7e30dcb",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 109,
+          "byteEnd": 158
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- head: 26cc469e06bab7b6dad98cb726326f949d1c486f\n",
+          "text": "head: 26cc469e06bab7b6dad98cb726326f949d1c486f",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 8,
+          "lineEnd": 8,
+          "byteStart": 158,
+          "byteEnd": 207
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- original base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8\n",
+          "text": "original base: 15084177065dbaaa4eff1992cfb2fbfb56cee5f8",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 207,
+          "byteEnd": 265
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- stacked: false\n",
+          "text": "stacked: false",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 265,
+          "byteEnd": 282
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- reopened: false\n",
+          "text": "reopened: false",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 282,
+          "byteEnd": 300
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- branch: task-super-plan-ufz.12\n",
+          "text": "branch: task-super-plan-ufz.12",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 300,
+          "byteEnd": 333
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12\n",
+          "text": "worktree: /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 333,
+          "byteEnd": 482
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- blockerBead: none\n",
+          "text": "blockerBead: none",
+          "listMarker": "- ",
+          "positionInSection": 10,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 482,
+          "byteEnd": 502
+        }
+      ]
+    },
+    {
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Implementation\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "lineStart": 16,
+      "lineEnd": 27,
+      "byteStart": 503,
+      "byteEnd": 3084,
+      "bodyLineStart": 17,
+      "rawText": "## Implementation\n\nResume now reconciles active pending-closure Recovery records before affected admission. A single read-only `resume-check:<task>` dispatch verifies the exact persisted 40-character SHA through `already-merged` and independently reads task/review/blocker tracker statuses. A verified landing seeds the existing closure-only machinery with the original head/range and associated bead IDs. No implementation, task review or merge is dispatched again. Already-closed associated beads need no closure repair; partially open sets use the existing close-only step, which independently checks statuses and closes only observed-open beads.\n\nUnknown/denied Git or tracker observations, incomplete/contradictory status sets, missing exact heads and Git/ledger disagreement retain the original obligation/evidence and persist a scoped `hold` record with ID `resume:<task>`. No additional observation retry or implementation attempt is spent. Later successful reconciliation clears only this reconciler's own hold. Tracker-only Finish reconciliation cannot promote an affected Git mismatch to completed.\n\nOther persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n\nAll-closed recovery appends its clear(s) and completion together through the existing writer, and updates in-memory obligations only after that append is confirmed. An unavailable append retains the original obligation and explicit hold. Pending-closure updates retain additive top-level/data fields and original evidence. Fix history is neither reduced to the latest Task outcome nor replayed as repair work. Workflow and ordinary-subagent references describe the same ordering, scope and bounded observations.\n\nNo ledger-digest change was needed: task 4's landed bounded transport already preserves the required records. No replacement journal, tracker schema or retry engine was added. Historical dryRun/golden fixture blocks remain byte-for-byte unchanged; additive current scenarios extend the replay harness. One existing Recovery round-trip scenario supplies the new observation/closure answers without changing its assertions or expected values.\n\n",
+      "bodyRawText": "\nResume now reconciles active pending-closure Recovery records before affected admission. A single read-only `resume-check:<task>` dispatch verifies the exact persisted 40-character SHA through `already-merged` and independently reads task/review/blocker tracker statuses. A verified landing seeds the existing closure-only machinery with the original head/range and associated bead IDs. No implementation, task review or merge is dispatched again. Already-closed associated beads need no closure repair; partially open sets use the existing close-only step, which independently checks statuses and closes only observed-open beads.\n\nUnknown/denied Git or tracker observations, incomplete/contradictory status sets, missing exact heads and Git/ledger disagreement retain the original obligation/evidence and persist a scoped `hold` record with ID `resume:<task>`. No additional observation retry or implementation attempt is spent. Later successful reconciliation clears only this reconciler's own hold. Tracker-only Finish reconciliation cannot promote an affected Git mismatch to completed.\n\nOther persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n\nAll-closed recovery appends its clear(s) and completion together through the existing writer, and updates in-memory obligations only after that append is confirmed. An unavailable append retains the original obligation and explicit hold. Pending-closure updates retain additive top-level/data fields and original evidence. Fix history is neither reduced to the latest Task outcome nor replayed as repair work. Workflow and ordinary-subagent references describe the same ordering, scope and bounded observations.\n\nNo ledger-digest change was needed: task 4's landed bounded transport already preserves the required records. No replacement journal, tracker schema or retry engine was added. Historical dryRun/golden fixture blocks remain byte-for-byte unchanged; additive current scenarios extend the replay harness. One existing Recovery round-trip scenario supplies the new observation/closure answers without changing its assertions or expected values.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Resume now reconciles active pending-closure Recovery records before affected admission. A single read-only `resume-check:<task>` dispatch verifies the exact persisted 40-character SHA through `already-merged` and independently reads task/review/blocker tracker statuses. A verified landing seeds the existing closure-only machinery with the original head/range and associated bead IDs. No implementation, task review or merge is dispatched again. Already-closed associated beads need no closure repair; partially open sets use the existing close-only step, which independently checks statuses and closes only observed-open beads.\n",
+          "text": "Resume now reconciles active pending-closure Recovery records before affected admission. A single read-only `resume-check:<task>` dispatch verifies the exact persisted 40-character SHA through `already-merged` and independently reads task/review/blocker tracker statuses. A verified landing seeds the existing closure-only machinery with the original head/range and associated bead IDs. No implementation, task review or merge is dispatched again. Already-closed associated beads need no closure repair; partially open sets use the existing close-only step, which independently checks statuses and closes only observed-open beads.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 522,
+          "byteEnd": 1153
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Unknown/denied Git or tracker observations, incomplete/contradictory status sets, missing exact heads and Git/ledger disagreement retain the original obligation/evidence and persist a scoped `hold` record with ID `resume:<task>`. No additional observation retry or implementation attempt is spent. Later successful reconciliation clears only this reconciler's own hold. Tracker-only Finish reconciliation cannot promote an affected Git mismatch to completed.\n",
+          "text": "Unknown/denied Git or tracker observations, incomplete/contradictory status sets, missing exact heads and Git/ledger disagreement retain the original obligation/evidence and persist a scoped `hold` record with ID `resume:<task>`. No additional observation retry or implementation attempt is spent. Later successful reconciliation clears only this reconciler's own hold. Tracker-only Finish reconciliation cannot promote an affected Git mismatch to completed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 20,
+          "lineEnd": 20,
+          "byteStart": 1154,
+          "byteEnd": 1613
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n",
+          "text": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1614,
+          "byteEnd": 2128
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All-closed recovery appends its clear(s) and completion together through the existing writer, and updates in-memory obligations only after that append is confirmed. An unavailable append retains the original obligation and explicit hold. Pending-closure updates retain additive top-level/data fields and original evidence. Fix history is neither reduced to the latest Task outcome nor replayed as repair work. Workflow and ordinary-subagent references describe the same ordering, scope and bounded observations.\n",
+          "text": "All-closed recovery appends its clear(s) and completion together through the existing writer, and updates in-memory obligations only after that append is confirmed. An unavailable append retains the original obligation and explicit hold. Pending-closure updates retain additive top-level/data fields and original evidence. Fix history is neither reduced to the latest Task outcome nor replayed as repair work. Workflow and ordinary-subagent references describe the same ordering, scope and bounded observations.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 2129,
+          "byteEnd": 2641
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No ledger-digest change was needed: task 4's landed bounded transport already preserves the required records. No replacement journal, tracker schema or retry engine was added. Historical dryRun/golden fixture blocks remain byte-for-byte unchanged; additive current scenarios extend the replay harness. One existing Recovery round-trip scenario supplies the new observation/closure answers without changing its assertions or expected values.\n",
+          "text": "No ledger-digest change was needed: task 4's landed bounded transport already preserves the required records. No replacement journal, tracker schema or retry engine was added. Historical dryRun/golden fixture blocks remain byte-for-byte unchanged; additive current scenarios extend the replay harness. One existing Recovery round-trip scenario supplies the new observation/closure answers without changing its assertions or expected values.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 2642,
+          "byteEnd": 3083
+        }
+      ]
+    },
+    {
+      "section": "Interfaces",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Interfaces\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Interfaces"
+      ],
+      "lineStart": 28,
+      "lineEnd": 35,
+      "byteStart": 3084,
+      "byteEnd": 4366,
+      "bodyLineStart": 29,
+      "rawText": "## Interfaces\n\nConsumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.\n\nGenerated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.\n\nRead the current bead and comments, task 4's landed record/digest report, task 5's independent evidence interface, the spec, and existing already-merged/closure/admission paths. Invocation identity handling from landed producer 8.1 is unchanged.\n\n",
+      "bodyRawText": "\nConsumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.\n\nGenerated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.\n\nRead the current bead and comments, task 4's landed record/digest report, task 5's independent evidence interface, the spec, and existing already-merged/closure/admission paths. Invocation identity handling from landed producer 8.1 is unchanged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Consumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.\n",
+          "text": "Consumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 3099,
+          "byteEnd": 3571
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Generated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.\n",
+          "text": "Generated reconciliation hold data includes `taskId`, `recoveryId`, and the current observation when available. Existing holds/deferred obligations have no universal automatic release condition; their owner supplies an explicit matching clear with evidence. Only `resume:<task>` holds are automatically cleared by successful fresh reconciliation. Unknown/additive record fields survive decoding and pending-closure updates. Task 7's `deferred.data.runFailure` diagnostic contract remains intact and does not create generic mandatory repair work.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 3572,
+          "byteEnd": 4118
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read the current bead and comments, task 4's landed record/digest report, task 5's independent evidence interface, the spec, and existing already-merged/closure/admission paths. Invocation identity handling from landed producer 8.1 is unchanged.\n",
+          "text": "Read the current bead and comments, task 4's landed record/digest report, task 5's independent evidence interface, the spec, and existing already-merged/closure/admission paths. Invocation identity handling from landed producer 8.1 is unchanged.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4119,
+          "byteEnd": 4365
+        }
+      ]
+    },
+    {
+      "section": "Tests and TDD",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Tests and TDD\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Tests and TDD"
+      ],
+      "lineStart": 36,
+      "lineEnd": 117,
+      "byteStart": 4366,
+      "byteEnd": 8672,
+      "bodyLineStart": 37,
+      "rawText": "## Tests and TDD\n\nAll commands below ran in the task worktree named above. Test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.12`.\n\nInitial RED before resume production changes:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] Recovery-only landing completes without repeated implementation/review/merge\n[FAIL] only observed-open closure dispatches repair\n[FAIL] resume verifies exact original SHA and all associated tracker statuses\n[FAIL] confirmed recovery is drained through durable clear records\n[FAIL] mismatch or unavailable observation holds affected work even when tracker claims closed\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n[FAIL] hold holds only affected work while unrelated work proceeds\n[FAIL] deferred holds only affected work while unrelated work proceeds\n[FAIL] persisted merge lane hold gates resumed admission until evidence clears it\n1966 passed, 24 failed\n```\n\nThese failures were expected: the baseline decoded Recovery data but did not reconcile pending closures or use restored obligations for admission. First GREEN after implementation/compatibility corrections: `1990 passed, 0 failed`.\n\nAdditional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.\n\nAdditional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.\n\nFinal verification on head `26cc469e06bab7b6dad98cb726326f949d1c486f`, after clean rebase onto `caf187cef8d1769da6184de42332a31bc7e30dcb`:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-rebased.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-dispatch-rebased.log 2>&1\n```\n\nBoth commands exited 0:\n\n```text\n2074 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nThe rebased count includes the landed process-recurrence task's checks. Replay includes all three documented dryRun scenarios and their expected dispatch counts; no historical expected count or JSON fixture changed. The dispatch-text check covers callers of the coordinator prompt helpers. `git diff --check` passed.\n\nAdditive scenarios cover Recovery-only landing with empty readiness and a closed root; fully/partially closed tracker sets; exact original SHA/association lookup; second restart after durable clear; Git mismatch; denied Git/tracker lookups; null and partial observations; release of a persisted reconciliation hold after later verification; failed closure metadata preservation; interrupted clear persistence; scoped hold/deferred admission with unrelated work; merge-lane holds; and diagnostic runFailure preservation. Assertions fail on duplicate implementation/review/merge or closure repair, missing required associations/SHA, incorrectly completed mismatch, extra observation retries, lost obligations/extensions/evidence, cleared foreign holds, affected dispatch, unrelated suppression, or invented generic repair work.\n\n",
+      "bodyRawText": "\nAll commands below ran in the task worktree named above. Test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.12`.\n\nInitial RED before resume production changes:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] Recovery-only landing completes without repeated implementation/review/merge\n[FAIL] only observed-open closure dispatches repair\n[FAIL] resume verifies exact original SHA and all associated tracker statuses\n[FAIL] confirmed recovery is drained through durable clear records\n[FAIL] mismatch or unavailable observation holds affected work even when tracker claims closed\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n[FAIL] hold holds only affected work while unrelated work proceeds\n[FAIL] deferred holds only affected work while unrelated work proceeds\n[FAIL] persisted merge lane hold gates resumed admission until evidence clears it\n1966 passed, 24 failed\n```\n\nThese failures were expected: the baseline decoded Recovery data but did not reconcile pending closures or use restored obligations for admission. First GREEN after implementation/compatibility corrections: `1990 passed, 0 failed`.\n\nAdditional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.\n\nAdditional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.\n\nFinal verification on head `26cc469e06bab7b6dad98cb726326f949d1c486f`, after clean rebase onto `caf187cef8d1769da6184de42332a31bc7e30dcb`:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-rebased.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-dispatch-rebased.log 2>&1\n```\n\nBoth commands exited 0:\n\n```text\n2074 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nThe rebased count includes the landed process-recurrence task's checks. Replay includes all three documented dryRun scenarios and their expected dispatch counts; no historical expected count or JSON fixture changed. The dispatch-text check covers callers of the coordinator prompt helpers. `git diff --check` passed.\n\nAdditive scenarios cover Recovery-only landing with empty readiness and a closed root; fully/partially closed tracker sets; exact original SHA/association lookup; second restart after durable clear; Git mismatch; denied Git/tracker lookups; null and partial observations; release of a persisted reconciliation hold after later verification; failed closure metadata preservation; interrupted clear persistence; scoped hold/deferred admission with unrelated work; merge-lane holds; and diagnostic runFailure preservation. Assertions fail on duplicate implementation/review/merge or closure repair, missing required associations/SHA, incorrectly completed mismatch, extra observation retries, lost obligations/extensions/evidence, cleared foreign holds, affected dispatch, unrelated suppression, or invented generic repair work.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands below ran in the task worktree named above. Test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.12`.\n",
+          "text": "All commands below ran in the task worktree named above. Test temporary state used `/tmp/sp-bce79baa/super-plan-ufz.12`.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 4384,
+          "byteEnd": 4505
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Initial RED before resume production changes:\n",
+          "text": "Initial RED before resume production changes:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 4506,
+          "byteEnd": 4552
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 42,
+          "lineEnd": 44,
+          "byteStart": 4553,
+          "byteEnd": 4677
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1:\n",
+          "text": "Exit 1:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 4678,
+          "byteEnd": 4686
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] Recovery-only landing completes without repeated implementation/review/merge\n[FAIL] only observed-open closure dispatches repair\n[FAIL] resume verifies exact original SHA and all associated tracker statuses\n[FAIL] confirmed recovery is drained through durable clear records\n[FAIL] mismatch or unavailable observation holds affected work even when tracker claims closed\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n[FAIL] hold holds only affected work while unrelated work proceeds\n[FAIL] deferred holds only affected work while unrelated work proceeds\n[FAIL] persisted merge lane hold gates resumed admission until evidence clears it\n1966 passed, 24 failed\n```\n",
+          "text": "```text\n[FAIL] Recovery-only landing completes without repeated implementation/review/merge\n[FAIL] only observed-open closure dispatches repair\n[FAIL] resume verifies exact original SHA and all associated tracker statuses\n[FAIL] confirmed recovery is drained through durable clear records\n[FAIL] mismatch or unavailable observation holds affected work even when tracker claims closed\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n[FAIL] hold holds only affected work while unrelated work proceeds\n[FAIL] deferred holds only affected work while unrelated work proceeds\n[FAIL] persisted merge lane hold gates resumed admission until evidence clears it\n1966 passed, 24 failed\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 48,
+          "lineEnd": 61,
+          "byteStart": 4687,
+          "byteEnd": 5524
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "These failures were expected: the baseline decoded Recovery data but did not reconcile pending closures or use restored obligations for admission. First GREEN after implementation/compatibility corrections: `1990 passed, 0 failed`.\n",
+          "text": "These failures were expected: the baseline decoded Recovery data but did not reconcile pending closures or use restored obligations for admission. First GREEN after implementation/compatibility corrections: `1990 passed, 0 failed`.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 63,
+          "lineEnd": 63,
+          "byteStart": 5525,
+          "byteEnd": 5757
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Additional interrupted-clear RED:\n",
+          "text": "Additional interrupted-clear RED:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 65,
+          "lineEnd": 65,
+          "byteStart": 5758,
+          "byteEnd": 5792
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 67,
+          "lineEnd": 69,
+          "byteStart": 5793,
+          "byteEnd": 5928
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1:\n",
+          "text": "Exit 1:",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 71,
+          "lineEnd": 71,
+          "byteStart": 5929,
+          "byteEnd": 5937
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n",
+          "text": "```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 73,
+          "lineEnd": 76,
+          "byteStart": 5938,
+          "byteEnd": 6051
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Expected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.\n",
+          "text": "Expected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 78,
+          "lineEnd": 78,
+          "byteStart": 6052,
+          "byteEnd": 6278
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Additional incomplete-observation RED:\n",
+          "text": "Additional incomplete-observation RED:",
+          "listMarker": null,
+          "positionInSection": 12,
+          "lineStart": 80,
+          "lineEnd": 80,
+          "byteStart": 6279,
+          "byteEnd": 6318
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 13,
+          "lineStart": 82,
+          "lineEnd": 84,
+          "byteStart": 6319,
+          "byteEnd": 6454
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1:\n",
+          "text": "Exit 1:",
+          "listMarker": null,
+          "positionInSection": 14,
+          "lineStart": 86,
+          "lineEnd": 86,
+          "byteStart": 6455,
+          "byteEnd": 6463
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n",
+          "text": "```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```",
+          "listMarker": null,
+          "positionInSection": 15,
+          "lineStart": 88,
+          "lineEnd": 95,
+          "byteStart": 6464,
+          "byteEnd": 6810
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Expected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.\n",
+          "text": "Expected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`.",
+          "listMarker": null,
+          "positionInSection": 16,
+          "lineStart": 97,
+          "lineEnd": 97,
+          "byteStart": 6811,
+          "byteEnd": 6985
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final verification on head `26cc469e06bab7b6dad98cb726326f949d1c486f`, after clean rebase onto `caf187cef8d1769da6184de42332a31bc7e30dcb`:\n",
+          "text": "Final verification on head `26cc469e06bab7b6dad98cb726326f949d1c486f`, after clean rebase onto `caf187cef8d1769da6184de42332a31bc7e30dcb`:",
+          "listMarker": null,
+          "positionInSection": 17,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "byteStart": 6986,
+          "byteEnd": 7125
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-rebased.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-dispatch-rebased.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-rebased.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-dispatch-rebased.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 18,
+          "lineStart": 101,
+          "lineEnd": 104,
+          "byteStart": 7126,
+          "byteEnd": 7384
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both commands exited 0:\n",
+          "text": "Both commands exited 0:",
+          "listMarker": null,
+          "positionInSection": 19,
+          "lineStart": 106,
+          "lineEnd": 106,
+          "byteStart": 7385,
+          "byteEnd": 7409
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n2074 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n2074 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 20,
+          "lineStart": 108,
+          "lineEnd": 112,
+          "byteStart": 7410,
+          "byteEnd": 7526
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The rebased count includes the landed process-recurrence task's checks. Replay includes all three documented dryRun scenarios and their expected dispatch counts; no historical expected count or JSON fixture changed. The dispatch-text check covers callers of the coordinator prompt helpers. `git diff --check` passed.\n",
+          "text": "The rebased count includes the landed process-recurrence task's checks. Replay includes all three documented dryRun scenarios and their expected dispatch counts; no historical expected count or JSON fixture changed. The dispatch-text check covers callers of the coordinator prompt helpers. `git diff --check` passed.",
+          "listMarker": null,
+          "positionInSection": 21,
+          "lineStart": 114,
+          "lineEnd": 114,
+          "byteStart": 7527,
+          "byteEnd": 7844
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Additive scenarios cover Recovery-only landing with empty readiness and a closed root; fully/partially closed tracker sets; exact original SHA/association lookup; second restart after durable clear; Git mismatch; denied Git/tracker lookups; null and partial observations; release of a persisted reconciliation hold after later verification; failed closure metadata preservation; interrupted clear persistence; scoped hold/deferred admission with unrelated work; merge-lane holds; and diagnostic runFailure preservation. Assertions fail on duplicate implementation/review/merge or closure repair, missing required associations/SHA, incorrectly completed mismatch, extra observation retries, lost obligations/extensions/evidence, cleared foreign holds, affected dispatch, unrelated suppression, or invented generic repair work.\n",
+          "text": "Additive scenarios cover Recovery-only landing with empty readiness and a closed root; fully/partially closed tracker sets; exact original SHA/association lookup; second restart after durable clear; Git mismatch; denied Git/tracker lookups; null and partial observations; release of a persisted reconciliation hold after later verification; failed closure metadata preservation; interrupted clear persistence; scoped hold/deferred admission with unrelated work; merge-lane holds; and diagnostic runFailure preservation. Assertions fail on duplicate implementation/review/merge or closure repair, missing required associations/SHA, incorrectly completed mismatch, extra observation retries, lost obligations/extensions/evidence, cleared foreign holds, affected dispatch, unrelated suppression, or invented generic repair work.",
+          "listMarker": null,
+          "positionInSection": 22,
+          "lineStart": 116,
+          "lineEnd": 116,
+          "byteStart": 7845,
+          "byteEnd": 8671
+        }
+      ]
+    },
+    {
+      "section": "Files changed",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Files changed\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Files changed"
+      ],
+      "lineStart": 118,
+      "lineEnd": 124,
+      "byteStart": 8672,
+      "byteEnd": 8853,
+      "bodyLineStart": 119,
+      "rawText": "## Files changed\n\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "bodyRawText": "\n- skills/super-code/coordinator.js\n- skills/super-code/coordinator-workflow.md\n- skills/super-code/coordinator-subagents.md\n- tests/super-code/replay-harness.mjs\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator.js\n",
+          "text": "skills/super-code/coordinator.js",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 120,
+          "lineEnd": 120,
+          "byteStart": 8690,
+          "byteEnd": 8725
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-workflow.md\n",
+          "text": "skills/super-code/coordinator-workflow.md",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 121,
+          "lineEnd": 121,
+          "byteStart": 8725,
+          "byteEnd": 8769
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-code/coordinator-subagents.md\n",
+          "text": "skills/super-code/coordinator-subagents.md",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 122,
+          "lineEnd": 122,
+          "byteStart": 8769,
+          "byteEnd": 8814
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- tests/super-code/replay-harness.mjs\n",
+          "text": "tests/super-code/replay-harness.mjs",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 123,
+          "lineEnd": 123,
+          "byteStart": 8814,
+          "byteEnd": 8852
+        }
+      ]
+    },
+    {
+      "section": "Toolchain provenance",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Toolchain provenance\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Toolchain provenance"
+      ],
+      "lineStart": 125,
+      "lineEnd": 128,
+      "byteStart": 8853,
+      "byteEnd": 9332,
+      "bodyLineStart": 126,
+      "rawText": "## Toolchain provenance\n\nNo installation/setup step is needed by this zero-dependency replay harness. Node realpaths confirmed both the test runner and package-under-test inside this task worktree. The product coordinator runs through the replay AsyncFunction runtime; no live product invocation or ad-hoc product probe used the real HOME. Tests used the assigned TMPDIR. Logs were task-local and removed after preserving the exact commands and relevant outputs in this report.\n\n",
+      "bodyRawText": "\nNo installation/setup step is needed by this zero-dependency replay harness. Node realpaths confirmed both the test runner and package-under-test inside this task worktree. The product coordinator runs through the replay AsyncFunction runtime; no live product invocation or ad-hoc product probe used the real HOME. Tests used the assigned TMPDIR. Logs were task-local and removed after preserving the exact commands and relevant outputs in this report.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No installation/setup step is needed by this zero-dependency replay harness. Node realpaths confirmed both the test runner and package-under-test inside this task worktree. The product coordinator runs through the replay AsyncFunction runtime; no live product invocation or ad-hoc product probe used the real HOME. Tests used the assigned TMPDIR. Logs were task-local and removed after preserving the exact commands and relevant outputs in this report.\n",
+          "text": "No installation/setup step is needed by this zero-dependency replay harness. Node realpaths confirmed both the test runner and package-under-test inside this task worktree. The product coordinator runs through the replay AsyncFunction runtime; no live product invocation or ad-hoc product probe used the real HOME. Tests used the assigned TMPDIR. Logs were task-local and removed after preserving the exact commands and relevant outputs in this report.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 127,
+          "lineEnd": 127,
+          "byteStart": 8878,
+          "byteEnd": 9331
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Test hygiene"
+      ],
+      "lineStart": 129,
+      "lineEnd": 134,
+      "byteStart": 9332,
+      "byteEnd": 9998,
+      "bodyLineStart": 130,
+      "rawText": "## Test hygiene\n\nEvery completed-run process check exited 0 with empty output: no leaked process. Final `stop-run-processes --check <task worktree> /tmp/sp-bce79baa/super-plan-ufz.12` and `stop-run-processes <same roots>` both exited 0 with empty output; there were no stopped/survived lines and no remaining background process.\n\nOne early check was accidentally made while initial RED replay was still running. Its `match:` lines named the active harness PID 61224 and temporary fixture PIDs 93513, 93543, 97709 and 97712. They were ongoing tests, not post-run leaks, and exited naturally before the completed-run check. No process was stopped by name or pattern.\n\n",
+      "bodyRawText": "\nEvery completed-run process check exited 0 with empty output: no leaked process. Final `stop-run-processes --check <task worktree> /tmp/sp-bce79baa/super-plan-ufz.12` and `stop-run-processes <same roots>` both exited 0 with empty output; there were no stopped/survived lines and no remaining background process.\n\nOne early check was accidentally made while initial RED replay was still running. Its `match:` lines named the active harness PID 61224 and temporary fixture PIDs 93513, 93543, 97709 and 97712. They were ongoing tests, not post-run leaks, and exited naturally before the completed-run check. No process was stopped by name or pattern.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Every completed-run process check exited 0 with empty output: no leaked process. Final `stop-run-processes --check <task worktree> /tmp/sp-bce79baa/super-plan-ufz.12` and `stop-run-processes <same roots>` both exited 0 with empty output; there were no stopped/survived lines and no remaining background process.\n",
+          "text": "Every completed-run process check exited 0 with empty output: no leaked process. Final `stop-run-processes --check <task worktree> /tmp/sp-bce79baa/super-plan-ufz.12` and `stop-run-processes <same roots>` both exited 0 with empty output; there were no stopped/survived lines and no remaining background process.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 131,
+          "lineEnd": 131,
+          "byteStart": 9349,
+          "byteEnd": 9661
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "One early check was accidentally made while initial RED replay was still running. Its `match:` lines named the active harness PID 61224 and temporary fixture PIDs 93513, 93543, 97709 and 97712. They were ongoing tests, not post-run leaks, and exited naturally before the completed-run check. No process was stopped by name or pattern.\n",
+          "text": "One early check was accidentally made while initial RED replay was still running. Its `match:` lines named the active harness PID 61224 and temporary fixture PIDs 93513, 93543, 97709 and 97712. They were ongoing tests, not post-run leaks, and exited naturally before the completed-run check. No process was stopped by name or pattern.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 133,
+          "lineEnd": 133,
+          "byteStart": 9662,
+          "byteEnd": 9997
+        }
+      ]
+    },
+    {
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Assumptions\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Assumptions"
+      ],
+      "lineStart": 135,
+      "lineEnd": 138,
+      "byteStart": 9998,
+      "byteEnd": 10604,
+      "bodyLineStart": 136,
+      "rawText": "## Assumptions\n\nCurrent task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n\n",
+      "bodyRawText": "\nCurrent task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n",
+          "text": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 137,
+          "lineEnd": 137,
+          "byteStart": 10014,
+          "byteEnd": 10603
+        }
+      ]
+    },
+    {
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Concerns\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "lineStart": 139,
+      "lineEnd": 142,
+      "byteStart": 10604,
+      "byteEnd": 11182,
+      "bodyLineStart": 140,
+      "rawText": "## Concerns\n\nNo deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n\n",
+      "bodyRawText": "\nNo deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n",
+          "text": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 141,
+          "lineEnd": 141,
+          "byteStart": 10617,
+          "byteEnd": 11181
+        }
+      ]
+    },
+    {
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "headingLevel": 2,
+      "headingRaw": "## Fix pass\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "lineStart": 143,
+      "lineEnd": 157,
+      "byteStart": 11182,
+      "byteEnd": 13341,
+      "bodyLineStart": 144,
+      "rawText": "## Fix pass\n\nStatus: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.\n\nThe Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n\nThe fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n\nFiles changed in the fix commit:\n\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nThe additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n\n",
+      "bodyRawText": "\nStatus: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.\n\nThe Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n\nThe fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n\nFiles changed in the fix commit:\n\n- `skills/super-code/coordinator.js`\n- `tests/super-code/replay-harness.mjs`\n\nThe additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.\n",
+          "text": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 145,
+          "lineEnd": 145,
+          "byteStart": 11195,
+          "byteEnd": 11479
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+          "text": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 147,
+          "lineEnd": 147,
+          "byteStart": 11480,
+          "byteEnd": 11889
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n",
+          "text": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 149,
+          "lineEnd": 149,
+          "byteStart": 11890,
+          "byteEnd": 12500
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Files changed in the fix commit:\n",
+          "text": "Files changed in the fix commit:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 151,
+          "lineEnd": 151,
+          "byteStart": 12501,
+          "byteEnd": 12534
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `skills/super-code/coordinator.js`\n",
+          "text": "`skills/super-code/coordinator.js`",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 153,
+          "lineEnd": 153,
+          "byteStart": 12535,
+          "byteEnd": 12572
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+          "text": "`tests/super-code/replay-harness.mjs`",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 154,
+          "lineEnd": 154,
+          "byteStart": 12572,
+          "byteEnd": 12612
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n",
+          "text": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 156,
+          "lineEnd": 156,
+          "byteStart": 12613,
+          "byteEnd": 13340
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN evidence",
+      "sectionOrdinal": 11,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN evidence\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass",
+        "RED/GREEN evidence"
+      ],
+      "lineStart": 158,
+      "lineEnd": 197,
+      "byteStart": 13341,
+      "byteEnd": 15281,
+      "bodyLineStart": 159,
+      "rawText": "### RED/GREEN evidence\n\nCommands ran in the assigned task worktree, with the assigned temporary root. RED ran after adding the fixture and before production edits:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-red.log 2>&1\n```\n\nExit 1, expected assertion failures in each persistence-failure variant:\n\n```text\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n2086 passed, 4 failed\n```\n\nFinal GREEN and caller regression commands:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-fix-dispatch.log 2>&1\ngit diff --check\n```\n\nAll exited 0. Relevant output:\n\n```text\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] restart settles partial closure after its durable clear is confirmed\n2090 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nBoth failure variants pass these assertions. The full replay run covers `confirmClosure`, both `closeAlreadyMerged` re-entry routes and their callers, and the existing buffered-ledger callers; dispatch-text supplies the existing prompt-builder regression. No narrower replay filter is available. Neither command exceeded a few minutes. Task-local logs were removed after recording their commands and relevant output here.\n\n",
+      "bodyRawText": "\nCommands ran in the assigned task worktree, with the assigned temporary root. RED ran after adding the fixture and before production edits:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-red.log 2>&1\n```\n\nExit 1, expected assertion failures in each persistence-failure variant:\n\n```text\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n2086 passed, 4 failed\n```\n\nFinal GREEN and caller regression commands:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-fix-dispatch.log 2>&1\ngit diff --check\n```\n\nAll exited 0. Relevant output:\n\n```text\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] restart settles partial closure after its durable clear is confirmed\n2090 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nBoth failure variants pass these assertions. The full replay run covers `confirmClosure`, both `closeAlreadyMerged` re-entry routes and their callers, and the existing buffered-ledger callers; dispatch-text supplies the existing prompt-builder regression. No narrower replay filter is available. Neither command exceeded a few minutes. Task-local logs were removed after recording their commands and relevant output here.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Commands ran in the assigned task worktree, with the assigned temporary root. RED ran after adding the fixture and before production edits:\n",
+          "text": "Commands ran in the assigned task worktree, with the assigned temporary root. RED ran after adding the fixture and before production edits:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 160,
+          "lineEnd": 160,
+          "byteStart": 13365,
+          "byteEnd": 13505
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 162,
+          "lineEnd": 164,
+          "byteStart": 13506,
+          "byteEnd": 13634
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, expected assertion failures in each persistence-failure variant:\n",
+          "text": "Exit 1, expected assertion failures in each persistence-failure variant:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 166,
+          "lineEnd": 166,
+          "byteStart": 13635,
+          "byteEnd": 13708
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n2086 passed, 4 failed\n```\n",
+          "text": "```text\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n[FAIL] failed partial-close append holds recovery instead of reporting completed\n[FAIL] failed partial-close append retains the exact original obligation\n2086 passed, 4 failed\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 168,
+          "lineEnd": 174,
+          "byteStart": 13709,
+          "byteEnd": 14051
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Final GREEN and caller regression commands:\n",
+          "text": "Final GREEN and caller regression commands:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 176,
+          "lineEnd": 176,
+          "byteStart": 14052,
+          "byteEnd": 14096
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-fix-dispatch.log 2>&1\ngit diff --check\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-fix-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 bash tests/super-code/test-dispatch-text.sh > evidence-task12-fix-dispatch.log 2>&1\ngit diff --check\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 178,
+          "lineEnd": 182,
+          "byteStart": 14097,
+          "byteEnd": 14370
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All exited 0. Relevant output:\n",
+          "text": "All exited 0. Relevant output:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 184,
+          "lineEnd": 184,
+          "byteStart": 14371,
+          "byteEnd": 14402
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] restart settles partial closure after its durable clear is confirmed\n2090 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] restart settles partial closure after its durable clear is confirmed\n2090 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 186,
+          "lineEnd": 194,
+          "byteStart": 14403,
+          "byteEnd": 14857
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both failure variants pass these assertions. The full replay run covers `confirmClosure`, both `closeAlreadyMerged` re-entry routes and their callers, and the existing buffered-ledger callers; dispatch-text supplies the existing prompt-builder regression. No narrower replay filter is available. Neither command exceeded a few minutes. Task-local logs were removed after recording their commands and relevant output here.\n",
+          "text": "Both failure variants pass these assertions. The full replay run covers `confirmClosure`, both `closeAlreadyMerged` re-entry routes and their callers, and the existing buffered-ledger callers; dispatch-text supplies the existing prompt-builder regression. No narrower replay filter is available. Neither command exceeded a few minutes. Task-local logs were removed after recording their commands and relevant output here.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 196,
+          "lineEnd": 196,
+          "byteStart": 14858,
+          "byteEnd": 15280
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene, assumptions and concerns",
+      "sectionOrdinal": 12,
+      "headingLevel": 3,
+      "headingRaw": "### Test hygiene, assumptions and concerns\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass",
+        "Test hygiene, assumptions and concerns"
+      ],
+      "lineStart": 198,
+      "lineEnd": 203,
+      "byteStart": 15281,
+      "byteEnd": 16449,
+      "bodyLineStart": 199,
+      "rawText": "### Test hygiene, assumptions and concerns\n\nCompleted-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n\nThe current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n\n",
+      "bodyRawText": "\nCompleted-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n\nThe current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n",
+          "text": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 200,
+          "lineEnd": 200,
+          "byteStart": 15325,
+          "byteEnd": 15980
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+          "text": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 202,
+          "lineEnd": 202,
+          "byteStart": 15981,
+          "byteEnd": 16448
+        }
+      ]
+    },
+    {
+      "section": "Seam fix",
+      "sectionOrdinal": 13,
+      "headingLevel": 2,
+      "headingRaw": "## Seam fix\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "lineStart": 204,
+      "lineEnd": 213,
+      "byteStart": 16449,
+      "byteEnd": 18727,
+      "bodyLineStart": 205,
+      "rawText": "## Seam fix\n\nStatus: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.\n\nThe finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n\nThe repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.\n\nNo production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.\n\n",
+      "bodyRawText": "\nStatus: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.\n\nThe finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n\nThe repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.\n\nNo production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.\n",
+          "text": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 206,
+          "lineEnd": 206,
+          "byteStart": 16462,
+          "byteEnd": 16890
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n",
+          "text": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 208,
+          "lineEnd": 208,
+          "byteStart": 16891,
+          "byteEnd": 17367
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.\n",
+          "text": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 210,
+          "lineEnd": 210,
+          "byteStart": 17368,
+          "byteEnd": 18304
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.\n",
+          "text": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 212,
+          "lineEnd": 212,
+          "byteStart": 18305,
+          "byteEnd": 18726
+        }
+      ]
+    },
+    {
+      "section": "RED/GREEN and overlap verification",
+      "sectionOrdinal": 14,
+      "headingLevel": 3,
+      "headingRaw": "### RED/GREEN and overlap verification\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix",
+        "RED/GREEN and overlap verification"
+      ],
+      "lineStart": 214,
+      "lineEnd": 262,
+      "byteStart": 18727,
+      "byteEnd": 22221,
+      "bodyLineStart": 215,
+      "rawText": "### RED/GREEN and overlap verification\n\nAll commands ran from the assigned task worktree. Every test used the following environment prefix (HOME and all configured XDG homes remain task-local):\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state\n```\n\nExact RED command before editing:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-red.log 2>&1\n```\n\nExit 1, exactly the expected two schema-incompatibility failures:\n\n```text\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n2118 passed, 2 failed\n```\n\nExact final GREEN and overlapping prompt-surface regression commands:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state bash tests/super-code/test-dispatch-text.sh > evidence-task12-seam-dispatch.log 2>&1\ngit diff --check\n```\n\nAll exited 0. Relevant GREEN output (the three diagnostic assertions run for both variants):\n\n```text\n[PASS] runFailure diagnostics survive without becoming generic repair work\n[PASS] unscoped diagnostic retains its open introducing owner alongside unrelated admission\n[PASS] resumed diagnostic exposes the original source-bound baseline and failing observation\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] B base exoneration retains A run ownership after durable re-entry\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] missing-evidence: live aliases share exactly one count\n2124 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nThe full replay exercises overlapping coordinator behavior and workflow dryRun scenarios, pending-closure writer failure/restart paths, ownership and malformed diagnostic history contracts, and alias recurrence identity. Dispatch-text exercises existing prompt builders and callers. There is no narrower replay filter. Neither command exceeded a few minutes. Captured scratch logs were removed after preserving commands and verdicts here. Final task working tree is clean.\n\n",
+      "bodyRawText": "\nAll commands ran from the assigned task worktree. Every test used the following environment prefix (HOME and all configured XDG homes remain task-local):\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state\n```\n\nExact RED command before editing:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-red.log 2>&1\n```\n\nExit 1, exactly the expected two schema-incompatibility failures:\n\n```text\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n2118 passed, 2 failed\n```\n\nExact final GREEN and overlapping prompt-surface regression commands:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state bash tests/super-code/test-dispatch-text.sh > evidence-task12-seam-dispatch.log 2>&1\ngit diff --check\n```\n\nAll exited 0. Relevant GREEN output (the three diagnostic assertions run for both variants):\n\n```text\n[PASS] runFailure diagnostics survive without becoming generic repair work\n[PASS] unscoped diagnostic retains its open introducing owner alongside unrelated admission\n[PASS] resumed diagnostic exposes the original source-bound baseline and failing observation\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] B base exoneration retains A run ownership after durable re-entry\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] missing-evidence: live aliases share exactly one count\n2124 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n\nThe full replay exercises overlapping coordinator behavior and workflow dryRun scenarios, pending-closure writer failure/restart paths, ownership and malformed diagnostic history contracts, and alias recurrence identity. Dispatch-text exercises existing prompt builders and callers. There is no narrower replay filter. Neither command exceeded a few minutes. Captured scratch logs were removed after preserving commands and verdicts here. Final task working tree is clean.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "All commands ran from the assigned task worktree. Every test used the following environment prefix (HOME and all configured XDG homes remain task-local):\n",
+          "text": "All commands ran from the assigned task worktree. Every test used the following environment prefix (HOME and all configured XDG homes remain task-local):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 216,
+          "lineEnd": 216,
+          "byteStart": 18767,
+          "byteEnd": 18921
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 218,
+          "lineEnd": 220,
+          "byteStart": 18922,
+          "byteEnd": 19243
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact RED command before editing:\n",
+          "text": "Exact RED command before editing:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 222,
+          "lineEnd": 222,
+          "byteStart": 19244,
+          "byteEnd": 19278
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-red.log 2>&1\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-red.log 2>&1\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 224,
+          "lineEnd": 226,
+          "byteStart": 19279,
+          "byteEnd": 19677
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exit 1, exactly the expected two schema-incompatibility failures:\n",
+          "text": "Exit 1, exactly the expected two schema-incompatibility failures:",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 228,
+          "lineEnd": 228,
+          "byteStart": 19678,
+          "byteEnd": 19744
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n2118 passed, 2 failed\n```\n",
+          "text": "```text\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n[FAIL] runFailure diagnostics survive without becoming generic repair work\n2118 passed, 2 failed\n```",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 230,
+          "lineEnd": 234,
+          "byteStart": 19745,
+          "byteEnd": 19929
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exact final GREEN and overlapping prompt-surface regression commands:\n",
+          "text": "Exact final GREEN and overlapping prompt-surface regression commands:",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 236,
+          "lineEnd": 236,
+          "byteStart": 19930,
+          "byteEnd": 20000
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state bash tests/super-code/test-dispatch-text.sh > evidence-task12-seam-dispatch.log 2>&1\ngit diff --check\n```\n",
+          "text": "```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state node tests/super-code/replay-harness.mjs > evidence-task12-seam-green.log 2>&1\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 HOME=/tmp/sp-bce79baa/super-plan-ufz.12/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/config XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/cache XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/data XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.12/state bash tests/super-code/test-dispatch-text.sh > evidence-task12-seam-dispatch.log 2>&1\ngit diff --check\n```",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 238,
+          "lineEnd": 242,
+          "byteStart": 20001,
+          "byteEnd": 20814
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "All exited 0. Relevant GREEN output (the three diagnostic assertions run for both variants):\n",
+          "text": "All exited 0. Relevant GREEN output (the three diagnostic assertions run for both variants):",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 244,
+          "lineEnd": 244,
+          "byteStart": 20815,
+          "byteEnd": 20908
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```text\n[PASS] runFailure diagnostics survive without becoming generic repair work\n[PASS] unscoped diagnostic retains its open introducing owner alongside unrelated admission\n[PASS] resumed diagnostic exposes the original source-bound baseline and failing observation\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] B base exoneration retains A run ownership after durable re-entry\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] missing-evidence: live aliases share exactly one count\n2124 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```\n",
+          "text": "```text\n[PASS] runFailure diagnostics survive without becoming generic repair work\n[PASS] unscoped diagnostic retains its open introducing owner alongside unrelated admission\n[PASS] resumed diagnostic exposes the original source-bound baseline and failing observation\n[PASS] failed partial-close append holds recovery instead of reporting completed\n[PASS] failed partial-close append retains the exact original obligation\n[PASS] restart after failed partial-close append observes facts without repeating closure or implementation\n[PASS] B base exoneration retains A run ownership after durable re-entry\n[PASS] cleanup-inspection: live aliases share exactly one count\n[PASS] missing-evidence: live aliases share exactly one count\n2124 passed, 0 failed\n[PASS] the help's kinds all parse (missing: none)\ndispatch-text: all tests passed\n```",
+          "listMarker": null,
+          "positionInSection": 10,
+          "lineStart": 246,
+          "lineEnd": 259,
+          "byteStart": 20909,
+          "byteEnd": 21746
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The full replay exercises overlapping coordinator behavior and workflow dryRun scenarios, pending-closure writer failure/restart paths, ownership and malformed diagnostic history contracts, and alias recurrence identity. Dispatch-text exercises existing prompt builders and callers. There is no narrower replay filter. Neither command exceeded a few minutes. Captured scratch logs were removed after preserving commands and verdicts here. Final task working tree is clean.\n",
+          "text": "The full replay exercises overlapping coordinator behavior and workflow dryRun scenarios, pending-closure writer failure/restart paths, ownership and malformed diagnostic history contracts, and alias recurrence identity. Dispatch-text exercises existing prompt builders and callers. There is no narrower replay filter. Neither command exceeded a few minutes. Captured scratch logs were removed after preserving commands and verdicts here. Final task working tree is clean.",
+          "listMarker": null,
+          "positionInSection": 11,
+          "lineStart": 261,
+          "lineEnd": 261,
+          "byteStart": 21747,
+          "byteEnd": 22220
+        }
+      ]
+    },
+    {
+      "section": "Test hygiene",
+      "sectionOrdinal": 15,
+      "headingLevel": 3,
+      "headingRaw": "### Test hygiene\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix",
+        "Test hygiene"
+      ],
+      "lineStart": 263,
+      "lineEnd": 272,
+      "byteStart": 22221,
+      "byteEnd": 22929,
+      "bodyLineStart": 264,
+      "rawText": "### Test hygiene\n\nAfter each completed RED, GREEN and dispatch run, the following command ran from `/Users/alepar/AleCode/superpowers` (outside the checked roots):\n\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12 /tmp/sp-bce79baa/super-plan-ufz.12\n```\n\nEach exited 0 with empty output: no match, no leak. Final task-scoped stop command with the same roots and without `--check` also exited 0 with empty output; no stopped or survived lines. No background process remains.\n\n",
+      "bodyRawText": "\nAfter each completed RED, GREEN and dispatch run, the following command ran from `/Users/alepar/AleCode/superpowers` (outside the checked roots):\n\n```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12 /tmp/sp-bce79baa/super-plan-ufz.12\n```\n\nEach exited 0 with empty output: no match, no leak. Final task-scoped stop command with the same roots and without `--check` also exited 0 with empty output; no stopped or survived lines. No background process remains.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "After each completed RED, GREEN and dispatch run, the following command ran from `/Users/alepar/AleCode/superpowers` (outside the checked roots):\n",
+          "text": "After each completed RED, GREEN and dispatch run, the following command ran from `/Users/alepar/AleCode/superpowers` (outside the checked roots):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 265,
+          "lineEnd": 265,
+          "byteStart": 22239,
+          "byteEnd": 22385
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12 /tmp/sp-bce79baa/super-plan-ufz.12\n```\n",
+          "text": "```sh\nbash /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.12 /tmp/sp-bce79baa/super-plan-ufz.12\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 267,
+          "lineEnd": 269,
+          "byteStart": 22386,
+          "byteEnd": 22708
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Each exited 0 with empty output: no match, no leak. Final task-scoped stop command with the same roots and without `--check` also exited 0 with empty output; no stopped or survived lines. No background process remains.\n",
+          "text": "Each exited 0 with empty output: no match, no leak. Final task-scoped stop command with the same roots and without `--check` also exited 0 with empty output; no stopped or survived lines. No background process remains.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 271,
+          "lineEnd": 271,
+          "byteStart": 22709,
+          "byteEnd": 22928
+        }
+      ]
+    },
+    {
+      "section": "Assumptions and concerns",
+      "sectionOrdinal": 16,
+      "headingLevel": 3,
+      "headingRaw": "### Assumptions and concerns\n",
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix",
+        "Assumptions and concerns"
+      ],
+      "lineStart": 273,
+      "lineEnd": 275,
+      "byteStart": 22929,
+      "byteEnd": 23500,
+      "bodyLineStart": 274,
+      "rawText": "### Assumptions and concerns\n\nRead current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "bodyRawText": "\nRead current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+          "text": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 275,
+          "lineEnd": 275,
+          "byteStart": 22959,
+          "byteEnd": 23500
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: IMPLEMENTED",
+      "text": "Status: IMPLEMENTED",
+      "rawText": "Status: IMPLEMENTED\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 20,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Implementation",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Implementation"
+      ],
+      "positionInSection": 3,
+      "key": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.",
+      "text": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.",
+      "rawText": "Other persisted holds and explicitly scoped deferred obligations gate admission for the affected task and its consumers. `merge-lane` holds all admission; task holds can name their task via ID or `data.taskId`; scoped hold/deferred records can use `data.affectedIds`. Unrelated eligible work continues, and unresolved restored admission obligations return `recovery-held`. Unscoped caller-owned sweeps and additive `data.runFailure` diagnostics remain visible obligations without automatic generic repair routing.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1614,
+      "byteEnd": 2128,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Interfaces",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Interfaces"
+      ],
+      "positionInSection": 1,
+      "key": "Consumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.",
+      "text": "Consumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.",
+      "rawText": "Consumes task 4's `Recovery: {version:1,id,kind,operation,reason,evidence,data}` contract and bounded gaps unchanged. Existing `recovery: {obligations,fixHistory,gaps}` return shape is retained. A new read-only dispatch response is `{landed:boolean,closed:string[],open:string[],error?:string}`; missing/incomplete lists remain unknown. The exact pending-closure head is authoritative only after the Git check succeeds, and tracker closure remains a separate observation.\n",
+      "lineStart": 30,
+      "lineEnd": 30,
+      "byteStart": 3099,
+      "byteEnd": 3571,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Assumptions",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Assumptions"
+      ],
+      "positionInSection": 1,
+      "key": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.",
+      "text": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.",
+      "rawText": "Current task description/acceptance and frozen brief agree; `bd comments super-plan-ufz.12` returned no comments, so no amendments were applied. Caller-owned sweep deferrals remain caller-owned; they do not hold arbitrary unrelated rows. Explicit task/affected-ID scope is used for deferred admission gates. Existing owner holds are never inferred resolved from silence or missing branches. Legacy Task-only replay behavior is retained; active additive Recovery facts supply the new reconciliation gates. Parent owns fresh-agent resume behavior evaluation, as the brief explicitly states.\n",
+      "lineStart": 137,
+      "lineEnd": 137,
+      "byteStart": 10014,
+      "byteEnd": 10603,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Concerns",
+      "sectionOrdinal": 9,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Concerns"
+      ],
+      "positionInSection": 1,
+      "key": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.",
+      "text": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.",
+      "rawText": "No deterministic task-local failure remains. Fresh-agent live evaluation of the ordinary resume instructions is pending with the parent coordinator; these simulated replay/prompt checks do not claim to measure agent compliance. Suggested parent scenarios are the new `recovery resume: durable landing reconciles before admission and closure is idempotent` and `recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals` cases. No agent or Herdr write was performed by this implementer, and integration was read-only throughout.\n",
+      "lineStart": 141,
+      "lineEnd": 141,
+      "byteStart": 10617,
+      "byteEnd": 11181,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.",
+      "text": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.",
+      "rawText": "Status: FIXED. Task: super-plan-ufz.12. Exact task base remains `caf187cef8d1769da6184de42332a31bc7e30dcb`; reviewed implementation head was `26cc469e06bab7b6dad98cb726326f949d1c486f`; verified fix head is `07caa440eac3a501d9a18712344f6f2ede2e06d2`. No rebase or merge was performed.\n",
+      "lineStart": 145,
+      "lineEnd": 145,
+      "byteStart": 11195,
+      "byteEnd": 11479,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 2,
+      "key": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.",
+      "text": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.",
+      "rawText": "The Important finding is valid. A restored pending-closure with an initially open associated review/blocker took `closeAlreadyMerged` into `confirmClosure`; successful tracker closure immediately reduced recovery state before the buffered task ledger append was confirmed. Null append plus null retry, or an explicit `appended:false`, then returned a completed task with its original recovery record missing.\n",
+      "lineStart": 147,
+      "lineEnd": 147,
+      "byteStart": 11480,
+      "byteEnd": 11889,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 3,
+      "key": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.",
+      "text": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.",
+      "rawText": "The fix defers that reduction for restored pending-closure records. `flushLedger` now returns its existing serialized append promise. The partial-close path buffers clear and completion together, awaits that task append, and only then reduces the obligation and settles completed. Failed or unavailable persistence retains the exact original record, including additive fields and evidence, and sets the existing task-scoped resume hold, yielding `recovery-held`. Fresh closure handling retains its existing ordering. No root acceptance, scheduling, admission policy, record schema, or prompt change was added.\n",
+      "lineStart": 149,
+      "lineEnd": 149,
+      "byteStart": 11890,
+      "byteEnd": 12500,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 4,
+      "key": "Files changed in the fix commit:",
+      "text": "Files changed in the fix commit:",
+      "rawText": "Files changed in the fix commit:\n",
+      "lineStart": 151,
+      "lineEnd": 151,
+      "byteStart": 12501,
+      "byteEnd": 12534,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 5,
+      "key": "`skills/super-code/coordinator.js`",
+      "text": "`skills/super-code/coordinator.js`",
+      "rawText": "- `skills/super-code/coordinator.js`\n",
+      "lineStart": 153,
+      "lineEnd": 153,
+      "byteStart": 12535,
+      "byteEnd": 12572,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 6,
+      "key": "`tests/super-code/replay-harness.mjs`",
+      "text": "`tests/super-code/replay-harness.mjs`",
+      "rawText": "- `tests/super-code/replay-harness.mjs`\n",
+      "lineStart": 154,
+      "lineEnd": 154,
+      "byteStart": 12572,
+      "byteEnd": 12612,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Fix pass",
+      "sectionOrdinal": 10,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass"
+      ],
+      "positionInSection": 7,
+      "key": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.",
+      "text": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.",
+      "rawText": "The additive replay fixture begins with the task closed and its associated review/blocker open, observes successful close/check, then tests null append/retry and `appended:false`. It requires no completed result, a scoped held stop, and the exact original obligation. Each fixture restarts from confirmed durable lines only, observes all associated beads now closed, confirms a durable clear, and verifies no close-only, implementation, review or merge repeat. Existing assertions were not removed, loosened or skipped. Counterexamples caught include no closure check, excess retry, premature completed status, lost/changed obligation fields, duplicate restart repair/implementation, and missing successful restart settlement.\n",
+      "lineStart": 156,
+      "lineEnd": 156,
+      "byteStart": 12613,
+      "byteEnd": 13340,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Test hygiene, assumptions and concerns",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass",
+        "Test hygiene, assumptions and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.",
+      "text": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.",
+      "rawText": "Completed-run `stop-run-processes --check` checks after RED, GREEN and dispatch regression exited 0 with empty output: no leaked process. An initial hygiene invocation from inside the task root was refused by the script's own working-directory guard (exit 2); repeating from outside the checked roots succeeded. A first sandboxed RED invocation could not create its task-local output log and did not run the harness; approved task-local escalation then ran it to the RED verdict above. These are command/setup failures, not test verdicts. The final stop/check commands produced no `match:`, `stopped:` or `survived:` lines. No background process remains.\n",
+      "lineStart": 200,
+      "lineEnd": 200,
+      "byteStart": 15325,
+      "byteEnd": 15980,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Test hygiene, assumptions and concerns",
+      "sectionOrdinal": 12,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Fix pass",
+        "Test hygiene, assumptions and concerns"
+      ],
+      "positionInSection": 2,
+      "key": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.",
+      "text": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.",
+      "rawText": "The current bead and comments were read again: no amendments or comments exist, and the task/brief agree. There are no declined or evidence-only findings. Parent-owned fresh-agent evaluation remains pending as stated in the original brief; deterministic replay does not measure agent compliance. Integration was read-only except this explicitly allowed report append. No subagent, Herdr write, acceptance/scheduling expansion, merge, or unrelated edit was performed.\n",
+      "lineStart": 202,
+      "lineEnd": 202,
+      "byteStart": 15981,
+      "byteEnd": 16448,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 13,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 1,
+      "key": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.",
+      "text": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.",
+      "rawText": "Status: FIXED. Task: `super-plan-ufz.12`. Integration/merge base: `14444f0c6396a132250741eb45e5bab1cf934184`. Reviewed rebased head: `28a722c5b68c431cde222cae4ee0dc01c8d6c826`. Final committed head: `fd00d4da69a2a7b4b22540769acd60871efdfdba`. Original frozen task base: `caf187cef8d1769da6184de42332a31bc7e30dcb`. Branch: `task-super-plan-ufz.12`. No rebase, integration mutation, merge, subagent, or Herdr write was performed.\n",
+      "lineStart": 206,
+      "lineEnd": 206,
+      "byteStart": 16462,
+      "byteEnd": 16890,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 13,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 2,
+      "key": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.",
+      "text": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.",
+      "rawText": "The finding in `task-11-review-seam.md` is valid. Sibling `97ee30a1` requires a nonempty failure/command/configuration identity, plus task, dispatch, an identity-matching claim and an evidence array for every durable runFailure history event. The task's new diagnostic-deferral fixture lacked configuration and the event fields. `readRecovery` correctly classified it as a gap, so the exact diagnostic-obligation preservation assertion failed for both hold/deferred variants.\n",
+      "lineStart": 208,
+      "lineEnd": 208,
+      "byteStart": 16891,
+      "byteEnd": 17367,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 13,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 3,
+      "key": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.",
+      "text": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.",
+      "rawText": "The repair changes only `tests/super-code/replay-harness.mjs` (9 insertions, 1 deletion). Its unscoped caller-owned diagnostic now carries a matching identity, complete review history, live passing run baseline at source a, and live failing observation at source b linked to introducing owner `bd-old`. Existing exact-obligation preservation, affected hold, unrelated admission and held-finish assertions remain unchanged. Two additional assertions per variant verify that resumed runFailures retain the open introducing owner without attribution gaps and expose the exact original baseline/failing source records. A dropped diagnostic, owner loss/reassignment, invented verification, misclassification, attribution gap, or lost/replaced comparison evidence fails these assertions. JSON equality compares returned coordinator state to independently supplied input evidence; it does not use a production builder to compute expectations.\n",
+      "lineStart": 210,
+      "lineEnd": 210,
+      "byteStart": 17368,
+      "byteEnd": 18304,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Seam fix",
+      "sectionOrdinal": 13,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix"
+      ],
+      "positionInSection": 4,
+      "key": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.",
+      "text": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.",
+      "rawText": "No production behavior or function signature changed. `git diff --exit-code 28a722c5b68c431cde222cae4ee0dc01c8d6c826 -- skills/super-code/coordinator.js skills/super-code/coordinator-workflow.md skills/super-code/coordinator-subagents.md` exited 0. Thus readRecovery validation, malformed-history gaps, pending-closure durable confirmation ordering, diagnostic ownership, repair routing and alias identity are preserved.\n",
+      "lineStart": 212,
+      "lineEnd": 212,
+      "byteStart": 18305,
+      "byteEnd": 18726,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "section": "Assumptions and concerns",
+      "sectionOrdinal": 16,
+      "hierarchy": [
+        "Task super-plan-ufz.12 — IMPLEMENTED",
+        "Seam fix",
+        "Assumptions and concerns"
+      ],
+      "positionInSection": 1,
+      "key": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.",
+      "text": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.",
+      "rawText": "Read current `bd show super-plan-ufz.12 --json` and `bd comments super-plan-ufz.12` before changes: no amendments, no comments, and current task requirements agree with the brief. The diagnostic remains unscoped and caller-owned, while explicit hold/deferred task scope gates admission; no generic repair or new admission rule was introduced. No declined or evidence-only findings, permission refusals, or task-local unresolved failures. Parent-owned fresh-agent evaluation remains separate from deterministic replay as recorded previously.\n",
+      "lineStart": 275,
+      "lineEnd": 275,
+      "byteStart": 22959,
+      "byteEnd": 23500,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

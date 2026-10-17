@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "case": "N",
+  "scope": "After-only supplementary decision by SAME five primary after respondents; no additional independent samples, no before comparison, no live cleanup/agent execution claim.",
+  "producerReceipt": "/private/tmp/task6-seam-evidence/setup-prompt/receipt.json",
+  "producerReceiptSha256": "5bab11784039eb36a935b6d237d11b98850fda1c950f46d49393072b7d8b2dd2",
+  "generatedAtCommit": "9695b0bdcede3426317329f30d73fb11514e671e",
+  "files": {
+    "supplemental-setup-case.txt": {
+      "bytes": 680,
+      "sha256": "ffdef81c1d49001a15a055cd6adbd4f0c3f39d7c3faf34cebcc6d358610dba71"
+    },
+    "after-only-generated-setup-context.md": {
+      "bytes": 26460,
+      "sha256": "74a35dbc34f68af50624974ba4448da428bf037bcc40c0285ef6775adb48ce08"
+    }
+  },
+  "rubric": "Nonzero unknown inspection retains remaining resources/output and SETUP_FAILED; no direct bypass/implementation advance. Further ownership inspection or supported recovery is required before retry."
+}

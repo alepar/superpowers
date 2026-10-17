@@ -1,0 +1,172 @@
+{
+  "reviewer": "/root/metrics_coverage",
+  "partition": "metrics/reporting",
+  "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "head": "86ce3567e365fed967d50f3f4eeca77783fccf8b",
+  "verdict": "needs-fixes-partition-only",
+  "wholeBranchReadiness": false,
+  "runAcceptance": false,
+  "diff": {
+    "path": "/private/tmp/ufz-correction-coverage/metrics-review.diff",
+    "bytes": 136376,
+    "lines": 1733,
+    "sha256": "696414394c59c7e64dde18bfd8dafb55391321dc7676196606a6c36840614d51",
+    "readRanges": [
+      "1-240",
+      "241-500",
+      "501-760",
+      "761-1020",
+      "1021-1230",
+      "1231-1460",
+      "1461-1733"
+    ],
+    "complete": true,
+    "unreadRanges": []
+  },
+  "identities": [
+    {
+      "path": "skills/super-code/scripts/ledger-digest",
+      "gitBlob": "ea0310b9994cac7d516230802836e182e5cdf010",
+      "bytes": 5786,
+      "lines": 107,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "skills/super-code/scripts/run-digest",
+      "gitBlob": "ce8ab8c9deb80330a2e9b34f7645886d65c3e255",
+      "bytes": 10067,
+      "lines": 244,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "gitBlob": "3ed891e96450432bdbcb726502b8786ad29067d9",
+      "bytes": 125508,
+      "lines": 1821,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "gitBlob": "541a1e02cedf2c97f8c902206afd8b2a55281c3c",
+      "bytes": 10316,
+      "lines": 142,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "tests/super-code/test-run-digest.sh",
+      "gitBlob": "60796d9970299543bbf7d49d0209c5007aae218c",
+      "bytes": 13406,
+      "lines": 215,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "tests/super-code/test-run-profile.sh",
+      "gitBlob": "7c46b1c8ca6218f287fe50344fb31f16ae18f51a",
+      "bytes": 60698,
+      "lines": 622,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "tests/super-code/test-run-profile-in-flight.sh",
+      "gitBlob": "dd45ab1a59c017b6df6ca77dbc2330add96a1e11",
+      "bytes": 6940,
+      "lines": 114,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "tests/super-code/run-profile-fixture.mjs",
+      "gitBlob": "b1046205b308f9e609c333e5cec66a3ece6469fe",
+      "bytes": 6617,
+      "lines": 75,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    },
+    {
+      "path": "tests/super-code/run-profile-ordinary-fixture.mjs",
+      "gitBlob": "a734891e95e39b9191ee194c403d301aab130568",
+      "bytes": 11879,
+      "lines": 141,
+      "read": "complete changed bodies and complete pinned head body",
+      "unreadRanges": []
+    }
+  ],
+  "contextIdentities": [
+    {
+      "path": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+      "gitBlob": "4aa399cd6537fb5d43e407e0c47f4962d96b792a",
+      "readRanges": "all",
+      "purpose": "approved design"
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "gitBlob": "7dad720eea0e927fdc02a715df2353add448668c",
+      "readRanges": "all",
+      "purpose": "consumer contract"
+    },
+    {
+      "path": "skills/upstream-feedback/analyst-prompt.md",
+      "gitBlob": "5fa13fbc7f2f345257a6bf25e8720efaa1283263",
+      "readRanges": "all",
+      "purpose": "consumer contract"
+    },
+    {
+      "path": "skills/super-code/coordinator-subagents.md",
+      "gitBlob": "037d8c4e51d086180cb47fa3442e8f5aeb92c01b",
+      "readRanges": "25-52; search context 221-227",
+      "purpose": "verification-only producer semantics"
+    },
+    {
+      "path": "skills/super-code/scripts/context-pass.mjs",
+      "gitBlob": "02b148aefab7fa36957d1c9254b7fcfbfd269750",
+      "readRanges": "1-40",
+      "purpose": "unchanged dependency header; imported for private fixture, internals not audited"
+    }
+  ],
+  "findings": [
+    {
+      "id": "METRICS-1",
+      "severity": "Should-fix (P2)",
+      "title": "Verification-only completions become fabricated task landings and merges",
+      "locations": [
+        "skills/super-code/scripts/run-digest:109",
+        "skills/super-code/scripts/run-profile.mjs:726",
+        "skills/super-code/scripts/run-profile.mjs:996"
+      ],
+      "evidence": "/private/tmp/ufz-correction-coverage/metrics-probe"
+    },
+    {
+      "id": "METRICS-2",
+      "severity": "Should-fix (P2)",
+      "title": "Feedback report template reintroduces raw merge-count reconciliation",
+      "locations": [
+        "skills/upstream-feedback/SKILL.md:61",
+        "skills/upstream-feedback/SKILL.md:98",
+        "skills/upstream-feedback/report-template.md:29"
+      ],
+      "evidence": "Pinned instruction contradiction; no live agent evaluation"
+    }
+  ],
+  "verification": {
+    "broadSuitesRun": false,
+    "privateProbe": "metrics-probe/verification-only.json",
+    "outcome": "Both digest and profiler reproduce false landing; profiler also reports one synthetic merge dispatch",
+    "fixtureHarness": "synthetic Codex ordinary-subagent transcript",
+    "liveHarnessEvidence": false
+  },
+  "limits": [
+    "No whole-branch readiness or acceptance opinion.",
+    "No broad suite reruns; listed test bodies reviewed, their execution not claimed.",
+    "No new live agent-behavior evaluation of upstream-feedback instructions.",
+    "Other partitions, historical review artifacts and actual run reconciliation not audited.",
+    "Unchanged context-pass.mjs internals not read; only its first 40 lines and run-profile context integration were reviewed.",
+    "Full baseline file bodies outside diff context not audited.",
+    "One combined source-read response truncated 178 tokens; affected run-profile.mjs 1070-1110 reread in full, leaving no unread member-body gap."
+  ]
+}

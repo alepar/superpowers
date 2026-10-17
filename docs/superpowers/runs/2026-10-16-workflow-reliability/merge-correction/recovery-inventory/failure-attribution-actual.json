@@ -1,0 +1,1165 @@
+[
+  {
+    "task": "super-plan-ufz.22",
+    "record": {
+      "failure": "ready reentry with missing basis obtains independent verification review before closure",
+      "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+      "observed": 2,
+      "introducedBy": "super-plan-ufz.22"
+    },
+    "provenance": [
+      {
+        "objectId": "o00148",
+        "sourceId": "s0182",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00188",
+        "sourceId": "s0241",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00189",
+        "sourceId": "s0242",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00237",
+        "sourceId": "s0402",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00238",
+        "sourceId": "s0403",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00293",
+        "sourceId": "s0494",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      },
+      {
+        "objectId": "o00317",
+        "sourceId": "s0550",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      },
+      {
+        "objectId": "o00318",
+        "sourceId": "s0551",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00148",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00188",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00189",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00237",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00238",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00293",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00317",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00318",
+        "links": {
+          "observed": {
+            "index": 2,
+            "record": {
+              "sourceTree": "7941bd301896a6e28d6bc0909563cfd315a3d0eb",
+              "command": "node /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.22/.superpowers/task-evidence/verification-base.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#legacy-fixture-attribution",
+              "kind": "live"
+            }
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline."
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  },
+  {
+    "task": "super-plan-ufz.22",
+    "record": {
+      "failure": "ready reentry with missing basis obtains independent verification review before closure",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+      "observed": 4,
+      "introducedBy": "super-plan-ufz.22",
+      "verification": 12
+    },
+    "provenance": [
+      {
+        "objectId": "o00148",
+        "sourceId": "s0182",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00188",
+        "sourceId": "s0241",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00237",
+        "sourceId": "s0402",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00293",
+        "sourceId": "s0494",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "local-untracked-snapshot"
+      },
+      {
+        "objectId": "o00317",
+        "sourceId": "s0550",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00148",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00188",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00237",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00293",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00317",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline."
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  },
+  {
+    "task": "super-plan-ufz.22",
+    "record": {
+      "failure": "ready reentry with missing basis obtains independent verification review before closure",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+      "observed": 8,
+      "verification": 12,
+      "introducedBy": "super-plan-ufz.22"
+    },
+    "provenance": [
+      {
+        "objectId": "o00148",
+        "sourceId": "s0182",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/2",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00188",
+        "sourceId": "s0241",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/2",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00237",
+        "sourceId": "s0402",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/2",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00293",
+        "sourceId": "s0494",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.22-result.json",
+        "sourceSha256": "3873df80d1ed286ac8132ccebabf262f9f32f80289e4cf34f1c643d09b0d8483",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 209,
+          "charStart": 0,
+          "charEnd": 15359
+        },
+        "pointer": "$/failureAttribution/2",
+        "identityKind": "local-untracked-snapshot"
+      },
+      {
+        "objectId": "o00317",
+        "sourceId": "s0550",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+        "sourceSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+        "location": {
+          "lineStart": 364,
+          "lineEnd": 572,
+          "charStart": 31827,
+          "charEnd": 47186
+        },
+        "pointer": "$/failureAttribution/2",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00148",
+        "links": {
+          "observed": {
+            "index": 8,
+            "record": {
+              "sourceTree": "1442e3ffcde702efdae8789ae56513896333dd0e",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00188",
+        "links": {
+          "observed": {
+            "index": 8,
+            "record": {
+              "sourceTree": "1442e3ffcde702efdae8789ae56513896333dd0e",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00237",
+        "links": {
+          "observed": {
+            "index": 8,
+            "record": {
+              "sourceTree": "1442e3ffcde702efdae8789ae56513896333dd0e",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00293",
+        "links": {
+          "observed": {
+            "index": 8,
+            "record": {
+              "sourceTree": "1442e3ffcde702efdae8789ae56513896333dd0e",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00317",
+        "links": {
+          "observed": {
+            "index": 8,
+            "record": {
+              "sourceTree": "1442e3ffcde702efdae8789ae56513896333dd0e",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 12,
+            "record": {
+              "sourceTree": "0c1a61d28b20d557e0664056906edbafaed34d36",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+              "kind": "live"
+            }
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline."
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  },
+  {
+    "task": "super-plan-ufz.23",
+    "record": {
+      "failure": "ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "observed": 3,
+      "verification": 8,
+      "introducedBy": "super-plan-ufz.23"
+    },
+    "provenance": [
+      {
+        "objectId": "o00149",
+        "sourceId": "s0183",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.23-result.json",
+        "sourceSha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 169,
+          "charStart": 0,
+          "charEnd": 11251
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00191",
+        "sourceId": "s0244",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-report.md",
+        "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "location": {
+          "lineStart": 230,
+          "lineEnd": 398,
+          "charStart": 21891,
+          "charEnd": 33142
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00240",
+        "sourceId": "s0409",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-report.md",
+        "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "location": {
+          "lineStart": 230,
+          "lineEnd": 398,
+          "charStart": 21891,
+          "charEnd": 33142
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00294",
+        "sourceId": "s0495",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.23-result.json",
+        "sourceSha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+        "location": {
+          "lineStart": 1,
+          "lineEnd": 169,
+          "charStart": 0,
+          "charEnd": 11251
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      },
+      {
+        "objectId": "o00320",
+        "sourceId": "s0555",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+        "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+        "location": {
+          "lineStart": 230,
+          "lineEnd": 398,
+          "charStart": 21891,
+          "charEnd": 33142
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00149",
+        "links": {
+          "observed": {
+            "index": 3,
+            "record": {
+              "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 8,
+            "record": {
+              "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00191",
+        "links": {
+          "observed": {
+            "index": 3,
+            "record": {
+              "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 8,
+            "record": {
+              "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00240",
+        "links": {
+          "observed": {
+            "index": 3,
+            "record": {
+              "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 8,
+            "record": {
+              "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00294",
+        "links": {
+          "observed": {
+            "index": 3,
+            "record": {
+              "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 8,
+            "record": {
+              "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00320",
+        "links": {
+          "observed": {
+            "index": 3,
+            "record": {
+              "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log",
+              "kind": "live"
+            }
+          },
+          "verification": {
+            "index": 8,
+            "record": {
+              "sourceTree": "e074a18493acc7ae30c0a31ceeb77964a0d4e4bc",
+              "command": "bash tests/super-code/test-dispatch-text.sh",
+              "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+              "outcome": "pass",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md#fix-pass-archive-dispatch-final-log",
+              "kind": "live"
+            }
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline."
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  },
+  {
+    "task": "super-plan-ufz.23",
+    "record": {
+      "failure": "ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId",
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "configuration": "ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+      "observed": [
+        3
+      ],
+      "introducedBy": "super-plan-ufz.23"
+    },
+    "provenance": [
+      {
+        "objectId": "o00178",
+        "sourceId": "s0228",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-review-before-fix.md",
+        "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "location": {
+          "lineStart": 69,
+          "lineEnd": 151,
+          "charStart": 9048,
+          "charEnd": 14983
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00192",
+        "sourceId": "s0245",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-review.md",
+        "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "location": {
+          "lineStart": 69,
+          "lineEnd": 151,
+          "charStart": 9048,
+          "charEnd": 14983
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00241",
+        "sourceId": "s0410",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-review.md",
+        "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "location": {
+          "lineStart": 69,
+          "lineEnd": 151,
+          "charStart": 9048,
+          "charEnd": 14983
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00321",
+        "sourceId": "s0556",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+        "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+        "location": {
+          "lineStart": 69,
+          "lineEnd": 151,
+          "charStart": 9048,
+          "charEnd": 14983
+        },
+        "pointer": "$/failureAttribution/0",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00178",
+        "links": {
+          "observed": {
+            "index": [
+              3
+            ],
+            "record": null
+          }
+        }
+      },
+      {
+        "objectId": "o00192",
+        "links": {
+          "observed": {
+            "index": [
+              3
+            ],
+            "record": null
+          }
+        }
+      },
+      {
+        "objectId": "o00241",
+        "links": {
+          "observed": {
+            "index": [
+              3
+            ],
+            "record": null
+          }
+        }
+      },
+      {
+        "objectId": "o00321",
+        "links": {
+          "observed": {
+            "index": [
+              3
+            ],
+            "record": null
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline.",
+      "o00178/observed: invalid/missing same-object evidence index",
+      "o00192/observed: invalid/missing same-object evidence index",
+      "o00241/observed: invalid/missing same-object evidence index",
+      "o00321/observed: invalid/missing same-object evidence index",
+      "observed is not the documented scalar zero-based evidence index; raw value retained without adaptation"
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  },
+  {
+    "task": "super-plan-ufz.22",
+    "record": {
+      "failure": "ready reentry with missing basis obtains independent verification review before closure",
+      "command": "node tests/super-code/replay-harness.mjs",
+      "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+      "observed": 4,
+      "introducedBy": "super-plan-ufz.22"
+    },
+    "provenance": [
+      {
+        "objectId": "o00189",
+        "sourceId": "s0242",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00238",
+        "sourceId": "s0403",
+        "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "pinned-git"
+      },
+      {
+        "objectId": "o00318",
+        "sourceId": "s0551",
+        "path": ".superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+        "sourceSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+        "location": {
+          "lineStart": 76,
+          "lineEnd": 185,
+          "charStart": 11468,
+          "charEnd": 20285
+        },
+        "pointer": "$/failureAttribution/1",
+        "identityKind": "local-untracked-snapshot"
+      }
+    ],
+    "referencedEvidenceBySource": [
+      {
+        "objectId": "o00189",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00238",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          }
+        }
+      },
+      {
+        "objectId": "o00318",
+        "links": {
+          "observed": {
+            "index": 4,
+            "record": {
+              "sourceTree": "dba2b60460893a3ffa6658ab79d8419e3e58f73f",
+              "command": "node tests/super-code/replay-harness.mjs",
+              "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.22; HOME=TMPDIR/home; XDG_CONFIG_HOME=TMPDIR/config; XDG_DATA_HOME=TMPDIR/data; XDG_CACHE_HOME=TMPDIR/cache; XDG_STATE_HOME=TMPDIR/state; Node v26.9.0; real helper commands, simulated Workflow agents",
+              "outcome": "fail",
+              "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md#replay-final",
+              "kind": "live"
+            }
+          }
+        }
+      }
+    ],
+    "inventoryQualifications": [
+      "No runBaseline index in this association. Introducing claim alone does not establish a measured run-start baseline."
+    ],
+    "disposition": "not assessed by this read-only inventory"
+  }
+]

@@ -1,0 +1,704 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-23-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-23-review.md",
+  "rawSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+  "rawByteCount": 16469,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-review.md",
+    "durablePath": "task-report-history-r1/raw/task-23-review.md",
+    "sha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+    "byteCount": 16469,
+    "logicalRole": "review",
+    "ordinal": 23,
+    "logicalTaskId": "super-plan-ufz.26",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-23-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 6,
+      "byteStart": 0,
+      "byteEnd": 197,
+      "bodyLineStart": 1,
+      "rawText": "Status: CLEAN\nTask: super-plan-ufz.26 / Task 23\nBase: c3fac4369c7c737e2e7f9f7250fd253b21442d12\nHead: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067\n\n",
+      "bodyRawText": "Status: CLEAN\nTask: super-plan-ufz.26 / Task 23\nBase: c3fac4369c7c737e2e7f9f7250fd253b21442d12\nHead: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 14
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.26 / Task 23\n",
+          "text": "Task: super-plan-ufz.26 / Task 23",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 2,
+          "lineEnd": 2,
+          "byteStart": 14,
+          "byteEnd": 48
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: c3fac4369c7c737e2e7f9f7250fd253b21442d12\n",
+          "text": "Base: c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 48,
+          "byteEnd": 95
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067\n",
+          "text": "Head: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 4,
+          "lineEnd": 5,
+          "byteStart": 95,
+          "byteEnd": 196
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "lineStart": 7,
+      "lineEnd": 20,
+      "byteStart": 197,
+      "byteEnd": 3473,
+      "bodyLineStart": 8,
+      "rawText": "## Spec compliance\n\n✅ The current live bead (bd show super-plan-ufz.26 --json) and empty comments govern the amended existing-component contract, together with Task 23/brief, recursive-input-boundary-assessment-r1.md and recursive-boundary-amendment-r1.json. The earlier RED-only handoff was a scope hold, not a retry failure. The fresh-owner implementation is within the amended named boundary.\n\n✅ dispatch-text.mjs:123–261 adds mechanical review-inputs selection before builder loading. Full commit verification, literal argument-array Git access, NUL-separated enumeration, captured-endpoint run records and regular-blob hashing provide the exclusion authority. The archive comes from each captured run-file directory and safe invocation ID; record producer workspaces are not read. Only exact manifest entries matching the invocation assembled-input prefix or direct .md.diff file become candidates. Hash/record/bundle gaps disable all omission and return unavailable with explicit sidecars. Prior-endpoint claims detect changed/deleted payloads even when the later record disappears.\n\n✅ Unclaimed descendants, ordinary reviews paths, final/cluster reports, collection metadata and raw findings remain in selected input. The original full BASE/HEAD range stays intact; selected changed paths, slices and diffstat use the same membership. Omitted payload provenance carries captured record line, revision, invocation, archive, report and saved hash. No archive bytes or finding dispositions are rewritten.\n\n✅ coordinator.js:2506–2536 shares the same selection command across final-review and roast-code through assemblePrompt; dispatch-text renders those builders for ordinary callers. Both digest profiles include generated-input provenance. Semantic clustering and existing assembled-size checks remain assembler-owned. coordinator.js:2326 and finalReviewPrompt retain selection refusal through final-review fallback; super-auto/SKILL.md retains the corresponding roast refusal. Existing immutable source guard and partial-artifact refusal remain in place. History/assess, task review-package, collector integrity/symlink checks and general direct frozen-Git fallback design are unchanged.\n\n✅ No report-status edit is necessary under the amendment: its existing review-collection.files path/hash records already provide reader authority. Its complete immutable copying and replay remain exercised by the fixture. No new executable helper, agent call, role, replacement engine, finding lifecycle or specification Goal change appears in the captured range. Retained evidence additions are supporting task evidence.\n\n✅ The new fixture executes the actual report-status collector and actual review-inputs operation for initial collection, four fresh-ID unchanged-product re-entries and a new-product round. It checks no prior generated payload selection/recursive copying, one original product hunk, archive hashes and producer-cleanup replay, captured source versus advancing checkout, ordinary/unclaimed/untracked paths, unusual names, corrupt/missing/incomplete/malformed/conflicting claims and partial output preservation. This is local executable coverage; fixture-authored digest/clustering and canned coordinator results are not live agent adherence.\n\n",
+      "bodyRawText": "\n✅ The current live bead (bd show super-plan-ufz.26 --json) and empty comments govern the amended existing-component contract, together with Task 23/brief, recursive-input-boundary-assessment-r1.md and recursive-boundary-amendment-r1.json. The earlier RED-only handoff was a scope hold, not a retry failure. The fresh-owner implementation is within the amended named boundary.\n\n✅ dispatch-text.mjs:123–261 adds mechanical review-inputs selection before builder loading. Full commit verification, literal argument-array Git access, NUL-separated enumeration, captured-endpoint run records and regular-blob hashing provide the exclusion authority. The archive comes from each captured run-file directory and safe invocation ID; record producer workspaces are not read. Only exact manifest entries matching the invocation assembled-input prefix or direct .md.diff file become candidates. Hash/record/bundle gaps disable all omission and return unavailable with explicit sidecars. Prior-endpoint claims detect changed/deleted payloads even when the later record disappears.\n\n✅ Unclaimed descendants, ordinary reviews paths, final/cluster reports, collection metadata and raw findings remain in selected input. The original full BASE/HEAD range stays intact; selected changed paths, slices and diffstat use the same membership. Omitted payload provenance carries captured record line, revision, invocation, archive, report and saved hash. No archive bytes or finding dispositions are rewritten.\n\n✅ coordinator.js:2506–2536 shares the same selection command across final-review and roast-code through assemblePrompt; dispatch-text renders those builders for ordinary callers. Both digest profiles include generated-input provenance. Semantic clustering and existing assembled-size checks remain assembler-owned. coordinator.js:2326 and finalReviewPrompt retain selection refusal through final-review fallback; super-auto/SKILL.md retains the corresponding roast refusal. Existing immutable source guard and partial-artifact refusal remain in place. History/assess, task review-package, collector integrity/symlink checks and general direct frozen-Git fallback design are unchanged.\n\n✅ No report-status edit is necessary under the amendment: its existing review-collection.files path/hash records already provide reader authority. Its complete immutable copying and replay remain exercised by the fixture. No new executable helper, agent call, role, replacement engine, finding lifecycle or specification Goal change appears in the captured range. Retained evidence additions are supporting task evidence.\n\n✅ The new fixture executes the actual report-status collector and actual review-inputs operation for initial collection, four fresh-ID unchanged-product re-entries and a new-product round. It checks no prior generated payload selection/recursive copying, one original product hunk, archive hashes and producer-cleanup replay, captured source versus advancing checkout, ordinary/unclaimed/untracked paths, unusual names, corrupt/missing/incomplete/malformed/conflicting claims and partial output preservation. This is local executable coverage; fixture-authored digest/clustering and canned coordinator results are not live agent adherence.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The current live bead (bd show super-plan-ufz.26 --json) and empty comments govern the amended existing-component contract, together with Task 23/brief, recursive-input-boundary-assessment-r1.md and recursive-boundary-amendment-r1.json. The earlier RED-only handoff was a scope hold, not a retry failure. The fresh-owner implementation is within the amended named boundary.\n",
+          "text": "✅ The current live bead (bd show super-plan-ufz.26 --json) and empty comments govern the amended existing-component contract, together with Task 23/brief, recursive-input-boundary-assessment-r1.md and recursive-boundary-amendment-r1.json. The earlier RED-only handoff was a scope hold, not a retry failure. The fresh-owner implementation is within the amended named boundary.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 217,
+          "byteEnd": 595
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ dispatch-text.mjs:123–261 adds mechanical review-inputs selection before builder loading. Full commit verification, literal argument-array Git access, NUL-separated enumeration, captured-endpoint run records and regular-blob hashing provide the exclusion authority. The archive comes from each captured run-file directory and safe invocation ID; record producer workspaces are not read. Only exact manifest entries matching the invocation assembled-input prefix or direct .md.diff file become candidates. Hash/record/bundle gaps disable all omission and return unavailable with explicit sidecars. Prior-endpoint claims detect changed/deleted payloads even when the later record disappears.\n",
+          "text": "✅ dispatch-text.mjs:123–261 adds mechanical review-inputs selection before builder loading. Full commit verification, literal argument-array Git access, NUL-separated enumeration, captured-endpoint run records and regular-blob hashing provide the exclusion authority. The archive comes from each captured run-file directory and safe invocation ID; record producer workspaces are not read. Only exact manifest entries matching the invocation assembled-input prefix or direct .md.diff file become candidates. Hash/record/bundle gaps disable all omission and return unavailable with explicit sidecars. Prior-endpoint claims detect changed/deleted payloads even when the later record disappears.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 596,
+          "byteEnd": 1292
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Unclaimed descendants, ordinary reviews paths, final/cluster reports, collection metadata and raw findings remain in selected input. The original full BASE/HEAD range stays intact; selected changed paths, slices and diffstat use the same membership. Omitted payload provenance carries captured record line, revision, invocation, archive, report and saved hash. No archive bytes or finding dispositions are rewritten.\n",
+          "text": "✅ Unclaimed descendants, ordinary reviews paths, final/cluster reports, collection metadata and raw findings remain in selected input. The original full BASE/HEAD range stays intact; selected changed paths, slices and diffstat use the same membership. Omitted payload provenance carries captured record line, revision, invocation, archive, report and saved hash. No archive bytes or finding dispositions are rewritten.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 1293,
+          "byteEnd": 1714
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ coordinator.js:2506–2536 shares the same selection command across final-review and roast-code through assemblePrompt; dispatch-text renders those builders for ordinary callers. Both digest profiles include generated-input provenance. Semantic clustering and existing assembled-size checks remain assembler-owned. coordinator.js:2326 and finalReviewPrompt retain selection refusal through final-review fallback; super-auto/SKILL.md retains the corresponding roast refusal. Existing immutable source guard and partial-artifact refusal remain in place. History/assess, task review-package, collector integrity/symlink checks and general direct frozen-Git fallback design are unchanged.\n",
+          "text": "✅ coordinator.js:2506–2536 shares the same selection command across final-review and roast-code through assemblePrompt; dispatch-text renders those builders for ordinary callers. Both digest profiles include generated-input provenance. Semantic clustering and existing assembled-size checks remain assembler-owned. coordinator.js:2326 and finalReviewPrompt retain selection refusal through final-review fallback; super-auto/SKILL.md retains the corresponding roast refusal. Existing immutable source guard and partial-artifact refusal remain in place. History/assess, task review-package, collector integrity/symlink checks and general direct frozen-Git fallback design are unchanged.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1715,
+          "byteEnd": 2404
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ No report-status edit is necessary under the amendment: its existing review-collection.files path/hash records already provide reader authority. Its complete immutable copying and replay remain exercised by the fixture. No new executable helper, agent call, role, replacement engine, finding lifecycle or specification Goal change appears in the captured range. Retained evidence additions are supporting task evidence.\n",
+          "text": "✅ No report-status edit is necessary under the amendment: its existing review-collection.files path/hash records already provide reader authority. Its complete immutable copying and replay remain exercised by the fixture. No new executable helper, agent call, role, replacement engine, finding lifecycle or specification Goal change appears in the captured range. Retained evidence additions are supporting task evidence.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 2405,
+          "byteEnd": 2829
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The new fixture executes the actual report-status collector and actual review-inputs operation for initial collection, four fresh-ID unchanged-product re-entries and a new-product round. It checks no prior generated payload selection/recursive copying, one original product hunk, archive hashes and producer-cleanup replay, captured source versus advancing checkout, ordinary/unclaimed/untracked paths, unusual names, corrupt/missing/incomplete/malformed/conflicting claims and partial output preservation. This is local executable coverage; fixture-authored digest/clustering and canned coordinator results are not live agent adherence.\n",
+          "text": "✅ The new fixture executes the actual report-status collector and actual review-inputs operation for initial collection, four fresh-ID unchanged-product re-entries and a new-product round. It checks no prior generated payload selection/recursive copying, one original product hunk, archive hashes and producer-cleanup replay, captured source versus advancing checkout, ordinary/unclaimed/untracked paths, unusual names, corrupt/missing/incomplete/malformed/conflicting claims and partial output preservation. This is local executable coverage; fixture-authored digest/clustering and canned coordinator results are not live agent adherence.",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 2830,
+          "byteEnd": 3472
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Issues"
+      ],
+      "lineStart": 21,
+      "lineEnd": 26,
+      "byteStart": 3473,
+      "byteEnd": 3531,
+      "bodyLineStart": 22,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 3484,
+          "byteEnd": 3500
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 24,
+          "lineEnd": 24,
+          "byteStart": 3500,
+          "byteEnd": 3517
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 3517,
+          "byteEnd": 3530
+        }
+      ]
+    },
+    {
+      "section": "Focused reachability and risk checks",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Focused reachability and risk checks\n",
+      "hierarchy": [
+        "Focused reachability and risk checks"
+      ],
+      "lineStart": 27,
+      "lineEnd": 35,
+      "byteStart": 3531,
+      "byteEnd": 4885,
+      "bodyLineStart": 28,
+      "rawText": "## Focused reachability and risk checks\n\n- Risk: selector implemented but unused or only one consumer changed. Traced real Finish assemble:final dispatch to assemblePrompt to the assembler REVIEW_INPUTS step; ordinary assemble dispatch uses that same builder, and super-auto roast-code uses its other profile. Both are wired. Sibling history/assess profiles retain prior semantics.\n- Risk: fallback silently treats invalid provenance as clean. Read captured coordinator Finish refusal routing and finalReviewPrompt plus super-auto roast fallback. Explicit review input selection causes remain unavailable.\n- Risk: archives/findings hidden by directory-wide filtering or modified collector. Read exact claim gate, endpoint checks and test controls; only claimed/hash-verified payload files are omitted, and report-status has no source diff.\n- Risk: regression to captured-source or partial-artifact safety. Read the existing dispatch source-binding gate and reviewWriteGuard in the captured tree; compare retained final source-binding/startup/archive-integrity output. The new selection operation does not initialize builders or change these earlier guards.\n\nSource reads used git show 4639ee84:<path>. No review worktree was created. Caller checkout observed at the captured HEAD with empty git status --short; no identity/status mismatch was observed.\n\n",
+      "bodyRawText": "\n- Risk: selector implemented but unused or only one consumer changed. Traced real Finish assemble:final dispatch to assemblePrompt to the assembler REVIEW_INPUTS step; ordinary assemble dispatch uses that same builder, and super-auto roast-code uses its other profile. Both are wired. Sibling history/assess profiles retain prior semantics.\n- Risk: fallback silently treats invalid provenance as clean. Read captured coordinator Finish refusal routing and finalReviewPrompt plus super-auto roast fallback. Explicit review input selection causes remain unavailable.\n- Risk: archives/findings hidden by directory-wide filtering or modified collector. Read exact claim gate, endpoint checks and test controls; only claimed/hash-verified payload files are omitted, and report-status has no source diff.\n- Risk: regression to captured-source or partial-artifact safety. Read the existing dispatch source-binding gate and reviewWriteGuard in the captured tree; compare retained final source-binding/startup/archive-integrity output. The new selection operation does not initialize builders or change these earlier guards.\n\nSource reads used git show 4639ee84:<path>. No review worktree was created. Caller checkout observed at the captured HEAD with empty git status --short; no identity/status mismatch was observed.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: selector implemented but unused or only one consumer changed. Traced real Finish assemble:final dispatch to assemblePrompt to the assembler REVIEW_INPUTS step; ordinary assemble dispatch uses that same builder, and super-auto roast-code uses its other profile. Both are wired. Sibling history/assess profiles retain prior semantics.\n",
+          "text": "Risk: selector implemented but unused or only one consumer changed. Traced real Finish assemble:final dispatch to assemblePrompt to the assembler REVIEW_INPUTS step; ordinary assemble dispatch uses that same builder, and super-auto roast-code uses its other profile. Both are wired. Sibling history/assess profiles retain prior semantics.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3572,
+          "byteEnd": 3913
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: fallback silently treats invalid provenance as clean. Read captured coordinator Finish refusal routing and finalReviewPrompt plus super-auto roast fallback. Explicit review input selection causes remain unavailable.\n",
+          "text": "Risk: fallback silently treats invalid provenance as clean. Read captured coordinator Finish refusal routing and finalReviewPrompt plus super-auto roast fallback. Explicit review input selection causes remain unavailable.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 3913,
+          "byteEnd": 4137
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: archives/findings hidden by directory-wide filtering or modified collector. Read exact claim gate, endpoint checks and test controls; only claimed/hash-verified payload files are omitted, and report-status has no source diff.\n",
+          "text": "Risk: archives/findings hidden by directory-wide filtering or modified collector. Read exact claim gate, endpoint checks and test controls; only claimed/hash-verified payload files are omitted, and report-status has no source diff.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 4137,
+          "byteEnd": 4371
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Risk: regression to captured-source or partial-artifact safety. Read the existing dispatch source-binding gate and reviewWriteGuard in the captured tree; compare retained final source-binding/startup/archive-integrity output. The new selection operation does not initialize builders or change these earlier guards.\n",
+          "text": "Risk: regression to captured-source or partial-artifact safety. Read the existing dispatch source-binding gate and reviewWriteGuard in the captured tree; compare retained final source-binding/startup/archive-integrity output. The new selection operation does not initialize builders or change these earlier guards.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 32,
+          "lineEnd": 32,
+          "byteStart": 4371,
+          "byteEnd": 4688
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Source reads used git show 4639ee84:<path>. No review worktree was created. Caller checkout observed at the captured HEAD with empty git status --short; no identity/status mismatch was observed.\n",
+          "text": "Source reads used git show 4639ee84:<path>. No review worktree was created. Caller checkout observed at the captured HEAD with empty git status --short; no identity/status mismatch was observed.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 4689,
+          "byteEnd": 4884
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Test evidence"
+      ],
+      "lineStart": 36,
+      "lineEnd": 46,
+      "byteStart": 4885,
+      "byteEnd": 6595,
+      "bodyLineStart": 37,
+      "rawText": "## Test evidence\n\nNo tests were run by this reviewer. The report and retained .superpowers/evidence-super-plan-ufz.26/final-run.sh, source-tree/head/base/status files, exit files, log tails and hygiene records were read. They bind final checks to the captured tree, show clean status before/after, exit 0 for all seven checks, and empty exit-0 leak checks. The three required commands are bash tests/super-auto/generated-review-inputs-r1.sh, bash tests/super-auto/test-scripts.sh and bash tests/super-code/test-dispatch-text.sh. Their complete retained report output plausibly covers this task and passes. Additional source-binding (11), startup/builder seam (126) and archive-integrity (15) scenarios pass. The coordinator-focused command is correctly recorded simulated: three documented dryRuns plus a canned selection-refusal route; it does not establish hosted Workflow or fresh-agent instruction compliance.\n\nTest changes commands (run in the task worktree):\n- git diff --stat c3fac436..4639ee84 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n- git diff c3fac436..4639ee84 -- the same pathspec list.\nBoth exited 0: only tests/super-auto/generated-review-inputs-r1.sh was added (120 lines). Existing named suites are unchanged; no deleted/skipped/loosened tests were found.\n\nBase validation: git merge-base --is-ancestor c3fac4369c7c737e2e7f9f7250fd253b21442d12 4639ee8426129adf94103df2368c6db4f41b4410 exited 0; both commit identities resolved. review-package exited 0 with 2 commits and a nonempty 122296-byte package at task-23-review-initial.diff.\n\n",
+      "bodyRawText": "\nNo tests were run by this reviewer. The report and retained .superpowers/evidence-super-plan-ufz.26/final-run.sh, source-tree/head/base/status files, exit files, log tails and hygiene records were read. They bind final checks to the captured tree, show clean status before/after, exit 0 for all seven checks, and empty exit-0 leak checks. The three required commands are bash tests/super-auto/generated-review-inputs-r1.sh, bash tests/super-auto/test-scripts.sh and bash tests/super-code/test-dispatch-text.sh. Their complete retained report output plausibly covers this task and passes. Additional source-binding (11), startup/builder seam (126) and archive-integrity (15) scenarios pass. The coordinator-focused command is correctly recorded simulated: three documented dryRuns plus a canned selection-refusal route; it does not establish hosted Workflow or fresh-agent instruction compliance.\n\nTest changes commands (run in the task worktree):\n- git diff --stat c3fac436..4639ee84 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n- git diff c3fac436..4639ee84 -- the same pathspec list.\nBoth exited 0: only tests/super-auto/generated-review-inputs-r1.sh was added (120 lines). Existing named suites are unchanged; no deleted/skipped/loosened tests were found.\n\nBase validation: git merge-base --is-ancestor c3fac4369c7c737e2e7f9f7250fd253b21442d12 4639ee8426129adf94103df2368c6db4f41b4410 exited 0; both commit identities resolved. review-package exited 0 with 2 commits and a nonempty 122296-byte package at task-23-review-initial.diff.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests were run by this reviewer. The report and retained .superpowers/evidence-super-plan-ufz.26/final-run.sh, source-tree/head/base/status files, exit files, log tails and hygiene records were read. They bind final checks to the captured tree, show clean status before/after, exit 0 for all seven checks, and empty exit-0 leak checks. The three required commands are bash tests/super-auto/generated-review-inputs-r1.sh, bash tests/super-auto/test-scripts.sh and bash tests/super-code/test-dispatch-text.sh. Their complete retained report output plausibly covers this task and passes. Additional source-binding (11), startup/builder seam (126) and archive-integrity (15) scenarios pass. The coordinator-focused command is correctly recorded simulated: three documented dryRuns plus a canned selection-refusal route; it does not establish hosted Workflow or fresh-agent instruction compliance.\n",
+          "text": "No tests were run by this reviewer. The report and retained .superpowers/evidence-super-plan-ufz.26/final-run.sh, source-tree/head/base/status files, exit files, log tails and hygiene records were read. They bind final checks to the captured tree, show clean status before/after, exit 0 for all seven checks, and empty exit-0 leak checks. The three required commands are bash tests/super-auto/generated-review-inputs-r1.sh, bash tests/super-auto/test-scripts.sh and bash tests/super-code/test-dispatch-text.sh. Their complete retained report output plausibly covers this task and passes. Additional source-binding (11), startup/builder seam (126) and archive-integrity (15) scenarios pass. The coordinator-focused command is correctly recorded simulated: three documented dryRuns plus a canned selection-refusal route; it does not establish hosted Workflow or fresh-agent instruction compliance.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 4903,
+          "byteEnd": 5799
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands (run in the task worktree):\n",
+          "text": "Test changes commands (run in the task worktree):",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 5800,
+          "byteEnd": 5850
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- git diff --stat c3fac436..4639ee84 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n",
+          "text": "git diff --stat c3fac436..4639ee84 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 41,
+          "lineEnd": 41,
+          "byteStart": 5850,
+          "byteEnd": 6086
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- git diff c3fac436..4639ee84 -- the same pathspec list.\nBoth exited 0: only tests/super-auto/generated-review-inputs-r1.sh was added (120 lines). Existing named suites are unchanged; no deleted/skipped/loosened tests were found.\n",
+          "text": "git diff c3fac436..4639ee84 -- the same pathspec list.\nBoth exited 0: only tests/super-auto/generated-review-inputs-r1.sh was added (120 lines). Existing named suites are unchanged; no deleted/skipped/loosened tests were found.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 42,
+          "lineEnd": 43,
+          "byteStart": 6086,
+          "byteEnd": 6316
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base validation: git merge-base --is-ancestor c3fac4369c7c737e2e7f9f7250fd253b21442d12 4639ee8426129adf94103df2368c6db4f41b4410 exited 0; both commit identities resolved. review-package exited 0 with 2 commits and a nonempty 122296-byte package at task-23-review-initial.diff.\n",
+          "text": "Base validation: git merge-base --is-ancestor c3fac4369c7c737e2e7f9f7250fd253b21442d12 4639ee8426129adf94103df2368c6db4f41b4410 exited 0; both commit identities resolved. review-package exited 0 with 2 commits and a nonempty 122296-byte package at task-23-review-initial.diff.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 45,
+          "lineEnd": 45,
+          "byteStart": 6317,
+          "byteEnd": 6594
+        }
+      ]
+    },
+    {
+      "section": "Check records and coverage",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Check records and coverage\n",
+      "hierarchy": [
+        "Check records and coverage"
+      ],
+      "lineStart": 47,
+      "lineEnd": 50,
+      "byteStart": 6595,
+      "byteEnd": 6972,
+      "bodyLineStart": 48,
+      "rawText": "## Check records and coverage\n\nThe structured result below preserves the implementer evidence records unchanged. All three requiredLiveChecks have matching live/pass records at the verified captured tree. Historical RED live/fail records remain failures. The coordinator record remains simulated/pass. This review supplies no new measurement and does not relabel simulations.\n\n",
+      "bodyRawText": "\nThe structured result below preserves the implementer evidence records unchanged. All three requiredLiveChecks have matching live/pass records at the verified captured tree. Historical RED live/fail records remain failures. The coordinator record remains simulated/pass. This review supplies no new measurement and does not relabel simulations.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The structured result below preserves the implementer evidence records unchanged. All three requiredLiveChecks have matching live/pass records at the verified captured tree. Historical RED live/fail records remain failures. The coordinator record remains simulated/pass. This review supplies no new measurement and does not relabel simulations.\n",
+          "text": "The structured result below preserves the implementer evidence records unchanged. All three requiredLiveChecks have matching live/pass records at the verified captured tree. Historical RED live/fail records remain failures. The coordinator record remains simulated/pass. This review supplies no new measurement and does not relabel simulations.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 49,
+          "lineEnd": 49,
+          "byteStart": 6626,
+          "byteEnd": 6971
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Failure attribution"
+      ],
+      "lineStart": 51,
+      "lineEnd": 54,
+      "byteStart": 6972,
+      "byteEnd": 7442,
+      "bodyLineStart": 52,
+      "rawText": "## Failure attribution\n\nRead the relevant progress ledger scope-hold, amendment/fresh-owner and pending-evaluation history. No run failure history was supplied. No supported cross-source failureAttribution association is asserted: the development dispatch failure lacks a separate source snapshot, as the report explicitly states; historical baseline-recipe RED differs from the final operation. No run owner is cleared by guessing a baseline or by this CLEAN verdict.\n\n",
+      "bodyRawText": "\nRead the relevant progress ledger scope-hold, amendment/fresh-owner and pending-evaluation history. No run failure history was supplied. No supported cross-source failureAttribution association is asserted: the development dispatch failure lacks a separate source snapshot, as the report explicitly states; historical baseline-recipe RED differs from the final operation. No run owner is cleared by guessing a baseline or by this CLEAN verdict.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read the relevant progress ledger scope-hold, amendment/fresh-owner and pending-evaluation history. No run failure history was supplied. No supported cross-source failureAttribution association is asserted: the development dispatch failure lacks a separate source snapshot, as the report explicitly states; historical baseline-recipe RED differs from the final operation. No run owner is cleared by guessing a baseline or by this CLEAN verdict.\n",
+          "text": "Read the relevant progress ledger scope-hold, amendment/fresh-owner and pending-evaluation history. No run failure history was supplied. No supported cross-source failureAttribution association is asserted: the development dispatch failure lacks a separate source snapshot, as the report explicitly states; historical baseline-recipe RED differs from the final operation. No run owner is cleared by guessing a baseline or by this CLEAN verdict.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 53,
+          "lineEnd": 53,
+          "byteStart": 6996,
+          "byteEnd": 7441
+        }
+      ]
+    },
+    {
+      "section": "Pending caller obligations",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Pending caller obligations\n",
+      "hierarchy": [
+        "Pending caller obligations"
+      ],
+      "lineStart": 55,
+      "lineEnd": 58,
+      "byteStart": 7442,
+      "byteEnd": 7907,
+      "bodyLineStart": 56,
+      "rawText": "## Pending caller obligations\n\nFresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.\n\n",
+      "bodyRawText": "\nFresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.\n",
+          "text": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 57,
+          "lineEnd": 57,
+          "byteStart": 7473,
+          "byteEnd": 7906
+        }
+      ]
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Structured result\n",
+      "hierarchy": [
+        "Structured result"
+      ],
+      "lineStart": 59,
+      "lineEnd": 171,
+      "byteStart": 7907,
+      "byteEnd": 16469,
+      "bodyLineStart": 60,
+      "rawText": "## Structured result\n\n```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "bodyRawText": "\n```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 61,
+          "lineEnd": 171,
+          "byteStart": 7929,
+          "byteEnd": 16469
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: CLEAN",
+      "text": "Status: CLEAN",
+      "rawText": "Status: CLEAN\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 14,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.26 / Task 23",
+      "text": "Task: super-plan-ufz.26 / Task 23",
+      "rawText": "Task: super-plan-ufz.26 / Task 23\n",
+      "lineStart": 2,
+      "lineEnd": 2,
+      "byteStart": 14,
+      "byteEnd": 48,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "Base: c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+      "text": "Base: c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+      "rawText": "Base: c3fac4369c7c737e2e7f9f7250fd253b21442d12\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 48,
+      "byteEnd": 95,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "Head: 4639ee8426129adf94103df2368c6db4f41b4410",
+      "text": "Head: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067",
+      "rawText": "Head: 4639ee8426129adf94103df2368c6db4f41b4410\nSource tree: 3397ea3c23392a9b6b0cf004b7c8a54bf9830067\n",
+      "lineStart": 4,
+      "lineEnd": 5,
+      "byteStart": 95,
+      "byteEnd": 196,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 3484,
+      "byteEnd": 3500,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 24,
+      "lineEnd": 24,
+      "byteStart": 3500,
+      "byteEnd": 3517,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 3517,
+      "byteEnd": 3530,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "section": "Pending caller obligations",
+      "sectionOrdinal": 7,
+      "hierarchy": [
+        "Pending caller obligations"
+      ],
+      "positionInSection": 1,
+      "key": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.",
+      "text": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.",
+      "rawText": "Fresh-agent changed-instruction evaluation remains explicitly pending the enclosing coordinator, as authorized by the bead. Mechanical checks and simulated replay do not satisfy it. Caller-owned final sweep, independent whole-run review and human/root acceptance remain pending; this review does not close the root or task .27. Rejected measurement-classification and direct frozen-Git fallback materiality findings remain rejected.\n",
+      "lineStart": 57,
+      "lineEnd": 57,
+      "byteStart": 7473,
+      "byteEnd": 7906,
+      "appearanceClass": "scope-concern-or-qualification",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "scope-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 61,
+      "lineEnd": 171,
+      "byteStart": 7929,
+      "byteEnd": 16469,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.26\",\n  \"status\": \"CLEAN\",\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"4639ee8426129adf94103df2368c6db4f41b4410\",\n  \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"evidence\": [\n    {\n      \"sourceTree\": \"b961e615a65df862a0cf08e234617fee0005def2\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; original fixture\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0d0136c5b6cb8463da7d976bc0f48b5a6986718c\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"baseline pre-fix assembler recipe; real collector; complete finding-text assertion\",\n      \"outcome\": \"fail\",\n      \"location\": \"evidence/super-plan-ufz.26/red2.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"01a0e9ce996bdcf910971497df8d978feafdf7b3\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"amended real-collector fixture, retained pre-fix assembler recipe\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26/evidence/super-plan-ufz.26/amended-red.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-generated\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-super-auto\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-dispatch\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/invocation-source-binding-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-source-binding\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node tests/super-code/startup-builder-seam-r1.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-startup\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/archive-integrity-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-archive-integrity\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"node evidence/super-plan-ufz.26/coordinator-focused.mjs\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state; existing replay harness doc fixtures and canned runtime answers, no hosted agents\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md#final-check-coordinator\",\n      \"kind\": \"simulated\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/generated-review-inputs-r1.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-auto/test-scripts.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    },\n    {\n      \"sourceTree\": \"3397ea3c23392a9b6b0cf004b7c8a54bf9830067\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"clean post-rebase task branch; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26; HOME=/tmp/sp-bce79baa/super-plan-ufz.26/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/config; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/cache; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/data; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.26/state\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 61,
+      "lineEnd": 171,
+      "byteStart": 7929,
+      "byteEnd": 16469,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

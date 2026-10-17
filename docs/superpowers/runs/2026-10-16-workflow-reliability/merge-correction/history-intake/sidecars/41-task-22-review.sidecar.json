@@ -1,0 +1,747 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-22-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-22-review.md",
+  "rawSha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+  "rawByteCount": 10361,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-22-review.md",
+    "durablePath": "task-report-history-r1/raw/task-22-review.md",
+    "sha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+    "byteCount": 10361,
+    "logicalRole": "review",
+    "ordinal": 22,
+    "logicalTaskId": "super-plan-ufz.25",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-22-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 1,
+      "rawText": "Status: CLEAN"
+    },
+    {
+      "line": 23,
+      "rawText": "Risk: a fixed projection could be disconnected from the actual acceptance reader or leave a sibling consumer on the truncated path. Read pinned report-status and searched pinned skills/super-auto call sites with git grep. Its --acceptance entrypoint spawns this exact scope-dispositions --project path at report-status:150, accepts 0/3, parses the full JSON and processes retained occurrences. Ordinary status uses the same helper at :298, and documented --keys callers share the changed output boundary. No alternate forced-exit projection path remains in the diff. Legacy round processing is untouched."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 7,
+      "byteStart": 0,
+      "byteEnd": 193,
+      "bodyLineStart": 1,
+      "rawText": "Status: CLEAN\n\nTask: super-plan-ufz.25 (22)\nBase: 5bfbb92331652df67d9af367f0f81baa8267f020\nHead: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6\n\n",
+      "bodyRawText": "Status: CLEAN\n\nTask: super-plan-ufz.25 (22)\nBase: 5bfbb92331652df67d9af367f0f81baa8267f020\nHead: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 1,
+          "lineEnd": 1,
+          "byteStart": 0,
+          "byteEnd": 14
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.25 (22)\n",
+          "text": "Task: super-plan-ufz.25 (22)",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 15,
+          "byteEnd": 44
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 5bfbb92331652df67d9af367f0f81baa8267f020\n",
+          "text": "Base: 5bfbb92331652df67d9af367f0f81baa8267f020",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 44,
+          "byteEnd": 91
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6\n",
+          "text": "Head: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 5,
+          "lineEnd": 6,
+          "byteStart": 91,
+          "byteEnd": 192
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 1,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Spec compliance"
+      ],
+      "lineStart": 8,
+      "lineEnd": 13,
+      "byteStart": 193,
+      "byteEnd": 1330,
+      "bodyLineStart": 9,
+      "rawText": "## Spec compliance\n\n✅ Current bead description/acceptance and comments read before package construction; there are no comments or amendments, and the frozen brief agrees. All named production and regression changes are present. The 128 original occurrence values/order survive both valid and gap-bearing pipe projections; supported resolved/rejected judgments remain supported and exclude only the two expected outstanding groups. Empty controls retain valid empty semantics. The real report-status --acceptance consumer reads all 126 outstanding refs and retains legitimate evidence gaps. No spec, historical artifact, existing test, root acceptance, or unrelated component was changed.\n\n✅ Natural Node termination drains stdout after serialization. process.exitCode retains 0 for valid projection and 3 for projection gaps. The stdout error listener explicitly reports failed output on stderr and sets exit 1, including a closed pipe. Projection output never mutates the retained run record. The focused closed-pipe test checks nonzero exit, observable stderr and byte-identical retained input. No inferred argv issue was raised.\n\n",
+      "bodyRawText": "\n✅ Current bead description/acceptance and comments read before package construction; there are no comments or amendments, and the frozen brief agrees. All named production and regression changes are present. The 128 original occurrence values/order survive both valid and gap-bearing pipe projections; supported resolved/rejected judgments remain supported and exclude only the two expected outstanding groups. Empty controls retain valid empty semantics. The real report-status --acceptance consumer reads all 126 outstanding refs and retains legitimate evidence gaps. No spec, historical artifact, existing test, root acceptance, or unrelated component was changed.\n\n✅ Natural Node termination drains stdout after serialization. process.exitCode retains 0 for valid projection and 3 for projection gaps. The stdout error listener explicitly reports failed output on stderr and sets exit 1, including a closed pipe. Projection output never mutates the retained run record. The focused closed-pipe test checks nonzero exit, observable stderr and byte-identical retained input. No inferred argv issue was raised.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead description/acceptance and comments read before package construction; there are no comments or amendments, and the frozen brief agrees. All named production and regression changes are present. The 128 original occurrence values/order survive both valid and gap-bearing pipe projections; supported resolved/rejected judgments remain supported and exclude only the two expected outstanding groups. Empty controls retain valid empty semantics. The real report-status --acceptance consumer reads all 126 outstanding refs and retains legitimate evidence gaps. No spec, historical artifact, existing test, root acceptance, or unrelated component was changed.\n",
+          "text": "✅ Current bead description/acceptance and comments read before package construction; there are no comments or amendments, and the frozen brief agrees. All named production and regression changes are present. The 128 original occurrence values/order survive both valid and gap-bearing pipe projections; supported resolved/rejected judgments remain supported and exclude only the two expected outstanding groups. Empty controls retain valid empty semantics. The real report-status --acceptance consumer reads all 126 outstanding refs and retains legitimate evidence gaps. No spec, historical artifact, existing test, root acceptance, or unrelated component was changed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 213,
+          "byteEnd": 883
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Natural Node termination drains stdout after serialization. process.exitCode retains 0 for valid projection and 3 for projection gaps. The stdout error listener explicitly reports failed output on stderr and sets exit 1, including a closed pipe. Projection output never mutates the retained run record. The focused closed-pipe test checks nonzero exit, observable stderr and byte-identical retained input. No inferred argv issue was raised.\n",
+          "text": "✅ Natural Node termination drains stdout after serialization. process.exitCode retains 0 for valid projection and 3 for projection gaps. The stdout error listener explicitly reports failed output on stderr and sets exit 1, including a closed pipe. Projection output never mutates the retained run record. The focused closed-pipe test checks nonzero exit, observable stderr and byte-identical retained input. No inferred argv issue was raised.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 884,
+          "byteEnd": 1329
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Issues"
+      ],
+      "lineStart": 14,
+      "lineEnd": 20,
+      "byteStart": 1330,
+      "byteEnd": 1409,
+      "bodyLineStart": 15,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\nWarning items: none.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\nWarning items: none.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1341,
+          "byteEnd": 1357
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 17,
+          "lineEnd": 17,
+          "byteStart": 1357,
+          "byteEnd": 1374
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\n",
+          "text": "Minor: none.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 1374,
+          "byteEnd": 1387
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Warning items: none.\n",
+          "text": "Warning items: none.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1387,
+          "byteEnd": 1408
+        }
+      ]
+    },
+    {
+      "section": "Focused checks outside the diff",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Focused checks outside the diff\n",
+      "hierarchy": [
+        "Focused checks outside the diff"
+      ],
+      "lineStart": 21,
+      "lineEnd": 28,
+      "byteStart": 1409,
+      "byteEnd": 3051,
+      "bodyLineStart": 22,
+      "rawText": "## Focused checks outside the diff\n\nRisk: a fixed projection could be disconnected from the actual acceptance reader or leave a sibling consumer on the truncated path. Read pinned report-status and searched pinned skills/super-auto call sites with git grep. Its --acceptance entrypoint spawns this exact scope-dispositions --project path at report-status:150, accepts 0/3, parses the full JSON and processes retained occurrences. Ordinary status uses the same helper at :298, and documented --keys callers share the changed output boundary. No alternate forced-exit projection path remains in the diff. Legacy round processing is untouched.\n\nRisk: the regression might shrink the original reproducer or use implementation-derived expected values. Compared pinned judge-4-reproduce/probe.py with the new fixture: all 128 occurrences, positions, keys and full repeated text match; expected refs and occurrence values derive directly from the input fixture. File output and pipe output are compared byte-for-byte before JSON parsing and all occurrence assertions.\n\nRisk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.\n\n",
+      "bodyRawText": "\nRisk: a fixed projection could be disconnected from the actual acceptance reader or leave a sibling consumer on the truncated path. Read pinned report-status and searched pinned skills/super-auto call sites with git grep. Its --acceptance entrypoint spawns this exact scope-dispositions --project path at report-status:150, accepts 0/3, parses the full JSON and processes retained occurrences. Ordinary status uses the same helper at :298, and documented --keys callers share the changed output boundary. No alternate forced-exit projection path remains in the diff. Legacy round processing is untouched.\n\nRisk: the regression might shrink the original reproducer or use implementation-derived expected values. Compared pinned judge-4-reproduce/probe.py with the new fixture: all 128 occurrences, positions, keys and full repeated text match; expected refs and occurrence values derive directly from the input fixture. File output and pipe output are compared byte-for-byte before JSON parsing and all occurrence assertions.\n\nRisk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: a fixed projection could be disconnected from the actual acceptance reader or leave a sibling consumer on the truncated path. Read pinned report-status and searched pinned skills/super-auto call sites with git grep. Its --acceptance entrypoint spawns this exact scope-dispositions --project path at report-status:150, accepts 0/3, parses the full JSON and processes retained occurrences. Ordinary status uses the same helper at :298, and documented --keys callers share the changed output boundary. No alternate forced-exit projection path remains in the diff. Legacy round processing is untouched.\n",
+          "text": "Risk: a fixed projection could be disconnected from the actual acceptance reader or leave a sibling consumer on the truncated path. Read pinned report-status and searched pinned skills/super-auto call sites with git grep. Its --acceptance entrypoint spawns this exact scope-dispositions --project path at report-status:150, accepts 0/3, parses the full JSON and processes retained occurrences. Ordinary status uses the same helper at :298, and documented --keys callers share the changed output boundary. No alternate forced-exit projection path remains in the diff. Legacy round processing is untouched.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 1445,
+          "byteEnd": 2050
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: the regression might shrink the original reproducer or use implementation-derived expected values. Compared pinned judge-4-reproduce/probe.py with the new fixture: all 128 occurrences, positions, keys and full repeated text match; expected refs and occurrence values derive directly from the input fixture. File output and pipe output are compared byte-for-byte before JSON parsing and all occurrence assertions.\n",
+          "text": "Risk: the regression might shrink the original reproducer or use implementation-derived expected values. Compared pinned judge-4-reproduce/probe.py with the new fixture: all 128 occurrences, positions, keys and full repeated text match; expected refs and occurrence values derive directly from the input fixture. File output and pipe output are compared byte-for-byte before JSON parsing and all occurrence assertions.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2051,
+          "byteEnd": 2470
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Risk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.\n",
+          "text": "Risk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 27,
+          "lineEnd": 27,
+          "byteStart": 2471,
+          "byteEnd": 3050
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Test evidence"
+      ],
+      "lineStart": 29,
+      "lineEnd": 36,
+      "byteStart": 3051,
+      "byteEnd": 4440,
+      "bodyLineStart": 30,
+      "rawText": "## Test evidence\n\nNo tests were run by this reviewer. Read retained red.log, drain-only.log, green.log and existing-scripts.log and the embedded report output. RED reproduces five of seven failures on original production with the new regression. Drain-only restores transport/acceptance but leaves closed-pipe failure. Final `bash tests/super-auto/projection-output-r1.sh` reports 7 tests OK, 204381-byte valid and 204542-byte gap projections with exits 0/3, and real acceptance consumers retaining 126 refs. `bash tests/super-auto/test-scripts.sh` reports All super-auto script tests passed. Evidence is plausible, relevant and matches the captured tree. The reported cleanup sequence distinguishes active test processes from post-test leaks; no leak is reported.\n\nTest changes commands (exit 0):\n`git diff --stat 5bfbb92331652df67d9af367f0f81baa8267f020..d36ef7baca1fef0fb0a77ea4fb8b0015138beb19 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nThe same command without `--stat` read the full test diff. Result: only tests/super-auto/projection-output-r1.sh added, 147 lines; no deleted, skipped or weakened existing tests. Package contains two changed files and one commit; merge-base ancestor and both commit identity checks passed.\n\n",
+      "bodyRawText": "\nNo tests were run by this reviewer. Read retained red.log, drain-only.log, green.log and existing-scripts.log and the embedded report output. RED reproduces five of seven failures on original production with the new regression. Drain-only restores transport/acceptance but leaves closed-pipe failure. Final `bash tests/super-auto/projection-output-r1.sh` reports 7 tests OK, 204381-byte valid and 204542-byte gap projections with exits 0/3, and real acceptance consumers retaining 126 refs. `bash tests/super-auto/test-scripts.sh` reports All super-auto script tests passed. Evidence is plausible, relevant and matches the captured tree. The reported cleanup sequence distinguishes active test processes from post-test leaks; no leak is reported.\n\nTest changes commands (exit 0):\n`git diff --stat 5bfbb92331652df67d9af367f0f81baa8267f020..d36ef7baca1fef0fb0a77ea4fb8b0015138beb19 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nThe same command without `--stat` read the full test diff. Result: only tests/super-auto/projection-output-r1.sh added, 147 lines; no deleted, skipped or weakened existing tests. Package contains two changed files and one commit; merge-base ancestor and both commit identity checks passed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests were run by this reviewer. Read retained red.log, drain-only.log, green.log and existing-scripts.log and the embedded report output. RED reproduces five of seven failures on original production with the new regression. Drain-only restores transport/acceptance but leaves closed-pipe failure. Final `bash tests/super-auto/projection-output-r1.sh` reports 7 tests OK, 204381-byte valid and 204542-byte gap projections with exits 0/3, and real acceptance consumers retaining 126 refs. `bash tests/super-auto/test-scripts.sh` reports All super-auto script tests passed. Evidence is plausible, relevant and matches the captured tree. The reported cleanup sequence distinguishes active test processes from post-test leaks; no leak is reported.\n",
+          "text": "No tests were run by this reviewer. Read retained red.log, drain-only.log, green.log and existing-scripts.log and the embedded report output. RED reproduces five of seven failures on original production with the new regression. Drain-only restores transport/acceptance but leaves closed-pipe failure. Final `bash tests/super-auto/projection-output-r1.sh` reports 7 tests OK, 204381-byte valid and 204542-byte gap projections with exits 0/3, and real acceptance consumers retaining 126 refs. `bash tests/super-auto/test-scripts.sh` reports All super-auto script tests passed. Evidence is plausible, relevant and matches the captured tree. The reported cleanup sequence distinguishes active test processes from post-test leaks; no leak is reported.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 3069,
+          "byteEnd": 3816
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands (exit 0):\n`git diff --stat 5bfbb92331652df67d9af367f0f81baa8267f020..d36ef7baca1fef0fb0a77ea4fb8b0015138beb19 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nThe same command without `--stat` read the full test diff. Result: only tests/super-auto/projection-output-r1.sh added, 147 lines; no deleted, skipped or weakened existing tests. Package contains two changed files and one commit; merge-base ancestor and both commit identity checks passed.\n",
+          "text": "Test changes commands (exit 0):\n`git diff --stat 5bfbb92331652df67d9af367f0f81baa8267f020..d36ef7baca1fef0fb0a77ea4fb8b0015138beb19 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nThe same command without `--stat` read the full test diff. Result: only tests/super-auto/projection-output-r1.sh added, 147 lines; no deleted, skipped or weakened existing tests. Package contains two changed files and one commit; merge-base ancestor and both commit identity checks passed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 33,
+          "lineEnd": 35,
+          "byteStart": 3817,
+          "byteEnd": 4439
+        }
+      ]
+    },
+    {
+      "section": "Check records",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Check records\n",
+      "hierarchy": [
+        "Check records"
+      ],
+      "lineStart": 37,
+      "lineEnd": 94,
+      "byteStart": 4440,
+      "byteEnd": 8627,
+      "bodyLineStart": 38,
+      "rawText": "## Check records\n\nThese are original implementer measurements, not reviewer test runs. Both required live checks are covered by matching final-tree live/pass records. RED and drain-only failures are retained as failures and do not substitute for the final measurements.\n\nevidence:\n```json\n[\n  {\n    \"sourceTree\": \"7b5e745ec8195d3b48021a50ee4795147106b5bf\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"ce39090e06acac84ba4dff8457445206723abb2f\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/drain-only.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/green.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/existing-scripts.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n\nrequiredLiveChecks:\n```json\n[\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  }\n]\n```\n\n",
+      "bodyRawText": "\nThese are original implementer measurements, not reviewer test runs. Both required live checks are covered by matching final-tree live/pass records. RED and drain-only failures are retained as failures and do not substitute for the final measurements.\n\nevidence:\n```json\n[\n  {\n    \"sourceTree\": \"7b5e745ec8195d3b48021a50ee4795147106b5bf\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"ce39090e06acac84ba4dff8457445206723abb2f\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/drain-only.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/green.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/existing-scripts.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n\nrequiredLiveChecks:\n```json\n[\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  }\n]\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "These are original implementer measurements, not reviewer test runs. Both required live checks are covered by matching final-tree live/pass records. RED and drain-only failures are retained as failures and do not substitute for the final measurements.\n",
+          "text": "These are original implementer measurements, not reviewer test runs. Both required live checks are covered by matching final-tree live/pass records. RED and drain-only failures are retained as failures and do not substitute for the final measurements.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 39,
+          "lineEnd": 39,
+          "byteStart": 4458,
+          "byteEnd": 4710
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "evidence:\n",
+          "text": "evidence:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 41,
+          "lineEnd": 41,
+          "byteStart": 4711,
+          "byteEnd": 4721
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n[\n  {\n    \"sourceTree\": \"7b5e745ec8195d3b48021a50ee4795147106b5bf\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"ce39090e06acac84ba4dff8457445206723abb2f\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/drain-only.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/green.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/existing-scripts.log\",\n    \"kind\": \"live\"\n  }\n]\n```\n",
+          "text": "```json\n[\n  {\n    \"sourceTree\": \"7b5e745ec8195d3b48021a50ee4795147106b5bf\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/red.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"ce39090e06acac84ba4dff8457445206723abb2f\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"fail\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/drain-only.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/green.log\",\n    \"kind\": \"live\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\",\n    \"outcome\": \"pass\",\n    \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.25/.superpowers/sdd/super-plan-ufz.25-evidence/existing-scripts.log\",\n    \"kind\": \"live\"\n  }\n]\n```",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 42,
+          "lineEnd": 77,
+          "byteStart": 4721,
+          "byteEnd": 7650
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "requiredLiveChecks:\n",
+          "text": "requiredLiveChecks:",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 79,
+          "lineEnd": 79,
+          "byteStart": 7651,
+          "byteEnd": 7671
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n[\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  }\n]\n```\n",
+          "text": "```json\n[\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/projection-output-r1.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  },\n  {\n    \"sourceTree\": \"802896a13812a8ee3ad52a656cb32445514a59f6\",\n    \"command\": \"bash tests/super-auto/test-scripts.sh\",\n    \"configuration\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.25; HOME=/tmp/sp-bce79baa/super-plan-ufz.25/home; XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/config; XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/data; XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/cache; XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.25/state\"\n  }\n]\n```",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 80,
+          "lineEnd": 93,
+          "byteStart": 7671,
+          "byteEnd": 8626
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Failure attribution"
+      ],
+      "lineStart": 95,
+      "lineEnd": 100,
+      "byteStart": 8627,
+      "byteEnd": 9061,
+      "bodyLineStart": 96,
+      "rawText": "## Failure attribution\n\nfailureAttribution: []\n\nNo recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.\n\n",
+      "bodyRawText": "\nfailureAttribution: []\n\nNo recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "failureAttribution: []\n",
+          "text": "failureAttribution: []",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 97,
+          "lineEnd": 97,
+          "byteStart": 8651,
+          "byteEnd": 8674
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "No recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.\n",
+          "text": "No recorded run-failure history was supplied and the relevant ledger has no attribution association for this fix. RED measures the new regression on unchanged base production, not an evidenced run-start full-suite baseline. It establishes the local transport defect and final verification resolves those focused cases; no other run owner or caller acceptance obligation is discharged.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 99,
+          "lineEnd": 99,
+          "byteStart": 8675,
+          "byteEnd": 9060
+        }
+      ]
+    },
+    {
+      "section": "Original source capture commands",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Original source capture commands\n",
+      "hierarchy": [
+        "Original source capture commands"
+      ],
+      "lineStart": 101,
+      "lineEnd": 114,
+      "byteStart": 9061,
+      "byteEnd": 10361,
+      "bodyLineStart": 102,
+      "rawText": "## Original source capture commands\n\nCapture commands (all in this task worktree; real index preserved):\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git add tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git write-tree -> 7b5e745ec8195d3b48021a50ee4795147106b5bf\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git write-tree -> ce39090e06acac84ba4dff8457445206723abb2f (drain-only intermediate)\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git write-tree -> 802896a13812a8ee3ad52a656cb32445514a59f6\n- After commit, git rev-parse HEAD^{tree} -> 802896a13812a8ee3ad52a656cb32445514a59f6 (identical tested and committed inputs).\n\n",
+      "bodyRawText": "\nCapture commands (all in this task worktree; real index preserved):\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git add tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git write-tree -> 7b5e745ec8195d3b48021a50ee4795147106b5bf\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git write-tree -> ce39090e06acac84ba4dff8457445206723abb2f (drain-only intermediate)\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git read-tree HEAD\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git write-tree -> 802896a13812a8ee3ad52a656cb32445514a59f6\n- After commit, git rev-parse HEAD^{tree} -> 802896a13812a8ee3ad52a656cb32445514a59f6 (identical tested and committed inputs).\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Capture commands (all in this task worktree; real index preserved):\n",
+          "text": "Capture commands (all in this task worktree; real index preserved):",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 103,
+          "lineEnd": 103,
+          "byteStart": 9098,
+          "byteEnd": 9166
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git read-tree HEAD\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git read-tree HEAD",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 104,
+          "lineEnd": 104,
+          "byteStart": 9166,
+          "byteEnd": 9247
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git add tests/super-auto/projection-output-r1.sh\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git add tests/super-auto/projection-output-r1.sh",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 105,
+          "lineEnd": 105,
+          "byteStart": 9247,
+          "byteEnd": 9358
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git write-tree -> 7b5e745ec8195d3b48021a50ee4795147106b5bf\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/red.index git write-tree -> 7b5e745ec8195d3b48021a50ee4795147106b5bf",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 106,
+          "lineEnd": 106,
+          "byteStart": 9358,
+          "byteEnd": 9479
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git read-tree HEAD\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git read-tree HEAD",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 107,
+          "lineEnd": 107,
+          "byteStart": 9479,
+          "byteEnd": 9562
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh",
+          "listMarker": "- ",
+          "positionInSection": 6,
+          "lineStart": 108,
+          "lineEnd": 108,
+          "byteStart": 9562,
+          "byteEnd": 9720
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git write-tree -> ce39090e06acac84ba4dff8457445206723abb2f (drain-only intermediate)\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/green.index git write-tree -> ce39090e06acac84ba4dff8457445206723abb2f (drain-only intermediate)",
+          "listMarker": "- ",
+          "positionInSection": 7,
+          "lineStart": 109,
+          "lineEnd": 109,
+          "byteStart": 9720,
+          "byteEnd": 9869
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git read-tree HEAD\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git read-tree HEAD",
+          "listMarker": "- ",
+          "positionInSection": 8,
+          "lineStart": 110,
+          "lineEnd": 110,
+          "byteStart": 9869,
+          "byteEnd": 9952
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git add skills/super-auto/scripts/scope-dispositions tests/super-auto/projection-output-r1.sh",
+          "listMarker": "- ",
+          "positionInSection": 9,
+          "lineStart": 111,
+          "lineEnd": 111,
+          "byteStart": 9952,
+          "byteEnd": 10110
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git write-tree -> 802896a13812a8ee3ad52a656cb32445514a59f6\n",
+          "text": "GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.25/final.index git write-tree -> 802896a13812a8ee3ad52a656cb32445514a59f6",
+          "listMarker": "- ",
+          "positionInSection": 10,
+          "lineStart": 112,
+          "lineEnd": 112,
+          "byteStart": 10110,
+          "byteEnd": 10233
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- After commit, git rev-parse HEAD^{tree} -> 802896a13812a8ee3ad52a656cb32445514a59f6 (identical tested and committed inputs).\n",
+          "text": "After commit, git rev-parse HEAD^{tree} -> 802896a13812a8ee3ad52a656cb32445514a59f6 (identical tested and committed inputs).",
+          "listMarker": "- ",
+          "positionInSection": 11,
+          "lineStart": 113,
+          "lineEnd": 113,
+          "byteStart": 10233,
+          "byteEnd": 10360
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 1,
+      "key": "Status: CLEAN",
+      "text": "Status: CLEAN",
+      "rawText": "Status: CLEAN\n",
+      "lineStart": 1,
+      "lineEnd": 1,
+      "byteStart": 0,
+      "byteEnd": 14,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 2,
+      "key": "Task: super-plan-ufz.25 (22)",
+      "text": "Task: super-plan-ufz.25 (22)",
+      "rawText": "Task: super-plan-ufz.25 (22)\n",
+      "lineStart": 3,
+      "lineEnd": 3,
+      "byteStart": 15,
+      "byteEnd": 44,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 3,
+      "key": "Base: 5bfbb92331652df67d9af367f0f81baa8267f020",
+      "text": "Base: 5bfbb92331652df67d9af367f0f81baa8267f020",
+      "rawText": "Base: 5bfbb92331652df67d9af367f0f81baa8267f020\n",
+      "lineStart": 4,
+      "lineEnd": 4,
+      "byteStart": 44,
+      "byteEnd": 91,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": null,
+      "sectionOrdinal": 0,
+      "hierarchy": [],
+      "positionInSection": 4,
+      "key": "Head: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19",
+      "text": "Head: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6",
+      "rawText": "Head: d36ef7baca1fef0fb0a77ea4fb8b0015138beb19\nSource tree: 802896a13812a8ee3ad52a656cb32445514a59f6\n",
+      "lineStart": 5,
+      "lineEnd": 6,
+      "byteStart": 91,
+      "byteEnd": 192,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "unheaded-narrative-context",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 16,
+      "lineEnd": 16,
+      "byteStart": 1341,
+      "byteEnd": 1357,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 17,
+      "lineEnd": 17,
+      "byteStart": 1357,
+      "byteEnd": 1374,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.",
+      "rawText": "Minor: none.\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 1374,
+      "byteEnd": 1387,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": "Issues",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Issues"
+      ],
+      "positionInSection": 4,
+      "key": "Warning items: none.",
+      "text": "Warning items: none.",
+      "rawText": "Warning items: none.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1387,
+      "byteEnd": 1408,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "section": "Focused checks outside the diff",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Focused checks outside the diff"
+      ],
+      "positionInSection": 3,
+      "key": "Risk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.",
+      "text": "Risk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.",
+      "rawText": "Risk: evidence source identity or cleanup history could mismatch the reviewed commit. git rev-parse confirms HEAD tree equals final evidence tree 802896a13812a8ee3ad52a656cb32445514a59f6. Caller HEAD is the captured d36ef7ba commit and git status --short was empty. Compared retained RED and intermediate snapshot trees to final tree: only scope-dispositions differs; the same added regression is present in all. Relevant progress ledger records contain no recorded run-failure owner for this task and retain caller-owned acceptance pending. No review-owned worktree was needed.\n",
+      "lineStart": 27,
+      "lineEnd": 27,
+      "byteStart": 2471,
+      "byteEnd": 3050,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

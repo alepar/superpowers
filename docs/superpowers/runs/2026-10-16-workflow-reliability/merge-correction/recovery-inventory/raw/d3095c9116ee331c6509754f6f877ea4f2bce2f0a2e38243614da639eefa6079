@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Each committed invocation archive feeds prior generated slices into the next full-range review, multiplying review I/O and payload even when product source does not change.",
+      "location": "skills/super-auto/scripts/report-status:224",
+      "category": "hot-path-perf",
+      "external": false,
+      "evidence": "The new collector recursively walks every assembled input at report-status:220-224 and copies every discovered file into the run archive at :232-242; super-auto/SKILL.md Review collection requires committing it before another invocation. Frozen coordinator.js:2840 captures the entire range from the default-branch merge base, and assembler-prompt.md:26-27 slices every changed file, so the next invocation generates and archives diff slices of the prior archive itself. I independently verified these frozen-source rules and their callers; the archive branch and commit requirement are absent in base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5. This path runs at every settled invocation/fix-loop re-entry on the same branch and scales with invocation history, rather than process uptime. Independent premortem scout reproduction using actual frozen report-status/report-verdict helpers and exact assembler rules retained one product change: successful invocation 1/2/3 collections produced 2/7/17 changed files, 420/4355/17189 slice bytes, and 1/2/4 copies of the original change; invocation 4 reached 37 files before the nested flattened basename failed with errno63. Receipt and executable fixture: /tmp/ufz-pr1/evidence-premortem/recursive-result.json and recursive-probe.py (attribution retained). Frozen branch itself adds 735 archive files / 83,336 lines, versus 26 skill files / 2,771 lines, demonstrating material review input overhead on the actual run. My frozen source copies and base/head introduction check are in /tmp/ufz-pr1/evidence-hot-path-perf/.",
+      "kind": "ISSUE"
+    }
+  ]
+}

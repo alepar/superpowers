@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+  "artifact": "legacy-report-adapters-r1/54-task-29-review.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000240",
+      "position": 1,
+      "key": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened.",
+      "text": "Read current `bd show super-plan-ufz.32 --json` and `bd comments super-plan-ufz.32` before applying the frozen Task 29 brief. No comments, explicit amendments or unresolved conflicts were present. Current acceptance and brief agree: the coordinator owns bounded fresh-agent instruction evaluation, the final integrated sweep and root/human acceptance. They remain pending. No rejected historical measurement-classification or frozen-Git-fallback finding is reopened."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000003505",
+      "position": 1,
+      "key": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior.",
+      "text": "⚠ `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: fresh-agent behavior compliance remains caller-owned under super-plan-ufz. Survivor, deliberately-kept, retained-resource and missing-result scenarios are decision simulations. This review and fixture do not establish instruction-following acceptance or native Linux process behavior."
+    },
+    {
+      "section": "Findings — adapter/review-finding/raw-section-7/raw-byte-000003942",
+      "position": 1,
+      "key": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results.",
+      "text": "[deferred-evaluation] `evidence/super-plan-ufz.32/instruction-evaluation.md:34`: The required fresh-agent changed-instruction evaluation is pending with the super-plan-ufz coordinator, as the brief explicitly permits. Retain that pending obligation before root acceptance; do not infer behavior from instruction string checks or helper results."
+    },
+    {
+      "section": "Findings — adapter/structured-finding-appearance/raw-section-12/raw-byte-000009729/json-pointer-/minors/0",
+      "position": 1,
+      "key": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it.",
+      "text": "[deferred-evaluation] evidence/super-plan-ufz.32/instruction-evaluation.md:34 — Fresh-agent before/after changed-instruction evaluation remains explicitly assigned to the super-plan-ufz coordinator before root acceptance; deterministic contract replay and this source review do not satisfy it."
+    }
+  ]
+}

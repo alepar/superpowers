@@ -1,0 +1,696 @@
+diff --git a/skills/super-auto/scripts/collection-records.cjs b/skills/super-auto/scripts/collection-records.cjs
+new file mode 100644
+index 00000000..164a1295
+--- /dev/null
++++ b/skills/super-auto/scripts/collection-records.cjs
+@@ -0,0 +1,38 @@
++// Pure collection shape/provenance validation shared by collection and read-only gates.
++const path=require('node:path'),crypto=require('node:crypto');
++const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
++ typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
++ (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
++ typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
++ Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
++ (r.complete===undefined || typeof r.complete==='boolean') &&
++ (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
++ (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
++ (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
++ (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
++const recordHash=r=>crypto.createHash('sha256').update(JSON.stringify(r)).digest('hex');
++const sameBundle=(a,b)=>a.workspace===b.workspace&&JSON.stringify(a.required)===JSON.stringify(b.required);
++const sameRecovery=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
++function collectionHistory(text){
++ const latest=new Map(),history=new Map();let approvals=false,errors=0;
++for(const line of text.split('\n')){
++ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
++ if(!line.startsWith('- review-collection'))continue;
++ try{
++  if(!approvals||!line.startsWith('- review-collection · '))throw Error();
++  const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();
++  const old=latest.get(r.invocationId);
++  // Provenance is mandatory for the transition and every later recovery snapshot,
++  // including when a corrupted record omits the marker instead of changing it.
++  if(r.recovery!==undefined||old?.recovery!==undefined||(old?.settled&&old.reviewPath===null&&r.reviewPath!==null)){
++   const recovery=r.recovery,base=history.get(recovery?.recordSha256);
++   if(!recovery||recovery.kind!=='settled-null'||!base||!base.settled||base.reviewPath!==null||base.review!==recovery.review||
++      base.invocationId!==r.invocationId||!sameBundle(base,r)||!r.settled||r.reviewPath!==path.join(r.workspace,'final-review-'+r.invocationId+'.md')||
++      !(recordHash(old)===recovery.recordSha256||(old?.reviewPath===r.reviewPath&&old.review===r.review&&sameRecovery(old.recovery,recovery))))throw Error();
++  }
++  latest.set(r.invocationId,r);history.set(recordHash(r),r);
++ }catch{errors++}
++}
++ return {latest,errors};
++}
++module.exports={validCollection,recordHash,sameBundle,collectionHistory};
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index 35fc1882..2e997dd7 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -172,6 +172,21 @@ else{
+ const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
+ const roastInputs={design:new Set(),code:new Set()};
+ const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
++// This recognizes the keys transport grammar only; occurrence identity still requires
++// the hash-bound retained source and exact line correspondence below.
++function keysInput(artifact){
++ const lines=fs.readFileSync(artifact,'utf8').split(/\r?\n/),header=/^review: (ready|not ready|none)$/.exec(lines[0]);
++ const keys=[];
++ for(const [i,line] of lines.entries()){
++  if(i===0&&header)continue;if(!line.trim())continue;
++  if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
++  keys.push({line:i+1,key:line.replace(/^r[0-9]+ /,'')});
++ }
++ if(!header&&!keys.length)throw Error('untyped empty input');
++ if(header?.[1]==='none'&&keys.length)throw Error('no-review input contains keys');
++ return keys;
++}
++function declaredKind(artifact){try{keysInput(artifact);return 'keys'}catch{return 'roast'}}
+ let inApprovals=false,fenced=false;
+ for(const line of input.split(/\r?\n/)){
+  if(/^\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;
+@@ -188,7 +203,7 @@ for(const line of input.split(/\r?\n/)){
+  const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
+  if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
+   if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
+-  else{const original=artifactPath(artifact);declared.set(original,'roast');roastInputs[report[1].slice(6)].add(original)}
++  else{const original=artifactPath(artifact);declared.set(original,declaredKind(original));roastInputs[report[1].slice(6)].add(original)}
+  }
+  const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
+  if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
+@@ -217,9 +232,10 @@ for(const {artifact,loop} of ledgers){
+    const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
+    if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}
+    const kind=row[2]==='final-review'?'keys':'roast';
++   if(!roastInputs[loop].has(candidates[0]))gap('source coverage: undeclared ledger input population: '+artifact+'; '+candidates[0]);
+    const cacheKey=JSON.stringify([candidates[0],kind]);
+    if(!ledgerKeys.has(cacheKey)){
+-    if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\r?\n/).map(k=>k.trim().replace(/^r[0-9]+\s+/,'')));
++    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(candidates[0]).map(k=>k.key));
+     else{
+      const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
+      ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
+@@ -235,10 +251,11 @@ for(const {artifact,loop} of ledgers){
+   // still do not identify occurrences: all declared original reports are separately
+   // extracted and their immutable refs retain independent relevance/dispositions.
+   for(const original of roastInputs[loop]){
+-   const cacheKey=JSON.stringify([original,'roast']);
++   const kind=declared.get(original),cacheKey=JSON.stringify([original,kind]);
+    if(!ledgerKeys.has(cacheKey)){
+-    const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
+-    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
++    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(original).map(k=>k.key));
++    else{const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
++    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);}
+    }
+    const keys=ledgerKeys.get(cacheKey);
+    if(keys===null)gap('source coverage: ledger declared input population unavailable: '+artifact+'; '+original);
+@@ -267,14 +284,7 @@ for(const association of correspondences){
+   if(matches.some(s=>content(s)!==content(actual)))throw Error('retained source differs from complete extraction');
+   if(kind==='keys'){
+    if(actual.kind!=='final-review'||!Array.isArray(a.lines))throw Error('keys input needs final-review source and complete line correspondence');
+-   const lines=fs.readFileSync(original,'utf8').split(/\r?\n/),keyLines=[];
+-   for(const [i,line] of lines.entries()){
+-    if(i===0&&/^review: (ready|not ready|none)$/.test(line))continue;
+-    if(!line.trim())continue;
+-    if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
+-    keyLines.push(i+1);
+-   }
+-   if(!keyLines.length)throw Error('ledger row points at empty keys input');
++   const keyLines=keysInput(original).map(k=>k.line);
+    const known=new Set(actual.occurrences.map(o=>refId({source:a.source,...o}))),seen=new Set();
+    for(const mapping of a.lines){
+     if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!keyLines.includes(mapping.line)||seen.has(mapping.line)||
+@@ -370,40 +380,10 @@ for(let i=0;i<args.length;i++){
+  if(key==='--required')required.push(value);else if(['--invocation','--workspace','--review','--verdict'].includes(key)&&!o[key])o[key]=value;else usage();
+ }
+ let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
+-const dir=path.dirname(path.resolve(run)), latest=new Map();let approvals=false;
++const dir=path.dirname(path.resolve(run));
+ function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
+-const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
+- typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
+- (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
+- typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
+- Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
+- (r.complete===undefined || typeof r.complete==='boolean') &&
+- (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
+- (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
+- (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
+- (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
+-const recordHash=r=>crypto.createHash('sha256').update(JSON.stringify(r)).digest('hex');
+-const sameBundle=(a,b)=>a.workspace===b.workspace&&JSON.stringify(a.required)===JSON.stringify(b.required);
+-const sameRecovery=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+-const history=new Map();let malformed=false;
+-for(const line of text.split('\n')){
+- if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
+- if(!line.startsWith('- review-collection'))continue;
+- try{
+-  if(!approvals||!line.startsWith('- review-collection · '))throw Error();
+-  const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();
+-  const old=latest.get(r.invocationId);
+-  // Provenance is mandatory for the transition and every later recovery snapshot,
+-  // including when a corrupted record omits the marker instead of changing it.
+-  if(r.recovery!==undefined||old?.recovery!==undefined||(old?.settled&&old.reviewPath===null&&r.reviewPath!==null)){
+-   const recovery=r.recovery,base=history.get(recovery?.recordSha256);
+-   if(!recovery||recovery.kind!=='settled-null'||!base||!base.settled||base.reviewPath!==null||base.review!==recovery.review||
+-      base.invocationId!==r.invocationId||!sameBundle(base,r)||!r.settled||r.reviewPath!==path.join(r.workspace,'final-review-'+r.invocationId+'.md')||
+-      !(recordHash(old)===recovery.recordSha256||(old?.reviewPath===r.reviewPath&&old.review===r.review&&sameRecovery(old.recovery,recovery))))throw Error();
+-  }
+-  latest.set(r.invocationId,r);history.set(recordHash(r),r);
+- }catch{malformed=true}
+-}
++const {validCollection,recordHash,sameBundle,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
++const {latest,errors}=collectionHistory(text),malformed=errors>0;
+ // Reject every source symlink component before reading a recovered report or bundle.
+ function sourcePath(workspace,relative){
+  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
+@@ -533,18 +513,9 @@ if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }'
+     script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+     continuity=$(node - "$script_dir" "$run" <<'STATUS'
+ const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+-const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
+-const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
+- typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
+- (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
+- typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
+- Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
+- (r.complete===undefined || typeof r.complete==='boolean') &&
+- (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
+- (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
+- (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
+- (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
+-for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
++const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8');
++const {collectionHistory}=require(path.join(scripts,'collection-records.cjs'));
++const history=collectionHistory(text),latest=history.latest;let errors=history.errors;
+ // Collection metadata describes the last preservation attempt. Recheck retained bytes
+ // on every read; status and acceptance must never repair or recollect an archive.
+ let pending=0;const integrityGaps=[];
+diff --git a/skills/super-code/SKILL.md b/skills/super-code/SKILL.md
+index 8e1ebde5..454eafd8 100644
+--- a/skills/super-code/SKILL.md
++++ b/skills/super-code/SKILL.md
+@@ -171,13 +171,14 @@ is unmeasured here, not green) —
+ non-null only when that file was written (null when no work landed or the final review returned null);
+ `review` is that review's one verdict line (`ready`, `not ready (…)`, `no work landed`, or
+ `FINAL REVIEW UNAVAILABLE …`), never its body — read the file through `scripts/report-verdict` —
+-**`worktreesKept`**, the task worktrees the Finish sweep left in place because they hold
+-uncommitted or unmerged work (a caller's report lists them; empty means every finished task's
+-worktree is gone) — **`processSweep`**, `{ stopped, survived }`: the run's processes the Finish
+-sweep found still running (any process whose cwd, executable or HOME/TMPDIR is under a task
+-worktree, the run temp root, or a caller's `processRoots`, or an orphan with an argument there),
+-stopped, any kept because it holds or hosts an interactive terminal, and any that survived being
+-killed — a caller's report lists the survivors — **`humanActions`**, cleanup a task could not do because the permission layer refused it (the task still landed; each says what a human should do) — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
++**`worktreesKept`**, worktrees and temporary roots the Finish sweep retained for uncommitted
++or unmerged work, or because surviving, unknown or deliberately kept processes still need them —
++**`processSweep`**, `{ stopped, survived, unknown, kept }`: verified termination, verified survivors,
++unavailable or unverified inspection/termination, and deliberate preservation (including interactive
++terminal hosts). Ownership covers processes whose cwd, executable or HOME/TMPDIR is under a task
++worktree, the run temp root or the caller's `processRoots`, or an orphan with an argument there.
++A caller's report carries each outcome and every retained resource; empty survivor arrays alone
++cannot establish verified cleanup — **`humanActions`**, cleanup a task could not do because the permission layer refused it (the task still landed; each says what a human should do) — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
+ cap raises, a graph-bound audit, edge cuts applied or left for an operator, a merge backlog, a
+ recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
+ check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index 603bbe58..2c5c22bc 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -413,6 +413,7 @@ const verificationCompletions = new Map() // independently reviewed no-change ba
+ const verificationCandidates = new Set() // a tracker close cannot supply missing acceptance review
+ const fixHistory = []
+ const recoveryGaps = []
++const invalidRecoveryScopes = new Set() // constraints from invalid records are not validated obligations
+ let recoveryTransportHeld = false // unresolved retained pointers cannot supply a safe admission scope
+ function recoveryProblem(r) {
+   const text = v => typeof v === 'string' && v.trim().length > 0
+@@ -430,8 +431,22 @@ function recoveryProblem(r) {
+   return null
+ }
+ function readRecovery(line, digestLine = null) {
+-  const gap = reason => recoveryGap(line, reason, digestLine)
+   let r
++  const gap = reason => {
++    // Preserve every recognizable governing scope without treating malformed evidence
++    // as an obligation or a supported clear. Unknown scope holds all new admission.
++    const text = value => typeof value === 'string' && value.trim().length > 0
++    const scoped = []
++    if (r && ['hold', 'deferred'].includes(r.kind) && r.data && typeof r.data === 'object' && !Array.isArray(r.data)) {
++      if (r.kind === 'hold' && text(r.id)) scoped.push(r.id)
++      if (text(r.data.taskId)) scoped.push(r.data.taskId)
++      if (Array.isArray(r.data.affectedIds) && r.data.affectedIds.every(text)) scoped.push(...r.data.affectedIds)
++      if (r.data.affectedIds !== undefined && (!Array.isArray(r.data.affectedIds) || !r.data.affectedIds.every(text))) recoveryTransportHeld = true
++    }
++    if (!scoped.length || scoped.includes('merge-lane')) recoveryTransportHeld = true
++    for (const id of scoped) invalidRecoveryScopes.add(id)
++    return recoveryGap(line, reason, digestLine)
++  }
+   try { r = JSON.parse(line.slice('Recovery:'.length).trim()) } catch { return gap('invalid JSON') }
+   const problem = recoveryProblem(r)
+   if (problem) return gap(problem)
+@@ -922,6 +937,7 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
+ await drainLedger()
+ const recoveryAdmissionReason = id => {
+   if (recoveryTransportHeld) return 'recovery: retained record scope unavailable'
++  if (invalidRecoveryScopes.has(id)) return 'recovery: invalid retained record governs this task'
+   if (resumeHolds.has(id)) return 'recovery: ' + resumeHolds.get(id)
+   for (const r of recoveryObligations.values()) {
+     if (!['hold', 'deferred'].includes(r.kind)) continue
+@@ -1567,9 +1583,14 @@ while (true) {
+     (file, raised) => noteSlowness(`round ${roundNo}: ${file} held back two tasks while a slot was free — its hot-file cap is raised to ${raised} for the rest of this round (a shared file worth splitting or assigning to one task)`))
+   // Work outside a task chain (an unmapped id's filing and triage, a failed merge's blocker path)
+   // takes a scheduler slot like a chain does, so admitted work never exceeds the cap.
+-  const withSlot = async (id, fn) => {
+-    await sched.acquire(id)
+-    try { return await fn() } finally { sched.release(id) }
++  const withSlot = async (id, fn, { newWork = false } = {}) => {
++    const waited = await sched.acquire(id)
++    try {
++      // Failure/cancellation settlement already owns work; only newly initiated
++      // operational routing must pass admission after its capacity reservation.
++      if (newWork && !await admitAfterCapacity(id, waited)) return null
++      return await fn()
++    } finally { sched.release(id) }
+   }
+   // Chain rejections become null so one dead chain can't abort the drain, but are logged in full
+   // first. `chains` grows while awaited, which parallel() can't do; the scheduler bounds concurrency.
+@@ -1590,7 +1611,7 @@ while (true) {
+             { label: `unplanned-blocker:${id}`, phase: 'Plan', ...tier('mechanical'), schema: RESULT })
+           await handleBlocker({ id, status: 'BLOCKED', blockerBead: bead?.blockerBead }, planned.planPath, onResolve)
+         } finally { flushLedger(id, 'Triage') }
+-      }).catch(chainCatch(id)))
++      }, { newWork: true }).catch(chainCatch(id)))
+     }
+   }
+ 
+@@ -2433,7 +2454,7 @@ if (closureUnconfirmed.length) {
+   stopReason = 'closure-unconfirmed'
+   log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
+ }
+-if (!integrationBlocked && (recoveryTransportHeld || resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => resumedObligationKeys.has(key) && (r.kind === 'hold' || (r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
++if (!integrationBlocked && (recoveryTransportHeld || invalidRecoveryScopes.size || resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => (r.kind === 'hold' || (resumedObligationKeys.has(key) && r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
+   stopReason = 'recovery-held'
+   log('recovery held: persisted admission obligations remain unresolved; unrelated eligible work was allowed to proceed')
+ }
+@@ -3013,7 +3034,14 @@ function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integratio
+ 
+ function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath, source) {
+   // Mechanical: the seam review returned null, but the handoff file must exist. Lists the cluster files.
+-  return reviewWriteGuard(source.base, source.head, reviewPath) + `Write ${reviewPath} with exactly this content, and change nothing else: a "## Verdict" heading, then the line "not ready (unreviewed: ${unreviewed.join(', ')})"; a "## Must fix before landing" heading, then the line "- the seam review did not run; see the cluster files"; a line "Cluster files:" followed by one bullet per path (${clusterPaths.length ? clusterPaths.join(', ') : 'none'}); then an empty "## Untested scope" heading and an empty "## Deferred OK" heading. Report written true and path ${reviewPath}. ${finalAnswerRule(true)}`
++  const content = [
++    'Cluster files:', ...(clusterPaths.length ? clusterPaths.map(p => '- ' + p) : ['- none']),
++    '', '## Verdict', 'not ready (unreviewed: ' + unreviewed.join(', ') + ')',
++    '## Must fix before landing', '- the seam review did not run; see the retained cluster findings',
++    '## Untested scope', ...unreviewed.map(scope => '- ' + scope),
++    '## Deferred OK', '- none',
++  ].join('\n')
++  return reviewWriteGuard(source.base, source.head, reviewPath) + 'Write ' + reviewPath + ' with exactly the content between the review-stub tags, excluding the tags, and change nothing else:\n<review-stub>\n' + content + '\n</review-stub>\nReport written true and path ' + reviewPath + '. ' + finalAnswerRule(true)
+ }
+ 
+ function ledgerLine(n, id, rest) {
+diff --git a/tests/super-auto/acceptance-population-correction.mjs b/tests/super-auto/acceptance-population-correction.mjs
+index 443d79b2..e57d775c 100644
+--- a/tests/super-auto/acceptance-population-correction.mjs
++++ b/tests/super-auto/acceptance-population-correction.mjs
+@@ -180,14 +180,28 @@ try{
+   f.snapshot.findingAcceptance=refs.map(ref=>({...relevance(source),ref}));
+   const keys=path.join(f.dir,'review.keys');fs.writeFileSync(keys,'review: not ready\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
+   const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
+-  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md');f.sources.push(extract(original,'roast-code/round-1'));f.gate(3,/coverage|correspondence/);
++  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md, review.keys');f.sources.push(extract(original,'roast-code/round-1'));f.gate(3,/coverage|correspondence/);
+   const association={...correspondence(keys,source),lines:[{line:2,refs:[refs[0]]},{line:3,refs:[refs[1]]}]};
+   f.records.push({type:'source-correspondence',data:association});f.gate(0);
++  const completeDeclaration=f.declarations.at(-1);
++  f.declarations[f.declarations.length-1]='roast-code: clean-roast.md';f.gate(3,/population|undeclared/);
++  f.declarations[f.declarations.length-1]=completeDeclaration;
+   for(const mutate of [a=>a.lines.pop(),a=>a.lines.push(a.lines[0]),a=>a.lines[0].line=1,a=>a.lines[0].refs=[],a=>a.lines[0].refs[0].source='unrelated/final',a=>a.source='unrelated/final',a=>a.sha256='0'.repeat(64)]){
+    const invalid=structuredClone(association);mutate(invalid);f.records[0].data=invalid;f.gate(3,/coverage|correspondence/);
+   }
+   f.records[0].data=association;fs.appendFileSync(keys,'[Must-fix] later unaccounted concern\n');f.gate(3,/coverage|correspondence/);
+  });
++ for(const review of ['ready','none'])test('declared empty final-review keys '+review+' retain typed correspondence',()=>{
++  const f=fixture('empty-keys-'+review),original=roast(f,'clean-roast.md','None'),final=path.join(f.dir,'retained.md'),keys=path.join(f.dir,'unhelpful-name.data');
++  fs.writeFileSync(final,'## Verdict\n'+(review==='none'?'no work landed':'ready')+'\n## Must fix before landing\n- none\n## Untested scope\n- none\n## Deferred OK\n- none\n');
++  const source=extract(final,'empty-'+review+'/final');f.sources.push(source,extract(original,'roast-code/round-1'));
++  fs.writeFileSync(keys,'review: '+review+'\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
++  const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
++  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md, unhelpful-name.data');
++  f.gate(3,/correspondence|coverage/);
++  f.records.push({type:'source-correspondence',data:{...correspondence(keys,source),lines:[]}});f.gate(0);
++  f.records[0].data.lines=[{line:1,refs:[]}];f.gate(3,/correspondence/);
++ });
+  test('actual immutable reviewSource producer is metadata, not a measurement',()=>{
+   const f=fixture('source-binding'),progress=path.join(f.dir,'progress.md');
+   fs.writeFileSync(progress,`Launch: mechanism ordinary-subagents · epic fixture · branch fixture · integrationWorktree ${f.dir} · invocationId inv-fixture\n`);
+diff --git a/tests/super-auto/collection-recovery-correction.sh b/tests/super-auto/collection-recovery-correction.sh
+index b4ec6250..3c3203ec 100644
+--- a/tests/super-auto/collection-recovery-correction.sh
++++ b/tests/super-auto/collection-recovery-correction.sh
+@@ -18,7 +18,24 @@ function fixture(name){
+  fs.mkdirSync(path.join(workspace,'inputs'),{recursive:true});fs.writeFileSync(path.join(workspace,'inputs/required.txt'),'required source bytes\n');fs.writeFileSync(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');
+  const f={root,workspace,run,review};assert.equal(collect(f,{review:'none',verdict:'UNAVAILABLE'}).status,3);f.original=fs.readFileSync(run,'utf8');f.nullRecord=last(f);return f;
+ }
+-const f=fixture('recover');fs.writeFileSync(f.review,report);
++function gate(f,want){
++ const before=fs.readFileSync(f.run,'utf8');
++ const r=cp.spawnSync('bash',[script,'--acceptance',f.run,'--tree','a'.repeat(40)],{encoding:'utf8'});
++ assert.equal(r.status,want,r.stdout+r.stderr);assert.equal(JSON.parse(r.stdout).eligible,want===0);
++ assert.equal(fs.readFileSync(f.run,'utf8'),before,'acceptance must not repair history');
++}
++function addRequirements(f){
++ const tree='a'.repeat(40),a={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'caller'},{id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'fixture',requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'fixture',kind:'live',outcome:'pass',location:'synthetic-fixture.log'}],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:f.review}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['synthetic fixture decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
++ fs.appendFileSync(f.run,'- root-acceptance · '+JSON.stringify(a)+'\n');
++}
++function rejectedRead(f){
++ const before=fs.readFileSync(f.run,'utf8');
++ const r=cp.spawnSync('bash',[script,f.run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
++ gate(f,3);assert.equal(r.status,0);assert.match(r.stdout,/qualifier: .*review collection gaps/);
++ assert.equal(fs.readFileSync(f.run,'utf8'),before,'status must not repair history');
++}
++const f=fixture('recover');fs.writeFileSync(f.review,report);addRequirements(f);
++check('null settlement cannot satisfy independently declared acceptance',()=>gate(f,3));
+ check('plain replay cannot promote a null result from file presence',()=>{assert.equal(collect(f,{replay:true}).status,3);assert.equal(last(f).reviewPath,null)});
+ check('ordinary settlement cannot replace a settled null result',()=>{assert.equal(collect(f).status,3);assert.equal(last(f).reviewPath,null)});
+ // Name the break: without explicit null-recovery admission a valid recovered report
+@@ -27,6 +44,7 @@ f.nullRecord=last(f);const before=fs.readFileSync(f.run,'utf8'),result=collect(f
+ check('explicit recovered report collects with unchanged invocation and inputs',()=>{assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(last(f).complete,true);assert.equal(last(f).reviewPath,f.review);assert.equal(last(f).review,'ready');assert.equal(fs.readFileSync(path.join(f.root,'reviews/probe/inputs/required.txt'),'utf8'),'required source bytes\n')});
+ check('recovery retains original unavailable events and binds their exact predecessor',()=>{assert.ok(fs.readFileSync(f.run,'utf8').includes(before.trimEnd()));const r=last(f);assert.deepEqual(r.recovery,{kind:'settled-null',recordSha256:digest(f.nullRecord),review:'UNAVAILABLE'});assert.ok(records(f).some(r=>r.reviewPath===null&&r.review==='UNAVAILABLE'&&r.gaps?.some(g=>g.includes('recover'))))});
+ check('repeated explicit recovery and plain replay are byte-idempotent',()=>{const stable=fs.readFileSync(f.run,'utf8');assert.equal(collect(f,{recover:true}).status,0);assert.equal(collect(f,{replay:true}).status,0);assert.equal(fs.readFileSync(f.run,'utf8'),stable)});
++check('valid recovery supports read-only acceptance with independent prerequisites',()=>gate(f,0));
+ // A recovery marker without its exact retained null predecessor cannot establish
+ // source identity. These are real replay checks, not source-text/schema assertions.
+ {
+@@ -39,12 +57,13 @@ check('repeated explicit recovery and plain replay are byte-idempotent',()=>{con
+   ['all omitted recovery markers',r=>{delete r.recovery}]
+  ]){
+   const changed=stable.split('\n').map(line=>{if(!line.startsWith('- review-collection · '))return line;const r=JSON.parse(line.slice('- review-collection · '.length));if(r.recovery)mutate(r);return '- review-collection · '+JSON.stringify(r)}).join('\n');
+-  fs.writeFileSync(f.run,changed);const result=collect(f,{replay:true});
++  fs.writeFileSync(f.run,changed);check('readers reject '+name,()=>rejectedRead(f));const result=collect(f,{replay:true});
+   check('replay rejects '+name,()=>assert.equal(result.status,3,result.stdout+result.stderr));
+  }
+  const lines=stable.split('\n'),lastSnapshot=lines.map((line,index)=>line.startsWith('- review-collection · ')?index:-1).filter(index=>index>=0).at(-1);
+  const snapshot=JSON.parse(lines[lastSnapshot].slice('- review-collection · '.length));delete snapshot.recovery;
+  lines[lastSnapshot]='- review-collection · '+JSON.stringify(snapshot);fs.writeFileSync(f.run,lines.join('\n'));
++ check('readers reject omitted final snapshot recovery marker',()=>rejectedRead(f));
+  check('replay rejects omitted final snapshot recovery marker',()=>{const result=collect(f,{replay:true});assert.equal(result.status,3,result.stdout+result.stderr)});
+  fs.writeFileSync(f.run,stable);
+ }
+diff --git a/tests/super-code/fixture-liveness-final-wave.mjs b/tests/super-code/fixture-liveness-final-wave.mjs
+new file mode 100644
+index 00000000..e9a84f5f
+--- /dev/null
++++ b/tests/super-code/fixture-liveness-final-wave.mjs
+@@ -0,0 +1,23 @@
++#!/usr/bin/env node
++// The cleanup test observer must not turn denied inspection into observed process death.
++import assert from 'node:assert/strict'
++import fs from 'node:fs'
++import path from 'node:path'
++import os from 'node:os'
++import {fileURLToPath} from 'node:url'
++const here=path.dirname(fileURLToPath(import.meta.url))
++const source=fs.readFileSync(path.join(here,'replay-harness.mjs'),'utf8')
++const driver=source.slice(0,source.indexOf('// ---------- template-literal span scan'))
++ .replace('const here = path.dirname(fileURLToPath(import.meta.url))','const here = '+JSON.stringify(here))
++const {fixtureProcessAlive}=await import('data:text/javascript;base64,'+Buffer.from(driver+'\nexport {fixtureProcessAlive}').toString('base64'))
++const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'fixture-liveness-')),originalPath=process.env.PATH
++try {
++ fs.writeFileSync(path.join(tmp,'ps'),'#!/bin/sh\ncase "$FIXTURE_PS_CASE" in\nalive) echo S; exit 0;;\nzombie) echo Z; exit 0;;\nabsent) exit 1;;\ndenied) echo "ps: inspection denied" >&2; exit 1;;\nfailed) exit 2;;\nempty-success) exit 0;;\nesac\n',{mode:0o755})
++ process.env.PATH=tmp+':'+originalPath
++ for(const [mode,want] of [['alive',true],['zombie',false],['absent',false],['denied',null],['failed',null],['empty-success',null]]){
++  process.env.FIXTURE_PS_CASE=mode
++  if(want===null)assert.throws(()=>fixtureProcessAlive(123),/inspection unavailable/,mode+' cannot prove death')
++  else assert.equal(fixtureProcessAlive(123),want,mode+' explicit observation')
++  console.log('PASS fixture liveness '+mode)
++ }
++} finally {process.env.PATH=originalPath;delete process.env.FIXTURE_PS_CASE;fs.rmSync(tmp,{recursive:true,force:true})}
+diff --git a/tests/super-code/invocation-source-binding-r1.mjs b/tests/super-code/invocation-source-binding-r1.mjs
+index 18e0f223..7595f34d 100644
+--- a/tests/super-code/invocation-source-binding-r1.mjs
++++ b/tests/super-code/invocation-source-binding-r1.mjs
+@@ -34,8 +34,16 @@ function binding(f) {
+ function bind(f, head = sha('b')) {
+   return cli(f.ledger, 'bind-review-source', '--base', sha('a'), '--head', head)
+ }
+-async function replay(f, head, { mode = 'split', seam = null, stub = null, assemble = true, launchOK = true } = {}) {
+-  const trace = [], snapshots = []
++function stubContent(prompt) {
++  const exact = prompt.match(/<review-stub>\n([\s\S]*?)\n<\/review-stub>/)?.[1]
++  if (exact) return exact + '\n'
++  // Faithful legacy mechanical instruction, retained only to reproduce its empty sections.
++  const verdict = prompt.match(/then the line "(not ready \(unreviewed: [^"]+\))"/)?.[1]
++  assert(verdict, 'stub must supply exact report content')
++  return '## Verdict\n' + verdict + '\n## Must fix before landing\n- the seam review did not run; see the cluster files\n## Untested scope\n## Deferred OK\n'
++}
++async function replay(f, head, { mode = 'split', seam = null, stub = null, assemble = true, launchOK = true, collision = null } = {}) {
++  const trace = [], snapshots = [], guards = [], collisions = []
+   const agent = async (prompt, opts = {}) => {
+     const label = opts.label
+     trace.push({ label, prompt })
+@@ -54,8 +62,17 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
+     if (label === 'assemble:final' || label?.startsWith('final-review')) {
+       // Execute the real mechanical source guard emitted by the real prompt builder.
+       const cmd = prompt.match(/`(node [^`]* bind-review-source[^`]*)`/)?.[1]
++      guards.push({label, found:!!cmd})
+       if (cmd) {
++        if (label === collision && !collisions.length) {
++          const artifact = cmd.match(/--artifact '([^']+)'/)?.[1]
++          assert(artifact, 'guard identifies its own destination')
++          if (label === 'assemble:final') { mkdirSync(artifact,{recursive:true});writeFileSync(join(artifact,'retained.txt'),'original partial assembly') }
++          else writeFileSync(artifact,'original partial finding')
++          collisions.push({artifact,content:label === 'assemble:final' ? join(artifact,'retained.txt') : artifact})
++        }
+         const guard = spawnSync('sh', ['-c', cmd], { cwd: f.worktree, encoding: 'utf8' })
++        guards.at(-1).status=guard.status
+         if (guard.status !== 0) return label === 'assemble:final' ? { dir: prompt.match(/\[OUT_DIR\] = ([^;]+);/)?.[1], exit: 2, cause: 'review source guard: ' + guard.stderr.trim() } : null
+       }
+       snapshots.push({ label, binding: binding(f) })
+@@ -63,11 +80,16 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
+         if (!assemble) return null
+         const dir = prompt.match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
+         mkdirSync(dir, { recursive: true }); writeFileSync(join(dir, 'digest.md'), 'assembly from ' + head)
++        if (mode !== 'single') {
++          mkdirSync(join(dir,'slices'),{recursive:true})
++          writeFileSync(join(dir,'slices/alpha.diff'),'captured fixture cluster source')
++          writeFileSync(join(dir,'clusters.json'),JSON.stringify({clusters:[{name:'alpha',slices:['slices/alpha.diff']}]}))
++        }
+         return { dir, exit: 0, fits: mode === 'single' ? 'fits: yes (100 of 80000)' : 'fits: no (100000 of 80000)', clusterFits: mode === 'single' ? [] : ['cluster-fits: alpha yes (100 of 80000)'], clusters: mode === 'single' ? 0 : 1 }
+       }
+       if (label === 'final-review:seam' || label === 'final-review:stub') {
+         const result = label === 'final-review:seam' ? seam : stub
+-        if (result) writeFileSync(join(f.ws, 'final-review-' + f.id + '.md'), 'retained cluster finding and seam status\n')
++        if (result) writeFileSync(join(f.ws, 'final-review-' + f.id + '.md'), label === 'final-review:stub' ? stubContent(prompt) : 'retained cluster finding and seam status\n')
+         return result
+       }
+       const artifact = prompt.match(/declared review artifact is (\S+?\.md)/)?.[1]
+@@ -77,7 +99,8 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
+     throw new Error('unexpected dispatch ' + label)
+   }
+   const result = await run({ epicId: 'R', integrationBranch: 'integ', integrationWorktree: f.worktree, skillsRoot: skills, invocationId: f.id, runTag: 'shared', rootAcceptance: 'caller', deferSweep: true, config: { concurrency: 2, earlyUnblock: false } }, agent, () => {}, () => {}, async () => [], async thunks => Promise.all(thunks.map(t => t())), { remaining: () => Infinity }, () => {})
+-  return { result, trace, snapshots }
++  assert(guards.every(g=>g.found && Number.isInteger(g.status)), 'every dispatched artifact writer must execute its source guard: '+JSON.stringify(guards))
++  return { result, trace, snapshots, guards, collisions }
+ }
+ try {
+   // Omitting persistence before assembly is the original defect; this fails before any fix.
+@@ -158,11 +181,37 @@ try {
+     assert(execution.snapshots.length >= 2, name + ' executes assembly and review guards')
+     assert(execution.snapshots.every(s => s.binding?.data.reviewSource.base === sha('a') && s.binding?.data.reviewSource.head === sha('b')), name + ' persists before every writer')
+     assert.equal(!!execution.result.reviewPath, expectedPath, name + ' keeps confirmed output path semantics')
+-    assert(readFileSync(execution.result.reviewPath, 'utf8').includes('finding'), name + ' confirmed path contains its finding artifact')
++    if (name !== 'split-stub') assert(readFileSync(execution.result.reviewPath, 'utf8').includes('finding'), name + ' confirmed path contains its finding artifact')
++    if (name === 'split-stub') {
++      const extracted = spawnSync('bash',[join(skills,'super-code/scripts/report-verdict'),'--complete','--source',f.id+'/final',execution.result.reviewPath],{encoding:'utf8'})
++      assert.equal(extracted.status,0,extracted.stderr)
++      const report=JSON.parse(extracted.stdout)
++      assert(report.occurrences.some(o=>o.section==='Untested scope'&&o.text.includes('seam')),'seam coverage stays explicitly unreviewed')
++      assert.match(execution.result.review,/^not ready/)
++      const runFile=join(f.worktree,'run.md');writeFileSync(runFile,'phase: report\napprovals:\n')
++      const collection=spawnSync('bash',[join(skills,'super-auto/scripts/report-status'),'--collect',runFile,'--invocation',f.id,'--workspace',f.ws,'--review',execution.result.reviewPath,'--verdict',report.verdict],{encoding:'utf8'})
++      assert.equal(collection.status,0,collection.stdout+collection.stderr)
++      const archive=join(f.worktree,'reviews',f.id,'final-review-'+f.id+'.cluster-1.md')
++      assert.match(readFileSync(archive,'utf8'),/original finding/,'collection preserves the original cluster finding')
++      assert.match(readFileSync(runFile,'utf8'),/original finding/,'collector retains the cluster occurrence independently of the stub')
++    }
+     if (name === 'split-stub') assert(execution.snapshots.some(s => s.label === 'final-review:stub'), 'stub guard was exercised')
+     if (name === 'split-seam') assert(execution.snapshots.some(s => s.label === 'final-review:seam'), 'seam guard was exercised')
+     passed++
+   }
++  for (const [label, options] of [
++    ['assemble:final',{}], ['final-review',{mode:'single'}],
++    ['final-review:cluster:1',{}], ['final-review:seam',{seam:{verdict:'not ready'}}],
++    ['final-review:stub',{stub:{written:true}}], ['final-review',{assemble:false}],
++  ]) {
++    const f=fixture('collision-'+passed,'collision-'+passed)
++    const out=await replay(f,sha('b'),{...options,collision:label})
++    assert(out.guards.some(g=>g.label===label&&g.status===2),label+' individually refuses existing output')
++    assert(!out.snapshots.some(s=>s.label===label),label+' never reaches its writer after refusal')
++    assert.equal(out.collisions.length,1)
++    assert.match(readFileSync(out.collisions[0].content,'utf8'),/^original partial/,'collision bytes remain unchanged')
++    passed++
++  }
+   const noPersist = fixture('no-persist')
+   const unavailable = await replay(noPersist, sha('b'), { launchOK: false })
+   assert.equal(unavailable.result.reviewPath, null)
+diff --git a/tests/super-code/recovery-hold-scope-r1.mjs b/tests/super-code/recovery-hold-scope-r1.mjs
+index 46d106c5..c110f434 100644
+--- a/tests/super-code/recovery-hold-scope-r1.mjs
++++ b/tests/super-code/recovery-hold-scope-r1.mjs
+@@ -81,6 +81,24 @@ try {
+     console.log(bytes + '-byte hold preserves its task scope')
+     passed++
+   }
++  // Invalid compact records must not silently release either known or unknown scope.
++  for (const [name, record, scoped] of [
++    ['version', { ...hold(0), version: 9 }, true],
++    ['evidence', { ...hold(0), evidence: [] }, true],
++    ['fields', { ...hold(0), reason: '' }, true],
++    ['unknown-scope', { ...hold(0), id: '', data: {} }, false],
++    ['broken-json', null, false],
++  ]) {
++    const raw = record ? line(record) : 'Recovery: {broken'
++    const out = await replay('compact-invalid-' + name, [raw])
++    held(out, scoped)
++    assert(out.result.recovery.gaps.some(g => g.reason && (g.raw === raw || g.preview === raw)), 'invalid raw evidence remains recoverable')
++    assert.equal(readFileSync(out.ledger, 'utf8'), raw + '\n', 'invalid source is never rewritten')
++    passed++
++  }
++  const compactClear = await replay('compact-clear', [line(hold(0)), line({ ...hold(0), operation: 'clear', evidence: ['release.md'] })])
++  assert.equal(compactClear.counts['impl:bd-101'], 1, 'valid compact clear releases only the supported obligation')
++  passed++
+   const additive = { ...hold(5000), ownerContext: { unknownFutureField: ['keep me'] } }
+   held(await replay('additive', [line(additive), 'Task 1 (bd-101): complete, review clean']))
+   const recovered = await replay('additive-data', [line(additive)])
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index e472e16b..c6aec85c 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -54,7 +54,7 @@ async function withFixtureProcesses(run) {
+ 
+ function fixtureProcessAlive(pid) {
+   const r = spawnSync('ps', ['-o', 'stat=', '-p', String(pid)], { encoding: 'utf8' })
+-  if (r.error || typeof r.stdout !== 'string' || ![0, 1].includes(r.status) || (r.status === 0 && !r.stdout.trim())) {
++  if (r.error || typeof r.stdout !== 'string' || r.stderr?.trim() || ![0, 1].includes(r.status) || (r.status === 0 && !r.stdout.trim())) {
+     throw new Error(`process inspection unavailable for fixture PID ${pid}`)
+   }
+   const st = r.stdout.trim()
+@@ -658,8 +658,10 @@ async function main() {
+     check(command.result?.runFailures?.length === 2 && command.result?.runFailures?.some(f => f.command === 'node other.mjs' && !f.owner), 'same failure display text with different command remains independently unattributed')
+     const unavailable = await runClaim([{ ...baseline, outcome: 'unavailable' }, broken], [claim])
+     check(unavailable.result?.runFailures?.[0]?.classification === 'gap' && !unavailable.result?.runFailures?.[0]?.owner, 'unavailable baseline is never treated as passing')
++    const malformedAssociation = await runClaim([], 'bad', durable.join('\n'))
++    check(malformedAssociation.result?.runFailures?.[0]?.owner === 'bd-A' && malformedAssociation.result?.checkEvidence?.gaps?.some(g => g.field === 'failureAttribution'), 'malformed new associations remain gaps without discarding known owner')
+     const malformed = await runClaim([], 'bad', durable.join('\n') + '\nRecovery: ' + JSON.stringify({ version: 1, id: 'bad', kind: 'deferred', operation: 'record', reason: 'bad history', evidence: ['bad.json'], data: { runFailure: { history: 'bad' } } }))
+-    check(malformed.result?.runFailures?.[0]?.owner === 'bd-A' && malformed.result?.recovery?.gaps?.some(g => g.reason === 'invalid run failure history') && malformed.result?.checkEvidence?.gaps?.some(g => g.field === 'failureAttribution'), 'malformed associations and durable histories remain explicit gaps without discarding known owner')
++    check(malformed.result?.runFailures?.[0]?.owner === 'bd-A' && malformed.result?.recovery?.gaps?.some(g => g.reason === 'invalid run failure history') && malformed.result?.stopReason === 'recovery-held' && !malformed.counts['impl:bd-101'], 'malformed durable history holds unknown scope without discarding known owner')
+     const combined = await runClaim([baseline, broken, checkRecord('e', 'pass', 'evidence/combined-fix.log')], [{ ...claim, verification: 2 }])
+     check(combined.result?.runFailures?.[0]?.owner === 'bd-A' && combined.result?.runFailures?.[0]?.state === 'verified' && combined.result?.runFailures?.[0]?.gaps?.length === 0, 'one before/after reply preserves introduction and linked verified fix independently')
+     const secondDurable = taskLedgerLines(second.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+@@ -891,8 +893,8 @@ async function main() {
+   {
+     const scan = scanTemplateSpans(scriptBody)
+     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
+-    check(scan.spans.length === 456,
+-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 456 (−8 when validated transport and identity metrics replace template-based causes with structured facts; −1 for seeding the full compact recurrence record instead of rebuilding its tag; +2 for captured review source and Finish capture instruction; +4 for the oversized race guard and exit-4 hold (the already-dispatched skip log, the exit-4 log, its ledger line and key); +23 for oversized handling (noteSurface's line and key, handleOversized's skip and split logs, the split dispatch key/label, the three outcome logs and ledger lines/keys/elision, the close-split key/label, splitOversizedPrompt and closeSplitPrompt); +16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
++    check(scan.spans.length === 455,
++      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 455 (−1 for deterministic stub content joined without a template literal; −8 when validated transport and identity metrics replace template-based causes with structured facts; −1 for seeding the full compact recurrence record instead of rebuilding its tag; +2 for captured review source and Finish capture instruction; +4 for the oversized race guard and exit-4 hold (the already-dispatched skip log, the exit-4 log, its ledger line and key); +23 for oversized handling (noteSurface's line and key, handleOversized's skip and split logs, the split dispatch key/label, the three outcome logs and ledger lines/keys/elision, the close-split key/label, splitOversizedPrompt and closeSplitPrompt); +16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+     // self-test: inject a raw backtick mid-way through the first literal's content and assert
+     // the detector actually fires — a detector that cannot catch the known failure is decoration
+     const [s, e] = scan.spans[0]
+@@ -1955,7 +1957,8 @@ async function main() {
+       const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), f], { encoding: 'utf8' })
+       check(text.startsWith('# ledger-digest: 10 of 11 lines\n'), 'digest counts recovery records and gaps along with legacy Task tokens', text)
+       check(records.every(r => text.includes('Recovery: ' + JSON.stringify(r))) && gaps.every(g => text.includes(g)), 'digest transports complete evidence and uninterpretable recovery lines verbatim', text)
+-      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text },
++      const validText = text.split('\n').filter(line => !gaps.includes(line)).join('\n').replace('# ledger-digest: 10 of 11 lines', '# ledger-digest: 6 of 7 lines')
++      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text: validText },
+         'resume-check:bd-101': { landed: true, closed: [], open: ['bd-101', 'bd-112', 'bd-109'] },
+         'close-only:bd-101': { status: 'CLOSED' },
+       }) })
+@@ -1963,7 +1966,14 @@ async function main() {
+       check(out.result?.completed.includes('bd-101') && !out.result?.pendingRetry.includes('bd-101'), 'a later clean retry supersedes terminal status independently')
+       check(JSON.stringify(out.result?.recovery?.fixHistory) === JSON.stringify([records[3]]), 'earlier FIXED record survives the clean retry intact', JSON.stringify(out.result?.recovery))
+       check(JSON.stringify(out.result?.recovery?.obligations) === JSON.stringify([records[2]]), 'clears only matching hold and confirmed pending closure; deferred obligation stays owned by caller', JSON.stringify(out.result?.recovery))
+-      check(out.result?.recovery?.gaps?.length === 4 && gaps.every(raw => out.result.recovery.gaps.some(g => g.source?.endsWith('/progress.md') && Number.isInteger(g.digestLine) && g.preview === raw.slice(0, 200) && g.reason && !('raw' in g))), 'malformed, unknown-version, evidenceless and fix-clear records remain explicit gaps', JSON.stringify(out.result?.recovery))
++      const held = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text },
++        'resume-check:bd-101': { landed: true, closed: [], open: ['bd-101', 'bd-112', 'bd-109'] },
++      }) })
++      assertNoThrow(held)
++      check(held.result?.stopReason === 'recovery-held' && !held.counts['impl:bd-101'] && !held.counts['close-only:bd-101'], 'unresolved malformed scope prevents new retry and closure work')
++      check(held.result?.recovery?.obligations?.some(r => r.kind === 'pending-closure' && r.id === 'bd-101') && JSON.stringify(held.result?.recovery?.fixHistory) === JSON.stringify([records[3]]), 'malformed scope retains valid pending closure and fix history')
++      check(held.result?.recovery?.gaps?.length === 4 && gaps.every(raw => held.result.recovery.gaps.some(g => g.source?.endsWith('/progress.md') && Number.isInteger(g.digestLine) && g.preview === raw.slice(0, 200) && g.reason && !('raw' in g))), 'malformed, unknown-version, evidenceless and fix-clear records retain bounded diagnostics and original ledger bytes', JSON.stringify(held.result?.recovery))
++      check(readFileSync(f, 'utf8') === lines.join('\n') + '\n', 'invalid raw records remain unchanged in their original ledger')
+       const clear = taskLedgerLines(out.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: ')).map(l => JSON.parse(l.slice(10)))
+       check(clear.some(r => r.kind === 'pending-closure' && r.operation === 'clear' && r.id === 'bd-101' && r.evidence.includes('bead:bd-101')), 'confirmed tracker closure emits a durable matching clear', JSON.stringify(clear))
+     } finally { rmSync(dir, { recursive: true, force: true }) }
+diff --git a/tests/super-code/unplanned-admission-final-wave.mjs b/tests/super-code/unplanned-admission-final-wave.mjs
+new file mode 100644
+index 00000000..7d7cd0fa
+--- /dev/null
++++ b/tests/super-code/unplanned-admission-final-wave.mjs
+@@ -0,0 +1,65 @@
++#!/usr/bin/env node
++// Runtime integration: unmapped work is new admission, while settlement retains its slot path.
++import assert from 'node:assert/strict'
++import fs from 'node:fs'
++import path from 'node:path'
++import { fileURLToPath } from 'node:url'
++const here = path.dirname(fileURLToPath(import.meta.url))
++const harness = fs.readFileSync(path.join(here, 'replay-harness.mjs'), 'utf8')
++const prefix = harness.slice(0, harness.indexOf('// ---------- template-literal span scan'))
++  .replace('const here = path.dirname(fileURLToPath(import.meta.url))', 'const here = ' + JSON.stringify(here))
++async function driver(inject = false) {
++  let source = prefix
++  if (inject) {
++    // Boundary fault injection only: a real scheduler reservation is queued before
++    // the existing Recovery producer records a new hold. Scheduling/admission and
++    // blocker/triage/ledger consumers are the unchanged production implementation.
++    source = source.replace('const scriptBody = extractScript()', `const scriptBody = extractScript().replace('  const withSlot =', ${JSON.stringify(`  const originalAcquire = sched.acquire
++  sched.acquire = async id => {
++    const pending = originalAcquire(id)
++    if (id === 'bd-106') {
++      noteRecovery('bd-106', 'hold', 'record', 'hold arrived during capacity wait', ['new-hold.md'], { taskId: 'bd-106' })
++    }
++    const waited = await pending
++    if (id === 'bd-106') log('fixture new hold while capacity queued: ' + waited)
++    return waited
++  }
++  const withSlot =`)})`)
++  }
++  return import('data:text/javascript;base64,' + Buffer.from(source + '\nexport {run,liveArgs,oneTaskCanned}').toString('base64'))
++}
++function noRoute(out, id) {
++  for (const label of ['unplanned-blocker:', 'triage:', 'notify:']) assert.equal(out.counts[label + id] || 0, 0, 'held reservation must not route ' + label + id)
++  assert(!out.trace.filter(t => t.label === 'ledger:' + id).some(t => /<ledger-line>Task /.test(t.prompt)), 'held reservation creates no task outcome ledger')
++  for (const bucket of ['completed', 'escalated', 'pendingRetry']) assert(!out.result[bucket].includes(id), 'held reservation creates no outcome')
++}
++let failures = 0
++for (const mode of ['eligible', 'task', 'global', 'during-wait']) {
++  const {run,liveArgs,oneTaskCanned} = await driver(mode === 'during-wait')
++  const id = mode === 'during-wait' ? 'bd-106' : 'bd-105'
++  const hold = {version:1,id:mode === 'global' ? 'merge-lane' : id,kind:'hold',operation:'record',reason:'human gate pending',evidence:['hold.md'],data:mode === 'global' ? {} : {taskId:id}}
++  const overrides = {
++    'bd-ready': [{ids:['bd-101', 'bd-105', ...(mode === 'during-wait' ? [id] : [])]}, {ids:[]}],
++    'unplanned-blocker:bd-105': {blockerBead:'blocker-105'},
++    'triage:bd-105': {decision:'ESCALATE',detail:'independent ordinary unplanned task'},
++    'notify:bd-105': {sent:true},
++    'unplanned-blocker:bd-106': {blockerBead:'blocker-106'},
++    'triage:bd-106': {decision:'ESCALATE',detail:'must never run'},
++    'notify:bd-106': {sent:true},
++  }
++  if (['task','global'].includes(mode)) overrides['read-ledger'] = {text:'Recovery: ' + JSON.stringify(hold)}
++  const out = await run({args:liveArgs({deferSweep:true,rootAcceptance:'caller',config:{concurrency:1,earlyUnblock:false}}),canned:oneTaskCanned(overrides)})
++  try {
++    assert.ifError(out.error)
++    if (mode === 'eligible') assert(out.result.escalated.includes(id), 'ordinary unmapped work retains blocker routing')
++    else { noRoute(out,id); assert.equal(out.result.stopReason,'recovery-held') }
++    assert.equal(out.counts['impl:bd-101'] || 0,mode === 'global' ? 0 : 1,'unrelated eligible implementation progresses')
++    if (mode === 'during-wait') {
++      assert(out.logs.includes('fixture new hold while capacity queued: true'), 'new hold occurs during an actual queued reservation')
++      assert(out.result.escalated.includes('bd-105'),'already-started unplanned settlement completes')
++      assert(out.result.recovery.obligations.some(r=>r.id===id&&r.reason==='hold arrived during capacity wait'),'real producer retains new hold')
++    }
++    console.log('PASS unplanned admission ' + mode)
++  } catch(e) { failures++;console.error('FAIL '+mode+'\n'+e.stack) }
++}
++process.exitCode = failures ? 1 : 0

@@ -1,0 +1,863 @@
+{
+  "purpose": "Read-only planning inventory; no acceptance or disposition approval",
+  "requestedBaseline": "c4c9bf712a0010346bbea0c020f8070d121d597c",
+  "frozenGate": {
+    "sourceTree": "35e91189f7c31b48a933381641197e21056e00bf",
+    "eligible": false,
+    "pendingCount": 46,
+    "gaps": [
+      "Initial root-acceptance snapshot missing before code; late checkpoint only.",
+      "Whole-run finding population unestablished:74 strict extraction gaps plus5 successful unregistered sources; task-report-history-intake-r1.json.",
+      "Whole-epic final review not ready;690 selection/provenance review gaps remain; scoped post-cap audit cannot supply whole-epic coverage.",
+      "Complete historical returned Recovery/checkEvidence/requiredLiveChecks/runFailures reduction unavailable. Legacy failures/fix history/missing run-baseline attribution retained; task-base failure does not exonerate earlier run introduction.",
+      "Historical aggregate final-suite command/configuration differs from37 measured serial commands; exact reconciliation pending.",
+      "Fresh-agent interrupted-invocation/finding continuity assessment unestablished; merged changed-instruction representative assessment pending.",
+      "Caller/review-root process inspection/final-parent cleanup not performed here; retain unknown resources until separately verified.",
+      "Historical task/reviewer requiredLiveChecks population has no authoritative complete reduction; no empty-clean claim.",
+      "review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable"
+    ]
+  },
+  "namedPending": [
+    "R1: review pending; owner: super-auto",
+    "R2: review pending; owner: super-auto",
+    "R3: review pending; owner: super-auto",
+    "R4: review pending; owner: super-auto",
+    "R5: review pending; owner: super-auto",
+    "R6: review pending; owner: super-auto",
+    "R7: review pending; owner: super-auto",
+    "R8: review pending; owner: super-auto",
+    "R9: review pending; owner: super-auto",
+    "R10: review pending; owner: super-auto",
+    "R11: review pending; owner: super-auto",
+    "R12: review pending; owner: super-auto",
+    "R13: review pending; owner: super-auto",
+    "R14: review pending; owner: super-auto",
+    "R15: review pending; owner: super-auto",
+    "final-review: review pending; owner: super-auto",
+    "final-suite: unavailable (live required); owner: super-auto",
+    "phase7-human-choice: human decision pending; owner: human partner",
+    "finding-continuity-fresh-agent-assessment: review pending; owner: super-auto",
+    "changed-instruction-representativeness-assessment: review pending; owner: super-auto"
+  ],
+  "requiredFindingGroups": [
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 1
+      },
+      "requirement": "R6",
+      "texts": [
+        "[Blocking] skills/super-code/coordinator.js:1830 \u2014 A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails. (still-open, see iteration 2; prior report evidence retained, not reverified in this scoped audit)\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Prior report records independent full-coordinator simulations stalling after both reviews when the verification-only child occupies the sole slot awaiting parentsMerged and parent failure handling needs that slot. No current packet re-tests or resolves this finding.\n  fix-shape hint: Release the child task slot before waiting for parent merge settlement, or let failure settlement run without that slot."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 2
+      },
+      "requirement": "R9",
+      "texts": [
+        "[Should-fix] skills/super-auto/scripts/report-status:254 \u2014 Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Prior report records three frozen-head probes creating an outside file while collection returned complete; this key was deliberately punch-listed and is not re-surfaced by the current packets.\n  fix-shape hint: Validate each destination path component before creating or copying archived review files."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 3
+      },
+      "requirement": "R8",
+      "texts": [
+        "[Should-fix] skills/super-auto/scripts/report-status:131 \u2014 Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Prior report records the actual classifier preserving a pre-run classification while adding a run-introduced/pre-run conflict, with acceptance eligible until classification changes to gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Preserve attribution gaps from pre-run failures when same-tree pass/fail history remains contradictory."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 4
+      },
+      "requirement": "R7",
+      "texts": [
+        "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319 \u2014 Persisted immutable review-source bindings are recovered as deferred measurement obligations, causing otherwise satisfied root acceptance to fail for missing measurement identity. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Prior report records a real binding recovered as an obligation without measurement identity and acceptance failing with that sole gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Give review-source provenance a defined recovery disposition that does not require measurement fields it does not contain."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 5
+      },
+      "requirement": "R9",
+      "texts": [
+        "[Should-fix] skills/super-auto/scripts/report-status:206 \u2014 The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending. (punch-listed (open), see iteration 2; not reverified in this scoped audit)\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Prior report records a recovered report rejected as an identity change while replay retained the reconciliation gap; this key was deliberately punch-listed and is not re-surfaced.\n  fix-shape hint: Add a supported reconciliation transition that associates a recovered report with the settled null result while preserving its history."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Confirmed findings            \u2190 consumed by super-design, one task per finding",
+        "position": 7
+      },
+      "requirement": "R4",
+      "texts": [
+        "[Should-fix] skills/super-auto/resume.md:68 \u2014 The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync. (new; static instruction trace only) [lanes: hygiene-docs]\n  verdict: confirmed (reproduce \u2713 / refute \u2717-survived / ground \u2713)\n  evidence: Amend Mode orders commit and persist specs-committed before running Key Abstractions sync at super-design/SKILL.md:905-907. The specs-committed replay at super-auto/resume.md:68 only files missing work items, then the beads-filed path continues without sync; the adjacent amend-checked path at :67 explicitly syncs. All three seats confirm this source-backed interruption trace, which is not a live workflow execution. The profile makes synchronization of changed abstractions core to preserving review and task inputs, so the Should-fix severity stands.\n  fix-shape hint: Make the persisted resume state prove synchronization completed, or run the sync before advancing from specs-committed."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Escalations (need human)      \u2190 UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+        "position": 1
+      },
+      "requirement": "R1",
+      "texts": [
+        "skills/super-code/scripts/dispatch-text.mjs:154 \u2014 Still-open material dissent from iteration 2: confirming seats found nested historical run.md snapshots suppress review of available product edits and cited direct-input review when assembly is unavailable; the refute seat cited assembler-prompt.md:22-29 and super-auto/SKILL.md:463, which keep invalid provenance unavailable through fallback. The seats did not resolve whether that explicit refusal policy governs this nested snapshot case. Selector assembly failed before this audit; captured-Git fallback preserved the coverage gaps and does not resolve this policy question."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+        "section": "Escalations (need human)      \u2190 UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+        "position": 2
+      },
+      "requirement": "R7",
+      "texts": [
+        "skills/super-auto/scripts/report-status:469 \u2014 Cross-packet material dissent leaves the producer contract unresolved. The two refute seats for this packet cite super-auto/SKILL.md:491, requiring complete extraction for each settled roast source, and base acceptance behavior. The ground seat for the adjacent confirmed packet at :468 says the supported design-loop producer writes findingsLedgerDesign without creating finding-source records and identifies this as a producer-consumer seam. That concrete design-loop evidence, recorded in probe-panel0-ground/receipt.json, is not answered by the roast-source requirement; the packets do not establish whether the requirement applies to that producer. The new-regression claim needs human judgment on this scope question."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "requirement": "R15",
+      "texts": [
+        "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "requirement": "R15",
+      "texts": [
+        "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "requirement": "R15",
+      "texts": [
+        "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "requirement": "R15",
+      "texts": [
+        "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "requirement": "R15",
+      "texts": [
+        "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "requirement": "R15",
+      "texts": [
+        "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 3
+      },
+      "requirement": "final-suite",
+      "texts": [
+        "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Must-fix",
+        "position": 1
+      },
+      "requirement": "R7",
+      "texts": [
+        "[P2; recovery/acceptance seam] `skills/super-code/scripts/dispatch-text.mjs:319` \u2192 `skills/super-code/coordinator.js:432\u2013448` \u2192 `skills/super-auto/scripts/report-status:135\u2013143`: immutable review-source metadata becomes an unsatisfiable measurement obligation after recovery. The producer writes `kind:\"deferred\"` with `data.reviewSource` only; the actual coordinator reader accepts and retains that record in `recoveryObligations`, which the returned Recovery snapshot and caller contract preserve. Acceptance handles every non-runFailure deferred record as a measurement, so this metadata lacks the required sourceTree/command/configuration. A read-only in-memory probe executed the actual captured reader and acceptance heredoc using the actual current binding from progress.md. With synthetic satisfied review/measurement/human controls and mocked clean projection/status, control returned exit 0, eligible:true; adding only the real binding returned exit 3, eligible:false, gap `review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable`. This verifies deterministic classification, not actual run acceptance or a live resumed workflow. The first invocation may not reread its newly appended binding into memory; the supported resume/next-invocation path does. Preserve the immutable binding and distinguish it from actionable deferred measurement obligations; do not fabricate a test or delete binding history to pass acceptance. Add a focused producer\u2192recovery\u2192acceptance control with real binding metadata and independently satisfied actual acceptance prerequisites. Full probe, raw outputs, and exact source hashes are retained in the companion package."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Must-fix",
+        "position": 2
+      },
+      "requirement": "R1",
+      "texts": [
+        "[P2; selection authority and review recovery] `skills/super-code/scripts/dispatch-text.mjs:153\u2013224`, `skills/super-code/coordinator.js:2326,2361,2943`, and `skills/super-code/assembler-prompt.md:22\u201329`: every tracked file named run.md, including archived roast-fixture snapshots, is promoted into current omission authority; any resulting gap then suppresses even a bounded direct-source final review. The actual current assembly selected no slices and returned exit 2 with `review input selection:`; its sidecar retains 5,587 changed paths, 22 archive records, zero omissions and 690 gaps. Its first cause is the captured `...roast-pr-1-stages/evidence-observability/run.md:87` snapshot's missing sibling `reviews/.../clusters.json`. Both Git endpoints and the invocation binding remain available and valid. The first generated final-review attempt then returned UNAVAILABLE without a report, requiring this manual pinned-policy dispatch. Refusing to omit unverified payloads is legitimate, and those 690 claims remain evidence gaps: this finding does not authorize exclusion, archive repair by inference, or a clean verdict. The defect is letting nested historical fixture records govern whether any scoped review of independently available current source can be reported. Keep the refusal/provenance details while distinguishing archival input evidence from review-selection authority and preserving a source-bound, explicitly incomplete review route. A fixture should include an ordinary archived run.md snapshot with unavailable referenced payload plus an independently reviewable product edit; it must neither authorize omission nor erase that edit's review/report opportunity. This is materially new evidence relative to round 1's rejected filename/fallback-materiality candidate: that rejection explicitly relied on working captured-Git direct fallback; this head adds selection-prefix refusal and the unconditional single-review selection-gap return, and the current invocation actually lost its first review. The old errno-63-only claim remains rejected; this is the changed selection/guard behavior, not a claim that an unavailable assembly is clean."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "requirement": "final-review",
+      "texts": [
+        "Complete source/evidence coverage is not established. The full 5,587-file diff and roughly 1.1 million added lines were not semantically reviewed. Remaining product scope includes complete scheduling/stack/merge execution paths outside the targeted modified hunks, all ordinary-coordinator instructions end to end, complete caller/report/maintenance documentation, all new/changed test bodies, full profiler modeling internals, and the smaller ledger/run digest, close-epic, roast assembly/prompt and upstream-feedback changes. Targeted inspection of adjacent hunks does not clear those entire files. No forced-fit package, filename-based exclusion, or clean whole-branch assertion is made."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "requirement": "final-review",
+      "texts": [
+        "All 690 selection/provenance gaps remain unresolved. I inspected the sidecar's aggregate fields and first concrete failure, and the relevant selector implementation; I did not independently validate every gap or every claimed archived payload. No historical file was excluded, repaired, rewritten, or certified complete. This manual direct review does not convert unavailable archival provenance into valid exclusion authority."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 4
+      },
+      "requirement": "final-suite",
+      "texts": [
+        "`SWEEP DEFERRED (caller-owned)` remains the only final-suite status. No required suite, hosted Workflow, live ordinary scheduling/recovery, live verification-only completion, process termination, final parent removal, or native Linux /proc behavior was executed here. Existing focused helper/replay measurements retain their source/kind limits. The in-memory recovery/acceptance probe mocks filesystem and subprocess consumers and supplies synthetic satisfied acceptance facts only for isolation; it neither supplies a human decision nor proves this actual run is eligible."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Untested scope",
+        "position": 7
+      },
+      "requirement": "final-review",
+      "texts": [
+        "Root acceptance, the final reviewed/measured source identity, supported finding dispositions, the separately reserved human decision, and any post-loop combined-tree audit remain caller-owned. Captured run.md has no root-acceptance snapshot; this review does not insert one or close the root. Later main changes were intentionally not absorbed before phase-5 exit and are outside this captured head. Their absence is not attributed as a defect in this branch."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/final",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "requirement": "R15",
+      "texts": [
+        "Preserve the root-owned deferred behavioral evaluation, platform-coverage qualification and task-2 fixture-teardown concern from the ledger as attributed obligations/limitations. No active recurring-minor or recurring-blocker class was found in the inspected ledger matches. Do not turn a deferred sweep or a disclosed platform limit into an invented code defect, and do not clear the fixture-teardown concern solely from this review's silence."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+        "section": "Untested scope",
+        "position": 7
+      },
+      "requirement": "R15",
+      "texts": [
+        "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-2",
+        "section": "Untested scope",
+        "position": 4
+      },
+      "requirement": "R15",
+      "texts": [
+        "Replay sections labeled `live-sim`, dryRun scenarios, prompt-content checks, and simulated denied-inspection/fake-signal cases support the reported deterministic/simulated behaviors. They do not establish real independent-agent execution, real denied-operation behavior, or a fresh-agent interrupted-invocation evaluation. The nested design assigns changed-instruction and fresh-agent interruption evaluations to the enclosing coordinator; those evaluations are outside this partition."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+        "section": "Untested scope",
+        "position": 3
+      },
+      "requirement": "R15",
+      "texts": [
+        "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here."
+      ]
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+        "section": "Untested scope",
+        "position": 7
+      },
+      "requirement": "final-review",
+      "texts": [
+        "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report."
+      ]
+    }
+  ],
+  "legacyIntake": {
+    "rawFileCount": 110,
+    "errors": {
+      "report-verdict: --complete: unrecognized finding source": 5,
+      "report-verdict: --complete: finding text without a list marker in Finding and correction": 2,
+      "report-verdict: --complete: missing finding sections": 46,
+      "report-verdict: --complete: finding text without a list marker in Concerns": 11,
+      "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation": 3,
+      "report-verdict: --complete: finding text without a list marker in Finding and narrow correction": 1,
+      "report-verdict: --complete: finding text without a list marker in Concerns and coordinator evaluation": 1,
+      "report-verdict: --complete: finding text without a list marker in Concerns and limits": 1,
+      "report-verdict: --complete: finding text without a list marker in Findings": 1,
+      "report-verdict: --complete: finding text without a list marker in Concerns and coordinator-owned evidence": 1,
+      "report-verdict: --complete: finding text without a list marker in Finding and bounded repair": 1,
+      "report-verdict: --complete: none marker has finding text in Escalations (need human)      \u2190 UNVERIFIED externals, incomplete panels, unsettled panels, material dissent": 1
+    },
+    "gaps": [
+      {
+        "rawPath": "task-report-history-r1/raw/task-1-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+        "error": "report-verdict: --complete: unrecognized finding source"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-10-report-fix.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+        "error": "report-verdict: --complete: finding text without a list marker in Finding and correction"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-10-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Finding and correction"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-10-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-10-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-11-report-fix.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-11-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-11-review-seam-round-1.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam-round-1",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-11-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-11-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-12-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-12-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-12-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-12-seam-findings.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-13-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-13-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-14-report-fix.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+        "error": "report-verdict: --complete: finding text without a list marker in Finding and narrow correction"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-14-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator evaluation"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-14-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-15-report-fix.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-15-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and limits"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-15-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-15-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-15-seam-findings.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-seam-findings",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-16-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-16-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-16-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-16-seam-findings.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-seam-findings",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-17-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-18-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-18-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-18-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-19-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+        "error": "report-verdict: --complete: finding text without a list marker in Findings"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-2-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator-owned evidence"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-2-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-2-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-20-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Finding and bounded repair"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-20-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-21-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-21-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-22-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-22-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-23-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-24-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-24-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-25-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-25-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-26-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+        "error": "report-verdict: --complete: unrecognized finding source"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-26-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-27-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+        "error": "report-verdict: --complete: unrecognized finding source"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-27-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-28-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-28-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-29-report.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+        "error": "report-verdict: --complete: unrecognized finding source"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-29-review.md",
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-3-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-3-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-3-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-3-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-4-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-4-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-4-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-4-seam-findings.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-4-seam-findings",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-5-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-5-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-5-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-5-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-6-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-6-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-7-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-7-review-seam.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-7-review-seam",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-7-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-8-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-8-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+        "error": "report-verdict: --complete: missing finding sections"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-9-report.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-9-report",
+        "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+      },
+      {
+        "rawPath": "task-report-history-r1/raw/task-9-review.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+        "error": "report-verdict: --complete: unrecognized finding source"
+      },
+      {
+        "rawPath": "2026-10-16-workflow-reliability-roast-pr-1.md",
+        "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+        "error": "report-verdict: --complete: none marker has finding text in Escalations (need human)      \u2190 UNVERIFIED externals, incomplete panels, unsettled panels, material dissent"
+      }
+    ],
+    "alreadyParsedUnregistered": [
+      {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+        "rawArtifact": "task-report-history-r1/raw/task-1-report.md",
+        "parsedSourceJSON": "task-report-history-r1/parsed/task-1-report.md.complete.json",
+        "kind": "task-report",
+        "verdict": "IMPLEMENTED",
+        "occurrences": 2
+      },
+      {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+        "rawArtifact": "task-report-history-r1/raw/task-17-report.md",
+        "parsedSourceJSON": "task-report-history-r1/parsed/task-17-report.md.complete.json",
+        "kind": "task-report",
+        "verdict": "IMPLEMENTED",
+        "occurrences": 7
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+        "rawArtifact": "task-report-history-r1/raw/task-19-report.md",
+        "parsedSourceJSON": "task-report-history-r1/parsed/task-19-report.md.complete.json",
+        "kind": "task-report",
+        "verdict": "FIXED",
+        "occurrences": 4
+      },
+      {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+        "rawArtifact": "task-report-history-r1/raw/task-23-report.md",
+        "parsedSourceJSON": "task-report-history-r1/parsed/task-23-report.md.complete.json",
+        "kind": "task-report",
+        "verdict": "IMPLEMENTED",
+        "occurrences": 7
+      },
+      {
+        "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+        "rawArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+        "parsedSourceJSON": "task-report-history-r1/parsed/2026-10-16-workflow-reliability-roast-design-1.md.complete.json",
+        "kind": "roast",
+        "verdict": "Should-fix (1 confirmed)",
+        "occurrences": 4,
+        "rawSourceAlreadyDurable": true
+      }
+    ],
+    "parsedOccurrenceCount": 24
+  },
+  "selector": {
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+    "changedCount": 5587,
+    "sliceCount": 0,
+    "omittedCount": 0,
+    "archiveCount": 22,
+    "gapCount": 690,
+    "gapsByClaimingRun": {
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/run.md": 678,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-security/archive-symlink-fixture/run.md": 2,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-ground/run.md": 1,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-refute/run.md": 1,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/run/run.md": 1,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-ground/run/run.md": 2,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-refute/control/run/run.md": 1,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-refute/fixture/run/run.md": 2,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-reproduce/run/run.md": 2
+    }
+  },
+  "report": "/private/tmp/ufz-correction-acceptance-inventory.md",
+  "limits": [
+    "No complete independent read of all74 raw intake sources or690 archival payload claims",
+    "No complete independent reread of242 historical source/slice members",
+    "No suites, gates, source edits, commits, Herdr writes or cleanup"
+  ],
+  "productCoverage": {
+    "frozenHead": "c4c9bf712a0010346bbea0c020f8070d121d597c",
+    "absorbedMain": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+    "reliabilitySkills": [
+      "skills/finishing-a-development-branch/SKILL.md",
+      "skills/super-auto/SKILL.md",
+      "skills/super-auto/report-prompt.md",
+      "skills/super-auto/resume.md",
+      "skills/super-auto/run-state.md",
+      "skills/super-auto/scripts/report-status",
+      "skills/super-auto/scripts/scope-dispositions",
+      "skills/super-code/SKILL.md",
+      "skills/super-code/assembler-prompt.md",
+      "skills/super-code/coordinator-subagents.md",
+      "skills/super-code/coordinator-workflow.md",
+      "skills/super-code/coordinator.js",
+      "skills/super-code/implementer-prompt.md",
+      "skills/super-code/scripts/close-in-tree-epics",
+      "skills/super-code/scripts/dispatch-text.mjs",
+      "skills/super-code/scripts/ledger-digest",
+      "skills/super-code/scripts/remove-task-worktree",
+      "skills/super-code/scripts/report-verdict",
+      "skills/super-code/scripts/run-digest",
+      "skills/super-code/scripts/run-profile.mjs",
+      "skills/super-code/scripts/stop-run-processes",
+      "skills/super-code/task-reviewer-prompt.md",
+      "skills/super-roast/SKILL.md",
+      "skills/super-roast/judge-seat-prompts.md",
+      "skills/super-roast/scout-prompts-pr.md",
+      "skills/super-roast/scripts/assemble-args.mjs",
+      "skills/upstream-feedback/SKILL.md"
+    ],
+    "reliabilityTests": [
+      "tests/super-auto/archive-integrity-r1.sh",
+      "tests/super-auto/collection-symlinks-r1.sh",
+      "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+      "tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt",
+      "tests/super-auto/generated-review-inputs-r1.sh",
+      "tests/super-auto/outer-cleanup-r1.sh",
+      "tests/super-auto/projection-output-r1.sh",
+      "tests/super-auto/test-contract-lint.sh",
+      "tests/super-auto/test-scripts.sh",
+      "tests/super-code/invocation-source-binding-r1.mjs",
+      "tests/super-code/invocation-start-r1.mjs",
+      "tests/super-code/recovery-hold-scope-r1.mjs",
+      "tests/super-code/replay-harness.mjs",
+      "tests/super-code/run-profile-fixture.mjs",
+      "tests/super-code/run-profile-ordinary-fixture.mjs",
+      "tests/super-code/startup-builder-seam-r1.mjs",
+      "tests/super-code/test-dispatch-text.sh",
+      "tests/super-code/test-report-verdict.sh",
+      "tests/super-code/test-run-digest.sh",
+      "tests/super-code/test-run-profile-in-flight.sh",
+      "tests/super-code/test-run-profile.sh",
+      "tests/super-roast/test-assemble-args.sh"
+    ],
+    "inheritedMainOnlySkills": [
+      "skills/super-auto/MAINTENANCE.md",
+      "skills/super-design/MAINTENANCE.md",
+      "skills/super-design/SKILL.md",
+      "skills/super-design/amend-prompt.md",
+      "skills/super-design/scripts/amend-check",
+      "skills/super-design/scripts/findings-ledger",
+      "skills/super-design/scripts/step-back-check",
+      "skills/super-design/step-back-prompt.md",
+      "skills/super-roast/super-roast-workflow.md"
+    ],
+    "scope": "Exact path inventory only; no full source-review pass is asserted"
+  },
+  "canonicalInputs": {
+    "historicalIntake": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-intake-r1.json",
+    "legacyAdapterPrecedent": ".superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/manifest.json",
+    "humanAuthorization": "Parent reports conditional local merge permission; cite exact statement when conditions established; no push/release permission"
+  }
+}

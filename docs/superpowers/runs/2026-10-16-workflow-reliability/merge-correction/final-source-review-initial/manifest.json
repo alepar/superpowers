@@ -1,0 +1,451 @@
+{
+  "base": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "sourceTree": "61a8b70d795acd816d348934bd55293264ed5587",
+  "scope": "Exact all changed tracked skills/tests/scripts/AGENTS/CLAUDE paths, provisional code-source review before final evidence/docs freeze; final composer must bind later source and actual verification. Artifact-role/historical review separate.",
+  "groups": {
+    "runtime": {
+      "package": "/private/tmp/ufz-correction-final-source-review/runtime.diff",
+      "bytes": 422914,
+      "sha256": "dc6d94bc6a33776233f34e58fa97d56d271976a6d10c030926f6d56397111613",
+      "paths": [
+        "skills/super-code/SKILL.md",
+        "skills/super-code/coordinator-subagents.md",
+        "skills/super-code/coordinator-workflow.md",
+        "skills/super-code/coordinator.js",
+        "skills/super-code/implementer-prompt.md",
+        "skills/super-code/scripts/close-in-tree-epics",
+        "skills/super-code/task-reviewer-prompt.md"
+      ]
+    },
+    "harness": {
+      "package": "/private/tmp/ufz-correction-final-source-review/harness.diff",
+      "bytes": 247203,
+      "sha256": "fb4be9d04de4022a098962c11ec1d2a3e0c1c91ba7c29a3a6e5c6ba0f044c4f5",
+      "paths": [
+        "tests/super-code/invocation-source-binding-r1.mjs",
+        "tests/super-code/invocation-start-r1.mjs",
+        "tests/super-code/recovery-hold-scope-r1.mjs",
+        "tests/super-code/replay-harness.mjs",
+        "tests/super-code/startup-builder-seam-r1.mjs"
+      ]
+    },
+    "acceptance": {
+      "package": "/private/tmp/ufz-correction-final-source-review/acceptance.diff",
+      "bytes": 349863,
+      "sha256": "7a3bd1188efdf371bc8fc2513ea6cb7438f2c3f97c3d58aecd25afe41ecc0b32",
+      "paths": [
+        "skills/finishing-a-development-branch/SKILL.md",
+        "skills/super-auto/SKILL.md",
+        "skills/super-auto/report-prompt.md",
+        "skills/super-auto/resume.md",
+        "skills/super-auto/run-state.md",
+        "skills/super-auto/scripts/report-status",
+        "skills/super-auto/scripts/scope-dispositions",
+        "skills/super-design/SKILL.md",
+        "tests/super-auto/acceptance-population-correction.mjs",
+        "tests/super-auto/archive-integrity-r1.sh",
+        "tests/super-auto/collection-recovery-correction.sh",
+        "tests/super-auto/collection-symlinks-r1.sh",
+        "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+        "tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt",
+        "tests/super-auto/outer-cleanup-r1.sh",
+        "tests/super-auto/projection-output-r1.sh",
+        "tests/super-auto/resume-sync-contract.mjs",
+        "tests/super-auto/test-contract-lint.sh",
+        "tests/super-auto/test-scripts.sh"
+      ]
+    },
+    "source-review": {
+      "package": "/private/tmp/ufz-correction-final-source-review/source-review.diff",
+      "bytes": 150485,
+      "sha256": "df61ce104c79ff01224c4eb5b3bec890e87644da3fc1155258e4b260237bed5a",
+      "paths": [
+        "skills/super-code/assembler-prompt.md",
+        "skills/super-code/scripts/dispatch-text.mjs",
+        "skills/super-code/scripts/report-verdict",
+        "skills/super-roast/SKILL.md",
+        "skills/super-roast/judge-seat-prompts.md",
+        "skills/super-roast/scout-prompts-pr.md",
+        "skills/super-roast/scripts/assemble-args.mjs",
+        "tests/super-auto/generated-review-inputs-r1.sh",
+        "tests/super-auto/selection-recovery-correction.mjs",
+        "tests/super-code/test-dispatch-text.sh",
+        "tests/super-code/test-report-verdict.sh",
+        "tests/super-roast/test-assemble-args.sh"
+      ]
+    },
+    "metrics-cleanup": {
+      "package": "/private/tmp/ufz-correction-final-source-review/metrics-cleanup.diff",
+      "bytes": 150362,
+      "sha256": "58c67b0016fa5a3f4737df8f319f0ba96fa10af2f737db474f498cc4009685b8",
+      "paths": [
+        "skills/super-code/scripts/ledger-digest",
+        "skills/super-code/scripts/remove-task-worktree",
+        "skills/super-code/scripts/run-digest",
+        "skills/super-code/scripts/run-profile.mjs",
+        "skills/super-code/scripts/stop-run-processes",
+        "skills/upstream-feedback/SKILL.md",
+        "skills/upstream-feedback/report-template.md",
+        "tests/super-code/run-profile-fixture.mjs",
+        "tests/super-code/run-profile-ordinary-fixture.mjs",
+        "tests/super-code/test-run-digest.sh",
+        "tests/super-code/test-run-profile-in-flight.sh",
+        "tests/super-code/test-run-profile.sh",
+        "tests/super-code/test-setup-cleanup.sh",
+        "tests/super-code/test-stop-run-processes-inventory.sh",
+        "tests/super-code/test-verification-completion-metrics.sh"
+      ]
+    }
+  },
+  "paths": [
+    {
+      "path": "skills/super-code/SKILL.md",
+      "group": "runtime",
+      "bytes": 46583,
+      "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6"
+    },
+    {
+      "path": "skills/super-code/coordinator-subagents.md",
+      "group": "runtime",
+      "bytes": 24313,
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff"
+    },
+    {
+      "path": "skills/super-code/coordinator-workflow.md",
+      "group": "runtime",
+      "bytes": 224354,
+      "sha256": "5b11bc9f00d5e94fbf3a5229d7e40472d6c6793006037f2481d0253080e604bc"
+    },
+    {
+      "path": "skills/super-code/coordinator.js",
+      "group": "runtime",
+      "bytes": 305003,
+      "sha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b"
+    },
+    {
+      "path": "skills/super-code/implementer-prompt.md",
+      "group": "runtime",
+      "bytes": 15139,
+      "sha256": "f89cdbb1218fd069cb63f86c1d1edd269a51b1642ce6dff27b86a2dcef93a6e8"
+    },
+    {
+      "path": "skills/super-code/scripts/close-in-tree-epics",
+      "group": "runtime",
+      "bytes": 3513,
+      "sha256": "f00af0b17ba63cd3a41141e5e48e580cafd4d3f8e2c467719c429153e583986b"
+    },
+    {
+      "path": "skills/super-code/task-reviewer-prompt.md",
+      "group": "runtime",
+      "bytes": 13172,
+      "sha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8"
+    },
+    {
+      "path": "tests/super-code/invocation-source-binding-r1.mjs",
+      "group": "harness",
+      "bytes": 11467,
+      "sha256": "96bc655d4e7fbe6375f21285bcefd15769a9f15b01de96620d581e1391e37ff7"
+    },
+    {
+      "path": "tests/super-code/invocation-start-r1.mjs",
+      "group": "harness",
+      "bytes": 9326,
+      "sha256": "8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2"
+    },
+    {
+      "path": "tests/super-code/recovery-hold-scope-r1.mjs",
+      "group": "harness",
+      "bytes": 8788,
+      "sha256": "45aca60f8cba478195e0a7113ff1c9595249822c0b4bc2776188a7d481bee77b"
+    },
+    {
+      "path": "tests/super-code/replay-harness.mjs",
+      "group": "harness",
+      "bytes": 438072,
+      "sha256": "8e540e28b28a2b7a80f8921940e871408464c3d0c0936555a3075ac29a04e06f"
+    },
+    {
+      "path": "tests/super-code/startup-builder-seam-r1.mjs",
+      "group": "harness",
+      "bytes": 7807,
+      "sha256": "29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013"
+    },
+    {
+      "path": "skills/finishing-a-development-branch/SKILL.md",
+      "group": "acceptance",
+      "bytes": 13605,
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c"
+    },
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "group": "acceptance",
+      "bytes": 87107,
+      "sha256": "c7947601428c4365805b5001562e696ad4dbd28425eedb34c2d140f990417f4b"
+    },
+    {
+      "path": "skills/super-auto/report-prompt.md",
+      "group": "acceptance",
+      "bytes": 14645,
+      "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb"
+    },
+    {
+      "path": "skills/super-auto/resume.md",
+      "group": "acceptance",
+      "bytes": 17270,
+      "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf"
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "group": "acceptance",
+      "bytes": 60469,
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203"
+    },
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "group": "acceptance",
+      "bytes": 53242,
+      "sha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4"
+    },
+    {
+      "path": "skills/super-auto/scripts/scope-dispositions",
+      "group": "acceptance",
+      "bytes": 15638,
+      "sha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0"
+    },
+    {
+      "path": "skills/super-design/SKILL.md",
+      "group": "acceptance",
+      "bytes": 105517,
+      "sha256": "e23a402ce0fde5dbb4245c4bf4c0de6361aec144cfec71c0e2dfc787c38ecf95"
+    },
+    {
+      "path": "tests/super-auto/acceptance-population-correction.mjs",
+      "group": "acceptance",
+      "bytes": 21138,
+      "sha256": "16f46da7a5abd18f8463a0a0dd9026b647d8b001b257dc284349efd986b2e0c0"
+    },
+    {
+      "path": "tests/super-auto/archive-integrity-r1.sh",
+      "group": "acceptance",
+      "bytes": 5698,
+      "sha256": "21285fda3051e7dd001ca757310c128d55d29fdd630cd4b38ec19f56d828085c"
+    },
+    {
+      "path": "tests/super-auto/collection-recovery-correction.sh",
+      "group": "acceptance",
+      "bytes": 8184,
+      "sha256": "12b343f3c63151718f57ed6bd5ed863fb635770cc542d919976399153040879c"
+    },
+    {
+      "path": "tests/super-auto/collection-symlinks-r1.sh",
+      "group": "acceptance",
+      "bytes": 8064,
+      "sha256": "3e7eff204bbeb8502d41ea3cb4d3fce94240da278f573a3971457b10d6d39754"
+    },
+    {
+      "path": "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+      "group": "acceptance",
+      "bytes": 209,
+      "sha256": "5cae2ad527fab6c3adac312f9f25c5509fb586c865efe131248e3424590dd2c4"
+    },
+    {
+      "path": "tests/super-auto/fixtures/contract-lint/run-state-added-formats.txt",
+      "group": "acceptance",
+      "bytes": 395,
+      "sha256": "54eeea04fd9a91875bff2715b7aa4837e12469a3f24f1f80153b2f0b0d5deb3e"
+    },
+    {
+      "path": "tests/super-auto/outer-cleanup-r1.sh",
+      "group": "acceptance",
+      "bytes": 8688,
+      "sha256": "41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4"
+    },
+    {
+      "path": "tests/super-auto/projection-output-r1.sh",
+      "group": "acceptance",
+      "bytes": 10822,
+      "sha256": "514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff"
+    },
+    {
+      "path": "tests/super-auto/resume-sync-contract.mjs",
+      "group": "acceptance",
+      "bytes": 4468,
+      "sha256": "acdf27fed2346f2793b19abd2e9ed27c9ca87007494a508ad90a0a0915cab051"
+    },
+    {
+      "path": "tests/super-auto/test-contract-lint.sh",
+      "group": "acceptance",
+      "bytes": 31891,
+      "sha256": "d0bc031e5be20049f3f6dd45bf32d4c44762e6f2fb3d95f96100ac52f0304e95"
+    },
+    {
+      "path": "tests/super-auto/test-scripts.sh",
+      "group": "acceptance",
+      "bytes": 51041,
+      "sha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e"
+    },
+    {
+      "path": "skills/super-code/assembler-prompt.md",
+      "group": "source-review",
+      "bytes": 4716,
+      "sha256": "51071e255350347a56cc7124c6ca5fb8050d57705c8865c476c3730858164cef"
+    },
+    {
+      "path": "skills/super-code/scripts/dispatch-text.mjs",
+      "group": "source-review",
+      "bytes": 39995,
+      "sha256": "f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087"
+    },
+    {
+      "path": "skills/super-code/scripts/report-verdict",
+      "group": "source-review",
+      "bytes": 15431,
+      "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661"
+    },
+    {
+      "path": "skills/super-roast/SKILL.md",
+      "group": "source-review",
+      "bytes": 23957,
+      "sha256": "ab427479e2549ccd2445bd23f9db12121a3effd07c1eb90b5e72636cff4a5df0"
+    },
+    {
+      "path": "skills/super-roast/judge-seat-prompts.md",
+      "group": "source-review",
+      "bytes": 10175,
+      "sha256": "1466e4570985ebcc347ba23f7682a2987f18496e9229b9b90156ed06b8f59851"
+    },
+    {
+      "path": "skills/super-roast/scout-prompts-pr.md",
+      "group": "source-review",
+      "bytes": 32980,
+      "sha256": "485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60"
+    },
+    {
+      "path": "skills/super-roast/scripts/assemble-args.mjs",
+      "group": "source-review",
+      "bytes": 19189,
+      "sha256": "df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4"
+    },
+    {
+      "path": "tests/super-auto/generated-review-inputs-r1.sh",
+      "group": "source-review",
+      "bytes": 12650,
+      "sha256": "a7da9f3718adf97186d277859164ae6dda6675ff463a448a91ff1d7192129b0c"
+    },
+    {
+      "path": "tests/super-auto/selection-recovery-correction.mjs",
+      "group": "source-review",
+      "bytes": 12882,
+      "sha256": "d46d2814f4c332d7d25bac5393738f7fc6b52244c74bfe04d36593408cb10e7d"
+    },
+    {
+      "path": "tests/super-code/test-dispatch-text.sh",
+      "group": "source-review",
+      "bytes": 38194,
+      "sha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7"
+    },
+    {
+      "path": "tests/super-code/test-report-verdict.sh",
+      "group": "source-review",
+      "bytes": 23348,
+      "sha256": "d5a8118819f7097d08be1736af18793ad83ba70d54f9f37d3aefb43500e4797c"
+    },
+    {
+      "path": "tests/super-roast/test-assemble-args.sh",
+      "group": "source-review",
+      "bytes": 13180,
+      "sha256": "39046913137a6202d12cfc8ab1e333229c5d73c218d4171fd8ec1dce17e53454"
+    },
+    {
+      "path": "skills/super-code/scripts/ledger-digest",
+      "group": "metrics-cleanup",
+      "bytes": 5786,
+      "sha256": "58f5ea07216c78d68bb98a248d6f1850873f0df51864174d517645f8b0c6a8cf"
+    },
+    {
+      "path": "skills/super-code/scripts/remove-task-worktree",
+      "group": "metrics-cleanup",
+      "bytes": 8320,
+      "sha256": "05b4813af07ee1e0658457273cfaf2322bcf6c9ea8ad666c5a36ff97acab85dc"
+    },
+    {
+      "path": "skills/super-code/scripts/run-digest",
+      "group": "metrics-cleanup",
+      "bytes": 10338,
+      "sha256": "18c1288eb46313bb1366dfd7d909daf193118d39082a9c98767e7d75d3336a2f"
+    },
+    {
+      "path": "skills/super-code/scripts/run-profile.mjs",
+      "group": "metrics-cleanup",
+      "bytes": 127581,
+      "sha256": "616754d7613289e64db73fc9b0cfadfcaccefa7fecd53338196a69345899ef4a"
+    },
+    {
+      "path": "skills/super-code/scripts/stop-run-processes",
+      "group": "metrics-cleanup",
+      "bytes": 13012,
+      "sha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499"
+    },
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "group": "metrics-cleanup",
+      "bytes": 10316,
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30"
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "group": "metrics-cleanup",
+      "bytes": 4374,
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375"
+    },
+    {
+      "path": "tests/super-code/run-profile-fixture.mjs",
+      "group": "metrics-cleanup",
+      "bytes": 6617,
+      "sha256": "5acf81f83edf49e2437e1926038cb441182045159a8aa822000f0b4f43fe393d"
+    },
+    {
+      "path": "tests/super-code/run-profile-ordinary-fixture.mjs",
+      "group": "metrics-cleanup",
+      "bytes": 11879,
+      "sha256": "b734eef4f097ecba86bbeaae8e6c3529feb6a8c37a76a9c94c30b418d257a3c9"
+    },
+    {
+      "path": "tests/super-code/test-run-digest.sh",
+      "group": "metrics-cleanup",
+      "bytes": 13406,
+      "sha256": "ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa"
+    },
+    {
+      "path": "tests/super-code/test-run-profile-in-flight.sh",
+      "group": "metrics-cleanup",
+      "bytes": 6940,
+      "sha256": "028fc0f4d8193ce71b1ce3513cb99b581998dc15d5404589503cd18ab78a283d"
+    },
+    {
+      "path": "tests/super-code/test-run-profile.sh",
+      "group": "metrics-cleanup",
+      "bytes": 60698,
+      "sha256": "127a5aa66a3bc8956228867732a82a0b3d94b9a13e902250fc9001a2cc7f35b1"
+    },
+    {
+      "path": "tests/super-code/test-setup-cleanup.sh",
+      "group": "metrics-cleanup",
+      "bytes": 7222,
+      "sha256": "85dbbeab6b281e3240607de672aa2fd4c591ec6e0277d68a8dbf2c945e398e12"
+    },
+    {
+      "path": "tests/super-code/test-stop-run-processes-inventory.sh",
+      "group": "metrics-cleanup",
+      "bytes": 4174,
+      "sha256": "4b7b5f17f8bef2af08f991e26a7759d3d8f1a9e63a15db164cc070b882e6ea7a"
+    },
+    {
+      "path": "tests/super-code/test-verification-completion-metrics.sh",
+      "group": "metrics-cleanup",
+      "bytes": 6920,
+      "sha256": "b9962101de239173f7bc412ad82e14c980a6d4fb0dc21f75fb8d140dce98ce5f"
+    }
+  ]
+}

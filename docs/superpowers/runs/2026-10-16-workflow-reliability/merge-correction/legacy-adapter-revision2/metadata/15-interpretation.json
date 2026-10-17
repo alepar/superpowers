@@ -1,0 +1,1106 @@
+{
+  "version": 1,
+  "ordinal": 15,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+  "originalArtifact": "task-report-history-r1/raw/task-13-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-13-report.md",
+  "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+  "rawByteCount": 18230,
+  "readCompletenessEvidence": {
+    "completeRawRead": true,
+    "lineStart": 1,
+    "lineEnd": 191,
+    "byteStart": 0,
+    "byteEnd": 18230,
+    "unknownUnreadRanges": [],
+    "hashAndByteCountVerified": true
+  },
+  "reviewEvidence": "review-evidence/part-1-review.json#/sources/14",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/15-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status:IMPLEMENTED"
+    },
+    {
+      "line": 145,
+      "rawText": "- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}"
+    },
+    {
+      "line": 146,
+      "rawText": "- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/0",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        7512,
+        7659
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Coordinator owns fresh-agent baseline/post evaluations; none run here."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/1",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "span": [
+        7660,
+        8563
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "New project mode absent: expected valid/gapped projection calls returned usage 2. JSON bodies unmeasured during guarded RED and measured only during GREEN."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/2",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        8564,
+        8868
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Absent retained-source fixture wrongly returned clean 0 rather than gap 3; explicit unknown-coverage guard claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/3",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "span": [
+        8869,
+        9295
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "New contract rows/formats were absent until operative docs supplied; final GREEN claimed."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/4",
+      "roles": [
+        "illustrative-json"
+      ],
+      "span": [
+        10381,
+        12140
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "inv-a/inv-b A source/link/route/disposition records are complete worked examples. A and closed bd-fix are not this report actual findings or dispositions."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/5",
+      "roles": [
+        "protocol-context"
+      ],
+      "span": [
+        12141,
+        12599
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Keys do not override source/section/position identity; final full-first-line versus roast before-em-dash convention."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/6",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        13406,
+        14036
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Empty keys cannot establish clean acceptance; unavailable Node/manual fallback and output status describe helper boundary."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/7",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        14037,
+        14765
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Supplementary records need semantic support; silence/unknown input does not resolve; described consumer seam."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/8",
+      "roles": [
+        "deferred-integration-scope"
+      ],
+      "span": [
+        14766,
+        15253
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Collection/routing/status assigned .8.3 and acceptance metrics .9, explicitly not implemented here."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/9",
+      "roles": [
+        "scope-concern"
+      ],
+      "span": [
+        17590,
+        17866
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Structural evidence fields are not semantic proof; owning agent must judge supported fix/rejection."
+    },
+    {
+      "reviewRef": "review-evidence/part-1-review.json#/sources/14/interpretedPassages/10",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "span": [
+        17867,
+        18230
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Fresh-agent interrupted-invocation/changed-instruction evals pending; integration/metrics external tasks; epic sweep not run."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "passageId": "part1-15-p01",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Coordinator owns fresh-agent baseline/post evaluations; none run here.",
+      "lineStart": 111,
+      "lineEnd": 111,
+      "byteStart": 7512,
+      "byteEnd": 7659,
+      "rawText": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 7495,
+          "sectionByteEnd": 9880,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 18
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p02",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "historical-regression-evidence"
+      ],
+      "interpretation": "New project mode absent: expected valid/gapped projection calls returned usage 2. JSON bodies unmeasured during guarded RED and measured only during GREEN.",
+      "lineStart": 113,
+      "lineEnd": 123,
+      "byteStart": 7660,
+      "byteEnd": 8563,
+      "rawText": "RED 1: the same isolated environment and `bash tests/super-auto/test-scripts.sh`, before helper changes, produced `20 failure(s)`. New valid --project calls returned usage exit 2 and no keys instead of the expected projection/keys; unsupported/missing external cases likewise returned 2 instead of retained results plus gap status 3. Existing assertions passed. The two JSON-dependent assertion bodies were guarded and unmeasured during this RED, then passed during GREEN. An empty-output assertion following a failed status check was not sufficient evidence and was only accepted after the corresponding status check passed in GREEN.\n\n```text\n[FAIL] projection accepts retained complete extraction and supported dispositions\n  expected: 0\n  got:      2\n[FAIL] keys contain deferred A only; verified B, rejected C and active D excluded\n  expected: [Nit] café,format.ts:1 — A\n  got:\n20 failure(s)\n```\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 7495,
+          "sectionByteEnd": 9880,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 166
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p03",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "Absent retained-source fixture wrongly returned clean 0 rather than gap 3; explicit unknown-coverage guard claimed.",
+      "lineStart": 125,
+      "lineEnd": 125,
+      "byteStart": 8564,
+      "byteEnd": 8868,
+      "rawText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 7495,
+          "sectionByteEnd": 9880,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 1070
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p04",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "interpretation": "New contract rows/formats were absent until operative docs supplied; final GREEN claimed.",
+      "lineStart": 127,
+      "lineEnd": 127,
+      "byteStart": 8869,
+      "byteEnd": 9295,
+      "rawText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 5,
+          "section": "TDD evidence",
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "sectionByteStart": 7495,
+          "sectionByteEnd": 9880,
+          "canonicalSectionAlias": "legacy-raw-section/5",
+          "positionByteInSection": 1375
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p05",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "illustrative-json"
+      ],
+      "interpretation": "inv-a/inv-b A source/link/route/disposition records are complete worked examples. A and closed bd-fix are not this report actual findings or dispositions.",
+      "lineStart": 139,
+      "lineEnd": 150,
+      "byteStart": 10381,
+      "byteEnd": 12140,
+      "rawText": "It returns `{version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}`. Retain all occurrences. When archiving, preserve source/section/position/key/text and update only artifact to the archive copy; relative artifact paths resolve from RUN_MD's directory. This task does not collect artifacts or append records automatically.\n\nAppend these one-line JSON record forms in the existing `approvals:` block (examples are complete producer records, not a separate file format):\n\n```text\napprovals:\n- finding-source · {\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"final-review-inv-a.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-source · {\"version\":1,\"source\":\"inv-b/final\",\"artifact\":\"final-review-inv-b.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Deferred OK\",\"position\":1,\"key\":\"[Nit] café,format.ts:1 — A\",\"text\":\"[Nit] café,format.ts:1 — A\\n  original continuation\"}]}\n- finding-link · {\"refs\":[{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},{\"source\":\"inv-b/final\",\"section\":\"Deferred OK\",\"position\":1}],\"basis\":\"verified same obligation\"}\n- finding-route · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"owner\":\"bd-fix\",\"fix\":\"bd-fix\",\"deferred\":\"outside the current goal\"}\n- finding-disposition · {\"ref\":{\"source\":\"inv-a/final\",\"section\":\"Deferred OK\",\"position\":1},\"disposition\":\"resolved\",\"judgment\":\"supported\",\"basis\":\"another task supplied the relevant fix\",\"evidence\":[\"verification.log @ abc123\"],\"verification\":\"focused reproduction now passes against repaired code\"}\n```\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "sectionByteStart": 9880,
+          "sectionByteEnd": 15254,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 502
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p06",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "protocol-context"
+      ],
+      "interpretation": "Keys do not override source/section/position identity; final full-first-line versus roast before-em-dash convention.",
+      "lineStart": 152,
+      "lineEnd": 152,
+      "byteStart": 12141,
+      "byteEnd": 12599,
+      "rawText": "A rejection uses disposition `rejected` with the same supported judgment, basis and nonempty evidence; verification is optional for rejection. A source record's payload is the exact complete extraction object, not a key-only reconstruction. For final reviews, keys retain the full original first finding line; roast keys use the producer's before-em-dash convention. Source/section/position refs remain authoritative independently of the legacy printed key.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "sectionByteStart": 9880,
+          "sectionByteEnd": 15254,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 2262
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p07",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Empty keys cannot establish clean acceptance; unavailable Node/manual fallback and output status describe helper boundary.",
+      "lineStart": 164,
+      "lineEnd": 164,
+      "byteStart": 13406,
+      "byteEnd": 14036,
+      "rawText": "Exit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "sectionByteStart": 9880,
+          "sectionByteEnd": 15254,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 3527
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p08",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Supplementary records need semantic support; silence/unknown input does not resolve; described consumer seam.",
+      "lineStart": 166,
+      "lineEnd": 166,
+      "byteStart": 14037,
+      "byteEnd": 14765,
+      "rawText": "Optional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "sectionByteStart": 9880,
+          "sectionByteEnd": 15254,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 4158
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p09",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "deferred-integration-scope"
+      ],
+      "interpretation": "Collection/routing/status assigned .8.3 and acceptance metrics .9, explicitly not implemented here.",
+      "lineStart": 168,
+      "lineEnd": 168,
+      "byteStart": 14766,
+      "byteEnd": 15253,
+      "rawText": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 6,
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "sectionByteStart": 9880,
+          "sectionByteEnd": 15254,
+          "canonicalSectionAlias": "legacy-raw-section/6",
+          "positionByteInSection": 4887
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p10",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "scope-concern"
+      ],
+      "interpretation": "Structural evidence fields are not semantic proof; owning agent must judge supported fix/rejection.",
+      "lineStart": 189,
+      "lineEnd": 189,
+      "byteStart": 17590,
+      "byteEnd": 17866,
+      "rawText": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Concerns",
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Concerns"
+          ],
+          "sectionByteStart": 17577,
+          "sectionByteEnd": 18230,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 14
+        }
+      ],
+      "isAppliedDisposition": false
+    },
+    {
+      "passageId": "part1-15-p11",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "interpretation": "Fresh-agent interrupted-invocation/changed-instruction evals pending; integration/metrics external tasks; epic sweep not run.",
+      "lineStart": 191,
+      "lineEnd": 191,
+      "byteStart": 17867,
+      "byteEnd": 18230,
+      "rawText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "rawSections": [
+        {
+          "sectionOrdinal": 9,
+          "section": "Concerns",
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Concerns"
+          ],
+          "sectionByteStart": 17577,
+          "sectionByteEnd": 18230,
+          "canonicalSectionAlias": "legacy-raw-section/9",
+          "positionByteInSection": 291
+        }
+      ],
+      "isAppliedDisposition": false
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 7512,
+      "byteEnd": 7659,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/0"
+      ],
+      "interpretation": "Coordinator owns fresh-agent baseline/post evaluations; none run here.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8564,
+      "byteEnd": 8868,
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/2"
+      ],
+      "interpretation": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together. Claimed repair, present applicability and cross-source identity remain unadjudicated.",
+      "jsonPointer": null,
+      "passageJudgment": {
+        "ordinal": 15,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "byteStart": 8564,
+        "byteEnd": 8868,
+        "lineStart": 125,
+        "lineEnd": 125,
+        "selection": "full-original-passage",
+        "assertionQuote": "with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3.",
+        "repairClaimQuote": "Adding the explicit unknown-coverage gap made this GREEN.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      }
+    },
+    {
+      "byteStart": 8869,
+      "byteEnd": 9295,
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/3"
+      ],
+      "interpretation": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose. Claimed repair, present applicability and cross-source identity remain unadjudicated.",
+      "jsonPointer": null,
+      "passageJudgment": {
+        "ordinal": 15,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "byteStart": 8869,
+        "byteEnd": 9295,
+        "lineStart": 127,
+        "lineEnd": 127,
+        "selection": "full-original-passage",
+        "assertionQuote": "identifying the missing approvals finding-source/link/route/disposition fields and exact line formats.",
+        "repairClaimQuote": "Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      }
+    },
+    {
+      "byteStart": 13406,
+      "byteEnd": 14036,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/6"
+      ],
+      "interpretation": "Empty keys cannot establish clean acceptance; unavailable Node/manual fallback and output status describe helper boundary.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14037,
+      "byteEnd": 14765,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/7"
+      ],
+      "interpretation": "Supplementary records need semantic support; silence/unknown input does not resolve; described consumer seam.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 14766,
+      "byteEnd": 15253,
+      "roles": [
+        "deferred-integration-scope"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/8"
+      ],
+      "interpretation": "Collection/routing/status assigned .8.3 and acceptance metrics .9, explicitly not implemented here.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17590,
+      "byteEnd": 17866,
+      "roles": [
+        "scope-concern"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/9"
+      ],
+      "interpretation": "Structural evidence fields are not semantic proof; owning agent must judge supported fix/rejection.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 17867,
+      "byteEnd": 18230,
+      "roles": [
+        "deferred-coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/10"
+      ],
+      "interpretation": "Fresh-agent interrupted-invocation/changed-instruction evals pending; integration/metrics external tasks; epic sweep not run.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "rawSidecarLossless": true,
+    "proposedSemanticExtractionCompleteForAssertedHistory": false,
+    "proposedReview": "Concern/eval passages supported, but historical unknown-coverage defect L125 and contract omission L127 must remain report history if extracting all findings. Worked JSON L145–149 is illustrative and must not become A occurrences.",
+    "hasActualFindingOrHistoricalDefect": true,
+    "validScopedEmptySupported": false,
+    "emptyScope": null,
+    "globalEmptySupported": false,
+    "globalEmptyReason": "No whole-run empty conclusion follows from task-local history; historical findings, coverage scopes and pending obligations retained."
+  },
+  "semanticAmbiguities": [
+    "Semantic sufficiency of evidence remains agent-owned; exact-looking complete JSON examples are not actual retained run records."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Adapter preserves original compact-recognized task verdict; this status does not discharge findings/obligations.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-5/raw-byte-000007512",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 7512,
+      "rawByteEnd": 7659,
+      "rawLineStart": 111,
+      "rawLineEnd": 111,
+      "originalSections": [
+        {
+          "section": "TDD evidence",
+          "sectionOrdinal": 5,
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "byteStart": 7495,
+          "byteEnd": 9880
+        }
+      ],
+      "rawText": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Used test-driven-development and writing-skills. The coordinator owns fresh-agent baseline/post behavior evaluations; no agents were spawned here.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/0"
+      ],
+      "interpretation": "Coordinator owns fresh-agent baseline/post evaluations; none run here."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008564",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "passageJudgment": {
+        "ordinal": 15,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "byteStart": 8564,
+        "byteEnd": 8868,
+        "lineStart": 125,
+        "lineEnd": 125,
+        "selection": "full-original-passage",
+        "assertionQuote": "with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3.",
+        "repairClaimQuote": "Adding the explicit unknown-coverage gap made this GREEN.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      },
+      "representationChoice": null,
+      "rawByteStart": 8564,
+      "rawByteEnd": 8868,
+      "rawLineStart": 125,
+      "rawLineEnd": 125,
+      "originalSections": [
+        {
+          "section": "TDD evidence",
+          "sectionOrdinal": 5,
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "byteStart": 7495,
+          "byteEnd": 9880
+        }
+      ],
+      "rawText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/2"
+      ],
+      "interpretation": "The passage expressly asserts a wrong clean exit on absent retained coverage, not merely a RED test name. Preserve the bounded historical behavior and author correction claim together. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+    },
+    {
+      "adapterSection": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008869",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historical-defect-assertion",
+      "roles": [
+        "historical-finding",
+        "claimed-repair"
+      ],
+      "passageJudgment": {
+        "ordinal": 15,
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "rawSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+        "byteStart": 8869,
+        "byteEnd": 9295,
+        "lineStart": 127,
+        "lineEnd": 127,
+        "selection": "full-original-passage",
+        "assertionQuote": "identifying the missing approvals finding-source/link/route/disposition fields and exact line formats.",
+        "repairClaimQuote": "Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN.",
+        "judgment": "retain actual asserted historical finding together with its unadjudicated repair qualification",
+        "basis": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose.",
+        "reviewBasis": "correction-round-1/failed-review.md#F1; independent part-1 source interpretation historical-finding + claimed-repair roles",
+        "appliedDisposition": false,
+        "currentApplicability": "unjudged",
+        "crossSourceIdentity": "unjudged"
+      },
+      "representationChoice": null,
+      "rawByteStart": 8869,
+      "rawByteEnd": 9295,
+      "rawLineStart": 127,
+      "rawLineEnd": 127,
+      "originalSections": [
+        {
+          "section": "TDD evidence",
+          "sectionOrdinal": 5,
+          "headingRaw": "## TDD evidence\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "TDD evidence"
+          ],
+          "byteStart": 7495,
+          "byteEnd": 9880
+        }
+      ],
+      "rawText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/3"
+      ],
+      "interpretation": "The source identifies specific absent operative record fields/formats in that intermediate tree. Preserve that qualified historical contract omission, without promoting unrelated TDD/support prose. Claimed repair, present applicability and cross-source identity remain unadjudicated."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-6/raw-byte-000013406",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 13406,
+      "rawByteEnd": 14036,
+      "rawLineStart": 164,
+      "rawLineEnd": 164,
+      "originalSections": [
+        {
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "sectionOrdinal": 6,
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "byteStart": 9880,
+          "byteEnd": 15254
+        }
+      ],
+      "rawText": "Exit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Exit 0: validated projection. Exit 3: retained projection plus evidence/record gaps. Exit 2: invalid CLI or unavailable run.md, no projection established. Exit 4: Node unavailable, no projection established. JSON includes gaps; key mode emits only deduplicated outstanding-deferred keys on stdout and `FINDING_GAP:` diagnostics on stderr. An empty key stream alone cannot mean acceptance is clean. Neither jq nor external packages are needed for this projection; the legacy round mode keeps its existing jq/manual fallback. Without Node, stderr `NODE_UNAVAILABLE:` directs manual conservative projection while retaining evidence.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/6"
+      ],
+      "interpretation": "Empty keys cannot establish clean acceptance; unavailable Node/manual fallback and output status describe helper boundary."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-6/raw-byte-000014037",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 14037,
+      "rawByteEnd": 14765,
+      "rawLineStart": 166,
+      "rawLineEnd": 166,
+      "originalSections": [
+        {
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "sectionOrdinal": 6,
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "byteStart": 9880,
+          "byteEnd": 15254
+        }
+      ],
+      "rawText": "Optional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Optional supplementary input is `{version:1,records:[{type:\"finding-link\",refs,basis},{type:\"finding-disposition\",ref,disposition,judgment,basis,evidence,verification?}]}`. This is a local consumer seam, not a proposed external roast ledger contract. Only references to retained local occurrences are accepted. Absent/malformed/unknown/incomplete inputs report gaps; silence/dissolved/success-only records do not resolve. Valid attributed explicit supported records can supplement the same projection; owning agents must judge semantic support before writing or adapting them. External source/routing replacement is refused. Any external record worth retaining durably should be recorded in local approvals after that judgment.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/7"
+      ],
+      "interpretation": "Supplementary records need semantic support; silence/unknown input does not resolve; described consumer seam."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-6/raw-byte-000014766",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-integration-scope"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 14766,
+      "rawByteEnd": 15253,
+      "rawLineStart": 168,
+      "rawLineEnd": 168,
+      "originalSections": [
+        {
+          "section": "Interface for super-plan-ufz.8.3 and super-plan-ufz.9",
+          "sectionOrdinal": 6,
+          "headingRaw": "## Interface for super-plan-ufz.8.3 and super-plan-ufz.9\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Interface for super-plan-ufz.8.3 and super-plan-ufz.9"
+          ],
+          "byteStart": 9880,
+          "byteEnd": 15254
+        }
+      ],
+      "rawText": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": ".8.3 should collect the immutable artifact bundles, append source/route/supported-disposition records without overwriting previous ones, preserve gap outcomes and route Remaining/resume/status through this projection. .9 can measure outstanding groups, outstanding deferred groups and gaps separately from latest invocation verdict and task success; archive copies and duplicate printed keys are not separate resolved/remaining obligations. This task does not implement those consumers.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/8"
+      ],
+      "interpretation": "Collection/routing/status assigned .8.3 and acceptance metrics .9, explicitly not implemented here."
+    },
+    {
+      "adapterSection": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000017590",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "scope-or-coverage-qualification",
+      "roles": [
+        "scope-concern"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 17590,
+      "rawByteEnd": 17866,
+      "rawLineStart": 189,
+      "rawLineEnd": 189,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Concerns"
+          ],
+          "byteStart": 17577,
+          "byteEnd": 18230
+        }
+      ],
+      "rawText": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Semantic sufficiency of a fix/rejection cannot be proved by these structural helpers. The owning agent must assess the evidence and explicitly record the supported judgment; mere presence of evidence text is not a semantic oracle. This is the specified helper/agent boundary.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/9"
+      ],
+      "interpretation": "Structural evidence fields are not semantic proof; owning agent must judge supported fix/rejection."
+    },
+    {
+      "adapterSection": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000017867",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "pending-obligation",
+      "roles": [
+        "deferred-coverage"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 17867,
+      "rawByteEnd": 18230,
+      "rawLineStart": 191,
+      "rawLineEnd": 191,
+      "originalSections": [
+        {
+          "section": "Concerns",
+          "sectionOrdinal": 9,
+          "headingRaw": "## Concerns\n",
+          "hierarchy": [
+            "super-plan-ufz.8.4 implementation evidence",
+            "Concerns"
+          ],
+          "byteStart": 17577,
+          "byteEnd": 18230
+        }
+      ],
+      "rawText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "Coordinator-owned fresh-agent interrupted-invocation and changed-instruction baseline/post evaluations remain pending outside this task. Collection/routing/resume/status integration belongs to .8.3 and acceptance metrics to .9. The full epic sweep was not run here. No PR was opened, no tracker closure was performed and no external ledger policy was introduced.",
+      "transformation": {
+        "firstListMarkerRemoved": false,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-1-review.json#/sources/14/interpretedPassages/10"
+      ],
+      "interpretation": "Fresh-agent interrupted-invocation/changed-instruction evals pending; integration/metrics external tasks; epic sweep not run."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/15-task-13-report.md",
+  "retainedSha256": "87a1600e1c8f580312e88f15c9287ccb6c86833bc44ecbef90cba812e81eee4e"
+}

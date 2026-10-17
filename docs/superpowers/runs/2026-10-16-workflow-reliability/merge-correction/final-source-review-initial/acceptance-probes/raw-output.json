@@ -1,0 +1,195 @@
+[
+  {
+    "label": "extract fixture-final/final",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-code/scripts/report-verdict",
+    "args": [
+      "--complete",
+      "--source",
+      "fixture-final/final",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/original-final.md"
+    ],
+    "status": 0,
+    "stdout": "{\"version\":1,\"source\":\"fixture-final/final\",\"artifact\":\"/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/original-final.md\",\"kind\":\"final-review\",\"verdict\":\"not ready\",\"occurrences\":[{\"section\":\"Must fix before landing\",\"position\":1,\"key\":\"formatting suggestion\",\"text\":\"formatting suggestion\"}]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "extract roast-code/round-1",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-code/scripts/report-verdict",
+    "args": [
+      "--complete",
+      "--source",
+      "roast-code/round-1",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/clean-roast.md"
+    ],
+    "status": 0,
+    "stdout": "{\"version\":1,\"source\":\"roast-code/round-1\",\"artifact\":\"/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/clean-roast.md\",\"kind\":\"roast\",\"verdict\":\"CLEAN\",\"occurrences\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "produce final-review keys",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-code/scripts/report-verdict",
+    "args": [
+      "--keys",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/original-final.md"
+    ],
+    "status": 0,
+    "stdout": "[Must-fix] formatting suggestion\n",
+    "stderr": ""
+  },
+  {
+    "label": "produce real code ledger",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-design/scripts/findings-ledger",
+    "args": [
+      "--loop",
+      "code",
+      "--out",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/ledger.md",
+      "--report",
+      "1=/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/clean-roast.md",
+      "--final-review",
+      "1=/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/review.keys"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "KEYS CONTROL: incomplete declaration accepted as existing test does",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[{\"source\":\"fixture-final/final\",\"section\":\"Must fix before landing\",\"position\":1}]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "KEYS COUNTEREXAMPLE: contract-complete declaration rejected",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"source coverage: conflicting report kind /private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/review.keys\",\"source coverage: ledger declared input population unavailable: ledger.md; /private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/review.keys\",\"source coverage: source-correspondence /private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/review.keys: retained report kind differs from declaration\",\"source coverage: declared report has no retained source extraction: /private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/keys-declaration/review.keys\"],\"nonblockingFindings\":[{\"source\":\"fixture-final/final\",\"section\":\"Must fix before landing\",\"position\":1}]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "produce settled null unavailable",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--collect",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/run.md",
+      "--invocation",
+      "recovery",
+      "--workspace",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/workspace",
+      "--review",
+      "none",
+      "--verdict",
+      "UNAVAILABLE"
+    ],
+    "status": 3,
+    "stdout": "collection: gaps — retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: recovery: required review is null; owner: orchestrator; recover whole-epic review; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "RECOVERY NEGATIVE CONTROL: settled null stays pending",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/run.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\",\"review collections pending: 1\",\"review collection gaps: 1\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "produce supported null recovery",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--collect",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/run.md",
+      "--invocation",
+      "recovery",
+      "--workspace",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/workspace",
+      "--review",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/workspace/final-review-recovery.md",
+      "--verdict",
+      "ready",
+      "--recover-null"
+    ],
+    "status": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  {
+    "label": "RECOVERY POSITIVE CONTROL: valid hash-bound recovery",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "RECOVERY COUNTEREXAMPLE missing-marker: gate admits malformed provenance",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/missing-marker.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "COLLECT CONTROL missing-marker: same input is rejected by preservation validator",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--collect",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/missing-marker-replay.md"
+    ],
+    "status": 3,
+    "stdout": "collection: gaps — retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: malformed collection record; retain sources\n"
+  },
+  {
+    "label": "RECOVERY COUNTEREXAMPLE incorrect-predecessor: gate admits malformed provenance",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--acceptance",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/incorrect-predecessor.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "label": "COLLECT CONTROL incorrect-predecessor: same input is rejected by preservation validator",
+    "script": "/private/tmp/ufz-correction-final-source-review/acceptance-probes/captured/skills/super-auto/scripts/report-status",
+    "args": [
+      "--collect",
+      "/private/tmp/ufz-correction-final-source-review/acceptance-probes/fixtures/recovery-history/incorrect-predecessor-replay.md"
+    ],
+    "status": 3,
+    "stdout": "collection: gaps — retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: malformed collection record; retain sources\n"
+  }
+]

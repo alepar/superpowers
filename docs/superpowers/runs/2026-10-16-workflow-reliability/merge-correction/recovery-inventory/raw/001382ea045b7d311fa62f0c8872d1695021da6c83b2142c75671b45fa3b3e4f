@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "command": [
+    "bash",
+    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes",
+    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers",
+    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability"
+  ],
+  "cwd": "/Users/alepar/AleCode/superpowers",
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "scope": "Owned integration/report roots after all audit and acceptance agents completed; helper ancestry guards protect this session. No filesystem teardown and no global process absence claim. Earlier acceptance snapshot retains the assessor-time unknown; this is separate later scoped evidence.",
+  "stoppedReported": 0,
+  "survivedReported": 0
+}

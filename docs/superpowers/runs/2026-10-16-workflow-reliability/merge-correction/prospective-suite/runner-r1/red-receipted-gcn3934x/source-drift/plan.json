@@ -1,0 +1,29 @@
+{
+  "checkout": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/source-drift/clone",
+  "output": "/private/tmp/ufz-correction-suite-runner-r1/red-receipted-gcn3934x/source-drift/evidence",
+  "sourceHead": "6defb89b797f05a1b1e340005b759f325954bae5",
+  "sourceTree": "e0004adbd88438263f521b121eb57fa4c42f3c4f",
+  "commands": [
+    "bash tests/one.sh",
+    "bash tests/two.sh"
+  ],
+  "timeoutPerCommandSeconds": 3,
+  "reviewReference": "private hand-checked microfixture entrypoints",
+  "historicalRoots": [],
+  "entrypoints": [
+    {
+      "command": "bash tests/one.sh",
+      "sha256": "d3c497c03c601b2babe16d692256451c8d36ccebf804a2b1f95a7db29f7e0ea1",
+      "requirementIds": [
+        "fixture-0"
+      ]
+    },
+    {
+      "command": "bash tests/two.sh",
+      "sha256": "e06ecfb599378c89bdff3c0458da4727559ca2577526efb5cbf324ae0a20f6ba",
+      "requirementIds": [
+        "fixture-1"
+      ]
+    }
+  ]
+}

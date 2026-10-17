@@ -1,0 +1,400 @@
+{
+  "version": 1,
+  "proposalRevision": 2,
+  "correctionRound": 1,
+  "initialSnapshot": "/private/tmp/ufz-correction-legacy-adapters-initial",
+  "initialManifestSha256": "20ac4489e3029a2c65394f8b766bdae8bbf441310962edff9288fcb0e93d81cf",
+  "initialRecordsSha256": "ec52ee50d9e0ed8b666db30e4b5014eacd0d00243518796242da020e68f19ca0",
+  "correctedManifestSha256": "d759bee75ac79d3952540ff325f13f422848b8c26ed5a599d4a47cca4066e262",
+  "correctedRecordsSha256": "c04593efb7ffd0b9414222ee39c1337e1b3e5d2722356d11fe2de0dfd5e7b9ee",
+  "sourceIDsAdded": [],
+  "sourceIDsRemoved": [],
+  "changedRetainedAdapters": [
+    {
+      "ordinal": 2,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "retainedArtifact": "legacy-report-adapters-r1/02-task-10-report-fix.md",
+      "beforeSha256": "41c876e1e449614c0617b3eef1aed755bb64caf2d51c837229580e3aee7694e3",
+      "afterSha256": "00dd09e9b9c2b94e56ceffb02702caee223de0782be0d8c15bd0cfabb5951058",
+      "beforeOccurrenceCount": 3,
+      "afterOccurrenceCount": 4
+    },
+    {
+      "ordinal": 3,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "retainedArtifact": "legacy-report-adapters-r1/03-task-10-report.md",
+      "beforeSha256": "13ffb3307818da6cdb8347659656ba4643bf550517c2c82264ae566b2dff29d7",
+      "afterSha256": "74e6936a43f2d4f74317649fe93ba7ccb8d3a7bdf31bcf5a6e8405d3b114ffb8",
+      "beforeOccurrenceCount": 8,
+      "afterOccurrenceCount": 9
+    },
+    {
+      "ordinal": 7,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "retainedArtifact": "legacy-report-adapters-r1/07-task-11-report.md",
+      "beforeSha256": "25e59934d4a4ed1efe52c8b7ffc151ba9edabe9f3fb70129cdc77fe0b260eb58",
+      "afterSha256": "50137e01f489d372ff5be480e934e038cb103b8d4ef0a8806edf17f93d5770f0",
+      "beforeOccurrenceCount": 8,
+      "afterOccurrenceCount": 10
+    },
+    {
+      "ordinal": 11,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "retainedArtifact": "legacy-report-adapters-r1/11-task-12-report.md",
+      "beforeSha256": "820d04e9bfd0285a3a4b809d6181857e57002f747f1ac07dabb34dff074b6721",
+      "afterSha256": "8e639d24bcf12b854fdb4d890a6d9b9b968126199604bbcd0e0f698dfc3fe8a6",
+      "beforeOccurrenceCount": 6,
+      "afterOccurrenceCount": 8
+    },
+    {
+      "ordinal": 15,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "retainedArtifact": "legacy-report-adapters-r1/15-task-13-report.md",
+      "beforeSha256": "59598cd7522301252056e875b1c6d2e96ba66d433f6dd53f4edd63fd39641c51",
+      "afterSha256": "87a1600e1c8f580312e88f15c9287ccb6c86833bc44ecbef90cba812e81eee4e",
+      "beforeOccurrenceCount": 6,
+      "afterOccurrenceCount": 8
+    },
+    {
+      "ordinal": 17,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "retainedArtifact": "legacy-report-adapters-r1/17-task-14-report-fix.md",
+      "beforeSha256": "fcf8c3aa9d5940cca5046765875b64c3a7233c890f3715d5652b8335d723aa32",
+      "afterSha256": "f1b4e0cffd3a6df697dc0f7b45129b56ac6a53835ac75dfc05949561a14e763a",
+      "beforeOccurrenceCount": 1,
+      "afterOccurrenceCount": 2
+    },
+    {
+      "ordinal": 18,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "retainedArtifact": "legacy-report-adapters-r1/18-task-14-report.md",
+      "beforeSha256": "82aeb2d5447f0730d8eff2ebd9fa096d3c6a03ac74518572e8b6604cd080f6fb",
+      "afterSha256": "c6bf8358131e3b510635726087a87796104ad9625ba2c8ab4e95f51f011f7764",
+      "beforeOccurrenceCount": 5,
+      "afterOccurrenceCount": 6
+    },
+    {
+      "ordinal": 21,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "retainedArtifact": "legacy-report-adapters-r1/21-task-15-report.md",
+      "beforeSha256": "ffc346f7d4eb604986d78ef52d7aeb8fb36b23e161759c53b635f07842332ccb",
+      "afterSha256": "8ca78600158b96410bcab7f98b039380167824b07383cf1d239da7975bce976b",
+      "beforeOccurrenceCount": 7,
+      "afterOccurrenceCount": 8
+    },
+    {
+      "ordinal": 25,
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "retainedArtifact": "legacy-report-adapters-r1/25-task-16-report.md",
+      "beforeSha256": "15e08a57d1df326e146e00d85bbe06d356964733f4f115919880af80f66f72fc",
+      "afterSha256": "cd3b8d9591794ad954d530005cf5ea232f10ea1e9f7b431ee6266a90b44916f2",
+      "beforeOccurrenceCount": 6,
+      "afterOccurrenceCount": 7
+    },
+    {
+      "ordinal": 43,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "retainedArtifact": "legacy-report-adapters-r1/43-task-24-report.md",
+      "beforeSha256": "52c908b46cd4f76c2267bc594d56bf659ebf4fbe1ab08df8c3df141b2a30a00e",
+      "afterSha256": "bec5094e8fbfc085ce1d6f0c6ccf072838ae675327c6df3f2b59886768f89c31",
+      "beforeOccurrenceCount": 2,
+      "afterOccurrenceCount": 3
+    },
+    {
+      "ordinal": 49,
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "retainedArtifact": "legacy-report-adapters-r1/49-task-27-report.md",
+      "beforeSha256": "c11cafd1b07314b1e844965d977dd0cefb771caa3898d30dce65e2e32fd0aa63",
+      "afterSha256": "471b6eaf23204fbb19d8049f4d2e6b31e23d8723559b787e4f1221b8992c7372",
+      "beforeOccurrenceCount": 6,
+      "afterOccurrenceCount": 7
+    }
+  ],
+  "addedExactRefs": [
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-6/raw-byte-000009651/json-pointer-/concerns/0",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-6/raw-byte-000009651/json-pointer-/concerns/0",
+        "position": 1,
+        "key": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines.",
+        "text": "Task .26 separately edits collector input selection; preserve both selection and containment when integrating overlapping collector lines."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Concerns — adapter/structured-concern-appearance/raw-section-13/raw-byte-000022349/json-pointer-/concerns/0",
+        "position": 1,
+        "key": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed.",
+        "text": "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-13/raw-byte-000020452",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-13/raw-byte-000020452",
+        "position": 1,
+        "key": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:",
+        "text": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-3/raw-byte-000003014",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-3/raw-byte-000003014",
+        "position": 1,
+        "key": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:",
+        "text": "The initial correction passed 1979/0. Self-review then added history-order coverage. Command `node tests/super-code/replay-harness.mjs > evidence-task7-fix-order-red.log 2>&1` exited 1 with:\n\n```text\n[FAIL] supported different-source repair retains earlier verification contradiction in history\n1980 passed, 1 failed\n```\n\nThat RED showed the first correction checked only the latest verification and could drop an earlier contradiction gap when a genuinely different fixed source passed. The final correction checks every retained verification and only reopens the currently active conflicting one."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000005758",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000005758",
+        "position": 1,
+        "key": "Additional interrupted-clear RED:",
+        "text": "Additional interrupted-clear RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-durability-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] unconfirmed recovery clear append remains unresolved after writer drain\n2010 passed, 1 failed\n```\n\nExpected failure: the initial implementation cleared the in-memory obligation before its append was confirmed. Combined clear/completion appending with confirmation before reduction fixed this. GREEN: `2011 passed, 0 failed`."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000006279",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000006279",
+        "position": 1,
+        "key": "Additional incomplete-observation RED:",
+        "text": "Additional incomplete-observation RED:\n\n```sh\nTMPDIR=/tmp/sp-bce79baa/super-plan-ufz.12 node tests/super-code/replay-harness.mjs > evidence-task12-incomplete-red.log 2>&1\n```\n\nExit 1:\n\n```text\n[FAIL] run completes without throwing\nTypeError: Cannot read properties of undefined (reading 'includes')\n[FAIL] recovery observation is bounded to one attempt with explicit held stop\n[FAIL] unresolved recovery preserves additive record data\n[FAIL] Git/tracker discrepancy or unavailable status remains explicit\n2014 passed, 4 failed\n```\n\nExpected failure: a reply missing its closed-status array was not safely classified as unknown. Explicit array guards fixed it. GREEN before rebase: `2018 passed, 0 failed`."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000010301",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000010301",
+        "position": 1,
+        "key": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened.",
+        "text": "The dispatch failures were missing explicit intent, fixed tree, retained evidence references, evidence-review selection and default implementation intent. After the initial change, all new cases passed; one unchanged existing metrics assertion failed because a new zero-valued field changed its exact output. Production now retains the exact old metrics line when there are no verification-only completions; the existing assertion was not loosened."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-9/raw-byte-000016157",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-9/raw-byte-000016157",
+        "position": 1,
+        "key": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact.",
+        "text": "The combined code exposed an additional seam: the landed pending-closure reconciler required a Git landing head, which a verification-only record intentionally lacks. Its additive verification branch now resolves the retained unchanged commit/tree and observes all associated tracker statuses through `sourceVerified`; it never manufactures a landing or increments merge counts. Unavailable, mismatched or contradictory facts hold recovery even when a later tracker response claims closure. Verification closure now appends its clear and typed completion with structured `appended: true` confirmation before reducing the obligation or settling completed; failed writes retain the accepted basis and hold recovery. Cleanup observations preserve additive existing Recovery fields and evidence. Existing implementation landing reconciliation and regression classification remain intact."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008564",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008564",
+        "position": 1,
+        "key": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN.",
+        "text": "RED 2: added the absent-retained-source fixture before adding its check. The script suite produced `1 failure(s)`, with `no retained sources is an explicit gap rather than a clean review` returning 0 instead of 3. All other edge fixtures passed. Adding the explicit unknown-coverage gap made this GREEN."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008869",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-5/raw-byte-000008869",
+        "position": 1,
+        "key": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again.",
+        "text": "RED 3: contract lint's approved-additions fixtures preceded operative run-state documentation. It produced `1 super-auto contract lint test(s) failed`, identifying the missing approvals finding-source/link/route/disposition fields and exact line formats. All mutation checks passed. Adding field-table rows, worked examples and the operative record/CLI instructions made this GREEN. The final rebased runs above passed again."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000016071",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000016071",
+        "position": 1,
+        "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-2/raw-byte-000000539",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-2/raw-byte-000000539",
+        "position": 1,
+        "key": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed.",
+        "text": "Verified the Important finding against `skills/super-code/coordinator.js` finalReviewPrompt: direct review invokes review-package with `${reviewPath}.diff`, while reviewPath defaults to `final-review-ID.md`. The collector's discovery and hasBundle checks incorrectly expected `final-review-ID.diff`. Both now recognize the actual `final-review-ID.md.diff` filename. No producer, root acceptance, measurement, metric, or disposition logic changed."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "position": 1,
+        "key": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation.",
+        "text": "Task-report coverage is absent from this retained population, not a zero run-wide task-review total. The full projection retains the two other-section groups for Remaining/interpretation."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-16/raw-byte-000021569",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-16/raw-byte-000021569",
+        "position": 1,
+        "key": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope.",
+        "text": "Resolved the quoted `rebase-conflict` finding. The named `task-15-review-seam.diff` file was absent; the complete finding in the dispatch was available and matched the reproduced coordinator.js conflict. Read the current bead, comments (none), frozen brief, existing report, and `task-15-report-fix.md` before edits. No amendments changed the scope."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "position": 1,
+        "key": "Resolved `[rebase-conflict]` by running exactly:",
+        "text": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge."
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+        "position": 1,
+        "key": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with",
+        "text": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint."
+      }
+    }
+  ],
+  "removedErroneousOrNarrowSyntheticRefs": [
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005358",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005358",
+        "position": 1,
+        "key": "```json",
+        "text": "```json\n{\"scope\":\"retained sources\",\"sources\":3,\"sourceKinds\":[\"final-review\",\"roast\"],\"occurrences\":7,\"occurrenceGroups\":7,\"findings\":5,\"otherSectionGroups\":2,\"sections\":[\"Must fix\",\"Deferred OK\",\"Rejected\",\"Not verified\"],\"repaired\":1,\"rejected\":1,\"outstanding\":3,\"deferred\":1,\"gaps\":0}\n```"
+      }
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000015015",
+        "position": 1
+      },
+      "occurrence": {
+        "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000015015",
+        "position": 1,
+        "key": "blocker `super-plan-8fn` remains for the parent to close after verified merge.",
+        "text": "blocker `super-plan-8fn` remains for the parent to close after verified merge."
+      }
+    }
+  ],
+  "changedOccurrenceObjectsUnderSameRef": [],
+  "representationReplacements": [
+    {
+      "oldSyntheticRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005358",
+        "position": 1
+      },
+      "replacementSyntheticRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+        "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000005652",
+        "position": 1
+      },
+      "representationCorrectionOnly": true,
+      "basis": "F2 corrects an adapter selection error: unqualified illustrative JSON leaves occurrence extraction and remains exact labelled contextual evidence; its exact population qualification becomes the interpreted occurrence. This is no semantic rejection disposition.",
+      "appliedFindingLink": false,
+      "appliedDisposition": false
+    },
+    {
+      "oldSyntheticRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Concerns — adapter/pending-obligation/raw-section-10/raw-byte-000015015",
+        "position": 1
+      },
+      "replacementSyntheticRef": {
+        "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+        "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+        "position": 1
+      },
+      "representationCorrectionOnly": true,
+      "basis": "F1 expands the adapter item to the full original mixed historical-finding/repair passage, including the exact unchanged blocker obligation. It replaces only the narrower synthetic representation; no blocker closure, supported resolution or cross-source identity decision occurs.",
+      "appliedFindingLink": false,
+      "appliedDisposition": false
+    }
+  ],
+  "newHistoricalMixedAppearances": 13,
+  "boundedStructuredConcernAppearances": 2,
+  "oldTotalOccurrences": 199,
+  "newTotalOccurrences": 213,
+  "countLimit": "Appearances, obligations and qualifications; not independent defects/current outstanding totals. One prior blocker-only item is now part of a full mixed historical item; all105 reviewed obligation passages and29 strict supplements remain explicit.",
+  "strict24AndFiveRawReportsUnchanged": true,
+  "all79OriginalRawHashesUnchanged": true,
+  "all73ExistingRegistrationsUnchanged": true,
+  "all35SourceAndFourGlobalGapsUnchanged": true,
+  "frozenInitialSnapshotUnchanged": true,
+  "canonicalWrites": 0,
+  "appliedLinks": 0,
+  "appliedDispositions": 0,
+  "semanticAcceptance": null
+}

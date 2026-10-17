@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "python3",
+    "/private/tmp/ufz-correction-legacy-adapters/build_proposal.py"
+  ],
+  "exitCode": 0,
+  "builderSha256": "0ffdea14344af714c591c5b32bc265a6e6d38609e90c81b47d636c17f60c9f0e",
+  "stdoutSha256": "817d4bc14328d88058e2f4eb97f64a0509a036e90cee7df3832029e2db4ebb2e",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

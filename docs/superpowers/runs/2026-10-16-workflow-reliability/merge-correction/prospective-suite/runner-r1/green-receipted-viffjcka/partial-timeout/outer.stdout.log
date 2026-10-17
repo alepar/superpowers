@@ -1,0 +1,2 @@
+01/2 error: bash tests/one.sh
+{"status": "invalid", "measurementValid": false, "completed": false, "commandGroupsPassed": 0, "commandGroupsFailed": 0, "commandGroupsErrors": 1, "commandGroupsSkipped": 1}

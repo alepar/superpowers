@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "proposalOnly": true,
+  "associations": [
+    {
+      "version": 1,
+      "artifact": "task-report-history-r1/raw/task-1-review.md",
+      "sha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "retainedArtifact": "legacy-report-adapters-r1/01-task-1-review.md",
+      "retainedSha256": "989f75807a05894709bdfd451a8c7a831ccda05d4cfb10aaa7a54b2d2fa8f5f9",
+      "basis": "PROPOSAL ONLY. Independent full-source semantic review, exact raw provenance and deterministic reversible adapter. Parent/fresh review required before registration or correspondence approval.",
+      "evidence": [
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/reversible-manifest.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/metadata/01-interpretation.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/review-evidence/part-1-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "unknown",
+        "limitations": [
+          "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "All original contextual/example/repair passages retained in raw/metadata, excluded from new finding counts."
+        ]
+      },
+      "lines": [
+        {
+          "line": 5,
+          "refs": [
+            {
+              "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+              "section": "Concerns — adapter/pending-obligation/raw-section-1/raw-byte-000000151",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 16,
+          "refs": [
+            {
+              "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+              "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000001579",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 24,
+          "refs": [
+            {
+              "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+              "section": "Concerns — adapter/pending-obligation/raw-section-3/raw-byte-000001972",
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "status": "unsupported/gap",
+      "reason": "Original compact kind/verdict unknown. Adapter NEEDS_CONTEXT is a new interpretation status and cannot be represented as the original historical outcome or a status-preserving declared-report correspondence."
+    },
+    {
+      "version": 1,
+      "artifact": "task-report-history-r1/raw/task-26-report.md",
+      "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "retainedArtifact": "legacy-report-adapters-r1/47-task-26-report.md",
+      "retainedSha256": "b4a1f322a1ce96cb87c26a220bbc57533922aaecad3418778b6109df0ad7ab54",
+      "basis": "PROPOSAL ONLY. Independent full-source semantic review, exact raw provenance and deterministic reversible adapter. Parent/fresh review required before registration or correspondence approval.",
+      "evidence": [
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/reversible-manifest.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/metadata/47-interpretation.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/review-evidence/part-2-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "unknown",
+        "limitations": [
+          "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "All original contextual/example/repair passages retained in raw/metadata, excluded from new finding counts."
+        ]
+      },
+      "lines": [
+        {
+          "line": 159,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000012057",
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "status": "unsupported/gap",
+      "reason": "Original compact kind/verdict unknown. Adapter NEEDS_CONTEXT is a new interpretation status and cannot be represented as the original historical outcome or a status-preserving declared-report correspondence."
+    },
+    {
+      "version": 1,
+      "artifact": "task-report-history-r1/raw/task-27-report.md",
+      "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "retainedArtifact": "legacy-report-adapters-r1/49-task-27-report.md",
+      "retainedSha256": "c11cafd1b07314b1e844965d977dd0cefb771caa3898d30dce65e2e32fd0aa63",
+      "basis": "PROPOSAL ONLY. Independent full-source semantic review, exact raw provenance and deterministic reversible adapter. Parent/fresh review required before registration or correspondence approval.",
+      "evidence": [
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/reversible-manifest.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/metadata/49-interpretation.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/review-evidence/part-2-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "unknown",
+        "limitations": [
+          "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "All original contextual/example/repair passages retained in raw/metadata, excluded from new finding counts."
+        ]
+      },
+      "lines": [
+        {
+          "line": 7,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-2/raw-byte-000000687",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 36,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000004152",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 134,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000014979",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 135,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000015223",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 152,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-11/raw-byte-000017542",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 156,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-12/raw-byte-000017935",
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "status": "unsupported/gap",
+      "reason": "Original compact kind/verdict unknown. Adapter NEEDS_CONTEXT is a new interpretation status and cannot be represented as the original historical outcome or a status-preserving declared-report correspondence."
+    },
+    {
+      "version": 1,
+      "artifact": "task-report-history-r1/raw/task-29-report.md",
+      "sha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "retainedArtifact": "legacy-report-adapters-r1/53-task-29-report.md",
+      "retainedSha256": "7e35aae7c85ee65f28851d6dddafc14cf21d8ff0f03847ab5fdd985ef226b3d6",
+      "basis": "PROPOSAL ONLY. Independent full-source semantic review, exact raw provenance and deterministic reversible adapter. Parent/fresh review required before registration or correspondence approval.",
+      "evidence": [
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/reversible-manifest.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/metadata/53-interpretation.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/review-evidence/part-2-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "unknown",
+        "limitations": [
+          "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "All original contextual/example/repair passages retained in raw/metadata, excluded from new finding counts."
+        ]
+      },
+      "lines": [
+        {
+          "line": 5,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000000074",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 119,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 120,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 121,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 122,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 123,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 124,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        },
+        {
+          "line": 125,
+          "refs": [
+            {
+              "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+              "section": "Concerns — adapter/pending-obligation/raw-section-8/raw-byte-000007279",
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "status": "unsupported/gap",
+      "reason": "Original compact kind/verdict unknown. Adapter NEEDS_CONTEXT is a new interpretation status and cannot be represented as the original historical outcome or a status-preserving declared-report correspondence."
+    },
+    {
+      "version": 1,
+      "artifact": "task-report-history-r1/raw/task-9-review.md",
+      "sha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+      "retainedArtifact": "legacy-report-adapters-r1/73-task-9-review.md",
+      "retainedSha256": "49b63f88e7d6275461bddfd6516c90a7f045815fcfda115632833703307312a7",
+      "basis": "PROPOSAL ONLY. Independent full-source semantic review, exact raw provenance and deterministic reversible adapter. Parent/fresh review required before registration or correspondence approval.",
+      "evidence": [
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/reversible-manifest.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/metadata/73-interpretation.json",
+        "/private/tmp/ufz-correction-legacy-adapters/correction-round-1/original-builder-reproduction/review-evidence/part-3-review.json"
+      ],
+      "interpretation": {
+        "kind": "legacy-adapter",
+        "originalVerdict": "unknown",
+        "limitations": [
+          "NEEDS_CONTEXT is a conservative status of this NEW INTERPRETATION ADAPTER only; original legacy task/reviewer outcome remains unrecognized by the parser. All actual original verdict/status fields are preserved separately.",
+          "No identity links, source merges, repair or rejection dispositions applied.",
+          "Scoped explicit empty declarations do not clear pending obligations or establish global readiness.",
+          "All original contextual/example/repair passages retained in raw/metadata, excluded from new finding counts."
+        ]
+      },
+      "lines": [
+        {
+          "line": 14,
+          "refs": [
+            {
+              "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+              "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-4/raw-byte-000000820",
+              "position": 1
+            }
+          ]
+        }
+      ],
+      "status": "unsupported/gap",
+      "reason": "Original compact kind/verdict unknown. Adapter NEEDS_CONTEXT is a new interpretation status and cannot be represented as the original historical outcome or a status-preserving declared-report correspondence."
+    }
+  ]
+}

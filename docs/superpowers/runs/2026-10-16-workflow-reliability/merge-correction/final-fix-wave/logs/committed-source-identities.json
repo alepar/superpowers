@@ -1,0 +1,108 @@
+{
+  "base": "9e4e057136d449348135bfc18d1f084cb6e4c303",
+  "head": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "tree": "9d74c04d6a465e02439dc08e2076395d8e791583",
+  "owned": {
+    "skills/super-auto/scripts/collection-records.cjs": {
+      "sha256": "fa444c243485404d761eb59ab53ca6b4bd7c97218dfc5521cc527fe5414def4f",
+      "bytes": 2956,
+      "blob": "164a129570a8c600b41997c8c3ca46881dc0572b"
+    },
+    "skills/super-auto/scripts/report-status": {
+      "sha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963",
+      "bytes": 50113,
+      "blob": "2e997dd7a178b5d50709957bdfc14e5283eed2c4"
+    },
+    "skills/super-code/SKILL.md": {
+      "sha256": "fdd8596017bf2a5b6660721145eb9aff07a039a390f35bdde99de5940a261c64",
+      "bytes": 46686,
+      "blob": "454eafd84f0d8042181e393e46db711609e36ec6"
+    },
+    "skills/super-code/coordinator.js": {
+      "sha256": "154bd1069d2e20eaeb24c460c09360c7e281de6a1f8ff74824db089bb53dafa1",
+      "bytes": 308121,
+      "blob": "2c5c22bcce01146248107a8dca640a21bf51d8a5"
+    },
+    "tests/super-auto/acceptance-population-correction.mjs": {
+      "sha256": "bc8c9fcb9eb35044d81f0b3f7798e38b5625841e756f97c7f3c79220346542a4",
+      "bytes": 22596,
+      "blob": "e57d775c6d04bb01333ba7365d4b8b3c6fda5090"
+    },
+    "tests/super-auto/collection-recovery-correction.sh": {
+      "sha256": "885c3384c95fa896771bdf1c071bf68958de2ce9c81ccc9fee8de1d948e2122c",
+      "bytes": 10050,
+      "blob": "3c3203ec978fc3a52cf2ef91136a5442b16209e5"
+    },
+    "tests/super-code/fixture-liveness-final-wave.mjs": {
+      "sha256": "a9c532101fbe784cf437362ede92bc414f79814e42e8507f265bb42451954882",
+      "bytes": 1677,
+      "blob": "e9a84f5f070bc5c2f0574eb74f285bab620dad82"
+    },
+    "tests/super-code/invocation-source-binding-r1.mjs": {
+      "sha256": "32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826",
+      "bytes": 15311,
+      "blob": "7595f34d8a6710658f93e7ee37ed298f7164607e"
+    },
+    "tests/super-code/recovery-hold-scope-r1.mjs": {
+      "sha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f",
+      "bytes": 9843,
+      "blob": "c110f434284b98a8ded9748041617c544fb75fa9"
+    },
+    "tests/super-code/replay-harness.mjs": {
+      "sha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+      "bytes": 440250,
+      "blob": "c6aec85c8e84703d1fe06907f9fef409e9a1dd32"
+    },
+    "tests/super-code/unplanned-admission-final-wave.mjs": {
+      "sha256": "7e5993760cf853d5477e2c82f1610b1147a3333389ed1e11c3e55fe4fcff0998",
+      "bytes": 4230,
+      "blob": "7d7cd0fa2f72b07e193920b757a5e6d6ba832308"
+    }
+  },
+  "frozen": {
+    "skills/super-auto/SKILL.md": {
+      "sameAsBase": true,
+      "sha256": "c7947601428c4365805b5001562e696ad4dbd28425eedb34c2d140f990417f4b"
+    },
+    "skills/super-auto/resume.md": {
+      "sameAsBase": true,
+      "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf"
+    },
+    "skills/super-auto/run-state.md": {
+      "sameAsBase": true,
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203"
+    },
+    "skills/super-auto/report-prompt.md": {
+      "sameAsBase": true,
+      "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb"
+    },
+    "skills/super-code/coordinator-subagents.md": {
+      "sameAsBase": true,
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff"
+    },
+    "skills/super-code/assembler-prompt.md": {
+      "sameAsBase": true,
+      "sha256": "51071e255350347a56cc7124c6ca5fb8050d57705c8865c476c3730858164cef"
+    },
+    "skills/super-code/task-reviewer-prompt.md": {
+      "sameAsBase": true,
+      "sha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8"
+    },
+    "skills/finishing-a-development-branch/SKILL.md": {
+      "sameAsBase": true,
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c"
+    },
+    "skills/upstream-feedback/SKILL.md": {
+      "sameAsBase": true,
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30"
+    },
+    "skills/upstream-feedback/analyst-prompt.md": {
+      "sameAsBase": true,
+      "sha256": "b9a5d6fb0b92f1bae8155291cb74e58712258b4f815adddcd169dd3cfea72cd2"
+    },
+    "skills/upstream-feedback/report-template.md": {
+      "sameAsBase": true,
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375"
+    }
+  }
+}

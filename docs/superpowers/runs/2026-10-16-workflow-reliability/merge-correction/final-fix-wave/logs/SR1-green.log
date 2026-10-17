@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: collection: gaps — retain sources; block later invocation and cleanup
+COLLECTION_GAP: split-stub: split bundle manifest unavailable or incomplete; keep source workspace and archive; owner: orchestrator
+
+
+3 !== 0
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/invocation-source-binding-r1.mjs:178:14 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 3,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

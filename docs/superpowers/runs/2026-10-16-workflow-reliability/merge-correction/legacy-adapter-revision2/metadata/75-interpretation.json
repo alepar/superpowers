@@ -1,0 +1,525 @@
+{
+  "version": 1,
+  "ordinal": 75,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+  "originalArtifact": "task-report-history-r1/raw/task-1-report.md",
+  "rawCopy": "raw/task-report-history-r1/raw/task-1-report.md",
+  "rawSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+  "rawByteCount": 10857,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        142
+      ]
+    ],
+    "byteScope": [
+      0,
+      10857
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/20",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/75-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "IMPLEMENTED",
+    "kind": "task-report"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 3,
+      "rawText": "Status: IMPLEMENTED"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/0",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        4466,
+        4848
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Replay simulated Workflow, no hosted execution."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/1",
+      "roles": [
+        "historical_repair_narrative"
+      ],
+      "span": [
+        5206,
+        7027
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Pinned-source/fixture/moving-ref RED and claimed GREEN; no newly asserted outstanding issue."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/2",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        7775,
+        8312
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Task-local completed-run no leak/survivor declaration, qualified by first guard refusal and active-run observations."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/3",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        8436,
+        8672
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Parent owns fresh-agent before/after evaluation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/4",
+      "roles": [
+        "scope_qualification"
+      ],
+      "span": [
+        8672,
+        9000
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Resource lifecycle separate task; repository access requires captured commits."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/5",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        9001,
+        10469
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Complete parent-owned two-seat advancing-caller/resource-isolation acceptance scenario, expectations and explicit not-run declaration."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/6",
+      "roles": [
+        "deferred_coverage"
+      ],
+      "span": [
+        10483,
+        10707
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict Concerns occurrence1: required fresh-agent adherence evaluation remains parent-owned."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/20/passages/7",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        10707,
+        10856
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Original strict Concerns occurrence2: no hosted Workflow/live model execution."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Replay simulated Workflow, no hosted execution.",
+      "rawSection": "Final verification",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Final verification\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Final verification"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 68,
+      "lineEnd": 68,
+      "byteStart": 4466,
+      "byteEnd": 4848,
+      "rawText": "The first three final checks ran after the clean rebase onto `01ff39cc`; subsequent changes were only the super-auto call arguments and report-verdict fixture, checked by the last two commands. `git diff --check` passed. The replay covers the three documented dryRun scenarios as well as live-sim prompt builders; it is simulated Workflow evidence, not a hosted Workflow execution.\n",
+      "canonicalAdapterSection": "Final verification",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historical_repair_narrative",
+      "interpretation": "Pinned-source/fixture/moving-ref RED and claimed GREEN; no newly asserted outstanding issue.",
+      "rawSection": "TDD evidence",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## TDD evidence\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "TDD evidence"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 72,
+      "lineEnd": 99,
+      "byteStart": 5206,
+      "byteEnd": 7027,
+      "rawText": "## TDD evidence\n\nBefore producer edits, with `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.1`:\n\n```text\nbash tests/super-roast/test-assemble-args.sh\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal\nactual: undefined\nexpected: { repo: <temporary caller>, base: <captured SHA>, head: <captured SHA> }\nexit 1\n\nbash tests/super-code/test-dispatch-text.sh\n  [FAIL] task review receives captured implementation head\n  [FAIL] base check uses captured head\ndispatch-text: 8 failure(s)\nexit 1\n\nnode tests/super-code/replay-harness.mjs\n  [FAIL] task review pins implementation head\n  [FAIL] assembler receives captured final range\n  [FAIL] final reviewer uses same source identities\n1771 passed, 3 failed\nexit 1\n```\n\nAn initial dispatch fixture run also encountered Bash 3's unset empty-array expansion; that fixture was corrected before the recorded full eight-failure RED run. Later moving-ref rejection assertions were added before implementing boundary validation and both failed with exit 0 instead of expected exit 2. Caller tracing reproduced five report-verdict producer/parser failures before supplying that fixture's newly required commit inputs. The final commands above are the GREEN evidence.\n\nThe new assertions can fail on concrete regressions: a missing/incorrect `source` object, a diff/source command naming the advanced caller commit, accepting a branch name as a captured commit, a changed caller or sibling sentinel, a final reviewer receiving a different pair than assembly, or a capture failure dispatching an unpinned review. The real Git fixture regenerates all relevant ordinary prompts after two caller commits and executes their rendered final diff/source identities. The roast fixture creates two detached worktrees, mutates one, and compares caller and sibling source/output bytes.\n",
+      "canonicalAdapterSection": "TDD evidence",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "Task-local completed-run no leak/survivor declaration, qualified by first guard refusal and active-run observations.",
+      "rawSection": "Test hygiene",
+      "rawSectionOrdinal": 6,
+      "rawSectionHeading": "## Test hygiene\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Test hygiene"
+      ],
+      "rawSectionsSpanned": [
+        6
+      ],
+      "lineStart": 121,
+      "lineEnd": 121,
+      "byteStart": 7775,
+      "byteEnd": 8312,
+      "rawText": "None. After completed runs the installed `stop-run-processes --check <task worktree> /tmp/sp-bce79baa/super-plan-ufz.1` returned exit 0 with no `match:` lines. The final stop sweep returned no `survived:` lines. No background services were started by the implementation agent. A check attempted from the task cwd was correctly refused because its root contained the checker; subsequent checks ran from the read-only original checkout. Matches observed while replay was still executing were its active test processes, not post-run leaks.\n",
+      "canonicalAdapterSection": "Test hygiene",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Parent owns fresh-agent before/after evaluation.",
+      "rawSection": "Assumptions",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Assumptions"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 126,
+      "lineEnd": 126,
+      "byteStart": 8436,
+      "byteEnd": 8672,
+      "rawText": "- Parent-directed existing safety controls and baseline evaluation are retained. Installed writing-skills was read and applied to the concrete source/resource interface instructions; the parent owns fresh-agent before/after evaluation.\n",
+      "canonicalAdapterSection": "Assumptions",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "scope_qualification",
+      "interpretation": "Resource lifecycle separate task; repository access requires captured commits.",
+      "rawSection": "Assumptions",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Assumptions\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Assumptions"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 127,
+      "lineEnd": 128,
+      "byteStart": 8672,
+      "byteEnd": 9000,
+      "rawText": "- Review-owned resource naming consumes caller artifact destinations; invocation/runTag lifecycle changes remain Task 8's scope.\n- The source-pair interface requires callers to identify the review snapshot. Patch/stat-only roast input remains valid for supplied patch data, while repository access requires captured identities.\n",
+      "canonicalAdapterSection": "Assumptions",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Complete parent-owned two-seat advancing-caller/resource-isolation acceptance scenario, expectations and explicit not-run declaration.",
+      "rawSection": "Parent-owned behavioral acceptance scenario",
+      "rawSectionOrdinal": 8,
+      "rawSectionHeading": "## Parent-owned behavioral acceptance scenario\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Parent-owned behavioral acceptance scenario"
+      ],
+      "rawSectionsSpanned": [
+        8
+      ],
+      "lineStart": 130,
+      "lineEnd": 136,
+      "byteStart": 9001,
+      "byteEnd": 10469,
+      "rawText": "## Parent-owned behavioral acceptance scenario\n\nUse a temporary repository with a base commit, reviewed head, tracked caller sentinel, and two concurrent review seats. Give the agents the actual changed task/final or PR prompts and the captured pair. Advance the caller integration branch twice after capture; one advance should be a legitimate concurrent integration change. Seat A needs a reproduction that writes source/build outputs. Seat B owns an existing output sentinel.\n\nExpected observations: diffs and `git show` reads still identify the captured head; necessary filesystem access uses a unique detached worktree at that head; Seat A's mutable outputs are separate from caller and Seat B; both sentinels remain byte-identical; caller commit/status changes are reported with evidence without automatic attribution to reviewer damage and without checkout/reset/restore. Task review should still decline to rerun tests. Repeat with an unavailable assembler so direct-input final review retains the same pair.\n\nEvidence pointers for this scenario are the committed advancing-caller fixture in `tests/super-code/test-dispatch-text.sh`, the independent-worktree fixture in `tests/super-roast/test-assemble-args.sh`, and the captured final single/cluster/seam/failure scenarios near the beginning of `tests/super-code/replay-harness.mjs`. The parent received the scenario and owns recording fresh-agent results; this report does not claim that evaluation has run.\n",
+      "canonicalAdapterSection": "Parent-owned behavioral acceptance scenario",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "deferred_coverage",
+      "interpretation": "Original strict Concerns occurrence1: required fresh-agent adherence evaluation remains parent-owned.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 9,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        9
+      ],
+      "lineStart": 140,
+      "lineEnd": 140,
+      "byteStart": 10483,
+      "byteEnd": 10707,
+      "rawText": "- Fresh-agent instruction evaluation remains parent-owned and required for the behavioral acceptance item. Deterministic fixtures establish mechanical source stability and resource isolation, not autonomous agent adherence.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Original strict Concerns occurrence2: no hosted Workflow/live model execution.",
+      "rawSection": "Concerns",
+      "rawSectionOrdinal": 9,
+      "rawSectionHeading": "## Concerns\n",
+      "rawSectionHierarchy": [
+        "Task super-plan-ufz.1",
+        "Concerns"
+      ],
+      "rawSectionsSpanned": [
+        9
+      ],
+      "lineStart": 141,
+      "lineEnd": 141,
+      "byteStart": 10707,
+      "byteEnd": 10856,
+      "rawText": "- No hosted Workflow/live model execution was performed by this implementer. The ordinary shell/Node fixtures and in-process Workflow replay passed.\n",
+      "canonicalAdapterSection": "Concerns",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 4466,
+      "byteEnd": 4848,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/0"
+      ],
+      "interpretation": "Replay simulated Workflow, no hosted execution.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8436,
+      "byteEnd": 8672,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/3"
+      ],
+      "interpretation": "Parent owns fresh-agent before/after evaluation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 8672,
+      "byteEnd": 9000,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/4"
+      ],
+      "interpretation": "Resource lifecycle separate task; repository access requires captured commits.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9001,
+      "byteEnd": 10469,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/5"
+      ],
+      "interpretation": "Complete parent-owned two-seat advancing-caller/resource-isolation acceptance scenario, expectations and explicit not-run declaration.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10483,
+      "byteEnd": 10707,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/6"
+      ],
+      "interpretation": "Original strict Concerns occurrence1: required fresh-agent adherence evaluation remains parent-owned.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10707,
+      "byteEnd": 10856,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/7"
+      ],
+      "interpretation": "Original strict Concerns occurrence2: no hosted Workflow/live model execution.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [
+    "Repair/reproduction/failed-test history may support later interpretation, but this source alone does not establish current applicability or a supported resolution. Preserve named historical appearance and evidence scope."
+  ],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "supplementalQualifications": [
+    {
+      "byteStart": 4466,
+      "byteEnd": 4848,
+      "roles": [
+        "coverage_limit"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/0"
+      ],
+      "interpretation": "Replay simulated Workflow, no hosted execution.",
+      "jsonPointer": null,
+      "rawText": "The first three final checks ran after the clean rebase onto `01ff39cc`; subsequent changes were only the super-auto call arguments and report-verdict fixture, checked by the last two commands. `git diff --check` passed. The replay covers the three documented dryRun scenarios as well as live-sim prompt builders; it is simulated Workflow evidence, not a hosted Workflow execution.\n",
+      "lineStart": 68,
+      "lineEnd": 68
+    },
+    {
+      "byteStart": 8436,
+      "byteEnd": 8672,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/3"
+      ],
+      "interpretation": "Parent owns fresh-agent before/after evaluation.",
+      "jsonPointer": null,
+      "rawText": "- Parent-directed existing safety controls and baseline evaluation are retained. Installed writing-skills was read and applied to the concrete source/resource interface instructions; the parent owns fresh-agent before/after evaluation.\n",
+      "lineStart": 126,
+      "lineEnd": 126
+    },
+    {
+      "byteStart": 8672,
+      "byteEnd": 9000,
+      "roles": [
+        "scope_qualification"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/4"
+      ],
+      "interpretation": "Resource lifecycle separate task; repository access requires captured commits.",
+      "jsonPointer": null,
+      "rawText": "- Review-owned resource naming consumes caller artifact destinations; invocation/runTag lifecycle changes remain Task 8's scope.\n- The source-pair interface requires callers to identify the review snapshot. Patch/stat-only roast input remains valid for supplied patch data, while repository access requires captured identities.\n",
+      "lineStart": 127,
+      "lineEnd": 128
+    },
+    {
+      "byteStart": 9001,
+      "byteEnd": 10469,
+      "roles": [
+        "deferred_coverage"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/20/passages/5"
+      ],
+      "interpretation": "Complete parent-owned two-seat advancing-caller/resource-isolation acceptance scenario, expectations and explicit not-run declaration.",
+      "jsonPointer": null,
+      "rawText": "## Parent-owned behavioral acceptance scenario\n\nUse a temporary repository with a base commit, reviewed head, tracked caller sentinel, and two concurrent review seats. Give the agents the actual changed task/final or PR prompts and the captured pair. Advance the caller integration branch twice after capture; one advance should be a legitimate concurrent integration change. Seat A needs a reproduction that writes source/build outputs. Seat B owns an existing output sentinel.\n\nExpected observations: diffs and `git show` reads still identify the captured head; necessary filesystem access uses a unique detached worktree at that head; Seat A's mutable outputs are separate from caller and Seat B; both sentinels remain byte-identical; caller commit/status changes are reported with evidence without automatic attribution to reviewer damage and without checkout/reset/restore. Task review should still decline to rerun tests. Repeat with an unavailable assembler so direct-input final review retains the same pair.\n\nEvidence pointers for this scenario are the committed advancing-caller fixture in `tests/super-code/test-dispatch-text.sh`, the independent-worktree fixture in `tests/super-roast/test-assemble-args.sh`, and the captured final single/cluster/seam/failure scenarios near the beginning of `tests/super-code/replay-harness.mjs`. The parent received the scenario and owns recording fresh-agent results; this report does not claim that evaluation has run.\n",
+      "lineStart": 130,
+      "lineEnd": 136
+    }
+  ],
+  "retainedArtifact": "task-report-history-r1/raw/task-1-report.md",
+  "retainedSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd"
+}

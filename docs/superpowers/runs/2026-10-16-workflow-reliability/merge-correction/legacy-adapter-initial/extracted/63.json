@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-5-review-seam",
+  "artifact": "legacy-report-adapters-r1/63-task-5-review-seam.md",
+  "kind": "task-report",
+  "verdict": "CLEAN",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-0/raw-byte-000002408",
+      "position": 1,
+      "key": "No tests executed, source edited, branch state changed, subagents spawned or Herdr mutations performed. Worktree git status --short was empty. Artifacts written under /private/tmp as authorized by the dispatching agent.",
+      "text": "No tests executed, source edited, branch state changed, subagents spawned or Herdr mutations performed. Worktree git status --short was empty. Artifacts written under /private/tmp as authorized by the dispatching agent."
+    }
+  ]
+}

@@ -1,0 +1,708 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-20-review.md",
+  "rawSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+  "rawByteCount": 15003,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+    "durablePath": "task-report-history-r1/raw/task-20-review.md",
+    "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+    "byteCount": 15003,
+    "logicalRole": "review",
+    "ordinal": 20,
+    "logicalTaskId": "super-plan-ufz.23",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-20-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 20 review — super-plan-ufz.23",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 20 review — super-plan-ufz.23\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23"
+      ],
+      "lineStart": 1,
+      "lineEnd": 4,
+      "byteStart": 0,
+      "byteEnd": 60,
+      "bodyLineStart": 2,
+      "rawText": "# Task 20 review — super-plan-ufz.23\n\nVerdict: NEEDS_FIX\n\n",
+      "bodyRawText": "\nVerdict: NEEDS_FIX\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Verdict: NEEDS_FIX\n",
+          "text": "Verdict: NEEDS_FIX",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 40,
+          "byteEnd": 59
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Spec compliance"
+      ],
+      "lineStart": 5,
+      "lineEnd": 14,
+      "byteStart": 60,
+      "byteEnd": 1564,
+      "bodyLineStart": 6,
+      "rawText": "## Spec compliance\n\n❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).\n\n✅ The bounded Workflow startup repair implements external identity acquisition through the existing Resume read-ledger dispatch, safe-token validation, explicit-ID preservation, retry selection, and the existing awaited Launch acknowledgment. It adds no startup dispatch, clock/random fallback, or replacement engine. The two guidance files distinguish fresh launch, explicit unsettled resume, and settled relaunch.\n\n✅ Applied amendments: current `bd show super-plan-ufz.23 --json`, corrected Task 20 brief/plan, and `fixture-amendment-r1.json` explicitly authorize only the named omitted-ID replay tail to receive fresh-a/fresh-b boundary tokens and strengthened identity/persistence/path assertions. `bd comments super-plan-ufz.23` returned no comments. The diff preserves its prior ledger and omitted args; no unrelated scenario, runtime default, expected dispatch count, skip, or loosened assertion was changed. The explicit-resume added no-mint assertion is compatible with the amendment's requirement. Separate captured-source binding remains .29-owned; no combined repair is assumed.\n\n⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n\n",
+      "bodyRawText": "\n❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).\n\n✅ The bounded Workflow startup repair implements external identity acquisition through the existing Resume read-ledger dispatch, safe-token validation, explicit-ID preservation, retry selection, and the existing awaited Launch acknowledgment. It adds no startup dispatch, clock/random fallback, or replacement engine. The two guidance files distinguish fresh launch, explicit unsettled resume, and settled relaunch.\n\n✅ Applied amendments: current `bd show super-plan-ufz.23 --json`, corrected Task 20 brief/plan, and `fixture-amendment-r1.json` explicitly authorize only the named omitted-ID replay tail to receive fresh-a/fresh-b boundary tokens and strengthened identity/persistence/path assertions. `bd comments super-plan-ufz.23` returned no comments. The diff preserves its prior ledger and omitted args; no unrelated scenario, runtime default, expected dispatch count, skip, or loosened assertion was changed. The explicit-resume added no-mint assertion is compatible with the amendment's requirement. Separate captured-source binding remains .29-owned; no combined repair is assumed.\n\n⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).\n",
+          "text": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 80,
+          "byteEnd": 246
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ The bounded Workflow startup repair implements external identity acquisition through the existing Resume read-ledger dispatch, safe-token validation, explicit-ID preservation, retry selection, and the existing awaited Launch acknowledgment. It adds no startup dispatch, clock/random fallback, or replacement engine. The two guidance files distinguish fresh launch, explicit unsettled resume, and settled relaunch.\n",
+          "text": "✅ The bounded Workflow startup repair implements external identity acquisition through the existing Resume read-ledger dispatch, safe-token validation, explicit-ID preservation, retry selection, and the existing awaited Launch acknowledgment. It adds no startup dispatch, clock/random fallback, or replacement engine. The two guidance files distinguish fresh launch, explicit unsettled resume, and settled relaunch.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 247,
+          "byteEnd": 665
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Applied amendments: current `bd show super-plan-ufz.23 --json`, corrected Task 20 brief/plan, and `fixture-amendment-r1.json` explicitly authorize only the named omitted-ID replay tail to receive fresh-a/fresh-b boundary tokens and strengthened identity/persistence/path assertions. `bd comments super-plan-ufz.23` returned no comments. The diff preserves its prior ledger and omitted args; no unrelated scenario, runtime default, expected dispatch count, skip, or loosened assertion was changed. The explicit-resume added no-mint assertion is compatible with the amendment's requirement. Separate captured-source binding remains .29-owned; no combined repair is assumed.\n",
+          "text": "✅ Applied amendments: current `bd show super-plan-ufz.23 --json`, corrected Task 20 brief/plan, and `fixture-amendment-r1.json` explicitly authorize only the named omitted-ID replay tail to receive fresh-a/fresh-b boundary tokens and strengthened identity/persistence/path assertions. `bd comments super-plan-ufz.23` returned no comments. The diff preserves its prior ledger and omitted args; no unrelated scenario, runtime default, expected dispatch count, skip, or loosened assertion was changed. The explicit-resume added no-mint assertion is compatible with the amendment's requirement. Separate captured-source binding remains .29-owned; no combined repair is assumed.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 666,
+          "byteEnd": 1342
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n",
+          "text": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 13,
+          "lineEnd": 13,
+          "byteStart": 1343,
+          "byteEnd": 1563
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues"
+      ],
+      "lineStart": 15,
+      "lineEnd": 16,
+      "byteStart": 1564,
+      "byteEnd": 1575,
+      "bodyLineStart": 16,
+      "rawText": "## Issues\n\n",
+      "bodyRawText": "\n",
+      "units": []
+    },
+    {
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Critical\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Critical"
+      ],
+      "lineStart": 17,
+      "lineEnd": 20,
+      "byteStart": 1575,
+      "byteEnd": 1596,
+      "bodyLineStart": 18,
+      "rawText": "### Critical\n\nNone.\n\n",
+      "bodyRawText": "\nNone.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None.\n",
+          "text": "None.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1589,
+          "byteEnd": 1595
+        }
+      ]
+    },
+    {
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "headingLevel": 3,
+      "headingRaw": "### Important\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Important"
+      ],
+      "lineStart": 21,
+      "lineEnd": 26,
+      "byteStart": 1596,
+      "byteEnd": 3167,
+      "bodyLineStart": 22,
+      "rawText": "### Important\n\nskills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n\nThe report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n\n",
+      "bodyRawText": "\nskills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n\nThe report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n",
+          "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 1611,
+          "byteEnd": 2511
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n",
+          "text": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2512,
+          "byteEnd": 3166
+        }
+      ]
+    },
+    {
+      "section": "Minor / deferred coverage",
+      "sectionOrdinal": 6,
+      "headingLevel": 3,
+      "headingRaw": "### Minor / deferred coverage\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Minor / deferred coverage"
+      ],
+      "lineStart": 27,
+      "lineEnd": 30,
+      "byteStart": 3167,
+      "byteEnd": 3550,
+      "bodyLineStart": 28,
+      "rawText": "### Minor / deferred coverage\n\n[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n\n",
+      "bodyRawText": "\n[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n",
+          "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 3198,
+          "byteEnd": 3549
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Test evidence"
+      ],
+      "lineStart": 31,
+      "lineEnd": 47,
+      "byteStart": 3550,
+      "byteEnd": 5617,
+      "bodyLineStart": 32,
+      "rawText": "## Test evidence\n\nNo tests were run by this reviewer, as required by the review policy. Retained implementer logs were read directly:\n\n- `node tests/super-code/invocation-start-r1.mjs`: 16 startups pass, with a Workflow-like VM denying Date.now/Math.random and a simulated mechanical agent invoking external uuidgen. The focused fixture uses real coordinator declarations/startup and exercises selected-token retention, retries, missing/unsafe identities, explicit resume, replayed result and failed persistence. This is credible local command evidence, not live Workflow/fresh-agent evaluation.\n- `node tests/super-code/replay-harness.mjs`: 2295 passed, 0 failed; counts 48/19/23 retained. Real scenario coverage includes review assembly/writer persistence gates and null paths beyond the focused fixture's returned builders.\n- `bash tests/super-code/test-dispatch-text.sh`: retained fail, exit 1, ordinary classification/review/closure and implement failures; suite terminates before summary when impl-ep.2.md is absent. Later cases are unmeasured. This remains unsatisfied.\n- Startup RED shows forbidden Date.now at the original allocation. Hygiene log is empty with exit 0 reported; no leaked process finding is warranted.\n\nTest-change commands (executed read-only in the assigned worktree):\n\n`git diff --stat 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n\n`git diff 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n\nBoth exit 0. Two test files: 149 insertions, 4 deletions. The deletions replace only the expressly amended omitted-ID case; assertions are strengthened rather than weakened.\n\n",
+      "bodyRawText": "\nNo tests were run by this reviewer, as required by the review policy. Retained implementer logs were read directly:\n\n- `node tests/super-code/invocation-start-r1.mjs`: 16 startups pass, with a Workflow-like VM denying Date.now/Math.random and a simulated mechanical agent invoking external uuidgen. The focused fixture uses real coordinator declarations/startup and exercises selected-token retention, retries, missing/unsafe identities, explicit resume, replayed result and failed persistence. This is credible local command evidence, not live Workflow/fresh-agent evaluation.\n- `node tests/super-code/replay-harness.mjs`: 2295 passed, 0 failed; counts 48/19/23 retained. Real scenario coverage includes review assembly/writer persistence gates and null paths beyond the focused fixture's returned builders.\n- `bash tests/super-code/test-dispatch-text.sh`: retained fail, exit 1, ordinary classification/review/closure and implement failures; suite terminates before summary when impl-ep.2.md is absent. Later cases are unmeasured. This remains unsatisfied.\n- Startup RED shows forbidden Date.now at the original allocation. Hygiene log is empty with exit 0 reported; no leaked process finding is warranted.\n\nTest-change commands (executed read-only in the assigned worktree):\n\n`git diff --stat 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n\n`git diff 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n\nBoth exit 0. Two test files: 149 insertions, 4 deletions. The deletions replace only the expressly amended omitted-ID case; assertions are strengthened rather than weakened.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests were run by this reviewer, as required by the review policy. Retained implementer logs were read directly:\n",
+          "text": "No tests were run by this reviewer, as required by the review policy. Retained implementer logs were read directly:",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 3568,
+          "byteEnd": 3684
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/invocation-start-r1.mjs`: 16 startups pass, with a Workflow-like VM denying Date.now/Math.random and a simulated mechanical agent invoking external uuidgen. The focused fixture uses real coordinator declarations/startup and exercises selected-token retention, retries, missing/unsafe identities, explicit resume, replayed result and failed persistence. This is credible local command evidence, not live Workflow/fresh-agent evaluation.\n",
+          "text": "`node tests/super-code/invocation-start-r1.mjs`: 16 startups pass, with a Workflow-like VM denying Date.now/Math.random and a simulated mechanical agent invoking external uuidgen. The focused fixture uses real coordinator declarations/startup and exercises selected-token retention, retries, missing/unsafe identities, explicit resume, replayed result and failed persistence. This is credible local command evidence, not live Workflow/fresh-agent evaluation.",
+          "listMarker": "- ",
+          "positionInSection": 2,
+          "lineStart": 35,
+          "lineEnd": 35,
+          "byteStart": 3685,
+          "byteEnd": 4146
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `node tests/super-code/replay-harness.mjs`: 2295 passed, 0 failed; counts 48/19/23 retained. Real scenario coverage includes review assembly/writer persistence gates and null paths beyond the focused fixture's returned builders.\n",
+          "text": "`node tests/super-code/replay-harness.mjs`: 2295 passed, 0 failed; counts 48/19/23 retained. Real scenario coverage includes review assembly/writer persistence gates and null paths beyond the focused fixture's returned builders.",
+          "listMarker": "- ",
+          "positionInSection": 3,
+          "lineStart": 36,
+          "lineEnd": 36,
+          "byteStart": 4146,
+          "byteEnd": 4377
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- `bash tests/super-code/test-dispatch-text.sh`: retained fail, exit 1, ordinary classification/review/closure and implement failures; suite terminates before summary when impl-ep.2.md is absent. Later cases are unmeasured. This remains unsatisfied.\n",
+          "text": "`bash tests/super-code/test-dispatch-text.sh`: retained fail, exit 1, ordinary classification/review/closure and implement failures; suite terminates before summary when impl-ep.2.md is absent. Later cases are unmeasured. This remains unsatisfied.",
+          "listMarker": "- ",
+          "positionInSection": 4,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 4377,
+          "byteEnd": 4627
+        },
+        {
+          "unitKind": "list-item",
+          "rawText": "- Startup RED shows forbidden Date.now at the original allocation. Hygiene log is empty with exit 0 reported; no leaked process finding is warranted.\n",
+          "text": "Startup RED shows forbidden Date.now at the original allocation. Hygiene log is empty with exit 0 reported; no leaked process finding is warranted.",
+          "listMarker": "- ",
+          "positionInSection": 5,
+          "lineStart": 38,
+          "lineEnd": 38,
+          "byteStart": 4627,
+          "byteEnd": 4777
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test-change commands (executed read-only in the assigned worktree):\n",
+          "text": "Test-change commands (executed read-only in the assigned worktree):",
+          "listMarker": null,
+          "positionInSection": 6,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 4778,
+          "byteEnd": 4846
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --stat 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n",
+          "text": "`git diff --stat 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`",
+          "listMarker": null,
+          "positionInSection": 7,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 4847,
+          "byteEnd": 5147
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\n",
+          "text": "`git diff 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`",
+          "listMarker": null,
+          "positionInSection": 8,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 5148,
+          "byteEnd": 5441
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Both exit 0. Two test files: 149 insertions, 4 deletions. The deletions replace only the expressly amended omitted-ID case; assertions are strengthened rather than weakened.\n",
+          "text": "Both exit 0. Two test files: 149 insertions, 4 deletions. The deletions replace only the expressly amended omitted-ID case; assertions are strengthened rather than weakened.",
+          "listMarker": null,
+          "positionInSection": 9,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 5442,
+          "byteEnd": 5616
+        }
+      ]
+    },
+    {
+      "section": "Captured source and focused reachability check",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Captured source and focused reachability check\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Captured source and focused reachability check"
+      ],
+      "lineStart": 48,
+      "lineEnd": 59,
+      "byteStart": 5617,
+      "byteEnd": 7632,
+      "bodyLineStart": 49,
+      "rawText": "## Captured source and focused reachability check\n\n`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74` exited 0; both commits resolve. `git rev-parse b8b46857b723b73817bf6fc82ad1998de60fed74^{tree}` returned 6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06, matching final test evidence. `git status --short` was empty. Source reads used git show at the captured head; no detached filesystem view or product mutation was needed.\n\nReview package command:\n\n`bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/subagent-driven-development/scripts/review-package /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/super-plan-ufz-plan.md 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review-initial.diff`\n\nInitial sandbox attempt could not write the authorized diff despite script exit 0; retried with approved narrow escalation and verified the readable 40337-byte package, 1 commit, 5 changed files. This permission gap was resolved before review.\n\nConcrete risk examined outside the diff: dispatch-text extracts builders by executing all coordinator initialization before the round loop. Checked captured-head dispatch-text lines 78–136 and coordinator lines 734–754 with `git show ... | nl -ba`. Real CLI parse -> selected last Launch -> conditional reviewOutput config -> loadBuilders AsyncFunction with agent returning null -> Resume null/retry -> line 745 throw proves reachability. Sibling non-review kinds share that loader, so this is not limited to a single implement prompt. `git diff BASE HEAD -- skills/super-code/scripts/dispatch-text.mjs` is empty; task-base coordinator still contains the old random fallback. The new exception and identity deferral create the incompatibility against that unchanged loader.\n\n",
+      "bodyRawText": "\n`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74` exited 0; both commits resolve. `git rev-parse b8b46857b723b73817bf6fc82ad1998de60fed74^{tree}` returned 6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06, matching final test evidence. `git status --short` was empty. Source reads used git show at the captured head; no detached filesystem view or product mutation was needed.\n\nReview package command:\n\n`bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/subagent-driven-development/scripts/review-package /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/super-plan-ufz-plan.md 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review-initial.diff`\n\nInitial sandbox attempt could not write the authorized diff despite script exit 0; retried with approved narrow escalation and verified the readable 40337-byte package, 1 commit, 5 changed files. This permission gap was resolved before review.\n\nConcrete risk examined outside the diff: dispatch-text extracts builders by executing all coordinator initialization before the round loop. Checked captured-head dispatch-text lines 78–136 and coordinator lines 734–754 with `git show ... | nl -ba`. Real CLI parse -> selected last Launch -> conditional reviewOutput config -> loadBuilders AsyncFunction with agent returning null -> Resume null/retry -> line 745 throw proves reachability. Sibling non-review kinds share that loader, so this is not limited to a single implement prompt. `git diff BASE HEAD -- skills/super-code/scripts/dispatch-text.mjs` is empty; task-base coordinator still contains the old random fallback. The new exception and identity deferral create the incompatibility against that unchanged loader.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74` exited 0; both commits resolve. `git rev-parse b8b46857b723b73817bf6fc82ad1998de60fed74^{tree}` returned 6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06, matching final test evidence. `git status --short` was empty. Source reads used git show at the captured head; no detached filesystem view or product mutation was needed.\n",
+          "text": "`git merge-base --is-ancestor 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74` exited 0; both commits resolve. `git rev-parse b8b46857b723b73817bf6fc82ad1998de60fed74^{tree}` returned 6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06, matching final test evidence. `git status --short` was empty. Source reads used git show at the captured head; no detached filesystem view or product mutation was needed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 50,
+          "lineEnd": 50,
+          "byteStart": 5668,
+          "byteEnd": 6099
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Review package command:\n",
+          "text": "Review package command:",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 52,
+          "lineEnd": 52,
+          "byteStart": 6100,
+          "byteEnd": 6124
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/subagent-driven-development/scripts/review-package /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/super-plan-ufz-plan.md 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review-initial.diff`\n",
+          "text": "`bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/subagent-driven-development/scripts/review-package /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/super-plan-ufz-plan.md 1d0ab308f09598c8c2826cfbca2af119a631d37a b8b46857b723b73817bf6fc82ad1998de60fed74 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review-initial.diff`",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 54,
+          "lineEnd": 54,
+          "byteStart": 6125,
+          "byteEnd": 6607
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Initial sandbox attempt could not write the authorized diff despite script exit 0; retried with approved narrow escalation and verified the readable 40337-byte package, 1 commit, 5 changed files. This permission gap was resolved before review.\n",
+          "text": "Initial sandbox attempt could not write the authorized diff despite script exit 0; retried with approved narrow escalation and verified the readable 40337-byte package, 1 commit, 5 changed files. This permission gap was resolved before review.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 56,
+          "lineEnd": 56,
+          "byteStart": 6608,
+          "byteEnd": 6852
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Concrete risk examined outside the diff: dispatch-text extracts builders by executing all coordinator initialization before the round loop. Checked captured-head dispatch-text lines 78–136 and coordinator lines 734–754 with `git show ... | nl -ba`. Real CLI parse -> selected last Launch -> conditional reviewOutput config -> loadBuilders AsyncFunction with agent returning null -> Resume null/retry -> line 745 throw proves reachability. Sibling non-review kinds share that loader, so this is not limited to a single implement prompt. `git diff BASE HEAD -- skills/super-code/scripts/dispatch-text.mjs` is empty; task-base coordinator still contains the old random fallback. The new exception and identity deferral create the incompatibility against that unchanged loader.\n",
+          "text": "Concrete risk examined outside the diff: dispatch-text extracts builders by executing all coordinator initialization before the round loop. Checked captured-head dispatch-text lines 78–136 and coordinator lines 734–754 with `git show ... | nl -ba`. Real CLI parse -> selected last Launch -> conditional reviewOutput config -> loadBuilders AsyncFunction with agent returning null -> Resume null/retry -> line 745 throw proves reachability. Sibling non-review kinds share that loader, so this is not limited to a single implement prompt. `git diff BASE HEAD -- skills/super-code/scripts/dispatch-text.mjs` is empty; task-base coordinator still contains the old random fallback. The new exception and identity deferral create the incompatibility against that unchanged loader.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 58,
+          "lineEnd": 58,
+          "byteStart": 6853,
+          "byteEnd": 7631
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Failure attribution"
+      ],
+      "lineStart": 60,
+      "lineEnd": 63,
+      "byteStart": 7632,
+      "byteEnd": 8372,
+      "bodyLineStart": 61,
+      "rawText": "## Failure attribution\n\nRead progress.md, including round-1 Launch, usage-limit recovery, amended fixture record and Task 20 unresolved-seam entry, plus startup-builder-seam-assessment-r1.md and implementer concerns. The observed failing record below is exact final-tree evidence index 3. Source history and the implementer's explicit diagnosis establish .23 as introducing this particular startup incompatibility. No measured run-start or task-base caller-suite result was supplied; those baseline comparisons remain gaps, not inferred pass results. No fix verification exists; passing startup/replay evidence does not discharge the caller regression. The separate .29 work and a proposed future seam bead do not exonerate or resolve it.\n\n",
+      "bodyRawText": "\nRead progress.md, including round-1 Launch, usage-limit recovery, amended fixture record and Task 20 unresolved-seam entry, plus startup-builder-seam-assessment-r1.md and implementer concerns. The observed failing record below is exact final-tree evidence index 3. Source history and the implementer's explicit diagnosis establish .23 as introducing this particular startup incompatibility. No measured run-start or task-base caller-suite result was supplied; those baseline comparisons remain gaps, not inferred pass results. No fix verification exists; passing startup/replay evidence does not discharge the caller regression. The separate .29 work and a proposed future seam bead do not exonerate or resolve it.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read progress.md, including round-1 Launch, usage-limit recovery, amended fixture record and Task 20 unresolved-seam entry, plus startup-builder-seam-assessment-r1.md and implementer concerns. The observed failing record below is exact final-tree evidence index 3. Source history and the implementer's explicit diagnosis establish .23 as introducing this particular startup incompatibility. No measured run-start or task-base caller-suite result was supplied; those baseline comparisons remain gaps, not inferred pass results. No fix verification exists; passing startup/replay evidence does not discharge the caller regression. The separate .29 work and a proposed future seam bead do not exonerate or resolve it.\n",
+          "text": "Read progress.md, including round-1 Launch, usage-limit recovery, amended fixture record and Task 20 unresolved-seam entry, plus startup-builder-seam-assessment-r1.md and implementer concerns. The observed failing record below is exact final-tree evidence index 3. Source history and the implementer's explicit diagnosis establish .23 as introducing this particular startup incompatibility. No measured run-start or task-base caller-suite result was supplied; those baseline comparisons remain gaps, not inferred pass results. No fix verification exists; passing startup/replay evidence does not discharge the caller regression. The separate .29 work and a proposed future seam bead do not exonerate or resolve it.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 62,
+          "lineEnd": 62,
+          "byteStart": 7656,
+          "byteEnd": 8371
+        }
+      ]
+    },
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 10,
+      "headingLevel": 2,
+      "headingRaw": "## Check records and structured result\n",
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Check records and structured result"
+      ],
+      "lineStart": 64,
+      "lineEnd": 151,
+      "byteStart": 8372,
+      "byteEnd": 15003,
+      "bodyLineStart": 65,
+      "rawText": "## Check records and structured result\n\nEvidence records below are copied unchanged from the implementer, including live command outcomes for simulated VM/agent configurations. The first two required checks have matching live/pass records and plausible semantic coverage. The caller suite is additionally required to verify the preserved ordinary path and currently has live/fail evidence. Full capture commands (temporary-index RED/final snapshots and committed HEAD tree check) remain in task-20-report.md; this review did not execute or alter those measurements. The RED tree is a temporary-index snapshot including its focused test, not a claim of an unchanged task-base commit.\n\n```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "bodyRawText": "\nEvidence records below are copied unchanged from the implementer, including live command outcomes for simulated VM/agent configurations. The first two required checks have matching live/pass records and plausible semantic coverage. The caller suite is additionally required to verify the preserved ordinary path and currently has live/fail evidence. Full capture commands (temporary-index RED/final snapshots and committed HEAD tree check) remain in task-20-report.md; this review did not execute or alter those measurements. The RED tree is a temporary-index snapshot including its focused test, not a claim of an unchanged task-base commit.\n\n```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Evidence records below are copied unchanged from the implementer, including live command outcomes for simulated VM/agent configurations. The first two required checks have matching live/pass records and plausible semantic coverage. The caller suite is additionally required to verify the preserved ordinary path and currently has live/fail evidence. Full capture commands (temporary-index RED/final snapshots and committed HEAD tree check) remain in task-20-report.md; this review did not execute or alter those measurements. The RED tree is a temporary-index snapshot including its focused test, not a claim of an unchanged task-base commit.\n",
+          "text": "Evidence records below are copied unchanged from the implementer, including live command outcomes for simulated VM/agent configurations. The first two required checks have matching live/pass records and plausible semantic coverage. The caller suite is additionally required to verify the preserved ordinary path and currently has live/fail evidence. Full capture commands (temporary-index RED/final snapshots and committed HEAD tree check) remain in task-20-report.md; this review did not execute or alter those measurements. The RED tree is a temporary-index snapshot including its focused test, not a claim of an unchanged task-base commit.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 66,
+          "lineEnd": 66,
+          "byteStart": 8412,
+          "byteEnd": 9055
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 68,
+          "lineEnd": 151,
+          "byteStart": 9056,
+          "byteEnd": 15003
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).",
+      "text": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).",
+      "rawText": "❌ The global requirement to preserve Workflow and ordinary-subagent paths is not satisfied: ordinary dispatch builder rendering now aborts (Important issue below).\n",
+      "lineStart": 7,
+      "lineEnd": 7,
+      "byteStart": 80,
+      "byteEnd": 246,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Spec compliance"
+      ],
+      "positionInSection": 4,
+      "key": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.",
+      "text": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.",
+      "rawText": "⚠️ Fresh-agent changed-instruction evaluation remains pending with the enclosing coordinator, exactly as the amended acceptance permits. Root sweep/human acceptance remain pending and are not cleared by this review.\n",
+      "lineStart": 13,
+      "lineEnd": 13,
+      "byteStart": 1343,
+      "byteEnd": 1563,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Critical"
+      ],
+      "positionInSection": 1,
+      "key": "None.",
+      "text": "None.",
+      "rawText": "None.\n",
+      "lineStart": 19,
+      "lineEnd": 19,
+      "byteStart": 1589,
+      "byteEnd": 1595,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Important"
+      ],
+      "positionInSection": 1,
+      "key": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "rawText": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 1611,
+      "byteEnd": 2511,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Important"
+      ],
+      "positionInSection": 2,
+      "key": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.",
+      "text": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.",
+      "rawText": "The report itself acknowledges the confirmed caller failure. Parent direction to leave dispatch-text untouched bounds the implementation scope; it does not waive the global preservation requirement or make the captured tree safe to integrate. The separate `startup-builder-seam-assessment-r1.md` recommends a follow-on seam repair but supplies neither delivered code nor passing verification. A genuine ID handoff repairs current-ID ledgers only; legacy identity-free non-review builder loading also needs separation from operational startup. Do not weaken live Resume validation, add synthetic identities, or treat a CLI override as persisted identity.\n",
+      "lineStart": 25,
+      "lineEnd": 25,
+      "byteStart": 2512,
+      "byteEnd": 3166,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "section": "Minor / deferred coverage",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task 20 review — super-plan-ufz.23",
+        "Issues",
+        "Minor / deferred coverage"
+      ],
+      "positionInSection": 1,
+      "key": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "rawText": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\n",
+      "lineStart": 29,
+      "lineEnd": 29,
+      "byteStart": 3198,
+      "byteEnd": 3549,
+      "appearanceClass": "historical-minor-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 10,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "text": "skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "lineStart": 68,
+      "lineEnd": 151,
+      "byteStart": 9056,
+      "byteEnd": 15003,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Check records and structured result",
+      "sectionOrdinal": 10,
+      "field": "minors",
+      "jsonPointer": "/minors/0",
+      "fieldValue": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "text": "[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.23\",\n  \"status\": \"NEEDS_FIX\",\n  \"finding\": \"skills/super-code/coordinator.js:745 (caller: skills/super-code/scripts/dispatch-text.mjs:101-111,133-135): New required Resume identity aborts ordinary non-review builder rendering. loadBuilders executes startup with a null-returning agent, while its caller forwards the persisted ID only for reviewOutput. Thus implement, task review, verification-close, fix, seam/check-fix review, merge, plan, triage, check-evidence and non-final assembly throw before producing output, including current ledgers with valid IDs. Preserve strict live startup and separate internal builder initialization from operational Resume/Launch; forward genuine selected-Launch IDs consistently and retain identity-free legacy non-review rendering without minting or fabricating tokens. Keep persisted-ID review gates strict. Verify the actual ordinary dispatch suite plus both startup/replay checks on the integrated fix.\",\n  \"minors\": [\n    \"[missing-evidence] skills/super-code/coordinator-workflow.md:72 and skills/super-code/coordinator-subagents.md:155: Fresh-agent changed-instruction evaluation remains explicitly caller-owned and pending; mechanical fixture/replay evidence does not establish agent compliance. This is a deferred coverage warning, not an additional task-local blocker.\"\n  ],\n  \"base\": \"1d0ab308f09598c8c2826cfbca2af119a631d37a\",\n  \"head\": \"b8b46857b723b73817bf6fc82ad1998de60fed74\",\n  \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n  \"completionKind\": \"implementation\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"e1810a117ad08c4617bdd077797b8532656484ca\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-red-resume.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/replay-green.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/dispatch-final.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23 /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"configuration\": \"run from integration worktree outside inspected task roots; check-only\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/hygiene-final.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/invocation-start-r1.mjs\",\n      \"configuration\": \"Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"node tests/super-code/replay-harness.mjs\",\n      \"configuration\": \"offline documented dryRun plus live-sim canned subagent replies; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    },\n    {\n      \"sourceTree\": \"6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\"\n    }\n  ],\n  \"failureAttribution\": [\n    {\n      \"failure\": \"ordinary-subagent dispatch-text builder initialization aborts on missing Resume invocationId\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"ordinary-subagent dispatch-text caller suite; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23\",\n      \"observed\": [\n        3\n      ],\n      \"introducedBy\": \"super-plan-ufz.23\"\n    }\n  ]\n}\n```\n",
+      "lineStart": 68,
+      "lineEnd": 151,
+      "byteStart": 9056,
+      "byteEnd": 15003,
+      "isExplicitEmptyDeclaration": false,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

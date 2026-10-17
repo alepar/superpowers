@@ -1,0 +1,26 @@
+[
+  {
+    "case": "available",
+    "command": [
+      "/bin/bash",
+      "/private/tmp/ufz-correction-coverage/cleanup-probe/stop-run-processes",
+      "--check",
+      "/private/tmp/ufz-correction-coverage/cleanup-probe/parent"
+    ],
+    "exit": 2,
+    "stdout": "",
+    "stderr": "refusing root /private/tmp/ufz-correction-coverage/cleanup-probe/parent: it holds worktree /private/tmp/ufz-correction-coverage/cleanup-probe/parent, which has worktrees nested under it (an epic/integration or main checkout); pass task worktrees, the task-worktree directory or run temp dirs instead\n"
+  },
+  {
+    "case": "denied",
+    "command": [
+      "/bin/bash",
+      "/private/tmp/ufz-correction-coverage/cleanup-probe/stop-run-processes",
+      "--check",
+      "/private/tmp/ufz-correction-coverage/cleanup-probe/parent"
+    ],
+    "exit": 3,
+    "stdout": "match: 990001 fixture-nested-owned \u2014 cwd /private/tmp/ufz-correction-coverage/cleanup-probe/parent/.worktrees/child\n",
+    "stderr": ""
+  }
+]

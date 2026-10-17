@@ -1,0 +1,514 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-14-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-14-review.md",
+  "rawSha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+  "rawByteCount": 4111,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-review.md",
+    "durablePath": "task-report-history-r1/raw/task-14-review.md",
+    "sha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+    "byteCount": 4111,
+    "logicalRole": "review",
+    "ordinal": 14,
+    "logicalTaskId": "super-plan-ufz.8.3",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-14-review.md",
+    "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: NEEDS_FIX"
+    },
+    {
+      "line": 26,
+      "rawText": "- skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename."
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 14 review",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 14 review\n",
+      "hierarchy": [
+        "Task 14 review"
+      ],
+      "lineStart": 1,
+      "lineEnd": 7,
+      "byteStart": 0,
+      "byteEnd": 156,
+      "bodyLineStart": 2,
+      "rawText": "# Task 14 review\n\nStatus: NEEDS_FIX\nTask: super-plan-ufz.8.3\nBase: 44a0c1896f7b52095d4d77b2580ff34c84974533\nHead: 9095b2667b4a05fc4f229a725ab266211bce26f7\n\n",
+      "bodyRawText": "\nStatus: NEEDS_FIX\nTask: super-plan-ufz.8.3\nBase: 44a0c1896f7b52095d4d77b2580ff34c84974533\nHead: 9095b2667b4a05fc4f229a725ab266211bce26f7\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: NEEDS_FIX\n",
+          "text": "Status: NEEDS_FIX",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 18,
+          "byteEnd": 36
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Task: super-plan-ufz.8.3\n",
+          "text": "Task: super-plan-ufz.8.3",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 36,
+          "byteEnd": 61
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 44a0c1896f7b52095d4d77b2580ff34c84974533\n",
+          "text": "Base: 44a0c1896f7b52095d4d77b2580ff34c84974533",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 5,
+          "byteStart": 61,
+          "byteEnd": 108
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 9095b2667b4a05fc4f229a725ab266211bce26f7\n",
+          "text": "Head: 9095b2667b4a05fc4f229a725ab266211bce26f7",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 6,
+          "lineEnd": 6,
+          "byteStart": 108,
+          "byteEnd": 155
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Spec compliance"
+      ],
+      "lineStart": 8,
+      "lineEnd": 17,
+      "byteStart": 156,
+      "byteEnd": 1067,
+      "bodyLineStart": 9,
+      "rawText": "## Spec compliance\n\n❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.\n\n✅ Settled collection intent/replay, retained extraction identities, history-derived projection consumption, supported dispositions, and null/no-work distinctions are implemented. Latest invocation readiness remains separate from unresolved history. Historical 2bf1d53 fixtures are unchanged; additive fixtures extend the existing contract.\n\n⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).\n\nCurrent bead description and acceptance criteria plus comments were read. There are no comments/amendments or unresolved source conflicts.\n\n",
+      "bodyRawText": "\n❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.\n\n✅ Settled collection intent/replay, retained extraction identities, history-derived projection consumption, supported dispositions, and null/no-work distinctions are implemented. Latest invocation readiness remains separate from unresolved history. Historical 2bf1d53 fixtures are unchanged; additive fixtures extend the existing contract.\n\n⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).\n\nCurrent bead description and acceptance criteria plus comments were read. There are no comments/amendments or unresolved source conflicts.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.\n",
+          "text": "❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 176,
+          "byteEnd": 364
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Settled collection intent/replay, retained extraction identities, history-derived projection consumption, supported dispositions, and null/no-work distinctions are implemented. Latest invocation readiness remains separate from unresolved history. Historical 2bf1d53 fixtures are unchanged; additive fixtures extend the existing contract.\n",
+          "text": "✅ Settled collection intent/replay, retained extraction identities, history-derived projection consumption, supported dispositions, and null/no-work distinctions are implemented. Latest invocation readiness remains separate from unresolved history. Historical 2bf1d53 fixtures are unchanged; additive fixtures extend the existing contract.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 365,
+          "byteEnd": 707
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).\n",
+          "text": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 708,
+          "byteEnd": 926
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Current bead description and acceptance criteria plus comments were read. There are no comments/amendments or unresolved source conflicts.\n",
+          "text": "Current bead description and acceptance criteria plus comments were read. There are no comments/amendments or unresolved source conflicts.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 927,
+          "byteEnd": 1066
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Issues"
+      ],
+      "lineStart": 18,
+      "lineEnd": 19,
+      "byteStart": 1067,
+      "byteEnd": 1078,
+      "bodyLineStart": 19,
+      "rawText": "## Issues\n\n",
+      "bodyRawText": "\n",
+      "units": []
+    },
+    {
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "headingLevel": 3,
+      "headingRaw": "### Critical\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Critical"
+      ],
+      "lineStart": 20,
+      "lineEnd": 23,
+      "byteStart": 1078,
+      "byteEnd": 1099,
+      "bodyLineStart": 21,
+      "rawText": "### Critical\n\nNone.\n\n",
+      "bodyRawText": "\nNone.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "None.\n",
+          "text": "None.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 1092,
+          "byteEnd": 1098
+        }
+      ]
+    },
+    {
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "headingLevel": 3,
+      "headingRaw": "### Important\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Important"
+      ],
+      "lineStart": 24,
+      "lineEnd": 27,
+      "byteStart": 1099,
+      "byteEnd": 2001,
+      "bodyLineStart": 25,
+      "rawText": "### Important\n\n- skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.\n\n",
+      "bodyRawText": "\n- skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.\n",
+          "text": "skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 26,
+          "lineEnd": 26,
+          "byteStart": 1114,
+          "byteEnd": 2000
+        }
+      ]
+    },
+    {
+      "section": "Minor",
+      "sectionOrdinal": 6,
+      "headingLevel": 3,
+      "headingRaw": "### Minor\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Minor"
+      ],
+      "lineStart": 28,
+      "lineEnd": 31,
+      "byteStart": 2001,
+      "byteEnd": 2181,
+      "bodyLineStart": 29,
+      "rawText": "### Minor\n\n- [pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.\n\n",
+      "bodyRawText": "\n- [pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.\n\n",
+      "units": [
+        {
+          "unitKind": "list-item",
+          "rawText": "- [pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.\n",
+          "text": "[pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.",
+          "listMarker": "- ",
+          "positionInSection": 1,
+          "lineStart": 30,
+          "lineEnd": 30,
+          "byteStart": 2012,
+          "byteEnd": 2180
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Test evidence"
+      ],
+      "lineStart": 32,
+      "lineEnd": 41,
+      "byteStart": 2181,
+      "byteEnd": 3457,
+      "bodyLineStart": 33,
+      "rawText": "## Test evidence\n\nThe report supplies exact isolated-environment commands for `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh`, exit 0, relevant collector/projection assertions, and complete pass summaries. Evidence is plausible for the fixture behavior, but the direct-diff fixture uses a path the actual producer does not write. No tests were run during this review, as instructed.\n\nTest changes inspected using:\n`git diff --stat 44a0c1896f7b52095d4d77b2580ff34c84974533..9095b2667b4a05fc4f229a725ab266211bce26f7 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nand the identical command without `--stat`. Four test/fixture files change; additive collector cases plus a justified replacement of stale latest-review key lint with complete extraction/projection/collection checks. Existing null safety mutations remain. No skipped/deleted behavioral tests or weakened expected values were found.\n\n`git diff --exit-code BASE..HEAD -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` exited 0.\n\n",
+      "bodyRawText": "\nThe report supplies exact isolated-environment commands for `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh`, exit 0, relevant collector/projection assertions, and complete pass summaries. Evidence is plausible for the fixture behavior, but the direct-diff fixture uses a path the actual producer does not write. No tests were run during this review, as instructed.\n\nTest changes inspected using:\n`git diff --stat 44a0c1896f7b52095d4d77b2580ff34c84974533..9095b2667b4a05fc4f229a725ab266211bce26f7 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nand the identical command without `--stat`. Four test/fixture files change; additive collector cases plus a justified replacement of stale latest-review key lint with complete extraction/projection/collection checks. Existing null safety mutations remain. No skipped/deleted behavioral tests or weakened expected values were found.\n\n`git diff --exit-code BASE..HEAD -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` exited 0.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The report supplies exact isolated-environment commands for `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh`, exit 0, relevant collector/projection assertions, and complete pass summaries. Evidence is plausible for the fixture behavior, but the direct-diff fixture uses a path the actual producer does not write. No tests were run during this review, as instructed.\n",
+          "text": "The report supplies exact isolated-environment commands for `bash tests/super-auto/test-scripts.sh` and `bash tests/super-auto/test-contract-lint.sh`, exit 0, relevant collector/projection assertions, and complete pass summaries. Evidence is plausible for the fixture behavior, but the direct-diff fixture uses a path the actual producer does not write. No tests were run during this review, as instructed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 34,
+          "lineEnd": 34,
+          "byteStart": 2199,
+          "byteEnd": 2606
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes inspected using:\n`git diff --stat 44a0c1896f7b52095d4d77b2580ff34c84974533..9095b2667b4a05fc4f229a725ab266211bce26f7 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nand the identical command without `--stat`. Four test/fixture files change; additive collector cases plus a justified replacement of stale latest-review key lint with complete extraction/projection/collection checks. Existing null safety mutations remain. No skipped/deleted behavioral tests or weakened expected values were found.\n",
+          "text": "Test changes inspected using:\n`git diff --stat 44a0c1896f7b52095d4d77b2580ff34c84974533..9095b2667b4a05fc4f229a725ab266211bce26f7 -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'`\nand the identical command without `--stat`. Four test/fixture files change; additive collector cases plus a justified replacement of stale latest-review key lint with complete extraction/projection/collection checks. Existing null safety mutations remain. No skipped/deleted behavioral tests or weakened expected values were found.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 36,
+          "lineEnd": 38,
+          "byteStart": 2607,
+          "byteEnd": 3269
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git diff --exit-code BASE..HEAD -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` exited 0.\n",
+          "text": "`git diff --exit-code BASE..HEAD -- tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt` exited 0.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 40,
+          "lineEnd": 40,
+          "byteStart": 3270,
+          "byteEnd": 3456
+        }
+      ]
+    },
+    {
+      "section": "Focused boundary checks",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Focused boundary checks\n",
+      "hierarchy": [
+        "Task 14 review",
+        "Focused boundary checks"
+      ],
+      "lineStart": 42,
+      "lineEnd": 46,
+      "byteStart": 3457,
+      "byteEnd": 4111,
+      "bodyLineStart": 43,
+      "rawText": "## Focused boundary checks\n\nNamed risk: archival discovery may disagree with the real immutable producer. Traced SKILL.md Review collection's caller to report-status --collect, then checked coordinator.js finalReviewPrompt's concrete direct package path and split manifest producer format. This exposed the Important suffix mismatch. Resume and report consumers explicitly use the shared scope-dispositions projection; the latest verdict remains descriptive.\n\nThe package initially could not write outside the sandbox; the authorized artifact-only escalation succeeded and the nonempty package was read. No source/tests/tracker/Herdr state was modified.\n",
+      "bodyRawText": "\nNamed risk: archival discovery may disagree with the real immutable producer. Traced SKILL.md Review collection's caller to report-status --collect, then checked coordinator.js finalReviewPrompt's concrete direct package path and split manifest producer format. This exposed the Important suffix mismatch. Resume and report consumers explicitly use the shared scope-dispositions projection; the latest verdict remains descriptive.\n\nThe package initially could not write outside the sandbox; the authorized artifact-only escalation succeeded and the nonempty package was read. No source/tests/tracker/Herdr state was modified.\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Named risk: archival discovery may disagree with the real immutable producer. Traced SKILL.md Review collection's caller to report-status --collect, then checked coordinator.js finalReviewPrompt's concrete direct package path and split manifest producer format. This exposed the Important suffix mismatch. Resume and report consumers explicitly use the shared scope-dispositions projection; the latest verdict remains descriptive.\n",
+          "text": "Named risk: archival discovery may disagree with the real immutable producer. Traced SKILL.md Review collection's caller to report-status --collect, then checked coordinator.js finalReviewPrompt's concrete direct package path and split manifest producer format. This exposed the Important suffix mismatch. Resume and report consumers explicitly use the shared scope-dispositions projection; the latest verdict remains descriptive.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 3485,
+          "byteEnd": 3916
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The package initially could not write outside the sandbox; the authorized artifact-only escalation succeeded and the nonempty package was read. No source/tests/tracker/Herdr state was modified.\n",
+          "text": "The package initially could not write outside the sandbox; the authorized artifact-only escalation succeeded and the nonempty package was read. No source/tests/tracker/Herdr state was modified.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 46,
+          "lineEnd": 46,
+          "byteStart": 3917,
+          "byteEnd": 4111
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 14 review",
+        "Spec compliance"
+      ],
+      "positionInSection": 1,
+      "key": "❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.",
+      "text": "❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.",
+      "rawText": "❌ Complete immutable bundle preservation misses the real direct-review package filename. Missing source preservation may authorize cleanup that destroys the only remaining direct input.\n",
+      "lineStart": 10,
+      "lineEnd": 10,
+      "byteStart": 176,
+      "byteEnd": 364,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 14 review",
+        "Spec compliance"
+      ],
+      "positionInSection": 3,
+      "key": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).",
+      "text": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).",
+      "rawText": "⚠️ Coordinator-owned fresh-agent post behavior evaluation remains explicitly pending per implementer report; deterministic fixtures do not establish that acceptance criterion (owner: super-plan-ufz.8 coordinator).\n",
+      "lineStart": 14,
+      "lineEnd": 14,
+      "byteStart": 708,
+      "byteEnd": 926,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "section": "Critical",
+      "sectionOrdinal": 4,
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Critical"
+      ],
+      "positionInSection": 1,
+      "key": "None.",
+      "text": "None.",
+      "rawText": "None.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 1092,
+      "byteEnd": 1098,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "section": "Important",
+      "sectionOrdinal": 5,
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Important"
+      ],
+      "positionInSection": 1,
+      "key": "skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.",
+      "text": "skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.",
+      "rawText": "- skills/super-auto/scripts/report-status:107 — Discover and archive the actual direct-review package `final-review-ID.md.diff`. The collector discovers only `prefix+'.diff'`, while the real Workflow producer at skills/super-code/coordinator.js:2757 invokes review-package with `${reviewPath}.diff` and reviewPath is `final-review-ID.md`. A settled direct review can therefore return collection complete without preserving its input diff, allowing cleanup to destroy that source. The same incorrect suffix in hasBundle (:93) can classify a null/no-work return with a leftover actual direct package as artifact-free. Update discovery and null bundle detection to match the producer, and use producer-shaped .md.diff fixtures (tests/super-auto/test-scripts.sh:352 currently invents the shorter .diff filename). Retain byte-for-byte/idempotent archive assertions for that real filename.\n",
+      "lineStart": 26,
+      "lineEnd": 26,
+      "byteStart": 1114,
+      "byteEnd": 2000,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "section": "Minor",
+      "sectionOrdinal": 6,
+      "hierarchy": [
+        "Task 14 review",
+        "Issues",
+        "Minor"
+      ],
+      "positionInSection": 1,
+      "key": "[pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.",
+      "text": "[pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.",
+      "rawText": "- [pending-behavior-eval] Coordinator-owned fresh-agent post behavior evaluation for super-plan-ufz.8 remains pending; see the implementer report's evaluation section.\n",
+      "lineStart": 30,
+      "lineEnd": 30,
+      "byteStart": 2012,
+      "byteEnd": 2180,
+      "appearanceClass": "historical-minor-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

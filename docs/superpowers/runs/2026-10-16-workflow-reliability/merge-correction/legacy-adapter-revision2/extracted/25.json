@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+  "artifact": "legacy-report-adapters-r1/25-task-16-report.md",
+  "kind": "task-report",
+  "verdict": "FIXED",
+  "occurrences": [
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-2/raw-byte-000004464",
+      "position": 1,
+      "key": "The live epic and task were not accepted or closed. All acceptance testing used disposable",
+      "text": "The live epic and task were not accepted or closed. All acceptance testing used disposable\nfixtures. Post-change behavior evaluation, final reviews and the enclosing full sweep remain\ncoordinator-owned prerequisites; this implementation does not claim them complete."
+    },
+    {
+      "section": "Findings — adapter/historical-defect-assertion/raw-section-4/raw-byte-000007247",
+      "position": 1,
+      "key": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with",
+      "text": "Self-review against task 10 added a second RED case: a `run-introduced`, `verified` failure with\n`gaps:[\"conflicting source history\"]` incorrectly returned:\n\n```text\nAssertionError [ERR_ASSERTION]: {\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n0 !== 3\n1 failure(s)\n```\n\nRetaining those run-owned attribution gaps fixed it; the final status suite below was rerun\nafter this bounded follow-up. No coordinator or skill wording changed after the final replay/lint."
+    },
+    {
+      "section": "Concerns — adapter/scope-or-coverage-qualification/raw-section-9/raw-byte-000012982",
+      "position": 1,
+      "key": "No conflicting bead amendment was found. Coordinator clarification was applied: disclose and",
+      "text": "No conflicting bead amendment was found. Coordinator clarification was applied: disclose and\npreserve nonblocking deferred findings rather than requiring zero outstanding items; supported\nacceptance relevance belongs to the existing caller assessment, one judgment per linked group,\nwith genuinely human decisions remaining human-owned. The new snapshot is an additive consumer\nrecord under existing approvals, not a replacement recovery/finding engine. Canonical current\nRecovery/check facts are reconciled from durable source records before a caller changes them."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-9/raw-byte-000013549",
+      "position": 1,
+      "key": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the",
+      "text": "Fresh-agent scenarios are prepared in `evidence/super-plan-ufz.6/acceptance-scenarios.md` for the\ncoordinator-owned post-change evaluation. Required live behavior evaluation, whole-epic final\nreviews, final sweep and actual human acceptance remain outstanding at the enclosing run level.\nThe coordinator reported a separate task-8.3 collection diff-suffix correction in progress; this\ntask neither duplicates that fix nor replays its parent commits. No other deterministic check is\nfailed or unavailable. No integration worktree/user-checkout edits were made."
+    },
+    {
+      "section": "Findings — adapter/historical-defect-assertion/raw-section-10/raw-byte-000014138",
+      "position": 1,
+      "key": "Resolved `[rebase-conflict]` by running exactly:",
+      "text": "Resolved `[rebase-conflict]` by running exactly:\n\n```sh\ngit rebase --onto 549545dd696f02f4db7e5187f5fca7292f2c15a8 bee2526cd249be60632281f092ab48e1667b8747\n```\n\nOnly task-owned root-acceptance commits `1a1360fb` and `232d3ca4` were replayed,\nas `6e82092c` and `0bb280ed`. The old collector parent was not replayed.\nThe single conflict in `skills/super-auto/SKILL.md` was resolved by keeping the integrated\nmetrics/source-population paragraph and the independently reviewed caller-owned acceptance\nblock, both verbatim, separated by a blank line. Current collection/source-truth guidance\nremains present. No new behavior or instruction rewrite was introduced in this seam pass.\n`git range-diff` shows only the changed insertion context for the first commit; the second\ncommit is patch-equivalent. No integration ref, tracker state, task 17, or real epic acceptance\nwas changed; blocker `super-plan-8fn` remains for the parent to close after verified merge."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-11/raw-byte-000019067",
+      "position": 1,
+      "key": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent",
+      "text": "These checks are deterministic/simulated evidence, not real epic acceptance or fresh-agent\nbehavior evaluation. Coordinator-owned live evaluations remain outstanding."
+    },
+    {
+      "section": "Concerns — adapter/pending-obligation/raw-section-13/raw-byte-000019973",
+      "position": 1,
+      "key": "Current bead and comments were reread; no amendments/comments exist. The named seam-review",
+      "text": "Current bead and comments were reread; no amendments/comments exist. The named seam-review\nfile does not exist on disk, so the complete quoted `[rebase-conflict]` finding in the dispatch\nwas used. This did not prevent reproducing and resolving the exact reported single conflict.\nWriting-skills and verification-before-completion guidance were applied without changing\nreviewed behavior or spawning agents; fresh-agent acceptance stays coordinator-owned per dispatch.\nNo declined finding or permission refusal occurred. No merge, blocker closure, or actual\ncaller acceptance was performed."
+    }
+  ]
+}

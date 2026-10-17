@@ -1,0 +1,25 @@
+{
+  "head": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "files": [
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "sha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4",
+      "bytes": 53242
+    },
+    {
+      "path": "skills/super-auto/scripts/scope-dispositions",
+      "sha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0",
+      "bytes": 15638
+    },
+    {
+      "path": "skills/super-code/scripts/report-verdict",
+      "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661",
+      "bytes": 15431
+    },
+    {
+      "path": "skills/super-design/scripts/findings-ledger",
+      "sha256": "18582172872deac0b6c676a0c659ed8393fa5c9ca17bc9da8aeb0114b4537276",
+      "bytes": 19941
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "status": "Five prospective fresh-context baseline responses retained; ungraded. After variant and separate live helper interruption pending.",
+  "files": [
+    {
+      "path": "baseline-context.md",
+      "sha256": "4d88cae413e4947cc8acac22d63c6a6f5f7b912930b94110c7438efbb7c7de01",
+      "bytes": 227162
+    },
+    {
+      "path": "cases.txt",
+      "sha256": "a124a47cba2216ba7a3158be879c87cdffc522e411256225071e733af7cf45d8",
+      "bytes": 2569
+    },
+    {
+      "path": "protocol.json",
+      "sha256": "04214def776bf9f3f7f1236fc0767bbd928e97d24c719190422ad9f3fdb7a0c8",
+      "bytes": 2787
+    },
+    {
+      "path": "baseline_1-response.md",
+      "sha256": "2aa0cde3bd3677f2502ebf8ea3feae44c75446fd8baf174ef88f75b038f09e2d",
+      "bytes": 3272
+    },
+    {
+      "path": "baseline_2-response.md",
+      "sha256": "33f276d33408b2715bf45c80c230addaabc2dead960648749a2c2cb937c615ed",
+      "bytes": 3937
+    },
+    {
+      "path": "baseline_3-response.md",
+      "sha256": "046bb7ad8db29306d589252e6015ebdeafbbc4b8057745206b7760aa3d479234",
+      "bytes": 3794
+    },
+    {
+      "path": "baseline_4-response.md",
+      "sha256": "babd0d98f6d0b50eb3caa0f37b7eb83bf6e24963f6539bc26b0ae518cbb04832",
+      "bytes": 4750
+    },
+    {
+      "path": "baseline_5-response.md",
+      "sha256": "500cc6b277b6b2c0f53187f9694983d6dec47135c2666cd52feb1a5e72b0a304",
+      "bytes": 3264
+    }
+  ],
+  "limitations": [
+    "Text decisions are not actual orchestration or live helper execution.",
+    "All responses retained; no replacement or improvement claim.",
+    "Common inherited harness is disclosed, not a provider-identical prompt guarantee."
+  ]
+}

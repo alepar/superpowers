@@ -1,0 +1,1154 @@
+{
+  "version": 1,
+  "ordinal": 74,
+  "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+  "originalArtifact": "2026-10-16-workflow-reliability-roast-pr-1.md",
+  "rawCopy": "raw/2026-10-16-workflow-reliability-roast-pr-1.md",
+  "rawSha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+  "rawByteCount": 11824,
+  "readCompletenessEvidence": {
+    "complete": true,
+    "rawFileReadDirectly": true,
+    "boundedUntruncatedRawChunks": [
+      [
+        1,
+        59
+      ]
+    ],
+    "byteScope": [
+      0,
+      11824
+    ],
+    "hashAndLengthMatchMembership": true,
+    "sidecarsUsedOnlyForNavigationAndCheckedLocators": true
+  },
+  "reviewEvidence": "review-evidence/part-3-review.json#/sources/19",
+  "fullReviewInputHashes": [
+    {
+      "artifact": "review-evidence/part-1-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.json",
+      "sha256": "08968c74de981e8185e6e40eaacaaaa5b047aa0f2f0f7d1cd66d019f0a4ada46"
+    },
+    {
+      "artifact": "review-evidence/part-1-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-1-review.md",
+      "sha256": "887896f7155bda06f2eea2f8ab54b8966d823c390368931c87d0d367989335bf"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.json",
+      "sha256": "7a4c90343b606072e51582ea40df89f9e2aca025e95cd0596750d934da0e306f"
+    },
+    {
+      "artifact": "review-evidence/part-2-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-2-review.md",
+      "sha256": "ab05ee15c56b6d46c786dd2394945a7975805badce2c696c22f7bcce4384175d"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.json",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.json",
+      "sha256": "9d590ed76e154c29dec183d69ec785404bdbdb4b5efe663c2ac813992876f8a5"
+    },
+    {
+      "artifact": "review-evidence/part-3-review.md",
+      "original": "/private/tmp/ufz-correction-source-interpretation/part-3-review.md",
+      "sha256": "efacaca92959b11d33286d414f26deeb000c2ba62c571c100a6d8a33d001bcfe"
+    },
+    {
+      "artifact": "review-evidence/HANDOFF.md",
+      "original": "/private/tmp/ufz-correction-history-intake/HANDOFF.md",
+      "sha256": "46e36e9772e8a882ea92c13b894f331bc58c930be7d3c00477492d72dfe0d267"
+    },
+    {
+      "artifact": "review-evidence/task19-qualifier-correction.json",
+      "original": "/private/tmp/ufz-correction-history-intake/task19-qualifier-correction.json",
+      "sha256": "6661e179c4954f0fe7d8c6e36091d11ac4c7c39b960cadac2fbf779f89fc89f5"
+    },
+    {
+      "artifact": "mixed-passage-judgments.json",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/mixed-passage-judgments.json",
+      "sha256": "2ccfd7882f8b738649f3cf6816a2a62b7e5906b417beb88269254f2f1a7b6338"
+    },
+    {
+      "artifact": "review-evidence/adapter-initial-failed-review.md",
+      "original": "/private/tmp/ufz-correction-legacy-adapters/review-evidence/adapter-initial-failed-review.md",
+      "sha256": "0f13486a6200c58abd1473272de8935ac8eee0808ac599010ffbc665330c5003"
+    }
+  ],
+  "rawSidecar": "metadata/74-sidecar.json",
+  "originalCompactRecognition": {
+    "verdict": "Blocking (7 confirmed)",
+    "kind": "roast"
+  },
+  "originalVerdictAndStatusFields": [
+    {
+      "line": 1,
+      "rawText": "super-roast verdict: Blocking (7 confirmed)"
+    },
+    {
+      "line": 12,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 16,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 20,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 24,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 28,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 32,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    },
+    {
+      "line": 36,
+      "rawText": "  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)"
+    }
+  ],
+  "reviewedPassagesClassification": [
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/0",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        1423,
+        2439
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix oversized hold loses scope; full evidence and fix hint retained."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/1",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        2439,
+        3635
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Blocking omitted invocationId forbidden API startup; includes correction of dryRun evidence claim."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/2",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        3635,
+        4576
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix acceptance lacks archived hash recheck."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/3",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        4576,
+        5938
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix piped projection truncation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/4",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        5938,
+        6876
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix recursive archives/errno63."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/5",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        6876,
+        7582
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix intermediate symlink escape."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/6",
+      "roles": [
+        "review_finding"
+      ],
+      "span": [
+        7582,
+        8626
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Confirmed Should-fix trailing-slash TMPDIR assertions."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/7",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        8742,
+        8749
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No beyond-panel unverified candidates."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/8",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        8870,
+        8877
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No pipeline-failure unjudged candidates."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/9",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        9017,
+        9024
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No beyond-remainder candidates/count."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/10",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "span": [
+        9093,
+        10005
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Measurement semantic discrepancy rejected with contract reasoning; retain raw rejected state/reason, not outstanding confirmed defect."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/11",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "span": [
+        10005,
+        10795
+      ],
+      "retention": "canonical occurrence or exact grouped/split span",
+      "interpretation": "Next-roast assembly/materiality claim rejected despite reproduced errno63 because documented frozen-Git fallback retains review; preserve distinct from confirmed recursion finding."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/12",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        10830,
+        10837
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No unverified nits."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/13",
+      "roles": [
+        "explicit_empty_declaration"
+      ],
+      "span": [
+        10951,
+        10958
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "No escalation."
+    },
+    {
+      "reviewRef": "review-evidence/part-3-review.json#/sources/19/passages/14",
+      "roles": [
+        "coverage_limit"
+      ],
+      "span": [
+        10959,
+        11824
+      ],
+      "retention": "metadata/raw; may contribute to explicit grouped/split occurrence",
+      "interpretation": "Controller continuation, manual same-round fan-out, failed assembly and direct frozen-input fallback; provenance context, not an escalation item."
+    }
+  ],
+  "allReviewedPassages": [
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix oversized hold loses scope; full evidence and fix hint retained.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 11,
+      "lineEnd": 14,
+      "byteStart": 1423,
+      "byteEnd": 2439,
+      "rawText": "- [Should-fix] skills/super-code/coordinator.js:752 — Oversized persisted recovery holds lose their task scope during digest compaction, allowing the held task to run and merge. [lanes: data-migrations]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Independent frozen-source probes show a valid 173-byte hold blocks bd-101, while the same hold with additive context at 5173 bytes yields one implementation dispatch and merge, clears the obligation, and reports ready-drained. The digest keeps only a gap pointer, which admission does not consult. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/tests/super-code/probe.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/receipt.json.\n  fix-shape hint: Preserve or recover the held task scope before admitting work when compact transport drops the record.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Blocking omitted invocationId forbidden API startup; includes correction of dryRun evidence claim.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 15,
+      "lineEnd": 18,
+      "byteStart": 2439,
+      "byteEnd": 3635,
+      "rawText": "- [Blocking] skills/super-code/coordinator.js:25 — Omitting the supported invocationId makes Workflow startup call forbidden Date.now() and Math.random() APIs and abort before logging or dispatch. [lanes: concurrency-async]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: The documented contract says the script mints an ID when omitted; official Claude Code Workflow documentation says these clock/random APIs throw inside a script. Frozen-source VM checks show base starts without an ID and head throws before its first log; an explicit ID is a positive control. The documented dryRun examples do include invocationId, correcting the original evidence's contrary claim; the omission path remains explicitly supported. Evidence: https://code.claude.com/docs/en/workflows; docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro-runtime-result.json.\n  fix-shape hint: Mint the identifier outside the deterministic Workflow script and pass it through args.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix acceptance lacks archived hash recheck.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 19,
+      "lineEnd": 22,
+      "byteStart": 3635,
+      "byteEnd": 4576,
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:168 — The root acceptance gate trusts persisted collection-complete metadata and accepts corrupted archived review inputs without checking their saved hashes. [lanes: correctness]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: After collection completed, changing only a saved review diff changed its SHA-256, yet --acceptance still returned eligible:true with no gaps; recollection then detected an archive conflict. Reproducer and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/receipts.json.\n  fix-shape hint: Have the acceptance gate verify archived files against their collection records before declaring the run eligible.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 3
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix piped projection truncation.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 23,
+      "lineEnd": 26,
+      "byteStart": 4576,
+      "byteEnd": 5938,
+      "rawText": "- [Should-fix] skills/super-auto/scripts/scope-dispositions:194 — Large finding projections are truncated on piped stdout while exiting successfully, so status and root acceptance cannot consume valid retained findings. [lanes: correctness, api-contract, observability]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with 128 retained occurrences produced 203379 bytes on regular stdout but only 65536 bytes through a pipe, with exit 0 and invalid JSON. The actual acceptance consumer then reported projection unavailable; changing only the exit behavior restored full output and eligibility. Probe, acceptance probe, and receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/receipt.json, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-receipt.json.\n  fix-shape hint: Deliver the complete projection to the consumer or detect and report incomplete output as a failure.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 4
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix recursive archives/errno63.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 27,
+      "lineEnd": 30,
+      "byteStart": 5938,
+      "byteEnd": 6876,
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:224 — Committed assembled review archives are re-collected into later full-range reviews, recursively growing their inputs until slice creation fails with errno 63. [lanes: premortem, hot-path-perf]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Frozen-head repeated review fixtures show unchanged product content copied 1, 2, then 4 times as collected files grow; the fourth assembly fails creating a 281-byte basename with errno 63. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/receipt.json.\n  fix-shape hint: Exclude prior generated review archives from later full-range assembly or reuse their stable slices.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 5
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix intermediate symlink escape.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 31,
+      "lineEnd": 34,
+      "byteStart": 6876,
+      "byteEnd": 7582,
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:220 — Review collection follows intermediate directory symlinks and archives files outside the declared source workspace while reporting collection complete. [lanes: security]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with workspace/assembled linked to ../outside returned collection complete and archived a sentinel file from outside the workspace. Result: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-reproduce/result.json.\n  fix-shape hint: Reject symlinked path components while resolving and copying collected review inputs.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 6
+    },
+    {
+      "classification": "review_finding",
+      "interpretation": "Confirmed Should-fix trailing-slash TMPDIR assertions.",
+      "rawSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "rawSectionOrdinal": 1,
+      "rawSectionHeading": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+      "rawSectionHierarchy": [
+        "Confirmed findings            ← consumed by super-design, one task per finding"
+      ],
+      "rawSectionsSpanned": [
+        1
+      ],
+      "lineStart": 35,
+      "lineEnd": 38,
+      "byteStart": 7582,
+      "byteEnd": 8626,
+      "rawText": "- [Should-fix] tests/super-code/test-dispatch-text.sh:10 — The required dispatch-text test suite fails four assertions when TMPDIR ends with a slash. [lanes: testing]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: With the same trailing-slash TMPDIR, the frozen base test exits 0 while head exits 1 with four path assertions; removing the slash makes head pass. The failures compare an unnormalized temporary path with normalized output paths. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-trailing.log, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base-trailing.log, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-no-trailing.log.\n  fix-shape hint: Normalize TMPDIR before composing expected artifact paths or construct the test directory with mktemp.\n",
+      "canonicalAdapterSection": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 7
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No beyond-panel unverified candidates.",
+      "rawSection": "Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped",
+      "rawSectionOrdinal": 2,
+      "rawSectionHeading": "## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped\n",
+      "rawSectionHierarchy": [
+        "Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped"
+      ],
+      "rawSectionsSpanned": [
+        2
+      ],
+      "lineStart": 41,
+      "lineEnd": 41,
+      "byteStart": 8742,
+      "byteEnd": 8749,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No pipeline-failure unjudged candidates.",
+      "rawSection": "Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped",
+      "rawSectionOrdinal": 3,
+      "rawSectionHeading": "## Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped\n",
+      "rawSectionHierarchy": [
+        "Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped"
+      ],
+      "rawSectionsSpanned": [
+        3
+      ],
+      "lineStart": 44,
+      "lineEnd": 44,
+      "byteStart": 8870,
+      "byteEnd": 8877,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No beyond-remainder candidates/count.",
+      "rawSection": "Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not",
+      "rawSectionOrdinal": 4,
+      "rawSectionHeading": "## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not\n",
+      "rawSectionHierarchy": [
+        "Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not"
+      ],
+      "rawSectionsSpanned": [
+        4
+      ],
+      "lineStart": 47,
+      "lineEnd": 47,
+      "byteStart": 9017,
+      "byteEnd": 9024,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historically_rejected_finding",
+      "interpretation": "Measurement semantic discrepancy rejected with contract reasoning; retain raw rejected state/reason, not outstanding confirmed defect.",
+      "rawSection": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Rejected (with reason)        ← so re-roasts don't re-litigate\n",
+      "rawSectionHierarchy": [
+        "Rejected (with reason)        ← so re-roasts don't re-litigate"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 50,
+      "lineEnd": 50,
+      "byteStart": 9093,
+      "byteEnd": 10005,
+      "rawText": "- The claim that the new measurement aggregation rule is duplicated with conflicting semantics, so super-code reports a required live check as passed while super-auto reports the same retained check evidence as failed (skills/super-code/coordinator.js:354), is rejected. The concrete dissent reproduced pass versus fail for the same evidence, but the majority cited the contract at coordinator-workflow.md:645-657: coordinator pass means matching live/pass evidence is available, while semantic coverage and acceptance remain caller decisions. The acceptance gate separately requires reconciliation of contradictory records. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/producer.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/consumer.json.\n",
+      "canonicalAdapterSection": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "historically_rejected_finding",
+      "interpretation": "Next-roast assembly/materiality claim rejected despite reproduced errno63 because documented frozen-Git fallback retains review; preserve distinct from confirmed recursion finding.",
+      "rawSection": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "rawSectionOrdinal": 5,
+      "rawSectionHeading": "## Rejected (with reason)        ← so re-roasts don't re-litigate\n",
+      "rawSectionHierarchy": [
+        "Rejected (with reason)        ← so re-roasts don't re-litigate"
+      ],
+      "rawSectionsSpanned": [
+        5
+      ],
+      "lineStart": 51,
+      "lineEnd": 51,
+      "byteStart": 10005,
+      "byteEnd": 10795,
+      "rawText": "- The claim that the new tracked archive of complete assembled inputs makes this branch's required next roast assembly fail with ENAMETOOLONG (skills/super-auto/SKILL.md:400) is rejected on materiality. The concrete dissent verified errno 63 for oversized flattened basenames, establishing the assembly failure. Majority evidence shows the documented fallback runs the roast directly against the same captured base/head and records assembler unavailable, preserving the required review and revision binding. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-reproduce/receipt.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-refute/fixture.json.\n",
+      "canonicalAdapterSection": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No unverified nits.",
+      "rawSection": "Unverified nits (spot-checked)",
+      "rawSectionOrdinal": 6,
+      "rawSectionHeading": "## Unverified nits (spot-checked)\n",
+      "rawSectionHierarchy": [
+        "Unverified nits (spot-checked)"
+      ],
+      "rawSectionsSpanned": [
+        6
+      ],
+      "lineStart": 54,
+      "lineEnd": 54,
+      "byteStart": 10830,
+      "byteEnd": 10837,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Unverified nits (spot-checked)",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "explicit_empty_declaration",
+      "interpretation": "No escalation.",
+      "rawSection": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent\n",
+      "rawSectionHierarchy": [
+        "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 57,
+      "lineEnd": 57,
+      "byteStart": 10951,
+      "byteEnd": 10958,
+      "rawText": "- none\n",
+      "canonicalAdapterSection": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 1
+    },
+    {
+      "classification": "coverage_limit",
+      "interpretation": "Controller continuation, manual same-round fan-out, failed assembly and direct frozen-input fallback; provenance context, not an escalation item.",
+      "rawSection": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "rawSectionOrdinal": 7,
+      "rawSectionHeading": "## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent\n",
+      "rawSectionHierarchy": [
+        "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent"
+      ],
+      "rawSectionsSpanned": [
+        7
+      ],
+      "lineStart": 59,
+      "lineEnd": 59,
+      "byteStart": 10959,
+      "byteEnd": 11824,
+      "rawText": "Execution provenance: This is the same PR round 1 continued after the previous controller failed. All 12 same-round scout results were retained; fresh dedupe and 27 fresh blind seats ran. Required pre-roast assembly failed with errno 63, so the documented DIRECT INPUT frozen-Git fallback was used; the relevant assembly and fallback receipts are docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-reproduce/receipt.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-refute/fixture.json. The cited scripts and receipts were copied and SHA-256 verified; temporary-path prefixes map to durable equivalents in docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/durable-path-map.json.\n",
+      "canonicalAdapterSection": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "canonicalAdapterSectionIsSynthetic": false,
+      "applied": false,
+      "canonicalAdapterPositionInPhysicalSection": 2
+    }
+  ],
+  "structuredAppearances": [],
+  "additionalStructuredObligations": [],
+  "selectedExactSpans": [
+    {
+      "byteStart": 1423,
+      "byteEnd": 2439,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/0"
+      ],
+      "interpretation": "Confirmed Should-fix oversized hold loses scope; full evidence and fix hint retained.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 2439,
+      "byteEnd": 3635,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/1"
+      ],
+      "interpretation": "Confirmed Blocking omitted invocationId forbidden API startup; includes correction of dryRun evidence claim.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 3635,
+      "byteEnd": 4576,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/2"
+      ],
+      "interpretation": "Confirmed Should-fix acceptance lacks archived hash recheck.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 4576,
+      "byteEnd": 5938,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/3"
+      ],
+      "interpretation": "Confirmed Should-fix piped projection truncation.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 5938,
+      "byteEnd": 6876,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/4"
+      ],
+      "interpretation": "Confirmed Should-fix recursive archives/errno63.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 6876,
+      "byteEnd": 7582,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/5"
+      ],
+      "interpretation": "Confirmed Should-fix intermediate symlink escape.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 7582,
+      "byteEnd": 8626,
+      "roles": [
+        "review_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/6"
+      ],
+      "interpretation": "Confirmed Should-fix trailing-slash TMPDIR assertions.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 9093,
+      "byteEnd": 10005,
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/10"
+      ],
+      "interpretation": "Measurement semantic discrepancy rejected with contract reasoning; retain raw rejected state/reason, not outstanding confirmed defect.",
+      "jsonPointer": null
+    },
+    {
+      "byteStart": 10005,
+      "byteEnd": 10795,
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/11"
+      ],
+      "interpretation": "Next-roast assembly/materiality claim rejected despite reproduced errno63 because documented frozen-Git fallback retains review; preserve distinct from confirmed recursion finding.",
+      "jsonPointer": null
+    }
+  ],
+  "proposalRevision": 2,
+  "mixedPassageRepresentationJudgments": [],
+  "emptinessJudgment": {
+    "scopedEmptySupported": true,
+    "supportedGlobalFindingEmpty": false
+  },
+  "semanticAmbiguities": [],
+  "appliedIdentityLinks": [],
+  "appliedDispositions": [],
+  "acceptanceJudgment": null,
+  "adapterStatusInterpretation": "Original recognizable roast marker copied exactly; not a new historical outcome.",
+  "adapterOccurrenceMap": [
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000001423",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 1423,
+      "rawByteEnd": 2439,
+      "rawLineStart": 11,
+      "rawLineEnd": 14,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] skills/super-code/coordinator.js:752 — Oversized persisted recovery holds lose their task scope during digest compaction, allowing the held task to run and merge. [lanes: data-migrations]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Independent frozen-source probes show a valid 173-byte hold blocks bd-101, while the same hold with additive context at 5173 bytes yields one implementation dispatch and merge, clears the obligation, and reports ready-drained. The digest keeps only a gap pointer, which admission does not consult. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/tests/super-code/probe.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/receipt.json.\n  fix-shape hint: Preserve or recover the held task scope before admitting work when compact transport drops the record.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] skills/super-code/coordinator.js:752 — Oversized persisted recovery holds lose their task scope during digest compaction, allowing the held task to run and merge. [lanes: data-migrations]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Independent frozen-source probes show a valid 173-byte hold blocks bd-101, while the same hold with additive context at 5173 bytes yields one implementation dispatch and merge, clears the obligation, and reports ready-drained. The digest keeps only a gap pointer, which admission does not consult. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/tests/super-code/probe.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-0-reproduce/receipt.json.\n  fix-shape hint: Preserve or recover the held task scope before admitting work when compact transport drops the record.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/0"
+      ],
+      "interpretation": "Confirmed Should-fix oversized hold loses scope; full evidence and fix hint retained."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000002439",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 2439,
+      "rawByteEnd": 3635,
+      "rawLineStart": 15,
+      "rawLineEnd": 18,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Blocking] skills/super-code/coordinator.js:25 — Omitting the supported invocationId makes Workflow startup call forbidden Date.now() and Math.random() APIs and abort before logging or dispatch. [lanes: concurrency-async]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: The documented contract says the script mints an ID when omitted; official Claude Code Workflow documentation says these clock/random APIs throw inside a script. Frozen-source VM checks show base starts without an ID and head throws before its first log; an explicit ID is a positive control. The documented dryRun examples do include invocationId, correcting the original evidence's contrary claim; the omission path remains explicitly supported. Evidence: https://code.claude.com/docs/en/workflows; docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro-runtime-result.json.\n  fix-shape hint: Mint the identifier outside the deterministic Workflow script and pass it through args.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Blocking] skills/super-code/coordinator.js:25 — Omitting the supported invocationId makes Workflow startup call forbidden Date.now() and Math.random() APIs and abort before logging or dispatch. [lanes: concurrency-async]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: The documented contract says the script mints an ID when omitted; official Claude Code Workflow documentation says these clock/random APIs throw inside a script. Frozen-source VM checks show base starts without an ID and head throws before its first log; an explicit ID is a positive control. The documented dryRun examples do include invocationId, correcting the original evidence's contrary claim; the omission path remains explicitly supported. Evidence: https://code.claude.com/docs/en/workflows; docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro.mjs and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-1-ground/repro-runtime-result.json.\n  fix-shape hint: Mint the identifier outside the deterministic Workflow script and pass it through args.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/1"
+      ],
+      "interpretation": "Confirmed Blocking omitted invocationId forbidden API startup; includes correction of dryRun evidence claim."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000003635",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 3635,
+      "rawByteEnd": 4576,
+      "rawLineStart": 19,
+      "rawLineEnd": 22,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:168 — The root acceptance gate trusts persisted collection-complete metadata and accepts corrupted archived review inputs without checking their saved hashes. [lanes: correctness]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: After collection completed, changing only a saved review diff changed its SHA-256, yet --acceptance still returned eligible:true with no gaps; recollection then detected an archive conflict. Reproducer and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/receipts.json.\n  fix-shape hint: Have the acceptance gate verify archived files against their collection records before declaring the run eligible.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] skills/super-auto/scripts/report-status:168 — The root acceptance gate trusts persisted collection-complete metadata and accepts corrupted archived review inputs without checking their saved hashes. [lanes: correctness]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: After collection completed, changing only a saved review diff changed its SHA-256, yet --acceptance still returned eligible:true with no gaps; recollection then detected an archive conflict. Reproducer and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-2-reproduce/receipts.json.\n  fix-shape hint: Have the acceptance gate verify archived files against their collection records before declaring the run eligible.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/2"
+      ],
+      "interpretation": "Confirmed Should-fix acceptance lacks archived hash recheck."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000004576",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 4576,
+      "rawByteEnd": 5938,
+      "rawLineStart": 23,
+      "rawLineEnd": 26,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] skills/super-auto/scripts/scope-dispositions:194 — Large finding projections are truncated on piped stdout while exiting successfully, so status and root acceptance cannot consume valid retained findings. [lanes: correctness, api-contract, observability]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with 128 retained occurrences produced 203379 bytes on regular stdout but only 65536 bytes through a pipe, with exit 0 and invalid JSON. The actual acceptance consumer then reported projection unavailable; changing only the exit behavior restored full output and eligibility. Probe, acceptance probe, and receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/receipt.json, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-receipt.json.\n  fix-shape hint: Deliver the complete projection to the consumer or detect and report incomplete output as a failure.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] skills/super-auto/scripts/scope-dispositions:194 — Large finding projections are truncated on piped stdout while exiting successfully, so status and root acceptance cannot consume valid retained findings. [lanes: correctness, api-contract, observability]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with 128 retained occurrences produced 203379 bytes on regular stdout but only 65536 bytes through a pipe, with exit 0 and invalid JSON. The actual acceptance consumer then reported projection unavailable; changing only the exit behavior restored full output and eligibility. Probe, acceptance probe, and receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-probe.py, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/receipt.json, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-4-reproduce/acceptance-receipt.json.\n  fix-shape hint: Deliver the complete projection to the consumer or detect and report incomplete output as a failure.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/3"
+      ],
+      "interpretation": "Confirmed Should-fix piped projection truncation."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000005938",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 5938,
+      "rawByteEnd": 6876,
+      "rawLineStart": 27,
+      "rawLineEnd": 30,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:224 — Committed assembled review archives are re-collected into later full-range reviews, recursively growing their inputs until slice creation fails with errno 63. [lanes: premortem, hot-path-perf]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Frozen-head repeated review fixtures show unchanged product content copied 1, 2, then 4 times as collected files grow; the fourth assembly fails creating a 281-byte basename with errno 63. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/receipt.json.\n  fix-shape hint: Exclude prior generated review archives from later full-range assembly or reuse their stable slices.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] skills/super-auto/scripts/report-status:224 — Committed assembled review archives are re-collected into later full-range reviews, recursively growing their inputs until slice creation fails with errno 63. [lanes: premortem, hot-path-perf]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: Frozen-head repeated review fixtures show unchanged product content copied 1, 2, then 4 times as collected files grow; the fourth assembly fails creating a 281-byte basename with errno 63. Probe and receipt: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/probe.py and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-5-reproduce/receipt.json.\n  fix-shape hint: Exclude prior generated review archives from later full-range assembly or reuse their stable slices.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/4"
+      ],
+      "interpretation": "Confirmed Should-fix recursive archives/errno63."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000006876",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 6876,
+      "rawByteEnd": 7582,
+      "rawLineStart": 31,
+      "rawLineEnd": 34,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] skills/super-auto/scripts/report-status:220 — Review collection follows intermediate directory symlinks and archives files outside the declared source workspace while reporting collection complete. [lanes: security]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with workspace/assembled linked to ../outside returned collection complete and archived a sentinel file from outside the workspace. Result: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-reproduce/result.json.\n  fix-shape hint: Reject symlinked path components while resolving and copying collected review inputs.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] skills/super-auto/scripts/report-status:220 — Review collection follows intermediate directory symlinks and archives files outside the declared source workspace while reporting collection complete. [lanes: security]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: A fixture with workspace/assembled linked to ../outside returned collection complete and archived a sentinel file from outside the workspace. Result: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-7-reproduce/result.json.\n  fix-shape hint: Reject symlinked path components while resolving and copying collected review inputs.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/5"
+      ],
+      "interpretation": "Confirmed Should-fix intermediate symlink escape."
+    },
+    {
+      "adapterSection": "Findings — adapter/review-finding/raw-section-1/raw-byte-000007582",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "review-finding",
+      "roles": [
+        "review_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 7582,
+      "rawByteEnd": 8626,
+      "rawLineStart": 35,
+      "rawLineEnd": 38,
+      "originalSections": [
+        {
+          "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+          "sectionOrdinal": 1,
+          "headingRaw": "## Confirmed findings            ← consumed by super-design, one task per finding\n",
+          "hierarchy": [
+            "Confirmed findings            ← consumed by super-design, one task per finding"
+          ],
+          "byteStart": 1339,
+          "byteEnd": 8627
+        }
+      ],
+      "rawText": "- [Should-fix] tests/super-code/test-dispatch-text.sh:10 — The required dispatch-text test suite fails four assertions when TMPDIR ends with a slash. [lanes: testing]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: With the same trailing-slash TMPDIR, the frozen base test exits 0 while head exits 1 with four path assertions; removing the slash makes head pass. The failures compare an unnormalized temporary path with normalized output paths. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-trailing.log, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base-trailing.log, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-no-trailing.log.\n  fix-shape hint: Normalize TMPDIR before composing expected artifact paths or construct the test directory with mktemp.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "[Should-fix] tests/super-code/test-dispatch-text.sh:10 — The required dispatch-text test suite fails four assertions when TMPDIR ends with a slash. [lanes: testing]\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: With the same trailing-slash TMPDIR, the frozen base test exits 0 while head exits 1 with four path assertions; removing the slash makes head pass. The failures compare an unnormalized temporary path with normalized output paths. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-trailing.log, docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/base-trailing.log, and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-8-reproduce/head-no-trailing.log.\n  fix-shape hint: Normalize TMPDIR before composing expected artifact paths or construct the test directory with mktemp.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/6"
+      ],
+      "interpretation": "Confirmed Should-fix trailing-slash TMPDIR assertions."
+    },
+    {
+      "adapterSection": "Rejected — adapter/historically-rejected-claim/raw-section-5/raw-byte-000009093",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historically-rejected-claim",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 9093,
+      "rawByteEnd": 10005,
+      "rawLineStart": 50,
+      "rawLineEnd": 50,
+      "originalSections": [
+        {
+          "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+          "sectionOrdinal": 5,
+          "headingRaw": "## Rejected (with reason)        ← so re-roasts don't re-litigate\n",
+          "hierarchy": [
+            "Rejected (with reason)        ← so re-roasts don't re-litigate"
+          ],
+          "byteStart": 9025,
+          "byteEnd": 10796
+        }
+      ],
+      "rawText": "- The claim that the new measurement aggregation rule is duplicated with conflicting semantics, so super-code reports a required live check as passed while super-auto reports the same retained check evidence as failed (skills/super-code/coordinator.js:354), is rejected. The concrete dissent reproduced pass versus fail for the same evidence, but the majority cited the contract at coordinator-workflow.md:645-657: coordinator pass means matching live/pass evidence is available, while semantic coverage and acceptance remain caller decisions. The acceptance gate separately requires reconciliation of contradictory records. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/producer.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/consumer.json.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The claim that the new measurement aggregation rule is duplicated with conflicting semantics, so super-code reports a required live check as passed while super-auto reports the same retained check evidence as failed (skills/super-code/coordinator.js:354), is rejected. The concrete dissent reproduced pass versus fail for the same evidence, but the majority cited the contract at coordinator-workflow.md:645-657: coordinator pass means matching live/pass evidence is available, while semantic coverage and acceptance remain caller decisions. The acceptance gate separately requires reconciliation of contradictory records. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/producer.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-3-reproduce/consumer.json.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/10"
+      ],
+      "interpretation": "Measurement semantic discrepancy rejected with contract reasoning; retain raw rejected state/reason, not outstanding confirmed defect."
+    },
+    {
+      "adapterSection": "Rejected — adapter/historically-rejected-claim/raw-section-5/raw-byte-000010005",
+      "adapterSectionSynthetic": true,
+      "adapterPosition": 1,
+      "category": "historically-rejected-claim",
+      "roles": [
+        "historically_rejected_finding"
+      ],
+      "passageJudgment": null,
+      "representationChoice": null,
+      "rawByteStart": 10005,
+      "rawByteEnd": 10795,
+      "rawLineStart": 51,
+      "rawLineEnd": 51,
+      "originalSections": [
+        {
+          "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+          "sectionOrdinal": 5,
+          "headingRaw": "## Rejected (with reason)        ← so re-roasts don't re-litigate\n",
+          "hierarchy": [
+            "Rejected (with reason)        ← so re-roasts don't re-litigate"
+          ],
+          "byteStart": 9025,
+          "byteEnd": 10796
+        }
+      ],
+      "rawText": "- The claim that the new tracked archive of complete assembled inputs makes this branch's required next roast assembly fail with ENAMETOOLONG (skills/super-auto/SKILL.md:400) is rejected on materiality. The concrete dissent verified errno 63 for oversized flattened basenames, establishing the assembly failure. Majority evidence shows the documented fallback runs the roast directly against the same captured base/head and records assembler unavailable, preserving the required review and revision binding. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-reproduce/receipt.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-refute/fixture.json.\n",
+      "jsonPointer": null,
+      "originalReviewedJsonBlockSpan": null,
+      "fieldLocatorInterpretation": null,
+      "decodedFieldText": null,
+      "adapterText": "The claim that the new tracked archive of complete assembled inputs makes this branch's required next roast assembly fail with ENAMETOOLONG (skills/super-auto/SKILL.md:400) is rejected on materiality. The concrete dissent verified errno 63 for oversized flattened basenames, establishing the assembly failure. Majority evidence shows the documented fallback runs the roast directly against the same captured base/head and records assembler unavailable, preserving the required review and revision binding. Receipts: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-reproduce/receipt.json and docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/judge-6-refute/fixture.json.",
+      "transformation": {
+        "firstListMarkerRemoved": true,
+        "firstLeadingWhitespaceRemoved": "",
+        "newlineNormalization": "CRLF/CR to LF; trailing newline omitted by parser",
+        "continuationEscapes": [],
+        "originalSpanPreservedSeparately": true
+      },
+      "reviewRefs": [
+        "review-evidence/part-3-review.json#/sources/19/passages/11"
+      ],
+      "interpretation": "Next-roast assembly/materiality claim rejected despite reproduced errno63 because documented frozen-Git fallback retains review; preserve distinct from confirmed recursion finding."
+    }
+  ],
+  "retainedArtifact": "legacy-report-adapters-r1/74-2026-10-16-workflow-reliability-roast-pr-1.md",
+  "retainedSha256": "820f1185bc6dd01411b4f0f99674e1c087495f355c1df393d7267d2384f55c7c"
+}

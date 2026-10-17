@@ -1,0 +1,568 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-28-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-28-review.md",
+  "rawSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+  "rawByteCount": 9736,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-review.md",
+    "durablePath": "task-report-history-r1/raw/task-28-review.md",
+    "sha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+    "byteCount": 9736,
+    "logicalRole": "review",
+    "ordinal": 28,
+    "logicalTaskId": "super-plan-ufz.31",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-28-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 28 / super-plan-ufz.31 independent review",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 28 / super-plan-ufz.31 independent review\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review"
+      ],
+      "lineStart": 1,
+      "lineEnd": 7,
+      "byteStart": 0,
+      "byteEnd": 211,
+      "bodyLineStart": 2,
+      "rawText": "# Task 28 / super-plan-ufz.31 independent review\n\nStatus: CLEAN\nBase: 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\nHead: 7d5abfe28d01de5153d5905e48f057869ceb2a5e\nHead tree: f062b7c7ec1b967aa64952fad937ff6982cdb084\n\n",
+      "bodyRawText": "\nStatus: CLEAN\nBase: 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\nHead: 7d5abfe28d01de5153d5905e48f057869ceb2a5e\nHead tree: f062b7c7ec1b967aa64952fad937ff6982cdb084\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 50,
+          "byteEnd": 64
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Base: 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\n",
+          "text": "Base: 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 4,
+          "lineEnd": 4,
+          "byteStart": 64,
+          "byteEnd": 111
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Head: 7d5abfe28d01de5153d5905e48f057869ceb2a5e\nHead tree: f062b7c7ec1b967aa64952fad937ff6982cdb084\n",
+          "text": "Head: 7d5abfe28d01de5153d5905e48f057869ceb2a5e\nHead tree: f062b7c7ec1b967aa64952fad937ff6982cdb084",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 5,
+          "lineEnd": 6,
+          "byteStart": 111,
+          "byteEnd": 210
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Spec compliance"
+      ],
+      "lineStart": 8,
+      "lineEnd": 19,
+      "byteStart": 211,
+      "byteEnd": 2657,
+      "bodyLineStart": 9,
+      "rawText": "## Spec compliance\n\n✅ All four current acceptance obligations are satisfied within archival retention scope. Read current `bd show super-plan-ufz.31 --json` and `bd comments super-plan-ufz.31`; there are no comments or amendments. Frozen task 28, the brief and the current bead agree.\n\nExactly five original artifacts and the allowed retained-equivalents/provenance.json were added. Each artifact is restored at its original manifest identity, so no substitute mapping or manifest/report edit is required. All 81 captured Git blobs match the original manifest SHA-256 values. All original 76 present blobs, the manifest and the historical report are byte-identical to both the captured review base and the provenance's initial baseline.\n\nThe five retained blobs match all five original files still available under /private/tmp/ufz-live-isolation byte for byte, including their individually distinct original hashes and lengths (30, 4072, 436, 597, 72 bytes). This verifies actual original byte streams rather than a reconstruction from prose or reuse of the final-review duplicate for other artifacts. All five are explicit mode-100644 Git blobs although `git check-ignore --no-index` confirms their paths match ignore rules. Future checkout retention therefore does not depend on the temporary originals.\n\nThe actual final review, package, ledger, plan and caller output now resolve at the historical identities. Provenance names each original source path and expected/source/retained hash; every one of its 81 audit rows was checked against captured blobs, byte lengths, identities and manifest hashes. Its baseline commit resolves to its stated tree and its original manifest digest matches. No extra product, instruction, source-revision, historical-report, manifest or spec changes occur.\n\nHistorical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.\n\n",
+      "bodyRawText": "\n✅ All four current acceptance obligations are satisfied within archival retention scope. Read current `bd show super-plan-ufz.31 --json` and `bd comments super-plan-ufz.31`; there are no comments or amendments. Frozen task 28, the brief and the current bead agree.\n\nExactly five original artifacts and the allowed retained-equivalents/provenance.json were added. Each artifact is restored at its original manifest identity, so no substitute mapping or manifest/report edit is required. All 81 captured Git blobs match the original manifest SHA-256 values. All original 76 present blobs, the manifest and the historical report are byte-identical to both the captured review base and the provenance's initial baseline.\n\nThe five retained blobs match all five original files still available under /private/tmp/ufz-live-isolation byte for byte, including their individually distinct original hashes and lengths (30, 4072, 436, 597, 72 bytes). This verifies actual original byte streams rather than a reconstruction from prose or reuse of the final-review duplicate for other artifacts. All five are explicit mode-100644 Git blobs although `git check-ignore --no-index` confirms their paths match ignore rules. Future checkout retention therefore does not depend on the temporary originals.\n\nThe actual final review, package, ledger, plan and caller output now resolve at the historical identities. Provenance names each original source path and expected/source/retained hash; every one of its 81 audit rows was checked against captured blobs, byte lengths, identities and manifest hashes. Its baseline commit resolves to its stated tree and its original manifest digest matches. No extra product, instruction, source-revision, historical-report, manifest or spec changes occur.\n\nHistorical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ All four current acceptance obligations are satisfied within archival retention scope. Read current `bd show super-plan-ufz.31 --json` and `bd comments super-plan-ufz.31`; there are no comments or amendments. Frozen task 28, the brief and the current bead agree.\n",
+          "text": "✅ All four current acceptance obligations are satisfied within archival retention scope. Read current `bd show super-plan-ufz.31 --json` and `bd comments super-plan-ufz.31`; there are no comments or amendments. Frozen task 28, the brief and the current bead agree.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 10,
+          "lineEnd": 10,
+          "byteStart": 231,
+          "byteEnd": 498
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Exactly five original artifacts and the allowed retained-equivalents/provenance.json were added. Each artifact is restored at its original manifest identity, so no substitute mapping or manifest/report edit is required. All 81 captured Git blobs match the original manifest SHA-256 values. All original 76 present blobs, the manifest and the historical report are byte-identical to both the captured review base and the provenance's initial baseline.\n",
+          "text": "Exactly five original artifacts and the allowed retained-equivalents/provenance.json were added. Each artifact is restored at its original manifest identity, so no substitute mapping or manifest/report edit is required. All 81 captured Git blobs match the original manifest SHA-256 values. All original 76 present blobs, the manifest and the historical report are byte-identical to both the captured review base and the provenance's initial baseline.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 12,
+          "lineEnd": 12,
+          "byteStart": 499,
+          "byteEnd": 950
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The five retained blobs match all five original files still available under /private/tmp/ufz-live-isolation byte for byte, including their individually distinct original hashes and lengths (30, 4072, 436, 597, 72 bytes). This verifies actual original byte streams rather than a reconstruction from prose or reuse of the final-review duplicate for other artifacts. All five are explicit mode-100644 Git blobs although `git check-ignore --no-index` confirms their paths match ignore rules. Future checkout retention therefore does not depend on the temporary originals.\n",
+          "text": "The five retained blobs match all five original files still available under /private/tmp/ufz-live-isolation byte for byte, including their individually distinct original hashes and lengths (30, 4072, 436, 597, 72 bytes). This verifies actual original byte streams rather than a reconstruction from prose or reuse of the final-review duplicate for other artifacts. All five are explicit mode-100644 Git blobs although `git check-ignore --no-index` confirms their paths match ignore rules. Future checkout retention therefore does not depend on the temporary originals.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 14,
+          "lineEnd": 14,
+          "byteStart": 951,
+          "byteEnd": 1519
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The actual final review, package, ledger, plan and caller output now resolve at the historical identities. Provenance names each original source path and expected/source/retained hash; every one of its 81 audit rows was checked against captured blobs, byte lengths, identities and manifest hashes. Its baseline commit resolves to its stated tree and its original manifest digest matches. No extra product, instruction, source-revision, historical-report, manifest or spec changes occur.\n",
+          "text": "The actual final review, package, ledger, plan and caller output now resolve at the historical identities. Provenance names each original source path and expected/source/retained hash; every one of its 81 audit rows was checked against captured blobs, byte lengths, identities and manifest hashes. Its baseline commit resolves to its stated tree and its original manifest digest matches. No extra product, instruction, source-revision, historical-report, manifest or spec changes occur.",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 16,
+          "lineEnd": 16,
+          "byteStart": 1520,
+          "byteEnd": 2007
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.\n",
+          "text": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.",
+          "listMarker": null,
+          "positionInSection": 5,
+          "lineStart": 18,
+          "lineEnd": 18,
+          "byteStart": 2008,
+          "byteEnd": 2656
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Issues"
+      ],
+      "lineStart": 20,
+      "lineEnd": 26,
+      "byteStart": 2657,
+      "byteEnd": 2802,
+      "bodyLineStart": 21,
+      "rawText": "## Issues\n\nCritical: none.\nImportant: none.\nMinor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.\n\n",
+      "bodyRawText": "\nCritical: none.\nImportant: none.\nMinor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none.\n",
+          "text": "Critical: none.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 22,
+          "lineEnd": 22,
+          "byteStart": 2668,
+          "byteEnd": 2684
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Important: none.\n",
+          "text": "Important: none.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 23,
+          "lineEnd": 23,
+          "byteStart": 2684,
+          "byteEnd": 2701
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Minor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.\n",
+          "text": "Minor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 24,
+          "lineEnd": 25,
+          "byteStart": 2701,
+          "byteEnd": 2801
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Test evidence"
+      ],
+      "lineStart": 27,
+      "lineEnd": 39,
+      "byteStart": 2802,
+      "byteEnd": 5113,
+      "bodyLineStart": 28,
+      "rawText": "## Test evidence\n\nNo product tests or historical exercise were run by this reviewer. The implementer's `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -` has its complete stdin script and exit-zero output in task-28-report.md. It checks the historical red state separately from final restored integrity, all 81 Git blobs, original temp-source bytes, provenance identities, unchanged original bytes and the six-path addition boundary. It plausibly and directly covers this archived-data-only task. The baseline `fail` describes the actual 76/81 archive-integrity defect; the combined script's exit zero does not reclassify the baseline or certify the historical exercise.\n\nReviewer additionally performed authorized read-only mechanical source/evidence integrity validation using `python3 -` with Python stdlib hashlib/json/pathlib and subprocess Git reads. For every manifest entry it read `git show <head>:<archive-path>`, hashed the bytes, compared the manifest and corresponding provenance audit record, and compared the original base/baseline bytes. For each restored entry it also read its original `sourceLocation`, compared bytes and hashes, checked absence at captured historical head 612ea0a7e4d64480bdd01e0ac842b539115342ee, and checked tracked Git entries and ignored-path matching. It asserted only the five originals plus provenance were added. Exit 0: 81 entries, 81 hash matches, 76 original byte-identical entries, all 81 provenance rows verified, five original temp files byte-identical, unchanged manifest/report, only six allowed additions. This is a retention validation, not product-test or historical behavior evidence.\n\nTest changes: none. Both commands exited 0 with empty output:\n\n```bash\ngit diff --stat 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\n",
+      "bodyRawText": "\nNo product tests or historical exercise were run by this reviewer. The implementer's `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -` has its complete stdin script and exit-zero output in task-28-report.md. It checks the historical red state separately from final restored integrity, all 81 Git blobs, original temp-source bytes, provenance identities, unchanged original bytes and the six-path addition boundary. It plausibly and directly covers this archived-data-only task. The baseline `fail` describes the actual 76/81 archive-integrity defect; the combined script's exit zero does not reclassify the baseline or certify the historical exercise.\n\nReviewer additionally performed authorized read-only mechanical source/evidence integrity validation using `python3 -` with Python stdlib hashlib/json/pathlib and subprocess Git reads. For every manifest entry it read `git show <head>:<archive-path>`, hashed the bytes, compared the manifest and corresponding provenance audit record, and compared the original base/baseline bytes. For each restored entry it also read its original `sourceLocation`, compared bytes and hashes, checked absence at captured historical head 612ea0a7e4d64480bdd01e0ac842b539115342ee, and checked tracked Git entries and ignored-path matching. It asserted only the five originals plus provenance were added. Exit 0: 81 entries, 81 hash matches, 76 original byte-identical entries, all 81 provenance rows verified, five original temp files byte-identical, unchanged manifest/report, only six allowed additions. This is a retention validation, not product-test or historical behavior evidence.\n\nTest changes: none. Both commands exited 0 with empty output:\n\n```bash\ngit diff --stat 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No product tests or historical exercise were run by this reviewer. The implementer's `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -` has its complete stdin script and exit-zero output in task-28-report.md. It checks the historical red state separately from final restored integrity, all 81 Git blobs, original temp-source bytes, provenance identities, unchanged original bytes and the six-path addition boundary. It plausibly and directly covers this archived-data-only task. The baseline `fail` describes the actual 76/81 archive-integrity defect; the combined script's exit zero does not reclassify the baseline or certify the historical exercise.\n",
+          "text": "No product tests or historical exercise were run by this reviewer. The implementer's `TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -` has its complete stdin script and exit-zero output in task-28-report.md. It checks the historical red state separately from final restored integrity, all 81 Git blobs, original temp-source bytes, provenance identities, unchanged original bytes and the six-path addition boundary. It plausibly and directly covers this archived-data-only task. The baseline `fail` describes the actual 76/81 archive-integrity defect; the combined script's exit zero does not reclassify the baseline or certify the historical exercise.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2820,
+          "byteEnd": 3476
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Reviewer additionally performed authorized read-only mechanical source/evidence integrity validation using `python3 -` with Python stdlib hashlib/json/pathlib and subprocess Git reads. For every manifest entry it read `git show <head>:<archive-path>`, hashed the bytes, compared the manifest and corresponding provenance audit record, and compared the original base/baseline bytes. For each restored entry it also read its original `sourceLocation`, compared bytes and hashes, checked absence at captured historical head 612ea0a7e4d64480bdd01e0ac842b539115342ee, and checked tracked Git entries and ignored-path matching. It asserted only the five originals plus provenance were added. Exit 0: 81 entries, 81 hash matches, 76 original byte-identical entries, all 81 provenance rows verified, five original temp files byte-identical, unchanged manifest/report, only six allowed additions. This is a retention validation, not product-test or historical behavior evidence.\n",
+          "text": "Reviewer additionally performed authorized read-only mechanical source/evidence integrity validation using `python3 -` with Python stdlib hashlib/json/pathlib and subprocess Git reads. For every manifest entry it read `git show <head>:<archive-path>`, hashed the bytes, compared the manifest and corresponding provenance audit record, and compared the original base/baseline bytes. For each restored entry it also read its original `sourceLocation`, compared bytes and hashes, checked absence at captured historical head 612ea0a7e4d64480bdd01e0ac842b539115342ee, and checked tracked Git entries and ignored-path matching. It asserted only the five originals plus provenance were added. Exit 0: 81 entries, 81 hash matches, 76 original byte-identical entries, all 81 provenance rows verified, five original temp files byte-identical, unchanged manifest/report, only six allowed additions. This is a retention validation, not product-test or historical behavior evidence.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 3477,
+          "byteEnd": 4447
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes: none. Both commands exited 0 with empty output:\n",
+          "text": "Test changes: none. Both commands exited 0 with empty output:",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 4448,
+          "byteEnd": 4510
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```bash\ngit diff --stat 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```\n",
+          "text": "```bash\ngit diff --stat 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\ngit diff 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e -- 'tests/**' 'test/**' 'spec/**' '**/tests/**' '**/test/**' '**/spec/**' '*_test.*' '*.test.*' 'test_*.*' '*_spec.*' '*.spec.*' '**/*_test.*' '**/*.test.*' '**/test_*.*' '**/*_spec.*' '**/*.spec.*'\n```",
+          "listMarker": null,
+          "positionInSection": 4,
+          "lineStart": 35,
+          "lineEnd": 38,
+          "byteStart": 4511,
+          "byteEnd": 5112
+        }
+      ]
+    },
+    {
+      "section": "Review identities and package",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Review identities and package\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Review identities and package"
+      ],
+      "lineStart": 40,
+      "lineEnd": 45,
+      "byteStart": 5113,
+      "byteEnd": 5998,
+      "bodyLineStart": 41,
+      "rawText": "## Review identities and package\n\n`git merge-base --is-ancestor <base> <head>` exited 0. Each commit was resolved individually with `git rev-parse --verify <sha>^{commit}`. Review-package exited 0, one commit, 45754 bytes, six files; package retained at task-28-review-initial.diff. Task worktree HEAD equals captured head and status is empty. Caller integration HEAD was base 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551 with empty status; this observed difference changes no captured review identity and implies no cause.\n\nTwo initial read invocation errors were corrected: rev-parse --verify requires one revision per invocation, and frozen-plan metadata lives at the absolute integration plan path rather than task-worktree-relative path. Both identities and the complete task-28 frozen section were subsequently read successfully. No required read or validation remains unavailable.\n\n",
+      "bodyRawText": "\n`git merge-base --is-ancestor <base> <head>` exited 0. Each commit was resolved individually with `git rev-parse --verify <sha>^{commit}`. Review-package exited 0, one commit, 45754 bytes, six files; package retained at task-28-review-initial.diff. Task worktree HEAD equals captured head and status is empty. Caller integration HEAD was base 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551 with empty status; this observed difference changes no captured review identity and implies no cause.\n\nTwo initial read invocation errors were corrected: rev-parse --verify requires one revision per invocation, and frozen-plan metadata lives at the absolute integration plan path rather than task-worktree-relative path. Both identities and the complete task-28 frozen section were subsequently read successfully. No required read or validation remains unavailable.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "`git merge-base --is-ancestor <base> <head>` exited 0. Each commit was resolved individually with `git rev-parse --verify <sha>^{commit}`. Review-package exited 0, one commit, 45754 bytes, six files; package retained at task-28-review-initial.diff. Task worktree HEAD equals captured head and status is empty. Caller integration HEAD was base 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551 with empty status; this observed difference changes no captured review identity and implies no cause.\n",
+          "text": "`git merge-base --is-ancestor <base> <head>` exited 0. Each commit was resolved individually with `git rev-parse --verify <sha>^{commit}`. Review-package exited 0, one commit, 45754 bytes, six files; package retained at task-28-review-initial.diff. Task worktree HEAD equals captured head and status is empty. Caller integration HEAD was base 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551 with empty status; this observed difference changes no captured review identity and implies no cause.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 42,
+          "lineEnd": 42,
+          "byteStart": 5147,
+          "byteEnd": 5633
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Two initial read invocation errors were corrected: rev-parse --verify requires one revision per invocation, and frozen-plan metadata lives at the absolute integration plan path rather than task-worktree-relative path. Both identities and the complete task-28 frozen section were subsequently read successfully. No required read or validation remains unavailable.\n",
+          "text": "Two initial read invocation errors were corrected: rev-parse --verify requires one revision per invocation, and frozen-plan metadata lives at the absolute integration plan path rather than task-worktree-relative path. Both identities and the complete task-28 frozen section were subsequently read successfully. No required read or validation remains unavailable.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 44,
+          "lineEnd": 44,
+          "byteStart": 5634,
+          "byteEnd": 5997
+        }
+      ]
+    },
+    {
+      "section": "Check records and coverage",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Check records and coverage\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Check records and coverage"
+      ],
+      "lineStart": 46,
+      "lineEnd": 79,
+      "byteStart": 5998,
+      "byteEnd": 7703,
+      "bodyLineStart": 47,
+      "rawText": "## Check records and coverage\n\nThe following original implementer records are preserved unchanged. The final live/pass record matches the required integrity check and captured head tree. The initial live/fail record remains fail at the original pre-restoration tree, not the rebase base. These records establish archival integrity only. Full measurement script and output remain at their original report location.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ]\n}\n```\n\n",
+      "bodyRawText": "\nThe following original implementer records are preserved unchanged. The final live/pass record matches the required integrity check and captured head tree. The initial live/fail record remains fail at the original pre-restoration tree, not the rebase base. These records establish archival integrity only. Full measurement script and output remain at their original report location.\n\n```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ]\n}\n```\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The following original implementer records are preserved unchanged. The final live/pass record matches the required integrity check and captured head tree. The initial live/fail record remains fail at the original pre-restoration tree, not the rebase base. These records establish archival integrity only. Full measurement script and output remain at their original report location.\n",
+          "text": "The following original implementer records are preserved unchanged. The final live/pass record matches the required integrity check and captured head tree. The initial live/fail record remains fail at the original pre-restoration tree, not the rebase base. These records establish archival integrity only. Full measurement script and output remain at their original report location.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 48,
+          "lineEnd": 48,
+          "byteStart": 6029,
+          "byteEnd": 6412
+        },
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ]\n}\n```\n",
+          "text": "```json\n{\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ]\n}\n```",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 50,
+          "lineEnd": 78,
+          "byteStart": 6413,
+          "byteEnd": 7702
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Failure attribution"
+      ],
+      "lineStart": 80,
+      "lineEnd": 83,
+      "byteStart": 7703,
+      "byteEnd": 8146,
+      "bodyLineStart": 81,
+      "rawText": "## Failure attribution\n\n`failureAttribution: []`. Relevant progress history contains no Recovery failure-attribution records and no recorded run failure history was supplied. The original archive-integrity gap is measured at initial baseline tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d and fixed at the captured head tree; no new introducing-task or run-start ownership is inferred. No behavioral failure is discharged by this restoration.\n\n",
+      "bodyRawText": "\n`failureAttribution: []`. Relevant progress history contains no Recovery failure-attribution records and no recorded run failure history was supplied. The original archive-integrity gap is measured at initial baseline tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d and fixed at the captured head tree; no new introducing-task or run-start ownership is inferred. No behavioral failure is discharged by this restoration.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "`failureAttribution: []`. Relevant progress history contains no Recovery failure-attribution records and no recorded run failure history was supplied. The original archive-integrity gap is measured at initial baseline tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d and fixed at the captured head tree; no new introducing-task or run-start ownership is inferred. No behavioral failure is discharged by this restoration.\n",
+          "text": "`failureAttribution: []`. Relevant progress history contains no Recovery failure-attribution records and no recorded run failure history was supplied. The original archive-integrity gap is measured at initial baseline tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d and fixed at the captured head tree; no new introducing-task or run-start ownership is inferred. No behavioral failure is discharged by this restoration.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 82,
+          "lineEnd": 82,
+          "byteStart": 7727,
+          "byteEnd": 8145
+        }
+      ]
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Structured result\n",
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Structured result"
+      ],
+      "lineStart": 84,
+      "lineEnd": 122,
+      "byteStart": 8146,
+      "byteEnd": 9736,
+      "bodyLineStart": 85,
+      "rawText": "## Structured result\n\n```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "bodyRawText": "\n```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 86,
+          "lineEnd": 122,
+          "byteStart": 8168,
+          "byteEnd": 9736
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Spec compliance"
+      ],
+      "positionInSection": 5,
+      "key": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.",
+      "text": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.",
+      "rawText": "Historical limitations remain explicit: representative original source only, no baseline/control or repeated-run certification, controlled assembler failure versus successful review-package distinction, no task-review policy coverage, initial verifier false positives, sampled observations, denied global process inspection, and absent full sweep. Neither this review nor restoration supplies a new historical behavioral claim, reverses rejected measurement/fallback dispositions, or grants root acceptance. Caller-owned sweeps, behavioral assessment, wider review and human acceptance remain pending. Task .27 and its closure hold were untouched.\n",
+      "lineStart": 18,
+      "lineEnd": 18,
+      "byteStart": 2008,
+      "byteEnd": 2656,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none.",
+      "text": "Critical: none.",
+      "rawText": "Critical: none.\n",
+      "lineStart": 22,
+      "lineEnd": 22,
+      "byteStart": 2668,
+      "byteEnd": 2684,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Issues"
+      ],
+      "positionInSection": 2,
+      "key": "Important: none.",
+      "text": "Important: none.",
+      "rawText": "Important: none.\n",
+      "lineStart": 23,
+      "lineEnd": 23,
+      "byteStart": 2684,
+      "byteEnd": 2701,
+      "appearanceClass": "explicit-no-finding-declaration",
+      "isDeclaration": true,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": false
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 28 / super-plan-ufz.31 independent review",
+        "Issues"
+      ],
+      "positionInSection": 3,
+      "key": "Minor: none.",
+      "text": "Minor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.",
+      "rawText": "Minor: none.\nWarnings/unverified acceptance items: none within this task's bounded retention scope.\n",
+      "lineStart": 24,
+      "lineEnd": 25,
+      "byteStart": 2701,
+      "byteEnd": 2801,
+      "appearanceClass": "historical-minor-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": true,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 86,
+      "lineEnd": 122,
+      "byteStart": 8168,
+      "byteEnd": 9736,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 8,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.31\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551\",\n  \"head\": \"7d5abfe28d01de5153d5905e48f057869ceb2a5e\",\n  \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"baseline-red-integrity; captured e3749b014f6939cb82f5e79a33dc020f5b3961f0; exact stdin script in report Tests\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"f062b7c7ec1b967aa64952fad937ff6982cdb084\",\n      \"command\": \"TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.31 python3 -\",\n      \"configuration\": \"restored-git-tree-integrity; all 81 historical manifest identities; exact stdin script in report Tests\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 86,
+      "lineEnd": 122,
+      "byteStart": 8168,
+      "byteEnd": 9736,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}

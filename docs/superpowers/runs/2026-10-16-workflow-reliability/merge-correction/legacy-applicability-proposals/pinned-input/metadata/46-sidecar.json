@@ -1,0 +1,464 @@
+{
+  "sidecarVersion": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+  "artifact": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-25-review.md",
+  "rawArtifact": "task-report-history-r1/raw/task-25-review.md",
+  "rawSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+  "rawByteCount": 10824,
+  "originalMetadata": {
+    "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-review.md",
+    "durablePath": "task-report-history-r1/raw/task-25-review.md",
+    "sha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+    "byteCount": 10824,
+    "logicalRole": "review",
+    "ordinal": 25,
+    "logicalTaskId": "super-plan-ufz.28",
+    "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+    "disposition": "copied",
+    "fileType": "markdown",
+    "rawPath": "task-report-history-r1/raw/task-25-review.md",
+    "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+    "error": "report-verdict: --complete: missing finding sections"
+  },
+  "classification": "legacy-task-review",
+  "hasStandardizedFindingHeadings": true,
+  "reportedStatusLines": [
+    {
+      "line": 3,
+      "rawText": "Status: CLEAN"
+    }
+  ],
+  "sourceDisposition": "legacy format retained with exact passages; canonical parser gap not silently cleared",
+  "resolutionRecords": [],
+  "acceptanceJudgment": null,
+  "sections": [
+    {
+      "section": null,
+      "sectionOrdinal": 0,
+      "headingLevel": 0,
+      "headingRaw": null,
+      "hierarchy": [],
+      "lineStart": 1,
+      "lineEnd": 0,
+      "byteStart": 0,
+      "byteEnd": 0,
+      "bodyLineStart": 1,
+      "rawText": "",
+      "bodyRawText": "",
+      "units": []
+    },
+    {
+      "section": "Task 25 review — super-plan-ufz.28",
+      "sectionOrdinal": 1,
+      "headingLevel": 1,
+      "headingRaw": "# Task 25 review — super-plan-ufz.28\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28"
+      ],
+      "lineStart": 1,
+      "lineEnd": 4,
+      "byteStart": 0,
+      "byteEnd": 55,
+      "bodyLineStart": 2,
+      "rawText": "# Task 25 review — super-plan-ufz.28\n\nStatus: CLEAN\n\n",
+      "bodyRawText": "\nStatus: CLEAN\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Status: CLEAN\n",
+          "text": "Status: CLEAN",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 3,
+          "lineEnd": 3,
+          "byteStart": 40,
+          "byteEnd": 54
+        }
+      ]
+    },
+    {
+      "section": "Spec compliance",
+      "sectionOrdinal": 2,
+      "headingLevel": 2,
+      "headingRaw": "## Spec compliance\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Spec compliance"
+      ],
+      "lineStart": 5,
+      "lineEnd": 12,
+      "byteStart": 55,
+      "byteEnd": 1207,
+      "bodyLineStart": 6,
+      "rawText": "## Spec compliance\n\n✅ Current bead and comments read with `bd show super-plan-ufz.28 --json` and `bd comments super-plan-ufz.28`; no comments or amendments. The frozen Task 25 section and brief agree with the bead. Only tests/super-code/test-dispatch-text.sh changes, with two inserted lines at 11–12. The shared mktemp directory is normalized once using Node path.resolve before every derived expectation. No production code, spec, environment exclusion, invocation filename, equality check, or semantic assertion changes.\n\n✅ All three required configurations have retained live/pass results on the pinned final tree. The explicit slash and slash-free spellings name the same task-owned directory; replacing shared /private/tmp with that owned directory preserves the tested normalization property. The inherited macOS TMPDIR remains inherited, including its trailing slash. HOME/XDG isolation is disclosed.\n\nThe brief's physical/canonical wording is interpreted with its express requirement to match the consumer: lexical path.resolve is correct here. Resolving symlinks with realpath/pwd -P would differ from the consumer and is unnecessary.\n\n",
+      "bodyRawText": "\n✅ Current bead and comments read with `bd show super-plan-ufz.28 --json` and `bd comments super-plan-ufz.28`; no comments or amendments. The frozen Task 25 section and brief agree with the bead. Only tests/super-code/test-dispatch-text.sh changes, with two inserted lines at 11–12. The shared mktemp directory is normalized once using Node path.resolve before every derived expectation. No production code, spec, environment exclusion, invocation filename, equality check, or semantic assertion changes.\n\n✅ All three required configurations have retained live/pass results on the pinned final tree. The explicit slash and slash-free spellings name the same task-owned directory; replacing shared /private/tmp with that owned directory preserves the tested normalization property. The inherited macOS TMPDIR remains inherited, including its trailing slash. HOME/XDG isolation is disclosed.\n\nThe brief's physical/canonical wording is interpreted with its express requirement to match the consumer: lexical path.resolve is correct here. Resolving symlinks with realpath/pwd -P would differ from the consumer and is unnecessary.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ Current bead and comments read with `bd show super-plan-ufz.28 --json` and `bd comments super-plan-ufz.28`; no comments or amendments. The frozen Task 25 section and brief agree with the bead. Only tests/super-code/test-dispatch-text.sh changes, with two inserted lines at 11–12. The shared mktemp directory is normalized once using Node path.resolve before every derived expectation. No production code, spec, environment exclusion, invocation filename, equality check, or semantic assertion changes.\n",
+          "text": "✅ Current bead and comments read with `bd show super-plan-ufz.28 --json` and `bd comments super-plan-ufz.28`; no comments or amendments. The frozen Task 25 section and brief agree with the bead. Only tests/super-code/test-dispatch-text.sh changes, with two inserted lines at 11–12. The shared mktemp directory is normalized once using Node path.resolve before every derived expectation. No production code, spec, environment exclusion, invocation filename, equality check, or semantic assertion changes.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 7,
+          "lineEnd": 7,
+          "byteStart": 75,
+          "byteEnd": 583
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "✅ All three required configurations have retained live/pass results on the pinned final tree. The explicit slash and slash-free spellings name the same task-owned directory; replacing shared /private/tmp with that owned directory preserves the tested normalization property. The inherited macOS TMPDIR remains inherited, including its trailing slash. HOME/XDG isolation is disclosed.\n",
+          "text": "✅ All three required configurations have retained live/pass results on the pinned final tree. The explicit slash and slash-free spellings name the same task-owned directory; replacing shared /private/tmp with that owned directory preserves the tested normalization property. The inherited macOS TMPDIR remains inherited, including its trailing slash. HOME/XDG isolation is disclosed.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 9,
+          "lineEnd": 9,
+          "byteStart": 584,
+          "byteEnd": 970
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The brief's physical/canonical wording is interpreted with its express requirement to match the consumer: lexical path.resolve is correct here. Resolving symlinks with realpath/pwd -P would differ from the consumer and is unnecessary.\n",
+          "text": "The brief's physical/canonical wording is interpreted with its express requirement to match the consumer: lexical path.resolve is correct here. Resolving symlinks with realpath/pwd -P would differ from the consumer and is unnecessary.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 11,
+          "lineEnd": 11,
+          "byteStart": 971,
+          "byteEnd": 1206
+        }
+      ]
+    },
+    {
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "headingLevel": 2,
+      "headingRaw": "## Issues\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Issues"
+      ],
+      "lineStart": 13,
+      "lineEnd": 16,
+      "byteStart": 1207,
+      "byteEnd": 1297,
+      "bodyLineStart": 14,
+      "rawText": "## Issues\n\nCritical: none. Important: none. Minor: none. No unresolved acceptance items.\n\n",
+      "bodyRawText": "\nCritical: none. Important: none. Minor: none. No unresolved acceptance items.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Critical: none. Important: none. Minor: none. No unresolved acceptance items.\n",
+          "text": "Critical: none. Important: none. Minor: none. No unresolved acceptance items.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 15,
+          "lineEnd": 15,
+          "byteStart": 1218,
+          "byteEnd": 1296
+        }
+      ]
+    },
+    {
+      "section": "Focused source checks",
+      "sectionOrdinal": 4,
+      "headingLevel": 2,
+      "headingRaw": "## Focused source checks\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Focused source checks"
+      ],
+      "lineStart": 17,
+      "lineEnd": 22,
+      "byteStart": 1297,
+      "byteEnd": 2352,
+      "bodyLineStart": 18,
+      "rawText": "## Focused source checks\n\nConcrete risk: normalizing the fixture differently from dispatch could merely move the mismatch. Read pinned skills/super-code/scripts/dispatch-text.mjs around line 130: `ws = dirname(resolve(o.ledger))`. The fixture now uses the same node:path.resolve operation. Read the pinned test's affected assertions at lines 63, 85, 89 and 312: they still require the report/brief ordinal and complete dispatch filenames, including invocation identity. The diff itself proves all existing assertions and captured-source/prior-bundle tests remain unchanged. No new reachability wrapper or superseded production call site is introduced.\n\nConcrete risk: the initial baseline preceded rebasing. `git diff 5bbc02c6b754ed94b6fa50f5c1225d75664c2a99 c3fac4369c7c737e2e7f9f7250fd253b21442d12 -- tests/super-code/test-dispatch-text.sh skills/super-code/scripts/dispatch-text.mjs` was empty, confirming those two relevant inputs did not change between initial and rebased bases. This is source comparison, not a measured check at the rebased base.\n\n",
+      "bodyRawText": "\nConcrete risk: normalizing the fixture differently from dispatch could merely move the mismatch. Read pinned skills/super-code/scripts/dispatch-text.mjs around line 130: `ws = dirname(resolve(o.ledger))`. The fixture now uses the same node:path.resolve operation. Read the pinned test's affected assertions at lines 63, 85, 89 and 312: they still require the report/brief ordinal and complete dispatch filenames, including invocation identity. The diff itself proves all existing assertions and captured-source/prior-bundle tests remain unchanged. No new reachability wrapper or superseded production call site is introduced.\n\nConcrete risk: the initial baseline preceded rebasing. `git diff 5bbc02c6b754ed94b6fa50f5c1225d75664c2a99 c3fac4369c7c737e2e7f9f7250fd253b21442d12 -- tests/super-code/test-dispatch-text.sh skills/super-code/scripts/dispatch-text.mjs` was empty, confirming those two relevant inputs did not change between initial and rebased bases. This is source comparison, not a measured check at the rebased base.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Concrete risk: normalizing the fixture differently from dispatch could merely move the mismatch. Read pinned skills/super-code/scripts/dispatch-text.mjs around line 130: `ws = dirname(resolve(o.ledger))`. The fixture now uses the same node:path.resolve operation. Read the pinned test's affected assertions at lines 63, 85, 89 and 312: they still require the report/brief ordinal and complete dispatch filenames, including invocation identity. The diff itself proves all existing assertions and captured-source/prior-bundle tests remain unchanged. No new reachability wrapper or superseded production call site is introduced.\n",
+          "text": "Concrete risk: normalizing the fixture differently from dispatch could merely move the mismatch. Read pinned skills/super-code/scripts/dispatch-text.mjs around line 130: `ws = dirname(resolve(o.ledger))`. The fixture now uses the same node:path.resolve operation. Read the pinned test's affected assertions at lines 63, 85, 89 and 312: they still require the report/brief ordinal and complete dispatch filenames, including invocation identity. The diff itself proves all existing assertions and captured-source/prior-bundle tests remain unchanged. No new reachability wrapper or superseded production call site is introduced.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 19,
+          "lineEnd": 19,
+          "byteStart": 1323,
+          "byteEnd": 1949
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Concrete risk: the initial baseline preceded rebasing. `git diff 5bbc02c6b754ed94b6fa50f5c1225d75664c2a99 c3fac4369c7c737e2e7f9f7250fd253b21442d12 -- tests/super-code/test-dispatch-text.sh skills/super-code/scripts/dispatch-text.mjs` was empty, confirming those two relevant inputs did not change between initial and rebased bases. This is source comparison, not a measured check at the rebased base.\n",
+          "text": "Concrete risk: the initial baseline preceded rebasing. `git diff 5bbc02c6b754ed94b6fa50f5c1225d75664c2a99 c3fac4369c7c737e2e7f9f7250fd253b21442d12 -- tests/super-code/test-dispatch-text.sh skills/super-code/scripts/dispatch-text.mjs` was empty, confirming those two relevant inputs did not change between initial and rebased bases. This is source comparison, not a measured check at the rebased base.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 21,
+          "lineEnd": 21,
+          "byteStart": 1950,
+          "byteEnd": 2351
+        }
+      ]
+    },
+    {
+      "section": "Package and caller identity",
+      "sectionOrdinal": 5,
+      "headingLevel": 2,
+      "headingRaw": "## Package and caller identity\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Package and caller identity"
+      ],
+      "lineStart": 23,
+      "lineEnd": 26,
+      "byteStart": 2352,
+      "byteEnd": 2912,
+      "bodyLineStart": 24,
+      "rawText": "## Package and caller identity\n\nThe required merge-base ancestor check exited 0; both captured commits resolved. Authorized review-package command generated task-25-review-initial.diff, exit 0, one commit and one changed file. Caller HEAD equaled the pinned head and `git status --short` was empty. `git rev-parse` independently confirmed final tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d, rebased-base tree cbd25c0112630bd309c5bf74bab4f48ab923d27b and initial-base tree 0c1a61d28b20d557e0664056906edbafaed34d36. No review-owned filesystem view was needed.\n\n",
+      "bodyRawText": "\nThe required merge-base ancestor check exited 0; both captured commits resolved. Authorized review-package command generated task-25-review-initial.diff, exit 0, one commit and one changed file. Caller HEAD equaled the pinned head and `git status --short` was empty. `git rev-parse` independently confirmed final tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d, rebased-base tree cbd25c0112630bd309c5bf74bab4f48ab923d27b and initial-base tree 0c1a61d28b20d557e0664056906edbafaed34d36. No review-owned filesystem view was needed.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The required merge-base ancestor check exited 0; both captured commits resolved. Authorized review-package command generated task-25-review-initial.diff, exit 0, one commit and one changed file. Caller HEAD equaled the pinned head and `git status --short` was empty. `git rev-parse` independently confirmed final tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d, rebased-base tree cbd25c0112630bd309c5bf74bab4f48ab923d27b and initial-base tree 0c1a61d28b20d557e0664056906edbafaed34d36. No review-owned filesystem view was needed.\n",
+          "text": "The required merge-base ancestor check exited 0; both captured commits resolved. Authorized review-package command generated task-25-review-initial.diff, exit 0, one commit and one changed file. Caller HEAD equaled the pinned head and `git status --short` was empty. `git rev-parse` independently confirmed final tree 79fc403800ff3b89c60012d61d7e55f5f0e7099d, rebased-base tree cbd25c0112630bd309c5bf74bab4f48ab923d27b and initial-base tree 0c1a61d28b20d557e0664056906edbafaed34d36. No review-owned filesystem view was needed.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 25,
+          "lineEnd": 25,
+          "byteStart": 2384,
+          "byteEnd": 2911
+        }
+      ]
+    },
+    {
+      "section": "Test evidence",
+      "sectionOrdinal": 6,
+      "headingLevel": 2,
+      "headingRaw": "## Test evidence\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Test evidence"
+      ],
+      "lineStart": 27,
+      "lineEnd": 34,
+      "byteStart": 2912,
+      "byteEnd": 4704,
+      "bodyLineStart": 28,
+      "rawText": "## Test evidence\n\nNo tests were run by this reviewer. Reviewed retained command: `bash tests/super-code/test-dispatch-text.sh`. The runner, configuration headers, sourceTree headers, complete suite pass/fail summaries and exit statuses plausibly cover the actual fixture defect. Both initial inherited/trailing logs show four failures involving double-slash expected paths and single-slash actual paths; initial slash-free passes. Final inherited/trailing/slash-free logs identify the pinned final tree and each finish `dispatch-text: all tests passed`, exit=0. Each final log includes successful captured-source-across-two-caller-advances and prior-artifact-content assertions. The initial inherited raw log lacks the later runner's header; its command/source/configuration association is retained from the implementer report, with the inherited pathname independently visible in the failure output. This limitation does not affect the three fully headed final acceptance checks.\n\nTest changes commands executed: `git diff --stat c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]` and `git diff c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]`, expanding the exact dispatch-provided list. Both exited 0: one test file, two added lines, no deleted/skipped/loosened assertions. Full package was read once.\n\nThe report discloses the initial process-check self-root refusal, successful retry, two unidentified baseline cwd matches and later clean stop/check logs. It does not claim proven test-process attribution. Retained final hygiene and stop files are empty, consistent with the reported exit-0/no-match results; no daemon or survivor is established. No test was rerun for review.\n\n",
+      "bodyRawText": "\nNo tests were run by this reviewer. Reviewed retained command: `bash tests/super-code/test-dispatch-text.sh`. The runner, configuration headers, sourceTree headers, complete suite pass/fail summaries and exit statuses plausibly cover the actual fixture defect. Both initial inherited/trailing logs show four failures involving double-slash expected paths and single-slash actual paths; initial slash-free passes. Final inherited/trailing/slash-free logs identify the pinned final tree and each finish `dispatch-text: all tests passed`, exit=0. Each final log includes successful captured-source-across-two-caller-advances and prior-artifact-content assertions. The initial inherited raw log lacks the later runner's header; its command/source/configuration association is retained from the implementer report, with the inherited pathname independently visible in the failure output. This limitation does not affect the three fully headed final acceptance checks.\n\nTest changes commands executed: `git diff --stat c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]` and `git diff c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]`, expanding the exact dispatch-provided list. Both exited 0: one test file, two added lines, no deleted/skipped/loosened assertions. Full package was read once.\n\nThe report discloses the initial process-check self-root refusal, successful retry, two unidentified baseline cwd matches and later clean stop/check logs. It does not claim proven test-process attribution. Retained final hygiene and stop files are empty, consistent with the reported exit-0/no-match results; no daemon or survivor is established. No test was rerun for review.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "No tests were run by this reviewer. Reviewed retained command: `bash tests/super-code/test-dispatch-text.sh`. The runner, configuration headers, sourceTree headers, complete suite pass/fail summaries and exit statuses plausibly cover the actual fixture defect. Both initial inherited/trailing logs show four failures involving double-slash expected paths and single-slash actual paths; initial slash-free passes. Final inherited/trailing/slash-free logs identify the pinned final tree and each finish `dispatch-text: all tests passed`, exit=0. Each final log includes successful captured-source-across-two-caller-advances and prior-artifact-content assertions. The initial inherited raw log lacks the later runner's header; its command/source/configuration association is retained from the implementer report, with the inherited pathname independently visible in the failure output. This limitation does not affect the three fully headed final acceptance checks.\n",
+          "text": "No tests were run by this reviewer. Reviewed retained command: `bash tests/super-code/test-dispatch-text.sh`. The runner, configuration headers, sourceTree headers, complete suite pass/fail summaries and exit statuses plausibly cover the actual fixture defect. Both initial inherited/trailing logs show four failures involving double-slash expected paths and single-slash actual paths; initial slash-free passes. Final inherited/trailing/slash-free logs identify the pinned final tree and each finish `dispatch-text: all tests passed`, exit=0. Each final log includes successful captured-source-across-two-caller-advances and prior-artifact-content assertions. The initial inherited raw log lacks the later runner's header; its command/source/configuration association is retained from the implementer report, with the inherited pathname independently visible in the failure output. This limitation does not affect the three fully headed final acceptance checks.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 29,
+          "lineEnd": 29,
+          "byteStart": 2930,
+          "byteEnd": 3893
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "Test changes commands executed: `git diff --stat c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]` and `git diff c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]`, expanding the exact dispatch-provided list. Both exited 0: one test file, two added lines, no deleted/skipped/loosened assertions. Full package was read once.\n",
+          "text": "Test changes commands executed: `git diff --stat c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]` and `git diff c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e -- [TEST_PATHSPECS]`, expanding the exact dispatch-provided list. Both exited 0: one test file, two added lines, no deleted/skipped/loosened assertions. Full package was read once.",
+          "listMarker": null,
+          "positionInSection": 2,
+          "lineStart": 31,
+          "lineEnd": 31,
+          "byteStart": 3894,
+          "byteEnd": 4325
+        },
+        {
+          "unitKind": "paragraph",
+          "rawText": "The report discloses the initial process-check self-root refusal, successful retry, two unidentified baseline cwd matches and later clean stop/check logs. It does not claim proven test-process attribution. Retained final hygiene and stop files are empty, consistent with the reported exit-0/no-match results; no daemon or survivor is established. No test was rerun for review.\n",
+          "text": "The report discloses the initial process-check self-root refusal, successful retry, two unidentified baseline cwd matches and later clean stop/check logs. It does not claim proven test-process attribution. Retained final hygiene and stop files are empty, consistent with the reported exit-0/no-match results; no daemon or survivor is established. No test was rerun for review.",
+          "listMarker": null,
+          "positionInSection": 3,
+          "lineStart": 33,
+          "lineEnd": 33,
+          "byteStart": 4326,
+          "byteEnd": 4703
+        }
+      ]
+    },
+    {
+      "section": "Check records and coverage",
+      "sectionOrdinal": 7,
+      "headingLevel": 2,
+      "headingRaw": "## Check records and coverage\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Check records and coverage"
+      ],
+      "lineStart": 35,
+      "lineEnd": 38,
+      "byteStart": 4704,
+      "byteEnd": 5060,
+      "bodyLineStart": 36,
+      "rawText": "## Check records and coverage\n\nThe structured result below retains the implementer's seven evidence records unchanged and selects its three final requiredLiveChecks. All required final check tuples have matching live/pass evidence and satisfy the three environment obligations. These are reviewed measurements, not measurements executed by this reviewer.\n\n",
+      "bodyRawText": "\nThe structured result below retains the implementer's seven evidence records unchanged and selects its three final requiredLiveChecks. All required final check tuples have matching live/pass evidence and satisfy the three environment obligations. These are reviewed measurements, not measurements executed by this reviewer.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "The structured result below retains the implementer's seven evidence records unchanged and selects its three final requiredLiveChecks. All required final check tuples have matching live/pass evidence and satisfy the three environment obligations. These are reviewed measurements, not measurements executed by this reviewer.\n",
+          "text": "The structured result below retains the implementer's seven evidence records unchanged and selects its three final requiredLiveChecks. All required final check tuples have matching live/pass evidence and satisfy the three environment obligations. These are reviewed measurements, not measurements executed by this reviewer.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 37,
+          "lineEnd": 37,
+          "byteStart": 4735,
+          "byteEnd": 5059
+        }
+      ]
+    },
+    {
+      "section": "Failure attribution",
+      "sectionOrdinal": 8,
+      "headingLevel": 2,
+      "headingRaw": "## Failure attribution\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Failure attribution"
+      ],
+      "lineStart": 39,
+      "lineEnd": 42,
+      "byteStart": 5060,
+      "byteEnd": 5755,
+      "bodyLineStart": 40,
+      "rawText": "## Failure attribution\n\nRead relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.\n\n",
+      "bodyRawText": "\nRead relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.\n\n",
+      "units": [
+        {
+          "unitKind": "paragraph",
+          "rawText": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.\n",
+          "text": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 41,
+          "lineEnd": 41,
+          "byteStart": 5084,
+          "byteEnd": 5754
+        }
+      ]
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "headingLevel": 2,
+      "headingRaw": "## Structured result\n",
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Structured result"
+      ],
+      "lineStart": 43,
+      "lineEnd": 131,
+      "byteStart": 5755,
+      "byteEnd": 10824,
+      "bodyLineStart": 44,
+      "rawText": "## Structured result\n\n```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "bodyRawText": "\n```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "units": [
+        {
+          "unitKind": "fenced-block",
+          "rawText": "```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+          "text": "```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```",
+          "listMarker": null,
+          "positionInSection": 1,
+          "lineStart": 45,
+          "lineEnd": 131,
+          "byteStart": 5777,
+          "byteEnd": 10824
+        }
+      ]
+    }
+  ],
+  "candidatePassages": [
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "section": "Issues",
+      "sectionOrdinal": 3,
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Issues"
+      ],
+      "positionInSection": 1,
+      "key": "Critical: none. Important: none. Minor: none. No unresolved acceptance items.",
+      "text": "Critical: none. Important: none. Minor: none. No unresolved acceptance items.",
+      "rawText": "Critical: none. Important: none. Minor: none. No unresolved acceptance items.\n",
+      "lineStart": 15,
+      "lineEnd": 15,
+      "byteStart": 1218,
+      "byteEnd": 1296,
+      "appearanceClass": "historical-finding-assertion",
+      "isDeclaration": false,
+      "qualifiedNone": true,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "explicit-finding-heading",
+      "requiresSemanticInterpretation": true
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "section": "Failure attribution",
+      "sectionOrdinal": 8,
+      "hierarchy": [
+        "Task 25 review — super-plan-ufz.28",
+        "Failure attribution"
+      ],
+      "positionInSection": 1,
+      "key": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.",
+      "text": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.",
+      "rawText": "Read relevant progress history: task starts at initial base 5bbc02c6, task .27 lands c3fac436, and task .28 is implemented at 357c0059. No relevant Recovery/fix-owner record establishes an introducing task. Initial baseline tree is independently resolved, and initial failures support the bounded fixture repair; no measured rebased-base or run-start result is claimed. No run-owner exoneration or run-start baseline association is inferred. failureAttribution remains empty rather than inventing unsupported associations. Final passing measurements establish this task's acceptance only. Task .27's closure hold and caller-owned root/final acceptance remain untouched.\n",
+      "lineStart": 41,
+      "lineEnd": 41,
+      "byteStart": 5084,
+      "byteEnd": 5754,
+      "appearanceClass": "narrative-finding-context",
+      "isDeclaration": false,
+      "qualifiedNone": false,
+      "interpretation": "prospective-exact-passage; no semantic disposition or identity merge",
+      "selectionBasis": "warning-or-pending-wording",
+      "requiresSemanticInterpretation": true
+    }
+  ],
+  "structuredFieldAppearances": [
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "finding",
+      "jsonPointer": "/finding",
+      "fieldValue": "",
+      "text": "",
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 45,
+      "lineEnd": 131,
+      "byteStart": 5777,
+      "byteEnd": 10824,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    },
+    {
+      "section": "Structured result",
+      "sectionOrdinal": 9,
+      "field": "minors",
+      "jsonPointer": "/minors",
+      "fieldValue": [],
+      "text": null,
+      "exactJsonBlock": "```json\n{\n  \"id\": \"super-plan-ufz.28\",\n  \"status\": \"CLEAN\",\n  \"finding\": \"\",\n  \"minors\": [],\n  \"base\": \"c3fac4369c7c737e2e7f9f7250fd253b21442d12\",\n  \"head\": \"357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e\",\n  \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n  \"evidence\": [\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"fail\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"0c1a61d28b20d557e0664056906edbafaed34d36\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/base-slashfree.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"1e8641caa6a1ef1252f07d412a8d7694982e274d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/green-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-inherited.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-trailing.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\",\n      \"outcome\": \"pass\",\n      \"location\": \"/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-evidence/final-slashfree.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"requiredLiveChecks\": [\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"inherited; TMPDIR=/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"trailing; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28/; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    },\n    {\n      \"sourceTree\": \"79fc403800ff3b89c60012d61d7e55f5f0e7099d\",\n      \"command\": \"bash tests/super-code/test-dispatch-text.sh\",\n      \"configuration\": \"slashfree; TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.28; HOME=/tmp/sp-bce79baa/super-plan-ufz.28/home; XDG_*_HOME under /tmp/sp-bce79baa/super-plan-ufz.28\"\n    }\n  ],\n  \"failureAttribution\": []\n}\n```\n",
+      "lineStart": 45,
+      "lineEnd": 131,
+      "byteStart": 5777,
+      "byteEnd": 10824,
+      "isExplicitEmptyDeclaration": true,
+      "interpretation": "original JSON-field appearance; not automatically linked to prose renditions; empty is this field only"
+    }
+  ],
+  "uncertainties": [
+    "No automatic identity link between prose, JSON, fix-pass copies, archive variants or repeated text.",
+    "No later status, silence, FIXED/DONE/CLEAN, task closure or existence of verification discharges any appearance."
+  ],
+  "verification": {
+    "shaAndByteCountMatchInventory": true,
+    "allBytesPartitionedExactly": true,
+    "allPassageByteLocatorsVerified": true
+  }
+}
