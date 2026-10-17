@@ -51,7 +51,7 @@ A `redesign-<loop>-<K>` record (run-state.md item 7 (Design decisions)) whose `s
   - `r<M>` and its report: finish the fix step (spec fixes, tasks deduped by title under `sp:redesign-code-<K>-roast`, commit) and write `r<M> fixed`;
   - `r<M> fixed`, `skipped — design cap spent` or `none`: go on.
 
-  Then write state `applied`, re-enter `super-code`, and run the next numbered round. The design loop's `redesign-design-<K>` has no `designRoast` step: after the coverage round it writes `applied`, and its next round is the post-amendment design roast.
+  `applied` is written only after these remaining steps (for the code loop, the `designRoast` sub-states), so a record still at `beads-filed` always replays the amend roast steps; Amend Mode's return never wrote it early. Then write state `applied`, re-enter `super-code`, and run the next numbered round. The design loop's `redesign-design-<K>` has no `designRoast` step: after the coverage round it writes `applied`, and its next round is the post-amendment design roast.
 - `applied`, `aborted — <reason>`, `thrash — lastGood breach`: nothing to replay; the loop continues from its other records.
 
 The same rules apply to `redesign-design-<K>`, replayed through `super-design`'s re-entry. A recorded step-back's `redesign` is not re-dispatched: `<skills-root>/super-design/scripts/step-back-check --step-back … --keys … --ledger …` is re-run only when a round's step-back has no record yet.

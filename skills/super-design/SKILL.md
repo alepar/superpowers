@@ -765,7 +765,8 @@ ledger and overrides paths, this loop's `findings-ledger` invocation (item 2's i
 inputs excluded), the step-back record, the task-tree dump, the run-state file, and the bead
 context (§Decomposition's flag triple and the `Integration sweep:` wiring). After each of its
 steps, rewrite the `redesign-design-<K>` record's `state` in place (`amend-checked`,
-`specs-committed`, `beads-filed`, `applied`); fill its `amended` field from the amend record.
+`specs-committed`, `beads-filed`); this loop writes `applied` as soon as Amend Mode returns it, since
+it has no remaining step before its next round. Fill its `amended` field from the amend record.
 - `aborted — <reason>`: rewrite the state, park a `degraded-verdict` `redesign aborted —
   <reason>`, remove the `dissolved@r<N>` lines Step 1 wrote for this round's record from the
   overrides file, rebuild the ledger (item 2), and run the round `local`. The spent cycle is not
@@ -872,8 +873,10 @@ or any `redesign-*` field but `state`, never runs a roast, super-code or the nex
 routes on raw reports (the ledger is its input; read finding text by key through the ledger's
 `text` pointers), and never has the orchestrator edit specs: only the amend designer does. The
 calling loop's orchestrator runs Amend Mode inline; only the amend designer is dispatched. Per-loop
-differences live only in the loop table below. After each step the orchestrator rewrites the
-`redesign-<loop>-<K>` record's `state` with the state that step names; nothing else writes it.
+differences live only in the loop table below. After steps 2–4 the orchestrator rewrites the
+`redesign-<loop>-<K>` record's `state` with the state that step names (`amend-checked`,
+`specs-committed`, `beads-filed`), and the abort outcomes write `aborted — …`; `applied` is the
+calling loop's to write (step 7).
 
 **Inputs:** the root epic id; the root and nested spec paths; the ledger and overrides paths; the
 calling loop's findings-ledger invocation (its Step 1 input set, dropped inputs excluded); the
@@ -946,7 +949,7 @@ caller's bead context.
    `./coverage-reviewer-prompt.md` and `scripts/coverage-inputs` unchanged; its
    `## Changes since the previous round` lists the amend's beads and the `amended:` sections. No new
    coverage prompt.
-7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. The orchestrator writes state `applied` here.
+7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. Amend Mode does not write state `applied`: the calling loop writes it once its own remaining steps are done (the design loop as soon as Amend Mode returns, §Adversarial Review Loop, Redesign cycle; the code loop at super-auto §Redesign cycle step 4, after the amend design roast and its fixes).
 
 **After the commit nothing aborts.** A step from step 3's sync through step 6 that fails is retried
 once through its state's resume action; a second failure parks a `degraded-verdict`
@@ -968,7 +971,7 @@ the next roast re-validates the open items.
 - `aborted — amend rejected`: two rejects.
 - `aborted — <cause>`: any other failure before the commit.
 
-The orchestrator writes state `applied` on Step 7 and `aborted` on both abort outcomes (the terminal states).
+The orchestrator writes `aborted — …` on both abort outcomes; the calling loop writes `applied` when its remaining steps finish (step 7).
 
 Both aborts happen before the spec commit and leave the specs at HEAD; the caller runs the round
 `local`. A step-back with `scope: outside` never reaches Amend Mode: the caller parks or presents
