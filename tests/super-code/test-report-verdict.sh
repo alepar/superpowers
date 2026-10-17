@@ -235,5 +235,201 @@ assert_eq "$code" 2 "no argument exits 2"
 run bash "$R" a b
 assert_eq "$code" 2 "two arguments exit 2"
 
+echo "report-verdict --complete: complete final-review occurrences and stable archive identity"
+cat > "$T/complete-final.md" <<'EOF'
+Status: DONE
+## Verdict
+not ready (findings retained)
+## Must fix before landing
+- **Keep \"quoted\" café text.**
+  Evidence: src/one:7 — Ω
+  - nested detail stays with this occurrence
+- same finding
+- same finding
+## Untested scope
+1. Run the live check.
+## Deferred OK
+* **Deferred finding** with a \\ backslash.
+  Continuation preserves **formatting**.
+## Deferred OK
+- Another deferred occurrence.
+EOF
+run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/complete-final.md"
+assert_eq "$code" 0 "complete mode accepts a caller-supplied immutable source"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/complete-final.json"
+  run node --input-type=module - "$T/complete-final.json" "$T/complete-final.md" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const value = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+assert.deepEqual(value, {
+  version: 1, source: 'run/invocation-1/final-review', artifact: process.argv[3],
+  kind: 'final-review', verdict: 'not ready (findings retained)',
+  occurrences: [
+    {section:'Must fix before landing', position:1, key:'**Keep \\"quoted\\" café text.**',
+     text:'**Keep \\"quoted\\" café text.**\n  Evidence: src/one:7 — Ω\n  - nested detail stays with this occurrence'},
+    {section:'Must fix before landing', position:2, key:'same finding', text:'same finding'},
+    {section:'Must fix before landing', position:3, key:'same finding', text:'same finding'},
+    {section:'Untested scope', position:1, key:'Run the live check.', text:'Run the live check.'},
+    {section:'Deferred OK', position:1, key:'**Deferred finding** with a \\\\ backslash.',
+     text:'**Deferred finding** with a \\\\ backslash.\n  Continuation preserves **formatting**.'},
+    {section:'Deferred OK', position:2, key:'Another deferred occurrence.', text:'Another deferred occurrence.'},
+  ],
+});
+NODE
+  assert_eq "$code" 0 "all relevant sections, repeated occurrences and original text survive JSON encoding"
+  run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/complete-final.md"
+  assert_eq "$out" "$(cat "$T/complete-final.json")" "repeat parsing is deterministic"
+  cp "$T/complete-final.md" "$T/archive-final.md"
+  run bash "$R" --complete --source 'run/invocation-1/final-review' "$T/archive-final.md"
+  printf '%s\n' "$out" > "$T/archive-final.json"
+  run node --input-type=module - "$T/complete-final.json" "$T/archive-final.json" "$T/archive-final.md" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const original = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const archive = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
+assert.equal(archive.artifact, process.argv[4]);
+assert.equal(archive.source, original.source);
+assert.deepEqual(archive.occurrences, original.occurrences);
+NODE
+  assert_eq "$code" 0 "archiving changes artifact path but preserves source and occurrence identities"
+fi
+
+echo "report-verdict --complete: every roast finding section and severity"
+cat > "$T/complete-roast.md" <<'EOF'
+super-roast verdict: Blocking (4 confirmed)
+## Confirmed findings
+- [Blocking] a:1 — broken
+  evidence: actual proof
+- [Should-fix] b:2 — smaller
+- [Nit] c:3 — nit
+- [FYI] d:4 — context
+## Not verified (beyond panel cap)
+- [suggested Blocking] e:5 — unjudged
+## Not verified (dedupe failed or judge lost)
+- [unrated] f:6 — judge lost
+## Beyond remainder cap (count only)
+- 2 candidates dropped by the remainder cap
+## Rejected (with reason)
+- [Blocking] g:7 — rejected claim
+  evidence: retained reason
+## Unverified nits (spot-checked)
+- [Nit] h:8 — uncertain
+## Escalations (need human)
+- [Blocking] i:9 — unsettled panel
+## Deferred findings
+- [Should-fix] j:10 — deferred
+EOF
+run bash "$R" --complete --source 'invocation/roast' "$T/complete-roast.md"
+assert_eq "$code" 0 "roast complete mode exits 0"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/complete-roast.json"
+  run node --input-type=module - "$T/complete-roast.json" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const {kind, verdict, occurrences:o} = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+assert.equal(kind, 'roast');
+assert.equal(verdict, 'Blocking (4 confirmed)');
+assert.deepEqual(o.map(x => x.section), [
+  'Confirmed findings', 'Confirmed findings', 'Confirmed findings', 'Confirmed findings',
+  'Not verified (beyond panel cap)', 'Not verified (dedupe failed or judge lost)',
+  'Beyond remainder cap (count only)', 'Rejected (with reason)', 'Unverified nits (spot-checked)',
+  'Escalations (need human)', 'Deferred findings',
+]);
+assert.deepEqual(o.map(x => x.position), [1,2,3,4,1,1,1,1,1,1,1]);
+assert.deepEqual(o.map(x => x.key), ['[Blocking] a:1','[Should-fix] b:2','[Nit] c:3','[FYI] d:4',
+  '[suggested Blocking] e:5','[unrated] f:6','2 candidates dropped by the remainder cap',
+  '[Blocking] g:7','[Nit] h:8','[Blocking] i:9','[Should-fix] j:10']);
+assert.equal(o[0].text, '[Blocking] a:1 — broken\n  evidence: actual proof');
+assert.equal(o[7].text, '[Blocking] g:7 — rejected claim\n  evidence: retained reason');
+NODE
+  assert_eq "$code" 0 "all roast routes, severities, reason text and section-local positions are retained"
+fi
+
+echo "report-verdict --complete: uncapped extraction"
+run bash "$R" --complete --source 'invocation/many' "$T/many-mustfix.md"
+assert_eq "$code" 0 "large final review accepted"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/many.json"
+  run node --input-type=module - "$T/many.json" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const o = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences;
+assert.equal(o.length, 32);
+assert.deepEqual(o[31], {section:'Untested scope',position:12,key:'area 12',text:'area 12'});
+NODE
+  assert_eq "$code" 0 "complete extraction has no default item caps"
+fi
+run bash "$R" --complete --source 'invocation/long' "$T/long.md"
+assert_eq "$code" 0 "long roast accepted"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/long.json"
+  run node --input-type=module - "$T/long.json" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const {key,text} = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences[0];
+assert.equal(text, '[Blocking] ' + '0'.repeat(300));
+assert.equal(key, text);
+NODE
+  assert_eq "$code" 0 "complete extraction does not truncate keys or text"
+fi
+
+echo "report-verdict --complete: task concerns, bold labels and valid explicit empty reviews"
+cat > "$T/complete-task.md" <<'EOF'
+Status: IMPLEMENTED
+**Concerns:**
+- Still has an unmeasured path.
+**Deferred:**
+- Retain this even after a success status.
+EOF
+run bash "$R" --complete --source 'invocation/task' "$T/complete-task.md"
+assert_eq "$code" 0 "task report with successful status can retain concerns"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/task.json"
+  run node --input-type=module - "$T/task.json" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const value = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+assert.equal(value.kind, 'task-report');
+assert.equal(value.verdict, 'IMPLEMENTED');
+assert.deepEqual(value.occurrences.map(x=>x.text), ['Still has an unmeasured path.', 'Retain this even after a success status.']);
+NODE
+  assert_eq "$code" 0 "successful task status does not erase concern/deferred occurrences"
+fi
+printf '## Verdict\nready\n## Must fix before landing\n- none\n## Untested scope\n- none\n## Deferred OK\n- none\n' > "$T/explicit-empty.md"
+run bash "$R" --complete --source 'invocation/empty' "$T/explicit-empty.md"
+assert_eq "$code" 0 "recognized explicitly empty review succeeds"
+if [ "$code" = 0 ]; then
+  printf '%s\n' "$out" > "$T/empty.json"
+  run node --input-type=module - "$T/empty.json" <<'NODE'
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+assert.deepEqual(JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).occurrences, []);
+NODE
+  assert_eq "$code" 0 "explicit none markers are not findings"
+fi
+
+echo "report-verdict --complete: invalid or incomplete input cannot look clean"
+printf '## Verdict\n\n## Must fix before landing\n- none\n' > "$T/no-verdict.md"
+printf '## Verdict\nready\n' > "$T/no-sections.md"
+printf '## Verdict\nready\n## Must fix before landing\nunfinished prose without a finding marker\n' > "$T/malformed-section.md"
+printf 'super-roast verdict: \n## Confirmed findings\n- none\n' > "$T/empty-roast-verdict.md"
+printf '## Verdict\nready\n## Must fix before landing\n' > "$T/truncated-section.md"
+for invalid in "$T/nope.md" "$T" "$FX/unknown.md" "$T/no-verdict.md" "$T/no-sections.md" "$T/malformed-section.md" "$T/empty-roast-verdict.md" "$T/truncated-section.md"; do
+  run bash "$R" --complete --source 'invocation/invalid' "$invalid"
+  if [ "$code" -ne 0 ]; then pass "$(basename "$invalid"): explicit failure"; else fail "$(basename "$invalid"): explicit failure"; fi
+  assert_eq "$out" "" "$(basename "$invalid"): no success JSON"
+  if [ -s "$T/err" ]; then pass "$(basename "$invalid"): diagnostic on stderr"; else fail "$(basename "$invalid"): diagnostic on stderr"; fi
+done
+for source in '' '   '; do
+  run bash "$R" --complete --source "$source" "$T/explicit-empty.md"
+  assert_eq "$code" 2 "empty source identity exits 2"
+  assert_eq "$out" "" "empty source identity has no success output"
+done
+run bash "$R" --complete "$T/explicit-empty.md"
+assert_eq "$code" 2 "missing --source exits 2"
+run bash "$R" --complete --source identity
+assert_eq "$code" 2 "missing artifact exits 2"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
