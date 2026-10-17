@@ -29,3 +29,12 @@ roast-design: 2026-10-16-workflow-reliability-roast-design-1.md
 stepBackDesign-round-1: patch — correct .8.4 punch-list wording; parent/nested policies already agree.
 
 graph-pass: depth 5→5 · width 3.4→3.4 · applied 0 · parked 0
+
+codeBuckets:
+  completed: super-plan-ufz.8.2
+  escalated:
+  pendingRetry:
+  parked:
+  stalled: false
+  review: not ready (implementation in progress)
+  sweep: SWEEP DEFERRED (caller-owned)

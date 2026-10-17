@@ -11,7 +11,7 @@
   "config": {
     "concurrency": 3,
     "runtimeSlots": 10,
-    "hotFileCap": 2,
+    "hotFileCap": 3,
     "earlyUnblock": true,
     "mergeCheck": "none",
     "contextWindows": {
