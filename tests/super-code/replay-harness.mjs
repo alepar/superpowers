@@ -3072,6 +3072,23 @@ async function main() {
     check(!none.trace.some(t => t.label === 'sweep') && none.result?.sweep === null, 'no sweep when no work landed')
   }
 
+  scenario('caller-owned root acceptance: every closure prompt excludes root, empty frontier finishes normally')
+  {
+    const out = await run({ args: liveArgs({ rootAcceptance: 'caller', deferSweep: true }), canned: oneTaskCanned({
+      'close-epics': [{ rootClosed: false, closedThisRun: ['bd-099'] }, { rootClosed: false, closedThisRun: [] }],
+      'bd-ready-recheck': { ids: ['bd-101'] },
+    }) })
+    assertNoThrow(out)
+    const closures = out.trace.filter(t => /close-in-tree-epics/.test(t.prompt))
+    check(closures.length >= 2 && closures.every(t => t.prompt.includes('close-in-tree-epics bd-100 --exclude-root')), 'Close, Ready and refill/recheck closures preserve caller root ownership')
+    check(['close-epics','bd-ready-topup'].every(label=>closures.some(t=>t.label===label)), 'ownership exercised through every actual closure caller')
+    check(['bd-ready','bd-ready-recheck'].every(label=>promptOf(out.trace,label)?.includes('ready-in-tree')&&!promptOf(out.trace,label)?.includes('close-in-tree-epics')), 'Ready and recheck remain read-only queries')
+    check(out.result?.stopReason === 'ready-drained' && out.result?.stalled === false && out.result?.completed.includes('bd-101'), 'finished leaves return normally with an open caller-owned root')
+    check(extractLedgerLine(promptOf(out.trace, 'ledger-append:launch'))?.includes('"rootAcceptance":"caller"'), 'Launch durably records caller root ownership')
+    const standalone = await run({ args: liveArgs({ deferSweep: true }), canned: oneTaskCanned() })
+    check(!promptOf(standalone.trace, 'close-epics')?.includes('--exclude-root'), 'deferSweep alone preserves standalone root ownership')
+  }
+
   scenario('deferSweep: no sweep dispatch, the final review is told, the return says SWEEP DEFERRED (caller-owned)')
   {
     const out = await run({ args: liveArgs({ deferSweep: true, config: cfg({ sweep: 'nice -n 10 pytest -q' }) }), canned: oneTaskCanned() })
@@ -4528,6 +4545,15 @@ esac
       scenario('scripts: close-in-tree-epics — fixpoint over tree levels, out-of-tree epics untouched')
       {
         let dir = newFixture({ closed: ['A', 'B', 'C', 'D', 'X', 'zz-1'] })
+        let owned = runScript(dir, 'close-in-tree-epics', ['R', '--exclude-root'])
+        check(owned.code === 0 && owned.stdout.trim() === '{"rootClosed":false,"closedThisRun":["S"]}', 'caller-owned root stays open while eligible inner epics close to fixpoint', JSON.stringify(owned))
+        check(!calls(dir).includes('close R'), 'root is never passed to bd close under caller ownership')
+        rmSync(dir, { recursive: true, force: true })
+        dir = newFixture({ closed: ['A', 'B', 'C', 'D', 'X', 'zz-1'] })
+        owned = runScript(dir, 'close-in-tree-epics', ['R', '--exclude-root'], { noJq: true })
+        check(owned.code === 4 && owned.stdout.includes('NEVER close root R') && owned.stdout.includes('"rootClosed":false') && !owned.stdout.includes('the id is R, or'), 'manual no-jq fallback preserves root exclusion without contradictory root inclusion', JSON.stringify(owned))
+        rmSync(dir, { recursive: true, force: true })
+        dir = newFixture({ closed: ['A', 'B', 'C', 'D', 'X', 'zz-1'] })
         let r = runScript(dir, 'close-in-tree-epics', ['R'])
         check(r.code === 0 && r.stdout.trim() === '{"rootClosed":true,"closedThisRun":["S","R"]}', 'S then R closed across two passes; root reported closed', JSON.stringify(r))
         const cs = calls(dir)

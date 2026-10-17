@@ -123,6 +123,10 @@ const mergeCheckCommand = typeof config.mergeCheck === 'string' && config.mergeC
 // deferSweep (optional caller arg): the caller runs the full-suite sweep itself (super-auto runs
 // one after its fix loop exits), so Finish skips it and says so.
 const deferSweep = A.deferSweep === true
+// Root acceptance is independent of sweep ownership. Standalone callers keep the default.
+const rootAcceptance = A.rootAcceptance ?? 'coordinator'
+if (!['coordinator', 'caller'].includes(rootAcceptance)) throw new Error('rootAcceptance must be coordinator or caller')
+const rootCloseOption = rootAcceptance === 'caller' ? ' --exclude-root' : ''
 const SWEEP_DEFERRED = 'SWEEP DEFERRED (caller-owned)'
 // Edge-audit budget per invocation (0 disables); each audit is an opus read of the whole graph.
 const edgeAuditCap = Math.max(0, Number.isFinite(Number(config.edgeAuditCap)) ? Number(config.edgeAuditCap) : 3)
@@ -729,7 +733,7 @@ const ledger = await readLedger('read-ledger', 'Resume', true)
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
 // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
 // (dryRun stub tables omitted).
-const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, rootAcceptance, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
   'ledger-append:launch', 'Resume')
 const invocationPersisted = launchIdentity?.appended === true
 if (!invocationPersisted) log('invocation identity persistence unavailable — review artifacts will not be created')
@@ -914,7 +918,7 @@ while (true) {
   // unfinished epic done.
   const closed = (await closePromise) ?? { rootClosed: false, closedThisRun: [] }
   const pendingClosures = [...new Set([...landed.keys(), ...verificationCompletions.keys()])].filter(id => !completed.has(id) && !escalated.has(id) && !resumeHolds.has(id))
-  if (closed.rootClosed && !pendingClosures.length) {
+  if (rootAcceptance === 'coordinator' && closed.rootClosed && !pendingClosures.length) {
     stopReason = 'root-closed'
     await readyPromise.catch(() => {})  // settle the concurrent query before exiting; its result is moot
     break
@@ -2376,14 +2380,14 @@ function readyPrompt(epicId) {
 
 function closeEpicsPrompt(epicId) {
   // `bd epic close-eligible` is repo-global; scripts/close-in-tree-epics closes in-tree candidates only.
-  return `Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}\` and report \`rootClosed\` and \`closedThisRun\` from the JSON object it prints, verbatim. Do not run \`bd epic close-eligible\` or \`bd close\` yourself unless the script's fallback instruction tells you to. ${scriptOutcomeRule()} ${finalAnswerRule(true)}`
+  return `Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}${rootCloseOption}\` and report \`rootClosed\` and \`closedThisRun\` from the JSON object it prints, verbatim. Do not run \`bd epic close-eligible\` or \`bd close\` yourself unless the script's fallback instruction tells you to. ${scriptOutcomeRule()} ${finalAnswerRule(true)}`
 }
 
 function topUpPrompt(epicId, externalIds = []) {
   // The top-up closes newly eligible epics first (an unclosed epic hides its dependents), then
   // queries. The round-head Close pass stays the authority on rootClosed.
   return `Two scripts, in order, one report. ${scriptOutcomeRule()}
-1. Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}\`. Its closes are the point; its output is not part of your report.
+1. Run \`bash ${codeSkill}/scripts/close-in-tree-epics ${epicId}${rootCloseOption}\`. Its closes are the point; its output is not part of your report.
 2. Run \`bash ${codeSkill}/scripts/ready-in-tree ${epicId}\` and report the \`ids\` array from the JSON object it prints, verbatim and in its order. Do not filter, reorder, or re-judge the ids, and do not start any work. ${externalIds.length ? '\n3. For dependency IDs ' + JSON.stringify(externalIds) + ', run bd show <id> --json independently. Return observations [{id,status,kind}] using tracker status verbatim; kind is review (sp:review), blocker (blocker label), gate (gate type or sp:gate/human-gate/human label), epic, or task. These IDs are the mapping blocks relationship; local implementation completion cannot satisfy them. A failed lookup returns {id,error:<command/error>}, preserving other observations and the ready ids; do not set a global scriptError for an individual lookup. Keep tracker bodies out of the result.' : ''} ${finalAnswerRule(true)}`
 }
 

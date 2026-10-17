@@ -3,3 +3,4 @@
 - finding-route · <JSON ref and owner/fix/deferred>
 - finding-disposition · <JSON ref and supported disposition/basis>
 - review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>
+- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>

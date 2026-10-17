@@ -15,6 +15,19 @@ merge into the integration branch at a time. Write each agent's dispatch with
 kinds). It writes the text `coordinator.js` would send to a file and prints the path, so spawn the
 agent with "Read <path> and follow it exactly." The merge text leaves the ledger lines to you.
 
+Carry the explicit launch parameter `rootAcceptance: "caller"` when the enclosing caller owns
+acceptance (super-auto always does), and persist it in `Launch: args`. Its absence means the
+existing standalone coordinator ownership. `deferSweep` alone never transfers root ownership.
+In caller mode use `close-in-tree-epics EPIC --exclude-root` at every closure pass, including
+round-head Close and refill's preliminary close (Ready and its rechecks are read-only). Carry that option into each
+ordinary mechanical closure command. Close eligible inner epics to fixpoint while
+keeping root closure with the caller; never run an unfiltered or fallback root close. The no-jq
+manual procedure must preserve the same exclusion. Restore this parameter on every fix-loop or
+interrupted re-entry. Empty ready work ends implementation normally (`ready-drained`) while the
+root awaits required reviews, measurements or human gates; it neither stalls nor accepts the run.
+Return the existing durable Recovery obligations, source-bound checkEvidence and runFailures
+classification/state so the caller can reconcile acceptance independently of leaf completion.
+
 For an `IMPLEMENTED` reply with `completionKind: "verification-only"`, equal captured base/head,
 `files: []` and source-bound records, select the evidence-review path described in
 `coordinator-workflow.md` before building a diff package. Keep its JSON reply in the existing
