@@ -1,0 +1,18 @@
+requirements:
+R1 → super-plan-ufz.1
+R2 → super-plan-ufz.2
+R3 → super-plan-ufz.3
+R4 → super-plan-ufz.4, super-plan-ufz.12
+R5 → super-plan-ufz.5
+R6 → super-plan-ufz.13
+R7 → super-plan-ufz.6
+R8 → super-plan-ufz.7
+R9 → super-plan-ufz.8.1, super-plan-ufz.8.2, super-plan-ufz.8.3, super-plan-ufz.8.4
+R10 → super-plan-ufz.8.4
+R11 → super-plan-ufz.11
+R12 → super-plan-ufz.9
+R13 → super-plan-ufz.4, super-plan-ufz.8, super-plan-ufz.8.4, super-plan-ufz.9
+R14 → super-plan-ufz.10
+R15 → (root coordinator and implementing leaves)
+
+No high-level GAP, ORPHAN or UNOWNED-SEAM. R10 detailed rules are mandatory under .8.4 supported dispositions; R13 distinctions under .9 with .4/.8 history. No R-new or NEEDS-SPEC.
