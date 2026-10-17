@@ -9,7 +9,7 @@ fs.mkdirSync(repo);fs.mkdirSync(ws);
 const run=path.join(repo,'runs/current/run.md'),ledger=path.join(ws,'progress.md'),dt=path.join(root,'skills/super-code/scripts/dispatch-text'),rs=path.join(root,'skills/super-auto/scripts/report-status');
 const write=(p,t)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,t)};
 const exec=(c,a,cwd=repo)=>cp.execFileSync(c,a,{cwd,encoding:'utf8'}).trim();
-const git=(...a)=>exec('git',a),cli=(...a)=>cp.spawnSync('bash',[dt,...a],{cwd:repo,encoding:'utf8'});
+const git=(...a)=>exec('git',['-c','maintenance.auto=false','-c','gc.auto=0',...a]),cli=(...a)=>cp.spawnSync('bash',[dt,...a],{cwd:repo,encoding:'utf8'});
 let failed=0,passed=0,n=0;
 function check(name,f){if(process.env.TEST_FILTER&&!name.includes(process.env.TEST_FILTER))return;try{f();passed++;console.log('PASS '+name)}catch(e){failed++;console.error('FAIL '+name+': '+e.stack)}}
 function commit(){git('add','.');git('commit','-qm','snapshot '+n++);return git('rev-parse','HEAD')}
