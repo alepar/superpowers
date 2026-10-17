@@ -172,6 +172,21 @@ else{
 const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
 const roastInputs={design:new Set(),code:new Set()};
 const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
+// This recognizes the keys transport grammar only; occurrence identity still requires
+// the hash-bound retained source and exact line correspondence below.
+function keysInput(artifact){
+ const lines=fs.readFileSync(artifact,'utf8').split(/\r?\n/),header=/^review: (ready|not ready|none)$/.exec(lines[0]);
+ const keys=[];
+ for(const [i,line] of lines.entries()){
+  if(i===0&&header)continue;if(!line.trim())continue;
+  if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
+  keys.push({line:i+1,key:line.replace(/^r[0-9]+ /,'')});
+ }
+ if(!header&&!keys.length)throw Error('untyped empty input');
+ if(header?.[1]==='none'&&keys.length)throw Error('no-review input contains keys');
+ return keys;
+}
+function declaredKind(artifact){try{keysInput(artifact);return 'keys'}catch{return 'roast'}}
 let inApprovals=false,fenced=false;
 for(const line of input.split(/\r?\n/)){
  if(/^\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;
@@ -188,7 +203,7 @@ for(const line of input.split(/\r?\n/)){
  const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
  if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
   if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
-  else{const original=artifactPath(artifact);declared.set(original,'roast');roastInputs[report[1].slice(6)].add(original)}
+  else{const original=artifactPath(artifact);declared.set(original,declaredKind(original));roastInputs[report[1].slice(6)].add(original)}
  }
  const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
  if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
@@ -217,9 +232,10 @@ for(const {artifact,loop} of ledgers){
    const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
    if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}
    const kind=row[2]==='final-review'?'keys':'roast';
+   if(!roastInputs[loop].has(candidates[0]))gap('source coverage: undeclared ledger input population: '+artifact+'; '+candidates[0]);
    const cacheKey=JSON.stringify([candidates[0],kind]);
    if(!ledgerKeys.has(cacheKey)){
-    if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\r?\n/).map(k=>k.trim().replace(/^r[0-9]+\s+/,'')));
+    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(candidates[0]).map(k=>k.key));
     else{
      const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
      ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
@@ -235,10 +251,11 @@ for(const {artifact,loop} of ledgers){
   // still do not identify occurrences: all declared original reports are separately
   // extracted and their immutable refs retain independent relevance/dispositions.
   for(const original of roastInputs[loop]){
-   const cacheKey=JSON.stringify([original,'roast']);
+   const kind=declared.get(original),cacheKey=JSON.stringify([original,kind]);
    if(!ledgerKeys.has(cacheKey)){
-    const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
-    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
+    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(original).map(k=>k.key));
+    else{const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
+    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);}
    }
    const keys=ledgerKeys.get(cacheKey);
    if(keys===null)gap('source coverage: ledger declared input population unavailable: '+artifact+'; '+original);
@@ -267,14 +284,7 @@ for(const association of correspondences){
   if(matches.some(s=>content(s)!==content(actual)))throw Error('retained source differs from complete extraction');
   if(kind==='keys'){
    if(actual.kind!=='final-review'||!Array.isArray(a.lines))throw Error('keys input needs final-review source and complete line correspondence');
-   const lines=fs.readFileSync(original,'utf8').split(/\r?\n/),keyLines=[];
-   for(const [i,line] of lines.entries()){
-    if(i===0&&/^review: (ready|not ready|none)$/.test(line))continue;
-    if(!line.trim())continue;
-    if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
-    keyLines.push(i+1);
-   }
-   if(!keyLines.length)throw Error('ledger row points at empty keys input');
+   const keyLines=keysInput(original).map(k=>k.line);
    const known=new Set(actual.occurrences.map(o=>refId({source:a.source,...o}))),seen=new Set();
    for(const mapping of a.lines){
     if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!keyLines.includes(mapping.line)||seen.has(mapping.line)||
@@ -370,40 +380,10 @@ for(let i=0;i<args.length;i++){
  if(key==='--required')required.push(value);else if(['--invocation','--workspace','--review','--verdict'].includes(key)&&!o[key])o[key]=value;else usage();
 }
 let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
-const dir=path.dirname(path.resolve(run)), latest=new Map();let approvals=false;
+const dir=path.dirname(path.resolve(run));
 function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
-const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
- typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
- (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
- typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
- Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
- (r.complete===undefined || typeof r.complete==='boolean') &&
- (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
- (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
- (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
- (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
-const recordHash=r=>crypto.createHash('sha256').update(JSON.stringify(r)).digest('hex');
-const sameBundle=(a,b)=>a.workspace===b.workspace&&JSON.stringify(a.required)===JSON.stringify(b.required);
-const sameRecovery=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-const history=new Map();let malformed=false;
-for(const line of text.split('\n')){
- if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
- if(!line.startsWith('- review-collection'))continue;
- try{
-  if(!approvals||!line.startsWith('- review-collection · '))throw Error();
-  const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();
-  const old=latest.get(r.invocationId);
-  // Provenance is mandatory for the transition and every later recovery snapshot,
-  // including when a corrupted record omits the marker instead of changing it.
-  if(r.recovery!==undefined||old?.recovery!==undefined||(old?.settled&&old.reviewPath===null&&r.reviewPath!==null)){
-   const recovery=r.recovery,base=history.get(recovery?.recordSha256);
-   if(!recovery||recovery.kind!=='settled-null'||!base||!base.settled||base.reviewPath!==null||base.review!==recovery.review||
-      base.invocationId!==r.invocationId||!sameBundle(base,r)||!r.settled||r.reviewPath!==path.join(r.workspace,'final-review-'+r.invocationId+'.md')||
-      !(recordHash(old)===recovery.recordSha256||(old?.reviewPath===r.reviewPath&&old.review===r.review&&sameRecovery(old.recovery,recovery))))throw Error();
-  }
-  latest.set(r.invocationId,r);history.set(recordHash(r),r);
- }catch{malformed=true}
-}
+const {validCollection,recordHash,sameBundle,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
+const {latest,errors}=collectionHistory(text),malformed=errors>0;
 // Reject every source symlink component before reading a recovered report or bundle.
 function sourcePath(workspace,relative){
  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
@@ -533,18 +513,9 @@ if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }'
     script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
     continuity=$(node - "$script_dir" "$run" <<'STATUS'
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
-const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
-const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
- typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
- (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
- typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
- Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
- (r.complete===undefined || typeof r.complete==='boolean') &&
- (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
- (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
- (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
- (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
-for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
+const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8');
+const {collectionHistory}=require(path.join(scripts,'collection-records.cjs'));
+const history=collectionHistory(text),latest=history.latest;let errors=history.errors;
 // Collection metadata describes the last preservation attempt. Recheck retained bytes
 // on every read; status and acceptance must never repair or recollect an archive.
 let pending=0;const integrityGaps=[];

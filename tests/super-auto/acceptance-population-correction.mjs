@@ -180,13 +180,27 @@ try{
   f.snapshot.findingAcceptance=refs.map(ref=>({...relevance(source),ref}));
   const keys=path.join(f.dir,'review.keys');fs.writeFileSync(keys,'review: not ready\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
   const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
-  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md');f.sources.push(extract(original,'roast-code/round-1'));f.gate(3,/coverage|correspondence/);
+  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md, review.keys');f.sources.push(extract(original,'roast-code/round-1'));f.gate(3,/coverage|correspondence/);
   const association={...correspondence(keys,source),lines:[{line:2,refs:[refs[0]]},{line:3,refs:[refs[1]]}]};
   f.records.push({type:'source-correspondence',data:association});f.gate(0);
+  const completeDeclaration=f.declarations.at(-1);
+  f.declarations[f.declarations.length-1]='roast-code: clean-roast.md';f.gate(3,/population|undeclared/);
+  f.declarations[f.declarations.length-1]=completeDeclaration;
   for(const mutate of [a=>a.lines.pop(),a=>a.lines.push(a.lines[0]),a=>a.lines[0].line=1,a=>a.lines[0].refs=[],a=>a.lines[0].refs[0].source='unrelated/final',a=>a.source='unrelated/final',a=>a.sha256='0'.repeat(64)]){
    const invalid=structuredClone(association);mutate(invalid);f.records[0].data=invalid;f.gate(3,/coverage|correspondence/);
   }
   f.records[0].data=association;fs.appendFileSync(keys,'[Must-fix] later unaccounted concern\n');f.gate(3,/coverage|correspondence/);
+ });
+ for(const review of ['ready','none'])test('declared empty final-review keys '+review+' retain typed correspondence',()=>{
+  const f=fixture('empty-keys-'+review),original=roast(f,'clean-roast.md','None'),final=path.join(f.dir,'retained.md'),keys=path.join(f.dir,'unhelpful-name.data');
+  fs.writeFileSync(final,'## Verdict\n'+(review==='none'?'no work landed':'ready')+'\n## Must fix before landing\n- none\n## Untested scope\n- none\n## Deferred OK\n- none\n');
+  const source=extract(final,'empty-'+review+'/final');f.sources.push(source,extract(original,'roast-code/round-1'));
+  fs.writeFileSync(keys,'review: '+review+'\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
+  const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
+  f.declarations.push('findingsLedger: ledger.md','roast-code: clean-roast.md, unhelpful-name.data');
+  f.gate(3,/correspondence|coverage/);
+  f.records.push({type:'source-correspondence',data:{...correspondence(keys,source),lines:[]}});f.gate(0);
+  f.records[0].data.lines=[{line:1,refs:[]}];f.gate(3,/correspondence/);
  });
  test('actual immutable reviewSource producer is metadata, not a measurement',()=>{
   const f=fixture('source-binding'),progress=path.join(f.dir,'progress.md');

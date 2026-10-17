@@ -171,13 +171,14 @@ is unmeasured here, not green) —
 non-null only when that file was written (null when no work landed or the final review returned null);
 `review` is that review's one verdict line (`ready`, `not ready (…)`, `no work landed`, or
 `FINAL REVIEW UNAVAILABLE …`), never its body — read the file through `scripts/report-verdict` —
-**`worktreesKept`**, the task worktrees the Finish sweep left in place because they hold
-uncommitted or unmerged work (a caller's report lists them; empty means every finished task's
-worktree is gone) — **`processSweep`**, `{ stopped, survived }`: the run's processes the Finish
-sweep found still running (any process whose cwd, executable or HOME/TMPDIR is under a task
-worktree, the run temp root, or a caller's `processRoots`, or an orphan with an argument there),
-stopped, any kept because it holds or hosts an interactive terminal, and any that survived being
-killed — a caller's report lists the survivors — **`humanActions`**, cleanup a task could not do because the permission layer refused it (the task still landed; each says what a human should do) — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
+**`worktreesKept`**, worktrees and temporary roots the Finish sweep retained for uncommitted
+or unmerged work, or because surviving, unknown or deliberately kept processes still need them —
+**`processSweep`**, `{ stopped, survived, unknown, kept }`: verified termination, verified survivors,
+unavailable or unverified inspection/termination, and deliberate preservation (including interactive
+terminal hosts). Ownership covers processes whose cwd, executable or HOME/TMPDIR is under a task
+worktree, the run temp root or the caller's `processRoots`, or an orphan with an argument there.
+A caller's report carries each outcome and every retained resource; empty survivor arrays alone
+cannot establish verified cleanup — **`humanActions`**, cleanup a task could not do because the permission layer refused it (the task still landed; each says what a human should do) — **`slowness`**, the slowness signals the coordinator noticed and what it did about each (hot-file
 cap raises, a graph-bound audit, edge cuts applied or left for an operator, a merge backlog, a
 recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledger-line strings (merge/rebase/seam/
 check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count

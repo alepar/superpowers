@@ -413,6 +413,7 @@ const verificationCompletions = new Map() // independently reviewed no-change ba
 const verificationCandidates = new Set() // a tracker close cannot supply missing acceptance review
 const fixHistory = []
 const recoveryGaps = []
+const invalidRecoveryScopes = new Set() // constraints from invalid records are not validated obligations
 let recoveryTransportHeld = false // unresolved retained pointers cannot supply a safe admission scope
 function recoveryProblem(r) {
   const text = v => typeof v === 'string' && v.trim().length > 0
@@ -430,8 +431,22 @@ function recoveryProblem(r) {
   return null
 }
 function readRecovery(line, digestLine = null) {
-  const gap = reason => recoveryGap(line, reason, digestLine)
   let r
+  const gap = reason => {
+    // Preserve every recognizable governing scope without treating malformed evidence
+    // as an obligation or a supported clear. Unknown scope holds all new admission.
+    const text = value => typeof value === 'string' && value.trim().length > 0
+    const scoped = []
+    if (r && ['hold', 'deferred'].includes(r.kind) && r.data && typeof r.data === 'object' && !Array.isArray(r.data)) {
+      if (r.kind === 'hold' && text(r.id)) scoped.push(r.id)
+      if (text(r.data.taskId)) scoped.push(r.data.taskId)
+      if (Array.isArray(r.data.affectedIds) && r.data.affectedIds.every(text)) scoped.push(...r.data.affectedIds)
+      if (r.data.affectedIds !== undefined && (!Array.isArray(r.data.affectedIds) || !r.data.affectedIds.every(text))) recoveryTransportHeld = true
+    }
+    if (!scoped.length || scoped.includes('merge-lane')) recoveryTransportHeld = true
+    for (const id of scoped) invalidRecoveryScopes.add(id)
+    return recoveryGap(line, reason, digestLine)
+  }
   try { r = JSON.parse(line.slice('Recovery:'.length).trim()) } catch { return gap('invalid JSON') }
   const problem = recoveryProblem(r)
   if (problem) return gap(problem)
@@ -922,6 +937,7 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
 await drainLedger()
 const recoveryAdmissionReason = id => {
   if (recoveryTransportHeld) return 'recovery: retained record scope unavailable'
+  if (invalidRecoveryScopes.has(id)) return 'recovery: invalid retained record governs this task'
   if (resumeHolds.has(id)) return 'recovery: ' + resumeHolds.get(id)
   for (const r of recoveryObligations.values()) {
     if (!['hold', 'deferred'].includes(r.kind)) continue
@@ -1567,9 +1583,14 @@ while (true) {
     (file, raised) => noteSlowness(`round ${roundNo}: ${file} held back two tasks while a slot was free — its hot-file cap is raised to ${raised} for the rest of this round (a shared file worth splitting or assigning to one task)`))
   // Work outside a task chain (an unmapped id's filing and triage, a failed merge's blocker path)
   // takes a scheduler slot like a chain does, so admitted work never exceeds the cap.
-  const withSlot = async (id, fn) => {
-    await sched.acquire(id)
-    try { return await fn() } finally { sched.release(id) }
+  const withSlot = async (id, fn, { newWork = false } = {}) => {
+    const waited = await sched.acquire(id)
+    try {
+      // Failure/cancellation settlement already owns work; only newly initiated
+      // operational routing must pass admission after its capacity reservation.
+      if (newWork && !await admitAfterCapacity(id, waited)) return null
+      return await fn()
+    } finally { sched.release(id) }
   }
   // Chain rejections become null so one dead chain can't abort the drain, but are logged in full
   // first. `chains` grows while awaited, which parallel() can't do; the scheduler bounds concurrency.
@@ -1590,7 +1611,7 @@ while (true) {
             { label: `unplanned-blocker:${id}`, phase: 'Plan', ...tier('mechanical'), schema: RESULT })
           await handleBlocker({ id, status: 'BLOCKED', blockerBead: bead?.blockerBead }, planned.planPath, onResolve)
         } finally { flushLedger(id, 'Triage') }
-      }).catch(chainCatch(id)))
+      }, { newWork: true }).catch(chainCatch(id)))
     }
   }
 
@@ -2433,7 +2454,7 @@ if (closureUnconfirmed.length) {
   stopReason = 'closure-unconfirmed'
   log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
 }
-if (!integrationBlocked && (recoveryTransportHeld || resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => resumedObligationKeys.has(key) && (r.kind === 'hold' || (r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
+if (!integrationBlocked && (recoveryTransportHeld || invalidRecoveryScopes.size || resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => (r.kind === 'hold' || (resumedObligationKeys.has(key) && r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
   stopReason = 'recovery-held'
   log('recovery held: persisted admission obligations remain unresolved; unrelated eligible work was allowed to proceed')
 }
@@ -3013,7 +3034,14 @@ function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integratio
 
 function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath, source) {
   // Mechanical: the seam review returned null, but the handoff file must exist. Lists the cluster files.
-  return reviewWriteGuard(source.base, source.head, reviewPath) + `Write ${reviewPath} with exactly this content, and change nothing else: a "## Verdict" heading, then the line "not ready (unreviewed: ${unreviewed.join(', ')})"; a "## Must fix before landing" heading, then the line "- the seam review did not run; see the cluster files"; a line "Cluster files:" followed by one bullet per path (${clusterPaths.length ? clusterPaths.join(', ') : 'none'}); then an empty "## Untested scope" heading and an empty "## Deferred OK" heading. Report written true and path ${reviewPath}. ${finalAnswerRule(true)}`
+  const content = [
+    'Cluster files:', ...(clusterPaths.length ? clusterPaths.map(p => '- ' + p) : ['- none']),
+    '', '## Verdict', 'not ready (unreviewed: ' + unreviewed.join(', ') + ')',
+    '## Must fix before landing', '- the seam review did not run; see the retained cluster findings',
+    '## Untested scope', ...unreviewed.map(scope => '- ' + scope),
+    '## Deferred OK', '- none',
+  ].join('\n')
+  return reviewWriteGuard(source.base, source.head, reviewPath) + 'Write ' + reviewPath + ' with exactly the content between the review-stub tags, excluding the tags, and change nothing else:\n<review-stub>\n' + content + '\n</review-stub>\nReport written true and path ' + reviewPath + '. ' + finalAnswerRule(true)
 }
 
 function ledgerLine(n, id, rest) {

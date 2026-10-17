@@ -18,7 +18,24 @@ function fixture(name){
  fs.mkdirSync(path.join(workspace,'inputs'),{recursive:true});fs.writeFileSync(path.join(workspace,'inputs/required.txt'),'required source bytes\n');fs.writeFileSync(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');
  const f={root,workspace,run,review};assert.equal(collect(f,{review:'none',verdict:'UNAVAILABLE'}).status,3);f.original=fs.readFileSync(run,'utf8');f.nullRecord=last(f);return f;
 }
-const f=fixture('recover');fs.writeFileSync(f.review,report);
+function gate(f,want){
+ const before=fs.readFileSync(f.run,'utf8');
+ const r=cp.spawnSync('bash',[script,'--acceptance',f.run,'--tree','a'.repeat(40)],{encoding:'utf8'});
+ assert.equal(r.status,want,r.stdout+r.stderr);assert.equal(JSON.parse(r.stdout).eligible,want===0);
+ assert.equal(fs.readFileSync(f.run,'utf8'),before,'acceptance must not repair history');
+}
+function addRequirements(f){
+ const tree='a'.repeat(40),a={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'caller'},{id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'fixture',requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'fixture',kind:'live',outcome:'pass',location:'synthetic-fixture.log'}],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:f.review}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['synthetic fixture decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
+ fs.appendFileSync(f.run,'- root-acceptance · '+JSON.stringify(a)+'\n');
+}
+function rejectedRead(f){
+ const before=fs.readFileSync(f.run,'utf8');
+ const r=cp.spawnSync('bash',[script,f.run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
+ gate(f,3);assert.equal(r.status,0);assert.match(r.stdout,/qualifier: .*review collection gaps/);
+ assert.equal(fs.readFileSync(f.run,'utf8'),before,'status must not repair history');
+}
+const f=fixture('recover');fs.writeFileSync(f.review,report);addRequirements(f);
+check('null settlement cannot satisfy independently declared acceptance',()=>gate(f,3));
 check('plain replay cannot promote a null result from file presence',()=>{assert.equal(collect(f,{replay:true}).status,3);assert.equal(last(f).reviewPath,null)});
 check('ordinary settlement cannot replace a settled null result',()=>{assert.equal(collect(f).status,3);assert.equal(last(f).reviewPath,null)});
 // Name the break: without explicit null-recovery admission a valid recovered report
@@ -27,6 +44,7 @@ f.nullRecord=last(f);const before=fs.readFileSync(f.run,'utf8'),result=collect(f
 check('explicit recovered report collects with unchanged invocation and inputs',()=>{assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(last(f).complete,true);assert.equal(last(f).reviewPath,f.review);assert.equal(last(f).review,'ready');assert.equal(fs.readFileSync(path.join(f.root,'reviews/probe/inputs/required.txt'),'utf8'),'required source bytes\n')});
 check('recovery retains original unavailable events and binds their exact predecessor',()=>{assert.ok(fs.readFileSync(f.run,'utf8').includes(before.trimEnd()));const r=last(f);assert.deepEqual(r.recovery,{kind:'settled-null',recordSha256:digest(f.nullRecord),review:'UNAVAILABLE'});assert.ok(records(f).some(r=>r.reviewPath===null&&r.review==='UNAVAILABLE'&&r.gaps?.some(g=>g.includes('recover'))))});
 check('repeated explicit recovery and plain replay are byte-idempotent',()=>{const stable=fs.readFileSync(f.run,'utf8');assert.equal(collect(f,{recover:true}).status,0);assert.equal(collect(f,{replay:true}).status,0);assert.equal(fs.readFileSync(f.run,'utf8'),stable)});
+check('valid recovery supports read-only acceptance with independent prerequisites',()=>gate(f,0));
 // A recovery marker without its exact retained null predecessor cannot establish
 // source identity. These are real replay checks, not source-text/schema assertions.
 {
@@ -39,12 +57,13 @@ check('repeated explicit recovery and plain replay are byte-idempotent',()=>{con
   ['all omitted recovery markers',r=>{delete r.recovery}]
  ]){
   const changed=stable.split('\n').map(line=>{if(!line.startsWith('- review-collection · '))return line;const r=JSON.parse(line.slice('- review-collection · '.length));if(r.recovery)mutate(r);return '- review-collection · '+JSON.stringify(r)}).join('\n');
-  fs.writeFileSync(f.run,changed);const result=collect(f,{replay:true});
+  fs.writeFileSync(f.run,changed);check('readers reject '+name,()=>rejectedRead(f));const result=collect(f,{replay:true});
   check('replay rejects '+name,()=>assert.equal(result.status,3,result.stdout+result.stderr));
  }
  const lines=stable.split('\n'),lastSnapshot=lines.map((line,index)=>line.startsWith('- review-collection · ')?index:-1).filter(index=>index>=0).at(-1);
  const snapshot=JSON.parse(lines[lastSnapshot].slice('- review-collection · '.length));delete snapshot.recovery;
  lines[lastSnapshot]='- review-collection · '+JSON.stringify(snapshot);fs.writeFileSync(f.run,lines.join('\n'));
+ check('readers reject omitted final snapshot recovery marker',()=>rejectedRead(f));
  check('replay rejects omitted final snapshot recovery marker',()=>{const result=collect(f,{replay:true});assert.equal(result.status,3,result.stdout+result.stderr)});
  fs.writeFileSync(f.run,stable);
 }

@@ -81,6 +81,24 @@ try {
     console.log(bytes + '-byte hold preserves its task scope')
     passed++
   }
+  // Invalid compact records must not silently release either known or unknown scope.
+  for (const [name, record, scoped] of [
+    ['version', { ...hold(0), version: 9 }, true],
+    ['evidence', { ...hold(0), evidence: [] }, true],
+    ['fields', { ...hold(0), reason: '' }, true],
+    ['unknown-scope', { ...hold(0), id: '', data: {} }, false],
+    ['broken-json', null, false],
+  ]) {
+    const raw = record ? line(record) : 'Recovery: {broken'
+    const out = await replay('compact-invalid-' + name, [raw])
+    held(out, scoped)
+    assert(out.result.recovery.gaps.some(g => g.reason && (g.raw === raw || g.preview === raw)), 'invalid raw evidence remains recoverable')
+    assert.equal(readFileSync(out.ledger, 'utf8'), raw + '\n', 'invalid source is never rewritten')
+    passed++
+  }
+  const compactClear = await replay('compact-clear', [line(hold(0)), line({ ...hold(0), operation: 'clear', evidence: ['release.md'] })])
+  assert.equal(compactClear.counts['impl:bd-101'], 1, 'valid compact clear releases only the supported obligation')
+  passed++
   const additive = { ...hold(5000), ownerContext: { unknownFutureField: ['keep me'] } }
   held(await replay('additive', [line(additive), 'Task 1 (bd-101): complete, review clean']))
   const recovered = await replay('additive-data', [line(additive)])

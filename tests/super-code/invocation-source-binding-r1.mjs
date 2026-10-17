@@ -34,8 +34,16 @@ function binding(f) {
 function bind(f, head = sha('b')) {
   return cli(f.ledger, 'bind-review-source', '--base', sha('a'), '--head', head)
 }
-async function replay(f, head, { mode = 'split', seam = null, stub = null, assemble = true, launchOK = true } = {}) {
-  const trace = [], snapshots = []
+function stubContent(prompt) {
+  const exact = prompt.match(/<review-stub>\n([\s\S]*?)\n<\/review-stub>/)?.[1]
+  if (exact) return exact + '\n'
+  // Faithful legacy mechanical instruction, retained only to reproduce its empty sections.
+  const verdict = prompt.match(/then the line "(not ready \(unreviewed: [^"]+\))"/)?.[1]
+  assert(verdict, 'stub must supply exact report content')
+  return '## Verdict\n' + verdict + '\n## Must fix before landing\n- the seam review did not run; see the cluster files\n## Untested scope\n## Deferred OK\n'
+}
+async function replay(f, head, { mode = 'split', seam = null, stub = null, assemble = true, launchOK = true, collision = null } = {}) {
+  const trace = [], snapshots = [], guards = [], collisions = []
   const agent = async (prompt, opts = {}) => {
     const label = opts.label
     trace.push({ label, prompt })
@@ -54,8 +62,17 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
     if (label === 'assemble:final' || label?.startsWith('final-review')) {
       // Execute the real mechanical source guard emitted by the real prompt builder.
       const cmd = prompt.match(/`(node [^`]* bind-review-source[^`]*)`/)?.[1]
+      guards.push({label, found:!!cmd})
       if (cmd) {
+        if (label === collision && !collisions.length) {
+          const artifact = cmd.match(/--artifact '([^']+)'/)?.[1]
+          assert(artifact, 'guard identifies its own destination')
+          if (label === 'assemble:final') { mkdirSync(artifact,{recursive:true});writeFileSync(join(artifact,'retained.txt'),'original partial assembly') }
+          else writeFileSync(artifact,'original partial finding')
+          collisions.push({artifact,content:label === 'assemble:final' ? join(artifact,'retained.txt') : artifact})
+        }
         const guard = spawnSync('sh', ['-c', cmd], { cwd: f.worktree, encoding: 'utf8' })
+        guards.at(-1).status=guard.status
         if (guard.status !== 0) return label === 'assemble:final' ? { dir: prompt.match(/\[OUT_DIR\] = ([^;]+);/)?.[1], exit: 2, cause: 'review source guard: ' + guard.stderr.trim() } : null
       }
       snapshots.push({ label, binding: binding(f) })
@@ -63,11 +80,16 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
         if (!assemble) return null
         const dir = prompt.match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
         mkdirSync(dir, { recursive: true }); writeFileSync(join(dir, 'digest.md'), 'assembly from ' + head)
+        if (mode !== 'single') {
+          mkdirSync(join(dir,'slices'),{recursive:true})
+          writeFileSync(join(dir,'slices/alpha.diff'),'captured fixture cluster source')
+          writeFileSync(join(dir,'clusters.json'),JSON.stringify({clusters:[{name:'alpha',slices:['slices/alpha.diff']}]}))
+        }
         return { dir, exit: 0, fits: mode === 'single' ? 'fits: yes (100 of 80000)' : 'fits: no (100000 of 80000)', clusterFits: mode === 'single' ? [] : ['cluster-fits: alpha yes (100 of 80000)'], clusters: mode === 'single' ? 0 : 1 }
       }
       if (label === 'final-review:seam' || label === 'final-review:stub') {
         const result = label === 'final-review:seam' ? seam : stub
-        if (result) writeFileSync(join(f.ws, 'final-review-' + f.id + '.md'), 'retained cluster finding and seam status\n')
+        if (result) writeFileSync(join(f.ws, 'final-review-' + f.id + '.md'), label === 'final-review:stub' ? stubContent(prompt) : 'retained cluster finding and seam status\n')
         return result
       }
       const artifact = prompt.match(/declared review artifact is (\S+?\.md)/)?.[1]
@@ -77,7 +99,8 @@ async function replay(f, head, { mode = 'split', seam = null, stub = null, assem
     throw new Error('unexpected dispatch ' + label)
   }
   const result = await run({ epicId: 'R', integrationBranch: 'integ', integrationWorktree: f.worktree, skillsRoot: skills, invocationId: f.id, runTag: 'shared', rootAcceptance: 'caller', deferSweep: true, config: { concurrency: 2, earlyUnblock: false } }, agent, () => {}, () => {}, async () => [], async thunks => Promise.all(thunks.map(t => t())), { remaining: () => Infinity }, () => {})
-  return { result, trace, snapshots }
+  assert(guards.every(g=>g.found && Number.isInteger(g.status)), 'every dispatched artifact writer must execute its source guard: '+JSON.stringify(guards))
+  return { result, trace, snapshots, guards, collisions }
 }
 try {
   // Omitting persistence before assembly is the original defect; this fails before any fix.
@@ -158,9 +181,35 @@ try {
     assert(execution.snapshots.length >= 2, name + ' executes assembly and review guards')
     assert(execution.snapshots.every(s => s.binding?.data.reviewSource.base === sha('a') && s.binding?.data.reviewSource.head === sha('b')), name + ' persists before every writer')
     assert.equal(!!execution.result.reviewPath, expectedPath, name + ' keeps confirmed output path semantics')
-    assert(readFileSync(execution.result.reviewPath, 'utf8').includes('finding'), name + ' confirmed path contains its finding artifact')
+    if (name !== 'split-stub') assert(readFileSync(execution.result.reviewPath, 'utf8').includes('finding'), name + ' confirmed path contains its finding artifact')
+    if (name === 'split-stub') {
+      const extracted = spawnSync('bash',[join(skills,'super-code/scripts/report-verdict'),'--complete','--source',f.id+'/final',execution.result.reviewPath],{encoding:'utf8'})
+      assert.equal(extracted.status,0,extracted.stderr)
+      const report=JSON.parse(extracted.stdout)
+      assert(report.occurrences.some(o=>o.section==='Untested scope'&&o.text.includes('seam')),'seam coverage stays explicitly unreviewed')
+      assert.match(execution.result.review,/^not ready/)
+      const runFile=join(f.worktree,'run.md');writeFileSync(runFile,'phase: report\napprovals:\n')
+      const collection=spawnSync('bash',[join(skills,'super-auto/scripts/report-status'),'--collect',runFile,'--invocation',f.id,'--workspace',f.ws,'--review',execution.result.reviewPath,'--verdict',report.verdict],{encoding:'utf8'})
+      assert.equal(collection.status,0,collection.stdout+collection.stderr)
+      const archive=join(f.worktree,'reviews',f.id,'final-review-'+f.id+'.cluster-1.md')
+      assert.match(readFileSync(archive,'utf8'),/original finding/,'collection preserves the original cluster finding')
+      assert.match(readFileSync(runFile,'utf8'),/original finding/,'collector retains the cluster occurrence independently of the stub')
+    }
     if (name === 'split-stub') assert(execution.snapshots.some(s => s.label === 'final-review:stub'), 'stub guard was exercised')
     if (name === 'split-seam') assert(execution.snapshots.some(s => s.label === 'final-review:seam'), 'seam guard was exercised')
+    passed++
+  }
+  for (const [label, options] of [
+    ['assemble:final',{}], ['final-review',{mode:'single'}],
+    ['final-review:cluster:1',{}], ['final-review:seam',{seam:{verdict:'not ready'}}],
+    ['final-review:stub',{stub:{written:true}}], ['final-review',{assemble:false}],
+  ]) {
+    const f=fixture('collision-'+passed,'collision-'+passed)
+    const out=await replay(f,sha('b'),{...options,collision:label})
+    assert(out.guards.some(g=>g.label===label&&g.status===2),label+' individually refuses existing output')
+    assert(!out.snapshots.some(s=>s.label===label),label+' never reaches its writer after refusal')
+    assert.equal(out.collisions.length,1)
+    assert.match(readFileSync(out.collisions[0].content,'utf8'),/^original partial/,'collision bytes remain unchanged')
     passed++
   }
   const noPersist = fixture('no-persist')
