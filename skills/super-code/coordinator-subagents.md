@@ -88,6 +88,13 @@ Three things keep the run measurable and resumable:
 
 Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
 `FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
+During the existing Finish Git inspection, capture `reviewHead` with
+`git rev-parse --verify <integration branch>^{commit}` and `reviewBase` as its verified merge-base
+with the repository's default branch commit. Pass the same `--base <reviewBase> --head <reviewHead>`
+to assembly and every final review mode below, including direct-input fallbacks. A failed capture
+leaves final review unavailable with the command/error evidence. Task `review` takes the
+implementer's captured `--head` alongside `--base`; `check-fix-review` takes the fixer's `--head`.
+Review filesystem views use unique detached worktrees; mutable reproductions own their outputs.
 Run `dispatch-text assemble --consumer final-review --instance final --threshold <40% of the window>`,
 then `final-review --mode single [--dir …] [--capped]` (it reads the sweep and Metrics from the
 ledger's `Sweep:`/`Metrics:` lines, so append those first, as §Finish orders) or one `--mode cluster`

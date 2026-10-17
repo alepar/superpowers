@@ -103,7 +103,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
         // `ledger:<id>` flush — default to no-op answers here; a scenario that cares about one
         // overrides its key explicitly.
         if (label.startsWith('close-check:')) return { closed: (prompt.match(/read its status: ([^.]+)\./)?.[1] ?? '').split(', ') }
-        if (label === 'read-ledger:finish') return { text: '' }
+        if (label === 'read-ledger:finish') return { text: '', reviewBase: SHA('a'), reviewHead: SHA('b') }
         if (label === 'ledger-append:metrics') return { appended: true }
         if (label === 'reconcile-buckets') return { closed: [] }
         if (label === 'assemble:final') return { dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0 }   // the final review's assembler pre-step: fits
@@ -300,11 +300,11 @@ function oneTaskCanned(overrides = {}) {
     'bd-ready-topup': { ids: [] },
     'bd-ready-recheck': { ids: [] },
     'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
-    'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), files: ['src/a.js'] },
+    'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: ['src/a.js'] },
     'review:bd-101': { id: 'bd-101', status: 'CLEAN' },
     'fix:bd-101': { id: 'bd-101', status: 'FIXED', head: SHA('f') },
     'merge:bd-101': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
-    'read-ledger:finish': { text: '' },
+    'read-ledger:finish': { reviewBase: SHA('a'), reviewHead: SHA('b'), text: '' },
     'ledger-append:metrics': { appended: true },
     'assemble:final': { dir: FR_DIR, exit: 0, fits: 'fits: yes (12000 of 80000)', clusterFits: [], clusters: 0 },
     'final-review': { verdict: 'ready', path: REVIEW_PATH },
@@ -373,13 +373,42 @@ function scanTemplateSpans(src) {
 
 async function main() {
 
+  scenario('review source identities: task and final builders share captured heads')
+  {
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger:finish': { reviewBase: SHA('a'), reviewHead: SHA('b'), text: '' },
+    }) })
+    assertNoThrow(out)
+    const task = promptOf(out.trace, 'review:bd-101') ?? ''
+    check(task.includes('[HEAD] = ' + SHA('c')), 'task review pins implementation head', task)
+    const assembly = promptOf(out.trace, 'assemble:final') ?? ''
+    const final = promptOf(out.trace, 'final-review') ?? ''
+    check(assembly.includes('[BASE] = ' + SHA('a')) && assembly.includes('[HEAD] = ' + SHA('b')), 'assembler receives captured final range', assembly)
+    check(final.includes('diff ' + SHA('a') + '..' + SHA('b')) && final.includes('show ' + SHA('b') + ':<path>'), 'final reviewer uses same source identities', final)
+    const split = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'assemble:final': { dir: FR_DIR, exit: 0, fits: 'fits: no (90000 of 80000)', clusterFits: ['cluster-fits: source yes (1000 of 80000)'], clusters: 1 },
+      'final-review:cluster:1': { verdict: 'ready' },
+      'final-review:seam': { verdict: 'ready' },
+    }) })
+    assertNoThrow(split)
+    for (const label of ['final-review:cluster:1', 'final-review:seam']) {
+      const prompt = promptOf(split.trace, label) ?? ''
+      check(prompt.includes('diff ' + SHA('a') + '..' + SHA('b')) && prompt.includes('show ' + SHA('b') + ':<path>'), label + ' shares captured final source', prompt)
+    }
+    const unavailable = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger:finish': { text: '', reviewError: 'git rev-parse failed: missing commit' },
+    }) })
+    assertNoThrow(unavailable)
+    check(!unavailable.counts['assemble:final'] && !unavailable.counts['final-review'] && unavailable.result.review.includes('missing commit'), 'failed source capture remains unavailable with command evidence')
+  }
+
   // ===== 0. template-literal span accounting =====
   scenario('template-literal spans: scanner clean, count matches recorded baseline')
   {
     const scan = scanTemplateSpans(scriptBody)
     check(scan.clean, 'scanner ends in code state (no unterminated literal, string, or ${})')
-    check(scan.spans.length === 463,
-      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 463 (+4 for the oversized race guard and exit-4 hold (the already-dispatched skip log, the exit-4 log, its ledger line and key); +23 for oversized handling (noteSurface's line and key, handleOversized's skip and split logs, the split dispatch key/label, the three outcome logs and ledger lines/keys/elision, the close-split key/label, splitOversizedPrompt and closeSplitPrompt); +16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
+    check(scan.spans.length === 465,
+      `top-level template-literal count matches recorded baseline (got ${scan.spans.length}, baseline 465 (+2 for captured review source and Finish capture instruction; +4 for the oversized race guard and exit-4 hold (the already-dispatched skip log, the exit-4 log, its ledger line and key); +23 for oversized handling (noteSurface's line and key, handleOversized's skip and split logs, the split dispatch key/label, the three outcome logs and ledger lines/keys/elision, the close-split key/label, splitOversizedPrompt and closeSplitPrompt); +16 for the final-review size switch (reviewPath and cluster path, the assemble dispatch key/label, its fits and cluster parse, the Final review: ledger lines, the UNAVAILABLE string, notReadyWith's two literals, the cluster and seam keys/labels, the stub key/label and its log, finalReviewPrompt's capped note, finalClusterReviewPrompt, finalSeamReviewPrompt, finalReviewStubPrompt); +3 for the assembler builder (workspaceAbs, the default-base text, assemblePrompt's prompt); +2 for the deferred-to-this-task minors note and its per-minor literal; +5 for the outage and quarantine fixes: the dispatch-unavailable stop log, the quarantine release log, its ledger line and key, the fix pass's evidence-only note; +9 for the outage-resume fixes: the Resume read's git landings step and its seeding log, the merge's already-landed log, the seeded-edge keys and the edge re-write key, the reconcile's blocker note, the reconciled completion line and its key; +1 closure verification contract, +1 current requirements contract; recovery marker uses concatenation) — 215 after the D4 loop rewrite, +10 for the merge-evidence contract (clean-check and merge steps, mergeEvidence's diagnoses and logs, the Merge-cleanup line) and writeFence(), +17 for the failing-mergeCheck seam route (the check-fix and fix-review dispatch keys/labels, their logs and blocker findings, the re-merge, fixPrompt's check branch, checkFixReviewPrompt), +2 for mergeCheck's two check-step branches, +2 for deferSweep's log line and final-review wording, −1 when the tree walk/ready/close-epics builders became script echoes (5 literals out, 4 in), +1 for dispatch()'s SCRIPT FAILURE log, −7 for batched ledger writes (per-line ledger keys and labels out, the per-task flush key, the merge agent's LEDGER step and its line templates, the runtime-slot logs, the per-site null-merge logs and the background edge audit in), +46 for early unblock and graph readiness (the split/reopen/discard dispatch keys, labels, prompts and logs, the cancel and graph-dispatch logs, the stacked/re-entry brief and implementer wording, the stacked rebase and review-bead close, the held-back and re-entry logs, the reconcile split note, the detector and Metrics fields, the resume note), +33 for proactive slowness handling (noteSlowness and its items, the hot-file raise, the graph-bound arming and its audit reason, the detector's lane fields, the act-capable edge audit: change formatting, the edge-cuts dispatch key/label/prompt, the Edge cut: lines and their elided variants, effDeps' cut key), +8 for the round-1 planning split (planPrompt's walk and three scopes, the plan-rest key/label, its logs), +1 when the brief folded into the implementer (workspaceSetup's re-entry branch and the setup/no-base findings in, the brief dispatch key/label out), +1 for the planner-null degrade log, +5 for task-worktree cleanup (the task-worktree root, the merge's cleanup command and step, the worktree-sweep log and prompt), +4 for process cleanup (the run temp root, processHygiene's command and rule, the process-sweep log), +1 for the ledger-read retry label, +1 for the detached-HEAD merge diagnosis, +3 for the short task temp root (its root, taskTmp, processHygiene's roots), +1 for the auth-refused Merge: line, +1 for the review-base substitution log, +6 for the integration-blocked hold (the held/skip/stop logs, the hold reasons, its Merge: line and slowness item), +14 for added edges (addEdge's logs, ledger line, key and label, the waiting log, the waitFor ledger lines, edgeAddPrompt), +3 for edge-audit memory (the carried-verdict list), +30 for the open-issues sweep (already-merged re-check, ledger-check causes and the in-memory Metrics fallback, digest header check, class and cause tags, the graph-bound re-check, peak-based streak, aborted merge check, sweep-line validation and baseline, run-to-completion rule, HOME/XDG, human actions, deferred minors, composed review, base check, planner cwd), +1 for the final-review Metrics block, +1 for the merge-lane priority log; update it only alongside an edit that deliberately adds or removes a template literal) — a changed count without a deliberate literal add/remove is the backtick-in-prose trap`)
     // self-test: inject a raw backtick mid-way through the first literal's content and assert
     // the detector actually fires — a detector that cannot catch the known failure is decoration
     const [s, e] = scan.spans[0]
@@ -2455,7 +2484,7 @@ async function main() {
     check(out.counts['seam-review:bd-101'] === 1 && out.counts['merge:bd-101:seam-cleared'] === 1 && !out.counts['fix:bd-101:seam'], 'one seam review, no fix, one seam-cleared merge')
     const seam = promptOf(out.trace, 'seam-review:bd-101')
     check(!!seam && seam.includes('READ-ONLY') && seam.includes('src/a.js') && seam.includes('outside this review') && !seam.includes('already approved'), 'seam review is read-only, scoped, and not primed with the prior approval', seam)
-    check(!!seam && seam.includes('TEST CHANGES') && seam.includes(`${SHA('b')}..HEAD`) && /deleted, skipped, loosened, or whose expected values were edited/.test(seam) && /valid only with the command you ran stated/.test(seam), 'seam review carries the Test changes rule over the post-rebase range')
+    check(!!seam && seam.includes('TEST CHANGES') && seam.includes(`${SHA('b')}..${SHA('c')}`) && /deleted, skipped, loosened, or whose expected values were edited/.test(seam) && /valid only with the command you ran stated/.test(seam), 'seam review carries the Test changes rule over the post-rebase range')
     check(promptOf(out.trace, 'merge:bd-101:seam-cleared')?.includes('ALREADY rebased') && promptOf(out.trace, 'merge:bd-101')?.includes('POST-REBASE SEAM CHECK'), 'first merge carries the seam check; the second skips it')
     check(/^Merge: bd-101 — rebase clean · seam-review cleared · check none$/.test(taskLedgerLine(out.trace, 'bd-101', /^Merge: /) ?? ''), 'Merge: line records seam-review cleared')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.maxOpen.merge === 1, 'merged; single-flight held')
@@ -2537,7 +2566,7 @@ async function main() {
     check(!!cfix && /edit whatever files the errors name/.test(cfix) && /do not delete, skip, or loosen any test assertion/.test(cfix) && /smallest change/.test(cfix), 'merge-check fix is fenced: any named file, smallest change, no weakened tests')
     check(!!cfix && /merge-base --is-ancestor epic-\S+ HEAD. fails[\s\S]*rebase onto it[\s\S]*still occur on the current tip/.test(cfix), 'merge-check fix first re-checks against the current tip and fixes only errors that persist there', cfix)
     const crev = promptOf(fixed.trace, 'seam-review:bd-101:check')
-    check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..HEAD`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
+    check(!!crev && /READ-ONLY/.test(crev) && crev.includes(`${SHA('c')}..${SHA('e')}`) && crev.includes('<build-errors>'), 'one scoped read-only review of the fix diff')
     check(promptOf(fixed.trace, 'merge:bd-101:check-fixed')?.includes(CHECK), 'the check re-runs on the re-dispatched merge')
     check(taskLedgerLine(fixed.trace, 'bd-101', /^Merge: /) === 'Merge: bd-101 — rebase clean · seam-review none · check fail→fixed', 'Merge: line records check fail→fixed')
     check(JSON.stringify(fixed.result?.completed) === '["bd-101"]' && !fixed.trace.some(t => t.label.startsWith('triage:')), 'merged without the blocker path', JSON.stringify(fixed.result))
@@ -2726,7 +2755,7 @@ async function main() {
       'Task 10 (bd-110): cancelled (parent bd-106 blocked)',
       'Detector: round 1 — 2 ready · topped-up 0 · cap 4 · peak in-flight 2 · top-up queries 0/40',
     ].join('\n')
-    const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: knownLedger } }) })
+    const out = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { reviewBase: SHA('a'), reviewHead: SHA('b'), text: knownLedger } }) })
     assertNoThrow(out)
     const lines = extractLedgerLines(promptOf(out.trace, 'ledger-append:metrics')).filter(l => l.startsWith('Metrics:'))
     check(lines[0] === 'Metrics: merges 2 · merge-failed 2 · rebase-conflicts 3 · seam-reviews 2 (fixed 1) · check-fails 2 (fixed 1)', 'line 1: success-path merges only; conflicts, seam reviews and check failures on both paths', lines[0])
@@ -2734,9 +2763,9 @@ async function main() {
     check(lines[2] === 'Metrics: fix-pass — entered 4 · FIXED 3 · BLOCKED 1', 'line 3: every fix-pass line counted, a retried task twice', lines[2])
     check(lines[3].startsWith('Metrics: ledger-check landed≠completed: 3 vs 2 — the ledger shows landings this run did not count'), "line 4: landed ids (2 merges + 1 re-entry close) vs this run's completed.size (2), with the likely cause", lines[3])
     const reentryLedger = ['Merge: bd-101 — rebase clean · seam-review none · check none', 'Task 2 (bd-102): complete (already merged into epic-bd-100-integration before this re-entry — bead closed, no new review)'].join('\n')
-    const ok = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: reentryLedger } }) })
+    const ok = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { reviewBase: SHA('a'), reviewHead: SHA('b'), text: reentryLedger } }) })
     check(extractLedgerLines(promptOf(ok.trace, 'ledger-append:metrics'))[3] === 'Metrics: ledger-check ok · append-failed 0 · append-retried 0', 'a re-entry close (no Merge: line) counts as landed: no false mismatch')
-    const empty = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { text: '# ledger-digest: 0 of 5 lines' } }) })
+    const empty = await run({ args: liveArgs(), canned: manyTaskCanned(['bd-101', 'bd-102'], { 'read-ledger:finish': { reviewBase: SHA('a'), reviewHead: SHA('b'), text: '# ledger-digest: 0 of 5 lines' } }) })
     check(extractLedgerLines(promptOf(empty.trace, 'ledger-append:metrics'))[3].includes('METRICS INVALID'), 'a read with no landing lines while tasks completed is flagged METRICS INVALID')
     check(JSON.stringify(out.result?.metrics) === JSON.stringify(lines), 'the return carries exactly those four lines, in order', JSON.stringify(out.result?.metrics))
   }

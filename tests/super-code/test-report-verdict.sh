@@ -115,7 +115,8 @@ assert_eq "$(lines "$out")" 14 "verdict, kind, 11 untested, path"
 echo "report-verdict: producer/parser contract"
 printf '%s\n' '# SDD ledger — plan: ep-plan.md' \
   'Launch: mechanism ordinary-subagents · epic ep · branch b · integrationWorktree /r/w · mergeCheck none' > "$T/ledger.md"
-run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode single
+run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode single \
+  --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222
 assert_eq "$code" 0 "dispatch-text builds the single-mode final-review prompt"
 for needle in '"## Verdict"' '"## Must fix before landing"' '"## Untested scope"' 'no numbered lists'; do
   if printf '%s\n' "$out" | grep -qF -- "$needle"; then pass "prompt fixes $needle"; else fail "prompt fixes $needle"; fi
