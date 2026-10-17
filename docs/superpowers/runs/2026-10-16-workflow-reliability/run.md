@@ -15,3 +15,7 @@ skillSource: /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6
 
 approvals:
 - root vision and five categories approved collaboratively; simplification approved; spec committed d18e2960; user resumed after requested spec-only pause.
+
+# Design checkpoint
+
+Promotion review: promotion-review.md; proposed split: proposed-split.md. Pending interactive approval of proposed Key abstractions and thirteen-child top split (.8 PROMOTE, others LEAF). No implementation started.
