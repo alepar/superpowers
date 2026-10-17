@@ -125,7 +125,7 @@ codeBuckets:
   review: not ready (two supported cross-component/product findings; incomplete source and historical evidence coverage; caller sweep and acceptance pending)
   sweep: f726f0e — 37 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: 37 exact serial invocations in final-sweep-combined-1/command-plan.json (28 AGENTS envelope + 9 focused repair command groups) @ f726f0e97f57b398832891d3f7d95759ed367eb4
   worktreesKept: none in named completed-task cleanup scope; parent integration/raw evidence retained for caller
-  processSweep: scoped helper cleanup verified for task 23 and task 32 worktree/temp roots (exit 0); no run-root or global sweep; prior inspection unknowns retained in finish-state.json
+  processSweep: stopped 0 · survived 0 — owned integration/report roots; receipt post-cap-audit-checkpoint/parent-process-cleanup.json; no global absence claim
 
 roastCodeRound: 2
 
@@ -205,6 +205,7 @@ roastCodeExit: thrash
 roastCodeCapped: [Blocking] skills/super-code/coordinator.js:1830 · 2026-10-16-workflow-reliability-roast-pr-2.md · operator ruling required to authorize work beyond the ended fix loop
 
 parked:
+- 2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md · escalation · "skills/super-auto/scripts/report-status:469 — Cross-packet material dissent leaves the producer contract unresolved. The two refute seats for this packet cite super-auto/SKILL.md:491, requiring complete extraction for each settled roast source, and base acceptance behavior. The ground seat for the adjacent confirmed packet at :468 says the supported design-loop producer writes findingsLedgerDesign without creating finding-source records and identifies this as a producer-consumer seam. That concrete design-loop evidence, recorded in probe-panel0-ground/receipt.json, is not answered by the roast-source requirement; the packets do not establish whether the requirement applies to that producer. The new-regression claim needs human judgment on this scope question."
 - 2026-10-16-workflow-reliability-roast-pr-2.md · escalation · "skills/super-code/scripts/dispatch-text.mjs:154 — Material dissent: the refute seat cites assembler-prompt.md:22-29 and super-auto/SKILL.md:463, which explicitly make invalid-provenance refusals unavailable through fallback; the confirming seats cite the authoritative run.md location and direct-input behavior for assembly-unavailable cases but do not resolve whether that explicit refusal policy governs this nested historical snapshot case. New post-r1 evidence shows this selector failure suppresses a product review, but the policy conflict remains for human judgment."
 - 2026-10-16-workflow-reliability-roast-pr-2.md · degraded-verdict · "Fix loop ended at thrash with one unresolved Blocking and four Should-fix findings; no regression-only pass because the round did not converge. Final-review keys and cumulative punch list preserved."
 
