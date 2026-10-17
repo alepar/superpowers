@@ -72,6 +72,12 @@ assert_has "$out" "reject: supersedes: code loop supersedes nothing: bd-7" "code
 case_run sk code amend-code-ok.md
 assert_eq "$out" "ok" "code record without supersedes: passes"
 
+case_run se design amend-design-escaped.md
+assert_eq "$out" "ok" "design record with <, &, \" and -> in a work: title passes"
+
+case_run sn design amend-design-no-work.md
+assert_eq "$out" "ok" "design record with no work: lines passes"
+
 echo "filing sequence (stub bd)"
 BIN="$TMPROOT/bin"; ST="$TMPROOT/bd-state"
 mkdir -p "$BIN"
@@ -91,7 +97,9 @@ case "$cmd" in
       --description) printf '%s' "$3" > "$BD_STATE/desc-$id" ;;
       *) exit 1 ;;
     esac ;;
-  dep) [ "$1" = add ] || exit 1; echo "$2 $3" >> "$BD_STATE/deps.log" ;;
+  dep) [ "$1" = add ] || exit 1
+    [ -n "$2" ] && [ -n "$3" ] || { echo 'Error: resolving dependency ID : no issue found matching ""' >&2; exit 1; }
+    echo "$2 $3" >> "$BD_STATE/deps.log" ;;
   list)
     label=''; while [ $# -gt 0 ]; do [ "$1" = --label ] && label=$2; shift; done
     echo "["; first=1
@@ -99,7 +107,9 @@ case "$cmd" in
       [ -e "$f" ] || continue; id=${f##*/bead-}
       case ",$(get "$id" labels)," in *",$label,"*) ;; *) continue ;; esac
       [ $first = 1 ] || echo "  ,"; first=0
-      printf '  {\n    "id": "%s",\n    "title": "%s"\n  }\n' "$id" "$(get "$id" title)"
+      # Go-style JSON escaping, as bd 1.3.0 prints titles: \ and " backslashed, < > & as \u00XX.
+      title=$(get "$id" title | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/</\\u003c/g' -e 's/>/\\u003e/g' -e 's/&/\\u0026/g')
+      printf '  {\n    "id": "%s",\n    "title": "%s"\n  }\n' "$id" "$title"
     done
     echo "]" ;;
   create)
@@ -119,7 +129,8 @@ case "$cmd" in
       printf '%s\n      {\n        "id": "%s",\n        "status": "%s"\n      }' "$sep" "$dep" "$(get "$dep" status)"; sep=','
     done
     printf '\n    ]\n  }\n]\n' ;;
-  supersede) put "$1" status closed ;;
+  supersede) [ "$2" = --with ] && [ -n "${3:-}" ] || { echo 'Error: --with needs an issue id' >&2; exit 1; }
+    put "$1" status closed ;;
   ready)
     echo "["; first=1
     for f in "$BD_STATE"/bead-*; do
@@ -202,6 +213,33 @@ file_beads design sp:redesign-design-1 amend-design-ok.md
 assert_eq "$code" 0 "sweep replay: block exits 0"
 assert_eq "$(wc -l < "$ST/deps.log" | tr -d ' ')" "$deps_before" "sweep replay adds no dep add"
 assert_eq "$(cat "$ST/desc-sw-1")" "$desc_before" "sweep replay leaves the description unchanged"
+
+esc='Wire <loop> & "q" -> p'
+seed; seed_sweep
+file_beads design sp:redesign-design-1 amend-design-escaped.md
+assert_eq "$code" 0 "escaped title: block exits 0"
+esc_id=$(grep -lxF "title=$esc" "$ST"/bead-new-* | sed 's|.*/bead-||')
+assert_eq "$(printf '%s\n' "$esc_id" | grep -c .)" 1 "escaped title: filed once"
+listing=$(BD_STATE="$ST" "$BIN/bd" list --label sp:redesign-design-1 --all --json)
+assert_has "$listing" '"title": "Wire \u003cloop\u003e \u0026 \"q\" -\u003e p"' "stub bd list prints the title Go-escaped"
+assert_has "$(calls)" "supersede bd-7 --with $esc_id" "escaped title: bd-7 superseded by its bead"
+assert_has "$(cat "$ST/deps.log")" "sw-1 $esc_id" "escaped title: sweep depends on its bead"
+assert_has "$(cat "$ST/desc-sw-1")" "blocked-by $esc_id: consumes all leaves (integration sweep)" "escaped title: sweep description names its bead"
+creates_before=$(calls | grep -c '^create ' || true)
+deps_before=$(wc -l < "$ST/deps.log" | tr -d ' ')
+file_beads design sp:redesign-design-1 amend-design-escaped.md
+assert_eq "$code" 0 "escaped title replay: block exits 0"
+assert_eq "$(calls | grep -c '^create ' || true)" "$creates_before" "escaped title replay files no duplicate"
+assert_eq "$(wc -l < "$ST/deps.log" | tr -d ' ')" "$deps_before" "escaped title replay adds no dep add"
+
+seed; seed_sweep
+file_beads design sp:redesign-design-1 amend-design-no-work.md
+assert_eq "$code" 0 "no work: lines with sweep: block exits 0"
+assert_lacks "$(calls)" "create " "no work: lines: nothing filed"
+assert_eq "$(wc -c < "$ST/deps.log" | tr -d ' ')" 0 "no work: lines: no dep add"
+assert_eq "$(cat "$ST/desc-sw-1")" "Sweep the root goal.
+blocked-by bd-7: consumes all leaves (integration sweep)" "no work: lines: sweep description unchanged"
+assert_eq "$(status_of bd-7)" open "no work: lines: nothing superseded"
 
 seed; seed_sweep
 file_beads code sp:redesign-code-1 amend-code-ok.md
