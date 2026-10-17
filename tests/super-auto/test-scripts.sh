@@ -121,6 +121,7 @@ qualifier: code findings parked" "parked escalation plus codeBuckets.escalated c
 assert_eq "$(rs_status "$RF/roast-skipped.md")" "status: clean [degraded: plan roast skipped, code roast skipped]" "skipped roasts (t/f flag values) are qualifiers"
 assert_eq "$(rs_status "$RF/code-capped.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking"
 assert_eq "$(rs_status "$RF/code-thrash.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped written at a thrash exit counts its keys"
+assert_eq "$(rs_status "$RF/disputed-capped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking key held in roastCodeCapped counts as unresolved Blocking (never clean)"
 assert_eq "$(rs_status "$RF/design-capped-proceeded.md")" "status: completed with 2 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking, code roast skipped]" "proceeded design cap counts its keys and leads the qualifiers"
 assert_eq "$(rs_status "$RF/design-capped-unparseable.md")" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "design cap with no stopped/proceeded slot counts as proceeded"
 run bash "$RS" "$RF/design-capped-stopped.md"
