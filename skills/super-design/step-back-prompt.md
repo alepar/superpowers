@@ -19,7 +19,10 @@ and `[KEYS_FILE]` (the absolute path of the round's step-back keys file).
 The caller saves the output verbatim beside the round's roast report, named after it with
 `-step-back` appended (`…-roast-design-2.md` → `…-roast-design-2-step-back.md`), and records one
 line per round in its run-state file, keyed by loop (`stepBackDesign` in `design` mode, `stepBackCode`
-in `code` mode, since the two loops number their rounds independently):
+in `code` mode, since the two loops number their rounds independently). It writes the line when it
+has chosen the round's branch (its Step 1 branch item), in the same write as that branch's own
+records (on a taken redesign: the `redesignCycles-<loop>` counter and the `redesign-<loop>-<K>`
+record), never when the output is saved or checked:
 
 ```
 stepBack<Design|Code>-round-<N>: local — <why no higher-level correction fits>
@@ -28,11 +31,14 @@ stepBack<Design|Code>-round-<N>: redesign — <applied | parked | declined>: <de
 
 `<N>` is the roast round number. The caller also writes the `local — gate not computable: <reason>`,
 `redesign — forced: step-back record rejected: <reject lines>` and `local — redesign declined by human`
-forms itself; a `patch` in an older record is read as `local`. The output's `clusters:` lines are
+forms itself (the `local` forms where it decides them; the forced form from its branch item); a
+`patch` in an older record is read as `local`. The output's `clusters:` lines are
 machine-read by the caller: `super-auto`'s scope filter decides each cluster as a unit, and each
-cluster is fixed as one task carrying its `rule:`. `applied` = the redesign is being carried out;
-`parked` = outside the root goal/non-goals in an autonomous run, surfaced at the loop exit instead;
-`declined` = the human chose local.
+cluster is fixed as one task carrying its `rule:`. `applied` = the redesign cycle was started,
+written with its record (an aborted cycle's line stays `applied`; its record says `aborted — …`);
+`parked` = the redesign is not carried out this round and is surfaced at the loop exit: outside the
+root goal/non-goals in an autonomous run, redesign budget spent, or the budget-spent thrash exit
+(the park text or the exit summary says which); `declined` = the human chose local.
 
 ```
 Task tool (general-purpose), model: opus:
