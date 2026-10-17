@@ -190,10 +190,14 @@ if [ "${1:-}" = --collect ]; then
   node - "$script_dir" "$@" <<'COLLECT'
 const fs=require('node:fs'), path=require('node:path'), crypto=require('node:crypto'), cp=require('node:child_process');
 const [scriptDir,,run,...args]=process.argv.slice(2);
-const usage=()=>{console.error('usage: report-status --collect RUN_MD [--invocation ID --workspace DIR --review FILE|none --verdict TEXT [--required RELATIVE_FILE]...]');process.exit(2)};
+const usage=()=>{console.error('usage: report-status --collect RUN_MD [--invocation ID --workspace DIR --review FILE|none --verdict TEXT [--required RELATIVE_FILE]... [--recover-null]]');process.exit(2)};
 if(!run)usage();
-const o={},required=[];
-for(let i=0;i<args.length;i+=2){if(!args[i+1])usage();if(args[i]==='--required')required.push(args[i+1]);else if(['--invocation','--workspace','--review','--verdict'].includes(args[i])&&!o[args[i]])o[args[i]]=args[i+1];else usage();}
+const o={},required=[];let recoverNull=false;
+for(let i=0;i<args.length;i++){
+ if(args[i]==='--recover-null'){if(recoverNull)usage();recoverNull=true;continue}
+ const key=args[i],value=args[++i];if(!value)usage();
+ if(key==='--required')required.push(value);else if(['--invocation','--workspace','--review','--verdict'].includes(key)&&!o[key])o[key]=value;else usage();
+}
 let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
 const dir=path.dirname(path.resolve(run)), latest=new Map();let approvals=false;
 function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
@@ -207,9 +211,62 @@ const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.inv
  (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
  (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
  (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
-let malformed=false;
-for(const line of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';if(!line.startsWith('- review-collection'))continue;try{if(!approvals||!line.startsWith('- review-collection · '))throw Error();const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{malformed=true}}
-if(args.length){if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};const old=latest.get(r.invocationId);if(old&&(old.workspace!==r.workspace||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null))||JSON.stringify(old.required)!==JSON.stringify(r.required))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});console.error('COLLECTION_GAP: invocation identity or required bundle changed; retain both sources');process.exit(3)}if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}}
+const recordHash=r=>crypto.createHash('sha256').update(JSON.stringify(r)).digest('hex');
+const sameBundle=(a,b)=>a.workspace===b.workspace&&JSON.stringify(a.required)===JSON.stringify(b.required);
+const sameRecovery=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const history=new Map();let malformed=false;
+for(const line of text.split('\n')){
+ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
+ if(!line.startsWith('- review-collection'))continue;
+ try{
+  if(!approvals||!line.startsWith('- review-collection · '))throw Error();
+  const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();
+  if(r.recovery!==undefined){
+   const recovery=r.recovery,base=history.get(recovery?.recordSha256),old=latest.get(r.invocationId);
+   if(!recovery||recovery.kind!=='settled-null'||!base||!base.settled||base.reviewPath!==null||base.review!==recovery.review||
+      base.invocationId!==r.invocationId||!sameBundle(base,r)||!r.settled||r.reviewPath!==path.join(r.workspace,'final-review-'+r.invocationId+'.md')||
+      !(recordHash(old)===recovery.recordSha256||(old?.reviewPath===r.reviewPath&&old.review===r.review&&sameRecovery(old.recovery,recovery))))throw Error();
+  }
+  latest.set(r.invocationId,r);history.set(recordHash(r),r);
+ }catch{malformed=true}
+}
+// Reject every source symlink component before reading a recovered report or bundle.
+function sourcePath(workspace,relative){
+ if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
+ let full=workspace;if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path');
+ for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path')}
+ const resolved=path.relative(fs.realpathSync(workspace),fs.realpathSync(full));
+ if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))throw Error('unsafe bundle path');
+ return full;
+}
+if(args.length){
+ if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();
+ const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};
+ if(!validCollection(r))usage();
+ const old=latest.get(r.invocationId),deny=message=>{console.error('COLLECTION_GAP: '+message);process.exit(3)};
+ if(recoverNull){
+  // Caller-confirmed recovery is the sole supported settled-null transition. Its
+  // digest links the exact retained null event; replay cannot relabel another source.
+  const expected=path.join(r.workspace,'final-review-'+r.invocationId+'.md');
+  if(malformed||!old||!old.settled||!sameBundle(old,r)||r.reviewPath!==expected)deny('null recovery identity or required bundle changed; retain original result');
+  if(old.reviewPath!==null){
+   if(!old.recovery||old.reviewPath!==r.reviewPath||old.review!==r.review)deny('null recovery cannot replace a settled non-null result');
+  }else{
+   try{
+    const report=sourcePath(r.workspace,'final-review-'+r.invocationId+'.md');if(!fs.lstatSync(report).isFile())throw Error();
+    const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',r.invocationId+'/final',report],{encoding:'utf8'});
+    if(result.status!==0)throw Error();const extracted=JSON.parse(result.stdout);
+    if(extracted.kind!=='final-review'||extracted.verdict!==r.review)throw Error();
+   }catch{deny('null recovery report unavailable, unsafe, incomplete or verdict mismatch; retain original result')}
+   r.recovery={kind:'settled-null',recordSha256:recordHash(old),review:old.review};
+   if(old.files)r.files=old.files;
+   append('review-collection',r);latest.set(r.invocationId,r);
+  }
+ }else{
+  if(old&&(!sameBundle(old,r)||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null)))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});deny('invocation identity or required bundle changed; retain both sources')}
+  if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}
+ }
+}
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
 let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
@@ -219,13 +276,17 @@ for(const previous of latest.values()){
  // lstat on a leaf alone follows earlier directory symlinks. Validate the full
  // source path before enumeration, manifest reads, hashing or extraction.
  function source(relative){
-  const unsafe=()=>{gap('unsafe bundle path: '+relative);throw Error('unsafe bundle path')};
-  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))unsafe();
-  let full=r.workspace;
-  if(fs.lstatSync(full).isSymbolicLink())unsafe();
-  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())unsafe()}
-  const resolved=path.relative(fs.realpathSync(r.workspace),fs.realpathSync(full));
-  if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))unsafe();
+  try{return sourcePath(r.workspace,relative)}catch(e){if(e.message==='unsafe bundle path')gap('unsafe bundle path: '+relative);throw e}
+ }
+ // Destination parents belong to this archive too. Never hash, trust or copy a
+ // leaf through a symlink, even if the outside bytes happen to match the source.
+ function destination(relative){
+  const full=path.join(archive,relative);let current=dir;
+  for(const component of ['reviews',id,...relative.split(path.sep)]){
+   current=path.join(current,component);
+   try{if(fs.lstatSync(current).isSymbolicLink())throw Error('unsafe archive path')}
+   catch(e){if(e.code==='ENOENT')continue;gap('unsafe archive path: '+relative);throw e}
+  }
   return full;
  }
  if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
@@ -247,7 +308,8 @@ for(const previous of latest.values()){
   const manifests=[];
   for(const rel of [...files].sort()){
    if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
-   const src=path.join(r.workspace,rel),dst=path.join(archive,rel),saved=previous.files?.find(f=>f.path===rel);
+   let dst;try{dst=destination(rel)}catch{continue}
+   const src=path.join(r.workspace,rel),saved=previous.files?.find(f=>f.path===rel);
    let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
    try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
    if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
@@ -257,7 +319,7 @@ for(const previous of latest.values()){
    }
    if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
    if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
-   if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(dst)}catch{gap('archive copy failed: '+rel)}}
+   if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});destination(rel);fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(destination(rel))}catch{gap('archive copy failed: '+rel)}}
    if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
    manifests.push({path:rel,sha256:dstHash});
   }

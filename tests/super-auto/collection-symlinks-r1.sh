@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regression: source collection must reject symlinked components before reading bytes.
+# Regression: collection must reject source and destination symlinks before reading/copying bytes.
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 T=$(mktemp -d)
@@ -47,6 +47,28 @@ rejected('split-manifest-intermediate',f=>{
  fs.mkdirSync(path.join(f.outside,f.prefix+'-final'));fs.writeFileSync(path.join(f.outside,f.prefix+'-final','clusters.json'),JSON.stringify({clusters:[{slices:['sentinel.txt']}]}));fs.writeFileSync(path.join(f.outside,f.prefix+'-final','sentinel.txt'),sentinel);
  fs.symlinkSync(f.outside,path.join(f.workspace,'assembled'));fs.writeFileSync(path.join(f.workspace,f.prefix+'.cluster-1.md'),'## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n');
 });
+// A missing component guard would redirect writes through archive-owned directories.
+for(const component of ['reviews','invocation','nested','leaf']){
+ const f=fixture('destination-'+component),rel='payload/deep/input.txt';
+ fs.mkdirSync(path.dirname(path.join(f.workspace,rel)),{recursive:true});fs.writeFileSync(path.join(f.workspace,rel),'review input bytes\n');
+ fs.writeFileSync(path.join(f.outside,'sentinel.txt'),sentinel);
+ const archive=path.join(f.root,'reviews','probe');
+ if(component==='reviews')fs.symlinkSync(f.outside,path.join(f.root,'reviews'));
+ else if(component==='invocation'){fs.mkdirSync(path.dirname(archive));fs.symlinkSync(f.outside,archive)}
+ else if(component==='nested'){fs.mkdirSync(path.join(archive,'payload'),{recursive:true});fs.symlinkSync(f.outside,path.join(archive,'payload','deep'))}
+ else {fs.mkdirSync(path.join(archive,'payload','deep'),{recursive:true});fs.symlinkSync(path.join(f.outside,'sentinel.txt'),path.join(archive,rel))}
+ const before=fs.readdirSync(f.outside),result=collect(f,[rel]),record=latest(f);
+ check('destination-'+component+' rejects escaped collection',()=>{assert.equal(result.status,3,result.stdout+result.stderr);assert.equal(record.complete,false);assert.ok(record.gaps.some(g=>g.startsWith('unsafe archive path: ')),JSON.stringify(record.gaps))});
+ check('destination-'+component+' leaves outside bytes and entries untouched',()=>{assert.deepEqual(fs.readdirSync(f.outside),before);assert.equal(fs.readFileSync(path.join(f.outside,'sentinel.txt'),'utf8'),sentinel)});
+}
+// An existing matching external file must not be trusted as an owned archive copy.
+{
+ const f=fixture('destination-existing-file'),rel='payload/input.txt';
+ fs.mkdirSync(path.join(f.workspace,'payload'));fs.writeFileSync(path.join(f.workspace,rel),'same bytes\n');
+ fs.writeFileSync(path.join(f.outside,'input.txt'),'same bytes\n');fs.mkdirSync(path.join(f.root,'reviews','probe'),{recursive:true});fs.symlinkSync(f.outside,path.join(f.root,'reviews','probe','payload'));
+ const result=collect(f,[rel]);
+ check('matching outside file cannot satisfy archive completeness',()=>{assert.equal(result.status,3,result.stdout+result.stderr);assert.equal(latest(f).complete,false);assert.ok(!latest(f).files.some(entry=>entry.path===rel))});
+}
 const normal=fixture('normal'),relative='assembled/'+normal.prefix+'-final/nested/input.txt';
 fs.mkdirSync(path.dirname(path.join(normal.workspace,relative)),{recursive:true});fs.writeFileSync(path.join(normal.workspace,relative),'normal nested bytes\n');
 fs.mkdirSync(path.join(normal.workspace,'inputs'));fs.writeFileSync(path.join(normal.workspace,'inputs','required.txt'),'normal required bytes\n');
