@@ -107,6 +107,83 @@ assert_eq "$code" 2 "missing --keys exits 2"
 echo "report-status"
 RS="$REPO_ROOT/skills/super-auto/scripts/report-status"
 RF="$SCRIPT_DIR/fixtures/report-status"
+echo "caller-owned root acceptance"
+run node - "$RS" "$T" <<'ACCEPTANCE'
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const [script,tmp]=process.argv.slice(2),tree='a'.repeat(40),other='b'.repeat(40),file=path.join(tmp,'acceptance.md');
+fs.writeFileSync(path.join(tmp,'final.md'),'ready\n');
+const source={version:1,source:'inv-a/final',artifact:'final.md',kind:'final-review',verdict:'ready',occurrences:[]};
+const sourceLine='- finding-source · '+JSON.stringify(source)+'\n';
+const check={sourceTree:tree,command:'suite',configuration:'quiet',kind:'live',outcome:'pass',location:'sweep.log'};
+const base={version:1,owner:'super-auto',sourceTree:tree,requirements:[
+ {id:'final-review',kind:'review',owner:'super-auto'},
+ {id:'sweep',kind:'measurement',owner:'super-auto',command:'suite',configuration:'quiet',requiredLive:true},
+ {id:'finish',kind:'human',owner:'human'}],
+ evidence:[check],reviews:[{id:'final-review',sourceTree:tree,outcome:'pass',location:'final.md'}],
+ decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['user-choice']}],
+ recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
+let count=0;
+function run(modify,want,needle,tail=''){
+ const r=structuredClone(base);modify(r);
+ fs.writeFileSync(file,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\ncodeBuckets:\n  completed: leaf-A, leaf-B\n  escalated: none\n  pendingRetry: none\n  parked: none\n  stalled: false\n  review: ready\n  sweep: 1 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: suite @ aaaaaaa\napprovals:\n- root-acceptance · '+JSON.stringify(r)+'\n'+sourceLine+tail);
+ const p=cp.spawnSync('bash',[script,'--acceptance',file,'--tree',tree],{encoding:'utf8'});
+ assert.equal(p.status,want,p.stdout+p.stderr);const d=JSON.parse(p.stdout);assert.equal(d.eligible,want===0);if(needle)assert.match(JSON.stringify(d),needle);count++;return d;
+}
+run(()=>{},0);
+run(r=>r.decisions=[],3,/finish.*human/);
+run(r=>r.decisions[0].authority='agent',3,/finish.*human/);
+for(const decision of ['keep','cancel'])run(r=>r.decisions[0].decision=decision,3,/finish.*human/);
+run(r=>r.reviews=[],3,/final-review/);
+run(r=>r.reviews[0].sourceTree=other,3,/final-review/);
+for(const outcome of ['fail','unavailable'])run(r=>r.evidence[0].outcome=outcome,3,new RegExp(outcome));
+for(const kind of ['simulated','fallback'])run(r=>r.evidence[0].kind=kind,3,/live/);
+for(const key of ['sourceTree','command','configuration'])run(r=>r.evidence[0][key]=other,3,/sweep/);
+run(r=>r.checkEvidence.requiredLiveChecks=[{sourceTree:tree,command:'native',configuration:'hardware',satisfied:false}],3,/native/);
+run(r=>r.recovery.obligations=[{version:1,id:'hold',kind:'hold',operation:'record',reason:'external review',evidence:['ledger'],data:{owner:'reviewer'}}],3,/hold/);
+run(r=>r.recovery.gaps=['unread ledger'],3,/unread ledger/);
+run(r=>r.checkEvidence.gaps=['missing check identity'],3,/missing check identity/);
+const deferred={version:1,id:'sweep-old',kind:'deferred',operation:'record',reason:'deferred sweep',evidence:['Launch:inv-a'],data:{owner:'caller',command:'suite',configuration:'quiet',sourceTree:tree}};
+run(r=>r.recovery.obligations=[deferred],0);
+run(r=>{r.recovery.obligations=[deferred];r.evidence=[]},3,/sweep-old/);
+run(r=>{r.recovery.obligations=[deferred];r.evidence[0].sourceTree=other},3,/sweep-old/);
+run(r=>{r.recovery.obligations=[deferred];r.reviews=[]},3,/final-review/);
+run(r=>{r.recovery.obligations=[{...deferred,data:{owner:'caller',runTag:'run-a'}}];r.requirements[1].obligations=['sweep-old']},0);
+run(r=>{r.recovery.obligations=[{...deferred,id:'other-sweep',data:{owner:'caller',runTag:'run-a'}}];r.requirements[1].obligations=['sweep-old']},3,/other-sweep/);
+run(r=>{r.recovery.obligations=[{...deferred,data:{...deferred.data,command:'other-suite'}}];r.requirements[1].obligations=['sweep-old']},3,/sweep-old/);
+run(r=>r.runFailures=[{id:'regression',classification:'run-introduced',state:'open',owner:'task-A'}],3,/regression/);
+run(r=>r.runFailures=[{id:'unknown',classification:'gap',state:'open',owner:null}],3,/unknown/);
+run(r=>r.runFailures=[{id:'old-failure',classification:'pre-run',state:'open',owner:null}],0);
+run(r=>r.runFailures=[{id:'fixed',classification:'run-introduced',state:'verified',owner:'task-A'}],0);
+run(r=>{r.recovery.obligations=[{...deferred,id:'old-failure',data:{runFailure:{}}}];r.runFailures=[{id:'old-failure',classification:'pre-run',state:'open',owner:null}]},0);
+run(r=>r.requirements=[],3,/requirements/);
+run(r=>r.sourceTree=other,3,/source/);
+run(()=>{},3,/finding/, '- finding-source · {}\n');
+// Measurement clears only its own pending requirement, never an actual unresolved code finding.
+const defect='- finding-source · '+JSON.stringify({...source,source:'inv-b/final',occurrences:[{section:'Must fix',position:1,key:'[Should-fix] code.js:1',text:'[Should-fix] code.js:1 — actual defect'}]})+'\n';
+const relevance={ref:{source:'inv-b/final',section:'Must fix',position:1},judgment:'supported',effect:'required',requirement:'final-review',basis:'violates required behavior',evidence:['spec.md#requirement']};
+const retained=run(r=>{r.recovery.obligations=[deferred];r.findingAcceptance=[relevance]},3,/finding/,defect);
+assert(!retained.pending.some(s=>s.includes('sweep-old')),'matched measurement should settle only its own obligation');
+run(()=>{},3,/finding acceptance relevance unproven/,defect);
+const allowed=run(r=>r.findingAcceptance=[{...relevance,effect:'nonblocking',basis:'reviewed follow-up outside required scope'}],0,null,defect);
+assert.equal(allowed.nonblockingFindings.length,1);
+const projection=cp.spawnSync('bash',[path.join(path.dirname(script),'scope-dispositions'),'--project',file],{encoding:'utf8'});
+assert.equal(projection.status,0);assert.equal(JSON.parse(projection.stdout).findings.filter(f=>f.outstanding).length,1,'acceptance judgment must not resolve original finding');
+run(r=>r.findingAcceptance=[{...relevance,effect:'nonblocking',evidence:[]}],3,/finding acceptance relevance unproven/,defect);
+const twin=defect.replaceAll('inv-b/final','inv-c/final');
+const link='- finding-link · '+JSON.stringify({refs:[relevance.ref,{...relevance.ref,source:'inv-c/final'}],basis:'same defect independently reviewed'})+'\n';
+const linked=run(r=>r.findingAcceptance=[{...relevance,effect:'nonblocking',basis:'reviewed follow-up outside required scope'}],0,null,defect+twin+link);
+assert.equal(linked.nonblockingFindings.length,2,'one supported group judgment retains both linked occurrence refs');
+for(const kind of ['review','measurement','human'])run(r=>r.requirements=r.requirements.filter(q=>q.kind!==kind),3,/requirements/);
+run(r=>r.requirements.push({id:'native-required',kind:'measurement',owner:'hardware',command:'native',configuration:'hardware',requiredLive:true}),3,/native-required/,'- root-acceptance · '+JSON.stringify(base)+'\n');
+const pending=structuredClone(base);pending.decisions=[];
+fs.writeFileSync(file,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\napprovals:\n- root-acceptance · '+JSON.stringify(pending)+'\n');
+const status=cp.spawnSync('bash',[script,file],{encoding:'utf8'});
+assert.equal(status.status,0);assert.match(status.stdout,/root acceptance pending.*finish/);count++;
+console.log(count+' root acceptance assertions passed');
+ACCEPTANCE
+assert_eq "$code" 0 "source-bound required reviews, measurements, recovery and human gates control caller root acceptance"
+echo "$out"
+[ "$code" = 0 ] || cat "$T/err"
 rs_status() { run bash "$RS" "$@"; printf '%s\n' "$out" | head -1; }
 
 assert_eq "$(rs_status "$RF/clean.md" --tip 3f9c2e1)" "status: clean" "clean run"

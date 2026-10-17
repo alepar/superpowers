@@ -55,6 +55,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
 | `approvals · review-collection` | `- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>` | 7 | super-auto, before launch and after settled collection |
+| `approvals · root-acceptance` | `- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>` | 7 | super-auto, before code and after settlement or acceptance evidence changes |
 | `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
 | `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
 | `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
@@ -212,6 +213,74 @@ The helper appends complete extraction JSON under `finding-source`, preserving i
 
 `report-status --collect RUN_MD` replays all retained collections. It verifies complete archive hashes even after source cleanup. Exit 0 confirms preservation; exit 3 leaves pending/gaps and requires preserving the source workspace plus archive before later invocation or cleanup; exit 2/4 establishes no collection. Unsettled intents require ledger/result confirmation, not inference from artifact presence. A missing source extraction retains known inline occurrences and exposes unavailable coverage. Ordinary `report-status RUN_MD` is read-only: with new records it adds `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N` and/or `finding evidence gaps: N` qualifiers as applicable, derived from this collection history and the shared outstanding projection. Unavailable tooling/projection is qualified explicitly. Without new records legacy status output is unchanged.
 
+## Caller-owned root acceptance
+
+Every super-auto launch and re-entry supplies `rootAcceptance: "caller"` independently of
+`deferSweep`. All helper closures use `close-in-tree-epics EPIC --exclude-root`. Completed leaves,
+Git landing, an empty ready set, and a ready review each establish their own facts; the root stays
+open while caller acceptance is pending. Standalone super-code keeps its default root ownership.
+
+The existing `approvals:` block carries `root-acceptance` JSON snapshots, version 1, owner
+`super-auto`. Each has `sourceTree` (the full Git tree of the reviewed/measured code), `requirements`,
+`evidence`, `reviews`, `decisions`, `recovery`, `checkEvidence`, and `runFailures`. Write the initial
+snapshot before code, with pending requirements and empty evidence/decisions. After each settled
+invocation, preserve its returned Recovery obligations/gaps, source-bound checkEvidence records,
+requiredLiveChecks/gaps, and runFailures classification/state, using the exact prerequisite
+contracts. Carry still-open facts forward on bucket replacement; reconcile them from their durable
+ledger before removing them from a later snapshot. Earlier snapshots stay as evidence history.
+
+Each requirement has `id`, `kind` (`review`, `measurement`, `human`), and `owner`. Include the final
+whole-epic review, final full-suite measurement, existing phase-7 human choice, and every additional
+acceptance criterion or reserved human gate the run actually requires. This record describes those
+existing obligations; it introduces no additional approval ceremony. Measurement requirements add
+`command`, `configuration`, `requiredLive` (boolean), and optionally `sourceTree` for a check tied
+to a particular earlier tree. Without that override they measure the snapshot's final tree.
+Optional `obligations: [<exact Recovery ids>]` binds deferred final-suite records to that final
+measurement. Preserve a declared Recovery command; a different command cannot discharge it.
+Other deferred measurements need their own command/configuration/source binding. Requirements
+omitted in a later snapshot remain required; an amendment changes the existing requirement by ID
+with its authority/evidence retained in approvals. Never erase a required check by omission.
+
+`evidence` uses the existing sourceTree/command/configuration/outcome/location/kind records.
+`reviews` entries are `{id, sourceTree, outcome, location}`: `pass` means the required review's
+coverage and supported dispositions were verified, rather than copying a ready verdict over
+unresolved findings. `decisions` entries are `{id, authority:"human", decision, evidence:[...]}`.
+Only an actual human's `accept` decision satisfies a human requirement. `keep` and `cancel` preserve
+those outcomes and leave acceptance open, even when the run phase is `done`. Never invent an agent
+decision or infer acceptance from child closure. Retain every reserved human gate separately.
+
+Optional `findingAcceptance` entries carry `{ref, judgment:"supported", effect, basis, evidence}`.
+The existing caller assessment judges `effect:"required"` with the named `requirement` it blocks,
+or `effect:"nonblocking"` with evidence supporting its exclusion from required acceptance. Judge
+each outstanding projected finding/group once using an exact original source ref; explicit links
+make duplicate occurrences one group, while all their original refs remain available. A deferred
+or explicitly non-actionable source item is not automatically a required code defect. Missing or
+unsupported relevance is an acceptance gap. This judgment changes only its acceptance effect:
+nonblocking findings remain outstanding in the shared projection and punch list. It never invents
+a resolution or demands new human approval for every minor; human authority is required only for
+the human decisions already reserved by the task/spec and phase-7 menu.
+
+`report-status --acceptance RUN_MD --tree FULL_GIT_TREE` is a read-only root-close gate: exit 0 and
+`eligible:true` establish that recorded obligations are satisfied; exit 3 returns `pending`/`gaps`;
+2/4 establish no acceptance. Resolve the reviewed/measured source identity and confirm it still
+matches the final code (run-directory-only commits may be excluded per
+report-prompt.md §The status block) before passing that tree. Ordinary status also qualifies pending root acceptance when the
+record is present, using its recorded tree. Legacy status without the record is unchanged.
+
+The gate independently checks required reviews, matching measurements (live when required),
+Recovery holds/pending closures/deferred obligations, source-bound required live checks, run-owned
+failures, collection integrity and supported requirement relevance in the shared outstanding finding projection. A passing measurement
+discharges only its matching obligation. Failed and unavailable outcomes stay distinct; simulated
+or fallback evidence cannot satisfy live requirements. A contradictory pass/fail at the same tree
+requires reconciliation. An open run-introduced failure retains its owner; a missing attribution
+remains a gap. Evidenced pre-run failures are diagnostic unless a requirement separately calls for
+repair. A valid empty finding projection can pass; an empty key stream or missing extraction cannot.
+
+Only after the existing final choice and all required gates are supported, rerun this gate against
+the final code identity and explicitly close the root on exit 0. A passing gate never closes a bead
+or supplies a human decision. A report/hand-back may still describe delivered leaves with pending
+acceptance; keep the root open and name each owner and evidence gap.
+
 ## Finding continuity records and projection
 
 Append the finding records below to the existing `approvals:` block. Preserve earlier records
@@ -339,6 +408,7 @@ roastDesignRound: 2
 roastCodeRound: 1
 
 approvals:
+- root-acceptance · {"version":1,"owner":"super-auto","sourceTree":"1111111111111111111111111111111111111111","requirements":[{"id":"final-review","kind":"review","owner":"super-auto"},{"id":"sweep","kind":"measurement","owner":"super-auto","command":"npm test","configuration":"quiet host","requiredLive":true,"obligations":["bd-412:sweep:rate-limiter-20260731T120000"]},{"id":"finish","kind":"human","owner":"human"}],"evidence":[],"reviews":[],"decisions":[],"recovery":{"obligations":[],"gaps":[]},"checkEvidence":{"records":[],"requiredLiveChecks":[],"gaps":[]},"runFailures":[]}
 - review-collection · {"invocationId":"inv-a","workspace":"/work/project/.superpowers/sdd/bd-root-plan","reviewPath":"/work/project/.superpowers/sdd/bd-root-plan/final-review-inv-a.md","review":"pending","required":[],"settled":false}
 - top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
 - finding-source · {"version":1,"source":"inv-a/final","artifact":"final-review-inv-a.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — inconsistent formatting","text":"[Nit] lib/format.ts:12 — inconsistent formatting"}]}

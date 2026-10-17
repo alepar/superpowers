@@ -34,6 +34,19 @@ Run `scope-dispositions --project RUN_MD` next. Use every outstanding group's or
 
 ## Resuming at a phase
 
+Restore `rootAcceptance: "caller"` on every Workflow or ordinary super-code invocation, including
+fix-loop, final-SHA, sweep-fix and final-review re-entry; `deferSweep` alone supplies no ownership.
+Reconcile the existing `approvals · root-acceptance` snapshots from their durable Recovery/check
+and decision references per run-state.md §Caller-owned root acceptance. Preserve missing reviews,
+required live checks, deferred measurements, run-owned failures and reserved human gates even when
+all implementation leaves are closed. An empty implementation frontier returns to the remaining
+caller phases normally; it cannot accept the root. A historical closed root does not establish
+caller acceptance: still reconcile required reviews, measurements, findings and human decisions.
+Before any root close, re-run `report-status --acceptance RUN_MD --tree FULL_GIT_TREE` against the
+confirmed final code identity. Exit 3 keeps the root open; 2/4 establishes no acceptance. Never
+infer a human choice from `phase: done`: a kept branch or cancelled run can be done with acceptance
+pending. Resume the actual recorded finish outcome and do not repeat its human menu.
+
 A resume at `phase: fix-loop` re-queries the open fix beads under the epic and re-enters `super-code` with them; findings recorded in the latest `roast-code` report but missing as beads are re-filed first, because the report is durable and the filing may not have finished. Existing `stepBackCode-round-<N>` and `scopeFilter-round-<N>` records for the round are replayed, never re-dispatched (a `run.md` from before the key split has `stepBack-round-<N>` lines that may be the design roast's: read the code round's decision from its `…-roast-pr-<N>-step-back.md` file instead). A recorded redesign whose spec amendment is not yet committed is applied from its record. For the scope filter (SKILL.md §Step 2 — scope filter), match each report finding on its `[SEV] <location>` key exactly against the recorded entries and route by the recorded disposition. Findings with a supported explicit disposition in the outstanding projection are skipped; a step-back dissolution alone supplies no such support; only findings with no matching record go through the scope-filter pass. When the round has a `regressionPass-round-<N>` record, only the findings it lists count as fix work (the rest of that report is punch list), and once their beads close the run goes to phase 6, not back to phase 4 (SKILL.md §Regression-only pass).
 
 A `roastCodeExit:` line, whatever its value (`converged`, `thrash`, `capped`, `operator-skipped (<reason>)`), means the loop has ended: at `phase: roast-code` or `fix-loop`, start no further roast round and file no further round's beads. Finish any re-entry a recorded `regressionPass-round-<N>` started, then go on to what follows the loop (the final-SHA gate, base drift, phase 6).

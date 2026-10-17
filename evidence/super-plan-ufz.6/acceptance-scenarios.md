@@ -1,0 +1,35 @@
+# Caller acceptance behavior scenarios
+
+The enclosing coordinator owns fresh-agent evaluation. Use disposable tracker/run fixtures;
+never close the active implementation epic to evaluate these scenarios. No new agent role is
+part of the product change.
+
+1. Deferred suite plus actual defect. Launch super-auto code with explicit caller root ownership.
+   Return finished implementation leaves, a caller-owned deferred Recovery sweep, and a retained
+   review occurrence tied to a required behavior. A later invocation returns ready. Expected:
+   root remains open; the deferred measurement and actual defect remain independently visible.
+   Provide matching live/pass source-tree/command/configuration evidence for the sweep only.
+   Expected: its exact measurement obligation clears; the requirement-linked defect remains open
+   until supported resolution or a supported acceptance-scope judgment addresses its effect.
+   A simulated/fallback pass, failed/unavailable check or different source/configuration does
+   not satisfy required live measurement.
+
+2. Leaves finished, existing human choice pending. Set final reviews and required measurements to
+   supported passes. Keep the existing phase-7 choice or a reserved task/spec human gate pending.
+   Expected: normal implementation hand-back, with root open and the named human owner; no false
+   implementation stall and no agent-authored choice. Resume preserves that state. A real human
+   acceptance permits the root gate only after every other required obligation is supported.
+   Keep/cancel can end the run while leaving root acceptance open. Standalone super-code without
+   the caller option retains normal root closure, even when deferSweep was separately supplied.
+
+3. Disclosed deferred item. Retain an outstanding occurrence and its supported existing caller
+   assessment that it is outside required acceptance. Expected: final required review, measurement
+   and existing human choice can permit root acceptance; the original occurrence remains
+   outstanding in the projection and punch list. Unknown acceptance relevance is an evidence gap.
+   Explicitly linked duplicate occurrences share one acceptance judgment through an exact original
+   ref, retaining every original source ref. No extra human approval is requested for each minor.
+
+Deterministic coverage: tests/super-code/replay-harness.mjs exercises fake-bd root exclusion,
+standalone closure, no-jq fallback, and every coordinator helper caller. The caller-acceptance
+section of tests/super-auto/test-scripts.sh exercises requirement/recovery/evidence/finding/choice
+classification without mutating a tracker. Historical run-state goldens remain unchanged.

@@ -183,6 +183,35 @@ resolved groups as repairs, deferred/rejected separately; raw occurrences and li
 different units. `baseAbsorbed` adds zero task landings, and ordinary execution selection adds
 zero friction events. Profile collection keeps its existing invocation owner and labels.
 
+**Root acceptance stays with this caller.** Every phase-3 launch and every later super-code
+re-entry (fix loop, gated final-SHA leaves, regression pass, sweep fix and final-review fix)
+passes `rootAcceptance: "caller"` as a Workflow arg or explicit ordinary-subagent launch parameter,
+alongside `deferSweep: true`. These are separate options: deferring the suite does not transfer
+root ownership by itself. Retain the option in Launch and on resume. Every coordinator closure,
+including refill's preliminary pass, uses `close-in-tree-epics EPIC --exclude-root`.
+Finished leaves and eligible inner epics can close while this root remains open; `ready-drained`
+returns implementation to the caller normally, without demanding root closure or inventing a stall.
+
+Before code, record the actual acceptance requirements with owners in `approvals · root-acceptance`
+per run-state.md §Caller-owned root acceptance. Include the required whole-epic review, final
+measurement and existing phase-7 choice, plus reserved human gates and any explicit live criteria.
+After every settled invocation carry forward Recovery, checkEvidence and runFailures facts before
+overwriting buckets. Collect its review bundle and use the validated outstanding projection for
+remaining findings. Neither a later ready verdict nor a merged fix bead resolves an earlier finding.
+Required failed/unavailable checks and missing live evidence remain pending, with source pointers.
+
+Phase 6's sweep records sourceTree, command/configuration, outcome, kind and output location;
+bind its measurement requirement to only the deferred Recovery IDs it actually satisfies. A pass
+never resolves an actual code finding or a different measurement. Preserve unresolved reviews,
+Recovery holds, run-owned failures and reserved human choices independently. The report and phase-7
+menu still describe pending acceptance honestly; this adds no new pause before that existing menu.
+Record the human's actual choice there. A kept branch or cancellation may finish the run while
+root acceptance stays open. After authorized final acceptance, run
+`report-status --acceptance RUN_MD --tree FULL_GIT_TREE` against the confirmed final code identity;
+only exit 0 with `eligible:true` permits this caller to close the root explicitly. Exit 3 keeps the
+root open with named pending/gap owners; exit 2/4 establishes no acceptance. No agent answers or
+closes an unresolved human gate. The checker itself is read-only.
+
 ### Gates, final-SHA evidence and base drift
 
 **Gates.** A hold that someone outside `super-code` releases is a gate bead: `bd create --type task
@@ -457,7 +486,7 @@ Recorded decisions replay per run-state.md item 7 (Design decisions).
 
 ### Where the zone ends
 
-The zone ends when the work is done, not at a phase number: once every bead under the epic is terminal and `report.md` is written, the run presents the report and hands control back (stop 2 in §Ending turns in an autonomous run). A run sitting at the integration decision is done, not blocked, and the merge into `base` follows §Invariants I5 (human-owned merge).
+The zone ends when implementation and the required report are ready for hand-back (stop 2 in §Ending turns in an autonomous run). Implementation leaves may be terminal while the root awaits caller-owned reviews, measurements or reserved human choices. Present the report and existing integration menu with those obligations visible; root closure follows the acceptance gate above. The merge into `base` follows §Invariants I5 (human-owned merge).
 
 ### Roast caps
 

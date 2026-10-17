@@ -29,6 +29,7 @@ args = {
   runTag,                // optional — enclosing run identity
   invocationId,          // one invocation; reuse only on explicit unsettled resume
   deferSweep,            // optional — see below
+  rootAcceptance,        // optional 'caller' or default 'coordinator', independent of deferSweep
   processRoots,          // optional — see below
   dryRun,
   config: {
@@ -127,6 +128,15 @@ never a shared location.
 `deferSweep` is **optional**: `true` means the caller runs the full-suite sweep itself (super-auto
 runs one after its fix loop exits). Finish then skips the sweep, tells the final reviewer it was
 deferred, and returns `sweep: "SWEEP DEFERRED (caller-owned)"`.
+
+`rootAcceptance` is **optional**: `"caller"` reserves root closure for the enclosing caller
+(super-auto always supplies it). The default `"coordinator"` preserves standalone acceptance
+ownership. Persist it in Launch and restore it on every retry/re-entry. It is independent of
+`deferSweep` and finish/worktree ownership. In caller mode every `close-in-tree-epics` invocation
+adds `--exclude-root`, including Close and live top-up/refill's preliminary close. Ready and its
+post-closure recheck remain read-only queries. Inner epics still close to fixpoint. An empty frontier returns `ready-drained`
+without demanding a closed root; report implementation results and durable acceptance obligations
+to the caller. Required reviews, measurements and human choices remain the caller's to settle.
 
 `mergeCheck` is **optional**: the exact BUILD-ONLY command — compile or typecheck, envelope
 included (`cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) — the merge agent runs on
@@ -478,9 +488,12 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
    whose in-tree blocker this run quarantined or left awaiting its retry: bd sees that blocker's
    task bead closed only when a reopen was lost. A round whose every ready id is held back ends
    like an empty ready set (`ready-drained`).
-2. **Terminate?** — completion is **the root epic (`epicId`) closed**, not an empty ready set:
+2. **Terminate?** — under default standalone ownership, completion is **the root epic (`epicId`) closed**, not an empty ready set:
    run the epic-closure step (below) after each refill cycle and check whether the root closed.
-   An empty ready set with the root still open means the remaining work is quarantined blockers
+   With `rootAcceptance: "caller"`, skip root closure: an empty ready set ends implementation
+   normally as `ready-drained`, preserving caller review/measurement/human obligations. It does
+   not claim full run acceptance and is not itself a stall.
+   Under standalone ownership, an empty ready set with the root still open means the remaining work is quarantined blockers
    (see "The blocker-bead path") — that ends the loop too, but as a report, not a clean finish. A
    **third** exit, independent of both: a round that merges no task, closes no epic, gains no
    RESOLVE-pending id, and quarantines no id at all made no forward progress whatsoever and never
@@ -553,7 +566,8 @@ Round-based with refill (each `bd ready` batch is, by definition, mutually indep
 5. **Epic closure** — `bd epic close-eligible` is repo-global: it has no `--label`/`--parent`/
    `--mol` scoping flag (verified via `--help`), so the mutating form is **never** called
    unfiltered — in a repo holding more than one live epic it would close epics belonging to
-   unrelated work. An agent runs `scripts/close-in-tree-epics <epicId>`: every pass previews with
+   unrelated work. An agent runs `scripts/close-in-tree-epics <epicId>` (append `--exclude-root`
+   under caller root acceptance, in every helper caller): every pass previews with
    `bd epic close-eligible --dry-run --json`, keeps the candidates `scripts/epic-tree` places in
    this run's tree, and closes those individually via `bd close <id>`. **Stop condition: a pass that
    closes zero in-tree ids** — not "the preview is `[]`": an out-of-tree epic that is permanently
