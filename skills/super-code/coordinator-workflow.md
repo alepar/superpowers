@@ -262,7 +262,7 @@ Two rules, both mandatory in `./coordinator.js`:
 | `final-review` (single) | `review` is an explicit UNAVAILABLE string — **never** "no findings". |
 | `assemble:final` | Not fatal: the final review runs once on direct inputs, uncapped, and the ledger line reads `Final review: single (assembler unavailable)`. |
 | `final-review:cluster:<n>` / `final-review:seam` | The cluster (or `seam`) is listed `unreviewed` and `review` becomes `not ready (…; unreviewed: …)` — never `ready`. A null seam dispatches `final-review:stub` so the handoff file exists. |
-| `worktree-sweep` | `worktreesKept` is `['WORKTREE SWEEP UNAVAILABLE — …']` and `processSweep.survived` is `['PROCESS SWEEP UNAVAILABLE — …']` — **never** empty lists, which would read as nothing left behind. |
+| `worktree-sweep` | `worktreesKept` names unchecked worktree/temp roots as `WORKTREE SWEEP UNAVAILABLE — …`; `processSweep.unknown` carries `PROCESS SWEEP UNAVAILABLE — …`, with `survived` empty. A null dispatch, `scriptError` or missing `processLines` is unverified inspection, not a verified empty sweep. |
 | ledger writes (`ledger:<id>` — one per task chain, carrying every line the task noted — plus `ledger-append:<kind>` and `ledger-recurring:<k>`; all via `appendLedger` on the ledger chain) | **Retried once, then marked**: a null append is re-dispatched once — with the lines' agent-authored free text elided where the call site has an elided variant (ids and outcome token kept) — and a second null is recorded by label in `ledgerAppendFailed` (returned), logged as `ledger-append-failed: <label>`, and counted on the Finish-phase `Metrics: ledger-check` line. Never silent, never fatal. |
 | `notify` | Retried once with the detail elided (ids and the blocker bead only); a second null is logged and the run continues — the ledger's BLOCKED line and the bead carry the record. |
 | `clarify` | Fire-and-forget: logged and continued. The clarification IS the payload, so there is no elided form; the retry then runs without it (a known cost, recorded here). |
@@ -1072,17 +1072,20 @@ independent by definition):
 5. On a passing check (or none), commit the merge into the integration branch, then `bd close <id>`
    (a leaf-task close; epic closure is the separate fixpoint step in "The coordinator loop") and,
    for a split task, `bd close <review bead>` after it — first stopping the task's processes with
-   `scripts/stop-run-processes <task worktree>`, so nothing a task started outlives its close. Then,
+   `scripts/stop-run-processes <task worktree> <task temp root>` and recording its outcomes. Then,
    still in the same dispatch, the merge agent removes the finished task's worktree with
-   `scripts/remove-task-worktree`: it stops every process belonging to the worktree (cwd,
-   executable, arguments or HOME/TMPDIR under it, and their children — test daemons, private
-   servers with temp homes, a `tail -f`), then runs `git worktree remove`
-   and `git branch -d`, never `--force` or `-D`, and keeps anything uncommitted or unmerged (exit
-   3). A split task passes `--keep-branch`: a dependent being cut at that moment may still merge its
+   `scripts/remove-task-worktree --tmp <task temp root>`: it verifies all resources' process cleanup
+   before `git worktree remove` and `git branch -d`. Matching stays limited to cwd, executable,
+   exact HOME/TMPDIR and orphan argument paths, with no kinship expansion. Exit 0 means verified
+   completion; exit 3 means a survivor or deliberate retention (also dirty/unmerged guards);
+   exit 4 means inspection or termination is unverified. On 3 or 4, worktree/temp resources remain
+   and their paths appear in `kept:` lines. Code landing and tracker closure remain independent
+   of cleanup completion. Normal removal never uses `--force` or `-D`. A split task passes `--keep-branch`: a dependent being cut at that moment may still merge its
    branch by name, so only the worktree goes now and the Finish sweep deletes the branch. The outcome
    lines go on a `Cleanup: <id> — …` ledger line, which the Resume and Metrics parsers skip. An
    already-merged re-entry close runs the same script, and a cancelled task's discard runs it with
-   `--discard` (force, because that work is abandoned by design).
+   `--discard` (force for abandoned work, after the same process verification; exits 3/4 still
+   retain resources).
 6. Held, not blocked: a dirty integration worktree, or one not on its branch, is a run-wide
    condition, so the first merge that reports it (`dirty` / `detachedHead`) holds the merge lane:
    no blocker bead, no triage, a `Merge: … → held: <cause>` ledger line, no further merge or new
@@ -1228,14 +1231,21 @@ never as findings and never as done.
 ## Finish
 
 After the final review and the bucket reconciliation, one mechanical `worktree-sweep` dispatch
-runs `scripts/remove-task-worktree --sweep` over every task worktree still under the integration
-worktree's `.worktrees/` (the backstop for anything the per-task cleanup missed), plus `git branch -d`
-on split tasks' kept branches. It keeps anything uncommitted or unmerged, never forces, and its
-`kept:` lines are returned as `worktreesKept`. The same dispatch then runs the final process
-sweep, `scripts/stop-run-processes` over the task-worktree root, the run temp root and any
-`processRoots`, appends a `Process sweep: <N> stopped · <M> survived` ledger line, and its lines
-are returned as `processSweep` (`stopped`, `survived`). It runs whoever owns the finish, because
-task worktrees and the processes started in them are this skill's, not the caller's.
+runs `scripts/remove-task-worktree --sweep --tmp <run temp root>` over remaining task worktrees
+and split tasks' branches. It verifies owned processes before removing any resources; surviving,
+unverified or deliberately kept processes retain the worktree/temp paths they may need, including
+on `--discard` and `--sweep`. Dirty/unmerged guards still apply. Resource `kept:` lines become
+`worktreesKept`, including temp roots and their reasons.
+
+The same dispatch runs `scripts/stop-run-processes` over the task-worktree root, run temp roots and
+caller `processRoots`. Exit 0 means verified completion; 3 means survivors or intentional retention;
+4 means failed inspection/termination. Both steps' facts populate `processSweep` arrays `stopped`,
+`survived`, `unknown` and `kept` (interactive processes). The ledger line is
+`Process sweep: <N> stopped · <M> survived · <U> unknown · <K> kept`, followed by outstanding facts.
+An unavailable dispatch or `scriptError` yields unknown inspection and names unchecked resource
+roots; missing `processLines` also yields unknown. These cleanup obligations accompany completed
+code buckets and flow to run-state/reporting. This sweep runs whoever owns Finish because the
+owned task worktrees and their processes belong to this skill.
 
 When the loop ends (and at least some work landed), run the sweep (below), then the **final
 whole-epic review (opus)** against the integration branch, whose shape depends on size (next

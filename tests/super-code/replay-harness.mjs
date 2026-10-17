@@ -2837,9 +2837,31 @@ async function main() {
     check(stopAt !== -1 && closeAt !== -1 && stopAt < closeAt && closeAt < cleanAt, 'the merge agent stops the task\'s processes before closing its bead, and removes the worktree after', m)
     const sw = promptOf(out.trace, 'worktree-sweep') ?? ''
     check(new RegExp(`${STOP} ${WTR} \\.worktrees/${BRANCH}/\\.superpowers/sdd/${EPIC}-plan/tmp /tmp/sp-[0-9a-f]{8} ${RUN}`).test(sw) && !sw.includes('relative/ignored') && /Process sweep: <N> stopped · <M> survived/.test(sw), 'the Finish sweep stops processes under the task worktrees, the run temp roots and the caller\'s absolute processRoots, and writes the Process sweep ledger line', sw)
-    check(JSON.stringify(out.result?.processSweep) === JSON.stringify({ stopped: [`4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`], survived: ['4343 stuck-daemon — args/env'] }), 'processSweep returns what was stopped and what survived', JSON.stringify(out.result?.processSweep))
+    check(JSON.stringify(out.result?.processSweep) === JSON.stringify({ stopped: [`4242 herdr server — env HOME=${WTR}/x--task-bd-101/.tmp/home`], survived: ['4343 stuck-daemon — args/env'], unknown: [], kept: [] }), 'processSweep returns what was stopped and what survived', JSON.stringify(out.result?.processSweep))
     const out2 = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': null }) })
-    check(/^PROCESS SWEEP UNAVAILABLE/.test(out2.result?.processSweep?.survived?.[0] ?? ''), 'a null sweep reports the process sweep as unavailable, never as nothing left', JSON.stringify(out2.result?.processSweep))
+    check(/^PROCESS SWEEP UNAVAILABLE/.test(out2.result?.processSweep?.unknown?.[0] ?? ''), 'a null sweep reports the process sweep as unavailable, never as nothing left', JSON.stringify(out2.result?.processSweep))
+  }
+
+  scenario('cleanup result propagation: landed code coexists with survivors, unknowns and deliberately retained resources')
+  {
+    const resource = '/abs/task-worktree', tmp = '/tmp/sp-aabbccdd/task'
+    for (const [name, sweep, expected] of [
+      ['verified', { lines: [`removed: ${resource}`, `removed: ${tmp}`], processLines: ['stopped: 990001 fixture — cwd /abs/task-worktree'] }, 'stopped'],
+      ['survivor', { lines: [`kept: ${resource} — process cleanup incomplete (exit 3)`, `kept: ${tmp} — process cleanup incomplete (exit 3)`], processLines: ['survived: 990001 fixture — cwd /abs/task-worktree'] }, 'survived'],
+      ['unknown', { lines: [`unknown: ${resource} — lsof discovery denied`, `kept: ${resource} — process cleanup incomplete (exit 4)`, `kept: ${tmp} — process cleanup incomplete (exit 4)`], processLines: [`unknown: ${resource} — lsof discovery denied`] }, 'unknown'],
+      ['interactive', { lines: [`kept: ${resource} — process cleanup incomplete (exit 3)`, `kept: ${tmp} — process cleanup incomplete (exit 3)`], processLines: ['kept: 990001 fixture — interactive terminal'] }, 'kept'],
+      ['missing-process-lines', { lines: [] }, 'unknown'],
+      ['script-error', { lines: [], processLines: [], scriptError: 'stop-run-processes exit 9: unavailable' }, 'unknown'],
+      ['unavailable', null, 'unknown'],
+    ]) {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'worktree-sweep': sweep }) })
+      assertNoThrow(out)
+      check(out.result?.completed.includes('bd-101') && !out.result?.stalled, `${name}: completed code delivery remains independent of cleanup`, JSON.stringify(out.result))
+      check(out.result?.processSweep?.[expected]?.length > 0, `${name}: the cleanup outcome reaches its own result array`, JSON.stringify(out.result?.processSweep))
+      if (['survivor', 'unknown', 'interactive'].includes(name)) check(out.result?.worktreesKept.some(l => l.startsWith(resource)) && out.result?.worktreesKept.some(l => l.startsWith(tmp)), `${name}: worktree and temp paths reach Remaining sources`, JSON.stringify(out.result?.worktreesKept))
+      if (name === 'verified') check(out.result?.worktreesKept.length === 0 && ['survived', 'unknown', 'kept'].every(k => out.result?.processSweep?.[k]?.length === 0), 'verified cleanup has no outstanding process or resource obligations', JSON.stringify(out.result?.processSweep))
+      if (['script-error', 'unavailable'].includes(name)) check(out.result?.processSweep?.survived?.length === 0 && out.result?.worktreesKept.length > 0, `${name}: unavailable inspection is unknown rather than an invented survivor`, JSON.stringify(out.result))
+    }
   }
 
   scenario('worktree cleanup: the Finish sweep runs remove-task-worktree --sweep, never forces, and returns what it kept')
@@ -3696,6 +3718,67 @@ esac
         r = runScript(dir, 'close-in-tree-epics', ['nope'])
         check(r.code === 2, 'unknown EPIC_ID exits 2', JSON.stringify(r))
         rmSync(dir, { recursive: true, force: true })
+      }
+
+      scenario('scripts: cleanup uncertainty — denied discovery/status, survivors and interactive retention keep every resource; fake signals only')
+      {
+        const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'cleanup-outcomes-'))], { encoding: 'utf8' }).trim()
+        const bin = path.join(d, 'bin'); mkdirSync(bin)
+        const setup = path.join(d, 'bash-env')
+        // Force the lsof branch on Linux too; every signal is intercepted before reaching kill.
+        writeFileSync(setup, `function [ { if [[ "$*" == '-d /proc/self' ]]; then return 1; fi; builtin [ "$@"; }\nkill() { "$FIXTURE_BIN/kill" "$@"; }\n`)
+        writeFileSync(path.join(bin, 'ps'), `#!/bin/bash
+case "$*" in
+  '-A -o pid=,ppid=') if [ "$FIXTURE_CASE" = ancestry-discovery-denied ]; then exit 1; fi; printf '%s 1\\n990002 1\\n' "$PPID"; if [ "$FIXTURE_CASE" != ancestry-denied ]; then echo '990001 1'; fi ;;
+  '-A -o pid=,ppid=,tty=') if [ "$FIXTURE_CASE" = tty-denied ]; then exit 1; fi; printf '%s 1 ??\\n990001 1 %s\\n990002 1 ??\\n' "$PPID" "$(if [ "$FIXTURE_CASE" = interactive ]; then echo ttys001; else echo '??'; fi)" ;;
+  '-A -o pid=') if [ "$FIXTURE_CASE" = status-denied ]; then exit 1; fi; if [ "$FIXTURE_CASE" != vanished ] || [ ! -f "$FIXTURE_SIGNAL" ]; then echo 990001; fi ;;
+  '-Eww -U '*) if [ "$FIXTURE_CASE" = env-denied ]; then exit 1; fi ;;
+  '-o ppid= -p '*) if [ "$FIXTURE_CASE" = ancestry-denied ]; then exit 1; fi; echo 1 ;;
+  '-o command= -p '*) echo fixture-owned ;;
+  '-o stat= -p '*) if [ "$FIXTURE_CASE" = status-denied ] || [ "$FIXTURE_CASE" = status-listed ] || { [ "$FIXTURE_CASE" = vanished ] && [ -f "$FIXTURE_SIGNAL" ]; }; then exit 1; fi; echo S ;;
+  *) exit 9 ;;
+esac
+`)
+        writeFileSync(path.join(bin, 'lsof'), `#!/bin/bash
+case "$*" in
+  *'-u '*) if [ "$FIXTURE_CASE" = discovery-denied ]; then exit 1; fi; if [ "$FIXTURE_CASE" != empty ]; then printf 'p990001\\nfcwd\\nn%s\\np990002\\nfcwd\\nn/unrelated-fixture\\n' "$FIXTURE_ROOT"; fi ;;
+  *) printf 'n/unrelated-fixture\\n' ;;
+esac
+`)
+        writeFileSync(path.join(bin, 'kill'), `#!/bin/bash\nprintf '%s\\n' "$*" >> "$FIXTURE_SIGNALS"\n[ "$2" = 990001 ] || exit 99\n[ "$FIXTURE_CASE" != signal-failed ] || exit 1\ntouch "$FIXTURE_SIGNAL"\n`)
+        writeFileSync(path.join(bin, 'sleep'), '#!/bin/bash\nexit 0\n')
+        for (const f of ['ps', 'lsof', 'kill', 'sleep']) execFileSync('chmod', ['+x', path.join(bin, f)])
+        const genv = { ...process.env, PATH: `${bin}:${process.env.PATH}`, BASH_ENV: setup, FIXTURE_BIN: bin,
+          GIT_AUTHOR_NAME: 'x', GIT_AUTHOR_EMAIL: 'x@x', GIT_COMMITTER_NAME: 'x', GIT_COMMITTER_EMAIL: 'x@x' }
+        const g = (...a) => execFileSync('git', a, { cwd: d, env: genv, stdio: 'pipe', encoding: 'utf8' })
+        g('init', '-q', '-b', 'main'); g('commit', '-q', '--allow-empty', '-m', 'base')
+        const tmpRoot = `/tmp/sp-${process.pid.toString(16)}cc`
+        try {
+          for (const mode of ['ancestry-discovery-denied', 'ancestry-denied', 'discovery-denied', 'env-denied', 'tty-denied', 'status-denied', 'status-listed', 'signal-failed', 'survivor', 'interactive', 'vanished', 'empty']) {
+            const wt = path.join(d, 'tasks', mode), tmp = path.join(tmpRoot, mode)
+            mkdirSync(tmp, { recursive: true }); g('worktree', 'add', '-q', wt, '-b', mode)
+            const env = { ...genv, FIXTURE_CASE: mode, FIXTURE_ROOT: mode === 'env-denied' ? tmp : wt,
+              FIXTURE_SIGNAL: path.join(d, `${mode}.signalled`), FIXTURE_SIGNALS: path.join(d, `${mode}.signals`) }
+            // Include --discard and --sweep: neither is permission to delete needed resources.
+            const args = mode === 'survivor' ? ['--discard', '--tmp', tmp, wt, mode]
+              : mode === 'status-denied' ? ['--sweep', '--tmp', tmp, path.join(d, 'tasks'), 'main']
+              : ['--tmp', tmp, wt, mode, 'main']
+            const r = spawnSync(bashPath, [path.join(scriptsDir, 'remove-task-worktree'), ...args], { cwd: d, env, encoding: 'utf8' })
+            const out = r.stdout ?? '', verified = ['vanished', 'empty'].includes(mode)
+            const unknown = ['ancestry-discovery-denied', 'ancestry-denied', 'discovery-denied', 'env-denied', 'tty-denied', 'status-denied', 'status-listed'].includes(mode)
+            check(r.status === (verified ? 0 : unknown ? 4 : 3), `${mode}: truthful exit distinguishes verified, unknown and retained outcomes`, JSON.stringify({ code: r.status, out, err: r.stderr }))
+            check(existsSync(wt) === !verified && existsSync(tmp) === !verified, `${mode}: worktree and temp resources survive together until verified cleanup`, out)
+            if (unknown) check(/^unknown: /m.test(out) && !/^stopped: /m.test(out), `${mode}: denied inspection never claims stopped`, out)
+            if (!verified) check(out.includes(`kept: ${wt} —`) && out.includes(`kept: ${tmp} —`), `${mode}: retained resource identities are explicit`, out)
+            if (mode === 'interactive') check(/^kept: 990001 /m.test(out) && !existsSync(env.FIXTURE_SIGNALS), 'interactive: deliberate preservation sends no signal', out)
+            if (mode === 'vanished') check(/^stopped: 990001 /m.test(out), 'successful authoritative enumeration verifies disappearance after ps -p exits 1', out)
+            const signals = existsSync(env.FIXTURE_SIGNALS) ? readFileSync(env.FIXTURE_SIGNALS, 'utf8') : ''
+            check(!/990002/.test(out + signals), `${mode}: an unrelated process is never targeted`, out + signals)
+            // Each fixture owns all of its fake worktrees; remove retained state before the next sweep.
+            if (existsSync(wt)) g('worktree', 'remove', '--force', wt)
+            if (g('branch', '--list', mode).trim()) g('branch', '-D', mode)
+          }
+        } finally { rmSync(tmpRoot, { recursive: true, force: true }); rmSync(d, { recursive: true, force: true }) }
       }
 
       scenario('scripts: remove-task-worktree — removes clean merged worktrees, stops their processes, keeps dirty or unmerged ones, never forces')

@@ -104,6 +104,15 @@ entry plus seam>`. Route exactly as `coordinator-workflow.md` §Finish says, and
 the same `Final review:` ledger line. Read the result through `report-verdict
 <workspace>/final-review-<runTag>.md`.
 
+At Finish, run the worktree/process sweep from `coordinator-workflow.md` §Finish and return
+`worktreesKept` (resource paths and reasons, including temp roots) and `processSweep` arrays
+`stopped`, `survived`, `unknown`, `kept`. Cleanup helpers return 0 for verified completion, 3 for
+survivors or deliberate retention, and 4 for unverified inspection/termination; retain every output
+fact on all three exits. `remove-task-worktree` checks worktree/temp processes together before
+removal and retains resources on 3/4, including `--discard` and `--sweep`. An unavailable dispatch,
+`scriptError` or absent process output field becomes `unknown`, with unchecked roots identified.
+Record these facts alongside completed code; copy the same arrays and paths to the caller.
+
 At Finish, record the run profile: `bash <skillsRoot>/super-code/scripts/run-profile --codex
 "$CODEX_THREAD_ID"` on Codex, or `--subagents ~/.claude/projects/*/"$CLAUDE_CODE_SESSION_ID"/subagents`
 on Claude Code, with `--ledger <ledger> --out <ledger dir>/profile-<session id>`. Append its whole stdout
