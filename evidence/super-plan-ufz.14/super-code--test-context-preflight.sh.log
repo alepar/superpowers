@@ -1,0 +1,50 @@
+context-preflight: codex
+  [PASS] codex-ok: exits 0
+  [PASS] codex-ok: no stderr
+  [PASS] codex-ok line
+  [PASS] codex-ok --json
+  [PASS] codex-lowlimit: exits 0
+  [PASS] codex-lowlimit: no stderr
+  [PASS] low limit shown as the compact point
+  [PASS] low limit warning
+  [PASS] cache's multi_agent_version enables multi-agent
+  [PASS] multi_agent=false warns
+  [PASS] codex unreadable: exits 0
+  [PASS] codex unreadable: no stderr
+  [PASS] unreadable config.toml
+  [PASS] unreadable --json
+  [PASS] no jq: window unknown, not defaulted
+  [PASS] no jq: --json is {}
+  [PASS] CODEX_THREAD_ID selects codex; default home is $HOME/.codex
+context-preflight: claude
+  [PASS] claude-1m: exits 0
+  [PASS] claude-1m: no stderr
+  [PASS] claude-1m windows
+  [PASS] one grouped 200K warning
+  [PASS] exactly one warning
+  [PASS] claude-1m --json
+  [PASS] sonnet default override to 1M
+  [PASS] claude-200k all 200K
+  [PASS] opus roles warned
+  [PASS] sonnet roles warned
+  [PASS] subagent model env
+  [PASS] auto-compact window is every role's compact point
+  [PASS] override below 50% warns
+  [PASS] 300K is not below 50% of a 200K window
+  [PASS] claude no settings: exits 0
+  [PASS] claude no settings: no stderr
+  [PASS] bare alias with unreadable session model is unknown
+  [PASS] explicit [1m] needs no settings
+  [PASS] CLAUDECODE=1 selects claude
+  [PASS] project .claude/settings.json beats the config dir
+  [PASS] model-less project settings file does not hide the config dir model
+  [PASS] finalReview window comes from the config dir model
+context-preflight: undetected
+  [PASS] no harness: exits 0
+  [PASS] no harness: no stderr
+  [PASS] no signal, no --harness
+  [PASS] no harness --json
+context-preflight: writes nothing
+  [PASS] no files written by the script
+  [PASS] cwd untouched
+context-preflight: all tests passed

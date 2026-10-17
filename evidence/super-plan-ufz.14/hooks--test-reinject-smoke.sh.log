@@ -1,0 +1,75 @@
+Claude Code: compact with a live marker
+  [PASS] two run-block entries are selected on compact
+  [PASS] every entry exits 0
+  [PASS] both entries print valid JSON
+  [PASS] card entry carries the card heading first
+  [PASS] state entry has the Run state heading
+  [PASS] state names the epic
+  [PASS] state names the runTag
+  [PASS] state carries the ledger counts
+  [PASS] card additionalContext length (6507 < 10000)
+  [PASS] state additionalContext length (840 < 10000)
+  [PASS] control characters were sanitised out of the state
+  [PASS] the ledger line with control characters still reaches the state
+  [PASS] the bootstrap entry also fires on compact and emits the bootstrap
+  [PASS] run-block entry output is not the bootstrap
+  [PASS] run-block entry output is not the bootstrap
+Claude Code: no marker
+  [PASS] no run-block output without a marker
+  [PASS] every entry exits 0
+Claude Code: startup source
+  [PASS] run-block entries are not selected on startup
+Claude Code: task-worktree cwd, non-matching session
+  [PASS] no output from a task-worktree cwd with another session id
+  [PASS] every entry exits 0
+Claude Code: subagent / child identifier
+  [PASS] no output for a subagent id with another session id
+  [PASS] every entry exits 0
+Claude Code: failing run-digest
+  [PASS] every entry exits 0
+  [PASS] each entry finishes within its 5 s watchdog plus slack (ms) (517 < 9000)
+  [PASS] state entry prints exactly the fallback line
+  [PASS] card entry still prints the card
+Claude Code: hanging run-digest
+  [PASS] every entry exits 0
+  [PASS] each entry finishes within its 5 s watchdog plus slack (ms) (5925 < 9000)
+  [PASS] state entry prints exactly the fallback line
+  [PASS] card entry still prints the card
+Codex: package and unpack
+  [PASS] package script exits successfully
+  [PASS] the unpacked manifest names a hook file that exists (./hooks/hooks-codex.json)
+  [PASS] the Codex manifest does not resolve to the Claude hook file
+Codex: compact with a live marker
+  [PASS] one hook entry is selected on compact
+  [PASS] the Codex hook file carries no other entry (no bootstrap)
+  [PASS] the entry exits 0
+  [PASS] the entry prints valid JSON
+  [PASS] text starts with the card heading
+  [PASS] text carries the Run state block
+  [PASS] card comes before state
+  [PASS] state carries the ledger counts
+  [PASS] additionalContext length (7282 < 18000)
+  [PASS] the bootstrap text never appears
+  [PASS] control characters were sanitised out
+Codex: no marker
+  [PASS] no run-block output without a marker
+  [PASS] every entry exits 0
+Codex: startup source
+  [PASS] run-block entries are not selected on startup
+Codex: task-worktree cwd, non-matching session
+  [PASS] no output from a task-worktree cwd with another session id
+  [PASS] every entry exits 0
+Codex: subagent / child identifier
+  [PASS] no output for a subagent id with another session id
+  [PASS] every entry exits 0
+Codex: failing run-digest
+  [PASS] the entry exits 0
+  [PASS] the entry finishes within its 5 s watchdog plus slack (ms) (503 < 9000)
+  [PASS] card is still printed
+  [PASS] card is followed by the state fallback line
+Codex: hanging run-digest
+  [PASS] the entry exits 0
+  [PASS] the entry finishes within its 5 s watchdog plus slack (ms) (5924 < 9000)
+  [PASS] card is still printed
+  [PASS] card is followed by the state fallback line
+test-reinject-smoke: all tests passed

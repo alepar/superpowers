@@ -1,0 +1,35 @@
+Codex package archive tests
+  [PASS] source Codex manifest names the Codex-only hook file
+  [PASS] package script exits successfully
+  [PASS] package script writes archive
+  [PASS] reports archive path
+  [PASS] reports default zip format
+  [PASS] reports archive checksum
+  [PASS] archive excludes source-only paths
+  [PASS] archive includes Codex manifest
+  [PASS] archive carries exactly the Codex hook files
+  [PASS] archive keeps hooks/session-start-codex executable
+  [PASS] archive keeps hooks/run-hook.cmd executable
+  [PASS] archive excludes the Claude Code hook files
+  [PASS] archive includes skills
+  [PASS] archive includes OpenAI skill metadata
+  [PASS] archive includes app icon
+  [PASS] archive includes composer icon
+  [PASS] archive manifest preserves source hooks
+  [PASS] every packaged skill has OpenAI metadata
+  [PASS] archive preserves executable script mode
+  [PASS] zip archive normalizes entry timestamps
+  [PASS] package script writes explicit tar.gz archive
+  [PASS] reports explicit tar.gz format
+  [PASS] zip and tar.gz archives contain the same paths
+  [PASS] tar.gz archive preserves executable script mode
+  [PASS] tar.gz archive normalizes entry timestamps
+  [PASS] package script accepts tarball metadata source
+  [PASS] tarball metadata source produces identical archive
+  [PASS] package script accepts zip metadata source
+  [PASS] zip metadata source produces identical archive
+  [PASS] package script rejects incomplete metadata source
+  [PASS] incomplete metadata reports clear error
+  [PASS] package script rejects dirty worktree by default
+  [PASS] dirty worktree reports changed files
+All Codex package archive tests passed

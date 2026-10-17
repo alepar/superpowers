@@ -1,0 +1,118 @@
+run-marker: no session id
+  [PASS] exits 0
+  [PASS] prints the skip line
+  [PASS] no file written
+run-marker: register + get by session id
+  [PASS] register exits 0
+  [PASS] reports the store path
+  [PASS] file at <store>/s1
+  [PASS] get exits 0
+  [PASS] first line is key: s1
+  [PASS] skill field
+  [PASS] harness claude from CLAUDE_CODE_SESSION_ID
+  [PASS] run_md absolute
+  [PASS] ledger field
+  [PASS] epic field
+  [PASS] worktree field
+  [PASS] session field
+  [PASS] runTag field
+  [PASS] registered_by_pid field
+  [PASS] started field
+run-marker: session id order
+  [PASS] CODEX_THREAD_ID gives harness codex
+  [PASS] CLAUDE_CODE_SESSION_ID wins over CODEX_THREAD_ID
+  [PASS] --session used when neither env is set
+  [PASS] harness unknown for --session
+  [PASS] env wins over --session
+  [PASS] id with / rejected
+run-marker: XDG_STATE_HOME unset uses HOME/.local/state
+  [PASS] store under HOME/.local/state
+run-marker: liveness
+  [PASS] phase done is not live
+  [PASS] phase code is live
+  [PASS] missing run_md is not live
+  [PASS] standalone with ledger is live
+  [PASS] standalone has no run_md field
+  [PASS] standalone without ledger is not live
+  [PASS] marker older than 14 days is not live
+  [PASS] prune prints count
+  [PASS] prune removed backdated and dead markers
+  [PASS] pruned exactly the 2 still-present non-live markers
+run-marker: re-register and same run_md
+  [PASS] started kept on re-register
+  [PASS] re-register refreshed the age
+  [PASS] same run_md removes the other session's marker
+  [PASS] new marker kept
+run-marker: --cwd resolution
+  [PASS] cwd under worktree resolves
+  [PASS] key is the marker's session
+  [PASS] unknown id without --cwd: exit 1
+  [PASS] prints nothing
+  [PASS] newest live marker wins
+  [PASS] newest by mtime, not by name
+  [PASS] task worktree cwd refused
+  [PASS] --subagent refuses the cwd fallback
+  [PASS] --subagent with a session match still resolves
+  [PASS] session match is not subject to the cwd refusal
+run-marker: fallback marker
+  [PASS] exits 0
+  [PASS] prints fallback path and reason
+  [PASS] .gitignore lists run-marker-*
+  [PASS] walk-up finds the fallback
+  [PASS] fallback fields printed
+  [PASS] fallback refused under .worktrees
+  [PASS] fallback needs --cwd
+  [PASS] fallback refused for --subagent
+  [PASS] another session's fallback is not returned
+  [PASS] two distinct fallback files
+  [PASS] s1 gets its own
+  [PASS] s2 gets its own
+  [PASS] .gitignore entry not duplicated
+  [PASS] .gitignore lists itself
+run-marker: fallback leaves the worktree clean
+  [PASS] setup: clean before the register
+  [PASS] fallback path ran
+  [PASS] fallback register leaves no untracked file
+  [PASS] second session leaves no untracked file
+  [PASS] .gitignore line appears once
+  [PASS] run-marker-* line appears once
+  [PASS] upgraded old .gitignore leaves no untracked file
+  [PASS] upgrade adds the .gitignore line once
+  [PASS] upgrade keeps run-marker-* once
+run-marker: get --own-only
+  [PASS] store scan finds the marker without --own-only
+  [PASS] --own-only skips the store scan
+  [PASS] --own-only still resolves by session id
+  [PASS] --own-only keeps the own fallback marker
+  [PASS] --own-only: another session's fallback is not returned
+run-marker: both unwritable
+  [PASS] exits 0
+  [PASS] prints register failed
+  [PASS] not reported as a skip
+run-marker: refresh keeps optional fields
+  [PASS] refresh keeps ledger
+  [PASS] refresh keeps epic
+  [PASS] refresh keeps runTag
+  [PASS] refresh keeps run_md
+  [PASS] a given flag wins over the kept value
+  [PASS] ledger kept beside a new epic
+  [PASS] another worktree carries no epic
+  [PASS] another worktree carries no ledger
+  [PASS] another worktree carries no runTag
+  [PASS] another skill carries no epic
+  [PASS] another skill carries no run_md
+  [PASS] another skill carries no runTag
+  [PASS] fallback refresh keeps epic
+  [PASS] fallback refresh keeps ledger
+run-marker: usage
+  [PASS] register without --skill exits 0
+  [PASS] usage failure is a failure line
+  [PASS] get with no args exits 2
+  [PASS] unknown command exits 2
+run-marker: clear
+  [PASS] clear exits 0
+  [PASS] prints cleared
+  [PASS] caller's store and fallback markers removed
+  [PASS] other session's markers survive
+  [PASS] clear without id skips
+run-marker: all tests passed

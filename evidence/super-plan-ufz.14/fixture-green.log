@@ -1,0 +1,5 @@
+PASS worktree/helper-throws: leaked=[] sentinel-preserved=true error=injected helper failure assertions-before-error=0
+PASS worktree/ps-unavailable: leaked=[] sentinel-preserved=true error=process inspection unavailable for fixture PID 15185 assertions-before-error=0
+PASS processes/helper-throws: leaked=[] sentinel-preserved=true error=injected helper failure assertions-before-error=0
+PASS processes/ps-unavailable: leaked=[] sentinel-preserved=true error=process inspection unavailable for fixture PID 18930 assertions-before-error=1
+fixture failure probe: 4 passed, 0 failed

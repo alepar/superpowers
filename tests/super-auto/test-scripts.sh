@@ -475,6 +475,45 @@ DIRECT
   run bash "$RS" "$CR"
   [[ "$out" == *'outstanding findings: 3'* ]] && pass "status exposes historical outstanding findings despite latest ready" || fail "status exposes historical outstanding findings despite latest ready"
   [[ "$out" != *'review collection gaps:'* ]] && pass "settled intent history creates no false collection gaps" || fail "settled intent history creates no false collection gaps"
+  # Consume the same settled review history and ordinary evidence records at the caller gate.
+  run node - "$CR" "$RS" "$S" "$REPO_ROOT/skills/super-code/scripts/dispatch-text" <<'INTEGRATION'
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const [original,status,scope,dispatch]=process.argv.slice(2),dir=path.dirname(original),file=path.join(dir,'integrated.md');
+const tree='d'.repeat(40),identity={sourceTree:tree,command:'node smoke.mjs',configuration:'target=staging'};
+const ledger=path.join(dir,'progress.md'),results=path.join(dir,'results.json');
+fs.copyFileSync(original,file);
+fs.writeFileSync(ledger,'Launch: mechanism ordinary-subagents · epic ep · invocationId inv-integration · branch feat/x · integrationWorktree '+dir+' · concurrency 4 · earlyUnblock on · sweep deferred · reviewBase '+'a'.repeat(40)+' · reviewHead '+'b'.repeat(40)+'\n');
+function cli(script,args,want=0){const p=cp.spawnSync('bash',[script,...args],{encoding:'utf8'});assert.equal(p.status,want,p.stdout+p.stderr);return p.stdout;}
+const projection=()=>JSON.parse(cli(scope,['--project',file]));
+const before=projection(),active=before.findings.find(f=>f.outstanding),ref=active.ref,key=active.occurrences[0].key;
+assert.equal(before.metrics.outstanding,3);assert.equal(before.metrics.repaired,0);assert.equal(before.metrics.rejected,1);
+const append=(type,value)=>fs.appendFileSync(file,'- '+type+' · '+JSON.stringify(value)+'\n');
+append('finding-route',{ref,owner:'fix-elsewhere',fix:'closed-fix-task',deferred:'caller follow-up'});
+assert(cli(scope,['--project',file,'--keys']).split('\n').includes(key),'assignment and closed task cannot clear a deferred finding');
+function classify(kind){
+ fs.writeFileSync(results,JSON.stringify([{dispatch:'impl:ep.2',result:{id:'ep.2',evidence:[{...identity,kind,outcome:'pass',location:'smoke.log'}]}},{dispatch:'review:ep.2',result:{id:'ep.2',requiredLiveChecks:[identity]}}]));
+ return JSON.parse(cli(dispatch,['--ledger',ledger,'--stdout','check-evidence','--results-file',results]));
+}
+const deferred={version:1,id:'sweep:inv-integration',kind:'deferred',operation:'record',reason:'caller-owned sweep',evidence:['Launch:inv-integration'],data:{owner:'caller',runTag:'run-1'}};
+const requirement={id:'sweep',kind:'measurement',owner:'super-auto',...identity,requiredLive:true,obligations:[deferred.id]};
+const snapshot={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'super-auto'},requirement,{id:'finish',kind:'human',owner:'human'}],evidence:[],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:'ready-retry.md'}],decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['fixture-human-choice']}],recovery:{obligations:[deferred],gaps:[]},checkEvidence:classify('simulated'),runFailures:[],findingAcceptance:before.findings.filter(f=>f.outstanding).map(f=>({ref:f.ref,judgment:'supported',effect:f===active?'required':'nonblocking',requirement:'review',basis:'fixture review of goal scope',evidence:['fixture-spec']}))};
+append('root-acceptance',snapshot);
+let gate=JSON.parse(cli(status,['--acceptance',file,'--tree',tree],3));
+assert(gate.pending.some(p=>p.includes(deferred.id))&&gate.pending.some(p=>p.includes('finding ')),'ready retry retains both caller measurement and historical finding');
+const described=cli(status,[file]);assert.match(described,/outstanding findings: 3/);assert.match(described,/root acceptance pending/);
+snapshot.checkEvidence=classify('live');append('root-acceptance',snapshot);
+gate=JSON.parse(cli(status,['--acceptance',file,'--tree',tree],3));
+assert(!gate.pending.some(p=>p.includes(deferred.id))&&gate.pending.some(p=>p.includes('finding ')),'matching live measurement clears only its obligation');
+append('finding-disposition',{ref,disposition:'resolved',judgment:'supported',basis:'fix supplied by another task',evidence:['other-task-verified.log'],verification:'same defect reproduced then passing at '+tree});
+gate=JSON.parse(cli(status,['--acceptance',file,'--tree',tree]));assert.equal(gate.eligible,true);
+assert(!cli(scope,['--project',file,'--keys']).split('\n').includes(key),'verified elsewhere-fixed finding leaves key-only punch list');
+const after=projection();assert.equal(after.metrics.repaired,1);assert.equal(after.metrics.rejected,1);assert.equal(after.metrics.outstanding,2);assert.equal(after.metrics.occurrences,before.metrics.occurrences);
+const stable=fs.readFileSync(file,'utf8');cli(status,['--collect',file]);assert.equal(fs.readFileSync(file,'utf8'),stable,'settled collection replay preserves decisions and counts');
+console.log('integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed');
+INTEGRATION
+  assert_eq "$code" 0 "integrated ready retry retains measurement and findings until independently supported outcomes"
+  echo "$out"
+  [ "$code" = 0 ] || cat "$T/err"
   mv "$CW" "$T/collect/source-held"
   run bash "$RS" --collect "$CR"
   assert_eq "$code" 0 "verified complete archive survives source workspace removal"
