@@ -328,7 +328,7 @@ for(const [artifact,kind] of declared){
 }
 // Use the same validated projection as Remaining and resume. Valid empty is distinct
 // from a missing extraction or an empty --keys stream carrying gaps.
-const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8',maxBuffer:Infinity});
 try{
  if(![0,3].includes(projection.status))throw Error('unavailable');
  const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');
@@ -536,7 +536,7 @@ for(const g of integrityGaps)console.log('review collection gap: '+g);
 if(pending)console.log('review collections pending: '+pending);
 if(errors)console.log('review collection gaps: '+errors);
 if(/^- finding-/m.test(text)){
- const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+ const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8',maxBuffer:Infinity});
  try{if(![0,3].includes(p.status))throw Error();const d=JSON.parse(p.stdout),n=d.findings.filter(f=>f.outstanding).length;if(n)console.log('outstanding findings: '+n);if(d.gaps.length)console.log('finding evidence gaps: '+d.gaps.length)}catch{console.log('finding projection unavailable — retain known findings')}
 }else if([...latest.values()].some(r=>r.reviewPath!==null))console.log('finding evidence gaps: source extraction unavailable');
 STATUS
