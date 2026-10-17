@@ -61,7 +61,6 @@ run ledger "$T/L2.md" --report 1="$F/main/r1.md" --report 2="$F/main/r2.md" --fi
 assert_eq "$code" 0 "round-2 ledger builds"
 note_triggers "$T/L2.md"
 assert_has "$(trig "$T/L2.md")" "no-progress" "round-2 ledger fires no-progress (A and B confirmed again)"
-cp "$T/L2.md" "$T/L2-pre.md"
 run bash "$S/step-back-check" --step-back "$F/main/step-back-local.md" --keys "$F/main/keys-2.txt" --ledger "$T/L2.md"
 assert_eq "$code" 3 "step-back local is rejected under no-progress (exit)"
 assert_has "$out" "no-progress" "the reject names no-progress"
@@ -75,8 +74,8 @@ assert_eq "$code" 0 "ledger rebuilds after the dissolved line"
 assert_eq "$(status "$T/L2d.md" "$A")" "dissolved@r2" "A's row reads dissolved@r2"
 
 # Amend-check runs in a temp git repo with the spec committed at base and edited in the working tree.
-# It runs against the pre-dissolve ledger ($T/L2-pre.md): amend-check requires every owners: key to be
-# an open row, and A is no longer open once dissolved.
+# Production order (super-auto Step 1, Redesign cycle step 1): step-back-check, then the dissolved
+# lines written, then the ledger rebuilt, then amend-check against the rebuilt ledger ($T/L2d.md).
 REPO="$T/repo"; mkdir -p "$REPO/docs"
 git -C "$REPO" init -q
 cp "$F/main/spec-base.md" "$REPO/docs/spec.md"
@@ -86,8 +85,11 @@ cp "$F/main/spec-amended.md" "$REPO/docs/spec.md"
 amend() { # loop amend-file ledger
   run bash -c 'cd "$1" && bash "$2" --loop "$3" --amend "$4" --ledger "$5" --specs docs/spec.md' _ "$REPO" "$S/amend-check" "$1" "$2" "$3"
 }
-amend code "$F/main/amend-ok.md" "$T/L2-pre.md"
-assert_eq "$code:$out" "0:ok" "amend record passes amend-check against the round-2 ledger"
+amend code "$F/main/amend-post-dissolve.md" "$T/L2d.md"
+assert_eq "$code:$out" "0:ok" "amend record passes amend-check against the rebuilt (post-dissolve) ledger"
+amend code "$F/main/amend-ok.md" "$T/L2d.md"
+assert_eq "$code" 3 "a stale record still owning the dissolved key is rejected"
+assert_has "$out" "owners: not an open ledger key: $A" "the reject names the dissolved key"
 
 run ledger "$T/L3.md" --report 1="$F/main/r1.md" --report 2="$F/main/r2.md" --report 3="$F/main/r3.md" --final-review 2="$F/main/fr-2.txt" --overrides "$T/ov.md"
 assert_eq "$code" 0 "round-3 ledger builds"
@@ -126,16 +128,16 @@ assert_lacks "$(trig "$T/G3.md")" "recurrence" "no recurrence across a degraded 
 assert_has "$(grep '^blocking:' "$T/G3.md")" "returned" "not-computable names returned"
 
 echo "reverse rule"
-amend code "$F/reverse-rule/amend-fr-uncovered.md" "$T/L2-pre.md"
+amend code "$F/reverse-rule/amend-fr-uncovered.md" "$T/L2d.md"
 assert_eq "$code" 3 "final-review row covered by no work line is rejected"
 assert_has "$out" "reverse" "the reject is the reverse rule (final-review)"
-amend code "$F/reverse-rule/amend-local-uncovered.md" "$T/L2-pre.md"
+amend code "$F/reverse-rule/amend-local-uncovered.md" "$T/L2d.md"
 assert_eq "$code" 3 "local key covered by no work line is rejected"
 assert_has "$out" "reverse" "the reject is the reverse rule (local key)"
-amend code "$F/reverse-rule/amend-owner-only.md" "$T/L2-pre.md"
+amend code "$F/reverse-rule/amend-owner-only.md" "$T/L2d.md"
 assert_eq "$code" 3 "code loop: open key covered only by an amended owner section is rejected"
 assert_has "$out" "reverse" "the reject is the reverse rule (owner-only)"
-amend design "$F/reverse-rule/amend-owner-only.md" "$T/L2-pre.md"
+amend design "$F/reverse-rule/amend-owner-only.md" "$T/L2d.md"
 assert_eq "$code:$out" "0:ok" "design loop: the same record passes"
 
 echo "override for a dropped report's key"

@@ -1,10 +1,9 @@
 owners:
-- [Blocking] src/retry.sh:10 → owner: docs/spec.md §Retry policy
-- [Blocking] src/auth.sh:42 → local
+- [Blocking] src/auth.sh:42 → owner: docs/spec.md §Retry policy
 - [Must-fix] reviewer item → local
 amended:
 - docs/spec.md §Retry policy
 work:
-- Fix retry and auth | owns: retry loop; consumes: spec | scripts/retry.sh | covers: [Blocking] src/retry.sh:10, [Blocking] src/auth.sh:42
+- Fix auth | owns: auth; consumes: spec | scripts/auth.sh | covers: [Blocking] src/auth.sh:42
 unchanged:
 - Existing CLI stays the same
