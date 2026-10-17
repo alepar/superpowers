@@ -100,6 +100,16 @@ assert_eq "$(rs_status "$RF/roast-skipped.md")" "status: clean [degraded: plan r
 assert_eq "$(rs_status "$RF/code-capped.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking"
 assert_eq "$(rs_status "$RF/code-thrash.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped written at a thrash exit counts its keys"
 assert_eq "$(rs_status "$RF/disputed-capped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking key held in roastCodeCapped counts as unresolved Blocking (never clean)"
+assert_eq "$(rs_status "$RF/disputed-design-capped-proceeded.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "a disputed Blocking key held in a proceeded roastDesignCapped counts as unresolved Blocking"
+assert_eq "$(rs_status "$RF/disputed-design-capped-stopped.md" --tip 9e8d7c6)" "status: clean" "a disputed key in a stopped roastDesignCapped is not counted"
+run bash "$RS" "$RF/degraded-redesign-parks.md" --tip 3f9c2e1
+assert_eq "$out" "status: clean [degraded: redesign budget spent, redesign gate not computable, redesign declined by human, redesign aborted, redesign incomplete, amend roast finding not fixed]
+qualifier: redesign budget spent
+qualifier: redesign gate not computable
+qualifier: redesign declined by human
+qualifier: redesign aborted
+qualifier: redesign incomplete
+qualifier: amend roast finding not fixed" "the six redesign park texts each give one qualifier line, in record order"
 assert_eq "$(rs_status "$RF/design-capped-proceeded.md")" "status: completed with 2 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking, code roast skipped]" "proceeded design cap counts its keys and leads the qualifiers"
 assert_eq "$(rs_status "$RF/design-capped-unparseable.md")" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "design cap with no stopped/proceeded slot counts as proceeded"
 run bash "$RS" "$RF/design-capped-stopped.md"
