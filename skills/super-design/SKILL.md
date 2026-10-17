@@ -117,7 +117,7 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 **Resuming a redesign cycle** dispatches only from its record's `state`, never from what looks half-done:
 
-- A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record (a run from before the records existed) replays as before: the recorded redesign is applied from that line if its spec change is not yet committed.
+- A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record replays in place (the recorded redesign is applied from that line if its spec change is not yet committed) only when the run-state file (standalone, the round summaries) holds no `redesign-design-<K>` record anywhere, meaning the run predates the records. Otherwise the line is not replayed as a patch: re-run the round's Step 1 from item 5 on its saved step-back file (re-check, never re-dispatch).
 - `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
 - `amend-checked`: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, exit 2 → fix and re-run, no restore.
 - `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
@@ -726,36 +726,39 @@ it empty when absent), and the amend record `amend-design-<K>.md`.
 4. **Step-back.** Dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never
    an agent that does the fixes) with the ledger path (`[LEDGER_PATH]`), the keys file
    (`[KEYS_FILE]`), every roast report of this loop so far, the settled tree, and every prior
-   step-back record. Save its output beside the report; record `stepBackDesign-round-<N>` as the
-   template specifies.
+   step-back record. Save its output beside the report, with no record yet: item 7 writes the
+   round's `stepBackDesign-round-<N>` line.
 5. **Check.** Run `bash <base>/scripts/step-back-check --step-back <file> --keys <keys file>
    --ledger <ledger>`. Exit 0: continue. Exit 3: re-dispatch the step-back once with the reject
    lines and check again. A second exit 3 never falls back to `local` when the ledger names a
-   mechanical trigger: it is a forced redesign (recorded `redesign — forced: step-back record
-   rejected: <reject lines>`, scope `inside`, triggers from the ledger) while `redesignCycles-design`
-   < 2, else the thrash exit. With no mechanical trigger, run `local` with every finding its own
+   mechanical trigger: it is a forced redesign (scope `inside`, triggers from the ledger; item 7
+   writes `redesign — forced: step-back record rejected: <reject lines>`) while
+   `redesignCycles-design` < 2, else the thrash exit. With no mechanical trigger, run `local` with every finding its own
    task and no clusters, recorded `local — step-back record rejected: <reject lines>`. Exit 2: a
    bad invocation; fix it and run again.
 6. **Interactive runs** (§Gates by Mode). A `redesign`, mandated or not, is presented with the
    step-back's recommendation and the human chooses. A decline is recorded `stepBackDesign-round-<N>:
    local — redesign declined by human`, parked as a `degraded-verdict` `redesign declined by human
    — <triggers>`, and the round runs `local`. The check is not re-run on the human's choice.
-7. **Branch.**
-   - `local`: the fix list, items 1–4.
+7. **Branch.** Choose the branch from the record's decision, and write the round's
+   `stepBackDesign-round-<N>` line as part of that branch's own run-state write (the round
+   summaries when standalone), unless items 2, 5 or 6 already wrote a `local` line.
+   - `local`: write the `local — <why>` line; the fix list, items 1–4.
    - `redesign`, scope `inside`, `redesignCycles-design` < 2: commit any uncommitted spec changes
      (so HEAD is the pre-amendment spec state every Amend Mode restore returns to); record
      `lastGood` as that HEAD commit SHA (reported, never reverted: nothing has executed);
-     increment `redesignCycles-design` to K; write `redesign-design-<K>` with state `started`;
-     append each `dissolves:` key of the record that passed the check to the overrides file as
+     in one run-state write, increment `redesignCycles-design` to K, write `redesign-design-<K>`
+     with state `started` and the `redesign — applied` (or forced) line; then append each `dissolves:` key of the record that passed the check to the overrides file as
      `<key> · dissolved@r<N>` and rebuild the ledger (item 2); a forced redesign has no validated
      record and writes none, and no other branch writes a `dissolved` line;
      then run the exit tests below. This round does not take the cap exit; the redesign cycle
      runs.
-   - `redesign`, scope `outside`: unattended, record it as `parked`, park a `degraded-verdict`
+   - `redesign`, scope `outside`: unattended, write `redesign — parked: …`, park a `degraded-verdict`
      `redesign proposed, not applied`, run `local`, and surface it at the loop exit. Interactive,
      offer it to the human with the recommendation; the round runs `local`.
    - `redesign` with the budget spent (`redesignCycles-design` = 2): under a mechanical trigger,
-     the thrash exit; otherwise park a `degraded-verdict` `redesign budget spent` and run `local`.
+     write `redesign — parked: …` (naming the budget), then the thrash exit; otherwise park a
+     `degraded-verdict` `redesign budget spent` and run `local`.
 
 **Redesign cycle.** After the exit tests pass, run §Amend Mode inline: `--loop design`, K, the
 ledger and overrides paths, this loop's `findings-ledger` invocation (item 2's input set, dropped
@@ -1065,7 +1068,7 @@ Write these, each as it happens:
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
 | `findingsLedgerDesign: <path>` (`<artifact-dir>/findings-ledger-design.md`; single-valued, replaced) | Step 1 first builds the ledger |
-| `stepBackDesign-round-<N>: local \| redesign — <one line>` (format: `./step-back-prompt.md`; a `patch` line reads as `local`), one line per round, appended | that round's step-back decision is made |
+| `stepBackDesign-round-<N>: local \| redesign — <one line>` (format: `./step-back-prompt.md`; a `patch` line reads as `local`), one line per round, appended | the round's Step 1 branch item, in the same write as `redesignCycles-design` and the `redesign-design-<K>` record on a taken redesign; the `local` forms are written where items 2, 5 and 6 decide them |
 | `redesignCycles-design: <K>` (single-valued, replaced, never reset) | Step 1's branch starts a redesign cycle |
 | `redesign-design-<K>: round <N> · triggers <list> · amended <§s\|none> · lastGood <sha\|-> · designRoast - · state <started\|amend-checked\|specs-committed\|beads-filed\|applied\|aborted — <reason>\|thrash — lastGood breach>` (one line per K, rewritten in place, never appended; `designRoast` stays `-`: that field is the code loop's) | `started` before the exit tests, then at each transition of §Amend Mode's steps and of the loop's exits |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
