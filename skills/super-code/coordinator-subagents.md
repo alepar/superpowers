@@ -158,11 +158,14 @@ removal and retains resources on 3/4, including `--discard` and `--sweep`. An un
 `scriptError` or absent process output field becomes `unknown`, with unchecked roots identified.
 Record these facts alongside completed code; copy the same arrays and paths to the caller.
 
-At Finish, record the run profile: `bash <skillsRoot>/super-code/scripts/run-profile --codex
+After the ordinary invocation settles, the invoking session records one run profile (Finish does
+not generate a second one): `bash <skillsRoot>/super-code/scripts/run-profile --codex
 "$CODEX_THREAD_ID"` on Codex, or `--subagents ~/.claude/projects/*/"$CLAUDE_CODE_SESSION_ID"/subagents`
 on Claude Code, with `--ledger <ledger> --out <ledger dir>/profile-<session id>`. Append its whole stdout
-to the ledger on every exit path: on exit 3 its last line is `Profile: unavailable — …`, and
-the `Profile: context` lines it prints before that line belong in the ledger too.
+once to the ledger on every exit path: on exit 3 its last line is `Profile: unavailable — …`, and
+the `Profile: context` lines it prints before that line belong in the ledger too. `--out` writes the
+md/json pair beside the ledger, including qualified unavailable output. Under super-auto, collection
+copies that invocation's existing pair into the committed run directory without regenerating it.
 
 Then clear the run marker by the same rule as `coordinator-workflow.md` §Finish: `bash
 <skillsRoot>/super-code/scripts/run-marker get <session id> --cwd <integration worktree>`, and only

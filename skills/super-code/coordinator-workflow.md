@@ -1496,17 +1496,21 @@ up as context fills. Friction entries already written to the log survive compact
 
 **The run profile is the invoking session's job too.** The script has no clock and the ledger no
 timestamps, so per-bead timing is measured after the fact from the Workflow runtime's own run
-files. When the Workflow returns with a `stopReason` (not a budget-cap or first-outage return you
+files. The invoking session generates one profile after each settled invocation, including a
+qualified or unavailable result; `coordinator.js` and Finish do not generate it. When the Workflow
+returns with a `stopReason` (not a budget-cap or first-outage return you
 relaunch), run `bash <this skill's dir>/scripts/run-profile --workflow <dir> … --out
 <workspace>/profile-<runId>` with one `--workflow` per run of this invocation, relaunches included
 (each launch result prints its `Transcript dir:`; after a compaction, `--discover --epic <epicId>
---latest` finds them), and append its stdout to the ledger. Those `Profile:` lines give the bead
-graph's shape, the realized critical path and its bottleneck bead with what its time went to, each
-bead's ready-to-start wait and cause, the merge lane's load and conflict files, and modelled
-what-ifs. It dispatches nothing. Append its whole stdout on every exit path: where the harness keeps no
+--latest` finds them), and append its whole stdout once to the ledger for that invocation. Those
+`Profile:` lines describe the observed invocation/residual graph, evidenced waits, planning-aware
+diagnosis, task bottlenecks, separate all-agent/task-slot concurrency and counterfactual estimates.
+It dispatches nothing. Include every exit path: where the harness keeps no
 such files it exits 3 with `Profile: unavailable — …` as its last line, after the
 `Profile: context` lines it could still measure, and those lines belong in the ledger too. Run
-it before the hand-off removes the integration worktree.
+it before the hand-off removes the integration worktree. `--out` writes the md/json pair beside the
+ledger, including a qualified unavailable pair on exit 3. Under super-auto, collection copies this
+invocation's existing pair into the committed run directory; it does not regenerate or append it again.
 
 **The run marker is the invoking session's too.** After the Workflow returns with a `stopReason` (not
 a relaunch), run `bash <skills>/super-code/scripts/run-marker get <session id> --cwd <integration

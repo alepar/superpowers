@@ -30,7 +30,7 @@ const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
 const jsonl = (file, rows) => writeFileSync(file, rows.map(r => JSON.stringify(r)).join('\n') + '\n')
 mkdirSync(out, { recursive: true })
 if (sc.ledger) writeFileSync(join(out, 'progress.md'), sc.ledger.join('\n') + '\n')
-if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads))
+if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
 const tasksOf = a => a.tasks ?? [[a.start, a.end]]
 
 if (harness === 'codex') {

@@ -20,6 +20,7 @@ const sc = JSON.parse(readFileSync(scenarioPath, 'utf8'))
 mkdirSync(out, { recursive: true })
 const t0 = Date.parse(sc.t0)
 const at = s => new Date(t0 + Math.round(s * 1000)).toISOString()
+if (sc.beads) writeFileSync(join(out, 'beads.json'), JSON.stringify(sc.beads.map(b => ({ ...b, ...(typeof b.created_at === 'number' ? { created_at: at(b.created_at) } : {}) }))))
 const agents = sc.agents.map((a, i) => ({ ...a, id: `a${sc.idPrefix ?? 'f'}${String(i).padStart(4, '0')}` }))
 const usageRow = (s, ctx, id, model = 'claude-opus-4-6', extra = {}) => ({ type: 'assistant', timestamp: at(s), ...extra,
   message: { id, model, role: 'assistant', content: [{ type: 'text', text: 'ok' }], usage: { input_tokens: 10, cache_read_input_tokens: ctx - 30, cache_creation_input_tokens: 20, output_tokens: 5 } } })
