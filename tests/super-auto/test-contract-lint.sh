@@ -4,8 +4,8 @@
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
 # (unchanged fixtures from 2bf1d53 plus explicit run-state-added-fields/formats additions);
-# example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps
-# name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
+# example status lines have a shape report-status prints; (findings) complete source retention,
+# shared outstanding projection, collection recovery and null reviewPath rules are present. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -196,10 +196,10 @@ check_status_examples() { # SKILL_DIR
 
 check_keys_rule() { # SKILL_DIR
   local a b
-  grep '^- I8 ' "$1/SKILL.md" | grep -qF 'report-verdict --keys' || echo "SKILL.md: I8 does not name report-verdict --keys"
-  for a in 'First write the step-back keys file' 'Write the scope keys file' 'Its Must-fix and untested-scope items'; do
-    grep -F -- "$a" "$1/SKILL.md" | grep -qF 'report-verdict --keys' || echo "SKILL.md: '$a' does not use report-verdict --keys"
-  done
+  grep '^- I8 ' "$1/SKILL.md" | grep -qF 'scope-dispositions --project' || echo "SKILL.md: I8 does not name scope-dispositions --project"
+  grep -qF 'report-verdict --complete --source' "$1/SKILL.md" || echo "SKILL.md: collection does not retain complete extraction"
+  grep -qF 'scope-dispositions --project' "$1/report-prompt.md" || echo "report-prompt.md: Remaining does not consume projection"
+  grep -qF 'report-status --collect' "$1/resume.md" || echo "resume.md: pending collection recovery is absent"
   for b in SKILL.md report-prompt.md; do
     { grep -qF 'null `reviewPath`' "$1/$b" && grep -qF '[Must-fix] untested: whole-epic review' "$1/$b"; } || echo "$b: no null reviewPath rule"
   done
@@ -246,8 +246,8 @@ copy; printf '\nCollect all seven flags at once.\n' >> "$SA/SKILL.md"
 expect_caught "a numeric list count fails" "numeric count points at a list"
 copy; sed 's/^| `roastCodeRound` |/| `roastCodeRounds` |/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
 expect_caught "a renamed field-table field fails the baseline" "lost baseline field: roastCodeRound"
-copy; sed '/^- I8 /s/report-verdict --keys/report-verdict/g' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
-expect_caught "I8 without --keys fails" "I8 does not name report-verdict --keys"
+copy; sed '/^- I8 /s/scope-dispositions --project/scope-dispositions/g' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "I8 without projection fails" "I8 does not name scope-dispositions --project"
 copy; grep -vF 'whole-epic review' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "report-prompt without the null reviewPath rule fails" "report-prompt.md: no null reviewPath rule"
 

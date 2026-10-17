@@ -328,4 +328,92 @@ run bash "$S" --project "$T/projection.md" --keys
 assert_eq "$code" 3 "unavailable source artifacts are an explicit gap"
 assert_eq "$out" '[Nit] café,format.ts:1 — A' "retained occurrences survive unavailable source"
 
+echo "review collection and caller continuity"
+cp "$RF/clean.md" "$T/malformed-collection.md"
+printf 'approvals:\n- review-collection · {"invocationId":"bad","reviewPath":null,"complete":true,"gaps":[]}\n' >> "$T/malformed-collection.md"
+run bash "$RS" "$T/malformed-collection.md"
+[[ "$out" == *'review collection gaps:'* ]] && pass "malformed new collection cannot appear clean" || fail "malformed new collection cannot appear clean"
+mkdir -p "$T/collect/work/assembled/final-review-inv-one-final/slices" "$T/collect/run/reviews/inv-one"
+CW="$T/collect/work"
+CR="$T/collect/run/run.md"
+cp "$RF/clean.md" "$CR"
+cat > "$CW/final-review-inv-one.md" <<'REVIEW'
+## Verdict
+not ready
+## Must-fix
+- repair the auth guard
+## Deferred OK
+- [Nit] ui.ts:1 — keep the label
+## Untested scope
+none
+REVIEW
+cp "$CW/final-review-inv-one.md" "$CW/final-review-inv-one.cluster-1.md"
+printf 'diff original\n' > "$CW/final-review-inv-one.diff"
+printf '{"clusters":[{"name":"auth","slices":["slices/auth.diff"]}]}\n' > "$CW/assembled/final-review-inv-one-final/clusters.json"
+printf 'slice original\n' > "$CW/assembled/final-review-inv-one-final/slices/auth.diff"
+# The copy exists, but no completion or source record survived the interruption.
+cp "$CW/final-review-inv-one.md" "$T/collect/run/reviews/inv-one/final-review-inv-one.md"
+run bash "$RS" --collect "$CR" --invocation inv-one --workspace "$CW" --review "$CW/final-review-inv-one.md" --verdict 'not ready'
+assert_eq "$code" 0 "collection resumes after interrupted copy"
+if [ "$code" -eq 0 ]; then
+  node - "$CR" <<'ROUTE'
+const fs=require('fs'),p=process.argv[2];let s=fs.readFileSync(p,'utf8');const r={source:'inv-one/final',section:'Deferred OK',position:1};s+='- finding-route · '+JSON.stringify({ref:r,deferred:'outside goal'})+'\n';s+='- finding-disposition · '+JSON.stringify({ref:r,disposition:'rejected',judgment:'supported',basis:'intentional label',evidence:['decision @ abc123']})+'\n';fs.writeFileSync(p,s);
+ROUTE
+  cp "$CR" "$T/collect/before.md"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 0 "resume replays complete collections"
+  cmp -s "$CR" "$T/collect/before.md" && pass "second resume changes no records" || fail "second resume changes no records"
+  cmp -s "$CW/final-review-inv-one.diff" "$T/collect/run/reviews/inv-one/final-review-inv-one.diff" && pass "bundle diff archived byte for byte" || fail "bundle diff archived byte for byte"
+  cmp -s "$CW/assembled/final-review-inv-one-final/slices/auth.diff" "$T/collect/run/reviews/inv-one/assembled/final-review-inv-one-final/slices/auth.diff" && pass "split assembled input archived" || fail "split assembled input archived"
+  printf '## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n' > "$CW/final-review-inv-two.md"
+  run bash "$RS" --collect "$CR" --invocation inv-two --workspace "$CW" --review "$CW/final-review-inv-two.md" --verdict ready
+  assert_eq "$code" 0 "ready silent retry collected independently"
+  run bash "$S" --project "$CR"
+  assert_eq "$code" 0 "collected producer records validate in predecessor projection"
+  if node -e 'const p=JSON.parse(process.argv[1]);if(p.findings.length!==4||p.findings.filter(f=>f.outstanding).length!==3||!p.findings.some(f=>!f.outstanding&&f.dispositions.length))process.exit(1)' "$out"; then pass "one occurrence per source identity and supported disposition survives ready retry"; else fail "one occurrence per source identity and supported disposition survives ready retry"; fi
+  run bash "$RS" "$CR"
+  [[ "$out" == *'outstanding findings: 3'* ]] && pass "status exposes historical outstanding findings despite latest ready" || fail "status exposes historical outstanding findings despite latest ready"
+  [[ "$out" != *'review collection gaps:'* ]] && pass "settled intent history creates no false collection gaps" || fail "settled intent history creates no false collection gaps"
+  mv "$CW" "$T/collect/source-held"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 0 "verified complete archive survives source workspace removal"
+  mv "$T/collect/source-held" "$CW"
+  node - "$CR" "$CW" <<'INTENT'
+const fs=require('fs'),p=process.argv[2],w=process.argv[3];fs.appendFileSync(p,'- review-collection · '+JSON.stringify({invocationId:'inv-empty',workspace:w,reviewPath:w+'/final-review-inv-empty.md',review:'pending',required:[],settled:false})+'\n');
+INTENT
+  run bash "$RS" --collect "$CR" --invocation inv-empty --workspace "$CW" --review none --verdict 'no work landed'
+  assert_eq "$code" 0 "null review with no work landed preserves null semantics"
+  cp "$RF/clean.md" "$T/collect/null-partial.md"
+  cp "$CW/final-review-inv-one.md" "$CW/final-review-inv-ghost.md"
+  run bash "$RS" --collect "$T/collect/null-partial.md" --invocation inv-ghost --workspace "$CW" --review none --verdict 'no work landed'
+  assert_eq "$code" 3 "null no-work with a partial bundle remains a gap"
+  run bash "$S" --project "$T/collect/null-partial.md"
+  assert_eq "$code" 0 "unexpected null bundle still retains complete extraction"
+  if node -e 'const p=JSON.parse(process.argv[1]);if(!p.findings.some(f=>f.outstanding&&f.ref.source==="inv-ghost/final"))process.exit(1)' "$out"; then pass "null result never erases discoverable findings"; else fail "null result never erases discoverable findings"; fi
+  run bash "$RS" --collect "$CR" --invocation inv-partial --workspace "$CW" --review "$CW/final-review-inv-partial.md" --verdict 'not ready' --required absent-input.diff
+  assert_eq "$code" 3 "missing declared direct input blocks collection completion"
+  run bash "$RS" --collect "$CR" --invocation inv-null --workspace "$CW" --review none --verdict 'not ready'
+  assert_eq "$code" 3 "null required review is a durable evidence gap"
+  run bash "$RS" "$CR"
+  [[ "$out" == *'review collection gaps:'* ]] && pass "status exposes collection gaps" || fail "status exposes collection gaps"
+  run bash "$RS" --collect "$CR" --invocation inv-missing --workspace "$CW" --review "$CW/final-review-inv-missing.md" --verdict 'not ready'
+  assert_eq "$code" 3 "missing required bundle remains pending"
+  printf 'changed destination\n' > "$T/collect/run/reviews/inv-one/final-review-inv-one.md"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 3 "conflicting archive is not overwritten on replay"
+  assert_eq "$(cat "$T/collect/run/reviews/inv-one/final-review-inv-one.md")" 'changed destination' "conflicting archive bytes retained for recovery"
+  run bash "$S" --project "$CR" --keys
+  assert_eq "$code" 0 "known inline sources remain valid through collection gap"
+  assert_eq "$out" '' "supported rejected item stays off punch list while active defects stay open"
+  cp "$CW/final-review-inv-one.md" "$T/collect/run/reviews/inv-one/final-review-inv-one.md"
+  run bash "$RS" --collect "$CR"
+  assert_eq "$code" 3 "unrelated missing collections remain gaps after local archive repair"
+  if node - "$CR" <<'REPAIRED'
+const fs=require('fs');const r=fs.readFileSync(process.argv[2],'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.slice('- review-collection · '.length))).filter(r=>r.invocationId==='inv-one').at(-1);if(!r.complete||r.gaps.length)process.exit(1);
+REPAIRED
+  then pass "repaired collection appends completion after an earlier identical completion"; else fail "repaired collection appends completion after an earlier identical completion"; fi
+else
+  fail "collection-dependent archive/projection/status assertions unmeasured"
+fi
+
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

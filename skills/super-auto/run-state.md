@@ -54,6 +54,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals` | `approvals:` then one `- <record>` line per decision below | 7 | super-design; super-auto (`design-review`) |
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
+| `approvals · review-collection` | `- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>` | 7 | super-auto, before launch and after settled collection |
 | `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
 | `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
 | `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
@@ -120,7 +121,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    Refresh them from the tracker as phase 3 proceeds, so a session that ends inside phase 3 resumes with the last completed round: closed task beads under the epic are `completed`, quarantined ones `escalated`. A `review: <id>` bead (label `sp:review`) is `super-code`'s bookkeeping, never a task, and a task whose review bead is still open is in flight. When `super-code` returns, overwrite the buckets with its returned fields verbatim.
 
-   `review` records the verdict of `super-code`'s final whole-epic review: `ready` or `not ready (<summary>)`. A `run.md` written before this form has `CLEAN` or `<verdict> (<N> confirmed)`; read them as `ready` and `not ready`. Under `deferSweep` each invocation's review is informational; the one the report uses is the last invocation's, read after the phase-6 sweep, and its items are routed per SKILL.md §Final-review items. That review is mandatory even when `skipCodeRoast` is set.
+   `review` records the verdict of `super-code`'s final whole-epic review: `ready` or `not ready (<summary>)`. A `run.md` written before this form has `CLEAN` or `<verdict> (<N> confirmed)`; read them as `ready` and `not ready`. Under `deferSweep` each invocation's review is informational; the report describes the latest verdict after the phase-6 sweep, while its outstanding items come from the accumulated projection per SKILL.md §Final-review items. That review is mandatory even when `skipCodeRoast` is set.
 
    `sweep` is the run's one full-suite result in the §Field table form, stamped with the SHA it measured; it reads `SWEEP DEFERRED (caller-owned)` until phase 6. `scripts/report-status` counts it as a pass only in that form with zero failed and zero errors, stamped at the report's tip as report-prompt.md §The status block defines it; any other value becomes a qualifier.
 
@@ -199,6 +200,17 @@ The schema home for `run.md`: every field's name and line format. The numbered i
    "the human approved this run", because that turns one approval into consent for work
    they never saw, which is the failure mode this record exists to prevent, arrived
    at from the other direction.
+
+## Review collection records
+
+Use existing `approvals:` records, with one JSON object per line after `- review-collection · `.
+Before launch commit `{"invocationId":"inv-a","workspace":"<absolute workspace>","reviewPath":"<absolute workspace>/final-review-inv-a.md","review":"pending","required":[],"settled":false}`. Pass that ID to either coordinator mechanism; runTag remains the enclosing run identity. The caller adds relative `required` files when a known direct input is required beyond discovered `.diff`/assembled/split inputs. These are collection facts, not new producer result fields.
+
+After confirmed settlement, `report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review PATH_OR_none --verdict REVIEW [--required RELATIVE_FILE]...` appends the settled intent before copying. Preserve the exact original required-input list. `reviewPath:null` records a null result: only `review:"no work landed"` permits collection without a review. Any other null/missing review leaves an evidence gap, owned by the orchestrator; no clean review/source is invented. Unexpected recoverable bundle artifacts with a null result are still extracted and archived, with a gap requiring reconciliation.
+
+The helper appends complete extraction JSON under `finding-source`, preserving immutable `ID/final` and `ID/cluster-N` identities and every section/position/key/text, with an archive pointer under `reviews/ID/`. It copies final/cluster review files, the direct `.diff` when present, and the complete assembled input directory, checking declared files and split manifest slices. An interrupted copy is replayable before completion. Identical copies do not change; conflicting bytes remain untouched. Completion adds `complete:true`, `files:[{"path":"<bundle-relative path>","sha256":"<hash>"}]` and `gaps:[]`; missing/incomplete/conflicting artifacts add `complete:false` and nonempty `gaps`. Earlier records and supported finding dispositions remain append-only. The last collection record per invocation describes recovery progress; it never disposes a finding.
+
+`report-status --collect RUN_MD` replays all retained collections. It verifies complete archive hashes even after source cleanup. Exit 0 confirms preservation; exit 3 leaves pending/gaps and requires preserving the source workspace plus archive before later invocation or cleanup; exit 2/4 establishes no collection. Unsettled intents require ledger/result confirmation, not inference from artifact presence. A missing source extraction retains known inline occurrences and exposes unavailable coverage. Ordinary `report-status RUN_MD` is read-only: with new records it adds `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N` and/or `finding evidence gaps: N` qualifiers as applicable, derived from this collection history and the shared outstanding projection. Unavailable tooling/projection is qualified explicitly. Without new records legacy status output is unchanged.
 
 ## Finding continuity records and projection
 
@@ -311,6 +323,7 @@ roastDesignRound: 2
 roastCodeRound: 1
 
 approvals:
+- review-collection · {"invocationId":"inv-a","workspace":"/work/project/.superpowers/sdd/bd-root-plan","reviewPath":"/work/project/.superpowers/sdd/bd-root-plan/final-review-inv-a.md","review":"pending","required":[],"settled":false}
 - top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
 - finding-source · {"version":1,"source":"inv-a/final","artifact":"final-review-inv-a.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — inconsistent formatting","text":"[Nit] lib/format.ts:12 — inconsistent formatting"}]}
 - finding-source · {"version":1,"source":"inv-b/final","artifact":"final-review-inv-b.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — same formatting obligation","text":"[Nit] lib/format.ts:12 — same formatting obligation"}]}
