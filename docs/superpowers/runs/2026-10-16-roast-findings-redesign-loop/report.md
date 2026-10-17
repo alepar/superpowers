@@ -1,5 +1,5 @@
 status: clean [degraded: final review: not ready (cluster must-fixes in 6, 7, 8, 9, 13 and 15 remain open; the amend-checked resume abort and the unparked resumed abort affect both loops; the code loop's amend roast has no field owner or pointer), sweep: 3311a446 — 27 passed, 1 failed, 0 errors, 0 skipped; failing: tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files); command: CLAUDE.md release test list (28 commands) @ 3311a446]
-metrics: pending (upstream-feedback not yet run)
+metrics: parked draft docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/upstream-feedback-draft.md (3 defects, 1 design question; not filed)
 
 # super-auto report — roast findings redesign loop (epic super-plan-59b)
 
