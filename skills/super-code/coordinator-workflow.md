@@ -26,7 +26,8 @@ args = {
   integrationBranch,
   integrationWorktree,   // optional — see below
   skillsRoot,            // required — see below
-  runTag,                // optional — see below
+  runTag,                // optional — enclosing run identity
+  invocationId,          // one invocation; reuse only on explicit unsettled resume
   deferSweep,            // optional — see below
   processRoots,          // optional — see below
   dryRun,
@@ -62,9 +63,26 @@ cap is `concurrency` as given, and a log line says it was not checked.
 effort. dryRun stubs take none.
 
 `runTag` is **optional**: the run's tag, `<epicId or slug>-<UTC yyyymmddThhmmss>`. A caller
-(`super-auto`) passes its own; a standalone pre-flight mints `<epicId>-…`. Every assembled directory
-and final-review file name uses it, and the Workflow writes it into its `Launch: args` line. Absent,
-it is the epic id.
+(`super-auto`) passes its own; a standalone pre-flight mints `<epicId>-…`. It groups processes and
+non-review assembly directories; absent, it is the epic id.
+
+`invocationId` owns this invocation’s review bundle. Before launch, the caller mints a fresh
+filesystem-safe token (1–128 ASCII letters, digits, `_` or `-`, starting with a letter or digit;
+for example `inv-$(uuidgen)`) and passes it in args. The script mints one when omitted. The existing
+`Launch: args` append persists it and is awaited; only `appended: true` authorizes review assembly
+and review writers. A persistence gap leaves an explicit unavailable review and `reviewPath: null`.
+For an explicit resume of an unsettled invocation, copy its recorded `invocationId` into args
+alongside `resumeFromRunId`; replay retains the same paths. After an invocation has returned a
+settled result, the next invocation mints a new identity, including after a blocked result, even
+when `runTag` stays the same. Never infer resume identity from the latest Launch solely by runTag.
+
+The immutable bundle is `<workspace>/final-review-<invocationId>.md`, its direct-input `.diff`,
+`final-review-<invocationId>.cluster-<n>.md`, and
+`assembled/final-review-<invocationId>-final/`. Single, seam and stub writers share only that
+invocation’s final path. The dot before `cluster` cannot occur in invocation tokens, so a
+suffix-like token cannot alias another invocation’s cluster artifact. A settled bundle remains
+available to downstream source/disposition consumers under its original invocation and artifact
+identity; a later review does not replace it.
 
 `contextWindows` is **optional**: `context-preflight --json`'s object (`{"<role>": <window tokens>}`
 for planner, implementer, reviewer, finalReview and assembler; absent roles are unknown), passed
@@ -339,6 +357,9 @@ Done by the main session, not the Workflow:
      when it prints `{}`).
    - runTag: the caller's `args.runTag` when given, else mint `<epicId>-$(date -u +%Y%m%dT%H%M%S)`;
      pass it as `args.runTag` (the Workflow writes it into its `Launch: args` line).
+   - invocationId: mint `inv-$(uuidgen)` for a new invocation and pass `args.invocationId`;
+     reuse the persisted token only for explicit unsettled resume. Confirm the Launch append
+     before any review bundle output; leave a persistence gap unavailable.
    - Marker: `bash <skills>/super-code/scripts/run-marker get <session id> --cwd <integration worktree>`
      (session id: `$CLAUDE_CODE_SESSION_ID`, else `$CODEX_THREAD_ID`). Exit 1 (no live marker: a
      standalone run) → `bash <skills>/super-code/scripts/run-marker register --skill super-code
@@ -1337,7 +1358,7 @@ assigning cause from differences alone or restoring the caller checkout.
 
 **The final review is size-switched.** After the Metrics re-read and before its append, one
 mechanical `assemble:final` dispatch (`assemblePrompt('final-review', 'final', …)`) gathers the review
-inputs into `<workspace>/assembled/final-review-<runTag>-final/` and measures them. The window is
+inputs into `<workspace>/assembled/final-review-<invocationId>-final/` and measures them. The window is
 `config.contextWindows.finalReview`, else `FINAL_REVIEW_FALLBACK_WINDOW.workflow` (200K, defined once
 beside `MODEL_DEFAULTS` in `coordinator.js`; the ordinary-subagent coordinator uses its `ordinary`
 entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply:
@@ -1353,11 +1374,11 @@ entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply
 The `Final review:` line is appended in the same dispatch as the four `Metrics:` lines. Clusters come
 from the assembler's `clusters.json` (import and call edges, else directory), never from a declared
 key. A cluster still `cluster-fits: no` after the assembler's one re-cluster is not dispatched and is
-listed `unreviewed`. Cluster reviewers write `<workspace>/final-review-<runTag>-cluster-<n>.md`; the
+listed `unreviewed`. Cluster reviewers write `<workspace>/final-review-<invocationId>.cluster-<n>.md`; the
 seam reviewer, given only those files and the cross-cluster hunks and interfaces, writes the handoff
-file. **`<workspace>/final-review-<runTag>.md` exists whenever `reviewPath` is non-null**: the single or seam
+file. **`<workspace>/final-review-<invocationId>.md` exists whenever `reviewPath` is non-null**: the single or seam
 reviewer writes it, and on a null seam review a mechanical `final-review:stub` dispatch writes a stub
-that lists the cluster files; only a null stub leaves it absent, and `reviewPath` is then null. The
+that lists the cluster files; a null stub or a reply without `written: true` leaves `reviewPath` null. The
 Workflow returns `review` (the verdict line) and `reviewPath` (that file, or null when no file was
 written) and never a body; callers read the file through `report-verdict`. Anything unreviewed — a null
 cluster or seam review, an over-window cluster — makes `review` `not ready (<summary>; unreviewed: …)`,
@@ -2082,8 +2103,11 @@ it even by coincidence. The figures were real and unaltered — and still not ev
 run never executed. That is the failure the rule generalizes.
 
 **Schema-less dispatches — the harness's "N empty results" is expected, not a defect.** `notify`,
-`clarify` and the ledger appends (`ledger:<id>`, `ledger-append:*`, `ledger-recurring:*`) carry no
-`schema:`; the coordinator reads them only for null. The final-review dispatches carry `FINAL_VERDICT`
+`clarify` and ledger appends other than Launch (`ledger:<id>`, `ledger-append:*`,
+`ledger-recurring:*`) carry no `schema:`; their replies are read only for null. The Launch append
+carries an `{appended: boolean}` schema and requires `appended: true` before review artifacts.
+The final stub requires `written: true`.
+The final-review dispatches carry `FINAL_VERDICT`
 (`{verdict, path}`; `review` is the verdict line), the stub `STUB_WRITTEN`, the assembler `ASSEMBLED`. `sweep` carries `SWEEP_SUMMARY`, and its line must match a
 measurement form (counts, `PASS|FAIL` for a non-test command, or `MEASUREMENT INVALID:`) or it is
 recorded as `SWEEP UNAVAILABLE` — an agent's interim status once reached the final reviewer as the
@@ -2109,6 +2133,7 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
 ```json
 {
   "epicId": "bd-100",
+  "invocationId": "bd-100",
   "integrationBranch": "epic-bd-100-integration",
   "skillsRoot": "/abs/superpowers/skills",
   "dryRun": true,
@@ -2199,6 +2224,7 @@ replay harness at the current revision.
 ```json
 {
   "epicId": "bd-200",
+  "invocationId": "bd-200",
   "integrationBranch": "epic-bd-200-integration",
   "skillsRoot": "/abs/superpowers/skills",
   "dryRun": true,
@@ -2267,6 +2293,7 @@ the current revision.
 ```json
 {
   "epicId": "bd-300",
+  "invocationId": "bd-300",
   "integrationBranch": "epic-bd-300-integration",
   "skillsRoot": "/abs/superpowers/skills",
   "dryRun": true,

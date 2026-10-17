@@ -18,8 +18,12 @@ export const meta = {
 // worktree itself, since no string derivation can recover a caller-chosen path.
 const A = typeof args === 'string' ? JSON.parse(args) : args
 const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
-// runTag names this run's assembled-input directories so a relaunch never reads another run's files.
+// runTag groups the enclosing run; invocationId owns one immutable review bundle.
+// Callers reuse a persisted invocationId only when resuming that unsettled invocation.
+// A fresh launch without an explicit identity mints one before its Launch line is persisted.
 const runTag = (A && typeof A.runTag === 'string' && A.runTag.trim()) || epicId
+const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId
+if (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
 // skillsRoot: absolute path of the skills/ directory. Agents run inside project worktrees, so every
 // template and script path is built from it.
 const skillsRoot = A && typeof A.skillsRoot === 'string' ? A.skillsRoot.replace(/\/+$/, '') : ''
@@ -206,10 +210,10 @@ const ledgerAppendFailed = []
 let ledgerAppendRetried = 0
 const flatLines = l => (Array.isArray(l) ? l : [l]).map(x => String(x).replace(/\s+/g, ' ').trim()).filter(Boolean)
 async function appendLedger(line, stubKey, opts, elidedLine) {
-  const out = await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, flatLines(line)), stubKey, opts)
+  const out = await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, flatLines(line), !!opts.schema), stubKey, opts)
   if (out !== null) return out
   const retryLine = elidedLine ?? line
-  const retry = await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, flatLines(retryLine)), stubKey, { ...opts, label: `${opts.label}:retry` })
+  const retry = await dispatch(() => ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, flatLines(retryLine), !!opts.schema), stubKey, { ...opts, label: `${opts.label}:retry` })
   if (retry !== null) {
     ledgerAppendRetried++
     log(`ledger-append retried: ${opts.label} — the first append returned null; the retry landed${elidedLine ? ' with the free text elided (ids and outcome token kept)' : ''}`)
@@ -225,7 +229,8 @@ async function appendLedger(line, stubKey, opts, elidedLine) {
 let ledgerChain = Promise.resolve()
 let ledgerFailure = null
 function queueLedger(lines, key, phase, elided) {
-  const run = ledgerChain.then(() => appendLedger(lines, key, { label: key, phase, ...tier('mechanical') }, elided))
+  const schema = key === 'ledger-append:launch' ? { type: 'object', properties: { appended: { type: 'boolean' } }, required: ['appended'] } : null
+  const run = ledgerChain.then(() => appendLedger(lines, key, { label: key, phase, ...tier('mechanical'), ...(schema ? { schema } : {}) }, elided))
   ledgerChain = run.then(() => {}, e => { ledgerFailure = ledgerFailure ?? e })
   return run
 }
@@ -537,8 +542,10 @@ const ledger = await readLedger('read-ledger', 'Resume', true)
 if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
 // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
 // (dryRun stub tables omitted).
-queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
   'ledger-append:launch', 'Resume')
+const invocationPersisted = launchIdentity?.appended === true
+if (!invocationPersisted) log('invocation identity persistence unavailable — review artifacts will not be created')
 // Optional baseline (config.sweepBaseline): the same sweep at the starting tip, so Finish can tell a
 // regression this run made from breakage it started with. Off by default; never under deferSweep.
 let baselineSummary = null
@@ -1744,17 +1751,17 @@ if (!metricsLedger) {
 }
 // Final review (spec §B3): the assembler measures the review inputs against 40% of the reviewer's
 // window; one reviewer when they fit, one per cluster plus a seam reviewer when they do not. The
-// handoff file <workspace>/final-review-<runTag>.md exists whenever `reviewPath` is non-null;
+// handoff file <workspace>/final-review-<invocationId>.md exists whenever `reviewPath` is non-null;
 // `reviewPath` is null when no work landed or no review file was written (a null single review, or a
 // null seam review whose stub also returned null). The Workflow returns only the verdict line
 // (`review`) and that path, never a body.
 const landedWork = !!(completed.size || confirmedLandings.size)
 const finalSource = metricsLedger && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewBase || '') && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewHead || '') ? { base: metricsLedger.reviewBase, head: metricsLedger.reviewHead } : null
-const reviewPath = `${workspaceAbs}/final-review-${runTag}.md`
-const clusterReviewPath = n => `${workspaceAbs}/final-review-${runTag}-cluster-${n}.md`
+const reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`
+const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
 const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
-let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
-if (landedWork && finalSource) {
+let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
+if (landedWork && invocationPersisted && finalSource) {
   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
   const reviewThreshold = Math.floor(reviewWindow * 0.4)
   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
@@ -1790,6 +1797,7 @@ const notReadyWith = (verdict, unrev) => {
 }
 let review, reviewWritten = false
 if (!landedWork) review = 'no work landed'
+else if (!invocationPersisted) review = 'FINAL REVIEW UNAVAILABLE — invocation identity persistence unavailable; no review artifacts were authorized'
 else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
 else if (frMode !== 'split') {
   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
@@ -1818,7 +1826,7 @@ else if (frMode !== 'split') {
     unreviewed.push('seam')
     const stub = await dispatch(() => finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath), 'final-review:stub',
       { label: 'final-review:stub', phase: 'Finish', ...tier('mechanical'), schema: STUB_WRITTEN })
-    if (!stub) log(`final-review: the seam review and its stub both returned null — ${reviewPath} was not written; reviewPath is null`)
+    if (stub?.written !== true) log(`final-review: the seam review was unavailable and no stub write was confirmed — ${reviewPath} was not written; reviewPath is null`)
     else reviewWritten = true
     seamVerdict = ''
   }
@@ -1954,7 +1962,7 @@ function blockerBeadRule() {
 // templates, named by absolute path. Every dispatch is self-contained, and interpolated agent-written
 // text is wrapped in tags and marked as data.
 
-// The brief assembler (spec §B2): gathers a consumer's inputs into <workspace>/assembled/<consumer>-<runTag>-<instance>/.
+// The brief assembler (spec §B2): final-review directories use invocationId; other consumers use runTag.
 // One profile table (declared inside the builder, because dispatch-text loads only the code before the round loop); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
 // [SECTIONS] line below is `name: definition`, so a profile carries only its own sections' wording.
 function assemblePrompt(consumer, instance, { threshold = 80000, base = null, head = integrationBranch, specPaths = [] } = {}) {
@@ -1983,7 +1991,7 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
   const sections = profile.sections.map(k => ASSEMBLER_SECTIONS[k]).join('\n')
   if (['final-review', 'roast-code'].includes(consumer) && (!base || !head)) throw new Error('assemblePrompt: captured base and head are required')
   const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
-  return `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function planPrompt(epicId, ids, planFileName, reentryIds = [], mode = 'refill') {
@@ -2317,11 +2325,11 @@ function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, c
   return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
 }
 
-function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines) {
+function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines, structured = false) {
   // Mechanical append, in order; lines arrive already flattened. Creates the ledger's identity header
   // on a fresh ledger's first append.
   const body = lines.map(l => `<ledger-line>${l}</ledger-line>`).join('\n')
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger; never write it from a task worktree). If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append each line below as its own new physical line, in order, with exactly the text between its tags (the tags are delimiters, not ledger content):\n${body}\nReport appended true when done. ${finalAnswerRule(false)}`
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger; never write it from a task worktree). If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append each line below as its own new physical line, in order, with exactly the text between its tags (the tags are delimiters, not ledger content):\n${body}\nReport appended true when done. ${finalAnswerRule(structured)}`
 }
 
 // The review-file format every final-review prompt fixes; scripts/report-verdict's final-review recogniser is its parser.
@@ -2332,7 +2340,7 @@ function reviewSource(repo, base, head) {
 function reviewFileFormat() {
   return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
 }
-function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${runTag}.md`, base, head } = {}) {
+function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
