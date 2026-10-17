@@ -1,0 +1,2 @@
+Launch: args {"epicId": "ufz-live-review", "integrationBranch": "integration", "integrationWorktree": "/private/tmp/ufz-live-isolation/caller", "invocationId": "seat-b-live", "runTag": "live-isolation", "reviewBase": "96ba44f6f5ced6166997c74aee1ba374b6c3fe0f", "reviewHead": "7ddd110053fb302c4f6a0bd645ddbf28c512c563", "config": {"mergeCheck": "none"}}
+assembler: unavailable — controlled fixture exit 3, direct-input review required
