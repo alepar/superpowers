@@ -818,7 +818,7 @@ caller's bead context.
    `./coverage-reviewer-prompt.md` and `scripts/coverage-inputs` unchanged; its
    `## Changes since the previous round` lists the amend's beads and the `amended:` sections. No new
    coverage prompt.
-7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`.
+7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. The orchestrator writes state `applied` here.
 
 **After the commit nothing aborts.** A step from step 3's sync through step 6 that fails is retried
 once through its state's resume action; a second failure parks a `degraded-verdict`
@@ -839,6 +839,8 @@ the next roast re-validates the open items.
 - `applied`: with the record path, bead ids and `amended:`.
 - `aborted — amend rejected`: two rejects.
 - `aborted — <cause>`: any other failure before the commit.
+
+The orchestrator writes state `applied` on Step 7 and `aborted` on both abort outcomes (the terminal states).
 
 Both aborts happen before the spec commit and leave the specs at HEAD; the caller runs the round
 `local`. A step-back with `scope: outside` never reaches Amend Mode: the caller parks or presents
