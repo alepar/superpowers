@@ -11,7 +11,9 @@
 // `while (true) {`; the rest of the body stays in place, unreachable. Everything before the return runs
 // against an `agent` stub that returns null (the Resume ledger read degrades as on a null dispatch).
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, resolve, posix } from 'node:path'
+import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -43,6 +45,8 @@ kinds and options:
                     classification, retaining source/check provenance and evidence gaps)
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
+  review-inputs     --base SHA --head SHA --out-dir DIR
+                    (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
   bind-review-source --read | --base SHA --head SHA [--artifact PATH]
                     (persist immutable invocation source; refuse existing artifact writes)
   final-review      --mode single|cluster|seam|stub --base SHA --head SHA [--dir D] [--capped] [--sweep F|deferred]
@@ -116,6 +120,148 @@ function loadBuilders(cfg) {
   return fn(cfg, operational, noop, operational, operational, operational, undefined, undefined)
 }
 
+// Mechanical captured-Git selection only. This path exits before loading Workflow builders.
+// Collection metadata remains the authority; directory names alone never grant an exemption.
+function reviewInputs(repo, base, head, out) {
+  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: repo, maxBuffer: 64 * 1024 * 1024 })
+  const hash = bytes => createHash('sha256').update(bytes).digest('hex')
+  const safe = p => typeof p === 'string' && p !== '' && !p.includes('\\') && !p.includes('\0') && !posix.isAbsolute(p) && p.split('/').every(s => s && s !== '.' && s !== '..')
+  const idOK = id => typeof id === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id)
+  const gaps = [], gap = text => { if (!gaps.includes(text)) gaps.push(text) }
+  for (const sha of [base, head]) {
+    if (!/^[0-9a-f]{40,64}$/.test(String(sha))) fail('review-inputs needs full captured --base and --head commits')
+    try { if (git('rev-parse', '--verify', sha + '^{commit}').toString().trim() !== sha) throw Error() }
+    catch { fail('review-inputs cannot verify captured commit ' + sha) }
+  }
+  try {
+    const entries = readdirSync(out)
+    const emptySlices = entries.length === 1 && entries[0] === 'slices' && lstatSync(join(out, 'slices')).isDirectory() && !lstatSync(join(out, 'slices')).isSymbolicLink() && readdirSync(join(out, 'slices')).length === 0
+    if (lstatSync(out).isSymbolicLink() || (entries.length && !emptySlices)) fail('review-inputs refuses existing partial output; preserve it: ' + out)
+  } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
+  mkdirSync(out, { recursive: true })
+  const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).toString().split('\0').filter(Boolean)
+  function snapshot(revision) {
+    const tree = new Map(git('ls-tree', '-r', '-z', revision).toString().split('\0').filter(Boolean).map(entry => {
+      const tab = entry.indexOf('\t'), [mode, type, oid] = entry.slice(0, tab).split(' ')
+      return [entry.slice(tab + 1), { mode, type, oid }]
+    }))
+    const blob = p => {
+      const entry = tree.get(p)
+      if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
+      return git('cat-file', 'blob', entry.oid)
+    }
+    const archives = [], claims = new Map()
+    for (const run of tree.keys()) {
+      if (posix.basename(run) !== 'run.md') continue
+      let text
+      try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
+      const latest = new Map(), identities = new Map(), savedHashes = new Map()
+      let approvals = false
+      for (const [lineNumber, line] of text.split('\n').entries()) {
+        if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
+        if (!line.startsWith('- review-collection')) continue
+        try {
+          if (!approvals || !line.startsWith('- review-collection · ')) throw Error('record outside approvals or invalid prefix')
+          const r = JSON.parse(line.slice('- review-collection · '.length))
+          if (!r || !idOK(r.invocationId) || typeof r.workspace !== 'string' || !posix.isAbsolute(r.workspace) ||
+              !(r.reviewPath === null || (typeof r.reviewPath === 'string' && posix.isAbsolute(r.reviewPath))) ||
+              typeof r.review !== 'string' || !r.review.trim() || typeof r.settled !== 'boolean' ||
+              !Array.isArray(r.required) || !r.required.every(safe) ||
+              !(r.complete === undefined || typeof r.complete === 'boolean') ||
+              !(r.gaps === undefined || (Array.isArray(r.gaps) && r.gaps.every(g => typeof g === 'string' && g))) ||
+              !(r.files === undefined || (Array.isArray(r.files) && r.files.every(f => f && safe(f.path) && /^[a-f0-9]{64}$/.test(f.sha256))))) throw Error('invalid collection fields')
+          const identity = JSON.stringify([r.workspace, r.required])
+          const old = identities.get(r.invocationId)
+          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
+          identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
+          for (const f of r.files || []) {
+            const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
+            if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
+            savedHashes.set(key, f.sha256)
+          }
+          latest.set(r.invocationId, { ...r, line: lineNumber + 1 })
+        } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
+      }
+      for (const r of latest.values()) {
+        const prefix = 'final-review-' + r.invocationId, assembled = 'assembled/' + prefix + '-final/'
+        const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
+        const files = new Map((r.files || []).map(f => [f.path, f.sha256]))
+        const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
+        if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
+        if (r.reviewPath === null) {
+          if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
+        } else {
+          if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) gap(context + ': incomplete claimed final report')
+          for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
+        }
+        if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
+        const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
+        if (inputs.length) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
+        const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
+        if (clusters.length || files.has(assembled + 'clusters.json')) {
+          try {
+            const m = JSON.parse(blob(posix.join(archive, assembled + 'clusters.json')).toString())
+            if (!files.has(assembled + 'clusters.json') || !Array.isArray(m.clusters) || (clusters.length && !m.clusters.length)) throw Error('missing manifest')
+            for (const [n, c] of m.clusters.entries()) {
+              if ((clusters.length && !files.has(prefix + '.cluster-' + (n + 1) + '.md')) || !Array.isArray(c.slices)) throw Error('missing cluster report or slices')
+              for (const slice of c.slices) if (!safe(slice) || !files.has(assembled + slice)) throw Error('missing claimed cluster slice')
+            }
+          } catch (e) { gap(context + ': incomplete split bundle: ' + e.message) }
+        }
+        for (const [relative, sha256] of files) {
+          const p = posix.join(archive, relative)
+          try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
+          catch (e) { gap(context + ': ' + e.message) }
+          if (relative.startsWith(assembled) || relative === prefix + '.md.diff') {
+            const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
+            if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
+            claims.set(p, claim)
+          }
+        }
+        archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
+      }
+    }
+    return { tree, blob, archives, claims }
+  }
+  let selected = changed, omitted = [], archives = [], slices = []
+  try {
+    const before = snapshot(base), after = snapshot(head)
+    archives = after.archives
+    // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
+    for (const [p, claim] of before.claims) {
+      try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
+      catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }
+    }
+    if (!gaps.length) {
+      omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
+      selected = changed.filter(p => !after.claims.has(p))
+    }
+    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected) : '')
+    if (!gaps.length) {
+      mkdirSync(join(out, 'slices'), { recursive: true })
+      for (const [n, p] of selected.entries()) {
+        // Ordinals avoid collisions and platform filename limits for arbitrary Git paths.
+        const slice = 'slices/' + String(n + 1).padStart(6, '0') + '.diff'
+        writeFileSync(join(out, slice), git('diff', '--no-renames', base + '..' + head, '--', p))
+        slices.push({ path: p, slice })
+      }
+    }
+  } catch (e) { gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
+  const result = { base, head, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+  writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
+  writeFileSync(join(out, 'generated-input-provenance.md'), [
+    '## Generated-input provenance',
+    'Captured range: ' + base + '..' + head,
+    'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',
+    'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
+    ...omitted.map(o => '- ' + JSON.stringify(o)),
+    ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
+    'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
+  ].join('\n') + '\n')
+  console.log(JSON.stringify({ status: result.status, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
+  process.exit(gaps.length ? 3 : 0)
+}
+
 const o = parse(process.argv.slice(2))
 if (o.help || !o._.length) { console.log(USAGE); process.exit(o.help ? 0 : 2) }
 const kind = o._[0]
@@ -182,6 +328,10 @@ if (reviewOutput) {
     process.exit(0)
   }
   if (!boundSource && (!fullCommit(o.base) || !fullCommit(o.head))) fail('missing invocation source binding or full captured --base and --head; bind before artifact writes')
+}
+if (kind === 'review-inputs') {
+  if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
+  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))
 }
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 

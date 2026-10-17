@@ -48,3 +48,16 @@ tracker mutation or root closure was performed by this seat.
 Skills: systematic-debugging and test-driven-development supplied reproduction/TDD;
 writing-skills was read for the prospective operative prompt change, but prompt changes
 and coordinator-owned bounded instruction evaluation remain pending.
+
+Amended implementation owner (existing-component assessment r1):
+- Read live bead and comments, regenerated Task 23 brief, assessment and amendment.
+- Replaced provisional report-status --review-inputs fixture interface with existing dispatch-text review-inputs; retained historical baseline recipe and RED logs.
+- RED capture commands (real index preserved):
+  GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/amended-red.index git read-tree HEAD
+  GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/amended-red.index git add tests/super-auto/generated-review-inputs-r1.sh
+  GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/amended-red.index git write-tree > evidence/super-plan-ufz.26/amended-red-source-tree.txt
+  TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh > evidence/super-plan-ufz.26/amended-red.log 2>&1
+- RED: first collection succeeded, invocation 2 selected archived generated payloads (expected assertion failure).
+- Development GREEN: real selector/collector, initial collection plus four unchanged-product re-entries, separate new-product round; exact-file hash claims and provenance gaps exercised.
+- Development unchanged dispatch suite first failed its existing initialization assertion. Restored existing assembler mkdir slices contract and permitted only that empty directory in selection; rerun passed. No existing test was changed.
+- Development logs are historical observations; clean post-rebase evidence is recorded separately in Task 23 report. No unmeasured instruction behavior is claimed passing.
