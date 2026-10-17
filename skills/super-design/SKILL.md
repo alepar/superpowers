@@ -736,18 +736,19 @@ it empty when absent), and the amend record `amend-design-<K>.md`.
    < 2, else the thrash exit. With no mechanical trigger, run `local` with every finding its own
    task and no clusters, recorded `local — step-back record rejected: <reject lines>`. Exit 2: a
    bad invocation; fix it and run again.
-6. **Dissolves.** Append each validated `dissolves:` key to the overrides file as `<key> ·
-   dissolved@r<N>`, then rebuild the ledger (item 2).
-7. **Interactive runs** (§Gates by Mode). A `redesign`, mandated or not, is presented with the
+6. **Interactive runs** (§Gates by Mode). A `redesign`, mandated or not, is presented with the
    step-back's recommendation and the human chooses. A decline is recorded `stepBackDesign-round-<N>:
    local — redesign declined by human`, parked as a `degraded-verdict` `redesign declined by human
    — <triggers>`, and the round runs `local`. The check is not re-run on the human's choice.
-8. **Branch.**
+7. **Branch.**
    - `local`: the fix list, items 1–4.
    - `redesign`, scope `inside`, `redesignCycles-design` < 2: commit any uncommitted spec changes
      (so HEAD is the pre-amendment spec state every Amend Mode restore returns to); record
      `lastGood` as that HEAD commit SHA (reported, never reverted: nothing has executed);
      increment `redesignCycles-design` to K; write `redesign-design-<K>` with state `started`;
+     append each `dissolves:` key of the record that passed the check to the overrides file as
+     `<key> · dissolved@r<N>` and rebuild the ledger (item 2); a forced redesign has no validated
+     record and writes none, and no other branch writes a `dissolved` line;
      then run the exit tests below. This round does not take the cap exit; the redesign cycle
      runs.
    - `redesign`, scope `outside`: unattended, record it as `parked`, park a `degraded-verdict`
@@ -763,7 +764,9 @@ context (§Decomposition's flag triple and the `Integration sweep:` wiring). Aft
 steps, rewrite the `redesign-design-<K>` record's `state` in place (`amend-checked`,
 `specs-committed`, `beads-filed`, `applied`); fill its `amended` field from the amend record.
 - `aborted — <reason>`: rewrite the state, park a `degraded-verdict` `redesign aborted —
-  <reason>`, and run the round `local`. The spent cycle is not refunded.
+  <reason>`, remove the `dissolved@r<N>` lines Step 1 wrote for this round's record from the
+  overrides file, rebuild the ledger (item 2), and run the round `local`. The spent cycle is not
+  refunded.
 - `applied`: the loop's own next numbered round is the design roast after the amendment, always
   when `amended:` is non-empty (re-invoke `superpowers:super-roast`, fix item 3, with its prior
   report the latest report), with the ledger path in its stated intent as reference-only input:

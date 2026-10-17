@@ -62,8 +62,9 @@
 # One entry per line, `#` lines and blank lines skipped, a leading `rN ` stripped:
 #     <key> · dissolved@r<N>
 #     <key> · disputed@r<N> (<reason>)
-# N is the round whose ledger the deciding record read. The loops append `dissolved` lines from a
-# validated step-back `dissolves:`; Amend Mode appends `disputed` lines from validated amend
+# N is the round whose ledger the deciding record read; the override reduces the `blocking:` counts
+# of later rounds only (round N keeps the count the deciding ledger printed). The loops append
+# `dissolved` lines from a validated step-back `dissolves:`; Amend Mode appends `disputed` lines from validated amend
 # `owners:` disputes. A line that does not parse is treated like an unknown key (ignored, counted).
 #
 # Statuses: `open` (confirmed in the latest round); `open (returned r<N>)` (confirmed in latest round
@@ -91,8 +92,8 @@
 #   ignored-overrides: <n>
 #   - <key> · raised r<M>@<sha|-> · <status> · source <roast|final-review> · text <path>
 # N is the highest --report round. r<N-1> and r<N> are the effective open Blocking counts: Blocking
-# keys confirmed in that round, minus keys whose final status is disputed or dissolved. `raised r<M>`
-# is the first round that confirmed the key; <sha> is the first `@<hex>` token on that report's
+# keys confirmed in that round, minus keys whose final status is disputed or dissolved by an
+# override stamped before that round. `raised r<M>` is the first round that confirmed the key; <sha> is the first `@<hex>` token on that report's
 # `inputs:` line, `-` when none (design reports, final-review rows). `text` is the report or keys
 # file that last confirmed the key. Rows are ordered by raised round, then first appearance.
 # A mechanical trigger's name is the text before its `(`; evidence parentheses stay balanced and
@@ -281,8 +282,8 @@ awk -v loop="$loop" '
     # Effective open Blocking counts per report round.
     for (i = 1; i <= nk; i++) {
       k = ord[i]
-      if (src[k] != "roast" || k !~ /^\[Blocking\]/ || isout(k)) continue
-      for (j = 1; j <= nr; j++) if (conf[rounds[j], k]) ecount[rounds[j]]++
+      if (src[k] != "roast" || k !~ /^\[Blocking\]/) continue
+      for (j = 1; j <= nr; j++) if (conf[rounds[j], k] && !(isout(k) && rounds[j] > ovn[k])) ecount[rounds[j]]++
     }
     # Triggers.
     trig = ""; nc = ""
