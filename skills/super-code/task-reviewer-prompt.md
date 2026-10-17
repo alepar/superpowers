@@ -96,6 +96,33 @@ Important when the leaked process is a daemon or server, or when it survived bei
    itself) is Minor — unless it is the only test of one of the brief's acceptance criteria, which is
    then untested: Important.
 
+## Task-base and run-baseline attribution
+
+Keep a task's local comparison separate from the run's repair obligation. For example, the
+run-start source passes F, task A's source introduces F, and F also fails at task B's base.
+B's base evidence can exonerate B; A remains the run owner until linked fix verification passes.
+A CLEAN verdict for B, a later clean retry, or a terminal task status supplies no such verification.
+Read the relevant ledger Recovery records, introducing source range and fix history. Check that
+each referenced tree is the claimed run-start, task-base, failing or fixed source. The coordinator
+compares exact command/configuration identities; you judge temporal relevance and that they
+measure the same failure. Same display text alone does not establish correspondence.
+
+Return optional `failureAttribution` entries beside the existing `evidence` array. Each entry has
+`failure` (the recorded test/failure key), `command`, `configuration`, and zero-based indices into
+**this reply's** evidence array: `observed` for a failing source, `runBaseline` for an evidenced
+run-start check, `taskBase` for the local base comparison, `verification` for a fix measurement.
+`introducedBy` names the introducing task only when source/fix history establishes it. Copy the
+original evidence records without changing their kind or outcome; retain these associations and
+source-range justification in the review. Indices are not indices into an earlier reply.
+
+A live/fail run-start baseline establishes a pre-run failure, which does not automatically become
+this run's fix scope. Missing, unavailable, simulated or fallback baseline measurements remain an
+attribution gap; preserve any already-known owner. Different commands/configurations need
+separate records or a reviewer-supported source association, never a guessed merge. A claimed
+fix needs a live/pass measurement of the relevant fixed source and exact check, linked here by
+`verification`; an unrelated passing check does not discharge the obligation. Conflicting
+baseline/owner histories remain explicit gaps for reconciliation rather than replacing the owner.
+
 ## Severity
 
 - **Critical:** breaks the task's requirements, or corrupts behavior or data other code depends on —
@@ -124,6 +151,8 @@ Write your full review to [REVIEW_FILE]:
   with your coverage judgment. Return these arrays in the structured reply too; reference the
   original measurement locations and retain their kinds/outcomes without relabeling them as
   tests you ran. Review verdict and measurement outcome remain separate facts.
+- **Failure attribution:** preserve the `failureAttribution` associations, local exoneration and
+  run-owner or baseline gap separately; return these associations with the referenced `evidence`.
 - **Strengths:** optional, brief
 
 Then return:

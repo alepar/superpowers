@@ -96,6 +96,23 @@ unavailable outcomes. Only matching live/pass evidence supplies an explicitly re
 check. The reviewer judges semantic coverage; delivery buckets and caller acceptance stay
 separate. Old producers may omit the arrays; required checks without evidence stay outstanding.
 
+For run regressions, collect optional `failureAttribution` associations in the same replies and
+reports. Use `coordinator-workflow.md` §Run-failure attribution for the exact record shape and
+A/B example. Indices reference that reply's existing evidence array. Read relevant source/fix
+history before accepting the association; equal failure display text alone is insufficient.
+Append the same `Recovery` kind `deferred` record with `data.runFailure` and the complete event
+history, retaining earlier introducing ownership and all source-bound arrays. Compare exact
+command/configuration and live outcomes; absent/unavailable baseline or uncertain correspondence
+stays an attribution gap. Keep task-base exonerations separate. A run-start live/fail is `pre-run`
+and does not automatically create repair work; run-start live/pass plus a source-supported
+introducing task establishes a run owner. Preserve known ownership on missing/conflicting
+measurements. Only linked live/pass fix verification marks the obligation verified; CLEAN/FIXED
+status and later empty buckets do not. Retain verified history; a later linked failing observation
+reopens the obligation. Return `runFailures` with the same id/owner/classification/state,
+comparisons, taskExonerations, gaps and evidence references as Workflow. On re-entry reconstruct
+from these Recovery records independently of Task status, preserving malformed/oversized gaps.
+This adds no retry round or caller acceptance gate.
+
 Three things keep the run measurable and resumable:
 
 - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`

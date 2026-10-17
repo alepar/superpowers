@@ -209,5 +209,21 @@ run env PATH="$nojq" bash "$RS" "$RF/escalations.md"
 assert_eq "$code" 0 "report-status runs with only bash and awk on PATH (no jq)"
 rm -rf "$nojq"
 
+# Run attribution uses the existing durable parked source, independently of replaced code buckets.
+echo "run attribution: caller retention"
+cp "$RF/clean.md" "$T/attribution-run.md"
+cat >> "$T/attribution-run.md" <<'ATTR'
+
+parked:
+- progress.md#run-failure-F · degraded-verdict · "run-regression F owner bd-A; task bd-B exonerated; evidence/A.log"
+- progress.md#run-failure-G · degraded-verdict · "attribution gap G: missing run baseline; evidence/G.log"
+ATTR
+run bash "$RS" "$T/attribution-run.md" --tip 3f9c2e1
+assert_eq "$code" 0 "caller run.md accepts durable regression and gap pointers in existing parked records"
+case "$out" in *"run-regression F owner bd-A"*"attribution gap G"*) pass "clean latest buckets preserve run owner and attribution gap qualifiers" ;; *) fail "clean latest buckets preserve run owner and attribution gap qualifiers" ;; esac
+for contract in "$REPO_ROOT/skills/super-auto/SKILL.md" "$REPO_ROOT/skills/super-auto/run-state.md" "$REPO_ROOT/skills/super-auto/report-prompt.md"; do
+  if grep -qF 'run-regression' "$contract" && grep -qF 'attribution gap' "$contract"; then pass "$(basename "$contract") carries regression and missing-baseline obligations"; else fail "$(basename "$contract") carries regression and missing-baseline obligations"; fi
+done
+
 echo
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

@@ -419,6 +419,62 @@ async function main() {
     check(legacy.result?.completed?.includes('bd-101') && legacy.result?.checkEvidence?.records?.length === 0, 'old producers remain compatible without invented evidence')
   }
 
+  scenario('run attribution retains introducing owner independently of task-base exoneration')
+  {
+    const checkRecord = (source, outcome, location, more = {}) => ({ sourceTree: SHA(source), command: 'node smoke.mjs --case F', configuration: 'target=staging', outcome, location, kind: 'live', ...more })
+    const baseline = checkRecord('a', 'pass', 'evidence/run-start.log')
+    const broken = checkRecord('b', 'fail', 'evidence/A.log')
+    const local = checkRecord('b', 'fail', 'evidence/B-base.log')
+    const claim = { failure: 'F', command: baseline.command, configuration: baseline.configuration, observed: 1, runBaseline: 0, introducedBy: 'bd-A' }
+    const runClaim = async (evidence, failureAttribution, text = '') => run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text },
+      'review:bd-101': { id: 'bd-101', status: 'CLEAN', evidence, failureAttribution },
+    }) })
+    const first = await runClaim([baseline, broken], [claim])
+    assertNoThrow(first)
+    const failure = first.result?.runFailures?.[0]
+    check(failure?.classification === 'run-introduced' && failure?.owner === 'bd-A', 'passing run baseline and recorded introducing task establish A ownership', JSON.stringify(first.result?.runFailures))
+    const durable = taskLedgerLines(first.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    check(durable.some(l => l.includes('run-failure') && l.includes('evidence/run-start.log')), 'run attribution retains source-bound evidence in existing Recovery records')
+    const second = await runClaim([local, checkRecord('c', 'fail', 'evidence/B.log')], [{ ...claim, observed: 1, taskBase: 0, runBaseline: undefined, introducedBy: undefined }], durable.join('\n'))
+    assertNoThrow(second)
+    const retained = second.result?.runFailures?.[0]
+    check(retained?.owner === 'bd-A' && retained?.classification === 'run-introduced' && retained?.taskExonerations?.includes('bd-101'), 'B base exoneration retains A run ownership after durable re-entry', JSON.stringify(second.result?.runFailures))
+    check(retained?.gaps?.some(g => g.includes('run baseline')), 'missing baseline on later comparison stays explicit alongside known ownership')
+    const clean = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text: durable.join('\n') } }) })
+    check(clean.result?.runFailures?.[0]?.owner === 'bd-A' && clean.result?.runFailures?.[0]?.state === 'open', 'clean retry without linked verification cannot erase A obligation')
+    const old = await runClaim([checkRecord('a', 'fail', 'evidence/pre-run.log'), broken], [claim])
+    check(old.result?.runFailures?.[0]?.classification === 'pre-run' && !old.result?.runFailures?.[0]?.owner, 'failure evidenced before run remains historical without a manufactured fix owner')
+    const gap = await runClaim([broken], [{ ...claim, observed: 0, runBaseline: undefined }])
+    check(gap.result?.runFailures?.[0]?.classification === 'gap' && gap.result?.runFailures?.[0]?.gaps?.length, 'missing run baseline reports attribution gap rather than invented success')
+    const other = await runClaim([baseline, broken, checkRecord('d', 'fail', 'evidence/other.log', { configuration: 'target=local' })], [claim, { ...claim, configuration: 'target=local', observed: 2 }])
+    check(other.result?.runFailures?.length === 2 && other.result?.runFailures?.some(f => f.classification === 'gap' && !f.owner), 'same failure display text with different configuration never inherits an unrelated owner')
+    const wrong = await runClaim([baseline, { ...broken, command: 'node other.mjs' }], [claim], durable.join('\n'))
+    check(wrong.result?.runFailures?.[0]?.owner === 'bd-A' && wrong.result?.runFailures?.[0]?.gaps?.length, 'unassociated command cannot overwrite existing ownership')
+    const fixed = await runClaim([checkRecord('e', 'pass', 'evidence/fixed.log')], [{ ...claim, observed: undefined, runBaseline: undefined, verification: 0, introducedBy: undefined }], durable.join('\n'))
+    check(fixed.result?.runFailures?.[0]?.state === 'verified' && fixed.result?.runFailures?.[0]?.owner === 'bd-A', 'linked live fix verification resolves obligation while retaining introducing owner history')
+    const simulated = await runClaim([checkRecord('e', 'pass', 'evidence/sim.log', { kind: 'simulated' })], [{ ...claim, observed: undefined, runBaseline: undefined, verification: 0 }], durable.join('\n'))
+    check(simulated.result?.runFailures?.[0]?.state === 'open', 'simulated fix verification cannot resolve live run regression')
+    const sameTree = await runClaim([baseline, { ...broken, sourceTree: baseline.sourceTree }], [claim])
+    check(sameTree.result?.runFailures?.[0]?.classification === 'gap' && !sameTree.result?.runFailures?.[0]?.owner, 'opposite outcomes at one source tree cannot invent an introducing task')
+    const command = await runClaim([baseline, broken, checkRecord('d', 'fail', 'evidence/other-command.log', { command: 'node other.mjs' })], [claim, { ...claim, command: 'node other.mjs', observed: 2 }])
+    check(command.result?.runFailures?.length === 2 && command.result?.runFailures?.some(f => f.command === 'node other.mjs' && !f.owner), 'same failure display text with different command remains independently unattributed')
+    const unavailable = await runClaim([{ ...baseline, outcome: 'unavailable' }, broken], [claim])
+    check(unavailable.result?.runFailures?.[0]?.classification === 'gap' && !unavailable.result?.runFailures?.[0]?.owner, 'unavailable baseline is never treated as passing')
+    const malformed = await runClaim([], 'bad', durable.join('\n') + '\nRecovery: ' + JSON.stringify({ version: 1, id: 'bad', kind: 'deferred', operation: 'record', reason: 'bad history', evidence: ['bad.json'], data: { runFailure: { history: 'bad' } } }))
+    check(malformed.result?.runFailures?.[0]?.owner === 'bd-A' && malformed.result?.recovery?.gaps?.some(g => g.reason === 'invalid run failure history') && malformed.result?.checkEvidence?.gaps?.some(g => g.field === 'failureAttribution'), 'malformed associations and durable histories remain explicit gaps without discarding known owner')
+    const combined = await runClaim([baseline, broken, checkRecord('e', 'pass', 'evidence/combined-fix.log')], [{ ...claim, verification: 2 }])
+    check(combined.result?.runFailures?.[0]?.owner === 'bd-A' && combined.result?.runFailures?.[0]?.state === 'verified' && combined.result?.runFailures?.[0]?.gaps?.length === 0, 'one before/after reply preserves introduction and linked verified fix independently')
+    const secondDurable = taskLedgerLines(second.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    const repeated = await runClaim([local, checkRecord('c', 'fail', 'evidence/B-again.log')], [{ ...claim, observed: 1, taskBase: 0, runBaseline: undefined, introducedBy: undefined }], secondDurable.join('\n'))
+    check(repeated.result?.runFailures?.[0]?.taskExonerations?.length === 1 && !repeated.result?.runFailures?.[0]?.gaps?.some(g => g.includes('task base does not establish')), 'repeated valid local exoneration stays distinct without a spurious attribution gap')
+    const verifiedDurable = taskLedgerLines(fixed.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    const reopened = await runClaim([broken], [{ ...claim, observed: 0, runBaseline: undefined, introducedBy: undefined }], verifiedDurable.join('\n'))
+    check(reopened.result?.runFailures?.[0]?.owner === 'bd-A' && reopened.result?.runFailures?.[0]?.state === 'open', 'later linked failing observation reopens repair while retaining introducing history')
+    const prompt = second.trace.find(t => t.label === 'review:bd-101')?.prompt || ''
+    check(prompt.includes('failureAttribution') && prompt.includes('bd-A'), 'review dispatch carries attribution contract and existing run owner')
+  }
+
   scenario('review source identities: task and final builders share captured heads')
   {
     const out = await run({ args: liveArgs(), canned: oneTaskCanned({

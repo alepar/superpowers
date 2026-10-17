@@ -307,12 +307,39 @@ whole-branch roast outside this loop, such as a post-cap audit or a re-review af
 ruling, is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never
 with a fabricated round number.
 
+### Run-regression repair ownership
+
+Keep `super-code`'s `runFailures`/Recovery attribution independently of invocation buckets. Before
+replacing `codeBuckets` after phase 3 or any re-entry, reconcile returned run facts with the prior
+ledger Recovery records and record each open run-regression or attribution gap in the existing
+`parked` list as kind `degraded-verdict`, with the ledger/record id, exact check/source-output
+references and introducing owner or missing attribution evidence. Update that same source entry
+on later invocations; empty new buckets and a later task's base exoneration never erase it. Do not
+mark these entries `resolves-on: sweep`: an overall passing count alone does not associate a fix
+with the recorded failure. Retire the open qualifier only when linked live/pass fix verification
+establishes resolution, retaining the Recovery history and verification pointer.
+
+A run-start live/pass followed by A's failing source and B's failing task base exonerates B while
+A remains the run owner. A failure evidenced at run start is `pre-run`, separately recorded and
+not automatically this run's fix scope. Missing, unavailable or non-live baseline measurements
+remain an attribution gap; they establish neither a passing baseline nor exoneration of a known
+run owner. Match exact commands/configurations and reviewed source chronology, rather than
+merging equal display text. Keep uncertain correspondence explicit.
+
+In the existing code/fix-loop and sweep-fix passes, retain the owner and source references in the
+fix bead/repair assignment for a run-introduced failure even if the latest task is exonerated.
+Reuse an existing open repair assignment rather than filing a duplicate. Resolve attribution
+against recorded run-start/task-base/fix evidence when available; no new mandatory baseline
+phase is added. Do not force unrelated evidenced pre-run failures into repair scope. Existing
+pass limits still apply: a remaining run-regression or attribution gap at the cap is reported in
+Remaining with its owner/evidence; ownership retention creates no additional retry round.
+
 ### Phase 6 — report
 
 Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
 
 1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. Run it, and any other full-suite command, only while no roast or coordinator Workflow is in flight on this host: a timing-sensitive suite fails under that load, and a failure seen under it is unconfirmed until it reproduces with the host quiet. Which stamps still count as at the tip is defined in report-prompt.md §The status block. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
-2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: apply §Run-regression repair ownership and file the in-scope failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
 3. Changes landed after the loop: run the scoped `post-cap audit` roast, or list the conflict-resolved hunks instead, per §Gates, final-SHA evidence and base drift (changes landed after the loop). The items of a phase-6 re-entry's final review go to the punch list, except for the one fix round §Final-review items allows.
 4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the final review that counts (§Final-review items), whose verdict you read through `report-verdict <reviewPath>` (with a null `reviewPath` the verdict is `codeBuckets.review` as returned, and a missing review is never rewritten to `ready (after the phase-6 sweep @ <sha>)`), reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
 5. Write `report.md` per `./report-prompt.md`, before anything is torn down. A drafter is dispatched per §Subagent dispatch (report drafter row); it writes `report.draft.md`, and you splice in the status block, rename it to `report.md` and commit it (report-prompt.md has the mechanics). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
