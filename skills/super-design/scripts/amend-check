@@ -19,15 +19,19 @@
 # and final-review alike. `covers:` is the last ` | ` field of a work: line, so a ` | ` inside a key
 # is safe; its keys split only on `, [`.
 # Rules, checked in this order, each printing `reject: <rule>: <detail>`:
-#   owners    every open key is in owners:, and every owners: key is an open key
+#   owners    every open key is in owners:, and every owners: key is an open key, each key once
 #   work      every work: line covers at least one key
 #   reverse   every non-disputed open key is in some work: covers:; under --loop design a key that
 #             is `owner:` a section listed in amended: also passes (a `local` key still needs a work:
 #             line); under --loop code it does not, since only a bead changes code
 #   amended   every `<spec> §<section>` in amended: has a changed line inside that section in
 #             `git diff REV -- SPECS`
-#   goal      that diff changes no line inside a `## Goal` section
+#   goal      the `## Goal` body text (fence-aware) is identical between REV and the working tree,
+#             and no diff line falls inside it; a Goal present on one side only is a change
 #   unchanged the root spec has an `## Unchanged behavior` section
+# Spec paths are compared normalised: `./docs/x.md` and `docs/x.md` are the same spec, in --specs and
+# in amended: alike. A spec absent from REV and untracked (one the amendment created) is diffed as
+# all-added, so its sections count as changed; its Goal is new, not edited, so the goal rule skips it.
 #
 # Does not: edit or restore specs, file beads, write overrides (Amend Mode does), or re-check the
 # step-back record (step-back-check does). It has no side effects, so resume re-runs it on the
@@ -74,11 +78,15 @@ for sp in "${specs[@]}"; do
   abs="$(cd "$(dirname "$sp")" && pwd -P)/$(basename "$sp")"
   rel=${abs#"$top"/}
   [ "$rel" != "$abs" ] || { echo "spec is outside the git repository: $sp" >&2; exit 2; }
-  git diff -U0 --no-color --no-ext-diff "$base" -- "$abs" > "$tmp/diff.$i" 2>/dev/null || { echo "git diff failed for $sp against $base" >&2; exit 2; }
   if git cat-file -e "$base:$rel" 2>/dev/null; then
+    git diff -U0 --no-color --no-ext-diff "$base" -- "$abs" > "$tmp/diff.$i" 2>/dev/null || { echo "git diff failed for $sp against $base" >&2; exit 2; }
     git show "$base:$rel" > "$tmp/base.$i" 2>/dev/null || { echo "git show failed for $base:$rel" >&2; exit 2; }
   else
-    : > "$tmp/base.$i"
+    # not in REV: a new spec. Diff it against /dev/null so every line counts as added (git diff REV
+    # alone omits an untracked file). --no-index exits 1 when the files differ.
+    rc=0; git diff -U0 --no-color --no-ext-diff --no-index -- /dev/null "$abs" > "$tmp/diff.$i" 2>/dev/null || rc=$?
+    [ "$rc" -le 1 ] || { echo "git diff failed for $sp against $base" >&2; exit 2; }
+    : > "$tmp/base.$i"; : > "$tmp/new.$i"
   fi
 done
 
@@ -165,7 +173,7 @@ for f in owners.txt amended.txt work.txt rejects.parse; do [ -f "$tmp/$f" ] || :
 awk -F'\t' -v loop="$loop" -v dir="$tmp" '
   function reject(r) { print "reject: " r >> (dir "/rejects") }
   FILENAME == ARGV[1] { open[$0] = 1; order[++no] = $0; next }
-  FILENAME == ARGV[2] { okind[$1] = $2; ospec[$1] = $3; osec[$1] = $4; oorder[++nw] = $1; next }
+  FILENAME == ARGV[2] { if (($1 in okind) && !($1 in dup)) { dup[$1] = 1; reject("owners: duplicate key: " $1) } okind[$1] = $2; ospec[$1] = $3; osec[$1] = $4; oorder[++nw] = $1; next }
   FILENAME == ARGV[3] { amended[$1 SUBSEP $2] = 1; next }
   FILENAME == ARGV[4] { if ($2 == "") nocover[$1] = 1; else covered[$2] = 1; titles[++nt] = $1; next }
   END {
@@ -196,6 +204,20 @@ ranges() {
       }
     }
     END { if (cur) print cur "-" NR }
+  ' "$1"
+}
+# goal_body FILE: the lines strictly between the real `## Goal` heading (fence-aware) and the next
+# heading of level <= 2, trailing whitespace trimmed. Prints nothing when there is no Goal.
+goal_body() {
+  awk '
+    /^(```|~~~)/ { fence = !fence }
+    !fence && /^#+[ \t]/ {
+      match($0, /^#+/); l = RLENGTH
+      t = substr($0, l + 1); sub(/^[ \t]+/, "", t); sub(/[ \t\r]+$/, "", t)
+      if (ing && l <= 2) ing = 0
+      if (!ing && l == 2 && t == "Goal") { ing = 1; next }
+    }
+    ing { sub(/[ \t\r]+$/, ""); print }
   ' "$1"
 }
 # touched DIFF NEWRANGES BASERANGES: prints 1 when an added line falls in a new range or a removed line in a base range.
@@ -235,13 +257,18 @@ while IFS=$'\t' read -r aspec asec; do
   [ "$(touched "$tmp/diff.$idx" "$nr" "$br")" = 1 ] || echo "reject: amended: no changed line in section: $aspec §$asec" >> "$rejects"
 done < <(awk '!seen[$0]++' "$tmp/amended.txt")
 
-# --- check 5: no line inside a ## Goal section changes ---
+# --- check 5: the ## Goal body is unchanged: same text, and no diff line inside it ---
 i=0
 for sp in "${specs[@]}"; do
   i=$((i + 1))
+  [ ! -e "$tmp/new.$i" ] || continue
   nr=$(ranges "$sp" Goal 2 | tr '\n' ' ')
   br=$(ranges "$tmp/base.$i" Goal 2 | tr '\n' ' ')
-  { [ -z "$nr$br" ] || [ "$(touched "$tmp/diff.$i" "$nr" "$br")" = 0 ]; } || echo "reject: goal: ## Goal changed in $sp" >> "$rejects"
+  [ -n "$nr$br" ] || continue
+  if [ -z "$nr" ] || [ -z "$br" ] || [ "$(touched "$tmp/diff.$i" "$nr" "$br")" = 1 ] \
+     || [ "$(goal_body "$sp")" != "$(goal_body "$tmp/base.$i")" ]; then
+    echo "reject: goal: ## Goal changed in $sp" >> "$rejects"
+  fi
 done
 
 # --- check 6: the root spec has ## Unchanged behavior ---

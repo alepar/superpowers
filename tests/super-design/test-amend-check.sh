@@ -31,6 +31,9 @@ assert_has() {
 }
 
 # case NAME LOOP RECORD SPEC-EDIT [extra amend-check args...]: sets $out (stdout+stderr) and $code.
+# Optional env: BASE_SPEC (fixture committed as docs/spec.md, default spec-base.md), SPECS (the --specs
+# paths, default docs/spec.md), EXTRA_BASE / EXTRA_WT ("dest=fixture ..." pairs committed in the base
+# commit / copied into the working tree afterwards, left untracked).
 case_run() {
   local name=$1 loop=$2 record=$3 spec=$4; shift 4
   local d="$TMPROOT/$name"
@@ -38,12 +41,15 @@ case_run() {
   git -C "$d" init -q
   git -C "$d" config user.email t@example.com
   git -C "$d" config user.name t
-  cp "$F/spec-base.md" "$d/docs/spec.md"
+  cp "$F/${BASE_SPEC:-spec-base.md}" "$d/docs/spec.md"
+  local pair
+  for pair in ${EXTRA_BASE:-}; do cp "$F/${pair#*=}" "$d/${pair%%=*}"; done
   git -C "$d" add -A
   git -C "$d" commit -q -m base
   cp "$F/$spec" "$d/docs/spec.md"
+  for pair in ${EXTRA_WT:-}; do cp "$F/${pair#*=}" "$d/${pair%%=*}"; done
   set +e
-  out=$(cd "$d" && bash "$S/amend-check" --loop "$loop" --amend "$F/$record" --ledger "$F/ledger.md" --specs docs/spec.md "$@" 2>&1)
+  out=$(cd "$d" && bash "$S/amend-check" --loop "$loop" --amend "$F/$record" --ledger "$F/ledger.md" --specs ${SPECS:-docs/spec.md} "$@" 2>&1)
   code=$?
   set -e
 }
@@ -108,6 +114,38 @@ assert_has "$out" "reject: goal: ## Goal changed in docs/spec.md" "goal change n
 case_run nu code ok-code.md spec-no-unchanged.md
 assert_eq "$code" 3 "missing ## Unchanged behavior: exit 3"
 assert_has "$out" "reject: unchanged: root spec docs/spec.md has no ## Unchanged behavior section" "missing section named"
+
+echo "amend-check: normalised content"
+case_run gi code ok-code.md spec-goal-heading-inserted.md
+assert_eq "$code" 3 "heading inserted right after ## Goal: exit 3"
+assert_has "$out" "reject: goal: ## Goal changed in docs/spec.md" "moved Goal body named"
+
+BASE_SPEC=spec-base-fenced-goal.md case_run fg code ok-code.md spec-edit-fenced-goal.md
+assert_eq "$out" "ok" "edit inside a fenced '## Goal' example is not a Goal change"
+
+case_run od2 code owners-duplicate.md spec-edit-ok.md
+assert_eq "$code" 3 "duplicate owners: key: exit 3"
+assert_has "$out" "reject: owners: duplicate key: [Should-fix] src/d.sh:3" "duplicate key named"
+
+case_run ds code ok-dot-slash.md spec-edit-ok.md
+assert_eq "$out" "ok" "./docs/spec.md in amended: matches --specs docs/spec.md"
+SPECS=./docs/spec.md case_run sd code ok-code.md spec-edit-ok.md
+assert_eq "$out" "ok" "docs/spec.md in amended: matches --specs ./docs/spec.md"
+
+case_run dl design design-local-no-work.md spec-edit-ok.md
+assert_eq "$code" 3 "design loop: local key with no work: line: exit 3"
+assert_has "$out" "reject: reverse: open item not covered by a work: line: [Should-fix] src/d.sh:3" "uncovered local key named"
+
+SPECS="docs/spec.md docs/nested.md" EXTRA_WT="docs/nested.md=spec-nested-new.md" case_run un code amend-nested-new.md spec-edit-ok.md
+assert_eq "$out" "ok" "untracked new nested spec: its amended section counts as changed"
+
+SPECS="docs/nested.md docs/spec.md" EXTRA_BASE="docs/nested.md=spec-nested-base.md" case_run mu code ok-code.md spec-edit-ok.md
+assert_eq "$code" 3 "multi --specs: first spec is the root"
+assert_has "$out" "reject: unchanged: root spec docs/nested.md has no ## Unchanged behavior section" "root choice follows --specs order"
+
+SPECS="docs/spec.md docs/nested.md" EXTRA_BASE="docs/nested.md=spec-nested-base.md" EXTRA_WT="docs/nested.md=spec-nested-goal-edit.md" case_run mg code ok-code.md spec-edit-ok.md
+assert_eq "$code" 3 "## Goal change in the second spec: exit 3"
+assert_has "$out" "reject: goal: ## Goal changed in docs/nested.md" "nested Goal change named"
 
 echo "amend-check: bad input and git failure"
 case_run gf code ok-code.md spec-edit-ok.md --base no-such-rev
