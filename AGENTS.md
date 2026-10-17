@@ -1,5 +1,26 @@
 # Superpowers — Contributor Guidelines
 
+## Herdr development coordination
+
+Every current and future top-level agent tab working on Superpowers inside Herdr
+must join and stay subscribed to the active `superpowers-dev` thread. Subagents
+must not join or change membership. Joining is pre-approved by the user.
+
+On session start, check `herdr-threads thread list --joined`. If not already joined,
+discover it with `herdr-threads thread list --all --search superpowers-dev`, select
+the unique non-archived thread named exactly `superpowers-dev` whose topic covers
+Superpowers releases and development coordination, and join its canonical ID.
+Follow printed continuations and resolve any existing invitation according to the
+installed Herdr Threads guide. Do not pin an ID: store resets can change it. If no
+unique active match exists, report the discovery problem instead of guessing.
+
+Use this channel for new releases, merges into main, breaking changes, ownership
+or integration seams, and other consequential Superpowers development updates.
+Keep routine task chatter in its scoped threads. Include this membership instruction
+when handing work to a new Superpowers tab, including worktrees created before this
+instruction was added. Never leave unless the user explicitly asks. This membership
+is in addition to the mandatory system-wide `psa-global` subscription.
+
 ## If You Are an AI Agent
 
 Stop. Read this section before doing anything.
