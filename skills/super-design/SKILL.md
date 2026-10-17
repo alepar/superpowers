@@ -894,10 +894,42 @@ caller's bead context.
 3. **Commit** the specs; state `specs-committed`. An abort is possible only before this commit
    lands, and every abort restores the specs first. Then run the Key Abstractions sync
    (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed.
-4. **File the `work:` items** as beads per §Decomposition, with the caller's bead context appended
-   to each description, each labelled `sp:redesign-<loop>-<K>`. First list
-   `bd list --label sp:redesign-<loop>-<K> --all --json` and file only `work:` titles not already
-   present. The caller files none. State `beads-filed`.
+4. **File the `work:` items** with the filing sequence below. It does for a redesign round what
+   super-auto §Step 3 does for a local round: reopen the epic (and the owning subepic) first, since
+   a closed parent stays closed when a child is filed and super-code then stops at `root-closed`;
+   file under spec §4's parent (`$PARENT`: the root epic, or the subepic that owns the amended
+   spec) with the caller's bead context (`$CONTEXT`, appended to each description) and the
+   §Decomposition flag triple, labelled `$LABEL` = `sp:redesign-<loop>-<K>`, deduped by title
+   against that label; then, design loop, supersede the open beads the amendment obsoletes (the
+   record's `supersedes:` lines; a bead already closed is skipped). Every bead filing in a
+   redesign round, the calling loop's amend-roast tasks included, uses this sequence. The
+   orchestrator fills `$ROOT` (root epic id), `$PARENT`, `$LABEL`, `$LOOP` (`code|design`),
+   `$AMEND` (the record path) and `$CONTEXT`. State `beads-filed`.
+
+   ```bash
+   set -euo pipefail
+   bd update "$ROOT" --status open
+   [ "$PARENT" = "$ROOT" ] || bd update "$PARENT" --status open
+   field() { awk -v want="$1" '/^[A-Za-z][A-Za-z_-]*:/ { f = $0; sub(/:.*/, "", f); next }
+     f == want && /^[ \t]*- / { sub(/^[ \t]*- /, ""); sub(/[ \t\r]+$/, ""); print }' "$AMEND"; }
+   id_of() { bd list --label "$LABEL" --all --json | awk -v t="$1" '
+     /^    "id":/ { id = $2; gsub(/[",]/, "", id) }
+     $0 == "    \"title\": \"" t "\"," || $0 == "    \"title\": \"" t "\"" { print id; exit }'; }
+   field work | while IFS= read -r item; do
+     title=${item%% | *}
+     [ -z "$(id_of "$title")" ] || continue
+     bd create "$title" --parent "$PARENT" --no-inherit-labels -l "sp:$ROOT,$LABEL" \
+       -d "${item#"$title" | }${CONTEXT:+ — $CONTEXT}" --silent
+   done
+   if [ "$LOOP" = design ]; then
+     field supersedes | sed 's/ -> / → /' | while IFS= read -r item; do
+       old=${item%% → *}; title=${item#* → }
+       bd show "$old" --json | grep -q '"status": *"closed"' && continue
+       bd supersede "$old" --with "$(id_of "$title")"
+     done
+   fi
+   ```
+
 5. **Disputes.** Append each `disputed` owner to the overrides file as
    `<key> · disputed@r<N> (<reason>)` (canonical key `[SEV] <location>`; N is the round whose
    ledger the amend read), skipping a line already present. Then rebuild the ledger with the
@@ -920,7 +952,7 @@ the next roast re-validates the open items.
 | | `code` | `design` |
 |---|---|---|
 | Bead wiring | post-hand-off beads, no sweep edges | wired under the existing `Integration sweep:` |
-| Supersede | none | `bd supersede` open beads the amendment obsoletes |
+| Supersede | none (no `supersedes:` lines) | the record's `supersedes:` lines, run in step 4 |
 | amend-check reverse rule | a `work:` line for every non-disputed open item | a `work:` line, or an amended owning section |
 | Bead context source | I3 flags + §Fix-bead template context lines | §Decomposition flag triple + `Integration sweep:` wiring |
 
