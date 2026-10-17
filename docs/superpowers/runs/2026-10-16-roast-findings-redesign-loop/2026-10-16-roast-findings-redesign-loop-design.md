@@ -191,6 +191,97 @@ The redesign budget is implemented as an **effective cap**: `3 + redesignCycles`
 - **Also must pass:** `tests/super-auto/test-contract-lint.sh` and `test-scripts.sh` (with the moved cases removed), and the full CLAUDE.md release test list.
 - **Manual acceptance (report phase, not a bead):** replay the 2026-10-15 coordinator-subagent-compaction run's round-1 code roast report through `findings-ledger` and the amend designer. Record whether amend names a decision for the clustered findings.
 
+## Key abstractions
+
+**Findings ledger** — new module (`skills/super-design/scripts/findings-ledger` plus the `findings-ledger.md` file format it writes): the only cross-round view of roast findings, and the only place mechanical triggers are computed.
+- Owns: per-key identity across rounds (keys verbatim, `; ` multi-location included), each key's status (`open`, `open (returned rN)`, `resolved@rK`, `punch-listed`, plus `dissolved@rK` / `disputed (…)` taken from the overrides file), the `blocking:` counts line, and the `triggers:` header line (`no-progress`, `recurrence`, with evidence).
+- Hides: how identity is decided (exact-key matching plus the reporter's `delta vs prior:` carried and regressed Blocking counts), the arithmetic of the two mechanical triggers, and the round-1 rule (no delta line, so only `returned` can fire). Keys come only through `super-code/scripts/report-verdict --keys`; headers come only from the `inputs:`, `iteration:` and `delta vs prior:` lines, never from report bodies.
+- Must not: decide `local` vs `redesign` (the step-back agent does, gated by step-back-check); judge the semantic triggers `shared-cause` / `defect-type` (the step-back agent does); edit the overrides file (the orchestrator writes it from validated `dissolves:` / `disputes:` fields); keep state between calls.
+- Relationships: delegates key extraction to report-verdict (super-design → super-code, the dependency direction I8 already sets). Its file is read by step-back-check, amend-check, the step-back prompt, the amend designer and report-prompt; nothing reads raw reports to route a decision.
+- Lifecycle: each loop calls it after each roast round. Each call rebuilds the whole file from every round's report plus the punch list and the overrides file, so it is idempotent and resume-safe. There is one file per loop (`findingsLedger`, `findingsLedgerDesign`), owned by that loop, and the overrides file is that loop's to append to.
+- Errors: exit 2 on bad input (a missing report, an unreadable overrides file, a report kind with no keys, i.e. report-verdict --keys exit 3). A round ≥2 with no `delta vs prior:` line is not an error: delta-based identity is reported as unavailable (`-`) in `blocking:`, and only the exact-key `returned` check can fire. Callers can therefore tell "no triggers" from "triggers not computable".
+
+**Amend record and amend-check** — new module (the `amend-<loop>-<K>.md` format plus `skills/super-design/scripts/amend-check`): the structured contract between the amend designer and the orchestrator.
+- Owns: the record's fields (`owners:`, `amended:`, `work:`, `unchanged:`; disputes are carried in `owners:`) and the rules a record must pass: every `open` ledger key appears in `owners:`; `git diff` shows no `## Goal` change; `## Unchanged behavior` exists in the root spec; every `work:` line covers ≥1 key.
+- Hides: how `owners:` and `work:` are parsed (reusing step-back-check's split-on-`rN [` convention for key lists) and how specs are diffed.
+- Must not: edit specs, file beads or write overrides (the orchestrator does, in Amend Mode); re-check the step-back record (step-back-check does).
+- Relationships: reads the ledger's `open` keys and the spec files. It is a sibling of step-back-check with the same output and exit contract; the two share no code beyond that convention.
+- Lifecycle: the amend designer writes one record per redesign cycle K. Once it passes the check it is immutable, and resume replays from it.
+- Errors: 0 ok; 3 `reject:` lines (Amend Mode re-dispatches once with them, then aborts the cycle); 2 bad input, including a git failure, which must never read as a reject.
+
+**Amend Mode** — new super-design skill section (`§Amend Mode`, with `amend-prompt.md`): the single redesign entry point both loops call, a Facade over super-design's spec-amending machinery.
+- Owns: the sequence dispatch → amend-check (one retry) → commit specs (+ Key Abstractions sync when that section changed) → file `work:` beads per §Decomposition → one `coverage-amend-<loop>-<K>` round → an optional single design-roast round fixed locally → writing disputes to the ledger's overrides file.
+- Hides: the per-loop differences, held in one closed table keyed by `--loop code|design`:
+  - the code loop files post-hand-off beads with no sweep edges;
+  - the design loop wires beads under `Integration sweep:` and `bd supersede`s obsoleted beads.
+  
+  It also hides how it reuses Key Abstractions sync, coverage and design roast while staying outside the two-round coverage cap, and the no-recursion rule (no redesign inside amend).
+- Must not:
+  - count or check the redesign budget, or write `redesignCycles-*` / `redesign-*` records;
+  - run super-code or the next roast (the calling loop does all of these);
+  - read raw reports to decide anything (the ledger is its input);
+  - have the orchestrator edit specs (only the amend designer does, per I8).
+- Relationships: the calling loop delegates to it. It composes the amend designer, amend-check, §Decomposition, §Key Abstractions sync, §Coverage and §Adversarial Review Loop (single local round). Dependencies point loop → Amend Mode → super-design internals, never back into super-auto.
+- Lifecycle: invoked once per redesign cycle; stateless between cycles. Its durable outputs are the amend file, the spec commit, the beads and the coverage record. Resume re-enters at the first missing output.
+- Errors: it returns one of three outcomes the caller can tell apart:
+  - `applied`;
+  - `aborted — amend rejected` (the caller runs the round `local`);
+  - `aborted — <other cause>`.
+  
+  A failed coverage or design-roast round degrades and is recorded; it does not abort an applied amendment.
+
+**Redesign budget** — new run-state concept (fields `redesignCycles-<loop>` and `redesign-<loop>-<K>` in `run-state.md` items 5/7, plus the effective-cap rule): how many redesign cycles a loop has spent, and the cap derived from them.
+- Owns:
+  - the counter (≤2, written before a cycle starts, never reset);
+  - the per-cycle record (triggers, amended sections, `lastGood`, outcome applied | aborted | thrash);
+  - the effective cap (`3 + cycles` code; `3 + 1 + cycles` design).
+- Hides: the formula. Super-roast only ever sees a number as `config.iterationCap`.
+- Must not: change super-roast round numbering or labels (Challenge 2); revert to `lastGood` (vision: a breach exits as thrash and is reported).
+- Relationships: each loop's §Loop exits reads it to decide cap and thrash. The two loops state its exit rules separately, deliberately with no shared mode flag. Resume and report-prompt read it.
+- Lifecycle: it lives in run.md for the run's life, one set of fields per loop, shared between none.
+- Errors: none of its own. A record whose amend file is missing makes resume re-run Amend Mode.
+
+**step-back-check** — extended: moved to `skills/super-design/scripts/`. It gains `--ledger`, and it is the one place that maps `patch` to `local`. It rejects `local` while the ledger names a mechanical trigger, `redesign` with `triggers: none`, and a cited mechanical trigger the ledger lacks. It holds the list of semantic (agent-judged) trigger names and treats every other trigger name as mechanical, which needs ledger confirmation.
+
+**step-back-prompt.md** — extended: the `local | redesign` decision, the `triggers:` field, and the ledger as primary input. It is the single place the trigger vocabulary and the two semantic trigger definitions are written.
+
+**report-prompt.md, resume.md, run-state.md** — extended: they read and replay the new fields, the ledger and the amend files. They add no decisions of their own.
+
+Variation:
+- The loop kind (`code` | `design`) is fixed. It is a closed enum, matched once in Amend Mode's loop table (bead wiring and supersede) and once in each loop's own exit section (cap formula). The shared scripts never branch on it beyond `--loop` labelling.
+- The trigger set varies. A new mechanical trigger is computed only in findings-ledger; a new semantic one is defined only in step-back-prompt.md (and added to step-back-check's semantic list).
+
+Walk-through, main use case:
+1. Code round N ends, and findings-ledger rebuilds `findings-ledger.md` with `triggers: no-progress(...)`.
+2. The step-back reads the ledger and answers `redesign`, `scope: inside`; step-back-check `--ledger` prints `ok`.
+3. The loop checks that budget is left, records `lastGood`, increments `redesignCycles-code` and writes `redesign-code-1`.
+4. Amend Mode dispatches the designer, amend-check prints `ok`, the specs are committed, the beads are filed, and `coverage-amend-code-1` runs.
+5. The loop re-enters super-code (`deferSweep`), then roast round N+1 runs with `iterationCap` = 4.
+6. The ledger rebuilds and shows the old keys as `resolved@rN+1`.
+
+Likely future changes:
+- A third mechanical trigger (e.g. a Should-fix key open for 3 rounds) touches one computation in findings-ledger and one vocabulary line in step-back-prompt.md. step-back-check, Amend Mode and both loops stay unchanged.
+- A third loop (e.g. a plan roast) adds one row to Amend Mode's loop table and one counter field.
+
+Deliberate exceptions forced by the spec's decisions:
+- Per spec §1: findings-ledger calls `super-code/scripts/report-verdict --keys`. This deliberate cross-skill dependency is accepted so that key parsing stays in one place.
+- Per spec §3 and §Key decisions: the budget is an effective cap passed as `iterationCap`, not a separate round label. Redesign rounds are therefore indistinguishable in super-roast reports; only the `redesign-*` records mark them.
+- Per spec §4 step 7: disputes reach the ledger only through the orchestrator-written overrides file. The orchestrator transcribes validated amend fields, and findings-ledger never reads amend files directly.
+
+Digest:
+- Findings ledger: owns cross-round finding identity, statuses and mechanical triggers;
+  new mechanical triggers are computed only in `findings-ledger`;
+  callers never read raw reports or recompute Blocking deltas to route a decision.
+- Amend record and amend-check: owns the amend designer's output contract and its validation;
+  new amend rules go only in `amend-check`;
+  callers never act on an amend file that amend-check has not passed.
+- Amend Mode: owns the redesign sequence from the amend dispatch through beads, coverage and the optional design roast;
+  per-loop differences go only in its `code|design` table;
+  callers never edit specs, file amend beads or run coverage themselves, and Amend Mode never touches the budget.
+- Redesign budget: owns the `redesignCycles-<loop>` counters, the `redesign-<loop>-<K>` records and the effective cap;
+  cap and thrash rules go in each loop's §Loop exits;
+  callers never pass super-roast anything but the computed number, and never reset the counter.
+
 ## Post-Implementation Notes
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
