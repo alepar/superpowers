@@ -746,7 +746,27 @@ Elided append retries keep Recovery lines intact. Legacy `Task`, `Merge` and `Hu
 lines retain their formats and reducers. The return field `recovery` separates current
 `obligations`, append-only `fixHistory`, and `gaps` (source/line reference, reason, bounded preview) from latest terminal task
 buckets. Recovery/acceptance/attribution/metrics consumers read that history independently;
-retaining these facts alone does not reconcile Git/tracker state or complete the root.
+retaining these facts alone does not complete the root.
+
+Before resumed admission, reconcile each active `pending-closure` record once: verify its exact
+40-character `data.head` with `already-merged` and read authoritative status for the task plus
+its `reviewBead`/`blockerBead`. A valid landing seeds closure-only routing with its original
+head/range even after branch deletion. If all associated beads are observed closed, append the
+matching clear and completion without another repair; otherwise use the existing close-only
+path, which checks statuses again and closes only observed-open beads. Drain those records before
+calling recovery settled. Never implement, review or merge that valid landing again.
+
+A Git mismatch, denied/failed query, missing exact head or incomplete status is an explicit hold
+on the affected task and its consumers. Retain the original record/evidence plus the observation;
+do not infer closure from ready-set silence, a missing branch or a later clean Task line. Persist
+the reconciler's hold as `hold` ID `resume:<task>` with `data.taskId`; only successful fresh
+reconciliation clears that hold. Observe once per restart, with no added implementation retry.
+Other holds require their owner's matching clear: `merge-lane` holds all admission, task holds
+name their task via ID or `data.taskId`, and scoped holds/deferred obligations may also use
+`data.affectedIds`. Unrelated eligible work continues. Return `recovery-held` while these admission
+obligations remain. Unscoped caller sweep deferrals and `data.runFailure` diagnostics remain
+visible obligations, without automatic generic repair dispatch. Preserve additive record/data
+fields and append-only fix history through reconciliation and later retries.
 
 - **Workspace, one per epic:** I7 fix — every epic's plan file used to be named literally
   `plan.md`, so `scripts/sdd-workspace`'s basename-derived directory
@@ -829,7 +849,7 @@ retaining these facts alone does not reconcile Git/tracker state or complete the
   stage — "The coordinator loop" step 1) (a bead can
   accumulate more than one line over a run's history, e.g. a `pending retry` line followed later by
   `complete` or `BLOCKED`). **Stated plainly:** after the
-  relaxation described below, resume's only dispatch-gating, behavior-affecting reconstruction is
+  relaxation described below, the legacy Task reducer's dispatch-gating reconstruction is
   `pendingRetry` (it seeds C-2's one-bounded-retry check). A `complete` line (with or without
   `parked`) is recorded into `completed`/`parked` for **reporting and the no-progress guard's
   baseline only** — it does not, by itself, remove the id from what gets dispatched: `bd ready` is

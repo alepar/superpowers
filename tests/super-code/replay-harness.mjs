@@ -1555,7 +1555,10 @@ async function main() {
       const text = execFileSync('bash', [path.join(skillDir, 'scripts/ledger-digest'), f], { encoding: 'utf8' })
       check(text.startsWith('# ledger-digest: 10 of 11 lines\n'), 'digest counts recovery records and gaps along with legacy Task tokens', text)
       check(records.every(r => text.includes('Recovery: ' + JSON.stringify(r))) && gaps.every(g => text.includes(g)), 'digest transports complete evidence and uninterpretable recovery lines verbatim', text)
-      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text } }) })
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text },
+        'resume-check:bd-101': { landed: true, closed: [], open: ['bd-101', 'bd-112', 'bd-109'] },
+        'close-only:bd-101': { status: 'CLOSED' },
+      }) })
       assertNoThrow(out)
       check(out.result?.completed.includes('bd-101') && !out.result?.pendingRetry.includes('bd-101'), 'a later clean retry supersedes terminal status independently')
       check(JSON.stringify(out.result?.recovery?.fixHistory) === JSON.stringify([records[3]]), 'earlier FIXED record survives the clean retry intact', JSON.stringify(out.result?.recovery))
@@ -1633,6 +1636,116 @@ async function main() {
     check(out.counts['impl:bd-101'] === 2 && out.counts.plan === 1, 'retry refreshes inputs without replanning frozen identities')
     check(promptOf(out.trace, 'close-check:bd-101')?.includes('bd-109'), 'resolved blocker status is required for completion')
   }
+  scenario('recovery resume: durable landing reconciles before admission and closure is idempotent')
+  {
+    const pending = { version: 1, id: 'bd-101', kind: 'pending-closure', operation: 'record', reason: 'tracker closure unconfirmed', evidence: ['task-1-report.md', 'git:' + SHA('b')], data: { head: SHA('b'), range: SHA('a') + '..' + SHA('b'), reviewBead: 'bd-112', blockerBead: 'bd-109', extra: { retained: true } } }
+    const text = 'Recovery: ' + JSON.stringify(pending)
+    for (const closed of [[], ['bd-101'], ['bd-101', 'bd-112', 'bd-109']]) {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text }, 'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+        'resume-check:bd-101': { landed: true, closed, open: ['bd-101', 'bd-112', 'bd-109'].filter(id => !closed.includes(id)) },
+        'close-only:bd-101': { status: 'CLOSED' },
+      }) })
+      assertNoThrow(out)
+      check(out.result?.completed.includes('bd-101') && !out.counts['impl:bd-101'] && !out.counts['review:bd-101'] && !out.counts['merge:bd-101'], 'Recovery-only landing completes without repeated implementation/review/merge')
+      check((out.counts['close-only:bd-101'] ?? 0) === (closed.length === 3 ? 0 : 1), 'only observed-open closure dispatches repair')
+      const p = promptOf(out.trace, 'resume-check:bd-101') ?? ''
+      check(p.includes(SHA('b')) && p.includes('already-merged') && ['bd-101', 'bd-112', 'bd-109'].every(id => p.includes(id)), 'resume verifies exact original SHA and all associated tracker statuses')
+      const writes = out.trace.flatMap(t => extractLedgerLines(t.prompt))
+      check(writes.some(l => l.startsWith('Recovery: ') && JSON.parse(l.slice(10)).operation === 'clear'), 'confirmed recovery is drained through durable clear records')
+      const again = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text: [text, ...writes].join('\n') }, 'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] } }) })
+      assertNoThrow(again)
+      check(!again.counts['resume-check:bd-101'] && !again.counts['close-only:bd-101'] && !again.counts['impl:bd-101'], 'second restart does not replay cleared recovery')
+    }
+    for (const observation of [{ landed: false, closed: ['bd-101', 'bd-112', 'bd-109'], open: [] }, { landed: true, closed: [], open: [], error: 'tracker lookup denied' }, { landed: false, closed: [], open: [], error: 'Git lookup denied' }, { landed: true, closed: ['bd-101'], open: [] }, { landed: true, open: [] }, null]) {
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text }, 'resume-check:bd-101': observation, 'reconcile-buckets': { closed: ['bd-101'] } }) })
+      assertNoThrow(out)
+      check(!out.counts['impl:bd-101'] && !out.counts['close-only:bd-101'] && !out.result?.completed.includes('bd-101'), 'mismatch or unavailable observation holds affected work even when tracker claims closed')
+      check(out.counts['resume-check:bd-101'] === 1 && out.result?.stopReason === 'recovery-held', 'recovery observation is bounded to one attempt with explicit held stop')
+      check(out.result?.recovery?.obligations.some(r => r.kind === 'pending-closure' && JSON.stringify(r.data.extra) === '{"retained":true}'), 'unresolved recovery preserves additive record data')
+      check(out.logs.some(l => /recovery.*held|held.*recovery/.test(l)), 'Git/tracker discrepancy or unavailable status remains explicit')
+      if (observation?.error === 'Git lookup denied') {
+        const writes = out.trace.flatMap(t => extractLedgerLines(t.prompt))
+        const released = await run({ args: liveArgs(), canned: oneTaskCanned({
+          'read-ledger': { text: [text, ...writes].join('\n') }, 'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+          'resume-check:bd-101': { landed: true, closed: ['bd-101', 'bd-112', 'bd-109'], open: [] },
+        }) })
+        assertNoThrow(released)
+        check(released.result?.completed.includes('bd-101') && !released.result?.recovery?.obligations.some(r => r.id === 'resume:bd-101' || r.kind === 'pending-closure'), 'later verified restart clears only its own reconciliation hold and pending closure')
+      }
+    }
+    const extended = { ...pending, compatibility: { extension: 'kept' } }
+    const unconfirmed = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text: 'Recovery: ' + JSON.stringify(extended) },
+      'resume-check:bd-101': { landed: true, closed: [], open: ['bd-101', 'bd-112', 'bd-109'] },
+      'close-only:bd-101': { status: 'BLOCKED', finding: 'tracker close failed' },
+    }) })
+    assertNoThrow(unconfirmed)
+    const retained = unconfirmed.result?.recovery?.obligations.find(r => r.kind === 'pending-closure')
+    check(JSON.stringify(retained?.data) === JSON.stringify(extended.data) && JSON.stringify(retained?.compatibility) === JSON.stringify(extended.compatibility) && extended.evidence.every(e => retained?.evidence.includes(e)), 'failed closure update retains additive record/data fields and original evidence')
+    const failedAppend = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'read-ledger': { text }, 'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+      'resume-check:bd-101': { landed: true, closed: ['bd-101', 'bd-112', 'bd-109'], open: [] },
+      'ledger-append:recovery:pending-closure:bd-101': null, 'ledger-append:recovery:pending-closure:bd-101:retry': null,
+    }) })
+    assertNoThrow(failedAppend)
+    check(failedAppend.result?.stopReason === 'recovery-held' && failedAppend.result?.recovery?.obligations.some(r => r.kind === 'pending-closure' && r.id === 'bd-101'), 'unconfirmed recovery clear append remains unresolved after writer drain')
+    for (const appendResult of [null, { appended: false }]) {
+      const partial = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text: 'Recovery: ' + JSON.stringify(extended) },
+        'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+        'resume-check:bd-101': { landed: true, closed: ['bd-101'], open: ['bd-112', 'bd-109'] },
+        'close-only:bd-101': { status: 'CLOSED' },
+        'ledger:bd-101': appendResult, 'ledger:bd-101:retry': appendResult,
+      }) })
+      assertNoThrow(partial)
+      check(partial.counts['close-only:bd-101'] === 1 && partial.counts['close-check:bd-101'] === 1, 'partial recovery confirms tracker closure before attempting its durable clear')
+      check(partial.counts['ledger:bd-101'] === 1 && (partial.counts['ledger:bd-101:retry'] ?? 0) === (appendResult === null ? 1 : 0), 'partial recovery uses the bounded task ledger append path')
+      check(partial.result?.stopReason === 'recovery-held' && !partial.result?.completed.includes('bd-101'), 'failed partial-close append holds recovery instead of reporting completed')
+      check(JSON.stringify(partial.result?.recovery?.obligations.find(r => r.kind === 'pending-closure')) === JSON.stringify(extended), 'failed partial-close append retains the exact original obligation')
+      const durable = partial.trace.filter(t => !t.label.startsWith('ledger:bd-101')).flatMap(t => extractLedgerLines(t.prompt))
+      const restarted = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text: ['Recovery: ' + JSON.stringify(extended), ...durable].join('\n') },
+        'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+        'resume-check:bd-101': { landed: true, closed: ['bd-101', 'bd-112', 'bd-109'], open: [] },
+      }) })
+      assertNoThrow(restarted)
+      check(restarted.counts['resume-check:bd-101'] === 1 && !restarted.counts['close-only:bd-101'] && !restarted.counts['impl:bd-101'] && !restarted.counts['review:bd-101'] && !restarted.counts['merge:bd-101'], 'restart after failed partial-close append observes facts without repeating closure or implementation')
+      check(restarted.result?.completed.includes('bd-101') && !restarted.result?.recovery?.obligations.some(r => r.kind === 'pending-closure'), 'restart settles partial closure after its durable clear is confirmed')
+    }
+  }
+
+  scenario('recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals')
+  {
+    for (const kind of ['hold', 'deferred']) {
+      const scoped = { version: 1, id: 'bd-101', kind, operation: 'record', reason: 'required evidence unavailable', evidence: ['source.md'], data: { taskId: 'bd-101' } }
+      const identity = { failure: 'old failure', command: 'npm test', configuration: 'target=staging' }
+      const baseline = { sourceTree: SHA('a'), command: identity.command, configuration: identity.configuration, outcome: 'pass', location: 'evidence/old-baseline.log', kind: 'live' }
+      const observed = { ...baseline, sourceTree: SHA('b'), outcome: 'fail', location: 'evidence/old-failure.log' }
+      const diagnostic = { ...scoped, id: 'run-failure:old', kind: 'deferred', evidence: [baseline.location, observed.location], data: { owner: 'caller', runFailure: { ...identity, history: [
+        { task: 'bd-102', dispatch: 'review:bd-102', claim: { ...identity, runBaseline: 0, observed: 1, introducedBy: 'bd-old' }, evidence: [baseline, observed] },
+      ] } } }
+      const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text: [scoped, diagnostic].map(r => 'Recovery: ' + JSON.stringify(r)).join('\n') },
+        'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
+        'plan': { planPath: PLANPATH, mapping: [{ n: 1, id: 'bd-101', files: ['a'] }, { n: 2, id: 'bd-102', files: ['b'] }] },
+        'impl:bd-102': { status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: ['b'] }, 'review:bd-102': { status: 'CLEAN' },
+        'merge:bd-102': { merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a'), rebaseConflictFiles: 0 },
+      }) })
+      assertNoThrow(out)
+      check(!out.counts['impl:bd-101'] && out.counts['impl:bd-102'] === 1 && out.result?.completed.includes('bd-102'), kind + ' holds only affected work while unrelated work proceeds')
+      check(out.result?.recovery?.obligations.some(r => JSON.stringify(r) === JSON.stringify(diagnostic)), 'runFailure diagnostics survive without becoming generic repair work')
+      const failure = out.result?.runFailures?.find(r => r.id === diagnostic.id)
+      check(failure?.owner === 'bd-old' && failure?.classification === 'run-introduced' && failure?.state === 'open' && failure?.gaps.length === 0, 'unscoped diagnostic retains its open introducing owner alongside unrelated admission')
+      check(failure?.comparisons.length === 1 && JSON.stringify(failure.comparisons[0].runBaseline) === JSON.stringify(baseline) && JSON.stringify(failure.comparisons[0].observed) === JSON.stringify(observed), 'resumed diagnostic exposes the original source-bound baseline and failing observation')
+      check(out.result?.stopReason === 'recovery-held', 'persisted obligation prevents a clean resumed finish')
+    }
+    const lane = { version: 1, id: 'merge-lane', kind: 'hold', operation: 'record', reason: 'dirty integration', evidence: ['merge:bd-101'], data: { taskId: 'bd-101' } }
+    const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text: 'Recovery: ' + JSON.stringify(lane) } }) })
+    assertNoThrow(out)
+    check(!out.counts['impl:bd-101'] && out.result?.stopReason === 'recovery-held', 'persisted merge lane hold gates resumed admission until evidence clears it')
+  }
+
   scenario('resume: pending landing closure runs independently of empty ready and closed root')
   {
     for (const rootClosed of [false, true]) {

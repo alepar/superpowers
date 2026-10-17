@@ -255,7 +255,7 @@ function flushLedger(id, phase) {
   if (!entries || !entries.length) return
   const lines = entries.flatMap(e => flatLines(e.line))
   const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
-  queueLedger(lines, `ledger:${id}`, phase, elided)
+  return queueLedger(lines, `ledger:${id}`, phase, elided)
 }
 function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
@@ -340,6 +340,7 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // only): `<branch> <tip> <merge>` lines from scripts/already-merged --landed.
 const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'} }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
+const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
 // closed; a reopen's list; a cancelled task's worktree removal.
 const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
@@ -383,8 +384,8 @@ function recoveryGap(raw, reason, digestLine = null) {
   log('recovery record gap: ' + reason + ' — retained for reconciliation')
   return null
 }
-function noteRecovery(id, kind, operation, reason, evidence, data = {}, taskId = id, phase = 'Integrate') {
-  const line = 'Recovery: ' + JSON.stringify({ version: 1, id, kind, operation, reason, evidence, data })
+function noteRecovery(id, kind, operation, reason, evidence, data = {}, taskId = id, phase = 'Integrate', additive = {}) {
+  const line = 'Recovery: ' + JSON.stringify({ ...additive, version: 1, id, kind, operation, reason, evidence, data })
   if (!readRecovery(line)) throw new Error('invalid recovery record produced: ' + line)
   // Identical elided fallback: source pointers and commit facts must never be removed on retry.
   if (taskId) noteLedger(taskId, line, line)
@@ -758,6 +759,67 @@ for (const l of ledger?.landed ?? []) {
   const g = /^(\S+) ([0-9a-f]{7,40}) [0-9a-f]{7,40}$/.exec(String(l).trim())
   if (g) gitLanded.set(g[1], g[2])
 }
+// Recovery claims survive a later clean Task line. Observe exact Git and tracker facts once,
+// before any affected admission; a missing branch or failed lookup proves nothing.
+const resumeHolds = new Map()
+const resumedObligationKeys = new Set(recoveryObligations.keys())
+for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'pending-closure')) {
+  const id = record.id, data = record.data
+  const required = [...new Set([id, data.reviewBead, data.blockerBead].filter(Boolean))]
+  const observed = typeof data.head === 'string' && /^[a-f0-9]{40}$/.test(data.head)
+    ? await dispatch(() => resumeCheckPrompt(record, required), 'resume-check:' + id,
+      { label: 'resume-check:' + id, phase: 'Resume', ...tier('mechanical'), schema: RESUME_CHECK })
+    : null
+  const known = observed && !observed.error && Array.isArray(observed.closed) && Array.isArray(observed.open)
+    && required.every(bead => observed.closed.includes(bead) !== observed.open.includes(bead))
+  const reason = !observed ? 'Git/tracker observation unavailable or exact landing head missing'
+    : observed.error || (observed.landed !== true ? 'persisted landing disagrees with Git' : !known ? 'tracker status unavailable or contradictory' : null)
+  if (reason) {
+    completed.delete(id); parked.delete(id)
+    resumeHolds.set(id, reason)
+    log(id + ': recovery held — ' + reason + '; original evidence retained: ' + record.evidence.join(', '))
+    noteRecovery('resume:' + id, 'hold', 'record', reason, record.evidence,
+      { taskId: id, recoveryId: id, ...(observed ? { observation: observed } : {}) }, null, 'Resume')
+    continue
+  }
+  // Only this reconciler's own hold can clear on a successful observation. Caller holds and
+  // deferred evidence obligations require their owner's explicit matching clear record.
+  landed.set(id, data.head)
+  if (data.range) landedRanges.set(id, 'commits ' + data.range)
+  if (data.reviewBead) reviewBeadOf.set(id, data.reviewBead)
+  if (data.blockerBead) blockerBeadOf.set(id, data.blockerBead)
+  completed.delete(id); parked.delete(id)
+  const allClosed = required.every(bead => observed.closed.includes(bead))
+  const ownHold = recoveryObligations.get('hold:resume:' + id)
+  const clears = [...(ownHold ? [ownHold] : []), ...(allClosed ? [record] : [])].map(r =>
+    'Recovery: ' + JSON.stringify({ ...r, operation: 'clear', reason: allClosed ? 'tracker closure confirmed' : 'exact landing and tracker observations available',
+      evidence: ['git:' + data.head, ...required.map(bead => 'bead:' + bead)], data: {} }))
+  const lines = [...clears, ...(allClosed ? [ledgerLine('?', id, 'complete (' + (data.range ? 'commits ' + data.range + ', ' : '') + 'already merged into ' + integrationBranch + ' — tracker closure reconciled on resume)')] : [])]
+  if (lines.length) {
+    // Append completion and its clears together; only confirmed writes update in-memory
+    // obligations. An unavailable append retains recovery for the next restart.
+    const written = await queueLedger(lines, 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines).catch(() => null)
+    if (!written || written.appended === false) {
+      resumeHolds.set(id, 'recovery reconciliation append unavailable')
+      log(id + ': recovery held — reconciliation append unavailable; original obligation retained')
+      continue
+    }
+    for (const clear of clears) readRecovery(clear)
+  }
+  if (allClosed) { settle(id, completed); if (landedParked.has(id)) parked.add(id) }
+}
+await drainLedger()
+const recoveryAdmissionReason = id => {
+  if (resumeHolds.has(id)) return 'recovery: ' + resumeHolds.get(id)
+  for (const r of recoveryObligations.values()) {
+    if (!['hold', 'deferred'].includes(r.kind)) continue
+    // Unscoped caller sweeps and runFailure diagnostics remain visible obligations, without
+    // manufacturing compulsory generic repair work. Explicit scope constrains only its rows.
+    const affected = Array.isArray(r.data.affectedIds) ? r.data.affectedIds : []
+    if ((r.kind === 'hold' && (r.id === 'merge-lane' || r.id === id)) || r.data.taskId === id || affected.includes(id)) return 'recovery ' + r.kind + ': ' + r.reason
+  }
+  return null
+}
 if (resumed.size) log(`resume: reconstructed from ${ledgerPath} — ${completed.size} complete (${parked.size} parked), ${pendingRetry.size} pending retry, ${blockedHistoricallyCount} previously-BLOCKED id(s) found (not re-quarantined — each gets a fresh attempt this run; see the resume-reconstruction comment above)${cancelledHistoricallyCount ? `, ${cancelledHistoricallyCount} last cancelled (a stack parent did not merge; each re-enters fresh)` : ''}`)
 
 // Why the run stopped, returned to the caller: 'root-closed' (complete), 'ready-drained' (empty
@@ -791,7 +853,7 @@ while (true) {
   // Null close-epics: closed nothing and never rootClosed — defaulting to true would declare an
   // unfinished epic done.
   const closed = (await closePromise) ?? { rootClosed: false, closedThisRun: [] }
-  const pendingClosures = [...landed.keys()].filter(id => !completed.has(id) && !escalated.has(id))
+  const pendingClosures = [...landed.keys()].filter(id => !completed.has(id) && !escalated.has(id) && !resumeHolds.has(id))
   if (closed.rootClosed && !pendingClosures.length) {
     stopReason = 'root-closed'
     await readyPromise.catch(() => {})  // settle the concurrent query before exiting; its result is moot
@@ -1244,7 +1306,7 @@ while (true) {
   }
   // Already-merged re-entry: close the task bead (and its RESOLVEd blocker bead), settle completed,
   // and mark the completion line as a re-entry close. Runs outside the queue.
-  const confirmClosure = async (r, closeFirst = false) => {
+  const confirmClosure = async (r, closeFirst = false, deferClear = false) => {
     const required = [r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean)
     const repair = async () => {
       const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
@@ -1259,7 +1321,7 @@ while (true) {
       const check = await dispatch(() => reconcileBucketsPrompt(required, []), `close-check:${r.id}`,
         { label: `close-check:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RECONCILE })
       if (check && required.every(id => check.closed?.includes(id))) {
-        clearPendingClosure(r.id, required.map(id => 'bead:' + id))
+        if (!deferClear) clearPendingClosure(r.id, required.map(id => 'bead:' + id))
         closuresConfirmed++; return true
       }
       if (observation === 0 && check && !closeFirst && !await repair()) return false
@@ -1272,19 +1334,36 @@ while (true) {
     noteLedger(r.id, ledgerLine(r.n, r.id, 'landed (' + parts.join(', ') + ')'))
     const head = landed.get(r.id), range = landedRanges.get(r.id)?.replace(/^commits /, '')
     const reviewBead = reviewBeadOf.get(r.id), blockerBead = blockerBeadOf.get(r.id)
+    const existing = recoveryObligations.get('pending-closure:' + r.id)
     noteRecovery(r.id, 'pending-closure', 'record', 'tracker closure unconfirmed',
-      [artifacts(r.id).report, 'bead:' + r.id, ...(head ? ['git:' + head] : []),
-        ...[reviewBead, blockerBead].filter(Boolean).map(id => 'bead:' + id)],
-      { ...(head ? { head } : {}), ...(range ? { range } : {}), ...(reviewBead ? { reviewBead } : {}), ...(blockerBead ? { blockerBead } : {}) })
+      [...new Set([...(existing?.evidence ?? []), artifacts(r.id).report, 'bead:' + r.id, ...(head ? ['git:' + head] : []),
+        ...[reviewBead, blockerBead].filter(Boolean).map(id => 'bead:' + id)])],
+      { ...existing?.data, ...(head ? { head } : {}), ...(range ? { range } : {}), ...(reviewBead ? { reviewBead } : {}), ...(blockerBead ? { blockerBead } : {}) }, r.id, 'Integrate', existing)
   }
   const closeAlreadyMerged = async r => {
     if (!landed.has(r.id)) landed.set(r.id, null)
     completed.delete(r.id)
-    if (!await confirmClosure(r, true)) { recordPendingClosure(r); return }
+    const key = 'pending-closure:' + r.id
+    const pending = resumedObligationKeys.has(key) && recoveryObligations.get(key)
+    if (!await confirmClosure(r, true, !!pending)) { recordPendingClosure(r); return }
+    const clear = pending && 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed',
+      evidence: ['git:' + landed.get(r.id), ...[r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean).map(id => 'bead:' + id)], data: {} })
+    if (clear) noteLedger(r.id, clear, clear)
+    noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review${landedParked.has(r.id) ? ', 1 parked' : ''})`))
+    if (pending) {
+      // Resumed partial closure uses the same confirmation ordering as the all-closed
+      // Resume path: write clear + completion together before reducing the obligation.
+      const written = await flushLedger(r.id, 'Integrate').catch(() => null)
+      if (!written || written.appended === false) {
+        resumeHolds.set(r.id, 'recovery reconciliation append unavailable')
+        log(r.id + ': recovery held — reconciliation append unavailable; original obligation retained')
+        return
+      }
+      readRecovery(clear)
+    }
     settle(r.id, completed)
     if (landedParked.has(r.id)) parked.add(r.id)
     blockerBeadOf.delete(r.id)
-    noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review${landedParked.has(r.id) ? ', 1 parked' : ''})`))
     markMerged(r.att)
     topUpHook()
   }
@@ -1304,9 +1383,12 @@ while (true) {
     : externalStatus.get(id)?.status === 'closed' && ['review', 'blocker', 'gate', 'epic', 'task'].includes(externalStatus.get(id)?.kind)
   const admissionReason = id => {
     if (integrationBlocked) return 'merge lane held: ' + integrationBlocked
+    const recoveryHeld = recoveryAdmissionReason(id)
+    if (recoveryHeld) return recoveryHeld
     if (!canStartWork()) return 'coordinator cannot start new work'
     if (escalated.has(id)) return 'task quarantined'
     for (const dep of rowOf(id) ? effDeps(rowOf(id)) : []) {
+      if (recoveryAdmissionReason(dep)) return dep + ': ' + recoveryAdmissionReason(dep)
       if (escalated.has(dep) || (pendingRetry.has(dep) && !implDone.has(dep) && !completed.has(dep))) return dep + ' quarantined or awaiting retry'
       if (!dependencyReady(dep)) return dep + ': ' + (externalStatus.get(dep)?.error || externalStatus.get(dep)?.status || 'dependency status unavailable')
     }
@@ -2047,8 +2129,8 @@ else if (frMode !== 'split') {
 // whose RESOLVEd blocker bead must be closed too. Landed ids whose closure this run could not confirm
 // are asked as well: bd is the authority on closure, whatever git re-checks said. Null returns the
 // buckets as-is.
-const landedOpen = [...landed.keys()].filter(id => !completed.has(id))
-const unsettledIds = [...new Set([...[...escalated, ...pendingRetry].filter(id => !confirmedLandings.has(id)), ...landedOpen])]
+const landedOpen = [...landed.keys()].filter(id => !completed.has(id) && !resumeHolds.has(id))
+const unsettledIds = [...new Set([...[...escalated, ...pendingRetry].filter(id => !confirmedLandings.has(id) && !recoveryAdmissionReason(id)), ...landedOpen])]
 if (unsettledIds.length) {
   const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)]),
     landedOpen.filter(id => blockerBeadOf.has(id)).map(id => [id, blockerBeadOf.get(id)])), 'reconcile-buckets',
@@ -2072,6 +2154,10 @@ const closureUnconfirmed = [...landed.keys()].filter(id => !completed.has(id))
 if (closureUnconfirmed.length) {
   stopReason = 'closure-unconfirmed'
   log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
+}
+if (!integrationBlocked && (resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => resumedObligationKeys.has(key) && (r.kind === 'hold' || (r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
+  stopReason = 'recovery-held'
+  log('recovery held: persisted admission obligations remain unresolved; unrelated eligible work was allowed to proceed')
 }
 // Backstop sweep: every task worktree still under the integration worktree goes now, merged and
 // clean only; split tasks' kept branches are deleted with -d. Anything kept is returned.
@@ -2475,6 +2561,13 @@ function triagePrompt(id, blockerBead, planPath) {
 function commitNudgePrompt(id, n, worktree, branchName, base, reportFile) {
   // One nudge for an implementer whose head equals base: commit the finished work if it is there.
   return `Task ${id} (n ${n}) was reported IMPLEMENTED, but its branch ${branchName} in ${worktree} is still at base ${base}: nothing has been committed. In ${worktree}, run \`git status --short\`. If it lists files, compare them with the "Files changed" list in the report at ${reportFile}: \`git add\` exactly the listed files that belong to this task and commit on ${branchName}; leave anything else uncommitted and name it in your reply. If the tree is clean and the branch is still at ${base}, the work was never made — report that plainly with status BLOCKED. Then run \`git rev-parse HEAD\` and report id ${id}, status IMPLEMENTED (or BLOCKED), files, and head (it must differ from ${base} if you committed). ${authRefusalRule()} ${finalAnswerRule(true)}`
+}
+
+function resumeCheckPrompt(record, required) {
+  return 'READ-ONLY recovery reconciliation in ' + integrationWorktree + '. Evidence: ' + record.evidence.join(', ')
+    + '. Run `bash ' + codeSkill + '/scripts/already-merged ' + integrationBranch + ' ' + record.data.head
+    + '` once to verify the exact persisted landing SHA, even when its task branch was deleted. Report landed true only on successful exit and literal true; literal false means a Git/ledger mismatch. Run `bd show <id> --json` once for every required bead: '
+    + required.join(', ') + '. Report each observed closed ID in closed and each observed non-closed ID in open. A failed/denied Git or tracker query, missing status, or unrecognized Git output must return an explicit error; unknown is never open or closed. Do not implement, review, merge, close beads, clean up, retry commands, or edit any file. ' + finalAnswerRule(true)
 }
 
 function closeOnlyPrompt(id, integrationWorktree, integrationBranch, resolvedBead, landedHead) {
