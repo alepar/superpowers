@@ -1,0 +1,21 @@
+{
+ "t0": "2026-10-06T01:00:00Z",
+ "idPrefix": "s",
+ "launch": { "epicId": "st", "config": { "concurrency": 4, "runtimeSlots": 6, "earlyUnblock": true } },
+ "agents": [
+  { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 3 },
+  { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 2 },
+  { "label": "bd-ready", "phase": "Ready", "start": 3, "end": 5, "result": { "ids": ["st.1"] } },
+  { "label": "plan", "phase": "Plan", "start": 5, "end": 20, "result": { "planPath": "/w/.superpowers/sdd/st-plan/st-plan.md", "mapping": [{ "n": 1, "id": "st.1", "files": [], "deps": [] }] } },
+  { "label": "impl:st.1", "start": 20, "end": 900, "result": { "status": "IMPLEMENTED" }, "tools": [
+   { "name": "Bash", "command": "cd /Users/x/repo/.worktrees/task-st.1 && cargo test --locked --lib store:: 2>&1 | tail -30", "start": 30, "end": 150 },
+   { "name": "Bash", "command": "BIN=/Users/x/repo/.worktrees/task-st.1/target/debug/deps/svc-0123456789abcdef; $BIN --test-threads 1 > /tmp/sp-1/st.1/out.log", "start": 150, "end": 440 },
+   { "name": "Bash", "command": "npm test", "start": 440, "end": 470 }
+  ] },
+  { "label": "review:st.1", "start": 900, "end": 960, "result": { "status": "NEEDS_FIX" } },
+  { "label": "fix:st.1", "start": 960, "end": 1200, "result": { "status": "FIXED" }, "tools": [
+   { "name": "Bash", "command": "cargo test --locked --lib store:: 2>&1", "start": 970, "end": 1150 }
+  ] },
+  { "label": "merge:st.1", "phase": "Integrate", "start": 1200, "end": 1220, "result": { "merged": true } }
+ ]
+}

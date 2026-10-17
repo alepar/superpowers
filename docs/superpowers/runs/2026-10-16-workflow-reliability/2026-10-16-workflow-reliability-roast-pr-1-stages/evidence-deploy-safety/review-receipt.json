@@ -1,0 +1,20 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "lane": "deploy-safety",
+  "reviewed": [
+    "skills/super-code/coordinator.js",
+    "skills/super-code/scripts/dispatch-text.mjs",
+    "skills/super-code/scripts/ledger-digest",
+    "skills/super-code/scripts/report-verdict",
+    "skills/super-code/scripts/stop-run-processes",
+    "skills/super-code/scripts/remove-task-worktree",
+    "skills/super-code/scripts/close-in-tree-epics",
+    "skills/super-auto/run-state.md",
+    "skills/super-auto/resume.md",
+    "skills/super-auto/SKILL.md",
+    "skills/super-auto/scripts/report-status"
+  ],
+  "conclusion": "No defensible deploy-safety finding. This is an internal per-run coordinator and local plugin, with source pinning and explicit human-directed mid-run definition switches rather than a rolling deployed service fleet. Persistent recovery and approvals records are additive and append-only; changed cleanup helpers retain resources for unavailable inspection. Lack of general old/new mixed process support is not independently a concrete regression in this lane.",
+  "source_policy": "Frozen Git objects exported to owned evidence directory; no caller workspace mutations and no mutation-capable product commands executed."
+}

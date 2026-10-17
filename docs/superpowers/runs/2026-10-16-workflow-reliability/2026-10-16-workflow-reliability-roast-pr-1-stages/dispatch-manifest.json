@@ -1,0 +1,397 @@
+[
+  {
+    "task": "/root/roast_code_ufz_r1/triage",
+    "role": "triage",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_correctness",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_security",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_premortem",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_simplicity",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_perf",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_concurrency",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_migrations",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_deploy",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_api",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_observability",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1/scout_testing",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/scout_hygiene",
+    "role": "scout",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/dispatch-scout_hygiene-docs.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/dedupe",
+    "role": "dedupe",
+    "model": "gpt-6-luna",
+    "reasoningEffort": "low",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j0_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "framing": "static analysis",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-0.md"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j0_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "framing": "static analysis",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-0.md"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j0_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "framing": "static analysis",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-0.md"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j1_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-1.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j1_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-1.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j1_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-1.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j2_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-2.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j2_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-2.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j2_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-2.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j3_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-3.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j3_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-3.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j3_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-3.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j4_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-4.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j4_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-4.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j4_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-4.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j5_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-5.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j5_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-5.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j5_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-5.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j6_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-6.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j6_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-6.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j6_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-6.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j7_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-7.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j7_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-7.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j7_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-7.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j8_reproduce",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-8.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j8_refute",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-8.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/j8_ground",
+    "role": "judge",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-8.md",
+    "framing": "static analysis"
+  },
+  {
+    "task": "/root/roast_code_ufz_r1_continuation/reporter",
+    "role": "reporter",
+    "model": "gpt-6-luna",
+    "reasoningEffort": "high",
+    "fresh": true,
+    "mechanism": "native collaboration",
+    "promptPath": "/tmp/ufz-pr1/reporter-live.md",
+    "framing": "static review synthesis"
+  }
+]

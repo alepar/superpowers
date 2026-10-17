@@ -1,0 +1,10 @@
+[
+  {
+    "claim": "The new finding-projection CLI returns exit 0 with truncated, invalid JSON when a large projection is consumed through a pipe.",
+    "location": "skills/super-auto/scripts/scope-dispositions:194",
+    "category": "api-contract",
+    "external": false,
+    "kind": "ISSUE",
+    "evidence": "Introduced between frozen base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 and head ff2f79f62cc34084c8df20edc5c2e4f201a5d630: --project is a new internal CLI surface, documented in skills/super-auto/run-state.md:335 to return JSON with findings and gaps. scope-dispositions:192 prints the complete document with console.log, then :194 calls process.exit immediately, allowing buffered pipe output to be discarded. Independent reproduction using source extracted by git show at the frozen head creates 128 retained occurrences: regular-file stdout returns exit 0 and valid 205289-byte JSON containing all 128 findings, whereas subprocess pipe capture returns exit 0, empty stderr and exactly 65536 bytes that fail JSON parsing. The actual consumer report-status:298 uses spawnSync pipe capture and consequently emits finding projection unavailable instead of outstanding findings: 128 for the same valid input. report-status:150 uses the same transport at acceptance. This violates the new JSON/success contract and makes the existing in-repo consumers fail once projection size exceeds pipe buffering. Reproduce with python3 /tmp/ufz-pr1/evidence-api-contract/repro_projection.py; fixture large-run.md, complete output projection-direct.json, truncated output projection-pipe.json, and measured projection-receipt.json are beside that script. The base has no --project mode, and the vulnerable print/exit sequence is wholly added by this diff. Initial risk input was the supplied roast-status-observation.json; independently corroborates the observability scout result discovered after the reproduction."
+  }
+]

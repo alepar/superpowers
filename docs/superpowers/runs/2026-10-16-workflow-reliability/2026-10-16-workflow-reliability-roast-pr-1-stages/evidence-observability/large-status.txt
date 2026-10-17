@@ -1,0 +1,2 @@
+status: clean [degraded: finding projection unavailable — retain known findings]
+qualifier: finding projection unavailable — retain known findings

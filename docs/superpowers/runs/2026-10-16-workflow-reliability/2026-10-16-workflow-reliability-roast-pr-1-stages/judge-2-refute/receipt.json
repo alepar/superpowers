@@ -1,0 +1,27 @@
+{
+  "collect": {
+    "exit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  "initialAcceptance": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "corruptedAcceptance": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "recollect": {
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: probe: archive conflict: final-review-probe.md.diff; keep source workspace and archive; owner: orchestrator\n"
+  },
+  "afterRecollectAcceptance": {
+    "exit": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"review collections pending: 1\",\"review collection gaps: 1\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  }
+}

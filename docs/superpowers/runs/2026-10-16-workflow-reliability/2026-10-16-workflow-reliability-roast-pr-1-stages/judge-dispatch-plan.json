@@ -1,0 +1,434 @@
+[
+  {
+    "index": 0,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#0",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-0.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-0.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 0,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#0",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-0.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-0.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 0,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#0",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-0.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-0.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 1,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#1",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-1.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 1,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#1",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-1.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 1,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#1",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-1.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 2,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#2",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-2.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 2,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#2",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-2.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 2,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#2",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-2.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 3,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#3",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-3.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-3.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 3,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#3",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-3.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-3.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 3,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#3",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-3.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-3.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 4,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#4",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-4.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-4.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 4,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#4",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-4.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-4.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 4,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#4",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-4.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-4.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 5,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#5",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-5.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-5.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 5,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#5",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-5.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-5.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 5,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#5",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-5.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-5.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 6,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#6",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-6.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-6.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 6,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#6",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-6.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-6.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 6,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#6",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-6.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-6.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 7,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#7",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-7.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-7.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 7,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#7",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-7.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-7.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 7,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#7",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-7.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-7.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 8,
+    "seat": "reproduce",
+    "kind": "panel",
+    "label": "judge:reproduce#8",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-reproduce-8.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_reproduce-8.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 8,
+    "seat": "refute",
+    "kind": "panel",
+    "label": "judge:refute#8",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-refute-8.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_refute-8.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  },
+  {
+    "index": 8,
+    "seat": "ground",
+    "kind": "panel",
+    "label": "judge:ground#8",
+    "promptPath": "/tmp/ufz-pr1/static-dispatch-ground-8.md",
+    "resultPath": "/tmp/ufz-pr1/result-judge_ground-8.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "medium",
+    "blindFieldsRemoved": [
+      "suggestedSeverity",
+      "previouslyRejected",
+      "lanes"
+    ],
+    "framing": "canonical seatsSafe; static opening sentence only"
+  }
+]

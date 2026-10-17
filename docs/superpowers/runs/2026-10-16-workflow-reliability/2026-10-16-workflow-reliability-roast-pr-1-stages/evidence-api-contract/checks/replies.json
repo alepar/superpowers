@@ -1,0 +1,41 @@
+[
+  {
+    "dispatch": "impl:ep.1",
+    "result": {
+      "id": "ep.1",
+      "evidence": [
+        {
+          "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "command": "suite",
+          "configuration": "quiet",
+          "kind": "live",
+          "outcome": "fail",
+          "location": "fail.log"
+        }
+      ]
+    }
+  },
+  {
+    "dispatch": "review:ep.1",
+    "result": {
+      "id": "ep.1",
+      "evidence": [
+        {
+          "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "command": "suite",
+          "configuration": "quiet",
+          "kind": "live",
+          "outcome": "pass",
+          "location": "pass.log"
+        }
+      ],
+      "requiredLiveChecks": [
+        {
+          "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "command": "suite",
+          "configuration": "quiet"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,670 @@
+{
+  "head": {
+    "exit": 3,
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding projection unavailable",
+        "finding projection unavailable \u2014 retain known findings"
+      ],
+      "nonblockingFindings": []
+    },
+    "stderr": ""
+  },
+  "flush": {
+    "exit": 0,
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": [
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 1
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 2
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 3
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 4
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 5
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 6
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 7
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 8
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 9
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 10
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 11
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 12
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 13
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 14
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 15
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 16
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 17
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 18
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 19
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 20
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 21
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 22
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 23
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 24
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 25
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 26
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 27
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 28
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 29
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 30
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 31
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 32
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 33
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 34
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 35
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 36
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 37
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 38
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 39
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 40
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 41
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 42
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 43
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 44
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 45
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 46
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 47
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 48
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 49
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 50
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 51
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 52
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 53
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 54
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 55
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 56
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 57
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 58
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 59
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 60
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 61
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 62
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 63
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 64
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 65
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 66
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 67
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 68
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 69
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 70
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 71
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 72
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 73
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 74
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 75
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 76
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 77
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 78
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 79
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 80
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 81
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 82
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 83
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 84
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 85
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 86
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 87
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 88
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 89
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 90
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 91
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 92
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 93
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 94
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 95
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 96
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 97
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 98
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 99
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 100
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 101
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 102
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 103
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 104
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 105
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 106
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 107
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 108
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 109
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 110
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 111
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 112
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 113
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 114
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 115
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 116
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 117
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 118
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 119
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 120
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 121
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 122
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 123
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 124
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 125
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 126
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 127
+        },
+        {
+          "source": "independent/final",
+          "section": "Confirmed findings",
+          "position": 128
+        }
+      ]
+    },
+    "stderr": ""
+  }
+}

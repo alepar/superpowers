@@ -1,0 +1,30 @@
+diff --git a/skills/super-code/scripts/run-digest b/skills/super-code/scripts/run-digest
+index 32762af5..ce8ab8c9 100755
+--- a/skills/super-code/scripts/run-digest
++++ b/skills/super-code/scripts/run-digest
+@@ -87,6 +87,16 @@ build_state() {
+   [ "$want_beads" = 1 ] && src_ok beads && ok_beads=1
+   [ "$want_flight" = 1 ] && src_ok inflight && ok_flight=1
+ 
++  local ledger_unavailable=
++  if [ "$ok_ledger" = 1 ]; then
++    ledger_unavailable=$(awk '/^# ledger-status: (missing|unreadable)$/ { sub(/^# ledger-status: /, ""); print; exit }' "$T/ledger")
++    if [ -z "$ledger_unavailable" ] && ! awk '
++      NR == 1 { if ($0 !~ /^# ledger-digest: [0-9]+ of [0-9]+ lines$/ || $3 > $5) exit 1; kept = $3; next }
++      END { if (NR == 0 || NR - 1 != kept) exit 1 }
++    ' "$T/ledger"; then ledger_unavailable="invalid transport"; fi
++    if [ -n "$ledger_unavailable" ]; then ok_ledger=0; fi
++  fi
++
+   # Ledger: counts and the tail.
+   local ledger_counts tail_lines=() ntail=0 line
+   if [ -z "$ledger" ]; then
+@@ -104,6 +114,8 @@ build_state() {
+         printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
+     while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
+     ntail=${#tail_lines[@]}
++  elif [ -n "$ledger_unavailable" ]; then
++    ledger_counts="ledger: unknown — $ledger_unavailable"
+   else
+     ledger_counts="ledger: unknown"
+   fi

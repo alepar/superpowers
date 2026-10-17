@@ -1,0 +1,25 @@
+{
+  "node": "v26.9.0",
+  "file": {
+    "exit": 0,
+    "bytes": 203379,
+    "findings": 128,
+    "gaps": []
+  },
+  "pipe": {
+    "exit": 0,
+    "bytes": 65536,
+    "stderr": "",
+    "parse": "Unterminated string starting at: line 1083 column 19 (char 65353)"
+  },
+  "status": {
+    "exit": 0,
+    "stdout": "status: clean [degraded: finding projection unavailable \u2014 retain known findings]\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+    "stderr": ""
+  },
+  "flushProbe": {
+    "exit": 0,
+    "bytes": 203379,
+    "findings": 128
+  }
+}

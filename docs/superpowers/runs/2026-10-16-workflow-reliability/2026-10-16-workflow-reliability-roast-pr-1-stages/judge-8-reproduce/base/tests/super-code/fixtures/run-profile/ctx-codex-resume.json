@@ -1,0 +1,27 @@
+{ "t0": "2026-10-13T06:00:00Z", "end": 1000, "epic": "cr", "cwd": "/w",
+  "beads": [
+    { "id": "cr", "issue_type": "epic", "status": "open" },
+    { "id": "cr.1", "issue_type": "task", "status": "closed", "parent": "cr" },
+    { "id": "cr.2", "issue_type": "task", "status": "closed", "parent": "cr" }
+  ],
+  "caller": [ { "cmd": "git -C /w/.worktrees/epic-cr--task-cr.1 rebase epic-cr", "start": 710, "end": 720 } ],
+  "coord": [
+    ["prompt", -90, "run $super-auto on cr"],
+    ["usage", -80, 50000, 258400],
+    ["usage", 200, 240000, 258400],
+    ["compacted", 210, 245000],
+    ["usage", 220, 30000, 258400]
+  ],
+  "resume": { "at": 2000, "end": 3000,
+    "caller": [ { "cmd": "git -C /w/.worktrees/epic-cr--task-cr.2 rebase epic-cr", "start": 2710, "end": 2720 } ],
+    "coord": [
+      ["prompt", 2005, "continue"],
+      ["usage", 2010, 60000, 258400],
+      ["usage", 2500, 200000, 258400],
+      ["compacted", 2510, 150000],
+      ["usage", 2520, 20000, 258400]
+    ] },
+  "agents": [
+    { "codex": "impl_cr_1", "start": 0, "end": 600, "context": [[1, 40000, 258400], [300, 100000, 258400]] },
+    { "codex": "impl_cr_2", "rollout": 2, "start": 2100, "end": 2600, "context": [[2101, 30000, 258400], [2300, 140000, 258400]] }
+  ] }

@@ -1,0 +1,36 @@
+[
+  {
+    "label": "base-trailing",
+    "TMPDIR": "/private/tmp/ufz-pr1/judge-8-reproduce/tmp/",
+    "exit": 0,
+    "failures": [
+      "  [PASS] the help's kinds all parse (missing: none)"
+    ]
+  },
+  {
+    "label": "head-trailing",
+    "TMPDIR": "/private/tmp/ufz-pr1/judge-8-reproduce/tmp/",
+    "exit": 1,
+    "failures": [
+      "  [FAIL] evidence review reads the existing report",
+      "    missing: [REPORT_FILE] = /private/tmp/ufz-pr1/judge-8-reproduce/tmp//dispatch-text.SwsdvE/ws/task-2-report.md",
+      "  [FAIL] writes <ledger dir>/dispatch/<label>.md and prints only its path",
+      "    expected: /private/tmp/ufz-pr1/judge-8-reproduce/tmp//dispatch-text.SwsdvE/ws/dispatch/impl-ep.2.md",
+      "    got:      /private/tmp/ufz-pr1/judge-8-reproduce/tmp/dispatch-text.SwsdvE/ws/dispatch/impl-ep.2.md",
+      "  [FAIL] artifacts in the ledger's directory, by ordinal",
+      "    missing: [BRIEF_FILE] = /private/tmp/ufz-pr1/judge-8-reproduce/tmp//dispatch-text.SwsdvE/ws/task-2-brief.md",
+      "  [FAIL] stub dispatch name includes its invocation identity",
+      "    expected: /private/tmp/ufz-pr1/judge-8-reproduce/tmp//dispatch-text.SwsdvE/ws/dispatch/final-review-rt-1-stub.md",
+      "    got:      /private/tmp/ufz-pr1/judge-8-reproduce/tmp/dispatch-text.SwsdvE/ws/dispatch/final-review-rt-1-stub.md",
+      "  [PASS] the help's kinds all parse (missing: none)"
+    ]
+  },
+  {
+    "label": "head-no-trailing",
+    "TMPDIR": "/private/tmp/ufz-pr1/judge-8-reproduce/tmp",
+    "exit": 0,
+    "failures": [
+      "  [PASS] the help's kinds all parse (missing: none)"
+    ]
+  }
+]

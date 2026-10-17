@@ -1,0 +1,24 @@
+{
+  "immutableHead": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "source": "skills/super-auto/scripts/report-status",
+  "command": [
+    "bash",
+    "/tmp/ufz-pr1/evidence-security/source/skills/super-auto/scripts/report-status",
+    "--collect",
+    "/tmp/ufz-pr1/evidence-security/archive-symlink-fixture/run.md",
+    "--invocation",
+    "probe",
+    "--workspace",
+    "/tmp/ufz-pr1/evidence-security/archive-symlink-fixture/workspace",
+    "--review",
+    "/tmp/ufz-pr1/evidence-security/archive-symlink-fixture/workspace/final-review-probe.md",
+    "--verdict",
+    "ready"
+  ],
+  "exit": 0,
+  "stdout": "collection: complete\n",
+  "stderr": "",
+  "outsideSource": "/tmp/ufz-pr1/evidence-security/archive-symlink-fixture/outside/final-review-probe-final/private-material.txt",
+  "archive": "/tmp/ufz-pr1/evidence-security/archive-symlink-fixture/reviews/probe/assembled/final-review-probe-final/private-material.txt",
+  "copiedOutsideSource": true
+}

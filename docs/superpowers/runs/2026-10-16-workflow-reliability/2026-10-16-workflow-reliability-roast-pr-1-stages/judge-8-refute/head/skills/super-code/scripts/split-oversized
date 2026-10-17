@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+# Validate and file the split of one oversized task into smaller children, as one graph rewrite.
+# Run in the repository whose bd holds the beads.
+#
+# Usage: bash split-oversized <proposal.json>
+# Proposal: {"id","reason","filesTouched":[...],"filesToRead":[...],
+#            "children":[{"title","filesTouched":[...],"filesToRead":[...],"acceptance"}]}
+# (the top-level file lists are the ORIGINAL task's). Needs id and >= 2 children, each with a
+# title and acceptance.
+#
+# Refuses (exit 3, `refused: <reason>` on stdout, no bd writes) when a child names a file outside the
+# original's filesTouched + filesToRead, or when an original acceptance checklist item (`- [ ]` /
+# `- [x]` line) is not carried verbatim by some child.
+# Otherwise: (1) files each child (same parent, `--no-inherit-labels`, the original's sp: label, the
+# original's upstream deps with `blocked-by` lines); (2) adds every dependent of the original onto
+# every child, with `blocked-by` lines; (3) only then `bd supersede`.
+#
+# Exit 0 split (stdout `split: <id> -> <c1>,<c2>,...`), 2 bad input, 3 refused, 4 jq unavailable
+# (prints a JQ_UNAVAILABLE: line), 5 filing failed before supersede (stdout `filing failed: <step> -
+# <bd's first stderr line>` and `filed: <ids so far, or none>`; the original is left unsuperseded).
+set -euo pipefail
+
+if [ $# -ne 1 ] || [ ! -f "$1" ]; then
+  echo "usage: split-oversized <proposal.json>" >&2
+  exit 2
+fi
+prop=$1
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so do the same checks and filing by hand, in this order. (a) Refuse the split if any child's filesTouched/filesToRead names a file outside the original's filesTouched plus filesToRead, or if some original acceptance checklist item (a \`- [ ]\` or \`- [x]\` line of \`bd show <id> --json\` .acceptance_criteria) is not carried verbatim as an item of some child's acceptance. (b) File each child with \`bd create \"<title>\" --parent <original's parent> --no-inherit-labels -l <original's sp: label> -t task -d <desc> --acceptance <acceptance> --deps blocked-by:<upstream>... --silent\`, the description ending in one \`blocked-by <upstream>: <reason>\` line per upstream dep of the original. (c) For every dependent D of the original (\`bd dep list <id> --direction=up -t blocks --json\`) and every child C run \`bd dep add D C\`, then rewrite D's description once with one \`blocked-by <C>: consumes split of <id>\` line per child appended to its full text. (d) Only then \`bd supersede <id> --with <first child>\` and \`bd comments add <id> \"split into: <children>\"\`. If any step before (d) fails, stop, leave the original open and list the children filed."
+  exit 4
+}
+
+bad() { echo "split-oversized: $*" >&2; exit 2; }
+
+jq -e 'type == "object"' "$prop" >/dev/null 2>&1 || bad "proposal is not a JSON object"
+id=$(jq -r '.id // ""' "$prop")
+reason=$(jq -r '.reason // ""' "$prop")
+nchild=$(jq -r '(.children // []) | if type == "array" then length else 0 end' "$prop")
+[ -n "$id" ] || bad "proposal has no id"
+[ "$nchild" -ge 2 ] || bad "proposal needs at least 2 children"
+jq -e '.children | all(((.title // "") != "") and ((.acceptance // "") != ""))' "$prop" >/dev/null ||
+  bad "every child needs a title and acceptance"
+
+orig=$(bd show "$id" --json 2>/dev/null) || bad "bd cannot show $id"
+printf '%s' "$orig" | jq -e '.[0].id' >/dev/null 2>&1 || bad "bd cannot show $id"
+o() { printf '%s' "$orig" | jq -r ".[0] | $1"; }
+
+# --- refusal checks (no bd writes) ---
+outside=$(jq -r '
+  ((.filesTouched // []) + (.filesToRead // [])) as $ok
+  | .children[] | .title as $t
+  | ((.filesTouched // []) + (.filesToRead // []))[]
+  | select(. as $f | $ok | index($f) | not)
+  | "child \"\($t)\" names \(.), outside the original'"'"'s files"' "$prop" | head -n 1)
+if [ -n "$outside" ]; then
+  echo "refused: $outside"
+  exit 3
+fi
+
+items() { grep -E '^[[:space:]]*- \[[ xX]\] ' | sed -E 's/^[[:space:]]*- \[[ xX]\] //; s/[[:space:]]+$//'; }
+child_items=$(jq -r '.children[].acceptance' "$prop" | items || true)
+orig_items=$(o '.acceptance_criteria // ""' | items || true)
+while IFS= read -r item; do
+  [ -n "$item" ] || continue
+  if ! printf '%s\n' "$child_items" | grep -qFx -- "$item"; then
+    echo "refused: no child carries checklist item \"$item\""
+    exit 3
+  fi
+done <<EOF2
+$orig_items
+EOF2
+
+# --- filing ---
+parent=$(o '.parent // ""')
+sp=$(o '[.labels[]? | select(startswith("sp:"))][0] // ""')
+upstream=$(o '[.dependencies[]? | select(.dependency_type == "blocks") | .id] | join("\n")')
+odesc=$(o '.description // ""')
+filed=""
+
+fail() { # step, stderr file
+  echo "filing failed: $1 — $(head -n 1 "$2" 2>/dev/null)"
+  echo "filed: ${filed:-none}"
+  exit 5
+}
+err=$(mktemp)
+trap 'rm -f "$err"' EXIT
+
+i=0
+while [ "$i" -lt "$nchild" ]; do
+  title=$(jq -r ".children[$i].title" "$prop")
+  acc=$(jq -r ".children[$i].acceptance" "$prop")
+  ft=$(jq -r ".children[$i].filesTouched // [] | join(\", \")" "$prop")
+  fr=$(jq -r ".children[$i].filesToRead // [] | join(\", \")" "$prop")
+  desc="Split from $id: $reason
+files: $ft
+reads: $fr"
+  deps=""
+  while IFS= read -r u; do
+    [ -n "$u" ] || continue
+    why=$(printf '%s\n' "$odesc" | sed -n "s/^blocked-by $u: //p" | head -n 1)
+    [ -n "$why" ] || why="inherited from $id"
+    desc="$desc
+blocked-by $u: $why"
+    deps="${deps:+$deps,}blocked-by:$u"
+  done <<EOF2
+$upstream
+EOF2
+  args=(create "$title" --no-inherit-labels -t task -d "$desc" --acceptance "$acc" --silent)
+  [ -z "$parent" ] || args+=(--parent "$parent")
+  [ -z "$sp" ] || args+=(-l "$sp")
+  [ -z "$deps" ] || args+=(--deps "$deps")
+  cid=$(bd "${args[@]}" 2>"$err") || fail "create child $((i + 1))" "$err"
+  cid=$(printf '%s' "$cid" | tail -n 1)
+  filed="${filed:+$filed,}$cid"
+  i=$((i + 1))
+done
+
+dependents=$(bd dep list "$id" --direction=up -t blocks --json 2>"$err" | jq -r '.[].id' 2>>"$err") ||
+  fail "list dependents" "$err"
+while IFS= read -r d; do
+  [ -n "$d" ] || continue
+  text=$(bd show "$d" --json 2>"$err" | jq -r '.[0].description // ""') || fail "show $d" "$err"
+  for c in $(printf '%s' "$filed" | tr ',' ' '); do
+    bd dep add "$d" "$c" >/dev/null 2>"$err" || fail "dep add $d $c" "$err"
+    text="${text:+$text
+}blocked-by $c: consumes split of $id"
+  done
+  bd update "$d" --description "$text" >/dev/null 2>"$err" || fail "update $d description" "$err"
+done <<EOF2
+$dependents
+EOF2
+
+first=${filed%%,*}
+bd supersede "$id" --with "$first" >/dev/null 2>"$err" || fail "supersede" "$err"
+bd comments add "$id" "split into: $(printf '%s' "$filed" | sed 's/,/, /g')" >/dev/null 2>"$err" ||
+  echo "split-oversized: could not comment on $id: $(head -n 1 "$err")" >&2
+echo "split: $id → $filed"

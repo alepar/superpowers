@@ -1,0 +1,18 @@
+{ "t0": "2026-10-06T02:00:00Z", "idPrefix": "m",
+  "launch": { "epicId": "m", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 5, "end": 12, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 13, "result": { "ids": ["m.1"] } },
+    { "label": "plan", "phase": "Plan", "start": 14, "end": 60, "result": { "planPath": "/w/.superpowers/sdd/m-plan/m-plan.md", "mapping": [ { "n": 1, "id": "m.1", "files": ["a.ts"], "deps": [] } ] } },
+    { "label": "impl:m.1", "start": 60, "end": 600, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:m.1", "start": 600, "end": 660, "result": { "status": "CLEAN" } },
+    { "label": "merge:m.1", "phase": "Integrate", "start": 660, "end": 700, "result": { "merged": false, "check": "fail" } },
+    { "label": "missing-blocker:m.1", "phase": "Triage", "start": 700, "end": 720, "result": { "status": "BLOCKED" } },
+    { "label": "triage:m.1", "phase": "Triage", "start": 720, "end": 800, "result": { "verdict": "RESOLVE" } },
+    { "label": "clarify:m.1", "phase": "Triage", "start": 800, "end": 820 },
+    { "label": "impl:m.1", "start": 822, "end": 1200, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:m.1", "start": 1200, "end": 1260, "result": { "status": "CLEAN" } },
+    { "label": "merge:m.1", "phase": "Integrate", "start": 1260, "end": 1300, "result": { "merged": true } }
+  ] }

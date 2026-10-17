@@ -1,0 +1,21 @@
+diff --git a/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/docs__superpowers__runs__probe__reviews__inv1__assembled__final-review-inv1-final__slices__docs__superpowers__runs__probe__run.md.diff.diff b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/docs__superpowers__runs__probe__reviews__inv1__assembled__final-review-inv1-final__slices__docs__superpowers__runs__probe__run.md.diff.diff
+new file mode 100644
+index 0000000..f122704
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/docs__superpowers__runs__probe__reviews__inv1__assembled__final-review-inv1-final__slices__docs__superpowers__runs__probe__run.md.diff.diff
+@@ -0,0 +1,15 @@
++diff --git a/docs/superpowers/runs/probe/reviews/inv1/assembled/final-review-inv1-final/slices/docs__superpowers__runs__probe__run.md.diff b/docs/superpowers/runs/probe/reviews/inv1/assembled/final-review-inv1-final/slices/docs__superpowers__runs__probe__run.md.diff
++new file mode 100644
++index 0000000..b1704b9
++--- /dev/null
+++++ b/docs/superpowers/runs/probe/reviews/inv1/assembled/final-review-inv1-final/slices/docs__superpowers__runs__probe__run.md.diff
++@@ -0,0 +1,9 @@
+++diff --git a/docs/superpowers/runs/probe/run.md b/docs/superpowers/runs/probe/run.md
+++new file mode 100644
+++index 0000000..474e41d
+++--- /dev/null
++++++ b/docs/superpowers/runs/probe/run.md
+++@@ -0,0 +1,3 @@
++++phase: code
++++flags: skipPlanRoast false, skipCodeRoast false
++++approvals:

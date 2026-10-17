@@ -1,0 +1,21 @@
+[
+  {
+    "role": "base",
+    "error": null,
+    "logs": [
+      "coordinator: epic=epic branch=branch skillsRoot=/skills dryRun=false"
+    ],
+    "bannedMemberLines": []
+  },
+  {
+    "role": "head",
+    "error": "Date.now() / new Date() are unavailable in workflow scripts (breaks resume). Stamp results after the workflow returns, or pass timestamps via args.",
+    "logs": [],
+    "bannedMemberLines": [
+      {
+        "line": 25,
+        "text": "const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId"
+      }
+    ]
+  }
+]

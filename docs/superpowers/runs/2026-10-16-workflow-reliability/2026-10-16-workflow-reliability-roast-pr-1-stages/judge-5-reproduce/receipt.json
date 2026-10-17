@@ -1,0 +1,39 @@
+[
+  {
+    "invocation": 1,
+    "changedFiles": 2,
+    "sliceBytes": 417,
+    "productCopies": 1,
+    "collectExit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  {
+    "invocation": 2,
+    "changedFiles": 8,
+    "sliceBytes": 5096,
+    "productCopies": 2,
+    "collectExit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  {
+    "invocation": 3,
+    "changedFiles": 20,
+    "sliceBytes": 22479,
+    "productCopies": 4,
+    "collectExit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  {
+    "invocation": 4,
+    "changedFiles": 44,
+    "sliceBytes": 42558,
+    "productCopies": 4,
+    "errno": 63,
+    "error": "[Errno 63] File name too long: '/tmp/ufz-pr1/judge-5-reproduce/ws4/assembled/final-review-i4-final/slices/docs__superpowers__runs__probe__reviews__i3__assembled__final-review-i3-final__slices__docs__superpowers__runs__probe__reviews__i2__assembled__final-review-i2-final__slices__docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__clusters.json.diff.diff.diff'",
+    "basenameBytes": 281,
+    "source": "docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i2__assembled__final-review-i2-final__slices__docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__clusters.json.diff.diff"
+  }
+]

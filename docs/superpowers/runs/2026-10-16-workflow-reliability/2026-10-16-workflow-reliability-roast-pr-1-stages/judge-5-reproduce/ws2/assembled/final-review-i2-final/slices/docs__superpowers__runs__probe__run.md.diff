@@ -1,0 +1,12 @@
+diff --git a/docs/superpowers/runs/probe/run.md b/docs/superpowers/runs/probe/run.md
+new file mode 100644
+index 0000000..4861b74
+--- /dev/null
++++ b/docs/superpowers/runs/probe/run.md
+@@ -0,0 +1,6 @@
++phase: code
++flags: skipPlanRoast=false skipCodeRoast=false
++approvals:
++- review-collection · {"invocationId":"i1","workspace":"/tmp/ufz-pr1/judge-5-reproduce/ws1","reviewPath":"/tmp/ufz-pr1/judge-5-reproduce/ws1/final-review-i1.md","review":"ready","required":[],"settled":true}
++- finding-source · {"version":1,"source":"i1/final","artifact":"reviews/i1/final-review-i1.md","kind":"final-review","verdict":"ready","occurrences":[]}
++- review-collection · {"invocationId":"i1","workspace":"/tmp/ufz-pr1/judge-5-reproduce/ws1","reviewPath":"/tmp/ufz-pr1/judge-5-reproduce/ws1/final-review-i1.md","review":"ready","required":[],"settled":true,"files":[{"path":"assembled/final-review-i1-final/clusters.json","sha256":"2118bede815748f9e2a8b2e3a7c64f33f13cf214c30c5d973a7a35cee7fa2eb8"},{"path":"assembled/final-review-i1-final/diffstat.txt","sha256":"127cf47f4d198c0843ab0b4e937f64a004926704042561f96d8ec81ec5eec354"},{"path":"assembled/final-review-i1-final/digest.md","sha256":"74c764066ac697ec981b8817a98a82d3a9adc76c9f48016b3f43222cba705e4c"},{"path":"assembled/final-review-i1-final/slices/docs__superpowers__runs__probe__run.md.diff","sha256":"7f2ddcd51c4503c10638d45e345134849e3070cc2d0d0957c2d431764256652d"},{"path":"assembled/final-review-i1-final/slices/product.txt.diff","sha256":"1e383495549ae415fba9427db4e601fe117cf9cd0b0550247daabc8ae7e03ce1"},{"path":"final-review-i1.md","sha256":"92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"}],"complete":true,"gaps":[]}

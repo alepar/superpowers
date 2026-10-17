@@ -1,0 +1,16 @@
+{ "t0": "2026-10-12T00:00:00Z", "idPrefix": "ga",
+  "session": [
+    ["prompt", -100, "<command-name>/super-auto</command-name>"],
+    ["usage", -90, 40000],
+    ["usage", 100, 60000],
+    ["compact", 200, "auto", 70000],
+    ["prompt", 1000, "<command-name>/super-auto</command-name>"],
+    ["usage", 1100, 150000],
+    ["usage", 4000, 80000],
+    ["prompt", 4100, "<command-name>/super-auto</command-name>"],
+    ["compact", 4200, "auto", 90000, 10000],
+    ["usage", 4300, 20000],
+    ["usage", 4500, 100000],
+    ["usage", 4600, 30000]
+  ],
+  "agents": [ { "label": "impl:cg.1", "start": 0, "end": 500, "context": [[1, 30000]] } ] }

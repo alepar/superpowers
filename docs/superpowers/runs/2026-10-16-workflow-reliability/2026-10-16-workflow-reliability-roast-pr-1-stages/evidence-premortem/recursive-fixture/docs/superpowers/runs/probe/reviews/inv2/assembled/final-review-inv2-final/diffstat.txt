@@ -1,0 +1,8 @@
+.../reviews/inv1/assembled/final-review-inv1-final/diffstat.txt  | 3 +++
+ .../reviews/inv1/assembled/final-review-inv1-final/digest.md     | 2 ++
+ .../slices/docs__superpowers__runs__probe__run.md.diff           | 9 +++++++++
+ .../assembled/final-review-inv1-final/slices/product.txt.diff    | 7 +++++++
+ docs/superpowers/runs/probe/reviews/inv1/final-review-inv1.md    | 8 ++++++++
+ docs/superpowers/runs/probe/run.md                               | 6 ++++++
+ product.txt                                                      | 2 +-
+ 7 files changed, 36 insertions(+), 1 deletion(-)

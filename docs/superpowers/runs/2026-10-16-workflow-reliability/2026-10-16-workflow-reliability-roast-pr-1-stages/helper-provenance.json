@@ -1,0 +1,15 @@
+{
+  "canonicalEngineMatches": true,
+  "sha256": "a5566bedf216a5b93a51d14142efecc4da1c28032ab1d17a19e9a30a4c5a8aee",
+  "engineSource": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/super-roast-workflow.md",
+  "engineOperations": [
+    "mergeGroup",
+    "remainder cap",
+    "panel cap",
+    "blind",
+    "defaultRoute",
+    "coverage block",
+    "seatAgreementLine",
+    "enforce"
+  ]
+}

@@ -1,0 +1,19 @@
+diff --git a/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__slices__product.txt.diff.diff b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__slices__product.txt.diff.diff
+new file mode 100644
+index 0000000..db2ecfd
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__slices__product.txt.diff.diff
+@@ -0,0 +1,13 @@
++diff --git a/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/slices/product.txt.diff b/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/slices/product.txt.diff
++new file mode 100644
++index 0000000..e131fc0
++--- /dev/null
+++++ b/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/slices/product.txt.diff
++@@ -0,0 +1,7 @@
+++diff --git a/product.txt b/product.txt
+++index 3367afd..0665a87 100644
+++--- a/product.txt
++++++ b/product.txt
+++@@ -1 +1 @@
+++-old
++++UNIQUE_PRODUCT_DELTA

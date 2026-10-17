@@ -1,0 +1,1 @@
+const cp=require('node:child_process');const p=cp.spawnSync('bash',process.argv.slice(2),{encoding:'utf8'});let parse;try{parse=JSON.parse(p.stdout).findings.length}catch(e){parse=e.message};console.log(JSON.stringify({status:p.status,signal:p.signal,error:p.error?.message,stdoutBytes:Buffer.byteLength(p.stdout),stderr:p.stderr,parse},null,2));

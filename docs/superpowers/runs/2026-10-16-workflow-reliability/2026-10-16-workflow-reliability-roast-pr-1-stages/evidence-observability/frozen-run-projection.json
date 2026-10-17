@@ -1,0 +1,3355 @@
+{
+  "version": 1,
+  "findings": [
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-1",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-1",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-1.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No historical staged workflow was executed and no hosted Workflow or live agent behavior was tested; this review establishes the assigned snapshot's source identity and syntax only.",
+          "text": "No historical staged workflow was executed and no hosted Workflow or live agent behavior was tested; this review establishes the assigned snapshot's source identity and syntax only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-1.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-1",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-1",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-1.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Other clusters, their composition, and root acceptance obligations are outside this cluster review.",
+          "text": "Other clusters, their composition, and root acceptance obligations are outside this cluster review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-1.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review checked syntax and source behavior; it did not rerun the four real-process fault-injection cases or independently verify their saved execution logs.",
+          "text": "This review checked syntax and source behavior; it did not rerun the four real-process fault-injection cases or independently verify their saved execution logs."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "An unexpected failure of the outer oracle's real process inspection or teardown is outside the two injected fixture failure modes and was not exercised here.",
+          "text": "An unexpected failure of the outer oracle's real process inspection or teardown is outside the two injected fixture failure modes and was not exercised here."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-10",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The evidence probe relies on exact replay-source markers; explicit extraction-boundary assertions would make future fixture renaming failures clearer, while the markers match the captured revision reviewed here.",
+          "text": "The evidence probe relies on exact replay-source markers; explicit extraction-boundary assertions would make future fixture renaming failures clearer, while the markers match the captured revision reviewed here."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-10.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-11",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-11",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-11.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review did not rerun the runner or exercise spawn failure, signal interruption, nonempty hygiene, unknown inspection, or cleanup failure branches; retained measurements exercise the ordinary suite-completion and empty-hygiene path.",
+          "text": "This review did not rerun the runner or exercise spawn failure, signal interruption, nonempty hygiene, unknown inspection, or cleanup failure branches; retained measurements exercise the ordinary suite-completion and empty-hygiene path."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-11.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-11",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-11",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-11.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The runner retains the original run's fixed temp directory and installed canonical cleanup-helper path; portability, concurrent reruns, fresh environment setup, and preserving repeated same-prefix measurements would require additional work before treating it as a general-purpose test runner.",
+          "text": "The runner retains the original run's fixed temp directory and installed canonical cleanup-helper path; portability, concurrent reruns, fresh environment setup, and preserving repeated same-prefix measurements would require additional work before treating it as a general-purpose test runner."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-11.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-12",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-12",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-12.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The CLI and output-file write were inspected but not executed; verification independently recomputed all 17 comparisons using captured Git objects to avoid changing caller evidence.",
+          "text": "The CLI and output-file write were inspected but not executed; verification independently recomputed all 17 comparisons using captured Git objects to avoid changing caller evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-12.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-12",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-12",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-12.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "This cluster review does not rerun the underlying agent behavior trials or live isolation evaluation; matching their source hashes establishes source correspondence only.",
+          "text": "This cluster review does not rerun the underlying agent behavior trials or live isolation evaluation; matching their source hashes establishes source correspondence only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-12.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[P1] skills/super-code/coordinator.js:2256 — Bind a persisted invocation identity to its captured source before writing any review artifact and preserve existing partial bundle contents on unsettled resume; advancing integration currently redispatches the same cluster/assembly paths against a different source, allowing earlier findings to disappear.",
+          "text": "[P1] skills/super-code/coordinator.js:2256 — Bind a persisted invocation identity to its captured source before writing any review artifact and preserve existing partial bundle contents on unsettled resume; advancing integration currently redispatches the same cluster/assembly paths against a different source, allowing earlier findings to disappear."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Must fix before landing",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Must fix before landing",
+          "position": 2,
+          "key": "[P2] tests/super-code/test-dispatch-text.sh:10 — Normalize the trailing TMPDIR slash; inherited macOS TMPDIR produces double-slash fixture paths and four required-suite failures, while TMPDIR=/private/tmp passes.",
+          "text": "[P2] tests/super-code/test-dispatch-text.sh:10 — Normalize the trailing TMPDIR slash; inherited macOS TMPDIR produces double-slash fixture paths and four required-suite failures, while TMPDIR=/private/tmp passes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Fresh live Workflow execution of the timer/admission and interruption-resume instructions was not performed in this cluster review; replay coverage uses injected runtime hooks and canned agent replies.",
+          "text": "Fresh live Workflow execution of the timer/admission and interruption-resume instructions was not performed in this cluster review; replay coverage uses injected runtime hooks and canned agent replies."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Native Linux process inspection was not exercised in this macOS review.",
+          "text": "Native Linux process inspection was not exercised in this macOS review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-13",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence.",
+          "text": "Existing explicit caller-owned behavior-evaluation and measurement obligations remain separate acceptance work; this review does not promote replay evidence to live evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-13.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-14",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-14",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-14.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review ran deterministic assembly and mock-engine tests; it did not independently run hosted Workflow agents or establish live reviewers' adherence to the rendered isolation instructions.",
+          "text": "This review ran deterministic assembly and mock-engine tests; it did not independently run hosted Workflow agents or establish live reviewers' adherence to the rendered isolation instructions."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-14.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-15",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-15",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-15.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The phrase-presence checks establish documented command references, not semantic correctness of collection/projection behavior or live agent adherence; those require their owning clusters and integrated evaluation.",
+          "text": "The phrase-presence checks establish documented command references, not semantic correctness of collection/projection behavior or live agent adherence; those require their owning clusters and integrated evaluation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-15.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-15",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-15",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-15.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "This execution used the host macOS Bash environment; native Linux execution was not performed.",
+          "text": "This execution used the host macOS Bash environment; native Linux execution was not performed."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-15.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[metrics-causal-claim] `docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md:7` and the matching JSON summary/simulation verdict must distinguish the estimated schedule from an observed graph bound: 17h58m exceeds the actual 17h43m, .14 starts before .20 exists, readiness is unknown, and most of the window is idle; qualify or substantiate the claim that this dependency chain set the pace.",
+          "text": "[metrics-causal-claim] `docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md:7` and the matching JSON summary/simulation verdict must distinguish the estimated schedule from an observed graph bound: 17h58m exceeds the actual 17h43m, .14 starts before .20 exists, readiness is unknown, and most of the window is idle; qualify or substantiate the claim that this dependency chain set the pace."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Product suites were not rerun for this documentation-only cluster review; named result records were checked for consistency, without independently reproducing their original sessions.",
+          "text": "Product suites were not rerun for this documentation-only cluster review; named result records were checked for consistency, without independently reproducing their original sessions."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned.",
+          "text": "The documented native Linux process-inspection gap, live no-change completion gap, and hosted Workflow limitations remain explicit; root final sweep and human acceptance remain caller-owned."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Historical proposed/settled task snapshots retain the original .8.4 wording because the corrected successor snapshot and disposition record preserve the actual change.",
+          "text": "Historical proposed/settled task snapshots retain the original .8.4 wording because the corrected successor snapshot and disposition record preserve the actual change."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-16",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Combined source-bound regression coverage and separate standalone packaging coverage are clearly qualified rather than presented as one fresh final-commit linked-worktree run.",
+          "text": "Combined source-bound regression coverage and separate standalone packaging coverage are clearly qualified rather than presented as one fresh final-commit linked-worktree run."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-16.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-17",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-17",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-17.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live roast dispatch or engine replay was performed; this review validates archived packet consistency and cited internal evidence, not the original execution's independent provenance.",
+          "text": "No live roast dispatch or engine replay was performed; this review validates archived packet consistency and cited internal evidence, not the original execution's independent provenance."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-17.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-17",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-17",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-17.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The preserved assembled scout templates contain narrow single-spec wording alongside broader caller context; the dispatch manifest explicitly records the root/nested/tree scope clarification, and historical prompts should remain preserved as evidence.",
+          "text": "The preserved assembled scout templates contain narrow single-spec wording alongside broader caller context; the dispatch manifest explicitly records the root/nested/tree scope clarification, and historical prompts should remain preserved as evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-17.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The frozen B4 unconditional verification-only acceptance criterion remains unproven: 0 pass, 2 fail, 3 ambiguous; sourceTree and clean-status records absent from the unchanged scenario explain the compatibility limitation, and these artifacts establish neither a live implementation defect nor end-to-end improvement.",
+          "text": "The frozen B4 unconditional verification-only acceptance criterion remains unproven: 0 pass, 2 fail, 3 ambiguous; sourceTree and clean-status records absent from the unchanged scenario explain the compatibility limitation, and these artifacts establish neither a live implementation defect nor end-to-end improvement."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Scenario A establishes caller-file isolation only: every respondent reuses the available `/tmp/acme-review` although an unverified owned process may still use it; separate mutable-output safety is not established by this experiment.",
+          "text": "Scenario A establishes caller-file isolation only: every respondent reuses the available `/tmp/acme-review` although an unverified owned process may still use it; separate mutable-output safety is not established by this experiment."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+        "section": "Untested scope",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+          "section": "Untested scope",
+          "position": 3,
+          "key": "Text responses do not execute cleanup, admission/recovery, persistence, finding collection, check schemas or live acceptance; the cluster cannot independently discharge the epic's mechanical or live obligations.",
+          "text": "Text responses do not execute cleanup, admission/recovery, persistence, finding collection, check schemas or live acceptance; the cluster cannot independently discharge the epic's mechanical or live obligations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Small sample size, manual unblinded scoring, historical rather than concurrent controls, and the disclosed increase from one to three concurrent respondents appropriately limit causal claims.",
+          "text": "Small sample size, manual unblinded scoring, historical rather than concurrent controls, and the disclosed increase from one to three concurrent respondents appropriately limit causal claims."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-18",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Historical absolute paths in prompts and provenance scripts are retained as observations; committed artifacts and verified hash inventories preserve the evidence without requiring those temporary directories to survive.",
+          "text": "Historical absolute paths in prompts and provenance scripts are retained as observations; committed artifacts and verified hash inventories preserve the evidence without requiring those temporary directories to survive."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-18.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This historical text-only bundle does not establish live workflow mechanics, actual process or filesystem safety, or production reliability; those claims require separate evidence and are explicitly excluded by its report.",
+          "text": "This historical text-only bundle does not establish live workflow mechanics, actual process or filesystem safety, or production reliability; those claims require separate evidence and are explicitly excluded by its report."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "No new agent trials were executed; review checked preserved responses, provenance, hashes, and score aggregation, with evaluation execution and shared harness context accepted as recorded limitations.",
+          "text": "No new agent trials were executed; review checked preserved responses, provenance, hashes, and score aggregation, with evaluation execution and shared harness context accepted as recorded limitations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Case A's ambiguity about reuse of directories potentially occupied by an unverified process is disclosed and excluded from shared-output safety claims; retaining the unchanged historical scenario is appropriate for this reference archive.",
+          "text": "Case A's ambiguity about reuse of directories potentially occupied by an unverified process is disclosed and excluded from shared-output safety claims; retaining the unchanged historical scenario is appropriate for this reference archive."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-19",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "The historical prepared after-pack retains original temporary paths and is explicitly marked prepared rather than executed; it does not claim after-implementation results.",
+          "text": "The historical prepared after-pack retains original temporary paths and is explicitly marked prepared rather than executed; it does not claim after-implementation results."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-19.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Fresh live agent dispatch, failure-path behavior for missing replay inputs, and execution against the original physical /tmp fixture were not exercised; verification used captured inputs with all writes intercepted in memory.",
+          "text": "Fresh live agent dispatch, failure-path behavior for missing replay inputs, and execution against the original physical /tmp fixture were not exercised; verification used captured inputs with all writes intercepted in memory."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The archived driver hardcodes shared /tmp input/output locations and reuses output names; acceptable as preserved historical evidence, but any future concurrent reuse should first parameterize a unique owned directory.",
+          "text": "The archived driver hardcodes shared /tmp input/output locations and reuses output names; acceptable as preserved historical evidence, but any future concurrent reuse should first parameterize a unique owned directory."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-2",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Captured stage results are replay evidence, not a new live behavior evaluation; this cluster does not independently establish the epic's broader acceptance obligations.",
+          "text": "Captured stage results are replay evidence, not a new live behavior evaluation; this cluster does not independently establish the epic's broader acceptance obligations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-2.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-20",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-20",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-20.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No agent behavior trials or full workflow execution were rerun for these historical snapshots; this review verifies retained content and provenance, while evaluation outcomes and cross-cluster acceptance remain outside this cluster.",
+          "text": "No agent behavior trials or full workflow execution were rerun for these historical snapshots; this review verifies retained content and provenance, while evaluation outcomes and cross-cluster acceptance remain outside this cluster."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-20.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-21",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-21",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-21.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This archive integrity review does not rerun respondents, validate behavior scoring, or establish live workflow acceptance; those belong to the surrounding evaluation and integration reviews.",
+          "text": "This archive integrity review does not rerun respondents, validate behavior scoring, or establish live workflow acceptance; those belong to the surrounding evaluation and integration reviews."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-21.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-22",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-22",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-22.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live super-roast execution, automatic skill discovery, or later product guidance behavior was exercised; these archived files support only their recorded frozen evaluation source.",
+          "text": "No live super-roast execution, automatic skill discovery, or later product guidance behavior was exercised; these archived files support only their recorded frozen evaluation source."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-22.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-23",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-23",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-23.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live upstream-feedback execution or new behavioral trial was performed; this review validates the assigned historical source snapshot, not whole-epic acceptance or the complete evaluation pack.",
+          "text": "No live upstream-feedback execution or new behavioral trial was performed; this review validates the assigned historical source snapshot, not whole-epic acceptance or the complete evaluation pack."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-23.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "These are text-only decisions; actual coordinator execution, persistence, schema/helper correctness, process termination, and caller/output filesystem isolation require independent live or deterministic evidence outside this cluster.",
+          "text": "These are text-only decisions; actual coordinator execution, persistence, schema/helper correctness, process termination, and caller/output filesystem isolation require independent live or deterministic evidence outside this cluster."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Scenario A ambiguously calls a worktree available while an unverified server may use it; its documented A2 scoring supports caller-file isolation only and cannot establish isolation between concurrent mutable reproductions.",
+          "text": "Scenario A ambiguously calls a worktree available while an unverified server may use it; its documented A2 scoring supports caller-file isolation only and cannot establish isolation between concurrent mutable reproductions."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Untested scope",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Untested scope",
+          "position": 3,
+          "key": "This review validated retained artifacts and scoring, not the original fresh-agent execution or a new after-implementation run; common harness context remains present in both arms.",
+          "text": "This review validated retained artifacts and scoring, not the original fresh-agent execution or a new after-implementation run; common harness context remains present in both arms."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Five repetitions per arm and unblinded manual scoring support descriptive counts only; those limits are explicit in the retained report.",
+          "text": "Five repetitions per arm and unblinded manual scoring support descriptive counts only; those limits are explicit in the retained report."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "The excluded C pilot retains the original prompt, guidance bytes, response, identity, and explanation; its correction precedes the five counted runs according to the pack's recorded provenance.",
+          "text": "The excluded C pilot retains the original prompt, guidance bytes, response, identity, and explanation; its correction precedes the five counted runs according to the pack's recorded provenance."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+        "section": "Deferred OK",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-24",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md",
+          "section": "Deferred OK",
+          "position": 3,
+          "key": "Historical /tmp paths are retained as exact experiment inputs and accompanied by the committed scenario/guidance bytes; after-pack.json explicitly describes a prepared reuse recipe rather than completed after evidence.",
+          "text": "Historical /tmp paths are retained as exact experiment inputs and accompanied by the committed scenario/guidance bytes; after-pack.json explicitly describes a prepared reuse recipe rather than completed after evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-24.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[P2] Restore the five missing archived files or replace their manifest/report locations with retained, hash-verified equivalents: `artifact-manifest.json:76-80` declares `caller/build/caller-output.txt` and four files under `caller/.superpowers/sdd/ufz-live-review-plan/` (`final-review-seat-b-live.md`, `progress.md`, `final-review-seat-b-live.md.diff`, `ufz-live-review-plan.md`), but all five `git show 612ea0a7:<archive-prefix>/<path>` reads fail. The report at lines 26 and 45 claims the direct-input package, final artifact, fixture plan, and ledger are retained; its manifest separately declares the missing caller output sentinel. Archive these ignored fixture files explicitly and verify every manifest entry against the committed tree; keep the captured historical evidence unchanged.",
+          "text": "[P2] Restore the five missing archived files or replace their manifest/report locations with retained, hash-verified equivalents: `artifact-manifest.json:76-80` declares `caller/build/caller-output.txt` and four files under `caller/.superpowers/sdd/ufz-live-review-plan/` (`final-review-seat-b-live.md`, `progress.md`, `final-review-seat-b-live.md.diff`, `ufz-live-review-plan.md`), but all five `git show 612ea0a7:<archive-prefix>/<path>` reads fail. The report at lines 26 and 45 claims the direct-input package, final artifact, fixture plan, and ledger are retained; its manifest separately declares the missing caller output sentinel. Archive these ignored fixture files explicitly and verify every manifest entry against the committed tree; keep the captured historical evidence unchanged."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No fresh multi-agent behavioral exercise was run; this review inspected the archived scripts and evidence integrity.",
+          "text": "No fresh multi-agent behavioral exercise was run; this review inspected the archived scripts and evidence integrity."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The real coordinator assembler-failure transition, task-review no-test policy, hosted Workflow execution, repeated-run reliability, and arbitrary background descendants remain outside this exercise, as its report explicitly states.",
+          "text": "The real coordinator assembler-failure transition, task-review no-test policy, hosted Workflow execution, repeated-run reliability, and arbitrary background descendants remain outside this exercise, as its report explicitly states."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The historical single-run behavioral observation remains useful with its stated source revision and coverage limits; it does not establish behavior for later source changes.",
+          "text": "The historical single-run behavioral observation remains useful with its stated source revision and coverage limits; it does not establish behavior for later source changes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-25",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Global process inspection was unavailable in the exercise; the report preserves that uncertainty rather than claiming global verified termination.",
+          "text": "Global process inspection was unavailable in the exercise; the report preserves that uncertainty rather than claiming global verified termination."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-25.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-26",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-26",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-26.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The supported show branch was not rerun because it depends on the historical `/private/tmp/ufz-live-isolation/spec.json`; this review does not recertify the archived two-seat exercise.",
+          "text": "The supported show branch was not rerun because it depends on the historical `/private/tmp/ufz-live-isolation/spec.json`; this review does not recertify the archived two-seat exercise."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-26.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-27",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-27",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-27.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This static fixture-file review did not rerun the live isolation scenario or establish its end-to-end outcome; those scripts and evidence belong to other clusters.",
+          "text": "This static fixture-file review did not rerun the live isolation scenario or establish its end-to-end outcome; those scripts and evidence belong to other clusters."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-27.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-28",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-28",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-28.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Marker contents alone cannot establish live review isolation, stage ordering, or preservation of caller outputs; those claims require the other evidence clusters and their composition review.",
+          "text": "Marker contents alone cannot establish live review isolation, stage ordering, or preservation of caller outputs; those claims require the other evidence clusters and their composition review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-28.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-3",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-3",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-3.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The live two-seat isolation exercise was not rerun; this cluster review validates its archived final formatter, not the wider exercise or coordinator integration.",
+          "text": "The live two-seat isolation exercise was not rerun; this cluster review validates its archived final formatter, not the wider exercise or coordinator integration."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-3.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-3",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-3",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-3.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Non-integer and non-finite inputs were not tested because the fixture contract specifies integer cents.",
+          "text": "Non-integer and non-finite inputs were not tested because the fixture contract specifies integer cents."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-3.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-30",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-30",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-30.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Static review of archived prompts only; this reviewer did not rerun the live seats, fixture controller, reproduction, recorder, or evaluator, and makes no independent claim about their runtime outcomes.",
+          "text": "Static review of archived prompts only; this reviewer did not rerun the live seats, fixture controller, reproduction, recorder, or evaluator, and makes no independent claim about their runtime outcomes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-30.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-30",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-30",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-30.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Full evidence sufficiency and composition with other clusters remain outside this cluster review.",
+          "text": "Full evidence sufficiency and composition with other clusters remain outside this cluster review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-30.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-31",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-31",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-31.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This documentation review did not rerun the historical live fixture or establish arbitrary process/side-effect absence; it checked the retained seat-A command record against the two assigned artifacts.",
+          "text": "This documentation review did not rerun the historical live fixture or establish arbitrary process/side-effect absence; it checked the retained seat-A command record against the two assigned artifacts."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-31.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-31",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-31",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-31.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Whole-epic acceptance and composition with other clusters remain outside this cluster review.",
+          "text": "Whole-epic acceptance and composition with other clusters remain outside this cluster review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-31.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-32",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-32",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-32.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This evidence-only cluster was checked statically; the live isolation run and cross-cluster provenance/acceptance are outside this cluster review and were not rerun.",
+          "text": "This evidence-only cluster was checked statically; the live isolation run and cross-cluster provenance/acceptance are outside this cluster review and were not rerun."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-32.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-33",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-33",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-33.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review inspected the two archived evidence files and corroborating records; it did not rerun the live multi-seat experiment or establish whole-epic acceptance.",
+          "text": "This review inspected the two archived evidence files and corroborating records; it did not rerun the live multi-seat experiment or establish whole-epic acceptance."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-33.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-33",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-33",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-33.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The response's successful assembler run does not cover the unavailable-assembler fallback path; this limitation is explicit in the artifact.",
+          "text": "The response's successful assembler run does not cover the unavailable-assembler fallback path; this limitation is explicit in the artifact."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-33.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-34",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-34",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-34.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The live two-seat exercise was not rerun; this review validates the captured JSON and its stated provenance, not the broader harness or product behavior.",
+          "text": "The live two-seat exercise was not rerun; this review validates the captured JSON and its stated provenance, not the broader harness or product behavior."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-34.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-35",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-35",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-35.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The surrounding live experiment, provenance of this marker, concurrent caller changes, and end-to-end output isolation are outside this single-file cluster; no live experiment was rerun.",
+          "text": "The surrounding live experiment, provenance of this marker, concurrent caller changes, and end-to-end output isolation are outside this single-file cluster; no live experiment was rerun."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-35.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-36",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-36",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-36.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This archive review does not independently establish live reviewer behavior, runtime helper correctness, or whole-epic acceptance; those lie outside the four assigned evidence excerpts.",
+          "text": "This archive review does not independently establish live reviewer behavior, runtime helper correctness, or whole-epic acceptance; those lie outside the four assigned evidence excerpts."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-36.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "These text-only trials do not establish live verification-only dispatch, helper/schema enforcement, actual Git/status inspection, tracker closure, persistence/recovery, automatic skill discovery, or end-to-end acceptance; the report explicitly preserves those limits and separate evidence obligations.",
+          "text": "These text-only trials do not establish live verification-only dispatch, helper/schema enforcement, actual Git/status inspection, tracker closure, persistence/recovery, automatic skill discovery, or end-to-end acceptance; the report explicitly preserves those limits and separate evidence obligations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Agent launch freshness, exact runtime launch order, absence of hidden coaching and pretrial wall-clock ordering cannot be independently established from retained text/hash artifacts alone; this review validates their recorded evidence, not an independently captured execution trace.",
+          "text": "Agent launch freshness, exact runtime launch order, absence of hidden coaching and pretrial wall-clock ordering cannot be independently established from retained text/hash artifacts alone; this review validates their recorded evidence, not an independently captured execution trace."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The original frozen B4 result remains 0 pass / 2 fail / 3 ambiguous; this supplemental diagnostic neither repairs nor replaces that result, and its ready verdict applies to this evidence cluster only.",
+          "text": "The original frozen B4 result remains 0 pass / 2 fail / 3 ambiguous; this supplemental diagnostic neither repairs nor replaces that result, and its ready verdict applies to this evidence cluster only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-37",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "The control-4 hash transcription error and final-4 unsupported loop-exit assumption are retained as collateral concerns; the narrowly defined D1-D4 counts do not claim complete procedural correctness.",
+          "text": "The control-4 hash transcription error and final-4 unsupported loop-exit assumption are retained as collateral concerns; the narrowly defined D1-D4 counts do not claim complete procedural correctness."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-37.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Historical bounded text answers do not establish live workflow acceptance, automatic skill discovery, helper correctness, process cleanup, persistent recovery or production reliability; independent mechanical and live evidence belongs to other review scopes.",
+          "text": "Historical bounded text answers do not establish live workflow acceptance, automatic skill discovery, helper correctness, process cleanup, persistent recovery or production reliability; independent mechanical and live evidence belongs to other review scopes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The original B4 unconditional criterion remains unproven (two fail and three ambiguous); the archived report explicitly limits its interpretation and does not claim a product defect or an end-to-end improvement effect size.",
+          "text": "The original B4 unconditional criterion remains unproven (two fail and three ambiguous); the archived report explicitly limits its interpretation and does not claim a product defect or an end-to-end improvement effect size."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Retain historical absolute paths and original freeze/scoring scripts unchanged as provenance; the portable inventories and source snapshots preserve their referenced bytes.",
+          "text": "Retain historical absolute paths and original freeze/scoring scripts unchanged as provenance; the portable inventories and source snapshots preserve their referenced bytes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-38",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Retain the disclosed A-scenario shared-resource ambiguity, unblinded manual scoring, small samples and concurrency deviation as limits of this historical evaluation.",
+          "text": "Retain the disclosed A-scenario shared-resource ambiguity, unblinded manual scoring, small samples and concurrency deviation as limits of this historical evaluation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-38.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Historical trial execution and agent freshness were not rerun or independently reconstructed from external session logs; this review checks the preserved prompts, responses, metadata, hashes, and score consistency.",
+          "text": "Historical trial execution and agent freshness were not rerun or independently reconstructed from external session logs; this review checks the preserved prompts, responses, metadata, hashes, and score consistency."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "This text-decision pack does not establish live process termination, reproduction-output isolation, persistence, helper correctness, or current integrated run acceptance; those are outside this historical reference cluster.",
+          "text": "This text-decision pack does not establish live process termination, reproduction-output isolation, persistence, helper correctness, or current integrated run acceptance; those are outside this historical reference cluster."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-39",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The documented scenario-A shared-worktree ambiguity, small sample, unblinded manual scoring, and excluded pilot remain acceptable qualifications for descriptive historical evidence; they cannot support stronger safety or causal claims.",
+          "text": "The documented scenario-A shared-worktree ambiguity, small sample, unblinded manual scoring, and excluded pilot remain acceptable qualifications for descriptive historical evidence; they cannot support stronger safety or causal claims."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-39.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-4",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-4",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-4.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The archived live isolation exercise was not rerun; this review verifies the marker and its recorded verification contract only.",
+          "text": "The archived live isolation exercise was not rerun; this review verifies the marker and its recorded verification contract only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-4.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-41",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-41",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-41.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live agent behavior evaluation was performed for these historical copies; snapshot identity verification establishes provenance, not current integrated workflow behavior.",
+          "text": "No live agent behavior evaluation was performed for these historical copies; snapshot identity verification establishes provenance, not current integrated workflow behavior."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-41.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-42",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-42",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-42.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Live skill execution and the applicability of historical evaluation results to current product contracts were not tested; this cluster adds archival source snapshots only.",
+          "text": "Live skill execution and the applicability of historical evaluation results to current product contracts were not tested; this cluster adds archival source snapshots only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-42.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-43",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-43",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-43.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Evaluation execution, downstream evidence claims and composition with other clusters were outside this historical-source-only review; snapshot fidelity was checked directly without executing its embedded instructions.",
+          "text": "Evaluation execution, downstream evidence claims and composition with other clusters were outside this historical-source-only review; snapshot fidelity was checked directly without executing its embedded instructions."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-43.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-45",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-45",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-45.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Diagnostic trial execution, evaluation conclusions, and production reviewer behavior are outside this single-file historical snapshot cluster; the byte comparison establishes snapshot fidelity only.",
+          "text": "Diagnostic trial execution, evaluation conclusions, and production reviewer behavior are outside this single-file historical snapshot cluster; the byte comparison establishes snapshot fidelity only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-45.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-46",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-46",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-46.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live reporter execution or whole-diagnostic outcome validation was performed; this cluster contains only an archived source snapshot, and those cross-cluster acceptance claims remain outside this review.",
+          "text": "No live reporter execution or whole-diagnostic outcome validation was performed; this cluster contains only an archived source snapshot, and those cross-cluster acceptance claims remain outside this review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-46.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-48",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-48",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-48.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Live no-change completion, tracker closure, recovery and full-suite behavior were not exercised by this archival-source review; this verdict covers snapshot integrity and the assigned retained contracts only.",
+          "text": "Live no-change completion, tracker closure, recovery and full-suite behavior were not exercised by this archival-source review; this verdict covers snapshot integrity and the assigned retained contracts only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-48.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-49",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-49",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-49.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Diagnostic trial execution, scoring, other clusters, installed skill behavior and whole-epic acceptance were outside this two-file archival review; no live behavior evaluation is claimed.",
+          "text": "Diagnostic trial execution, scoring, other clusters, installed skill behavior and whole-epic acceptance were outside this two-file archival review; no live behavior evaluation is claimed."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-49.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-5",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-5",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-5.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review did not rerun the mutating fixture or certify the full multi-seat isolation exercise; its recorded behavioral claims and orchestration belong to their owning clusters.",
+          "text": "This review did not rerun the mutating fixture or certify the full multi-seat isolation exercise; its recorded behavioral claims and orchestration belong to their owning clusters."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-5.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-50",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-50",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-50.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No behavior sessions were rerun; this review verifies the assigned archival source snapshot and its integrity, not the surrounding diagnostic's scoring or overall epic acceptance.",
+          "text": "No behavior sessions were rerun; this review verifies the assigned archival source snapshot and its integrity, not the surrounding diagnostic's scoring or overall epic acceptance."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-50.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Runtime conformance and cross-cluster integration were outside this documentation cluster; no implementation tests were run.",
+          "text": "Runtime conformance and cross-cluster integration were outside this documentation cluster; no implementation tests were run."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The explicitly excluded, untracked historical triage inventory and its count of 37 entries were not independently audited.",
+          "text": "The explicitly excluded, untracked historical triage inventory and its count of 37 entries were not independently audited."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-51",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The new index rows remain draft while root acceptance and the finishing workflow are pending; INDEX assigns the status transition to finishing-a-development-branch.",
+          "text": "The new index rows remain draft while root acceptance and the finishing workflow are pending; INDEX assigns the status transition to finishing-a-development-branch."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-51.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation.",
+          "text": "Live ordinary-subagent behavior and authoritative tracker operation are outside these simulated replay transcripts; task super-plan-ufz.3 assigns live evaluation to the coordinator, and this review does not establish that acceptance obligation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "This evidence review did not independently rerun the recorded suites or establish suite success at captured integration head 612ea0a7e4d64480bdd01e0ac842b539115342ee; post-rebase success is scoped to its explicitly recorded source.",
+          "text": "This evidence review did not independently rerun the recorded suites or establish suite success at captured integration head 612ea0a7e4d64480bdd01e0ac842b539115342ee; post-rebase success is scoped to its explicitly recorded source."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-53",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "The initial green transcript and fixture-augmented red baseline provide qualified historical context; prefer the explicitly source-bound post-rebase artifact when citing successful task-level replay verification.",
+          "text": "The initial green transcript and fixture-augmented red baseline provide qualified historical context; prefer the explicitly source-bound post-rebase artifact when citing successful task-level replay verification."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-53.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations.",
+          "text": "Fresh-agent execution of these scenarios and enclosing root acceptance are coordinator-owned; this review validates the scenario document, not completion of those evaluations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-54",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Referenced deterministic suites were inspected at the captured head but not executed by this reviewer.",
+          "text": "Referenced deterministic suites were inspected at the captured head but not executed by this reviewer."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-54.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Fixture commands were not rerun in this documentation-only cluster review; support was checked against captured fixture source and assertions.",
+          "text": "Fixture commands were not rerun in this documentation-only cluster review; support was checked against captured fixture source and assertions."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-55",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review.",
+          "text": "Independent fresh-agent report interpretation and live-run acceptance are coordinator-owned obligations explicitly excluded from this artifact's claims; their completion is outside this cluster review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-55.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[P1] `skills/super-auto/SKILL.md:174`: Phase 7 tells the caller merely to list resources retained by `remove-task-worktree --sweep`, then permits the finishing skill to remove their parent worktree; the run-level process sweep occurs afterward. Honor exits 3/4 and every retained nested worktree/temp resource before parent removal, and verify run-owned processes before deleting the resources they may need. The isolated Git reproduction above proves that ordinary parent removal can destroy a dirty child under ignored `.worktrees/`; the new helper's retention guarantee therefore does not survive this caller path. Add an outer-finish regression case covering retained descendants and unknown/surviving process outcomes.",
+          "text": "[P1] `skills/super-auto/SKILL.md:174`: Phase 7 tells the caller merely to list resources retained by `remove-task-worktree --sweep`, then permits the finishing skill to remove their parent worktree; the run-level process sweep occurs afterward. Honor exits 3/4 and every retained nested worktree/temp resource before parent removal, and verify run-owned processes before deleting the resources they may need. The isolated Git reproduction above proves that ordinary parent removal can destroy a dirty child under ignored `.worktrees/`; the new helper's retention guarantee therefore does not survive this caller path. Add an outer-finish regression case covering retained descendants and unknown/surviving process outcomes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+        "section": "Must fix before landing",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md",
+          "section": "Must fix before landing",
+          "position": 2,
+          "key": "[P2] `skills/super-auto/scripts/report-status:168`: `--acceptance` delegates collection validation to ordinary status, whose lines 293–296 only inspect persisted `complete`/`gaps` metadata and never verify current archived files against `files[].sha256`. A previously complete but subsequently corrupted or missing direct input can therefore authorize root closure, contrary to run-state.md's stated independent collection-integrity check. Perform read-only archive existence/hash verification at the gate and return a gap on mismatch; cover archive corruption/deletion after successful collection without requiring a separate mutating `--collect` replay.",
+          "text": "[P2] `skills/super-auto/scripts/report-status:168`: `--acceptance` delegates collection validation to ordinary status, whose lines 293–296 only inspect persisted `complete`/`gaps` metadata and never verify current archived files against `files[].sha256`. A previously complete but subsequently corrupted or missing direct input can therefore authorize root closure, contrary to run-state.md's stated independent collection-integrity check. Perform read-only archive existence/hash verification at the gate and return a gap on mismatch; cover archive corruption/deletion after successful collection without requiring a separate mutating `--collect` replay."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Native Linux `/proc` process discovery/termination was not exercised in this review; the supplied digest also explicitly qualifies that platform coverage.",
+          "text": "Native Linux `/proc` process discovery/termination was not exercised in this review; the supplied digest also explicitly qualifies that platform coverage."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-56",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Live Workflow/ordinary-agent behavior evaluations were not independently rerun; this review validates the captured cluster's source and focused deterministic fixtures, not other clusters' aggregate acceptance evidence.",
+          "text": "Live Workflow/ordinary-agent behavior evaluations were not independently rerun; this review validates the captured cluster's source and focused deterministic fixtures, not other clusters' aggregate acceptance evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-56.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-57",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-57",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-57.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "The complete shell contract-lint suite was inspected but not executed; validation here checked the two captured fixtures directly against their pinned schema and consumer.",
+          "text": "The complete shell contract-lint suite was inspected but not executed; validation here checked the two captured fixtures directly against their pinned schema and consumer."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-57.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This review verifies the archived source and provenance; it does not rerun the two-seat behavioral exercise or certify every runtime coordinator path from this historical snapshot.",
+          "text": "This review verifies the archived source and provenance; it does not rerun the two-seat behavioral exercise or certify every runtime coordinator path from this historical snapshot."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "The associated live exercise explicitly excludes the real coordinator assembler-failure transition, task-review no-test behavior, repeated-run reliability and hosted Workflow execution; no additional coverage is claimed for this cluster.",
+          "text": "The associated live exercise explicitly excludes the real coordinator assembler-failure transition, task-review no-test behavior, repeated-run reliability and hosted Workflow execution; no additional coverage is claimed for this cluster."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-6",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Preserve this historical snapshot at its declared source version; later runtime coordinator changes do not require rewriting the evidence artifact.",
+          "text": "Preserve this historical snapshot at its declared source version; later runtime coordinator changes do not require rewriting the evidence artifact."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-6.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-7",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-7",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-7.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No fresh live agent exercise or complete dispatch-helper runtime suite was run in this archival-file review; the broader exercise and production implementation belong to other clusters and composition review.",
+          "text": "No fresh live agent exercise or complete dispatch-helper runtime suite was run in this archival-file review; the broader exercise and production implementation belong to other clusters and composition review."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-7.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-8",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-8",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-8.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "No live review agents or complete assembler workflow were rerun for this archived source copy; validation here establishes syntax, source fidelity, and static consistency only.",
+          "text": "No live review agents or complete assembler workflow were rerun for this archived source copy; validation here establishes syntax, source fidelity, and static consistency only."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-8.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[P1; cluster 13] `skills/super-code/coordinator.js:2256`: bind each persisted invocation identity to captured source before writing review artifacts and preserve existing partial contents on unsettled resume. The cluster's real-builder replay reused `final-review-resume-same.cluster-1.md` and the assembly path with heads `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb` then `cccccccccccccccccccccccccccccccccccccccc`; persisted Launch records retained neither source binding. Findings can disappear after integration advances. Source evidence: cluster-13.md and its retained probe `/private/tmp/ufz-cluster13-review-612ea0a7-20261017/tests/super-code/.cluster13-resume-probe.mjs`; preserve a finding-bearing partial artifact through advance/resume and test it.",
+          "text": "[P1; cluster 13] `skills/super-code/coordinator.js:2256`: bind each persisted invocation identity to captured source before writing review artifacts and preserve existing partial contents on unsettled resume. The cluster's real-builder replay reused `final-review-resume-same.cluster-1.md` and the assembly path with heads `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb` then `cccccccccccccccccccccccccccccccccccccccc`; persisted Launch records retained neither source binding. Findings can disappear after integration advances. Source evidence: cluster-13.md and its retained probe `/private/tmp/ufz-cluster13-review-612ea0a7-20261017/tests/super-code/.cluster13-resume-probe.mjs`; preserve a finding-bearing partial artifact through advance/resume and test it."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 2,
+          "key": "[P2; cluster 13] `tests/super-code/test-dispatch-text.sh:10`: normalize the trailing TMPDIR slash. The cluster ran the required suite with inherited macOS TMPDIR and observed four path-assertion failures because mktemp returned a double-slash path while dispatch resolves it; `TMPDIR=/private/tmp` passed. Source evidence: cluster-13.md; retain supported default-environment coverage.",
+          "text": "[P2; cluster 13] `tests/super-code/test-dispatch-text.sh:10`: normalize the trailing TMPDIR slash. The cluster ran the required suite with inherited macOS TMPDIR and observed four path-assertion failures because mktemp returned a double-slash path while dispatch resolves it; `TMPDIR=/private/tmp` passed. Source evidence: cluster-13.md; retain supported default-environment coverage."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 3,
+          "key": "[metrics-causal-claim; cluster 16] `docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md:7` and matching JSON summary/simulation verdict: qualify or substantiate the claimed graph lower bound and causal diagnosis. The 17h58m modeled bound exceeds the observed 17h43m graph window; .14 dispatch at 08:19:58Z precedes .20 creation at 08:27:13Z; both readiness times are unknown; the window includes 14h26m wait and 83% no-agent time. Source evidence: cluster-16.md and captured profile md/json; preserve raw observations while distinguishing estimates from established causes.",
+          "text": "[metrics-causal-claim; cluster 16] `docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md:7` and matching JSON summary/simulation verdict: qualify or substantiate the claimed graph lower bound and causal diagnosis. The 17h58m modeled bound exceeds the observed 17h43m graph window; .14 dispatch at 08:19:58Z precedes .20 creation at 08:27:13Z; both readiness times are unknown; the window includes 14h26m wait and 83% no-agent time. Source evidence: cluster-16.md and captured profile md/json; preserve raw observations while distinguishing estimates from established causes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 4
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 4,
+          "key": "[P2; cluster 25] `docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/artifact-manifest.json:76`: restore or replace with retained hash-verified equivalents the five absent manifest entries: `caller/build/caller-output.txt` plus `caller/.superpowers/sdd/ufz-live-review-plan/{final-review-seat-b-live.md,progress.md,final-review-seat-b-live.md.diff,ufz-live-review-plan.md}`. The cluster found 76 of 81 entries present and hash-matching; all five captured-head Git reads fail although report lines 26/45 claim their retention. The seat-B response duplicates only the final review's hash, leaving package/ledger evidence missing. Source evidence: cluster-25.md, captured manifest/report; repair retention without rewriting historical observations.",
+          "text": "[P2; cluster 25] `docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/artifact-manifest.json:76`: restore or replace with retained hash-verified equivalents the five absent manifest entries: `caller/build/caller-output.txt` plus `caller/.superpowers/sdd/ufz-live-review-plan/{final-review-seat-b-live.md,progress.md,final-review-seat-b-live.md.diff,ufz-live-review-plan.md}`. The cluster found 76 of 81 entries present and hash-matching; all five captured-head Git reads fail although report lines 26/45 claim their retention. The seat-B response duplicates only the final review's hash, leaving package/ledger evidence missing. Source evidence: cluster-25.md, captured manifest/report; repair retention without rewriting historical observations."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 5
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 5,
+          "key": "[P1; cluster 56] `skills/super-auto/SKILL.md:174`: honor task cleanup exits 3/4 and retained nested worktree/temp resources before allowing parent removal, and verify run-owned processes before deleting resources they may need. The phase-7 caller lists retained resources but still delegates parent deletion before its run-level stop. The cluster's independent Git fixture proves ordinary parent removal exits 0 and destroys a dirty child under ignored `.worktrees/`. Source evidence: cluster-56.md and `/tmp/ufz-review-cluster56-612ea0a7/.review-probes/`; the original finish instruction predates this diff, but this new safety contract remains uncovered. Add outer-finish coverage for retained descendants and unknown/surviving process outcomes.",
+          "text": "[P1; cluster 56] `skills/super-auto/SKILL.md:174`: honor task cleanup exits 3/4 and retained nested worktree/temp resources before allowing parent removal, and verify run-owned processes before deleting resources they may need. The phase-7 caller lists retained resources but still delegates parent deletion before its run-level stop. The cluster's independent Git fixture proves ordinary parent removal exits 0 and destroys a dirty child under ignored `.worktrees/`. Source evidence: cluster-56.md and `/tmp/ufz-review-cluster56-612ea0a7/.review-probes/`; the original finish instruction predates this diff, but this new safety contract remains uncovered. Add outer-finish coverage for retained descendants and unknown/surviving process outcomes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 6
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 6,
+          "key": "[P2; cluster 56] `skills/super-auto/scripts/report-status:168`: validate current archived existence/hashes at the read-only acceptance gate. Lines 293–296 inspect only persisted collection complete/gaps metadata. After valid collection, the cluster corrupted the direct `.md.diff`; acceptance still returned exit 0, `eligible:true`, empty pending/gaps, while collection replay returned exit 3 with `archive conflict`. Source evidence: cluster-56.md and its owned fixture; test missing/corrupted archive inputs without requiring mutating recollection first.",
+          "text": "[P2; cluster 56] `skills/super-auto/scripts/report-status:168`: validate current archived existence/hashes at the read-only acceptance gate. Lines 293–296 inspect only persisted collection complete/gaps metadata. After valid collection, the cluster corrupted the direct `.md.diff`; acceptance still returned exit 0, `eligible:true`, empty pending/gaps, while collection replay returned exit 3 with `archive conflict`. Source evidence: cluster-56.md and its owned fixture; test missing/corrupted archive inputs without requiring mutating recollection first."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 7
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 7,
+          "key": "[P2; seam] `skills/super-auto/scripts/report-status:223` / `skills/super-auto/SKILL.md:400` → `skills/super-code/assembler-prompt.md:26`: prevent committed generated review inputs from recursively re-entering subsequent full-branch assemblies while retaining historical provenance. The fresh-identity real-helper fixture above produces 21,204 → 46,851 → 104,901 slice bytes with unchanged product, then an actual invocation-4 311-byte basename failure, errno 63. Source evidence: captured collector/assembler/caller source, `/private/tmp/ufz-seam-amplification-probe.py`, owned `.review-probes/recursive-archive-result.json`, and this report's companion package; cover repeated successful collection/re-entry without further code changes.",
+          "text": "[P2; seam] `skills/super-auto/scripts/report-status:223` / `skills/super-auto/SKILL.md:400` → `skills/super-code/assembler-prompt.md:26`: prevent committed generated review inputs from recursively re-entering subsequent full-branch assemblies while retaining historical provenance. The fresh-identity real-helper fixture above produces 21,204 → 46,851 → 104,901 slice bytes with unchanged product, then an actual invocation-4 311-byte basename failure, errno 63. Source evidence: captured collector/assembler/caller source, `/private/tmp/ufz-seam-amplification-probe.py`, owned `.review-probes/recursive-archive-result.json`, and this report's companion package; cover repeated successful collection/re-entry without further code changes."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 8
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 8,
+          "key": "Unreviewed cluster 9 `evidence-super-plan-ufz-14`: authoritative reason is ambiguous duplicate cluster name with over-window cluster 52. Obtain an unambiguous bounded review; no clean verdict is inferred from adjacent reviewed evidence.",
+          "text": "Unreviewed cluster 9 `evidence-super-plan-ufz-14`: authoritative reason is ambiguous duplicate cluster name with over-window cluster 52. Obtain an unambiguous bounded review; no clean verdict is inferred from adjacent reviewed evidence."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 9
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 9,
+          "key": "Unreviewed cluster 29 `docs-superpowers-runs-2026-10-16-workflow-reliability-live-review-isolation-evidence-14`: authoritative reason is over-window after one recluster. Its command logs support limited named checks in other reviews but do not constitute a completed review of this entire cluster.",
+          "text": "Unreviewed cluster 29 `docs-superpowers-runs-2026-10-16-workflow-reliability-live-review-isolation-evidence-14`: authoritative reason is over-window after one recluster. Its command logs support limited named checks in other reviews but do not constitute a completed review of this entire cluster."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Must fix before landing",
+        "position": 10
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Must fix before landing",
+          "position": 10,
+          "key": "Unreviewed cluster 52 `evidence-super-plan-ufz-14`: authoritative reason is over-window after one recluster. Complete its bounded review separately from the duplicate-name cluster 9; source/evaluation evidence already cited remains qualified.",
+          "text": "Unreviewed cluster 52 `evidence-super-plan-ufz-14`: authoritative reason is over-window after one recluster. Complete its bounded review separately from the duplicate-name cluster 9; source/evaluation evidence already cited remains qualified."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above.",
+          "text": "This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 2,
+          "key": "Native Linux `/proc` inspection/termination remains untested in the supplied macOS evidence. Exit-zero/empty-stdout Finish process records do not independently resolve inspection availability or verify all resource safety; preserve the raw observations and caller-owned follow-up.",
+          "text": "Native Linux `/proc` inspection/termination remains untested in the supplied macOS evidence. Exit-zero/empty-stdout Finish process records do not independently resolve inspection availability or verify all resource safety; preserve the raw observations and caller-owned follow-up."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 3,
+          "key": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance.",
+          "text": "The root's final integrated sweep is explicitly deferred; required acceptance review/measurement/human facts remain caller-owned. All 18 leaves closing supplies no substitute for those facts, and this not-ready final review does not satisfy review acceptance."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Untested scope",
+        "position": 4
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Untested scope",
+          "position": 4,
+          "key": "Archived fixed temporary paths, source excerpts and replay drivers were reviewed as historical evidence; general-purpose rerun portability, concurrency and unrecorded agent side effects were not established. Original B4 failures/ambiguity and live-exercise limits remain unmodified.",
+          "text": "Archived fixed temporary paths, source excerpts and replay drivers were reviewed as historical evidence; general-purpose rerun portability, concurrency and unrecorded agent side effects were not established. Original B4 failures/ambiguity and live-exercise limits remain unmodified."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "Preserve all historical source snapshots, prepared packs, original failed measurements, excluded pilot and original frozen B4 scores with their provenance. Apply current-product fixes to operative source; keep supported scope qualifications beside historical results.",
+          "text": "Preserve all historical source snapshots, prepared packs, original failed measurements, excluded pilot and original frozen B4 scores with their provenance. Apply current-product fixes to operative source; keep supported scope qualifications beside historical results."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Deferred OK",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Deferred OK",
+          "position": 2,
+          "key": "Small manually scored unblinded text samples, historical controls, shared harness context, scenario-A occupied-worktree ambiguity and changed respondent concurrency are disclosed limits for descriptive observations; they support no production failure-rate or broad causal claim.",
+          "text": "Small manually scored unblinded text samples, historical controls, shared harness context, scenario-A occupied-worktree ambiguity and changed respondent concurrency are disclosed limits for descriptive observations; they support no production failure-rate or broad causal claim."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Deferred OK",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Deferred OK",
+          "position": 3,
+          "key": "Keep historical proposed/settled task snapshots and their corrected successor/disposition records; retain the clearly qualified combined-suite and standalone-packaging evidence rather than claiming one fresh final-commit linked-worktree sweep.",
+          "text": "Keep historical proposed/settled task snapshots and their corrected successor/disposition records; retain the clearly qualified combined-suite and standalone-packaging evidence rather than claiming one fresh final-commit linked-worktree sweep."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/final",
+        "section": "Deferred OK",
+        "position": 4
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/final",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md",
+          "section": "Deferred OK",
+          "position": 4,
+          "key": "Keep spec index entries draft until the caller completes root acceptance and finishing. Review-owned worktrees/probes remain retained for inspection; this report authorizes no removal of caller resources or closure of the root.",
+          "text": "Keep spec index entries draft until the caller completes root acceptance and finishing. Review-owned worktrees/probes remain retained for inspection; this report authorizes no removal of caller resources or closure of the root."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-29",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-29",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-29.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Cluster 29 was not reviewed: over-window after one permitted recluster. Obtain a bounded, unambiguous review; this record does not clear the obligation.",
+          "text": "Cluster 29 was not reviewed: over-window after one permitted recluster. Obtain a bounded, unambiguous review; this record does not clear the obligation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-29.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-52",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-52",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-52.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Cluster 52 was not reviewed: over-window after one permitted recluster. Obtain a bounded, unambiguous review; this record does not clear the obligation.",
+          "text": "Cluster 52 was not reviewed: over-window after one permitted recluster. Obtain a bounded, unambiguous review; this record does not clear the obligation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-52.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-mvc60k41-xt8p35rk04d/cluster-9",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-mvc60k41-xt8p35rk04d/cluster-9",
+          "artifact": "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-9.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Cluster 9 was not reviewed: ambiguous duplicate cluster name with over-window cluster 52. Obtain a bounded, unambiguous review; this record does not clear the obligation.",
+          "text": "Cluster 9 was not reviewed: ambiguous duplicate cluster name with over-window cluster 52. Obtain a bounded, unambiguous review; this record does not clear the obligation."
+        }
+      ],
+      "artifacts": [
+        "reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.cluster-9.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    }
+  ],
+  "gaps": [],
+  "metrics": {
+    "scope": "retained sources",
+    "sources": 58,
+    "sourceKinds": [
+      "final-review"
+    ],
+    "occurrences": 128,
+    "occurrenceGroups": 128,
+    "findings": 128,
+    "otherSectionGroups": 0,
+    "sections": [
+      "Untested scope",
+      "Deferred OK",
+      "Must fix before landing"
+    ],
+    "repaired": 0,
+    "rejected": 0,
+    "outstanding": 128,
+    "deferred": 0,
+    "gaps": 0
+  }
+}

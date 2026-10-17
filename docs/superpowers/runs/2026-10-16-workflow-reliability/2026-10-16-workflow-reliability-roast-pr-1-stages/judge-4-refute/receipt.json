@@ -1,0 +1,29 @@
+{
+  "direct": {
+    "code": 0,
+    "bytes": 172151,
+    "valid": true,
+    "findings": 128,
+    "gaps": []
+  },
+  "pipe": {
+    "code": 0,
+    "bytes": 65536,
+    "stderr": "",
+    "valid": false,
+    "error": "Expecting value: line 1269 column 4 (char 65536)"
+  },
+  "flushOnlyChange": {
+    "code": 0,
+    "bytes": 172151,
+    "valid": true,
+    "findings": 128,
+    "gaps": []
+  },
+  "status": {
+    "code": 0,
+    "stdout": "status: clean [degraded: finding projection unavailable \u2014 retain known findings]\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+    "stderr": ""
+  },
+  "nodeVersion": "v26.9.0"
+}

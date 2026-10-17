@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Per-bead dependency facts for the open leaves of one epic's tree, so the coordinator can tell
+# which beads a finished task unblocks without a `bd ready` round-trip.
+# Leaves: in-tree beads (epic-tree's structural membership) that are open, not epics, and not
+# labelled `blocker` or `sp:review`. For each leaf:
+#   deps    = its open `blocks` dependencies that are themselves leaves (in-tree, open, non-epic,
+#             not blocker/review beads) — the in-tree leaf blockers, in dump order
+#   opaque  = true when readiness depends on anything deps cannot show: an open blocker that is an
+#             epic, out of tree, or a blocker/review bead; an ancestor epic with an open `blocks`
+#             dependency (`bd ready` honors epic-level edges); or a stored status other than
+#             "open" or a defer date (claimed, deferred, or blocked by hand)
+# Closed blockers are satisfied and omitted.
+#
+# Usage: bash tree-deps EPIC_ID
+# Prints one JSON object {"beads":[{"id":...,"deps":[...],"opaque":true|false},...]} on stdout.
+# Exit 0 ok, 2 bad input or unknown EPIC_ID, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on
+# stdout).
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: tree-deps EPIC_ID" >&2
+  exit 2
+fi
+epic=$1
+here=$(cd "$(dirname "$0")" && pwd)
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute this by hand from \`bd list --all --json --limit 0\`. A bead's parent is the \`depends_on_id\` of its \`dependencies\` entry with \`type\` \"parent-child\" (or its \`parent\` field); it is in the tree when it is ${epic} or its parent chain reaches ${epic}; never judge by the id's prefix. A LEAF is an in-tree bead whose \`status\` is not \"closed\", whose \`issue_type\` is not \"epic\", and whose \`labels\` include neither \"blocker\" nor \"sp:review\". For each leaf: deps = the ids named by its \`dependencies\` entries with \`type\` \"blocks\" that are themselves leaves, in dump order; opaque = true if any of its \`blocks\` dependencies is a non-closed bead that is NOT a leaf, or any epic on its parent chain up to ${epic} has a \`blocks\` dependency on a non-closed bead, or its own \`status\` is not \"open\", or it has a non-empty \`defer_until\`; otherwise false. Output one JSON object {\"beads\":[{\"id\":\"<leaf id>\",\"deps\":[...],\"opaque\":true|false}, ...]} with one entry per leaf, in dump order."
+  exit 4
+}
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+bd list --all --json --limit 0 > "$tmp/dump.json"
+bash "$here/epic-tree" --from "$tmp/dump.json" "$epic" > "$tmp/members"
+
+# N<TAB>id<TAB>status<TAB>issue_type<TAB>excluded(0|1)<TAB>deferred(0|1); D<TAB>bead<TAB>depends_on<TAB>type
+jq -r '
+  .[] | .id as $c |
+  "N\t\($c)\t\(.status)\t\(.issue_type)\t\(if ((.labels // []) | (index("blocker") or index("sp:review"))) then 1 else 0 end)\t\(if ((.defer_until // "") != "") then 1 else 0 end)",
+  ( [ (.dependencies // [])[] | select(.type == "parent-child") | .depends_on_id ] + [ .parent // empty ]
+    | unique | .[] | "D\t\($c)\t\(.)\tparent-child" ),
+  ( (.dependencies // [])[] | select(.type == "blocks") | "D\t\($c)\t\(.depends_on_id)\tblocks" )' "$tmp/dump.json" > "$tmp/graph" ||
+  { echo "could not parse the bd list dump" >&2; exit 2; }
+
+awk -F '\t' -v epic="$epic" '
+  FNR == NR { member[$1] = 1; next }
+  $1 == "N" {
+    status[$2] = $3; type[$2] = $4; excl[$2] = $5; deferred[$2] = $6; order[++n] = $2
+    next
+  }
+  $1 == "D" && $4 == "parent-child" { np[$2]++; par[$2, np[$2]] = $3; next }
+  $1 == "D" && $4 == "blocks" { nb[$2]++; blk[$2, nb[$2]] = $3; next }
+  function isLeaf(id) { return (id in member) && status[id] != "closed" && type[id] != "epic" && excl[id] == 0 }
+  function isOpen(id) { return (id in status) ? status[id] != "closed" : 1 }   # unknown ids count as open
+  # 1 when an epic on the parent chain (up to the root) has an open blocks dependency.
+  function gatedAncestor(id, depth,   i, p, k) {
+    if (depth > 50) return 0
+    for (i = 1; i <= np[id]; i++) {
+      p = par[id, i]
+      if (!(p in member)) continue
+      if (type[p] == "epic") for (k = 1; k <= nb[p]; k++) if (isOpen(blk[p, k])) return 1
+      if (p != epic && gatedAncestor(p, depth + 1)) return 1
+    }
+    return 0
+  }
+  END {
+    if (!(epic in member)) { print "unknown epic: " epic > "/dev/stderr"; exit 2 }
+    out = ""
+    for (i = 1; i <= n; i++) {
+      id = order[i]
+      if (!isLeaf(id)) continue
+      deps = ""; opaque = (status[id] != "open" || deferred[id] == 1) ? 1 : 0
+      for (k = 1; k <= nb[id]; k++) {
+        b = blk[id, k]
+        if (!isOpen(b)) continue
+        if (isLeaf(b)) deps = deps (deps == "" ? "" : ",") "\"" b "\""
+        else opaque = 1
+      }
+      if (!opaque && gatedAncestor(id, 0)) opaque = 1
+      out = out (out == "" ? "" : ",") "{\"id\":\"" id "\",\"deps\":[" deps "],\"opaque\":" (opaque ? "true" : "false") "}"
+    }
+    printf "{\"beads\":[%s]}\n", out
+  }' "$tmp/members" "$tmp/graph"

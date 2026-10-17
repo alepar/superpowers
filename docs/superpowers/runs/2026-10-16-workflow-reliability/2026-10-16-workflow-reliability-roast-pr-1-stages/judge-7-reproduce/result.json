@@ -1,0 +1,21 @@
+{
+  "command": [
+    "bash",
+    "/tmp/ufz-pr1/judge-7-reproduce/skills/super-auto/scripts/report-status",
+    "--collect",
+    "/tmp/ufz-pr1/judge-7-reproduce/run/run.md",
+    "--invocation",
+    "probe",
+    "--workspace",
+    "/tmp/ufz-pr1/judge-7-reproduce/workspace",
+    "--review",
+    "/tmp/ufz-pr1/judge-7-reproduce/workspace/final-review-probe.md",
+    "--verdict",
+    "ready"
+  ],
+  "exit": 0,
+  "stdout": "collection: complete\n",
+  "stderr": "",
+  "archivedOutsideSentinel": "BENIGN OWNED OUTSIDE-WORKSPACE SENTINEL j7\n",
+  "runRecords": "flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n- review-collection \u00b7 {\"invocationId\":\"probe\",\"workspace\":\"/tmp/ufz-pr1/judge-7-reproduce/workspace\",\"reviewPath\":\"/tmp/ufz-pr1/judge-7-reproduce/workspace/final-review-probe.md\",\"review\":\"ready\",\"required\":[],\"settled\":true}\n- finding-source \u00b7 {\"version\":1,\"source\":\"probe/final\",\"artifact\":\"reviews/probe/final-review-probe.md\",\"kind\":\"final-review\",\"verdict\":\"ready\",\"occurrences\":[]}\n- review-collection \u00b7 {\"invocationId\":\"probe\",\"workspace\":\"/tmp/ufz-pr1/judge-7-reproduce/workspace\",\"reviewPath\":\"/tmp/ufz-pr1/judge-7-reproduce/workspace/final-review-probe.md\",\"review\":\"ready\",\"required\":[],\"settled\":true,\"files\":[{\"path\":\"assembled/final-review-probe-final/private-material.txt\",\"sha256\":\"acf9e2e44f09ce2c3f83fc93753fc324ef1534efad01cfd3b5fa72dd110be0ca\"},{\"path\":\"final-review-probe.md\",\"sha256\":\"9a9cc247e65d102b8016e34b36045e8c649450140b11b8f3ce1602cd16b8fde7\"}],\"complete\":true,\"gaps\":[]}\n"
+}

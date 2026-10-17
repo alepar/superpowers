@@ -1,0 +1,360 @@
+#!/usr/bin/env bash
+# Reduce a child report to the few lines a coordinator needs, so it never reads the report body.
+# Prints at most 31 lines (default mode):
+#   verdict: <verdict>
+#   kind: <task-report|roast|final-review|step-back|assembled>   (absent for an unknown format)
+#   - <blocking / must-fix / concern item>   (one per line, cut to 160 characters, at most 15,
+#   +N more                                   then a `+N more` line)
+#   untested: <item>                         (final-review only: the Untested scope items, same rule,
+#   untested: +N more                         cut to 160 characters, at most 10, then `+N more`)
+#   path: <file as given>
+# Recognisers are tried in this order; the first one whose marker line is in the file wins
+# (exception: an exact `## Verdict` heading selects final-review before step 1, so a final review
+# that quotes a `Status: DONE` line is not read as a task report):
+#   1. task-report  - a `Status: <TOKEN>` line (DONE, DONE_WITH_CONCERNS, BLOCKED, IMPLEMENTED, ...);
+#                     items (unless DONE/IMPLEMENTED/FIXED/CLEAN) are the bullets under the first
+#                     Concern/Blocker/Finding heading or bold label.
+#   2. roast        - a `super-roast verdict: ...` line; items are the `- [Blocking]` entries under
+#                     `## Confirmed findings`.
+#   3. final-review - a `Verdict` heading or label (final-review and cluster verdict files); a heading
+#                     wins over any label, else `**Verdict: X**`, `**Verdict:** X` or `Verdict: X`.
+#                     Items are the lines under the first `Must fix` heading or label; an item is a line
+#                     with at most one leading space starting `- `, `* `, `<n>. ` or `<n>) ` (deeper
+#                     indents are sub-bullets, skipped); a lone `none` is no items. The `Untested scope`
+#                     section gives the `untested:` lines by the same rule.
+#   4. step-back    - a `decision: patch|redesign` line; items are `summary:` (and for redesign
+#                     `changes:` and `scope:`).
+#   5. assembled    - a `fits: yes|no (<total> of <threshold>)` line; items are the
+#                     `cluster-fits: <name> no (...)` lines.
+# An unrecognised file prints `verdict: unknown`, `path: <file>` and the file's first 10 lines.
+#
+# Prints at most 31 lines in this default mode. With --keys, the same recogniser order picks the kind
+# but only key lines are printed, uncapped and uncut, so the output can be redirected into a keys
+# file: roast `[SEV] <location>` (every severity under `## Confirmed findings`, the text before the
+# first ` — `); final-review `[Must-fix] <item>` then `[Must-fix] untested: <item>`. Any other kind
+# prints nothing and exits 3.
+#
+# Usage: bash report-verdict [--keys] FILE
+# Exits 0 on any readable file; 2 on a missing or unreadable file or a wrong argument count;
+# 3 for --keys on a kind that has no keys.
+set -euo pipefail
+
+# Complete extraction is deliberately separate from the compact legacy summary/keys parsers.
+# Usage: report-verdict --complete --source IMMUTABLE_SOURCE_ID FILE
+# JSON: {version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}.
+# Identity is (source, section, position), never artifact: an archive copy keeps the caller's source.
+# Positions are 1-based within each exact section label (including repeated section headings).
+# key is the original first item line without its list marker; roast keys stop before " — ".
+# text keeps that first line and its continuations verbatim, excluding separator blank lines.
+# Node is already used by the coordinator and dispatch helpers; only built-in modules are needed.
+if [ "${1:-}" = "--complete" ]; then
+  if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
+    echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
+    exit 2
+  fi
+  node --input-type=module - "$4" "$3" <<'NODE'
+import fs from 'node:fs';
+
+const [artifact, source] = process.argv.slice(2);
+function invalid(message) { throw new Error(message); }
+try {
+  if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) invalid('invalid immutable source identity');
+  if (!fs.statSync(artifact).isFile()) invalid(`cannot read ${artifact}: not a file`);
+  const raw = new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(artifact));
+  const lines = raw.replace(/\r\n?/g, '\n').split('\n');
+  const status = lines.map(l => l.match(/^[ \t]*(?:\*\*)?[Ss]tatus(?::\*\*|\*\*:|:)[ \t]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b/)).find(Boolean);
+  const roast = lines.find(l => /^super-roast verdict: /.test(l));
+  const exactVerdict = lines.some(l => /^##[ \t]+Verdict[ \t]*$/.test(l));
+  const verdictMarker = /^(?:#+[ \t]*)?\**Verdict\**[ \t]*:?/;
+  let kind, verdict;
+  if (exactVerdict) kind = 'final-review';
+  else if (status) { kind = 'task-report'; verdict = status[1]; }
+  else if (roast !== undefined) { kind = 'roast'; verdict = roast.slice('super-roast verdict: '.length).trim(); }
+  else if (lines.some(l => verdictMarker.test(l))) kind = 'final-review';
+  else invalid('unrecognized finding source');
+
+  if (kind === 'final-review') {
+    let index = lines.findIndex(l => /^#+[ \t]*\**Verdict\**[ \t]*:?/.test(l));
+    if (index < 0) index = lines.findIndex(l => verdictMarker.test(l));
+    verdict = lines[index].replace(/^(?:#+[ \t]*)?\**Verdict/, '')
+      .replace(/^[ \t]*\**[ \t]*:?[ \t]*\**[ \t]*/, '').split('**')[0]
+      .replace(/^[ \t*:]+|[ \t*:]+$/g, '');
+    if (!verdict) {
+      const following = lines.slice(index + 1).find(l => l.trim());
+      if (!following || /^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(following)) invalid('missing verdict value');
+      verdict = following.replace(/^[ \t*:]+|[ \t*:]+$/g, '');
+    }
+  }
+  if (!verdict) invalid('missing verdict value');
+
+  function heading(line) {
+    const match = line.match(/^#+[ \t]+(.*)$/) || line.match(/^\*\*([^*]+)\*\*/);
+    return match ? match[1] : null;
+  }
+  function relevant(section) {
+    if (/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b)/i.test(section)) return true;
+    if (kind === 'final-review') return /^must[- ]fix\b/i.test(section);
+    if (kind === 'roast') return /^(?:confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i.test(section);
+    return false;
+  }
+  function none(text) { return text.toLowerCase().replace(/[ \t.*_`]+/g, '') === 'none'; }
+  const occurrences = [], positions = new Map();
+  let section = null, active = false, sectionSeen = false, hasContent = false, item = null;
+  function flushItem() {
+    if (!item) return;
+    while (item.lines.length > 1 && !item.lines.at(-1).trim()) item.lines.pop();
+    const first = item.lines[0];
+    if (none(first)) {
+      if (item.lines.length > 1) invalid(`none marker has finding text in ${section}`);
+    } else {
+      const position = (positions.get(section) || 0) + 1;
+      positions.set(section, position);
+      const key = kind === 'roast' ? first.split(' — ')[0] : first;
+      occurrences.push({section, position, key, text:item.lines.join('\n')});
+    }
+    item = null;
+  }
+  function closeSection() {
+    flushItem();
+    if (active && !hasContent) invalid(`empty finding section: ${section}`);
+  }
+  for (const line of lines) {
+    const label = heading(line);
+    if (label !== null) {
+      closeSection();
+      section = label;
+      active = relevant(section);
+      if (active) sectionSeen = true;
+      hasContent = false;
+      continue;
+    }
+    if (!active) continue;
+    const bullet = line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
+    if (bullet) {
+      flushItem();
+      if (!bullet[1].trim()) invalid(`empty finding item in ${section}`);
+      item = {lines:[bullet[1]]};
+      hasContent = true;
+    } else if (item) {
+      item.lines.push(line);
+    } else if (none(line)) {
+      hasContent = true;
+    } else if (line.trim()) {
+      invalid(`finding text without a list marker in ${section}`);
+    }
+  }
+  closeSection();
+  if (!sectionSeen) invalid('missing finding sections');
+  console.log(JSON.stringify({version:1, source, artifact, kind, verdict, occurrences}));
+} catch (error) {
+  console.error(`report-verdict: --complete: ${error.message}`);
+  process.exitCode = 2;
+}
+NODE
+  exit $?
+fi
+
+keys=0
+if [ $# -eq 2 ] && [ "$1" = "--keys" ]; then
+  keys=1
+  f=$2
+elif [ $# -eq 1 ] && [ "$1" != "--keys" ]; then
+  f=$1
+else
+  echo "usage: report-verdict [--keys] FILE" >&2
+  exit 2
+fi
+if [ ! -f "$f" ] || [ ! -r "$f" ]; then
+  echo "report-verdict: cannot read $f" >&2
+  exit 2
+fi
+
+MAX_ITEMS=15
+MAX_LEN=160
+
+# Shared awk helpers: a section boundary is a markdown heading or a line that opens with a bold
+# label; label() is the text of that heading or label.
+HELPERS='
+function boundary(l) { return (l ~ /^#+[ \t]/ || l ~ /^\*\*[^*]+\*\*/) }
+function label(l) {
+  if (l ~ /^#+[ \t]/) { sub(/^#+[ \t]*/, "", l); return l }
+  sub(/^\*\*/, "", l); sub(/\*\*.*/, "", l); return l
+}
+function bullet(l) { return (l ~ /^[ \t]{0,3}[-*][ \t]+/) }
+function bullet_text(l) { sub(/^[ \t]*[-*][ \t]+/, "", l); return l }
+function is_none(t) { t = tolower(t); gsub(/[ \t.*_`]+/, "", t); return (t == "none") }
+'
+
+# Items go out as bare text lines; the formatter below truncates, caps and prefixes them.
+items_task_report() {
+  awk "$HELPERS"'
+    { sub(/\r$/, "") }
+    boundary($0) {
+      lab = label($0)
+      insec = (!done && lab ~ /(Concern|Blocker|Finding)/)
+      if (insec) done = 1
+      next
+    }
+    insec && bullet($0) { print bullet_text($0) }
+  ' "$f"
+}
+items_roast() {
+  awk '
+    { sub(/\r$/, "") }
+    /^## / { insec = ($0 ~ /^## Confirmed findings/); next }
+    insec && /^- \[[Bb][Ll][Oo][Cc][Kk][Ii][Nn][Gg]\]/ { sub(/^- /, ""); print }
+  ' "$f"
+}
+# A final-review item: a line with at most one leading space that starts with `- `, `* `, `<n>. ` or
+# `<n>) `; deeper-indented lines are continuations or sub-bullets and are skipped.
+# section_items PATTERN: the items of the first section whose heading or bold label contains PATTERN.
+section_items() {
+  awk -v pat="$1" "$HELPERS"'
+    { sub(/\r$/, "") }
+    boundary($0) {
+      insec = (!done && tolower(label($0)) ~ pat)
+      if (insec) done = 1
+      next
+    }
+    insec && $0 ~ /^ ?([-*]|[0-9]+[.)])[ \t]+/ {
+      t = $0; sub(/^ ?([-*]|[0-9]+[.)])[ \t]+/, "", t); gsub(/\*\*/, "", t)
+      if (!is_none(t)) print t
+    }
+  ' "$f"
+}
+items_final_review() { section_items "must fix"; }
+# `untested: <text>` lines, pre-formatted: 160-character cut, at most 10, then `untested: +N more`.
+untested_lines() {
+  section_items "untested scope" | awk -v max="$MAX_LEN" '
+    { n++ }
+    n <= 10 { print "untested: " (length($0) > max ? substr($0, 1, max) "…" : $0) }
+    END { if (n > 10) print "untested: +" (n - 10) " more" }
+  '
+}
+items_step_back() {
+  awk -v redesign="$1" '
+    { sub(/\r$/, "") }
+    /^summary:/ { print }
+    redesign == "1" && (/^changes:/ || /^scope:/) { print }
+  ' "$f"
+}
+items_assembled() {
+  grep -E '^cluster-fits: .* no \(' "$f" | tr -d '\r' || true
+}
+
+# Prints the verdict text for final-review. A `Verdict` heading wins over any bold or plain label
+# anywhere in the file; without a heading, the first label counts. The value is the text after the
+# label (up to a closing `**`) when non-empty, else the first non-empty line after it.
+final_review_verdict() {
+  awk '
+    function clean(t) { sub(/\*\*.*/, "", t); gsub(/^[ \t*:]+|[ \t*:]+$/, "", t); return t }
+    function value(l) { sub(/^(#+[ \t]*)?\**Verdict/, "", l); sub(/^[ \t]*\**[ \t]*:?[ \t]*\**[ \t]*/, "", l); return clean(l) }
+    { sub(/\r$/, "") }
+    pend != "" && $0 !~ /^[ \t]*$/ {
+      t = $0; gsub(/^[ \t*:]+|[ \t*:]+$/, "", t)
+      if (pend == "h") { if (hv == "") hv = t } else if (lv == "") lv = t
+      pend = ""
+    }
+    /^#+[ \t]*\**Verdict\**[ \t]*:?/ && hv == "" && !hseen {
+      hseen = 1; t = value($0); if (t != "") hv = t; else pend = "h"; next
+    }
+    /^\**Verdict\**[ \t]*:?/ && lv == "" && !lseen {
+      lseen = 1; t = value($0); if (t != "") lv = t; else pend = "l"
+    }
+    END { if (hv != "") print hv; else print lv }
+  ' "$f"
+}
+
+# emit VERDICT KIND [EXTRA]  (item text lines on stdin; EXTRA is pre-formatted lines placed before path:)
+emit() {
+  printf 'verdict: %s\n' "$(printf '%s' "$1" | awk -v max="$MAX_LEN" '{ print (length($0) > max ? substr($0, 1, max) "…" : $0); exit }')"
+  printf 'kind: %s\n' "$2"
+  awk -v max="$MAX_LEN" -v cap="$MAX_ITEMS" '
+    { n++ }
+    n <= cap { print "- " (length($0) > max ? substr($0, 1, max) "…" : $0) }
+    END { if (n > cap) print "+" (n - cap) " more" }
+  '
+  if [ -n "${3:-}" ]; then printf '%s\n' "$3"; fi
+  printf 'path: %s\n' "$f"
+}
+
+keys_refuse() {
+  if [ "$keys" = 1 ]; then
+    echo "report-verdict: --keys reads only a roast report or a final review: $f" >&2
+    exit 3
+  fi
+}
+
+# Keys mode: `[SEV] <location>` for every entry under `## Confirmed findings`.
+keys_roast() {
+  awk '
+    { sub(/\r$/, "") }
+    /^## / { insec = ($0 ~ /^## Confirmed findings/); next }
+    insec && /^- \[[^]]+\] / {
+      sub(/^- /, ""); i = index($0, " — "); if (i > 0) $0 = substr($0, 1, i - 1)
+      sub(/[ \t]+$/, ""); print
+    }
+  ' "$f"
+}
+keys_final_review() {
+  section_items "must fix" | sed 's/^/[Must-fix] /'
+  section_items "untested scope" | sed 's/^/[Must-fix] untested: /'
+}
+out_roast() {
+  if [ "$keys" = 1 ]; then keys_roast; else items_roast | emit "$1" roast; fi
+}
+out_final_review() {
+  if [ "$keys" = 1 ]; then keys_final_review; else items_final_review | emit "$(final_review_verdict)" final-review "$(untested_lines)"; fi
+}
+
+status_re='^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b'
+
+# The exact `## Verdict` heading the final-review prompts require wins before the Status line, so a
+# final review that quotes a task report's `Status: DONE` is not read as a task report.
+if tr -d '\r' < "$f" | grep -qE '^##[[:space:]]+Verdict[[:space:]]*$'; then
+  out_final_review
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E "$status_re" || true)
+if [ -n "$line" ]; then
+  keys_refuse
+  token=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*(\*\*)?[Ss]tatus(:\*\*|\*\*:|:)[[:space:]]*\**//; s/[^A-Z_].*$//')
+  case "$token" in
+    DONE|IMPLEMENTED|FIXED|CLEAN) : | emit "$token" task-report ;;
+    *) items_task_report | emit "$token" task-report ;;
+  esac
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^super-roast verdict: ' || true)
+if [ -n "$line" ]; then
+  out_roast "${line#super-roast verdict: }"
+  exit 0
+fi
+
+if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?'; then
+  out_final_review
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|redesign)' || true)
+if [ -n "$line" ]; then
+  keys_refuse
+  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|redesign).*/\1/')
+  r=0; [ "$value" = redesign ] && r=1
+  items_step_back "$r" | emit "decision: $value" step-back
+  exit 0
+fi
+
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^fits: (yes|no) \([0-9]+ of [0-9]+\)' || true)
+if [ -n "$line" ]; then
+  keys_refuse
+  items_assembled | emit "$line" assembled
+  exit 0
+fi
+
+keys_refuse
+printf 'verdict: unknown\n'
+printf 'path: %s\n' "$f"
+head -n 10 "$f" || true

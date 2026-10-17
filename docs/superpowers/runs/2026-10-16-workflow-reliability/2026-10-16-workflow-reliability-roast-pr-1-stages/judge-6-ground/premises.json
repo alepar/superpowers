@@ -1,0 +1,13 @@
+{
+  "headPaths": 1408,
+  "oversize": 492,
+  "nameMax": 255,
+  "example": "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__live-review-isolation__source-excerpts__skills__subagent-driven-development__scripts__review-package.diff",
+  "exampleBytes": 325,
+  "fixtureError": {
+    "errno": 63,
+    "strerror": "File name too long"
+  },
+  "preArchiveOversize": 0,
+  "archivePaths": 735
+}

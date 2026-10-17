@@ -1,0 +1,10 @@
+[
+  {
+    "claim": "The required dispatch-text test suite now fails four assertions with TMPDIR=/private/tmp/.",
+    "location": "tests/super-code/test-dispatch-text.sh:10",
+    "category": "testing",
+    "external": false,
+    "kind": "ISSUE",
+    "evidence": "The diff replaces base T=$(mktemp -d) with T=$(mktemp -d \"${TMPDIR:-/tmp}/dispatch-text.XXXXXX\"). With TMPDIR=/private/tmp/, mktemp preserves the resulting double slash in T, while dispatch-text.mjs:126 normalizes the ledger path through dirname(resolve(o.ledger)). Assertions compare the raw T with normalized output and fail despite equivalent paths. Independently extracted immutable skills/tests from base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 and head ff2f79f62cc34084c8df20edc5c2e4f201a5d630 into owned /tmp fixtures. Running TMPDIR=/private/tmp/ bash tests/super-code/test-dispatch-text.sh passed at base (exit 0), failed at head (exit 1, four failures: report-file path, implement dispatch output path, brief path and stub dispatch path), and running head with TMPDIR=/private/tmp passed (exit 0). This reproduces the earlier cluster-13 candidate independently and establishes it remains unfixed at the frozen PR head. Receipts and complete logs: /tmp/ufz-pr1/evidence-testing/receipts.json, base-dispatch-trailing-slash.log, head-dispatch-trailing-slash.log, head-dispatch-no-trailing-slash.log. Normalize the trailing slash or physically resolve T before making path equality assertions so the required suite remains valid in inherited trailing-slash environments."
+  }
+]

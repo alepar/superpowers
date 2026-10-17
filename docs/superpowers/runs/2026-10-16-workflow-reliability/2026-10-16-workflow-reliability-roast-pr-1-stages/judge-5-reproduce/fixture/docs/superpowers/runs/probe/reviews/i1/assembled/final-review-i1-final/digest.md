@@ -1,0 +1,4 @@
+## diffstat
+docs/superpowers/runs/probe/run.md | 3 +++
+ product.txt                        | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)

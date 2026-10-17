@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The new measurement aggregation rule is duplicated with conflicting semantics, so super-code reports a required live check as passed while super-auto reports the same retained check evidence as failed.",
+      "location": "skills/super-code/coordinator.js:354",
+      "category": "simplicity-design",
+      "external": false,
+      "evidence": "Introduced in this diff: classifyCheckEvidence() and report-status --acceptance are both absent at base d84541ae and added at head ff2f79f6. The coordinator selects pass whenever any matching live record passes (coordinator.js:351-356); the consumer independently implements the same sourceTree/command/configuration matching and requires a pass with no matching failure (skills/super-auto/scripts/report-status:102-112). This leaks one measurement policy across producer and consumer and already produces contradictory outcomes, rather than merely posing a maintenance concern. Frozen-source end-to-end reproduction: node /tmp/ufz-pr1/evidence-simplicity-design/repro.mjs submits one task with live fail and live pass records for the same full source tree, command and configuration, classifies them through dispatch-text.mjs check-evidence, then supplies that exact returned checkEvidence object to report-status --acceptance. Producer exits 0 and requiredLiveChecks[0].outcome is pass; consumer exits 3 with pending sweep: fail and required live check suite: fail, and gaps is empty. Receipts: /tmp/ufz-pr1/evidence-simplicity-design/producer.json and consumer.json. A shared deterministic measurement classifier would make the existing producer/consumer interface preserve one meaning.",
+      "kind": "ISSUE"
+    }
+  ]
+}

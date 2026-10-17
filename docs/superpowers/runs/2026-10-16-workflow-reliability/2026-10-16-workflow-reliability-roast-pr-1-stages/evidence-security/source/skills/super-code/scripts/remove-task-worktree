@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# Remove a finished task's worktree and branch, after stopping the processes started from it.
+#
+# Usage:
+#   bash remove-task-worktree [--keep-branch] [--tmp DIR] WORKTREE BRANCH INTEGRATION_BRANCH
+#   bash remove-task-worktree --discard [--tmp DIR] WORKTREE BRANCH
+#   bash remove-task-worktree --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]
+#
+# Default mode keeps the worktree (exit 3, nothing changed) when it has uncommitted or untracked
+# non-ignored files (its .tmp/ is excluded), or when BRANCH is not an ancestor of INTEGRATION_BRANCH.
+# Otherwise it stops every process belonging to WORKTREE (scripts/stop-run-processes: cwd,
+# executable, exact HOME/TMPDIR or orphan argument paths under it; TERM, then KILL), runs
+# `git worktree remove` (never --force) and `git branch -d` (never -D). --keep-branch skips the
+# branch delete (a task other tasks may still stack on). --discard is for a cancelled task whose
+# work is abandoned by design: it skips both guards and removes with --force / -D.
+# --sweep runs the default mode on every worktree under ROOT, then `git branch -d` on each listed
+# BRANCH that still exists without a worktree.
+# --tmp DIR names the task's temp root (or, with --sweep, the run's), which must be /tmp/sp-<hex>[/<name>]:
+# worktree and temp processes are verified stopped before any resource is removed. Survivors,
+# unknown inspection or interactive preservation retain all resources checked in that cleanup.
+#
+# Output, one fact per line: `stopped:` / `survived: <pid> <command> — <why>`, `removed: <worktree>`,
+# `deleted: <branch>`, `kept: <worktree-or-branch> — <reason>`.
+# Exit 0 verified done, 2 bad input, 3 something was kept, 4 process inspection unverified.
+set -euo pipefail
+
+usage() { echo "usage: remove-task-worktree [--keep-branch|--discard] [--tmp DIR] WORKTREE BRANCH [INTEGRATION_BRANCH] | --sweep [--tmp DIR] ROOT INTEGRATION_BRANCH [BRANCH...]" >&2; exit 2; }
+
+here=$(cd "$(dirname "$0")" && pwd)
+stop_processes() {  # Check all resources together before deleting any of them.
+  local status=0 resource
+  bash "$here/stop-run-processes" "$@" || status=$?
+  [ "$status" = 0 ] && return 0
+  for resource in "$@"; do echo "kept: $resource — process cleanup incomplete (exit $status)"; done
+  return "$status"
+}
+sweep_verified=
+
+
+exclude_tmp() {  # task temp state lives in <worktree>/.tmp/; it must never read as uncommitted work
+  local ex; ex="$(git -C "$1" rev-parse --git-common-dir)/info/exclude"
+  mkdir -p "$(dirname "$ex")"
+  grep -qx '/.tmp/' "$ex" 2>/dev/null || echo '/.tmp/' >> "$ex"
+}
+
+integ_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges merged-ness against it
+  git worktree list --porcelain | awk -v b="branch refs/heads/$1" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'
+}
+
+remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration
+  local mode=$1 wt=$2 br=$3 integ=${4:-}
+  if [ ! -d "$wt" ]; then
+    if [ "$mode" = discard ]; then
+      local status=0
+      if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
+      else stop_processes "$wt" || status=$?; fi
+      [ "$status" = 0 ] || return "$status"
+      git worktree prune
+      git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+      return 0
+    fi
+    echo "kept: $wt — not a directory (already removed?)"; return 3
+  fi
+  wt=$(cd "$wt" && pwd -P)
+  case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --git-common-dir)/.." ;; esac
+  exclude_tmp "$wt"
+  if [ "$mode" != discard ]; then
+    if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then
+      echo "kept: $wt — uncommitted or untracked changes"; return 3
+    fi
+    if ! git -C "$wt" merge-base --is-ancestor "$br" "$integ" 2>/dev/null; then
+      echo "kept: $wt — $br is not merged into $integ"; return 3
+    fi
+  fi
+  if [ -z "$sweep_verified" ]; then
+    local status=0
+    if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
+    else stop_processes "$wt" || status=$?; fi
+    [ "$status" = 0 ] || return "$status"
+  fi
+  if [ "$mode" = discard ]; then
+    git worktree remove --force "$wt" && echo "removed: $wt"
+    git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+    return 0
+  fi
+  if ! git worktree remove "$wt" 2>/dev/null; then
+    echo "kept: $wt — git worktree remove refused"; return 3
+  fi
+  echo "removed: $wt"
+  [ "$mode" = keep-branch ] && return 0
+  local idir; idir=$(integ_dir "$integ")
+  if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; return 3; fi
+}
+
+clean_tmp() {  # $1 = the --tmp DIR (validated); stop what runs under it, then delete it
+  [ -n "$1" ] && [ -e "$1" ] || return 0
+  rm -rf "$1" && echo "removed: $1"
+}
+
+mode=default tmp=
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --keep-branch) mode=keep-branch; shift ;;
+    --discard) mode=discard; shift ;;
+    --sweep) mode=sweep; shift ;;
+    --tmp) [ $# -ge 2 ] || usage; tmp=$2; shift 2
+           [[ "$tmp" =~ ^(/private)?/tmp/sp-[0-9a-f]+(/[^/]+)?$ ]] || { echo "--tmp must be /tmp/sp-<hex>[/<name>]: $tmp" >&2; exit 2; } ;;
+    -*) usage ;;
+    *) break ;;
+  esac
+done
+
+if [ "$mode" = sweep ]; then
+  [ $# -ge 2 ] || usage
+  root=$1 integ=$2; shift 2
+  git rev-parse --verify -q "$integ" >/dev/null || { echo "unknown branch: $integ" >&2; exit 2; }
+  rc=0
+  if [ -n "$tmp" ]; then stop_processes "$root" "$tmp" || rc=$?
+  else stop_processes "$root" || rc=$?; fi
+  if [ "$rc" != 0 ]; then
+    while IFS= read -r line; do
+      case "$line" in
+        "worktree "*) retained=${line#worktree }
+          case "$retained/" in "$root"/*) echo "kept: $retained — process cleanup incomplete (exit $rc)" ;; esac ;;
+      esac
+    done < <(git worktree list --porcelain)
+    exit "$rc"
+  fi
+  sweep_verified=1
+  if [ -d "$root" ]; then
+    root=$(cd "$root" && pwd -P)
+    wt="" br=""
+    while IFS= read -r line; do
+      case "$line" in
+        "worktree "*) wt=${line#worktree } br="" ;;
+        "branch refs/heads/"*) br=${line#branch refs/heads/} ;;
+        "")
+          case "$wt/" in
+            "$root"/*) if [ -n "$br" ]; then remove_one default "$wt" "$br" "$integ" || rc=$?
+                       else echo "kept: $wt — detached HEAD"; rc=3; fi ;;
+          esac
+          wt="" br="" ;;
+      esac
+    done < <(git worktree list --porcelain; echo)
+  fi
+  for br in "$@"; do
+    git rev-parse --verify -q "refs/heads/$br" >/dev/null || continue
+    if git worktree list --porcelain | grep -qx "branch refs/heads/$br"; then continue; fi
+    if ! git merge-base --is-ancestor "$br" "$integ"; then echo "kept: $br — not merged into $integ"; rc=3; continue; fi
+    idir=$(integ_dir "$integ")
+    if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; rc=3; fi
+  done
+  if [ -n "$tmp" ] && [ -e "$tmp" ]; then
+    if [ $rc -eq 0 ]; then clean_tmp "$tmp"; else echo "kept: $tmp — a worktree or branch above was kept"; fi
+  fi
+  exit $rc
+fi
+
+if [ "$mode" = discard ]; then [ $# -eq 2 ] || usage; else [ $# -eq 3 ] || usage; fi
+git rev-parse --verify -q "refs/heads/$2" >/dev/null || { [ "$mode" = discard ] || { echo "unknown branch: $2" >&2; exit 2; }; }
+[ "$mode" = discard ] || git rev-parse --verify -q "$3" >/dev/null || { echo "unknown branch: $3" >&2; exit 2; }
+rc=0
+remove_one "$mode" "$1" "$2" "${3:-}" || rc=$?
+if [ -n "$tmp" ]; then
+  if [ "$rc" = 0 ] && [ ! -d "$1" ]; then clean_tmp "$tmp"; elif [ -e "$tmp" ]; then echo "kept: $tmp — its worktree was kept"; fi
+fi
+exit $rc

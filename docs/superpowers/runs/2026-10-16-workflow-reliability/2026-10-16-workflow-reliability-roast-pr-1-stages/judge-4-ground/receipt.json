@@ -1,0 +1,20 @@
+{
+  "direct": {
+    "exit": 0,
+    "bytes": 178167,
+    "findings": 128,
+    "gaps": []
+  },
+  "pipe": {
+    "exit": 0,
+    "bytes": 65536,
+    "stderr": "",
+    "valid": false,
+    "parseError": "Expecting property name enclosed in double quotes: line 1238 column 4 (char 65536)"
+  },
+  "status": {
+    "exit": 0,
+    "stdout": "status: clean [degraded: final review: none recorded, sweep: none recorded, finding projection unavailable \u2014 retain known findings]\nqualifier: final review: none recorded\nqualifier: sweep: none recorded\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+    "stderr": ""
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "exit": 3,
+  "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+  "stderr": "COLLECTION_GAP: probe: bundle unavailable: assembled/final-review-probe-final; keep source workspace and archive; owner: orchestrator\n"
+}

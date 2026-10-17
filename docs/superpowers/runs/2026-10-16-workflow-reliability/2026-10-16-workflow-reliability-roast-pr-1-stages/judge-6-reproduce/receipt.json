@@ -1,0 +1,13 @@
+{
+  "name_max_measured": 255,
+  "changed_count": 1408,
+  "oversize_count": 492,
+  "example_source": "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__2026-10-16-finding-continuity-design.md.diff",
+  "example_flattened": "docs__superpowers__runs__2026-10-16-workflow-reliability__reviews__inv-mvc60k41-xt8p35rk04d__assembled__final-review-inv-mvc60k41-xt8p35rk04d-final__slices__docs__superpowers__runs__2026-10-16-workflow-reliability__2026-10-16-finding-continuity-design.md.diff.diff",
+  "example_bytes": 264,
+  "creation_result": {
+    "errno": 63,
+    "strerror": "File name too long"
+  },
+  "pre_archive_oversize_count": 0
+}

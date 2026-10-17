@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "id": "ep.1",
+      "dispatch": "impl:ep.1",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "command": "suite",
+      "configuration": "quiet",
+      "outcome": "pass",
+      "location": "pass.log",
+      "kind": "live"
+    }
+  ],
+  "gaps": [],
+  "requiredLiveChecks": [
+    {
+      "id": "ep.1",
+      "dispatch": "impl:ep.1",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "command": "suite",
+      "configuration": "quiet",
+      "outcome": "pass",
+      "matches": [
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+diff --git a/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/digest.md b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/digest.md
+new file mode 100644
+index 0000000..8d66d7f
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/digest.md
+@@ -0,0 +1,22 @@
++## diffstat
++.../i1/assembled/final-review-i1-final/clusters.json      |  1 +
++ .../i1/assembled/final-review-i1-final/diffstat.txt       |  3 +++
++ .../reviews/i1/assembled/final-review-i1-final/digest.md  |  4 ++++
++ .../slices/docs__superpowers__runs__probe__run.md.diff    |  9 +++++++++
++ .../final-review-i1-final/slices/product.txt.diff         |  7 +++++++
++ docs/superpowers/runs/probe/reviews/i1/final-review-i1.md |  8 ++++++++
++ .../i2/assembled/final-review-i2-final/clusters.json      |  1 +
++ .../i2/assembled/final-review-i2-final/diffstat.txt       |  9 +++++++++
++ .../reviews/i2/assembled/final-review-i2-final/digest.md  | 10 ++++++++++
++ ...__assembled__final-review-i1-final__clusters.json.diff |  8 ++++++++
++ ...1__assembled__final-review-i1-final__diffstat.txt.diff |  9 +++++++++
++ ...__i1__assembled__final-review-i1-final__digest.md.diff | 10 ++++++++++
++ ...ices__docs__superpowers__runs__probe__run.md.diff.diff | 15 +++++++++++++++
++ ...__final-review-i1-final__slices__product.txt.diff.diff | 13 +++++++++++++
++ ...ers__runs__probe__reviews__i1__final-review-i1.md.diff | 14 ++++++++++++++
++ .../slices/docs__superpowers__runs__probe__run.md.diff    | 12 ++++++++++++
++ .../final-review-i2-final/slices/product.txt.diff         |  7 +++++++
++ docs/superpowers/runs/probe/reviews/i2/final-review-i2.md |  8 ++++++++
++ docs/superpowers/runs/probe/run.md                        |  9 +++++++++
++ product.txt                                               |  2 +-
++ 20 files changed, 158 insertions(+), 1 deletion(-)

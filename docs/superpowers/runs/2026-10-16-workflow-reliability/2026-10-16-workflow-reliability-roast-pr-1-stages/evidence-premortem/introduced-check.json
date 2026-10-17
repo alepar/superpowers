@@ -1,0 +1,10 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "baseHasCollector": false,
+  "introducedCheck": "The frozen base report-status has 186 lines, no --collect branch and no archive copy logic; the frozen diff adds the collector and SKILL collection/commit instruction. Assembler full-range slice rules pre-exist, but the new committed archive is what feeds prior generated slices back into the next invocation.",
+  "commands": [
+    "python3 /tmp/ufz-pr1/evidence-premortem/recursive-probe.py"
+  ],
+  "scope": "Only owned /tmp fixture mutated; no caller worktree or run diagnostics executed."
+}

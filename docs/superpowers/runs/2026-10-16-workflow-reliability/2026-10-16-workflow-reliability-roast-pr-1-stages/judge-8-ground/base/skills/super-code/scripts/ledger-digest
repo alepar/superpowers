@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Reduce a super-code ledger (progress.md) to the lines the coordinator parses, with free text cut.
+# The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
+# `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
+# prints only:
+#   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
+#   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
+#   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
+#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+#     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
+#     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
+#     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
+#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
+# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+# The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
+# an empty ledger from a lost or truncated echo.
+# Line order is kept: the last line per id wins on resume.
+#
+# Usage: bash ledger-digest LEDGER_PATH
+# A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: ledger-digest LEDGER_PATH" >&2
+  exit 2
+fi
+[ -s "$1" ] || exit 0
+
+awk '
+function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
+function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
+function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
+{
+  total++
+  line = trim($0)
+  if (line ~ /^(Merge|Human action):[ \t]/) { out[++kept] = line; next }
+  if (line ~ /^Edge add:[ \t]/) { e = line; sub(/\)[ \t].*$/, ")", e); out[++kept] = e; next }
+  if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
+  head = line; sub(/\):.*$/, ")", head)            # "Task <n> (<id>)"
+  rest = line; sub(/^[^)]*\):[ \t]*/, "", rest)    # the state text
+  n = split(rest, w, /[ \t]+/)
+  if (rest ~ /^complete/) {
+    s = "complete"
+    if (index(rest, "already merged")) s = s ", already merged"
+    if (index(rest, "review clean")) s = s ", review clean"
+    if (index(rest, "fix pass")) s = s ", fix pass"
+    if (index(rest, "parked")) s = s ", parked"
+    s = s range(rest)
+  } else if (rest ~ /^landed/) s = "landed" range(rest) closure(rest, "review") closure(rest, "blocker") (index(rest, "parked") ? ", parked" : "")
+  else if (rest ~ /^pending retry/) s = "pending retry" cause(rest)
+  else if (rest ~ /^BLOCKED/) s = w[1] cause(rest)
+  else if (rest ~ /^cancelled \(/) s = "cancelled ("
+  else if (rest ~ /^cancelled/) s = "cancelled"
+  else if (rest ~ /^stacked on/) s = "stacked on " w[3]
+  else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
+  else next
+  out[++kept] = head ": " s
+}
+END {
+  print "# ledger-digest: " kept + 0 " of " total + 0 " lines"
+  for (i = 1; i <= kept; i++) print out[i]
+}' "$1"

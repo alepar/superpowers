@@ -1,0 +1,12 @@
+{
+  "headChanged": 1408,
+  "headOversize": 492,
+  "preArchiveOversize": 0,
+  "nameMax": 255,
+  "example": "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__2026-10-16-finding-continuity-design.md.diff",
+  "basenameBytes": 264,
+  "fixtureError": {
+    "errno": 63,
+    "strerror": "File name too long"
+  }
+}

@@ -1,0 +1,132 @@
+[
+  {
+    "bytes": 173,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery: {\"version\":1,\"id\":\"bd-101\",\"kind\":\"hold\",\"operation\":\"record\",\"reason\":\"human gate pending\",\"evidence\":[\"hold-receipt.md\"],\"data\":{\"taskId\":\"bd-101\",\"context\":\"\"}}",
+    "implementation": 0,
+    "merge": 0,
+    "completed": [],
+    "stopReason": "recovery-held",
+    "recovery": {
+      "obligations": [
+        {
+          "version": 1,
+          "id": "bd-101",
+          "kind": "hold",
+          "operation": "record",
+          "reason": "human gate pending",
+          "evidence": [
+            "hold-receipt.md"
+          ],
+          "data": {
+            "taskId": "bd-101",
+            "context": ""
+          }
+        }
+      ],
+      "fixHistory": [],
+      "gaps": []
+    },
+    "labels": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "ledger-append:detector",
+      "read-ledger:finish",
+      "ledger-append:metrics",
+      "worktree-sweep"
+    ]
+  },
+  {
+    "bytes": 5173,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery gap: 1 /private/tmp/ufz-pr1/judge-0-reproduce/tests/super-code/hold-5000.md",
+    "implementation": 1,
+    "merge": 1,
+    "completed": [
+      "bd-101"
+    ],
+    "stopReason": "ready-drained",
+    "recovery": {
+      "obligations": [],
+      "fixHistory": [],
+      "gaps": [
+        {
+          "source": "/private/tmp/ufz-pr1/judge-0-reproduce/tests/super-code/hold-5000.md",
+          "line": 1,
+          "reason": "Recovery record exceeds compact transport limit"
+        }
+      ]
+    },
+    "labels": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "merge:bd-101",
+      "close-check:bd-101",
+      "bd-ready-topup",
+      "ledger:bd-101",
+      "close-epics",
+      "bd-ready",
+      "ledger-append:detector",
+      "sweep",
+      "ledger-append:sweep",
+      "read-ledger:finish",
+      "assemble:final",
+      "ledger-append:metrics",
+      "final-review",
+      "worktree-sweep"
+    ]
+  },
+  {
+    "bytes": 6176,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery gap: 1 /private/tmp/ufz-pr1/judge-0-reproduce/tests/super-code/hold-600.md",
+    "implementation": 1,
+    "merge": 1,
+    "completed": [
+      "bd-101"
+    ],
+    "stopReason": "ready-drained",
+    "recovery": {
+      "obligations": [],
+      "fixHistory": [],
+      "gaps": [
+        {
+          "source": "/private/tmp/ufz-pr1/judge-0-reproduce/tests/super-code/hold-600.md",
+          "line": 1,
+          "reason": "Recovery record exceeds compact transport limit"
+        }
+      ]
+    },
+    "labels": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "merge:bd-101",
+      "close-check:bd-101",
+      "bd-ready-topup",
+      "ledger:bd-101",
+      "close-epics",
+      "bd-ready",
+      "ledger-append:detector",
+      "sweep",
+      "ledger-append:sweep",
+      "read-ledger:finish",
+      "assemble:final",
+      "ledger-append:metrics",
+      "final-review",
+      "worktree-sweep"
+    ]
+  }
+]

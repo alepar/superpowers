@@ -1,0 +1,47 @@
+[
+  {
+    "contextBytes": 0,
+    "recordBytes": 179,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery: {\"version\":1,\"id\":\"bd-101\",\"kind\":\"hold\",\"operation\":\"record\",\"reason\":\"required evidence unavailable\",\"evidence\":[\"source.md\"],\"data\":{\"taskId\":\"bd-101\",\"context\":\"\"}}\n",
+    "implDispatches": 0,
+    "mergeDispatches": 0,
+    "completed": [],
+    "obligations": [
+      {
+        "version": 1,
+        "id": "bd-101",
+        "kind": "hold",
+        "operation": "record",
+        "reason": "required evidence unavailable",
+        "evidence": [
+          "source.md"
+        ],
+        "data": {
+          "taskId": "bd-101",
+          "context": ""
+        }
+      }
+    ],
+    "gaps": [],
+    "stopReason": "recovery-held"
+  },
+  {
+    "contextBytes": 5000,
+    "recordBytes": 5179,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery gap: 1 /private/tmp/ufz-pr1/judge-0-refute/tests/super-code/hold-5000.md\n",
+    "implDispatches": 1,
+    "mergeDispatches": 1,
+    "completed": [
+      "bd-101"
+    ],
+    "obligations": [],
+    "gaps": [
+      {
+        "source": "/private/tmp/ufz-pr1/judge-0-refute/tests/super-code/hold-5000.md",
+        "line": 1,
+        "reason": "Recovery record exceeds compact transport limit"
+      }
+    ],
+    "stopReason": "ready-drained"
+  }
+]

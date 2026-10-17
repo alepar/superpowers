@@ -1,0 +1,35 @@
+{
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "sourceSha256": {
+    "skills/super-auto/scripts/report-status": "97132d8cb83fc4cdf6480cba6f601f05c3ea6bdef95a4ce1b44cc23ce4ce8b3d",
+    "skills/super-auto/scripts/scope-dispositions": "49aef1c1fda30ba0fc441215db58d4e05d4e26b2a00a7bcf1856a03715d7a4fa",
+    "skills/super-code/scripts/report-verdict": "ce1cea248377acc299f39429457bf31a26ee45bb6e0192822d54474ca1cc27f7"
+  },
+  "initialCollect": {
+    "exit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  "acceptBefore": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "hashBefore": "dc5ed901658f472c83b0d31732a1b0d310ee276f400c9d10f3caa3073a3e0ac8",
+  "hashAfter": "1c6fb68f89369c63ce806a709de4cbc13a894d5abfd3ff38e4e5686f2fb4f3aa",
+  "acceptAfter": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "ordinaryAfter": {
+    "exit": 0,
+    "stdout": "status: clean\n",
+    "stderr": ""
+  },
+  "recollect": {
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: ground: archive conflict: final-review-ground.md.diff; keep source workspace and archive; owner: orchestrator\n"
+  }
+}

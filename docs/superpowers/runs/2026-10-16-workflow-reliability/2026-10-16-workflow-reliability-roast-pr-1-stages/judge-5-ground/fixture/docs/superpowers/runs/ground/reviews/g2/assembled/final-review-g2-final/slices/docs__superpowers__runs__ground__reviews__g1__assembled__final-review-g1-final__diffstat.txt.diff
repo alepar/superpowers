@@ -1,0 +1,9 @@
+diff --git a/docs/superpowers/runs/ground/reviews/g1/assembled/final-review-g1-final/diffstat.txt b/docs/superpowers/runs/ground/reviews/g1/assembled/final-review-g1-final/diffstat.txt
+new file mode 100644
+index 0000000..cd4dcca
+--- /dev/null
++++ b/docs/superpowers/runs/ground/reviews/g1/assembled/final-review-g1-final/diffstat.txt
+@@ -0,0 +1,3 @@
++docs/superpowers/runs/ground/run.md | 3 +++
++ product.txt                         | 2 +-
++ 2 files changed, 4 insertions(+), 1 deletion(-)

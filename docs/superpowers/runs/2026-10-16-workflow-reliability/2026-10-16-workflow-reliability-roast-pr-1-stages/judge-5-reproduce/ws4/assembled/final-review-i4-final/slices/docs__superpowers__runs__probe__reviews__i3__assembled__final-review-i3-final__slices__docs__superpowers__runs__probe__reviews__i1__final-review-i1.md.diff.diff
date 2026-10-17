@@ -1,0 +1,20 @@
+diff --git a/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__final-review-i1.md.diff b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__final-review-i1.md.diff
+new file mode 100644
+index 0000000..6f9e3a6
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__final-review-i1.md.diff
+@@ -0,0 +1,14 @@
++diff --git a/docs/superpowers/runs/probe/reviews/i1/final-review-i1.md b/docs/superpowers/runs/probe/reviews/i1/final-review-i1.md
++new file mode 100644
++index 0000000..00117d9
++--- /dev/null
+++++ b/docs/superpowers/runs/probe/reviews/i1/final-review-i1.md
++@@ -0,0 +1,8 @@
+++## Verdict
+++ready
+++## Must fix before landing
+++- none
+++## Untested scope
+++- none
+++## Deferred OK
+++- none

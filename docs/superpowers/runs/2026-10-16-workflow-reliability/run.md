@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-workflow-reliability
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=false
-phase: roast-code
+phase: fix-loop
 codeMechanism: ordinary-subagents
 runTag: workflow-reliability-20261017T054545
 context: Context: codex · planner=475K/auto · implementer=475K/auto · reviewer=475K/auto · finalReview=475K/auto · assembler=475K/auto
@@ -104,3 +104,5 @@ codeBuckets:
   processSweep: stopped 0 · survived 0 · unknown 1 · kept 0 — inspection assurance unavailable: exit 0 with empty stdout; raw observations in finish-state.json
 
 roastCodeRound: 1
+
+roast-code: 2026-10-16-workflow-reliability-roast-pr-1.md

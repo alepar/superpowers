@@ -1,0 +1,36 @@
+{ "t0": "2026-10-09T00:00:00Z", "end": 3300, "epic": "co", "cwd": "/w",
+  "ledger": [
+    "# SDD ledger — plan: /w/.superpowers/sdd/co-plan/co-plan.md",
+    "Launch: mechanism ordinary-subagents · epic co · branch epic-co · integrationWorktree /w · sweep deferred",
+    "Merge: co.1 — rebase clean · seam-review none · check pass",
+    "Task 1 (co.1): complete (commits aaaaaaa..bbbbbbb, review clean)"
+  ],
+  "beads": [
+    { "id": "co", "issue_type": "epic", "status": "open" },
+    { "id": "co.1", "issue_type": "task", "status": "closed", "parent": "co" }
+  ],
+  "caller": [
+    { "cmd": "git -C /w/.worktrees/epic-co--task-co.1 rebase epic-co", "start": 702, "end": 710 },
+    { "cmd": "git -C /w merge --ff-only task-co.1 && printf 'Merge: co.1 — rebase clean\\n' >> /w/.superpowers/sdd/co-plan/progress.md", "start": 710, "end": 720 }
+  ],
+  "coord": [
+    ["prompt", -300, "<command-name>/super-auto</command-name>"],
+    ["usage", -290, 90000],
+    ["compact", -280, "manual", 95000, 5000],
+    ["prompt", -200, "<command-message>super-auto</command-message>\n<command-name>/superpowers:super-auto</command-name>"],
+    ["usage", -190, 20000],
+    ["result", 30, "<command-name>/super-auto</command-name>"],
+    ["usage", 500, 100000],
+    ["compact", 1000, "auto", 110000, 15000],
+    ["usage", 2900, 130000],
+    ["prompt", 3000, "<command-name>/super-auto</command-name>"],
+    ["usage", 3100, 180000]
+  ],
+  "agents": [
+    { "label": "scout", "start": -250, "end": -220, "context": [[-249, 100000]] },
+    { "label": "plan", "start": 0, "end": 60, "context": [[1, 15000], [59, 40000]] },
+    { "label": "impl:co.1", "start": 60, "end": 600, "context": [[61, 12000], [300, 150000], [400, 160000], [500, 30000]], "compact": [[450, "auto", 160000, 18000]] },
+    { "label": "helper", "start": 100, "end": 150 },
+    { "label": "review:co.1", "start": 600, "end": 700, "context": [[601, 50000], [660, 10000]], "compact": [[650, "manual", 52000, 8000]] },
+    { "label": "late-scout", "start": 3100, "end": 3200, "context": [[3101, 150000]] }
+  ] }

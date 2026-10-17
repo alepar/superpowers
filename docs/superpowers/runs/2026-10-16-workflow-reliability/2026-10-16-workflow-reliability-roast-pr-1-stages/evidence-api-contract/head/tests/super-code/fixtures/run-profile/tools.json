@@ -1,0 +1,165 @@
+{
+ "t0": "2026-10-04T00:00:00Z",
+ "idPrefix": "o",
+ "launch": {
+  "epicId": "tl",
+  "config": {
+   "concurrency": 2,
+   "runtimeSlots": 4,
+   "earlyUnblock": true
+  }
+ },
+ "agents": [
+  {
+   "label": "read-ledger",
+   "phase": "Resume",
+   "start": 0,
+   "end": 3
+  },
+  {
+   "label": "ledger-append:launch",
+   "phase": "Resume",
+   "start": 1,
+   "end": 2
+  },
+  {
+   "label": "bd-ready",
+   "phase": "Ready",
+   "start": 3,
+   "end": 5,
+   "result": {
+    "ids": [
+     "tl.1"
+    ]
+   }
+  },
+  {
+   "label": "plan",
+   "phase": "Plan",
+   "start": 5,
+   "end": 20,
+   "result": {
+    "planPath": "/w/.superpowers/sdd/tl-plan/tl-plan.md",
+    "mapping": [
+     {
+      "n": 1,
+      "id": "tl.1",
+      "files": [],
+      "deps": []
+     }
+    ]
+   }
+  },
+  {
+   "label": "impl:tl.1",
+   "start": 20,
+   "end": 400,
+   "result": {
+    "status": "IMPLEMENTED"
+   },
+   "tools": [
+    {
+     "name": "Bash",
+     "command": "git add tests/x.py",
+     "start": 100,
+     "end": 110
+    },
+    {
+     "name": "Bash",
+     "command": "npm install --save-dev jest",
+     "start": 110,
+     "end": 120
+    },
+    {
+     "name": "Bash",
+     "command": "pnpm -r test",
+     "start": 120,
+     "end": 130
+    },
+    {
+     "name": "Bash",
+     "command": "make check",
+     "start": 130,
+     "end": 140
+    },
+    {
+     "name": "Bash",
+     "command": "cd /w && cargo test 2>&1 | tail -20",
+     "start": 140,
+     "end": 150
+    },
+    {
+     "name": "Bash",
+     "command": "sed -n 1,20p tests/x.py",
+     "start": 150,
+     "end": 160
+    },
+    {
+     "name": "Bash",
+     "command": "cat > tests/x.py <<'EOF'\nimport pytest\nfor x in y: sleep 5\nEOF",
+     "start": 160,
+     "end": 170
+    },
+    {
+     "name": "Bash",
+     "command": "bash -c 'until grep -q done /tmp/l; do sleep 5; done'",
+     "start": 170,
+     "end": 180
+    },
+    {
+     "name": "Bash",
+     "command": "npx playwright test",
+     "start": 180,
+     "end": 190
+    },
+    {
+     "name": "Bash",
+     "command": "cargo build --release",
+     "start": 190,
+     "end": 200
+    },
+    {
+     "name": "Bash",
+     "command": "bazel test //...",
+     "start": 200,
+     "end": 210
+    },
+    {
+     "name": "Bash",
+     "command": "BIN=target/debug/deps/svc-0a1b2c; $BIN --test-threads 1",
+     "start": 210,
+     "end": 220
+    },
+    {
+     "name": "Bash",
+     "command": "tail -f /tmp/run.log",
+     "start": 220,
+     "end": 230
+    },
+    {
+     "name": "Bash",
+     "command": "./scripts/drain.sh w1 | tail -5",
+     "start": 230,
+     "end": 240
+    }
+   ]
+  },
+  {
+   "label": "review:tl.1",
+   "start": 400,
+   "end": 420,
+   "result": {
+    "status": "CLEAN"
+   }
+  },
+  {
+   "label": "merge:tl.1",
+   "phase": "Integrate",
+   "start": 420,
+   "end": 440,
+   "result": {
+    "merged": true
+   }
+  }
+ ]
+}

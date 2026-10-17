@@ -1,0 +1,5 @@
+{
+  "status": 0,
+  "stdout": "{\n  \"records\": [\n    {\n      \"id\": \"ep.1\",\n      \"dispatch\": \"impl:ep.1\",\n      \"sourceTree\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n      \"command\": \"suite\",\n      \"configuration\": \"quiet\",\n      \"outcome\": \"fail\",\n      \"location\": \"fail.log\",\n      \"kind\": \"live\"\n    },\n    {\n      \"id\": \"ep.1\",\n      \"dispatch\": \"review:ep.1\",\n      \"sourceTree\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n      \"command\": \"suite\",\n      \"configuration\": \"quiet\",\n      \"outcome\": \"pass\",\n      \"location\": \"pass.log\",\n      \"kind\": \"live\"\n    }\n  ],\n  \"gaps\": [],\n  \"requiredLiveChecks\": [\n    {\n      \"id\": \"ep.1\",\n      \"dispatch\": \"review:ep.1\",\n      \"sourceTree\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n      \"command\": \"suite\",\n      \"configuration\": \"quiet\",\n      \"outcome\": \"pass\",\n      \"matches\": [\n        0,\n        1\n      ]\n    }\n  ]\n}\n",
+  "stderr": ""
+}

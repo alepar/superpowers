@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# dispatch-text — the exact dispatch text coordinator.js builds for one agent (implementer, review,
+# fix, seam review, merge-check fix review, merge, planner, triage), for the ordinary-subagent
+# coordinator. Writes it to a file and prints the path. Usage: bash dispatch-text --help
+# Exit codes: 0 ok, 2 bad input, 3 coordinator.js could not be loaded, 4 node unavailable.
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+command -v node >/dev/null 2>&1 || {
+  echo "NODE_UNAVAILABLE: compose this dispatch by hand from coordinator-workflow.md's contract and the prompt templates."
+  exit 4
+}
+exec node "$here/dispatch-text.mjs" "$@"

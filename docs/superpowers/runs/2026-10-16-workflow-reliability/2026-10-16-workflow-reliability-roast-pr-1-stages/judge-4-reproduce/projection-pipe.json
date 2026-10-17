@@ -1,0 +1,1083 @@
+{
+  "version": 1,
+  "findings": [
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 1,
+          "key": "[Should-fix] file-0:1",
+          "text": "Finding 0: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 2,
+          "key": "[Should-fix] file-1:1",
+          "text": "Finding 1: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 3,
+          "key": "[Should-fix] file-2:1",
+          "text": "Finding 2: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 4
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 4,
+          "key": "[Should-fix] file-3:1",
+          "text": "Finding 3: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 5
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 5,
+          "key": "[Should-fix] file-4:1",
+          "text": "Finding 4: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 6
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 6,
+          "key": "[Should-fix] file-5:1",
+          "text": "Finding 5: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 7
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 7,
+          "key": "[Should-fix] file-6:1",
+          "text": "Finding 6: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 8
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 8,
+          "key": "[Should-fix] file-7:1",
+          "text": "Finding 7: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 9
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 9,
+          "key": "[Should-fix] file-8:1",
+          "text": "Finding 8: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 10
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 10,
+          "key": "[Should-fix] file-9:1",
+          "text": "Finding 9: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 11
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 11,
+          "key": "[Should-fix] file-10:1",
+          "text": "Finding 10: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 12
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 12,
+          "key": "[Should-fix] file-11:1",
+          "text": "Finding 11: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 13
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 13,
+          "key": "[Should-fix] file-12:1",
+          "text": "Finding 12: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 14
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 14,
+          "key": "[Should-fix] file-13:1",
+          "text": "Finding 13: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 15
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 15,
+          "key": "[Should-fix] file-14:1",
+          "text": "Finding 14: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 16
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 16,
+          "key": "[Should-fix] file-15:1",
+          "text": "Finding 15: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 17
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 17,
+          "key": "[Should-fix] file-16:1",
+          "text": "Finding 16: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 18
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 18,
+          "key": "[Should-fix] file-17:1",
+          "text": "Finding 17: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 19
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 19,
+          "key": "[Should-fix] file-18:1",
+          "text": "Finding 18: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 20
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 20,
+          "key": "[Should-fix] file-19:1",
+          "text": "Finding 19: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 21
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 21,
+          "key": "[Should-fix] file-20:1",
+          "text": "Finding 20: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 22
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 22,
+          "key": "[Should-fix] file-21:1",
+          "text": "Finding 21: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 23
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 23,
+          "key": "[Should-fix] file-22:1",
+          "text": "Finding 22: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 24
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 24,
+          "key": "[Should-fix] file-23:1",
+          "text": "Finding 23: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 25
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 25,
+          "key": "[Should-fix] file-24:1",
+          "text": "Finding 24: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 26
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 26,
+          "key": "[Should-fix] file-25:1",
+          "text": "Finding 25: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 27
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 27,
+          "key": "[Should-fix] file-26:1",
+          "text": "Finding 26: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 28
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 28,
+          "key": "[Should-fix] file-27:1",
+          "text": "Finding 27: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 29
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 29,
+          "key": "[Should-fix] file-28:1",
+          "text": "Finding 28: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 30
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 30,
+          "key": "[Should-fix] file-29:1",
+          "text": "Finding 29: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 31
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 31,
+          "key": "[Should-fix] file-30:1",
+          "text": "Finding 30: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 32
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 32,
+          "key": "[Should-fix] file-31:1",
+          "text": "Finding 31: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 33
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 33,
+          "key": "[Should-fix] file-32:1",
+          "text": "Finding 32: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 34
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 34,
+          "key": "[Should-fix] file-33:1",
+          "text": "Finding 33: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 35
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 35,
+          "key": "[Should-fix] file-34:1",
+          "text": "Finding 34: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 36
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 36,
+          "key": "[Should-fix] file-35:1",
+          "text": "Finding 35: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 37
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 37,
+          "key": "[Should-fix] file-36:1",
+          "text": "Finding 36: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 38
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 38,
+          "key": "[Should-fix] file-37:1",
+          "text": "Finding 37: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 39
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 39,
+          "key": "[Should-fix] file-38:1",
+          "text": "Finding 38: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 40
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 40,
+          "key": "[Should-fix] file-39:1",
+          "text": "Finding 39: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 41
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 41,
+          "key": "[Should-fix] file-40:1",
+          "text": "Finding 40: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "independent/final",
+        "section": "Confirmed findings",
+        "position": 42
+      },
+      "occurrences": [
+        {
+          "source": "independent/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 42,
+          "key": "[Should-fix] file-41:1",
+          "text": "Finding 41: Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detailed retained verification evidence. Detail

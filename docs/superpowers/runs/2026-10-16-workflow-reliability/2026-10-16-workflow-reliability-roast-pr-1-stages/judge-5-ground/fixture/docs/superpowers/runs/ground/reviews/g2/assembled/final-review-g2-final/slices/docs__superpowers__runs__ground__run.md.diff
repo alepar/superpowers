@@ -1,0 +1,12 @@
+diff --git a/docs/superpowers/runs/ground/run.md b/docs/superpowers/runs/ground/run.md
+new file mode 100644
+index 0000000..734c262
+--- /dev/null
++++ b/docs/superpowers/runs/ground/run.md
+@@ -0,0 +1,6 @@
++phase: code
++flags: skipPlanRoast=false skipCodeRoast=false
++approvals:
++- review-collection · {"invocationId":"g1","workspace":"/tmp/ufz-pr1/judge-5-ground/ws1","reviewPath":"/tmp/ufz-pr1/judge-5-ground/ws1/final-review-g1.md","review":"ready","required":[],"settled":true}
++- finding-source · {"version":1,"source":"g1/final","artifact":"reviews/g1/final-review-g1.md","kind":"final-review","verdict":"ready","occurrences":[]}
++- review-collection · {"invocationId":"g1","workspace":"/tmp/ufz-pr1/judge-5-ground/ws1","reviewPath":"/tmp/ufz-pr1/judge-5-ground/ws1/final-review-g1.md","review":"ready","required":[],"settled":true,"files":[{"path":"assembled/final-review-g1-final/diffstat.txt","sha256":"f02cda9467a5ea3830fdd0b7cd5e387792684fdd5ef433adb7b66bb063515ca9"},{"path":"assembled/final-review-g1-final/digest.md","sha256":"dd8138d1bd103bbf8fadcca7bc1314f0ca6d1401f9dedf520e8f120ba365c12c"},{"path":"assembled/final-review-g1-final/slices/docs__superpowers__runs__ground__run.md.diff","sha256":"3c86438b59407db0921d924b3e2ba06a2ab3b715b9e60006f8d798e68cdb2107"},{"path":"assembled/final-review-g1-final/slices/product.txt.diff","sha256":"4f6d7023c662b8b8fccecfc9fab848364a534073089af7eb9ea27c84578005d7"},{"path":"final-review-g1.md","sha256":"92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"}],"complete":true,"gaps":[]}

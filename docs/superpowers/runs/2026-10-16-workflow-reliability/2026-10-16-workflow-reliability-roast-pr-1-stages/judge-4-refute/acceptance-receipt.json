@@ -1,0 +1,21 @@
+{
+  "frozen": {
+    "code": 3,
+    "eligible": false,
+    "gaps": [
+      "finding projection unavailable",
+      "finding projection unavailable \u2014 retain known findings"
+    ],
+    "pending": [],
+    "nonblockingFindings": 0,
+    "stderr": ""
+  },
+  "flushOnlyChange": {
+    "code": 0,
+    "eligible": true,
+    "gaps": [],
+    "pending": [],
+    "nonblockingFindings": 128,
+    "stderr": ""
+  }
+}

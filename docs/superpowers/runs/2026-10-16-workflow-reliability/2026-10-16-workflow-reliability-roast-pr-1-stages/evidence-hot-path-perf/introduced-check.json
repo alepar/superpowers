@@ -1,0 +1,11 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "baseHasCollectionMode": false,
+  "headHasCollectionMode": true,
+  "headDiffAddedLines": {
+    "archive": 83336,
+    "skills": 2771
+  },
+  "reproductionAttribution": "Independent premortem scout receipt; performance scout independently read frozen collector, assembler, coordinator and invocation/commit rules and verified causal chain."
+}

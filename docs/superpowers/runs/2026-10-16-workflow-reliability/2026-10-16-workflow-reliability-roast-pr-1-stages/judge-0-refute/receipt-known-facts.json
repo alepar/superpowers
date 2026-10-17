@@ -1,0 +1,57 @@
+[
+  {
+    "contextBytes": 0,
+    "recordBytes": 421,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery: {\"version\":1,\"id\":\"merge-lane\",\"kind\":\"hold\",\"operation\":\"record\",\"reason\":\"integration worktree unavailable for merge\",\"evidence\":[\"merge:bd-101\",\"task-1-report.md\"],\"data\":{\"taskId\":\"bd-101\",\"integrationBranch\":\"epic-bd-100-integration\",\"integrationWorktree\":\"/repo/.worktrees/epic-bd-100-integration\",\"dirty\":[\"src/0/file.js\",\"src/1/file.js\",\"src/2/file.js\",\"src/3/file.js\",\"src/4/file.js\"],\"dirtyCount\":5}}\n",
+    "implDispatches": 0,
+    "mergeDispatches": 0,
+    "completed": [],
+    "obligations": [
+      {
+        "version": 1,
+        "id": "merge-lane",
+        "kind": "hold",
+        "operation": "record",
+        "reason": "integration worktree unavailable for merge",
+        "evidence": [
+          "merge:bd-101",
+          "task-1-report.md"
+        ],
+        "data": {
+          "taskId": "bd-101",
+          "integrationBranch": "epic-bd-100-integration",
+          "integrationWorktree": "/repo/.worktrees/epic-bd-100-integration",
+          "dirty": [
+            "src/0/file.js",
+            "src/1/file.js",
+            "src/2/file.js",
+            "src/3/file.js",
+            "src/4/file.js"
+          ],
+          "dirtyCount": 5
+        }
+      }
+    ],
+    "gaps": [],
+    "stopReason": "recovery-held"
+  },
+  {
+    "contextBytes": 5000,
+    "recordBytes": 5421,
+    "digest": "# ledger-digest: 1 of 1 lines\nRecovery gap: 1 /private/tmp/ufz-pr1/judge-0-refute/tests/super-code/hold-known-facts-5000.md\n",
+    "implDispatches": 1,
+    "mergeDispatches": 1,
+    "completed": [
+      "bd-101"
+    ],
+    "obligations": [],
+    "gaps": [
+      {
+        "source": "/private/tmp/ufz-pr1/judge-0-refute/tests/super-code/hold-known-facts-5000.md",
+        "line": 1,
+        "reason": "Recovery record exceeds compact transport limit"
+      }
+    ],
+    "stopReason": "ready-drained"
+  }
+]

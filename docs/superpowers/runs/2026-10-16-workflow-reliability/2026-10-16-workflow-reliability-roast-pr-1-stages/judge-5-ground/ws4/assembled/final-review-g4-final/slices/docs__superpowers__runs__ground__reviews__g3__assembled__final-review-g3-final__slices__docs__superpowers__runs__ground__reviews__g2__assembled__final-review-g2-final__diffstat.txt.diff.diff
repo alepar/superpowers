@@ -1,0 +1,20 @@
+diff --git a/docs/superpowers/runs/ground/reviews/g3/assembled/final-review-g3-final/slices/docs__superpowers__runs__ground__reviews__g2__assembled__final-review-g2-final__diffstat.txt.diff b/docs/superpowers/runs/ground/reviews/g3/assembled/final-review-g3-final/slices/docs__superpowers__runs__ground__reviews__g2__assembled__final-review-g2-final__diffstat.txt.diff
+new file mode 100644
+index 0000000..6ef63b6
+--- /dev/null
++++ b/docs/superpowers/runs/ground/reviews/g3/assembled/final-review-g3-final/slices/docs__superpowers__runs__ground__reviews__g2__assembled__final-review-g2-final__diffstat.txt.diff
+@@ -0,0 +1,14 @@
++diff --git a/docs/superpowers/runs/ground/reviews/g2/assembled/final-review-g2-final/diffstat.txt b/docs/superpowers/runs/ground/reviews/g2/assembled/final-review-g2-final/diffstat.txt
++new file mode 100644
++index 0000000..4236090
++--- /dev/null
+++++ b/docs/superpowers/runs/ground/reviews/g2/assembled/final-review-g2-final/diffstat.txt
++@@ -0,0 +1,8 @@
+++.../reviews/g1/assembled/final-review-g1-final/diffstat.txt      | 3 +++
+++ .../ground/reviews/g1/assembled/final-review-g1-final/digest.md  | 2 ++
+++ .../slices/docs__superpowers__runs__ground__run.md.diff          | 9 +++++++++
+++ .../g1/assembled/final-review-g1-final/slices/product.txt.diff   | 7 +++++++
+++ docs/superpowers/runs/ground/reviews/g1/final-review-g1.md       | 8 ++++++++
+++ docs/superpowers/runs/ground/run.md                              | 6 ++++++
+++ product.txt                                                      | 2 +-
+++ 7 files changed, 36 insertions(+), 1 deletion(-)

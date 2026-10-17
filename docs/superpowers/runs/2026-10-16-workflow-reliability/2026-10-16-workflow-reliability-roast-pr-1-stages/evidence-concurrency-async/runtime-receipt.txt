@@ -1,0 +1,30 @@
+offset 234585151
+function sAn(e){let{parse:n}=zFt(),o=Zn(),w=!1;try{let h=n(e,{ecmaVersion:"latest",sourceType:"module",allowAwaitOutsideFunction:!0,allowReturnOutsideFunction:!0});o.simple(h,{MemberExpression(f){if(f.computed||f.object.type!=="Identifier"||f.property.type!=="Identifier")return;let E=f.object.name,W=f.property.name;if(E==="Date"&&W==="now"||E==="Math"&&W==="random")w=!0},NewExpression(f){if(f.callee.type==="Identifier"&&f.callee.name==="Date"&&f.arguments.length===0)w=!0}})}catch{return!1}return w}import*as pn from"vm";var Jr=ops("Workflow: swallowed an unhandled rejection (not exiting): a script left a promise that carries the reason of a failed agent(), parallel(), pipeline() or workflow() call without a handler");function Pn(e){let n=YMr(e),o=X1s(e,Jr);return(w)=>o(n(w))}import*as fn from"vm";function eo(e,n){let o=e,w=(fe,F)=>{let B=o
+
+offset 247179843
+if(r.script&&sAn(k.scriptBody))return{result:!1,message:`Workflow scripts must be deterministic: Date.now()/Math.random()/new Date() are unavailable (breaks resume). Stamp results after the workflow returns, or pass timestamps via args.${vr(r,s.tools)}`,errorCode:4};return{result:!0}},async checkPermissions(r,n){let s=_r(e,n),a=s.permissions(),w=Ve(r)!==void 0,h=r.scriptPath||w?void 0:r.name,k=(z)=>h?OL(a,au,z).get(h):void 0,b=k("deny");if(b)return{behavior:"deny",message:`Workflow ${h} blocked 
+
+offset 228820649
+function eo(e,n){let{rewatchTiming:r}=e;if(r.idleTtlMs<=0)return!1;if(n.explicit||wr(e,n)||Date.now()-n.lastActivityAt<r.idleTtlMs)return!1;return!(n.autoReactWiring!==void 0&&lf()&&(!My(n.slug)||p_(n.slug)))}function wr(e,n){return n.slug===e.mostRecentPublishSlug&&n.armedVia!=="mcp_write"}function BRn(e,n){return e?"watch":n==="watch"?"watch_stop
+
+offset 234580181
+Math.random = function random() { throw new Error(RANDOM_ERR) };
+      const RealDate = Date;
+      RealDate.now = function now() { throw new Error(NOW_ERR) };
+      function ShimDate(...a) {
+        if (!new.target) throw new Error(NOW_ERR); // bare Date() \u2192 now-string
+        if (a.length === 0) throw new Error(NOW_ERR);
+        return Reflect.construct(RealDate, a, new.target);
+      }
+      ShimDate.now = RealDate.now;
+      ShimDate.parse = RealDate.parse;
+      ShimDate.UTC = RealDate.UTC;
+      ShimDate.prototype = RealDate.prototype;
+      // Close the (new Date(x)).constructor backdoor to RealDate.now \u2014 point
+      // .constructor at the shim, then freeze RealDate so it can't be undone.
+      RealDate.prototype.constructor = ShimDate;
+      Object.freeze(RealDate);
+      globalThis.Date = ShimDate;
+    })()`;function An(e){cn.runInContext(Br,e)}var Oqt=30000;function Har(e){let n=new Set,o=(h)=>h();function w(){for(let h of n)clearTimeout(h);n.clear()}return e?.addEventListener("abort",w,{once:!0}),{clear:w,setTimeout:o7((h,f)=>{if(e?.aborted)return 0;let E=typeof f==="number"?f:typeof f==="string"?+f||0:0,W=Number(setTimeout(()=>{try{o(h)}catch{}},E));return n.add(W),W}),clearTimeout:o7((h)=>{if(typeof h==="number"||typeof h==="string"){let f=typeof h==="number"?h:+h;if(n.has(f))n.delete(f),clearTimeout(f)}}),bindVMInvoke:(h)=>{o=h}}}var re="__wRg$",AXr=`${re}words`,Vr="{put, read, on, retract, agent, workflow}",Jo=`${re}resolve`;function Cn(e){cn.runInContext(`Object.defineProperty(globalThis, ${_(Jo)}, {
+      value: Promise.resolve.bind(Promise),
+    

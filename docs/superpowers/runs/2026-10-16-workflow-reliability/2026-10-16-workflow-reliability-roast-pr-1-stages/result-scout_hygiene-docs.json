@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The new tracked archive of complete assembled inputs makes this branch's required next roast assembly fail with ENAMETOOLONG.",
+      "location": "skills/super-auto/SKILL.md:400",
+      "category": "hygiene-docs",
+      "external": false,
+      "evidence": "The newly added Review collection instruction says collection preserves the final review, split reviews, direct .diff and assembled input tree under <run-dir>/reviews/<ID>/ and line 402 requires committing the collection. The unchanged assembler-prompt.md:26-27 maps every changed source path to a single slices/<path with each / replaced by __>.diff basename; SKILL.md:171 requires this assembler before each code-roast round. At frozen head ff2f79f62cc34084c8df20edc5c2e4f201a5d630, 492 paths in the base-to-head diff produce basenames over the fixture filesystem's measured NAME_MAX=255. For example the archived assembled slice ending live-review-isolation__source-excerpts__skills__subagent-driven-development__scripts__review-package.diff produces a 325-byte basename. Static source analysis plus an owned /tmp/ufz-pr1/evidence-hygiene-docs filename fixture reproduced errno 63, File name too long, without running any caller diagnostics. The pre-archive commit 68c8a062 has zero oversize flattened names against the same frozen base d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5; head adds 735 archive files and introduces this failure. The assembler therefore cannot finish or supply its size/clustering result, forcing the direct-input fallback. Retained receipt: /tmp/ufz-pr1/evidence-hygiene-docs/flattened-slice-reproduction.json.",
+      "kind": "ISSUE"
+    }
+  ]
+}

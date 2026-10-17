@@ -1,0 +1,2 @@
+model = "gpt-test"
+model_auto_compact_token_limit = 100000

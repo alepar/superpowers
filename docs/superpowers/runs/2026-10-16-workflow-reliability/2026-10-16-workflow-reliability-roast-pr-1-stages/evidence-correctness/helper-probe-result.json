@@ -1,0 +1,49 @@
+{
+  "projection": {
+    "pipe": {
+      "exit": 0,
+      "bytes": 65536,
+      "jsonValid": false,
+      "stderr": "",
+      "tail": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "file": {
+      "exit": 0,
+      "bytes": 167036,
+      "stderr": ""
+    },
+    "fileFindings": 80,
+    "status": {
+      "exit": 0,
+      "stdout": "status: clean [degraded: finding projection unavailable \u2014 retain known findings]\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+      "stderr": "",
+      "bytes": 151
+    }
+  },
+  "archiveIntegrity": {
+    "collect": {
+      "exit": 0,
+      "stdout": "collection: complete\n",
+      "stderr": "",
+      "bytes": 21
+    },
+    "before": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": "",
+      "bytes": 143
+    },
+    "afterCorruption": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": "",
+      "bytes": 143
+    },
+    "recollectDetects": {
+      "exit": 3,
+      "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+      "stderr": "COLLECTION_GAP: inv-small: archive conflict: final-review-inv-small.md.diff; keep source workspace and archive; owner: orchestrator\n",
+      "bytes": 72
+    }
+  }
+}

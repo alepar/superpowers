@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Size of a task's read/touch surface at its base commit, in tokens (bytes / 4, integer division).
+# Bytes stand in for characters (exact for ASCII source). Paths come from the caller; no plan field
+# is parsed here.
+#
+# Usage: bash task-surface --base <sha> <path>...
+# Prints one integer on stdout. A path missing at <sha> counts 0 and is named on stderr
+# (`task-surface: not at <sha>: <path>`).
+# Exit 0 ok, 2 bad input (no --base, unknown commit, no paths).
+set -euo pipefail
+
+if [ $# -lt 2 ] || [ "$1" != "--base" ]; then
+  echo "usage: task-surface --base <sha> <path>..." >&2
+  exit 2
+fi
+base=$2
+shift 2
+if [ $# -eq 0 ]; then
+  echo "task-surface: no paths given" >&2
+  exit 2
+fi
+git rev-parse --verify --quiet "${base}^{commit}" >/dev/null || {
+  echo "task-surface: not a commit: $base" >&2
+  exit 2
+}
+
+total=0
+for p in "$@"; do
+  if sz=$(git cat-file -s "${base}:${p}" 2>/dev/null); then
+    total=$((total + sz))
+  else
+    echo "task-surface: not at $base: $p" >&2
+  fi
+done
+echo $((total / 4))

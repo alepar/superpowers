@@ -1,0 +1,19 @@
+{
+ "t0": "2026-10-03T12:00:00Z",
+ "idPrefix": "u",
+ "agents": [
+  {
+   "label": "impl:x.1",
+   "start": 0,
+   "end": 60,
+   "result": {
+    "status": "IMPLEMENTED"
+   }
+  },
+  {
+   "label": "judge:x.1",
+   "start": 60,
+   "end": 90
+  }
+ ]
+}

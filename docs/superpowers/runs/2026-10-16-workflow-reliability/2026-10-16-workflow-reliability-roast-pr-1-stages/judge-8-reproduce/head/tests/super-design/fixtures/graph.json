@@ -1,0 +1,282 @@
+[
+ {
+  "id": "r",
+  "issue_type": "epic",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "",
+  "dependencies": []
+ },
+ {
+  "id": "r.1",
+  "issue_type": "epic",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "",
+  "dependencies": [
+   {
+    "issue_id": "r.1",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.1.1",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "owns: parser",
+  "dependencies": [
+   {
+    "issue_id": "r.1.1",
+    "depends_on_id": "r.1",
+    "type": "parent-child"
+   }
+  ],
+  "parent": "r.1"
+ },
+ {
+  "id": "r.1.2",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.1.1: consumes parser module",
+  "dependencies": [
+   {
+    "issue_id": "r.1.2",
+    "depends_on_id": "r.1",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.1.2",
+    "depends_on_id": "r.1.1",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r.1"
+ },
+ {
+  "id": "r.2",
+  "issue_type": "epic",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.1: consumes the parser epic",
+  "dependencies": [
+   {
+    "issue_id": "r.2",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.2",
+    "depends_on_id": "r.1",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.2.1",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.4: consumes boundary contract",
+  "dependencies": [
+   {
+    "issue_id": "r.2.1",
+    "depends_on_id": "r.2",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.2.1",
+    "depends_on_id": "r.4",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r.2"
+ },
+ {
+  "id": "r.2.2",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "",
+  "dependencies": [
+   {
+    "issue_id": "r.2.2",
+    "depends_on_id": "r.2",
+    "type": "parent-child"
+   }
+  ],
+  "parent": "r.2"
+ },
+ {
+  "id": "r.3",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.2.2: consumes report format\nblocked-by r.6: consumes fix",
+  "dependencies": [
+   {
+    "issue_id": "r.3",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.3",
+    "depends_on_id": "r.2.2",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.3",
+    "depends_on_id": "r.6",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.4",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "Seam contract: parser/report",
+  "dependencies": [
+   {
+    "issue_id": "r.4",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.5",
+  "issue_type": "task",
+  "status": "closed",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "",
+  "dependencies": [
+   {
+    "issue_id": "r.5",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.5",
+    "depends_on_id": "r.1.1",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.6",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r",
+   "blocker"
+  ],
+  "description": "",
+  "dependencies": [
+   {
+    "issue_id": "r.6",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.7",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.4: consumes stub types",
+  "dependencies": [
+   {
+    "issue_id": "r.7",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.7",
+    "depends_on_id": "r.4",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r"
+ },
+ {
+  "id": "r.9",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:r"
+  ],
+  "description": "blocked-by r.1.1: consumes all leaves (integration sweep)\nblocked-by r.1.2: consumes all leaves (integration sweep)\nblocked-by r.2.1: consumes all leaves (integration sweep)\nblocked-by r.2.2: consumes all leaves (integration sweep)\nblocked-by r.3: consumes all leaves (integration sweep)\nblocked-by r.4: consumes all leaves (integration sweep)",
+  "dependencies": [
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r",
+    "type": "parent-child"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.1.1",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.1.2",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.2.1",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.2.2",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.3",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "r.9",
+    "depends_on_id": "r.4",
+    "type": "blocks"
+   }
+  ],
+  "parent": "r"
+ }
+]

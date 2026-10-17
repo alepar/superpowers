@@ -1,0 +1,17 @@
+{
+  "direct": {
+    "status": 0,
+    "bytes": 205289,
+    "findings": 128
+  },
+  "pipe": {
+    "status": 0,
+    "bytes": 65536,
+    "parse_error": "Expecting ',' delimiter: line 1066 column 25 (char 65536)"
+  },
+  "report_status": {
+    "status": 0,
+    "stdout": "status: clean [degraded: finding projection unavailable \u2014 retain known findings]\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+    "stderr": ""
+  }
+}

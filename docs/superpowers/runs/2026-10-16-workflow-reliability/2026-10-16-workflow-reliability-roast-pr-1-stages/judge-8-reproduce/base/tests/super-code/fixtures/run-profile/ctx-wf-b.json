@@ -1,0 +1,11 @@
+{ "t0": "2026-10-08T00:00:00Z", "idPrefix": "cb",
+  "launch": { "epicId": "cw", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 4000, "end": 4005 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 4001, "end": 4003 },
+    { "label": "bd-ready", "phase": "Ready", "start": 4005, "end": 4010, "result": { "ids": ["cw.2"] } },
+    { "label": "plan", "phase": "Plan", "start": 4010, "end": 4040, "result": { "planPath": "/w/.superpowers/sdd/cw-plan/cw-plan.md", "mapping": [{ "n": 2, "id": "cw.2", "files": ["b.ts"], "deps": [] }] } },
+    { "label": "impl:cw.2", "start": 4040, "end": 4400, "context": [[4041, 10000], [4300, 110000]], "result": { "status": "IMPLEMENTED" } },
+    { "label": "review:cw.2", "start": 4400, "end": 4460, "result": { "status": "CLEAN" } },
+    { "label": "merge:cw.2", "phase": "Integrate", "start": 4460, "end": 4500, "result": { "merged": true } }
+  ] }

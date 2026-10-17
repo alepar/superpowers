@@ -1,0 +1,14 @@
+{ "t0": "2026-10-06T03:00:00Z", "idPrefix": "q",
+  "launch": { "epicId": "q", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 5, "end": 12, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 13, "result": { "ids": ["q.1"] } },
+    { "label": "plan", "phase": "Plan", "start": 14, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/q-plan/q-plan.md", "mapping": [ { "n": 1, "id": "q.1", "files": ["a.ts"], "deps": [] } ] } },
+    { "label": "impl:q.1", "start": 40, "end": 400, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:q.1", "start": 400, "end": 460, "result": { "status": "NEEDS_FIX" } },
+    { "label": "review-bead:q.1", "start": 420, "end": 425, "result": { "reviewBead": "q.9", "implClosed": true } },
+    { "label": "fix:q.1", "start": 460, "end": 560, "result": { "status": "FIXED" } },
+    { "label": "merge:q.1", "phase": "Integrate", "start": 560, "end": 600, "result": { "merged": true } }
+  ] }

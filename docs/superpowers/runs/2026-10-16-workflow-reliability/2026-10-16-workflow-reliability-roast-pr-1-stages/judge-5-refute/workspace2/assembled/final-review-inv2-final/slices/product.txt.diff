@@ -1,0 +1,7 @@
+diff --git a/product.txt b/product.txt
+index 90be1f3..01bcaff 100644
+--- a/product.txt
++++ b/product.txt
+@@ -1 +1 @@
+-before
++SEED-PRODUCT-CHANGE

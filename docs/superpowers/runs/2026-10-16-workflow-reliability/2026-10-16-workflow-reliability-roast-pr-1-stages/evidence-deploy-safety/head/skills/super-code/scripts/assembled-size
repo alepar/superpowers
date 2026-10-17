@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Measure an assembled review input (the assembler's output directory) and say whether it fits a
+# reviewer's context. The assembler and every consumer rely on this script for `fits`; none computes
+# it themselves.
+#
+# Usage: bash assembled-size DIR --threshold TOKENS [--clusters-required]
+# Prints, in order:
+#   size: <path relative to DIR> <tokens>      every regular file except clusters.json, sorted
+#                                              (tokens = bytes / 4)
+#   fits: yes|no (<total> of <threshold>)      total = digest.md + every file under slices/
+#   cluster-fits: <name> yes|no (<tokens> of <threshold>)   one per cluster, in file order, when
+#                                              clusters.json exists (tokens = sum over its slices;
+#                                              a missing slice counts 0)
+# clusters.json: {"changed": ["<path>", ...], "clusters": [{"name": "...", "files": [...], "slices": [...]}]}
+# Every changed path must be in exactly one cluster's files, and every cluster file in changed.
+# --clusters-required: clusters.json missing, unparsable or with an empty clusters array prints
+# `clusters: required but missing or empty` after the fits line.
+# Exit 3 still prints every size: line and the fits: line first, both valid; a consumer caps a review
+# only when fits is no.
+# Exit codes: 0 measured (whether or not it fits), 2 bad usage, 3 bad cluster coverage or required
+# clusters missing, 4 jq unavailable (clusters.json present: run the coverage check by hand).
+set -euo pipefail
+
+usage() { echo "usage: assembled-size DIR --threshold TOKENS [--clusters-required]" >&2; exit 2; }
+
+dir=""; threshold=""; required=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --threshold) [ $# -ge 2 ] || usage; threshold=$2; shift 2 ;;
+    --clusters-required) required=1; shift ;;
+    --*) usage ;;
+    *) [ -z "$dir" ] || usage; dir=$1; shift ;;
+  esac
+done
+[ -n "$dir" ] && [ -n "$threshold" ] || usage
+case "$threshold" in ''|*[!0-9]*) echo "assembled-size: threshold must be a non-negative integer, got '$threshold'" >&2; exit 2 ;; esac
+[ -d "$dir" ] || { echo "assembled-size: not a directory: $dir" >&2; exit 2; }
+dir=${dir%/}
+
+tokens() { local b; b=$(wc -c < "$1"); echo $((b / 4)); }
+
+total=0
+while IFS= read -r rel; do
+  [ -n "$rel" ] || continue
+  t=$(tokens "$dir/$rel")
+  echo "size: $rel $t"
+  case "$rel" in digest.md|slices/*) total=$((total + t)) ;; esac
+done < <(cd "$dir" && find . -type f ! -path ./clusters.json | sed 's|^\./||' | LC_ALL=C sort)
+
+if [ "$total" -le "$threshold" ]; then verdict=yes; else verdict=no; fi
+echo "fits: $verdict ($total of $threshold)"
+
+cj="$dir/clusters.json"
+if [ -f "$cj" ] && ! command -v jq >/dev/null 2>&1; then
+  echo "JQ_UNAVAILABLE: jq is not installed; check $cj by hand: every path in \"changed\" is in exactly one cluster's \"files\", and every cluster file is in \"changed\"; then add one 'cluster-fits: <name> yes|no (<tokens> of $threshold)' line per cluster (bytes / 4, summed over its slices)."
+  exit 4
+fi
+
+usable=0
+if [ -f "$cj" ] && jq -e 'type == "object"' "$cj" >/dev/null 2>&1; then
+  usable=1
+  nclusters=$(jq '(.clusters // []) | length' "$cj")
+fi
+if [ "$required" = 1 ] && { [ "$usable" = 0 ] || [ "$nclusters" -eq 0 ]; }; then
+  echo "clusters: required but missing or empty"
+  exit 3
+fi
+if [ -f "$cj" ] && [ "$usable" = 0 ]; then
+  echo "clusters: clusters.json is not a JSON object"
+  exit 3
+fi
+[ "$usable" = 1 ] || exit 0
+
+bad=$(jq -r '
+  . as $r | ($r.clusters // []) as $cs | ($r.changed // []) as $ch
+  | ( $ch[] as $p
+      | ([$cs[] | select((.files // []) | any(. == $p))] | length) as $n
+      | select($n != 1) | "coverage: \($p) in \($n) clusters" ),
+    ( $cs[] | (.files // [])[] as $p
+      | select($ch | any(. == $p) | not)
+      | "coverage: \($p) in 0 clusters (not in changed)" )' "$cj")
+if [ -n "$bad" ]; then
+  printf '%s\n' "$bad"
+  exit 3
+fi
+
+while IFS=$'\t' read -r name slices; do
+  [ -n "$name" ] || continue
+  sum=0
+  IFS=$'\t' read -r -a arr <<<"$slices"
+  for s in ${arr[@]+"${arr[@]}"}; do
+    [ -n "$s" ] && [ -f "$dir/$s" ] && sum=$((sum + $(tokens "$dir/$s")))
+  done
+  if [ "$sum" -le "$threshold" ]; then v=yes; else v=no; fi
+  echo "cluster-fits: $name $v ($sum of $threshold)"
+done < <(jq -r '(.clusters // [])[] | [.name, ((.slices // []) | join("\t"))] | join("\t")' "$cj")
+exit 0

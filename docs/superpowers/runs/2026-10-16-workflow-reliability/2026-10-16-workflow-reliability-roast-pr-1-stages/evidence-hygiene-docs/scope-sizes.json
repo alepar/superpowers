@@ -1,0 +1,56 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "totalBytes": 15734216,
+  "fileCount": 1408,
+  "largest": [
+    [
+      736387,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/final-review-inv-mvc60k41-xt8p35rk04d.md.diff"
+    ],
+    [
+      448062,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/run.md"
+    ],
+    [
+      416145,
+      "tests/super-code/replay-harness.mjs"
+    ],
+    [
+      296361,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__live-review-isolation__source-excerpts__skills__super-code__coordinator.js.diff"
+    ],
+    [
+      292746,
+      "skills/super-code/coordinator.js"
+    ],
+    [
+      292746,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/source-excerpts/skills__super-code__coordinator.js"
+    ],
+    [
+      269225,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__live-review-isolation__evidence__observations.jsonl.diff"
+    ],
+    [
+      268570,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/observations.jsonl"
+    ],
+    [
+      235683,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/clusters.json"
+    ],
+    [
+      222695,
+      "skills/super-code/coordinator-workflow.md"
+    ],
+    [
+      176865,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__nochange-diagnostic__historical-reference__scores.json.diff"
+    ],
+    [
+      176847,
+      "docs/superpowers/runs/2026-10-16-workflow-reliability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/slices/docs__superpowers__runs__2026-10-16-workflow-reliability__nochange-diagnostic__original-after-scores.json.diff"
+    ]
+  ]
+}

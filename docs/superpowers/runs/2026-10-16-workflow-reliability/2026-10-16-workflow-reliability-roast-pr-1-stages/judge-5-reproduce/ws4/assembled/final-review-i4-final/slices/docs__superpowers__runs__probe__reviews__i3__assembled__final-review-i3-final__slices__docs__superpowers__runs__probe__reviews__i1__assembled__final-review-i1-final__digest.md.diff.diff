@@ -1,0 +1,16 @@
+diff --git a/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__digest.md.diff b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__digest.md.diff
+new file mode 100644
+index 0000000..83bc6ef
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/i3/assembled/final-review-i3-final/slices/docs__superpowers__runs__probe__reviews__i1__assembled__final-review-i1-final__digest.md.diff
+@@ -0,0 +1,10 @@
++diff --git a/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/digest.md b/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/digest.md
++new file mode 100644
++index 0000000..46a283e
++--- /dev/null
+++++ b/docs/superpowers/runs/probe/reviews/i1/assembled/final-review-i1-final/digest.md
++@@ -0,0 +1,4 @@
+++## diffstat
+++docs/superpowers/runs/probe/run.md | 3 +++
+++ product.txt                        | 2 +-
+++ 2 files changed, 4 insertions(+), 1 deletion(-)

@@ -1,0 +1,25 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "reproductions": [
+    {
+      "source": "base",
+      "command": "TMPDIR=/private/tmp/ bash tests/super-code/test-dispatch-text.sh",
+      "exitCode": 0,
+      "log": "/tmp/ufz-pr1/evidence-testing/base-dispatch-trailing-slash.log"
+    },
+    {
+      "source": "head",
+      "command": "TMPDIR=/private/tmp/ bash tests/super-code/test-dispatch-text.sh",
+      "exitCode": 1,
+      "failureCount": 4,
+      "log": "/tmp/ufz-pr1/evidence-testing/head-dispatch-trailing-slash.log"
+    },
+    {
+      "source": "head",
+      "command": "TMPDIR=/private/tmp bash tests/super-code/test-dispatch-text.sh",
+      "exitCode": 0,
+      "log": "/tmp/ufz-pr1/evidence-testing/head-dispatch-no-trailing-slash.log"
+    }
+  ]
+}

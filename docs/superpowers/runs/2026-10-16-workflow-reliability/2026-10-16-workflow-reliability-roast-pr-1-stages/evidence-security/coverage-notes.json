@@ -1,0 +1,7 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "method": "immutable git show extraction, focused helper/caller review, added-line secret-pattern scan, isolated symlink reproduction",
+  "secretPatternMatches": 0,
+  "limits": "No full suite, product mutation, children, tracker, or Herdr actions. Archived logs were not treated as independently verified source evidence. Existing final-review path was not present in frozen head and was not used."
+}

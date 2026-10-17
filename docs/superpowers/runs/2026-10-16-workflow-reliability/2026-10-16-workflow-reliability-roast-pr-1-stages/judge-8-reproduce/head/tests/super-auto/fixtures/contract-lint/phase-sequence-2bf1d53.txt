@@ -1,0 +1,7 @@
+design
+roast-design
+code
+roast-code
+fix-loop
+report
+finish→done

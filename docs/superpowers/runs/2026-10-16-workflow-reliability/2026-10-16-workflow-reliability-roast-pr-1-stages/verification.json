@@ -1,0 +1,34 @@
+{
+  "verdict": "Blocking (7 confirmed)",
+  "confirmedCount": 7,
+  "severityCounts": {
+    "Blocking": 1,
+    "Should-fix": 6
+  },
+  "routes": {
+    "confirmed": 7,
+    "rejected": 2
+  },
+  "reporterFailed": false,
+  "engineEnforcement": [
+    "lanes: 7 confirmed entries tagged",
+    "header: lane-yield inserted"
+  ],
+  "coverageMatchesEngine": true,
+  "canonicalFindingLocations": true,
+  "allSeatFindingsBlind": true,
+  "modelRoster": {
+    "triage": 1,
+    "scout": 12,
+    "dedupe": 1,
+    "judge": 27,
+    "reporter": 1
+  },
+  "sameFamilySeatDifferentiated": true,
+  "durableFilesHashVerified": 4104,
+  "reportEvidenceCitationsVerified": 21,
+  "temporaryEvidenceReferencesInPublishedReport": 0,
+  "unresolvedTemplateTokens": 0,
+  "productFilesEdited": false,
+  "callerFilesEdited": false
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "revision": "base",
+    "sha": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "mode": "omitted",
+    "error": null,
+    "logs": [
+      "coordinator: epic=fixture branch=fixture-branch skillsRoot=/fixture/skills dryRun=true"
+    ],
+    "bannedSourceLines": []
+  },
+  {
+    "revision": "base",
+    "sha": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "mode": "explicit",
+    "error": null,
+    "logs": [
+      "coordinator: epic=fixture branch=fixture-branch skillsRoot=/fixture/skills dryRun=true"
+    ],
+    "bannedSourceLines": []
+  },
+  {
+    "revision": "head",
+    "sha": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "mode": "omitted",
+    "error": "Date.now() unavailable: breaks resume",
+    "logs": [],
+    "bannedSourceLines": [
+      {
+        "line": 25,
+        "text": "const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId"
+      }
+    ]
+  },
+  {
+    "revision": "head",
+    "sha": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "mode": "explicit",
+    "error": null,
+    "logs": [
+      "coordinator: epic=fixture branch=fixture-branch skillsRoot=/fixture/skills dryRun=true"
+    ],
+    "bannedSourceLines": [
+      {
+        "line": 25,
+        "text": "const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId"
+      }
+    ]
+  }
+]

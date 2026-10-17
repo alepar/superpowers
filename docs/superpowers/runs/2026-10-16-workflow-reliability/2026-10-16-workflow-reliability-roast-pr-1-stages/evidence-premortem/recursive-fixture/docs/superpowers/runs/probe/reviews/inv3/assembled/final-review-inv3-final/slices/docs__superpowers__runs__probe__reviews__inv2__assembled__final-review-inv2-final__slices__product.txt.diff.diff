@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/product.txt.diff b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/product.txt.diff
+new file mode 100644
+index 0000000..704a650
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/slices/product.txt.diff
+@@ -0,0 +1,7 @@
++diff --git a/product.txt b/product.txt
++index 90be1f3..01bcaff 100644
++--- a/product.txt
+++++ b/product.txt
++@@ -1 +1 @@
++-before
+++SEED-PRODUCT-CHANGE

@@ -1,0 +1,18 @@
+.../g1/assembled/final-review-g1-final/diffstat.txt       |  3 +++
+ .../reviews/g1/assembled/final-review-g1-final/digest.md  |  2 ++
+ .../slices/docs__superpowers__runs__ground__run.md.diff   |  9 +++++++++
+ .../final-review-g1-final/slices/product.txt.diff         |  7 +++++++
+ .../superpowers/runs/ground/reviews/g1/final-review-g1.md |  8 ++++++++
+ .../g2/assembled/final-review-g2-final/diffstat.txt       |  8 ++++++++
+ .../reviews/g2/assembled/final-review-g2-final/digest.md  |  2 ++
+ ...1__assembled__final-review-g1-final__diffstat.txt.diff |  9 +++++++++
+ ...__g1__assembled__final-review-g1-final__digest.md.diff |  8 ++++++++
+ ...ces__docs__superpowers__runs__ground__run.md.diff.diff | 15 +++++++++++++++
+ ...__final-review-g1-final__slices__product.txt.diff.diff | 13 +++++++++++++
+ ...rs__runs__ground__reviews__g1__final-review-g1.md.diff | 14 ++++++++++++++
+ .../slices/docs__superpowers__runs__ground__run.md.diff   | 12 ++++++++++++
+ .../final-review-g2-final/slices/product.txt.diff         |  7 +++++++
+ .../superpowers/runs/ground/reviews/g2/final-review-g2.md |  8 ++++++++
+ docs/superpowers/runs/ground/run.md                       |  9 +++++++++
+ product.txt                                               |  2 +-
+ 17 files changed, 135 insertions(+), 1 deletion(-)

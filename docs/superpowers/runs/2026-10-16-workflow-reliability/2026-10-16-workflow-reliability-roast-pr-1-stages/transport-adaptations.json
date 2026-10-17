@@ -1,0 +1,22 @@
+[
+  {
+    "file": "result-scout_api-contract.json",
+    "adaptation": "Wrap bare finding array in required findings object; findings unchanged"
+  },
+  {
+    "file": "result-scout_concurrency-async.json",
+    "adaptation": "Wrap bare finding array in required findings object; findings unchanged"
+  },
+  {
+    "file": "result-scout_correctness.json",
+    "adaptation": "Wrap bare finding array in required findings object; findings unchanged"
+  },
+  {
+    "file": "result-scout_observability.json",
+    "adaptation": "Wrap bare finding array in required findings object; findings unchanged"
+  },
+  {
+    "file": "result-scout_testing.json",
+    "adaptation": "Wrap bare finding array in required findings object; findings unchanged"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "continuationOf": "/root/roast_code_ufz_r1",
+  "controller": "/root/roast_code_ufz_r1_continuation",
+  "round": 1,
+  "mode": "PR",
+  "rung": "manual fan-out",
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+  "boundedStatusAudit": "API active, testing completed; all other dispatched scouts completed; hygiene not previously dispatched",
+  "maxActiveChildren": 3,
+  "reviewInput": "DIRECT INPUT fallback: required assembly failed errno63; immutable Git source, same-round scouts retained",
+  "sourcePolicy": "Do not load whole installed executables; use narrow retained runtime-contract receipts",
+  "wording": "Static code-correctness review framing for remaining dispatches; seat methods and output contracts unchanged",
+  "pendingScouts": [
+    "api-contract",
+    "hygiene-docs"
+  ],
+  "callerOwnedFilesUntouched": true
+}

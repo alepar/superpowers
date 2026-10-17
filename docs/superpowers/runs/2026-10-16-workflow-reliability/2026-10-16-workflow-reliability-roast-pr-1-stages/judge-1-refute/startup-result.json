@@ -1,0 +1,32 @@
+[
+  {
+    "rev": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "supplied": false,
+    "error": null,
+    "logs": [
+      "coordinator: epic=epic branch=branch skillsRoot=/skills dryRun=false"
+    ]
+  },
+  {
+    "rev": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "supplied": true,
+    "error": null,
+    "logs": [
+      "coordinator: epic=epic branch=branch skillsRoot=/skills dryRun=false"
+    ]
+  },
+  {
+    "rev": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "supplied": false,
+    "error": "forbidden Date.now",
+    "logs": []
+  },
+  {
+    "rev": "ff2f79f62cc34084c8df20edc5c2e4f201a5d630",
+    "supplied": true,
+    "error": null,
+    "logs": [
+      "coordinator: epic=epic branch=branch skillsRoot=/skills dryRun=false"
+    ]
+  }
+]

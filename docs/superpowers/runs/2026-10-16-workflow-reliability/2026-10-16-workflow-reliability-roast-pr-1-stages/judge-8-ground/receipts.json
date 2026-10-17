@@ -1,0 +1,25 @@
+[
+  {
+    "name": "base-trailing",
+    "TMPDIR": "/tmp/ufz-pr1/judge-8-ground/temp/",
+    "exit": 0,
+    "failures": []
+  },
+  {
+    "name": "head-trailing",
+    "TMPDIR": "/tmp/ufz-pr1/judge-8-ground/temp/",
+    "exit": 1,
+    "failures": [
+      "  [FAIL] evidence review reads the existing report",
+      "  [FAIL] writes <ledger dir>/dispatch/<label>.md and prints only its path",
+      "  [FAIL] artifacts in the ledger's directory, by ordinal",
+      "  [FAIL] stub dispatch name includes its invocation identity"
+    ]
+  },
+  {
+    "name": "head-plain",
+    "TMPDIR": "/tmp/ufz-pr1/judge-8-ground/temp",
+    "exit": 0,
+    "failures": []
+  }
+]

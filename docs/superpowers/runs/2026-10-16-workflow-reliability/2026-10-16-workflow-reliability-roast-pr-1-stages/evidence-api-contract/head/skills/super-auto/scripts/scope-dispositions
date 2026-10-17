@@ -1,0 +1,255 @@
+#!/usr/bin/env bash
+# The phase-5 scope dispositions for one fix-loop round, computed from the scope filter's JSON.
+#
+#   scope-dispositions --round N --findings KEYS_FILE --filter FILTER_JSON [--step-back STEP_BACK_FILE]
+#
+# KEYS_FILE: one `[SEV] <location>` key per line — the round's confirmed findings the step-back did
+# not dissolve. FILTER_JSON: the scope filter's output ({findings:[{key,disposition,reason,
+# clusterOverride?}]}). STEP_BACK_FILE: the round's step-back output; its `clusters:` lines
+# (`- <id>: rN [SEV] <loc>, … | rule: …`) are read, keeping this round's members.
+#
+# Rules, in order: a `[Blocking]` key is in-scope; a key with no exact filter entry is in-scope
+# (unrouted); otherwise the filter's disposition. Then each cluster with an in-scope member pulls
+# every other member in, except a member whose entry carries `clusterOverride`.
+#
+# Prints the `scopeFilter-round-N:` lines in KEYS_FILE order; then, for each cluster with a
+# member among the keys and no in-scope member, `cluster dropped: <id> — <rule text>`; then the
+# aggregate line `scope-filter: <in> in-scope · <punch> punch-listed`.
+# Exit 0 ok, 2 bad input, 4 jq unavailable (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+# Additive continuity view; the legacy round mode below is intentionally unchanged.
+if [ "${1:-}" = --project ]; then
+  command -v node >/dev/null 2>&1 || {
+    echo 'NODE_UNAVAILABLE: retain all known occurrences and dispositions; manually project explicit links and supported evidence per run-state.md. No empty/clean result is established.' >&2
+    exit 4
+  }
+  node - "$@" <<'NODE'
+const fs = require('node:fs');
+const path = require('node:path');
+const args = process.argv.slice(2);
+let run, external, keys = false;
+function usage() {
+  console.error('usage: scope-dispositions --project RUN_MD [--keys] [--external JSON]');
+  process.exit(2);
+}
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--project' && !run && args[i + 1]) run = args[++i];
+  else if (args[i] === '--external' && !external && args[i + 1]) external = args[++i];
+  else if (args[i] === '--keys' && !keys) keys = true;
+  else usage();
+}
+if (!run) usage();
+let text;
+try { text = fs.readFileSync(run, 'utf8'); }
+catch (e) { console.error('run record unavailable: ' + e.message); process.exit(2); }
+const gaps = [];
+const gap = (origin, message) => gaps.push({origin, message});
+const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
+const string = x => typeof x === 'string' && x.trim().length > 0;
+const sourceId = x => string(x) && !/[\x00-\x1f\x7f]/.test(x);
+const validRef = r => object(r) && sourceId(r.source) && string(r.section) && Number.isSafeInteger(r.position) && r.position > 0;
+const id = r => JSON.stringify([r.source, r.section, r.position]);
+const ref = r => ({source:r.source, section:r.section, position:r.position});
+const entries = [];
+// These are additive decisions inside the existing approvals block, never a new ledger.
+let approvals = false, fence = false;
+for (const [index, line] of text.split(/\r?\n/).entries()) {
+  if (/^\s*(```|~~~)/.test(line)) { fence = !fence; continue; }
+  if (fence) continue;
+  if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:';
+  if (!/^- finding-/.test(line)) continue;
+  const origin = `${run}:${index + 1}`;
+  if (!approvals) { gap(origin, 'finding record outside approvals'); continue; }
+  const match = line.match(/^- (finding-[a-z-]+) · (.*)$/);
+  if (!match) { gap(origin, 'malformed finding record'); continue; }
+  try { entries.push({type:match[1], data:JSON.parse(match[2]), origin, external:false}); }
+  catch { gap(origin, 'malformed finding JSON'); }
+}
+if (external) {
+  try {
+    const input = JSON.parse(fs.readFileSync(external, 'utf8'));
+    if (!object(input) || input.version !== 1 || !Array.isArray(input.records)) throw Error('expected version 1 records array');
+    input.records.forEach((data, i) => {
+      const origin = `${external}:records[${i}]`;
+      if (!object(data) || !['finding-link', 'finding-disposition'].includes(data.type)) gap(origin, 'unsupported external record');
+      else entries.push({type:data.type, data, origin, external:true});
+    });
+  } catch (e) { gap(external, 'external projection unavailable or malformed: ' + e.message); }
+}
+if (!entries.some(e => e.type === 'finding-source')) gap(run, 'no retained source extraction; finding coverage is unknown');
+const occurrences = new Map(), fingerprints = new Map(), conflictedSources = new Set();
+for (const entry of entries.filter(e => e.type === 'finding-source')) {
+  const {data:s, origin} = entry;
+  if (!object(s) || s.version !== 1 || !sourceId(s.source) || !string(s.artifact) ||
+      !['final-review','roast','task-report'].includes(s.kind) || !string(s.verdict) || !Array.isArray(s.occurrences)) {
+    gap(origin, 'invalid complete source extraction'); continue;
+  }
+  const fingerprint = JSON.stringify([s.kind, s.verdict, s.occurrences]);
+  if (fingerprints.has(s.source) && fingerprints.get(s.source) !== fingerprint) {
+    gap(origin, 'immutable source has conflicting extraction; retained occurrences stay open');
+    conflictedSources.add(s.source);
+  }
+  fingerprints.set(s.source, fingerprint);
+  try {
+    if (!fs.statSync(path.resolve(path.dirname(run), s.artifact)).isFile()) throw Error('not a file');
+  } catch { gap(origin, 'source artifact unavailable: ' + s.artifact); }
+  const seen = new Set();
+  for (const o of s.occurrences) {
+    const r = object(o) ? {source:s.source, ...o} : null;
+    if (!validRef(r) || !string(o.key) || !string(o.text) || Object.hasOwn(o, 'source')) {
+      gap(origin, 'invalid source occurrence'); conflictedSources.add(s.source); continue;
+    }
+    const k = id(r);
+    if (seen.has(k)) { gap(origin, 'duplicate occurrence position within source'); conflictedSources.add(s.source); }
+    seen.add(k);
+    const value = {source:s.source, artifact:s.artifact, section:o.section, position:o.position, key:o.key, text:o.text};
+    if (!occurrences.has(k)) occurrences.set(k, {ref:ref(r), value, artifacts:[s.artifact], variants:[]});
+    else {
+      const old = occurrences.get(k);
+      if (!old.artifacts.includes(s.artifact)) old.artifacts.push(s.artifact);
+      if (old.value.key !== o.key || old.value.text !== o.text) {
+        gap(origin, 'conflicting immutable occurrence text'); conflictedSources.add(s.source);
+        old.variants.push(value);
+      }
+    }
+  }
+}
+const parent = new Map([...occurrences.keys()].map(k => [k,k]));
+function root(k) { while (parent.get(k) !== k) k = parent.get(k); return k; }
+function known(r, origin) {
+  if (!validRef(r) || !occurrences.has(id(r))) { gap(origin, 'unknown or malformed occurrence reference'); return false; }
+  return true;
+}
+const links = [];
+for (const {data:d, origin} of entries.filter(e => e.type === 'finding-link')) {
+  if (!object(d) || !Array.isArray(d.refs) || d.refs.length < 2 || !string(d.basis)) { gap(origin, 'link requires explicit refs and basis'); continue; }
+  const checks = d.refs.map(r => known(r, origin));
+  if (checks.some(ok => !ok)) continue;
+  for (const r of d.refs.slice(1)) parent.set(root(id(r)), root(id(d.refs[0])));
+  links.push({refs:d.refs.map(ref), basis:d.basis, origin});
+}
+const groups = new Map();
+for (const [k, o] of occurrences) {
+  const r = root(k);
+  if (!groups.has(r)) groups.set(r, {ref:o.ref, occurrences:[], artifacts:[], variants:[], links:[], routes:[], dispositions:[], outstanding:true, deferred:false});
+  const group = groups.get(r);
+  group.occurrences.push(o.value);
+  group.artifacts = [...new Set([...group.artifacts, ...o.artifacts])];
+  group.variants.push(...o.variants);
+}
+for (const link of links) groups.get(root(id(link.refs[0]))).links.push(link);
+for (const {type, data:d, origin} of entries) {
+  if (type === 'finding-source' || type === 'finding-link') continue;
+  if (!['finding-route','finding-disposition'].includes(type)) { gap(origin, 'unsupported finding record: ' + type); continue; }
+  if (!object(d) || !known(d.ref, origin)) { if (!object(d)) gap(origin, 'finding record must be an object'); continue; }
+  const group = groups.get(root(id(d.ref)));
+  if (type === 'finding-route') {
+    if (!['owner','fix','deferred'].some(k => string(d[k])) || ['owner','fix','deferred'].some(k => Object.hasOwn(d,k) && !string(d[k]))) {
+      gap(origin, 'route needs nonempty owner, fix or deferred reason'); continue;
+    }
+    group.routes.push({...d, origin});
+    if (string(d.deferred)) group.deferred = true;
+  } else {
+    // Presence of evidence alone is not semantic support. The owning agent must
+    // explicitly judge support, with fix verification for a resolved disposition.
+    const supported = ['resolved','rejected'].includes(d.disposition) && d.judgment === 'supported' &&
+      string(d.basis) && Array.isArray(d.evidence) && d.evidence.length > 0 && d.evidence.every(string) &&
+      (d.disposition !== 'resolved' || string(d.verification));
+    group.dispositions.push({...d, origin, supported});
+    if (!supported) gap(origin, 'unsupported disposition; requires support judgment, basis, evidence and resolution verification');
+  }
+}
+for (const group of groups.values()) {
+  const conflict = group.occurrences.some(o => conflictedSources.has(o.source));
+  group.outstanding = conflict || !group.dispositions.some(d => d.supported);
+}
+const findings = [...groups.values()];
+if (keys) {
+  const printed = new Set();
+  for (const f of findings.filter(f => f.outstanding && f.deferred)) for (const o of f.occurrences) {
+    if (!printed.has(o.key)) { console.log(o.key); printed.add(o.key); }
+  }
+  for (const g of gaps) console.error('FINDING_GAP: ' + g.origin + ': ' + g.message);
+} else {
+  // Counts describe retained, explicitly linked groups only. A later clean verdict
+  // never erases a source occurrence, and a rejected/deferred group is no repair.
+  const actionable = findings.filter(f => f.occurrences.some(o => /^(confirmed findings|must[- ]fix|deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b)/i.test(o.section)));
+  const repaired = f => !f.outstanding && f.dispositions.some(d => d.supported && d.disposition === 'resolved');
+  const metrics = {
+    scope:gaps.length ? 'retained sources (partial)' : 'retained sources',
+    sources:fingerprints.size,
+    sourceKinds:[...new Set(entries.filter(e => e.type === 'finding-source' && fingerprints.has(e.data?.source)).map(e => e.data.kind))],
+    occurrences:occurrences.size, occurrenceGroups:findings.length, findings:actionable.length,
+    otherSectionGroups:findings.length - actionable.length,
+    sections:[...new Set(findings.flatMap(f => f.occurrences.map(o => o.section)))],
+    repaired:actionable.filter(repaired).length,
+    rejected:actionable.filter(f => !f.outstanding && !repaired(f) && f.dispositions.some(d => d.supported && d.disposition === 'rejected')).length,
+    outstanding:actionable.filter(f => f.outstanding).length,
+    deferred:actionable.filter(f => f.outstanding && f.deferred).length,
+    gaps:gaps.length,
+  };
+  console.log(JSON.stringify({version:1, findings, gaps, metrics}, null, 2));
+}
+process.exit(gaps.length ? 3 : 0);
+NODE
+  exit $?
+fi
+
+usage() { echo "usage: scope-dispositions --round N --findings KEYS_FILE --filter FILTER_JSON [--step-back STEP_BACK_FILE]" >&2; exit 2; }
+round='' keys='' filter='' stepback=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --round) round=${2:-}; shift 2 ;;
+    --findings) keys=${2:-}; shift 2 ;;
+    --filter) filter=${2:-}; shift 2 ;;
+    --step-back) stepback=${2:-}; shift 2 ;;
+    *) usage ;;
+  esac
+done
+[ -n "$round" ] && [ -n "$keys" ] && [ -n "$filter" ] || usage
+[[ "$round" =~ ^[0-9]+$ ]] || usage
+[ -f "$keys" ] && [ -f "$filter" ] || { echo "findings or filter file not found" >&2; exit 2; }
+[ -z "$stepback" ] || [ -f "$stepback" ] || { echo "step-back file not found: $stepback" >&2; exit 2; }
+
+command -v jq >/dev/null 2>&1 || {
+  echo "JQ_UNAVAILABLE: jq is not installed, so compute the round-${round} scope dispositions by hand. For each key in ${keys} (one \`[SEV] <location>\` per line, in order): a key starting \`[Blocking]\` is \`in-scope — Blocking, always in-scope\`; a key with no entry in ${filter} whose \`key\` matches exactly is \`in-scope — unrouted by filter — defaulted in-scope\`; otherwise use that entry's \`disposition\` and \`reason\`. Then read the \`clusters:\` lines of ${stepback:-the step-back file (none given: skip this step)} (\`- <id>: <keys, each rN [SEV] <location>, comma-separated> | rule: …\`), keeping members whose prefix is r${round} and dropping that prefix. For each cluster with an in-scope member, every other member that is punch-list becomes \`in-scope — cluster <id>\`, unless its filter entry has a \`clusterOverride\`, in which case it is \`punch-list — cluster override: <clusterOverride>\`. Output one line per key, \`scopeFilter-round-${round}: <key> <in-scope|punch-list> — <reason>\`; then, for each cluster with a member among the keys and no in-scope member, \`cluster dropped: <id> — <the text after rule:>\`; then \`scope-filter: <in-scope count> in-scope · <punch-list count> punch-listed\`."
+  exit 4
+}
+
+clusters='[]'
+if [ -n "$stepback" ]; then
+  clusters=$(awk '
+    /^[[:space:]]*clusters:/ { on = 1; next }
+    on && /^[[:space:]]*- [^:]+:.*\| rule:/ { print; next }
+    on && /^[[:space:]]*[a-z]+:/ { on = 0 }
+  ' "$stepback" | jq -R -s --arg r "r$round " '
+    split("\n") | map(select(length > 0))
+    | map(capture("^\\s*- (?<id>[^:]+):\\s*(?<members>.*?)\\s*\\|\\s*rule:\\s*(?<rule>.*?)\\s*$")
+          | {id, rule, members: ([.members | splits(",\\s*(?=r[0-9]+ \\[)")]
+                           | map(gsub("^\\s+|\\s+$"; "")) | map(select(startswith($r))) | map(ltrimstr($r)))})
+    | map(select(.members | length > 0))')
+fi
+
+jq -r -n --rawfile keys "$keys" --slurpfile f "$filter" --argjson clusters "$clusters" --arg n "$round" '
+  ($keys | split("\n") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))) as $ks
+  | ($f[0].findings // [] | map({(.key): .}) | add // {}) as $by
+  | ($ks | map(. as $k
+      | if startswith("[Blocking]") then {key: $k, d: "in-scope", reason: "Blocking, always in-scope"}
+        elif $by[$k] == null then {key: $k, d: "in-scope", reason: "unrouted by filter — defaulted in-scope"}
+        else {key: $k, d: $by[$k].disposition, reason: ($by[$k].reason // ""), override: $by[$k].clusterOverride}
+        end)) as $base
+  | ($base | map({(.key): .}) | add // {}) as $bm
+  | reduce $clusters[] as $c ($bm;
+      if any($c.members[]; . as $m | $bm[$m].d == "in-scope") then
+          reduce ($c.members[] | select(. as $m | $bm[$m] != null and $bm[$m].d == "punch-list")) as $m (.;
+            if (.[$m].override // "") != "" then .[$m].reason = "cluster override: \(.[$m].override)"
+            else .[$m].d = "in-scope" | .[$m].reason = "cluster \($c.id)" end)
+        else . end) as $out
+  | ($ks | map($out[.])) as $rows
+  | ($rows[] | "scopeFilter-round-\($n): \(.key) \(.d) — \(.reason)"),
+    ($clusters[] | select([.members[] | $out[.] | select(. != null) | .d] as $ds
+                          | ($ds | length > 0) and (any($ds[]; . == "in-scope") | not))
+                 | "cluster dropped: \(.id) — \(.rule)"),
+    "scope-filter: \($rows | map(select(.d == "in-scope")) | length) in-scope · \($rows | map(select(.d == "punch-list")) | length) punch-listed"
+'

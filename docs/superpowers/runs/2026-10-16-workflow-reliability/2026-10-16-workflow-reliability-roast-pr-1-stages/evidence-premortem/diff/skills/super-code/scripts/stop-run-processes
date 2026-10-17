@@ -1,0 +1,236 @@
+diff --git a/skills/super-code/scripts/stop-run-processes b/skills/super-code/scripts/stop-run-processes
+index a6430d5f..57e6ffc1 100644
+--- a/skills/super-code/scripts/stop-run-processes
++++ b/skills/super-code/scripts/stop-run-processes
+@@ -17,9 +17,12 @@
+ #   bash stop-run-processes [--check] ROOT [ROOT...]
+ #
+ # --check lists matches without signalling anything: `match: <pid> <command> — <why>`, exit 3 when
+-# anything matched, 0 when nothing did. Default mode stops each match (TERM, then KILL after 3 s)
++# anything matched or was kept, 0 only after verified discovery found nothing. Default mode stops
++# each match (TERM, then KILL after 3 s)
+ # and prints `stopped: <pid> <command> — <why>` or `survived: <pid> <command> — <why>` (alive after
+-# KILL), exit 3 when anything survived, 0 otherwise. Exit 2 on bad input.
++# KILL), exit 3 when anything survived or was deliberately kept, 0 otherwise.
++# `unknown: <root-or-pid> — <failed inspection>` and exit 4 mean discovery or termination could
++# not be verified. Unknown takes precedence over 3. Exit 2 on bad input.
+ set -euo pipefail
+ 
+ check=
+@@ -63,26 +66,48 @@ under() {  # $1 = a path; true when it is a root or inside one
+   return 1
+ }
+ 
++unknown=0
++unknown_roots() {
++  local root
++  for root in "${roots[@]}"; do echo "unknown: $root — $1"; done
++  unknown=1
++}
++# ps -p exits 1 for both absence and inspection failure. Only a successful all-PID
++# enumeration without the PID proves disappearance in that case.
++absent() {
++  local all
++  all=$(ps -A -o pid= 2>/dev/null) || return 1
++  ! awk -v p="$1" '$1==p{found=1} END{exit !found}' <<<"$all"
++}
+ uid=$(id -u)
+ # Never this process, its ancestors, its own children (subshells and the ps/lsof it runs carry
+ # the roots in their arguments), or PID 1.
+-ppids=$(ps -A -o pid=,ppid= 2>/dev/null || true)
++if ! ppids=$(ps -A -o pid=,ppid= 2>/dev/null); then unknown_roots "ps ancestry discovery failed"; exit 4; fi
+ ppid_of() {  # from the snapshot, else live (children started after the snapshot)
+   local r; r=$(awk -v p="$1" '$1==p{print $2; exit}' <<<"$ppids")
+-  [ -n "$r" ] || r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ')
++  if [ -z "$r" ]; then r=$(ps -o ppid= -p "$1" 2>/dev/null | tr -d ' ') || return 4; fi
++  [ -n "$r" ] || return 4
+   echo "$r"
+ }
+ skip=" 1 $$ "
+ p=$$
+ while [ -n "$p" ] && [ "$p" != 0 ] && [ "$p" != 1 ]; do
+-  p=$(ppid_of "$p")
++  if ! p=$(ppid_of "$p"); then unknown_roots "ps ancestor inspection failed"; exit 4; fi
+   [ -n "$p" ] && skip="$skip$p "
+ done
+ # Refuse a root that contains the working directory of this process or any ancestor.
+ for a in $skip; do
+   [ "$a" = 1 ] && continue
+-  if [ -r "/proc/$a/cwd" ]; then acwd=$(readlink "/proc/$a/cwd" 2>/dev/null || true)
+-  else acwd=$({ lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null || true; } | sed -n 's/^n//p' | head -1); fi
++  if [ -r "/proc/$a/cwd" ]; then
++    if ! acwd=$(readlink "/proc/$a/cwd" 2>/dev/null); then unknown_roots "ancestor $a cwd inspection failed"; exit 4; fi
++  else
++    if ! acwd=$(lsof -w -a -p "$a" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1); then
++      # Privileged launch/login ancestors are outside this user's cleanup candidates and
++      # may hide cwd on macOS. Successful ownership inspection can exclude them.
++      if ancestor_uid=$(ps -o uid= -p "$a" 2>/dev/null | tr -d ' ') && [ -n "$ancestor_uid" ] && [ "$ancestor_uid" != "$uid" ]; then continue; fi
++      unknown_roots "ancestor $a cwd inspection failed"; exit 4
++    fi
++  fi
+   [ -n "$acwd" ] || continue
+   for r in "${roots[@]}"; do
+     if contains "$r" "$acwd"; then echo "refusing root $r: it contains the working directory of this process or an ancestor ($acwd)" >&2; exit 2; fi
+@@ -92,7 +117,7 @@ is_ours() {  # $1 pid; true when it descends from this process
+   local q=$1 n=0
+   while [ -n "$q" ] && [ "$q" != 0 ] && [ "$q" != 1 ] && [ $n -lt 64 ]; do
+     [ "$q" = "$$" ] && return 0
+-    q=$(ppid_of "$q"); n=$((n + 1))
++    q=$(ppid_of "$q") || return 4; n=$((n + 1))
+   done
+   return 1
+ }
+@@ -101,7 +126,13 @@ matches=""
+ add() {  # $1 pid $2 reason
+   case "$skip" in *" $1 "*) return 0 ;; esac
+   case " $matches " in *" $1 "*) return 0 ;; esac
+-  is_ours "$1" && return 0
++  local ancestry=0
++  is_ours "$1" || ancestry=$?
++  [ "$ancestry" != 0 ] || return 0
++  if [ "$ancestry" = 4 ]; then
++    absent "$1" || unknown_roots "process $1 ancestry inspection failed"
++    return 0
++  fi
+   matches="$matches $1"
+   eval "why_$1=\$2"
+ }
+@@ -109,20 +140,42 @@ add() {  # $1 pid $2 reason
+ if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
+   for d in /proc/[0-9]*; do
+     pid=${d#/proc/}
+-    [ "$(stat -c %u "$d" 2>/dev/null)" = "$uid" ] || continue
+-    path=$(readlink "$d/cwd" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
+-    path=$(readlink "$d/exe" 2>/dev/null || true); [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
+-    env=$(tr '\0' '\n' < "$d/environ" 2>/dev/null | grep -E '^(HOME|TMPDIR)=' || true)
++    if ! owner=$(stat -c %u "$d" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid ownership inspection failed"
++      continue
++    fi
++    [ "$owner" = "$uid" ] || continue
++    if path=$(readlink "$d/cwd" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid cwd inspection failed"; fi
++    if path=$(readlink "$d/exe" 2>/dev/null); then
++      [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
++    else absent "$pid" || unknown_roots "process $pid executable inspection failed"; fi
++    if ! env=$(tr '\0' '\n' 2>/dev/null < "$d/environ"); then
++      absent "$pid" || unknown_roots "process $pid environment inspection failed"
++      continue
++    fi
++    env=$(grep -E '^(HOME|TMPDIR)=' <<<"$env" || true)
+     envhit=""
+     while IFS= read -r kv; do [ -n "$kv" ] && under "${kv#*=}" && envhit="$envhit $kv"; done <<<"$env"
+     [ -n "$envhit" ] && { add "$pid" "env$envhit"; continue; }
+-    if [ "$(awk '{print $4}' "$d/stat" 2>/dev/null)" = 1 ]; then
+-      args=$(tr '\0' '\n' < "$d/cmdline" 2>/dev/null || true)
++    if ! parent=$(awk '{print $4}' "$d/stat" 2>/dev/null); then
++      absent "$pid" || unknown_roots "process $pid parent inspection failed"
++      continue
++    fi
++    if [ "$parent" = 1 ]; then
++      if ! args=$(tr '\0' '\n' 2>/dev/null < "$d/cmdline"); then
++        absent "$pid" || unknown_roots "process $pid argument inspection failed"
++        continue
++      fi
+       while IFS= read -r a; do [ -n "$a" ] && under "${a#*=}" && { add "$pid" "orphan arg $a"; break; }; done <<<"$args"
+     fi
+   done
+ else
+   if command -v lsof >/dev/null 2>&1; then
++    if ! files=$(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null); then
++      unknown_roots "lsof cwd/executable discovery failed"
++    fi
+     pid=""
+     while IFS= read -r line; do
+       case "$line" in
+@@ -131,10 +184,15 @@ else
+         n*) path=${line#n}
+             under "$path" && add "$pid" "$fd $path" ;;
+       esac
+-    done < <(lsof -w -a -u "$uid" -d cwd,txt -Ffpn 2>/dev/null || true)
++    done <<<"$files"
++  else
++    unknown_roots "lsof cwd/executable discovery unavailable"
+   fi
+   # Environment: only HOME= and TMPDIR= tokens from `ps -E`, which appends the environment to the
+   # command line. Arguments: only for orphans (PPID 1), one token at a time, path-boundary checked.
++  if ! processes=$(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null); then
++    unknown_roots "ps environment/orphan discovery failed"
++  fi
+   while read -r pid ppid rest; do
+     [ -n "$pid" ] || continue
+     hit=""
+@@ -148,13 +206,13 @@ else
+         under "$tok" && { add "$pid" "orphan arg $tok"; break; }
+       done
+     fi
+-  done < <(ps -Eww -U "$uid" -o pid=,ppid=,command= 2>/dev/null || true)
++  done <<<"$processes"
+ fi
+ 
+ # Interactive work is never stopped: a match with a controlling terminal, or one hosting a
+ # terminal (a descendant has one, e.g. a terminal multiplexer server with live panes), is
+ # reported as `kept:` for a human to decide.
+-ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null || true)
++if ! ptt=$(ps -A -o pid=,ppid=,tty= 2>/dev/null); then unknown_roots "ps interactive-terminal inspection failed"; exit 4; fi
+ has_tty() { local t; t=$(awk -v p="$1" '$1==p{print $3; exit}' <<<"$ptt"); [ -n "$t" ] && [ "$t" != "??" ] && [ "$t" != "?" ]; }
+ hosts_tty() {  # any descendant with a terminal
+   local frontier=" $1 " next q c pp t n=0
+@@ -184,16 +242,25 @@ while IFS= read -r kl; do
+   echo "kept: $kp $(cmd_of0 "$kp") — ${kl#* } ($w)"
+ done <<<"$kept"
+ 
+-[ -n "$matches" ] || exit 0
++if [ -z "$matches" ]; then
++  [ "$unknown" = 0 ] || exit 4
++  [ -z "$kept" ] || exit 3
++  exit 0
++fi
+ w="" c=""
+ cmd_of() { ps -o command= -p "$1" 2>/dev/null | cut -c1-120 || echo '?'; }
+-alive() {  # running, not a zombie waiting for its parent to reap it
+-  local st; st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' ')
+-  [ -n "$st" ] && [ "${st#Z}" = "$st" ]
++alive() {  # 0 running, 1 verified absent/zombie, 4 unverified
++  local st
++  if st=$(ps -o stat= -p "$1" 2>/dev/null | tr -d ' '); then
++    case "$st" in Z*) return 1 ;; ?*) return 0 ;; esac
++  fi
++  absent "$1" && return 1
++  return 4
+ }
+ 
+ if [ -n "$check" ]; then
+   for pid in $matches; do eval "w=\$why_$pid"; echo "match: $pid $(cmd_of "$pid") — $w"; done
++  [ "$unknown" = 0 ] || exit 4
+   exit 3
+ fi
+ 
+@@ -201,7 +268,8 @@ live=""
+ for pid in $matches; do
+   eval "w=\$why_$pid"; c=$(cmd_of "$pid")
+   eval "cmd_$pid=\$c"
+-  kill -TERM "$pid" 2>/dev/null && live="$live $pid"
++  kill -TERM "$pid" 2>/dev/null || true
++  live="$live $pid"
+ done
+ for _ in 1 2 3 4 5 6; do
+   any=""
+@@ -212,8 +280,15 @@ done
+ for pid in $live; do alive "$pid" && kill -KILL "$pid" 2>/dev/null || true; done
+ sleep 0.3
+ rc=0
++[ -z "$kept" ] || rc=3
+ for pid in $matches; do
+   eval "w=\$why_$pid"; eval "c=\${cmd_$pid:-?}"
+-  if alive "$pid"; then echo "survived: $pid $c — $w"; rc=3; else echo "stopped: $pid $c — $w"; fi
++  state=0; alive "$pid" || state=$?
++  case "$state" in
++    0) echo "survived: $pid $c — $w"; rc=3 ;;
++    1) echo "stopped: $pid $c — $w" ;;
++    *) echo "unknown: $pid — ps termination inspection failed ($c — $w)"; unknown=1 ;;
++  esac
+ done
++[ "$unknown" = 0 ] || exit 4
+ exit $rc

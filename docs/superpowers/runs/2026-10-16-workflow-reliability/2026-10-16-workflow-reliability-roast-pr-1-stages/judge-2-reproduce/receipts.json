@@ -1,0 +1,55 @@
+{
+  "skills/super-auto/scripts/report-status": "97132d8cb83fc4cdf6480cba6f601f05c3ea6bdef95a4ce1b44cc23ce4ce8b3d",
+  "skills/super-auto/scripts/scope-dispositions": "49aef1c1fda30ba0fc441215db58d4e05d4e26b2a00a7bcf1856a03715d7a4fa",
+  "skills/super-code/scripts/report-verdict": "ce1cea248377acc299f39429457bf31a26ee45bb6e0192822d54474ca1cc27f7",
+  "collect-initial": {
+    "argv": [
+      "--collect",
+      "/tmp/ufz-pr1/judge-2-reproduce/run/run.md",
+      "--invocation",
+      "inv-proof",
+      "--workspace",
+      "/tmp/ufz-pr1/judge-2-reproduce/workspace",
+      "--review",
+      "/tmp/ufz-pr1/judge-2-reproduce/workspace/final-review-inv-proof.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  "acceptance-before": {
+    "argv": [
+      "--acceptance",
+      "/tmp/ufz-pr1/judge-2-reproduce/run/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "archived-before-sha256": "0a0f3c01acb1922b6c94bcb577d1c1a159d62044f52b6eb35a82571585a59271",
+  "archived-after-sha256": "42668e38f569bfbf2192da2b1e9866f3d76d956fdf7a00088cf613c1e701da72",
+  "acceptance-after": {
+    "argv": [
+      "--acceptance",
+      "/tmp/ufz-pr1/judge-2-reproduce/run/run.md",
+      "--tree",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "collect-after": {
+    "argv": [
+      "--collect",
+      "/tmp/ufz-pr1/judge-2-reproduce/run/run.md"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: inv-proof: archive conflict: final-review-inv-proof.md.diff; keep source workspace and archive; owner: orchestrator\n"
+  }
+}

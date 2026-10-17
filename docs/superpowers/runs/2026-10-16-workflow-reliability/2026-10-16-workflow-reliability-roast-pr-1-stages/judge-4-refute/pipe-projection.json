@@ -1,0 +1,1269 @@
+{
+  "version": 1,
+  "findings": [
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 1,
+          "key": "[Should-fix] sample:1",
+          "text": "Finding 1: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 2
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 2,
+          "key": "[Should-fix] sample:2",
+          "text": "Finding 2: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 3
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 3,
+          "key": "[Should-fix] sample:3",
+          "text": "Finding 3: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 4
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 4,
+          "key": "[Should-fix] sample:4",
+          "text": "Finding 4: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 5
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 5,
+          "key": "[Should-fix] sample:5",
+          "text": "Finding 5: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 6
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 6,
+          "key": "[Should-fix] sample:6",
+          "text": "Finding 6: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 7
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 7,
+          "key": "[Should-fix] sample:7",
+          "text": "Finding 7: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 8
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 8,
+          "key": "[Should-fix] sample:8",
+          "text": "Finding 8: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 9
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 9,
+          "key": "[Should-fix] sample:9",
+          "text": "Finding 9: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 10
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 10,
+          "key": "[Should-fix] sample:10",
+          "text": "Finding 10: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 11
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 11,
+          "key": "[Should-fix] sample:11",
+          "text": "Finding 11: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 12
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 12,
+          "key": "[Should-fix] sample:12",
+          "text": "Finding 12: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 13
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 13,
+          "key": "[Should-fix] sample:13",
+          "text": "Finding 13: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 14
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 14,
+          "key": "[Should-fix] sample:14",
+          "text": "Finding 14: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 15
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 15,
+          "key": "[Should-fix] sample:15",
+          "text": "Finding 15: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 16
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 16,
+          "key": "[Should-fix] sample:16",
+          "text": "Finding 16: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 17
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 17,
+          "key": "[Should-fix] sample:17",
+          "text": "Finding 17: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 18
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 18,
+          "key": "[Should-fix] sample:18",
+          "text": "Finding 18: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 19
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 19,
+          "key": "[Should-fix] sample:19",
+          "text": "Finding 19: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 20
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 20,
+          "key": "[Should-fix] sample:20",
+          "text": "Finding 20: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 21
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 21,
+          "key": "[Should-fix] sample:21",
+          "text": "Finding 21: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 22
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 22,
+          "key": "[Should-fix] sample:22",
+          "text": "Finding 22: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 23
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 23,
+          "key": "[Should-fix] sample:23",
+          "text": "Finding 23: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 24
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 24,
+          "key": "[Should-fix] sample:24",
+          "text": "Finding 24: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 25
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 25,
+          "key": "[Should-fix] sample:25",
+          "text": "Finding 25: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 26
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 26,
+          "key": "[Should-fix] sample:26",
+          "text": "Finding 26: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 27
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 27,
+          "key": "[Should-fix] sample:27",
+          "text": "Finding 27: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 28
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 28,
+          "key": "[Should-fix] sample:28",
+          "text": "Finding 28: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 29
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 29,
+          "key": "[Should-fix] sample:29",
+          "text": "Finding 29: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 30
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 30,
+          "key": "[Should-fix] sample:30",
+          "text": "Finding 30: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 31
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 31,
+          "key": "[Should-fix] sample:31",
+          "text": "Finding 31: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 32
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 32,
+          "key": "[Should-fix] sample:32",
+          "text": "Finding 32: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 33
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 33,
+          "key": "[Should-fix] sample:33",
+          "text": "Finding 33: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 34
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 34,
+          "key": "[Should-fix] sample:34",
+          "text": "Finding 34: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 35
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 35,
+          "key": "[Should-fix] sample:35",
+          "text": "Finding 35: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 36
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 36,
+          "key": "[Should-fix] sample:36",
+          "text": "Finding 36: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 37
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 37,
+          "key": "[Should-fix] sample:37",
+          "text": "Finding 37: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 38
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 38,
+          "key": "[Should-fix] sample:38",
+          "text": "Finding 38: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 39
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 39,
+          "key": "[Should-fix] sample:39",
+          "text": "Finding 39: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 40
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 40,
+          "key": "[Should-fix] sample:40",
+          "text": "Finding 40: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 41
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 41,
+          "key": "[Should-fix] sample:41",
+          "text": "Finding 41: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 42
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 42,
+          "key": "[Should-fix] sample:42",
+          "text": "Finding 42: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 43
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 43,
+          "key": "[Should-fix] sample:43",
+          "text": "Finding 43: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 44
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 44,
+          "key": "[Should-fix] sample:44",
+          "text": "Finding 44: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 45
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 45,
+          "key": "[Should-fix] sample:45",
+          "text": "Finding 45: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 46
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 46,
+          "key": "[Should-fix] sample:46",
+          "text": "Finding 46: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 47
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 47,
+          "key": "[Should-fix] sample:47",
+          "text": "Finding 47: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 48
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 48,
+          "key": "[Should-fix] sample:48",
+          "text": "Finding 48: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+        "review.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "inv-a/final",
+        "section": "Confirmed findings",
+        "position": 49
+      },
+      "occurrences": [
+        {
+          "source": "inv-a/final",
+          "artifact": "review.md",
+          "section": "Confirmed findings",
+          "position": 49,
+          "key": "[Should-fix] sample:49",
+          "text": "Finding 49: Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. Evidence details retain original finding text. "
+        }
+      ],
+      "artifacts": [
+   

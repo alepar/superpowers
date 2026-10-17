@@ -1,0 +1,20 @@
+{
+  "regularFile": {
+    "exit": 0,
+    "bytes": 155300,
+    "findings": 128,
+    "gaps": []
+  },
+  "spawnSync": {
+    "status": 0,
+    "signal": null,
+    "stdoutBytes": 65536,
+    "stderr": "",
+    "parse": "Unterminated string in JSON at position 65528 (line 1473 column 60)"
+  },
+  "reportStatus": {
+    "exit": 0,
+    "stdout": "status: clean [degraded: final review: not ready (seven supported must-fix findings and three unreviewed clusters; caller sweep and root acceptance remain pending), sweep: SWEEP DEFERRED (caller-owned), finding projection unavailable \u2014 retain known findings]\nqualifier: final review: not ready (seven supported must-fix findings and three unreviewed clusters; caller sweep and root acceptance remain pending)\nqualifier: sweep: SWEEP DEFERRED (caller-owned)\nqualifier: finding projection unavailable \u2014 retain known findings\n",
+    "stderr": ""
+  }
+}

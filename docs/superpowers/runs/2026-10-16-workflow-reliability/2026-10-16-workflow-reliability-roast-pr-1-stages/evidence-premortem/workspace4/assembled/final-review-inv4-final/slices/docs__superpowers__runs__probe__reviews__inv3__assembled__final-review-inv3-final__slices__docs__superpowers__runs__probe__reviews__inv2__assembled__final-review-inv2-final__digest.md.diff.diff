@@ -1,0 +1,14 @@
+diff --git a/docs/superpowers/runs/probe/reviews/inv3/assembled/final-review-inv3-final/slices/docs__superpowers__runs__probe__reviews__inv2__assembled__final-review-inv2-final__digest.md.diff b/docs/superpowers/runs/probe/reviews/inv3/assembled/final-review-inv3-final/slices/docs__superpowers__runs__probe__reviews__inv2__assembled__final-review-inv2-final__digest.md.diff
+new file mode 100644
+index 0000000..17c9a93
+--- /dev/null
++++ b/docs/superpowers/runs/probe/reviews/inv3/assembled/final-review-inv3-final/slices/docs__superpowers__runs__probe__reviews__inv2__assembled__final-review-inv2-final__digest.md.diff
+@@ -0,0 +1,8 @@
++diff --git a/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/digest.md b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/digest.md
++new file mode 100644
++index 0000000..14a0bdc
++--- /dev/null
+++++ b/docs/superpowers/runs/probe/reviews/inv2/assembled/final-review-inv2-final/digest.md
++@@ -0,0 +1,2 @@
+++## Source
+++ce7b8c59359549c4a66bf3c1d0c2022f4f8bdc68
