@@ -306,7 +306,7 @@ function stageOf(kind, suffix) {
     case 'reopen': case 'discard': return 'cancel'
     case 'ledger': case 'ledger-append': case 'read-ledger': return 'ledger'
     case 'plan': case 'plan-rest': case 'split': case 'close-split': return 'planning'
-    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': return 'ready'
+    case 'bd-ready': case 'bd-ready-topup': case 'bd-ready-recheck': case 'blocker-check': case 'close-epics': case 'resume-check': return 'ready'
     case 'edge-audit': case 'edge-cuts': case 'edge-add': return 'audit'
     case 'sweep': case 'final-review': case 'reconcile-buckets': case 'worktree-sweep': case 'assemble': return 'finish'
     default: return 'other'
@@ -490,7 +490,7 @@ function discover(projects, epic) {
 // with every other character of the bead id written `_`, and `__<n>` appended to a repeated name.
 const normName = s => String(s).toLowerCase().replace(/[^a-z0-9_]/g, '_')
 const RUN_KINDS = ['plan', 'plan-rest', 'final-review', 'sweep', 'worktree-sweep', 'reconcile-buckets', 'bd-ready', 'close-epics',
-  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append']
+  'edge-audit', 'edge-cuts', 'edge-add', 'read-ledger', 'ledger-append', 'resume-check']
 const KINDS_LONGEST_FIRST = [...BEAD_KINDS].sort((a, b) => b.length - a.length)
 // The label a Codex task name stands for; byNorm maps a normalized bead id to the id (null when two
 // ids normalize alike). Null when the name does not follow the rule.
