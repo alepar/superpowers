@@ -14,7 +14,7 @@ epic: super-plan-59b
 roast-design: 2026-10-16-roast-findings-redesign-loop-roast-design-1.md, 2026-10-16-roast-findings-redesign-loop-roast-design-2.md
 roastDesignRound: 2
 roast-code: 2026-10-17-roast-findings-redesign-loop-roast-pr-1.md
-roastCodeRound: 1
+roastCodeRound: 2
 
 approvals:
 - top-split · auto · super-plan-59b.1 LEAF, super-plan-59b.2 LEAF, super-plan-59b.3 LEAF, super-plan-59b.4 LEAF, super-plan-59b.5 LEAF, super-plan-59b.6 LEAF (PROMOTE overruled → split, sp:demoted-by-session), super-plan-59b.7 LEAF, super-plan-59b.8 LEAF, super-plan-59b.9 LEAF, super-plan-59b.10 LEAF
@@ -24,12 +24,12 @@ stepBackDesign-round-1: patch — round 1 has no recurrence history; 25 findings
 design-roast exit: converged at round 2 (Should-fix (13 confirmed) [converged]; 0 Blocking; 22 resolved, 4 regressed sub-Blocking); punch list of 13 applied as spec+bead fixes in cbf82090, no re-roast; escalations none; no qualifier
 graph-pass: depth 2→2 · width 5.5→5.5 · applied 0 · parked 0
 codeBuckets:
-  completed: super-plan-59b.1, super-plan-59b.2, super-plan-59b.3, super-plan-59b.4, super-plan-59b.5, super-plan-59b.6, super-plan-59b.7, super-plan-59b.8, super-plan-59b.9, super-plan-59b.10, super-plan-59b.11
+  completed: super-plan-59b.1, super-plan-59b.2, super-plan-59b.3, super-plan-59b.4, super-plan-59b.5, super-plan-59b.6, super-plan-59b.7, super-plan-59b.8, super-plan-59b.9, super-plan-59b.10, super-plan-59b.11, super-plan-59b.19, super-plan-59b.20, super-plan-59b.21, super-plan-59b.22, super-plan-59b.23, super-plan-59b.24, super-plan-59b.25, super-plan-59b.26, super-plan-59b.27
   escalated:
   pendingRetry:
   parked:
   stalled: false
-  review: not ready (super-code re-entry after a code-loop redesign hits a closed root epic and runs no amend beads; plus cluster 3 resume.md and cluster 5 supersede must-fixes)
+  review: not ready (resume can replay an interrupted redesign through the legacy in-place patch in both loops; Amend Mode and super-auto disagree on when `applied` is written; punch list stops being cumulative after a redesign round; design-loop amend beads miss the Integration sweep edge; cluster 2 unreviewed over the window)
   sweep: SWEEP DEFERRED (caller-owned)
   slowness: round 1: graph-bound — depth 3, achievable width 3 vs cap 8 (edge audit: no changes); round 1: merge queue peaked at 4
   worktreesKept:
