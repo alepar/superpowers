@@ -1,0 +1,171 @@
+{
+  "raw": [
+    {
+      "claim": "The punch-list leaf's acceptance criterion includes verified fixes supplied elsewhere, while the parent contract requires those findings to leave the punch list after supported verification.",
+      "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38",
+      "category": "premortem",
+      "external": false,
+      "evidence": "Leaf .8.4 requires: “Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.” The root acceptance example instead says: “A deferred item fixed elsewhere leaves the punch list after verification.” The nested spec requires removal after explicit supported resolution or rejection, including fixes supplied elsewhere. For an externally supplied fix with supported resolution, the leaf's inclusion wording conflicts with the intended removal behavior and gives the implementer an inconsistent acceptance target."
+    },
+    {
+      "claim": "The finding-continuity contract does not define how a later explicitly linked actionable occurrence interacts with an earlier supported resolution of the same finding.",
+      "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4",
+      "category": "premortem",
+      "external": false,
+      "kind": "GAP",
+      "evidence": "The design merges appearances through explicit references, records resolution against the finding, and mechanically projects outstanding findings from source and disposition records. It specifies unsupported resolutions and silent retries, but no rule or acceptance example addresses a new actionable occurrence after supported resolution. Failure story: F is verified fixed and resolved; a subsequent invocation reports that the defect has returned and explicitly links its occurrence to F. Both the old resolution and new occurrence are valid retained records. The projection needs to distinguish historical appearances covered by that resolution from newly actionable evidence; otherwise inheriting F's resolved disposition can conceal the recurrence. This requires a disposition-applicability rule or semantic decision, not a new lifecycle engine."
+    },
+    {
+      "claim": "The design permits integration to advance beyond a pinned review without defining when that review ceases to satisfy acceptance for the resulting source tree.",
+      "location": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14",
+      "category": "failure-mode",
+      "external": false,
+      "kind": "GAP",
+      "evidence": "Section 1 explicitly accepts that 'A review remains pinned while integration advances.' Section 3 records the tested source tree and requires reviews and measurements before root closure, but supplies no applicability rule when the accepted tree differs from the reviewed tree. Task .1 tests pinning while integration advances; task .6 gates on required reviews; task .14 requires integrated-tree regression checks and permits small fixes inline. None requires determining whether intervening changes invalidate the earlier review. Consequently, a passing review of A and passing measurements of later tree B can satisfy the described gates without establishing review coverage for B. Source identity exposes this difference but does not decide whether review remains outstanding."
+    },
+    {
+      "claim": "Task .8.4 instructs the punch list to include verified fixes supplied elsewhere, contradicting the parent and nested specifications' requirement to remove findings after supported resolution.",
+      "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance",
+      "category": "failure-mode",
+      "external": false,
+      "kind": "GAP",
+      "evidence": "Task .8.4 requires: 'Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.' The root acceptance example instead states: 'A deferred item fixed elsewhere leaves the punch list after verification.' The nested specification likewise requires deferred findings to leave the punch list after explicit supported resolution, including fixes supplied elsewhere. These prescribe opposite output membership for the same verified external fix, leaving the projection implementer with contradictory acceptance criteria."
+    },
+    {
+      "claim": "Resumed admission lacks a rule for an unfinished attempt whose owned process survives or cannot be verified, leaving the decision to retry affected work disconnected from the process uncertainty the design explicitly preserves.",
+      "location": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12",
+      "category": "domain:workflow-orchestration",
+      "external": false,
+      "kind": "GAP",
+      "evidence": "Section 1 requires retaining resources needed by 'surviving or unverified owned processes.' Section 2 requires resume to reconcile persisted facts 'with Git and tracker state before admitting affected work,' while fresh admission checks holds, cancellation and dependencies. Task super-plan-ufz.12 likewise defines reconciliation against Git/tracker and tests valid landings, holds and mismatches. None specifies how a surviving or unverified unfinished attempt constrains resumed admission. Consider interruption before landing, with the previous attempt still using its retained workspace: Git/tracker can correctly show unfinished work without establishing that restarting it is safe. Resource retention alone does not settle whether resume must wait, reconnect, verify termination, or isolate a replacement attempt and exclude the old attempt's eventual result. That cross-boundary decision is necessary to preserve work through the explicitly supported survivor/unknown outcome."
+    },
+    {
+      "claim": "Task super-plan-ufz.8.4 requires the punch-list output to include verified fixes supplied elsewhere, contradicting the parent and nested specifications’ requirement that those findings leave the punch list after supported verification.",
+      "location": "settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance",
+      "category": "domain:distributed-systems",
+      "external": false,
+      "evidence": "Task .8.4 says: \"Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.\" The root spec §4 instead states: \"A deferred item fixed elsewhere leaves the punch list after verification.\" The nested spec requires: \"Deferred findings leave the punch list only after explicit supported resolution or rejection, including fixes supplied elsewhere.\" These acceptance criteria require opposite projection results for the same explicitly resolved finding; implementing the task criterion literally retains an obligation that the approved continuity contract says is discharged.",
+      "kind": "GAP"
+    }
+  ],
+  "deduped": [
+    {
+      "claim": "Resumed admission lacks a rule for an unfinished attempt whose owned process survives or cannot be verified, leaving the decision to retry affected work disconnected from the process uncertainty the design explicitly preserves.",
+      "location": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12",
+      "category": "domain:workflow-orchestration",
+      "lanes": [
+        "domain:workflow-orchestration"
+      ],
+      "external": false,
+      "evidence": "Section 1 requires retaining resources needed by 'surviving or unverified owned processes.' Section 2 requires resume to reconcile persisted facts 'with Git and tracker state before admitting affected work,' while fresh admission checks holds, cancellation and dependencies. Task super-plan-ufz.12 likewise defines reconciliation against Git/tracker and tests valid landings, holds and mismatches. None specifies how a surviving or unverified unfinished attempt constrains resumed admission. Consider interruption before landing, with the previous attempt still using its retained workspace: Git/tracker can correctly show unfinished work without establishing that restarting it is safe. Resource retention alone does not settle whether resume must wait, reconnect, verify termination, or isolate a replacement attempt and exclude the old attempt's eventual result. That cross-boundary decision is necessary to preserve work through the explicitly supported survivor/unknown outcome.",
+      "kind": "GAP",
+      "suggestedSeverity": "Blocking"
+    },
+    {
+      "claim": "The design permits integration to advance beyond a pinned review without defining when that review ceases to satisfy acceptance for the resulting source tree.",
+      "location": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14",
+      "category": "failure-mode",
+      "lanes": [
+        "failure-mode"
+      ],
+      "external": false,
+      "evidence": "Section 1 explicitly accepts that 'A review remains pinned while integration advances.' Section 3 records the tested source tree and requires reviews and measurements before root closure, but supplies no applicability rule when the accepted tree differs from the reviewed tree. Task .1 tests pinning while integration advances; task .6 gates on required reviews; task .14 requires integrated-tree regression checks and permits small fixes inline. None requires determining whether intervening changes invalidate the earlier review. Consequently, a passing review of A and passing measurements of later tree B can satisfy the described gates without establishing review coverage for B. Source identity exposes this difference but does not decide whether review remains outstanding.",
+      "kind": "GAP",
+      "suggestedSeverity": "Should-fix"
+    },
+    {
+      "claim": "The finding-continuity contract does not define how a later explicitly linked actionable occurrence interacts with an earlier supported resolution of the same finding.",
+      "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4",
+      "category": "premortem",
+      "lanes": [
+        "premortem"
+      ],
+      "external": false,
+      "evidence": "The design merges appearances through explicit references, records resolution against the finding, and mechanically projects outstanding findings from source and disposition records. It specifies unsupported resolutions and silent retries, but no rule or acceptance example addresses a new actionable occurrence after supported resolution. Failure story: F is verified fixed and resolved; a subsequent invocation reports that the defect has returned and explicitly links its occurrence to F. Both the old resolution and new occurrence are valid retained records. The projection needs to distinguish historical appearances covered by that resolution from newly actionable evidence; otherwise inheriting F's resolved disposition can conceal the recurrence. This requires a disposition-applicability rule or semantic decision, not a new lifecycle engine.",
+      "kind": "GAP",
+      "suggestedSeverity": "Should-fix"
+    },
+    {
+      "claim": "Task super-plan-ufz.8.4 requires punch-list inclusion of verified fixes supplied elsewhere, contradicting the parent and nested specifications’ requirement to remove those findings after supported resolution.",
+      "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance",
+      "category": "premortem",
+      "lanes": [
+        "premortem",
+        "failure-mode",
+        "domain:distributed-systems"
+      ],
+      "external": false,
+      "evidence": "[docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38] Leaf .8.4 requires: “Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.” The root acceptance example instead says: “A deferred item fixed elsewhere leaves the punch list after verification.” The nested spec requires removal after explicit supported resolution or rejection, including fixes supplied elsewhere. For an externally supplied fix with supported resolution, the leaf's inclusion wording conflicts with the intended removal behavior and gives the implementer an inconsistent acceptance target.\n---\n[docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance] Task .8.4 requires: 'Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.' The root acceptance example instead states: 'A deferred item fixed elsewhere leaves the punch list after verification.' The nested specification likewise requires deferred findings to leave the punch list after explicit supported resolution, including fixes supplied elsewhere. These prescribe opposite output membership for the same verified external fix, leaving the projection implementer with contradictory acceptance criteria.\n---\n[settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance] Task .8.4 says: \"Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.\" The root spec §4 instead states: \"A deferred item fixed elsewhere leaves the punch list after verification.\" The nested spec requires: \"Deferred findings leave the punch list only after explicit supported resolution or rejection, including fixes supplied elsewhere.\" These acceptance criteria require opposite projection results for the same explicitly resolved finding; implementing the task criterion literally retains an obligation that the approved continuity contract says is discharged.",
+      "kind": "GAP",
+      "suggestedSeverity": "Should-fix"
+    }
+  ],
+  "toJudge": [
+    {
+      "f": {
+        "claim": "Resumed admission lacks a rule for an unfinished attempt whose owned process survives or cannot be verified, leaving the decision to retry affected work disconnected from the process uncertainty the design explicitly preserves.",
+        "location": "Root spec §1 Workspace and process safety and §2 Scheduling and recovery; settled-tree.json task super-plan-ufz.12",
+        "category": "domain:workflow-orchestration",
+        "lanes": [
+          "domain:workflow-orchestration"
+        ],
+        "external": false,
+        "evidence": "Section 1 requires retaining resources needed by 'surviving or unverified owned processes.' Section 2 requires resume to reconcile persisted facts 'with Git and tracker state before admitting affected work,' while fresh admission checks holds, cancellation and dependencies. Task super-plan-ufz.12 likewise defines reconciliation against Git/tracker and tests valid landings, holds and mismatches. None specifies how a surviving or unverified unfinished attempt constrains resumed admission. Consider interruption before landing, with the previous attempt still using its retained workspace: Git/tracker can correctly show unfinished work without establishing that restarting it is safe. Resource retention alone does not settle whether resume must wait, reconnect, verify termination, or isolate a replacement attempt and exclude the old attempt's eventual result. That cross-boundary decision is necessary to preserve work through the explicitly supported survivor/unknown outcome.",
+        "kind": "GAP",
+        "suggestedSeverity": "Blocking"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "The design permits integration to advance beyond a pinned review without defining when that review ceases to satisfy acceptance for the resulting source tree.",
+        "location": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:19–25,43–47; settled-tree.json tasks super-plan-ufz.1, super-plan-ufz.6 and super-plan-ufz.14",
+        "category": "failure-mode",
+        "lanes": [
+          "failure-mode"
+        ],
+        "external": false,
+        "evidence": "Section 1 explicitly accepts that 'A review remains pinned while integration advances.' Section 3 records the tested source tree and requires reviews and measurements before root closure, but supplies no applicability rule when the accepted tree differs from the reviewed tree. Task .1 tests pinning while integration advances; task .6 gates on required reviews; task .14 requires integrated-tree regression checks and permits small fixes inline. None requires determining whether intervening changes invalidate the earlier review. Consequently, a passing review of A and passing measurements of later tree B can satisfy the described gates without establishing review coverage for B. Source identity exposes this difference but does not decide whether review remains outstanding.",
+        "kind": "GAP",
+        "suggestedSeverity": "Should-fix"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "The finding-continuity contract does not define how a later explicitly linked actionable occurrence interacts with an earlier supported resolution of the same finding.",
+        "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md:16–24; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4",
+        "category": "premortem",
+        "lanes": [
+          "premortem"
+        ],
+        "external": false,
+        "evidence": "The design merges appearances through explicit references, records resolution against the finding, and mechanically projects outstanding findings from source and disposition records. It specifies unsupported resolutions and silent retries, but no rule or acceptance example addresses a new actionable occurrence after supported resolution. Failure story: F is verified fixed and resolved; a subsequent invocation reports that the defect has returned and explicitly links its occurrence to F. Both the old resolution and new occurrence are valid retained records. The projection needs to distinguish historical appearances covered by that resolution from newly actionable evidence; otherwise inheriting F's resolved disposition can conceal the recurrence. This requires a disposition-applicability rule or semantic decision, not a new lifecycle engine.",
+        "kind": "GAP",
+        "suggestedSeverity": "Should-fix"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "Task super-plan-ufz.8.4 requires punch-list inclusion of verified fixes supplied elsewhere, contradicting the parent and nested specifications’ requirement to remove those findings after supported resolution.",
+        "location": "docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38; docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance; settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance",
+        "category": "premortem",
+        "lanes": [
+          "premortem",
+          "failure-mode",
+          "domain:distributed-systems"
+        ],
+        "external": false,
+        "evidence": "[docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; docs/superpowers/specs/2026-10-16-workflow-reliability-design.md:57–61; nested finding-continuity spec:38] Leaf .8.4 requires: “Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.” The root acceptance example instead says: “A deferred item fixed elsewhere leaves the punch list after verification.” The nested spec requires removal after explicit supported resolution or rejection, including fixes supplied elsewhere. For an externally supplied fix with supported resolution, the leaf's inclusion wording conflicts with the intended removal behavior and gives the implementer an inconsistent acceptance target.\n---\n[docs/superpowers/runs/2026-10-16-workflow-reliability/settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec section 4; nested finding-continuity spec Acceptance] Task .8.4 requires: 'Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.' The root acceptance example instead states: 'A deferred item fixed elsewhere leaves the punch list after verification.' The nested specification likewise requires deferred findings to leave the punch list after explicit supported resolution, including fixes supplied elsewhere. These prescribe opposite output membership for the same verified external fix, leaving the projection implementer with contradictory acceptance criteria.\n---\n[settled-tree.json, super-plan-ufz.8.4 Acceptance; root spec §4; nested finding-continuity spec Acceptance] Task .8.4 says: \"Key-only punch-list output contains outstanding deferred findings, including verified fixes supplied elsewhere.\" The root spec §4 instead states: \"A deferred item fixed elsewhere leaves the punch list after verification.\" The nested spec requires: \"Deferred findings leave the punch list only after explicit supported resolution or rejection, including fixes supplied elsewhere.\" These acceptance criteria require opposite projection results for the same explicitly resolved finding; implementing the task criterion literally retains an obligation that the approved continuity contract says is discharged.",
+        "kind": "GAP",
+        "suggestedSeverity": "Should-fix"
+      },
+      "kind": "panel"
+    }
+  ],
+  "dedupeOrphans": 0,
+  "beyondCap": 0,
+  "beyondPanelCap": [],
+  "dedupeDead": false
+}

@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-workflow-reliability
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=false
-phase: roast-design
+phase: code
 codeMechanism: ordinary-subagents
 runTag: workflow-reliability-20261017T054545
 context: Context: codex · planner=475K/auto · implementer=475K/auto · reviewer=475K/auto · finalReview=475K/auto · assembler=475K/auto
@@ -24,3 +24,8 @@ approvals:
 Promotion review: promotion-review.md; proposed split: proposed-split.md. User approved proposed Key abstractions and thirteen-child top split (.8 PROMOTE, others LEAF). Finding-continuity nested design is next. No implementation started.
 
 roastDesignRound: 1
+
+roast-design: 2026-10-16-workflow-reliability-roast-design-1.md
+stepBackDesign-round-1: patch — correct .8.4 punch-list wording; parent/nested policies already agree.
+
+graph-pass: depth 5→5 · width 3.4→3.4 · applied 0 · parked 0
