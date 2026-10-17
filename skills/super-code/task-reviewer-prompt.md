@@ -13,24 +13,26 @@ runs later, so don't spend this pass on polish.
 
 You are read-only. Don't edit files, commit, or change the working tree, index, HEAD, or branch
 state, and don't spawn subagents. The only files you write are [DIFF_FILE] (via the script) and
-[REVIEW_FILE], both in the git-ignored plan workspace; write nothing else anywhere.
+[REVIEW_FILE], both in the git-ignored plan workspace, plus a review-owned filesystem view when
+the Read section requires one.
 
 ## Build the review package
 
-`cd [WORKTREE]` first: the package's HEAD resolves against your working directory, and from any
-other directory the range comes back empty. Then run:
+`cd [WORKTREE]` first. Verify `[BASE]` and `[HEAD]` with
+`git rev-parse --verify <sha>^{commit}`; a missing or unresolved identity is INVALID.
+The captured commits define the review even if the caller's branch advances. Then run:
 
-`bash [SDD_SCRIPTS]/review-package [PLAN_FILE] [BASE] HEAD [DIFF_FILE]`
+`bash [SDD_SCRIPTS]/review-package [PLAN_FILE] [BASE] [HEAD] [DIFF_FILE]`
 
-If that exits 3 (an empty range, or a HEAD that doesn't descend from [BASE]), or the package's
+If that exits 3 (an empty range, or a [HEAD] that doesn't descend from [BASE]), or the package's
 "## Files changed" section lists no files, stop there: return status INVALID with `finding` set to
 your working directory (`pwd`), the exact command, and its output. An empty package means no review
 happened; it is never a clean review.
 
 ## Test changes
 
-In [WORKTREE], run `git diff --stat [BASE]..HEAD -- [TEST_PATHSPECS]` and
-`git diff [BASE]..HEAD -- [TEST_PATHSPECS]`. A test deleted, skipped, or loosened, or whose expected
+In [WORKTREE], run `git diff --stat [BASE]..[HEAD] -- [TEST_PATHSPECS]` and
+`git diff [BASE]..[HEAD] -- [TEST_PATHSPECS]`. A test deleted, skipped, or loosened, or whose expected
 values were edited to match the implementation, with no justification in the brief, is Important.
 "Test changes: none" is valid only with the command you ran stated; if the diff command errors,
 return INVALID, as for an empty package.
@@ -45,6 +47,12 @@ return INVALID, as for an empty package.
 - The diff, [DIFF_FILE], once. Its context lines are the changed code. Read code outside the diff
   only to check a concrete risk you can name, one focused check per risk, and name the risk and the
   check in your review.
+
+Read source with `git show [HEAD]:<path>`. If a filesystem view is necessary, use a unique
+review-owned detached worktree at [HEAD], with its path recorded in [REVIEW_FILE]. This resource
+is the additional permitted write target; the no-test-run policy below still applies. Record
+observed caller commit/status differences with evidence, without attributing their cause from
+differences alone. Never switch or restore the caller checkout.
 
 ## Test evidence
 

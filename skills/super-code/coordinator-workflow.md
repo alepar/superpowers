@@ -1276,6 +1276,17 @@ one run (the implementer looking the report up under the bead id instead of the 
 finished work left uncommitted) were each RESOLVEd correctly and never counted, because the
 detector only saw review minors.
 
+**Captured review source.** The existing `read-ledger:finish` dispatch also captures `reviewHead`
+with `git rev-parse --verify <integration branch>^{commit}` and `reviewBase` as its verified
+merge-base with the default branch commit. The pair is returned alongside the ledger text;
+`reviewError` records a capture failure independently. Assembly and all final reviewers receive
+the same pair, including direct-input fallbacks when assembly fails. Failed or missing capture
+leaves final review unavailable. This adds no dispatch. Task review carries the implementer's
+captured head; seam/check-fix reviews carry the merge/fixer head. Source reads use `git show
+<head>:<path>`; filesystem views use unique review-owned detached worktrees, with separate mutable
+output/temp directories. Observed caller commit/status differences carry evidence without
+assigning cause from differences alone or restoring the caller checkout.
+
 **The final review is size-switched.** After the Metrics re-read and before its append, one
 mechanical `assemble:final` dispatch (`assemblePrompt('final-review', 'final', …)`) gathers the review
 inputs into `<workspace>/assembled/final-review-<runTag>-final/` and measures them. The window is
@@ -1900,7 +1911,7 @@ exercised by the replay harness's live-sim scenarios.
 | `triage:bd-103` / `triage:bd-104` | ESCALATE / RESOLVE (reused) | bd-104's second visit is bounced from RESOLVE into ESCALATE |
 | `notify:bd-103` / `notify:bd-104` / `clarify:bd-104` / `ledger:bd-104` | fixed | notify on ESCALATE; clarification on RESOLVE; bd-104 flushes once per chain — `pending retry`, then `BLOCKED` |
 | `sweep` / `ledger-append:sweep` | `{summary:"f00dbee — 12 passed, …"}` / `{appended:true}` | the mandatory full-suite sweep at Finish (work landed); the summary names bd-103/bd-104 as not in the measurement |
-| `read-ledger:finish` / `ledger-append:metrics` | `{text:""}` / `{appended:true}` | the Metrics re-read and the one dispatch appending all four lines |
+| `read-ledger:finish` / `ledger-append:metrics` | `{text:"",reviewBase,reviewHead}` / `{appended:true}` | the Metrics re-read and source capture and the one dispatch appending all four lines |
 | `reconcile-buckets` | `{closed:[]}` | Finish reconciliation of escalated ids (and any landed id whose closure is unconfirmed) against the tracker |
 | `worktree-sweep` | `{lines:[]}` | the Finish task-worktree backstop (always dispatched) |
 | `assemble:final` | `{dir:"…",exit:0,fits:"fits: yes (1200 of 80000)",clusterFits:[],clusters:0}` | the final review's assembler pre-step: fits, so a single review. The split-mode keys (`final-review:cluster:<n>`, `final-review:seam`, `final-review:stub`) are exercised by the replay harness's live-sim scenarios only |
@@ -2101,7 +2112,7 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
       "ledger:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",
@@ -2171,7 +2182,7 @@ replay harness at the current revision.
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"the caching strategy is a design decision the spec does not settle\"}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}"
     }
@@ -2239,7 +2250,7 @@ the current revision.
       "close-check:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-301\"]}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",

@@ -182,9 +182,9 @@ async function dispatch(buildReal, stubKey, opts) {
 // `withLanded` (Resume) also lists the task merges git holds, for landings the ledger never got.
 async function readLedger(stubKey, phaseName, withLanded = false) {
   const opts = { label: stubKey, phase: phaseName, schema: LEDGER_TEXT, ...tier('mechanical') }
-  const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded), stubKey, opts), stubKey)
+  const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish'), stubKey, opts), stubKey)
   if (out !== null) return out
-  return checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded), stubKey, { ...opts, label: `${stubKey}:retry` }), `${stubKey}:retry`)
+  return checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish'), stubKey, { ...opts, label: `${stubKey}:retry` }), `${stubKey}:retry`)
 }
 // The digest's first line counts what it kept. An echo without it, or with fewer lines than it counts,
 // was lost or truncated in transit — an unavailable read, never an empty ledger (that once seeded 1 of
@@ -299,7 +299,7 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // Ledger read returns raw text ('' for a fresh ledger), so parsing stays in this script. Appends are
 // schema-less: only a null return matters (appendLedger's retry-then-mark). `landed` (Resume read
 // only): `<branch> <tip> <merge>` lines from scripts/already-merged --landed.
-const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } } }, required: ['text'] }
+const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'} }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
 // closed; a reopen's list; a cancelled task's worktree removal.
@@ -968,7 +968,7 @@ while (true) {
           blockerFinding = `${failFinding} — the merge-check fix reported ${fixRes.status}`
           m = { ...m, blockerBead: fixRes.blockerBead }
         } else {
-          const rv = await dispatch(() => checkFixReviewPrompt(r, preFixHead, errors, artifacts(r.id)), `seam-review:${r.id}:check`,
+          const rv = await dispatch(() => checkFixReviewPrompt({ ...r, head: fixRes.head }, preFixHead, errors, artifacts(r.id)), `seam-review:${r.id}:check`,
             { label: `seam-review:${r.id}:check`, phase: 'Integrate', ...tier('reviewer'), schema: RESULT })
           if (!rv) { log(`merge-check fix review for ${r.id} unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
           if (rv.status !== 'CLEAN') {
@@ -1677,14 +1677,15 @@ if (!metricsLedger) {
 // null seam review whose stub also returned null). The Workflow returns only the verdict line
 // (`review`) and that path, never a body.
 const landedWork = !!(completed.size || confirmedLandings.size)
+const finalSource = metricsLedger && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewBase || '') && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewHead || '') ? { base: metricsLedger.reviewBase, head: metricsLedger.reviewHead } : null
 const reviewPath = `${workspaceAbs}/final-review-${runTag}.md`
 const clusterReviewPath = n => `${workspaceAbs}/final-review-${runTag}-cluster-${n}.md`
 const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
-let frMode = 'unavailable', frDir = null, frClusters = [], frLine = null, frAsmClusters = null
-if (landedWork) {
+let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
+if (landedWork && finalSource) {
   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
   const reviewThreshold = Math.floor(reviewWindow * 0.4)
-  const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold }), 'assemble:final',
+  const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
@@ -1717,9 +1718,10 @@ const notReadyWith = (verdict, unrev) => {
 }
 let review, reviewWritten = false
 if (!landedWork) review = 'no work landed'
+else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
 else if (frMode !== 'split') {
   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
-    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath }), 'final-review',
+    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
   const v = String(single?.verdict ?? '').trim()
   reviewWritten = !!v
@@ -1731,12 +1733,12 @@ else if (frMode !== 'split') {
   const fitting = frClusters.filter(c => c.fits)
   for (let i = 0; i < fitting.length; i += cap) {
     const batch = fitting.slice(i, i + cap)
-    const res = await Promise.all(batch.map(c => dispatch(() => finalClusterReviewPrompt(c.n, c.name, frDir, clusterReviewPath(c.n), epicId, integrationBranch, integrationWorktree), `final-review:cluster:${c.n}`,
+    const res = await Promise.all(batch.map(c => dispatch(() => finalClusterReviewPrompt(c.n, c.name, frDir, clusterReviewPath(c.n), epicId, integrationBranch, integrationWorktree, finalSource), `final-review:cluster:${c.n}`,
       { label: `final-review:cluster:${c.n}`, phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })))
     batch.forEach((c, j) => { if (res[j] && String(res[j].verdict ?? '').trim()) reviewed.push(c); else unreviewed.push(`cluster ${c.n} (${c.name}): review unavailable`) })
   }
   const clusterPaths = reviewed.map(c => clusterReviewPath(c.n))
-  const seam = await dispatch(() => finalSeamReviewPrompt(frDir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed), 'final-review:seam',
+  const seam = await dispatch(() => finalSeamReviewPrompt(frDir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed, finalSource), 'final-review:seam',
     { label: 'final-review:seam', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
   let seamVerdict = String(seam?.verdict ?? '').trim()
   reviewWritten = !!seamVerdict
@@ -1898,6 +1900,7 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
   const profile = Object.hasOwn(ASSEMBLER_PROFILES, consumer) ? ASSEMBLER_PROFILES[consumer] : null
   if (!profile) throw new Error('assemblePrompt: unknown consumer ' + consumer + ' (one of ' + Object.keys(ASSEMBLER_PROFILES).join(', ') + ')')
   const sections = profile.sections.map(k => ASSEMBLER_SECTIONS[k]).join('\n')
+  if (['final-review', 'roast-code'].includes(consumer) && (!base || !head)) throw new Error('assemblePrompt: captured base and head are required')
   const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
   return `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
@@ -1986,7 +1989,7 @@ function taskReviewPrompt(im, planPath, art) {
   // One light review per task; BASE is the base the coordinator carried. The reviewer writes its
   // review to art.review for the fix pass and does not re-run tests.
   const specs = testPathspecs.map(p => `'${p}'`).join(' ')
-  return `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} HEAD\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H HEAD\`), else \`git merge-base ${integrationBranch} HEAD\` — and use that as [BASE] everywhere. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
+  return `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\`), else \`git merge-base ${im.base} ${im.head || 'MISSING'}\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
 }
 
 function fixPrompt(r, finding, art, kind) {
@@ -2003,13 +2006,13 @@ function fixPrompt(r, finding, art, kind) {
 function seamReviewPrompt(r, m, integrationBranch, art) {
   // Scoped review only when the rebase overlapped: how the task's changes compose with the sibling
   // changes the rebase just moved it onto, on the files both touched. One round, at most one fix.
-  return `READ-ONLY post-rebase seam review for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit files, commit, or change branch state. The branch was just rebased onto ${integrationBranch}, and sibling commits that landed there since this task branched changed the same files this task changed: ${m.seamOverlap.join(', ')}. Scope: post-rebase compatibility on those files only; this task's own logic is outside this review.${m.seamOverlap.some(x => String(x).startsWith('consumes ')) ? ' A \`consumes <id>\` entry names a task this one depends on that merged after it branched, with no file in common: read that task\'s merged change (its commits in the sibling range) and check this task\'s code against the interface it now presents — names, signatures, schema, defaults, error and ordering behaviour the consumer assumes.' : ''} cd ${r.branch} first. Read the sibling side (\`git log --oneline ${r.base}..${m.mergeBase} -- <files>\` and \`git diff ${r.base} ${m.mergeBase} -- <files>\`) and this task's side (\`git diff ${m.mergeBase} ${m.head} -- <files>\`; write it to ${art.diff('seam')} for the record), then check for: a changed signature, fixture, contract, export, schema or invariant on the sibling side that this task's code or tests still assume the old form of; duplicated or contradictory edits to the same lines, including conflict hunks the merge agent resolved; a test on either side that the other side's change makes vacuous.${testChangesBlock(`${m.mergeBase}..HEAD`, testPathspecs)} Return id ${r.id} and status CLEAN (the two sides compose) or NEEDS_FIX with \`finding\` naming the incompatibility and the smallest change that reconciles it — exactly one fix is dispatched from that text, then the task merges without tests; there is no second seam round. ${finalAnswerRule(true)}`
+  return `READ-ONLY post-rebase seam review for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit caller files, commit, or change branch state. ${reviewSource(r.branch, m.mergeBase, m.head)} The branch was just rebased onto ${integrationBranch}, and sibling commits that landed there since this task branched changed the same files this task changed: ${m.seamOverlap.join(', ')}. Scope: post-rebase compatibility on those files only; this task's own logic is outside this review.${m.seamOverlap.some(x => String(x).startsWith('consumes ')) ? ' A \`consumes <id>\` entry names a task this one depends on that merged after it branched, with no file in common: read that task\'s merged change (its commits in the sibling range) and check this task\'s code against the interface it now presents — names, signatures, schema, defaults, error and ordering behaviour the consumer assumes.' : ''} cd ${r.branch} first. Read the sibling side (\`git log --oneline ${r.base}..${m.mergeBase} -- <files>\` and \`git diff ${r.base} ${m.mergeBase} -- <files>\`) and this task's side (\`git diff ${m.mergeBase} ${m.head} -- <files>\`; write it to ${art.diff('seam')} for the record), then check for: a changed signature, fixture, contract, export, schema or invariant on the sibling side that this task's code or tests still assume the old form of; duplicated or contradictory edits to the same lines, including conflict hunks the merge agent resolved; a test on either side that the other side's change makes vacuous.${testChangesBlock(`${m.mergeBase}..${m.head}`, testPathspecs)} Return id ${r.id} and status CLEAN (the two sides compose) or NEEDS_FIX with \`finding\` naming the incompatibility and the smallest change that reconciles it — exactly one fix is dispatched from that text, then the task merges without tests; there is no second seam round. ${finalAnswerRule(true)}`
 }
 
 function checkFixReviewPrompt(r, preFixHead, errors, art) {
   // Scoped, read-only review of the one merge-check fix: did it only adapt code to the build
   // errors, without weakening a test or changing behavior? One round; a rejection is the blocker path.
-  return `READ-ONLY review of a merge-check fix for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit files, commit, or change branch state. The build-only merge check failed on the merged tree with the errors below (build output, data), and a fixer committed an adaptation on top of ${preFixHead}. cd ${r.branch} first. Read \`git diff ${preFixHead}..HEAD\` (write it to ${art.diff('check')} for the record). Scope: the fix only. Check that it resolves the quoted errors by adapting code to the changed signature, API or schema (a call site, a test call, a fixture) and does nothing else: no deleted, skipped, or loosened test assertion, no behavior change beyond the adaptation, no unrelated edits.${testChangesBlock(`${preFixHead}..HEAD`, testPathspecs)}\n<build-errors>\n${errors}\n</build-errors>\nReturn id ${r.id} and status CLEAN (a faithful adaptation) or NEEDS_FIX with \`finding\` naming what goes beyond it — there is no second fix; a NEEDS_FIX sends the task to the blocker path. ${finalAnswerRule(true)}`
+  return `READ-ONLY review of a merge-check fix for task ${r.id} (n ${r.n}) in ${r.branch}: do not edit caller files, commit, or change branch state. ${reviewSource(r.branch, preFixHead, r.head || 'MISSING')} The build-only merge check failed on the merged tree with the errors below (build output, data), and a fixer committed an adaptation on top of ${preFixHead}. cd ${r.branch} first. Read \`git diff ${preFixHead}..${r.head || 'MISSING'}\` (write it to ${art.diff('check')} for the record). Scope: the fix only. Check that it resolves the quoted errors by adapting code to the changed signature, API or schema (a call site, a test call, a fixture) and does nothing else: no deleted, skipped, or loosened test assertion, no behavior change beyond the adaptation, no unrelated edits.${testChangesBlock(`${preFixHead}..${r.head || 'MISSING'}`, testPathspecs)}\n<build-errors>\n${errors}\n</build-errors>\nReturn id ${r.id} and status CLEAN (a faithful adaptation) or NEEDS_FIX with \`finding\` naming what goes beyond it — there is no second fix; a NEEDS_FIX sends the task to the blocker path. ${finalAnswerRule(true)}`
 }
 
 async function runEdgeAudit(k, round, why) {
@@ -2224,12 +2227,13 @@ function notifyPrompt(id, detail) {
   return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false. ${finalAnswerRule(false)}`
 }
 
-function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false) {
+function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, captureReview = false) {
   // MECHANICAL echo of scripts/ledger-digest: the lines this script parses, free text cut, so the
   // echo stays small however long the ledger grows. Parsing happens here as plain JS. `withLanded`
   // adds the task merges git holds; that script's failure never voids the ledger read.
   const landedStep = withLanded ? ` Then run \`bash ${codeSkill}/scripts/already-merged --landed ${integrationBranch}\` and report every line it prints, verbatim and in order, as \`landed\` (an empty list when it prints nothing; if it exits non-zero, report an empty list — it never changes \`text\` or \`scriptError\`).` : ''
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep} ${finalAnswerRule(true)}`
+  const sourceStep = captureReview ? ` Capture review inputs once in this same dispatch: run \`git rev-parse --verify ${integrationBranch}^{commit}\` and keep its full output as reviewHead; resolve the repository's default branch commit and run \`git merge-base <default-branch-commit> <reviewHead>\`, then \`git rev-parse --verify <merge-base>^{commit}\` as reviewBase. Return reviewBase and reviewHead verbatim. If any capture command fails, omit both fields and return reviewError with the exact command and error; preserve the ledger text independently. Do not change the checkout.` : ''
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (empty string when it prints nothing — a fresh epic). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
 }
 
 function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines) {
@@ -2240,18 +2244,22 @@ function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines
 }
 
 // The review-file format every final-review prompt fixes; scripts/report-verdict's final-review recogniser is its parser.
+function reviewSource(repo, base, head) {
+  if (!base || !head) throw new Error('reviewSource: captured base and head are required')
+  return `Captured source: base ${base}, head ${head}. Use \`git diff ${base}..${head}\` and \`git show ${head}:<path>\` in ${repo}. Verify both with \`git rev-parse --verify <sha>^{commit}\` before reading. If a filesystem view is needed, create a unique review-owned detached worktree at ${head}; mutable reproductions use its own output/temp directory. Record caller commit/status changes as observed evidence; differences alone do not attribute their cause. Never switch or restore the caller checkout.`
+}
 function reviewFileFormat() {
   return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
 }
-function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${runTag}.md` } = {}) {
+function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${runTag}.md`, base, head } = {}) {
   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
   const pkg = dir
     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
     : planPath
-    ? `Build the review package from ${integrationWorktree}: find the fork point \`B=$(git merge-base ${integrationBranch} <the repository's default branch>)\`, then run \`bash ${sddScripts}/review-package ${planPath} $B ${integrationBranch}\` and read the file it writes.`
-    : `Review \`git diff $(git merge-base ${integrationBranch} <the repository's default branch>)..${integrationBranch}\` from ${integrationWorktree}.`
+    ? `Build the review package from ${integrationWorktree}: run \`bash ${sddScripts}/review-package ${planPath} ${base} ${head} ${reviewPath}.diff\` and read the file it writes.`
+    : `Review \`git diff ${base}..${head}\` from ${integrationWorktree}.`
   const cappedNote = capped
     ? `The inputs exceed your window and no usable clusters exist: review what you can, and your verdict must be \`not ready (… unreviewed: inputs exceed the window and no usable clusters)\`. `
     : ''
@@ -2260,20 +2268,20 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge
     : sweepSummary
     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
-  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${reviewPath}. ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
-function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree) {
+function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree, source) {
   // One cluster of the split final review: the cluster's files and slices only, against the spec.
-  return `Final review of cluster ${n} (${name}) of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${clusterPath}. Your inputs are the files and slices that ${dir}/clusters.json lists for the cluster named ${name}, under ${dir}/, plus ${dir}/digest.md for context; review that cluster only, against the epic's spec (\`bd show ${epicId} --json\` and any design doc it references), and open other source files only to check a named risk. Judge the cluster on its own terms: spec requirements it fails to meet, defects, untested scope. Another reviewer judges how the clusters compose. Write your whole review to ${clusterPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return `Final review of cluster ${n} (${name}) of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${clusterPath}. ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are the files and slices that ${dir}/clusters.json lists for the cluster named ${name}, under ${dir}/, plus ${dir}/digest.md for context; review that cluster only, against the epic's spec (\`bd show ${epicId} --json\` and any design doc it references), and open other source files only to check a named risk. Judge the cluster on its own terms: spec requirements it fails to meet, defects, untested scope. Another reviewer judges how the clusters compose. Write your whole review to ${clusterPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
-function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed = []) {
+function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed = [], source) {
   // The split final review's second stage: how the reviewed clusters compose. It reads the cluster
   // verdict files and the cross-cluster hunks, never the clusters' full slices.
   const files = clusterPaths.length ? clusterPaths.join(', ') : 'none — no cluster review completed'
   const gaps = unreviewed.length ? ` These clusters have no review file, so name them in your Must fix section as unreviewed: ${unreviewed.join('; ')}.` : ''
-  return `Final seam review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit files, commit, merge, or create or close beads; the one file you write is your review, ${reviewPath}. Your inputs are only the cluster review files (${files}) and the cross-cluster hunks and interfaces: the diff hunks of files in one cluster that reference symbols defined in another, which you find from ${dir}/clusters.json and \`git diff\` in ${integrationWorktree}.${gaps} Judge how the clusters compose against the epic's spec (\`bd show ${epicId} --json\`): interfaces that disagree, requirements that fall between clusters, behavior that only breaks once every cluster is merged. Do not re-review a cluster's own files. Write your whole review to ${reviewPath}. ${reviewFileFormat()} Your Must fix before landing section carries every cluster's must-fix items forward plus your own. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return `Final seam review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are only the cluster review files (${files}) and the cross-cluster hunks and interfaces: the diff hunks of files in one cluster that reference symbols defined in another, which you find from ${dir}/clusters.json and \`git diff ${source.base}..${source.head}\` in ${integrationWorktree}.${gaps} Judge how the clusters compose against the epic's spec (\`bd show ${epicId} --json\`): interfaces that disagree, requirements that fall between clusters, behavior that only breaks once every cluster is merged. Do not re-review a cluster's own files. Write your whole review to ${reviewPath}. ${reviewFileFormat()} Your Must fix before landing section carries every cluster's must-fix items forward plus your own. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath) {
