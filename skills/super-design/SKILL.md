@@ -117,8 +117,9 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 **Resuming a redesign cycle** dispatches only from its record's `state`, never from what looks half-done:
 
-- `started`: with an amend file and a spec diff present, re-run `amend-check` on them; on ok continue from §Amend Mode's commit step, otherwise restore the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-run §Amend Mode from its first step. With no amend file, restore and re-run from the first step.
-- `amend-checked`: re-run `amend-check` before committing anything; ok → commit, reject → restore the specs and rewrite the state to `aborted — amend rejected on resume`.
+- A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record (a run from before the records existed) replays as before: the recorded redesign is applied from that line if its spec change is not yet committed.
+- `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
+- `amend-checked`: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, exit 2 → fix and re-run, no restore.
 - `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
 - `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
 - `applied`, `aborted — …`, `thrash — …`: nothing to replay; the loop continues from its other records.
