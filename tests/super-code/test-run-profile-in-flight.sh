@@ -36,7 +36,8 @@ const wf1 = join(sub, 'workflows/wf_1')
 put(join(wf1, 'journal.jsonl'), jl([
   { type: 'started', agentId: 'a1', label: 'plan' }, { type: 'result', agentId: 'a1', result: {} },
   { type: 'started', agentId: 'a2', label: 'impl:ep.2' },
-  { type: 'started', agentId: 'a3', label: 'review:ep.3' },
+  // Creation is not evidence of dispatch start when this in-flight agent has no transcript.
+  { type: 'started', agentId: 'a3', label: 'review:ep.3', created_at: '2026-10-01T00:10:00Z' },
   { type: 'note', text: 'see /w/.superpowers/sdd/ep-plan/progress.md' },
 ]))
 put(join(wf1, 'agent-a2.jsonl'), jl([asst('2026-10-01T00:35:00Z', [tool]), asst('2026-10-01T00:40:00Z', [tool])]))
