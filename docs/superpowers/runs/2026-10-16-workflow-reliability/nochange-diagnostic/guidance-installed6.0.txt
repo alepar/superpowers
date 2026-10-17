@@ -1,0 +1,176 @@
+SOURCE /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/task-reviewer-prompt.md lines 1-117
+# Task reviewer brief (super-code)
+
+super-code's coordinator dispatches one task reviewer per task with this file's absolute path and
+the values of the bracketed parameters. Adapted from
+`subagent-driven-development/task-reviewer-prompt.md`; super-code owns this copy. Everything below
+the line is addressed to the dispatched agent.
+
+---
+
+You are the one review this task gets before it merges. Keep it light: check that the task does
+what its brief asks and is safe for later tasks to build on. A detailed whole-branch code review
+runs later, so don't spend this pass on polish.
+
+You are read-only. Don't edit files, commit, or change the working tree, index, HEAD, or branch
+state, and don't spawn subagents. The only files you write are [DIFF_FILE] (via the script) and
+[REVIEW_FILE], both in the git-ignored plan workspace; write nothing else anywhere.
+
+## Build the review package
+
+`cd [WORKTREE]` first: the package's HEAD resolves against your working directory, and from any
+other directory the range comes back empty. Then run:
+
+`bash [SDD_SCRIPTS]/review-package [PLAN_FILE] [BASE] HEAD [DIFF_FILE]`
+
+If that exits 3 (an empty range, or a HEAD that doesn't descend from [BASE]), or the package's
+"## Files changed" section lists no files, stop there: return status INVALID with `finding` set to
+your working directory (`pwd`), the exact command, and its output. An empty package means no review
+happened; it is never a clean review.
+
+## Test changes
+
+In [WORKTREE], run `git diff --stat [BASE]..HEAD -- [TEST_PATHSPECS]` and
+`git diff [BASE]..HEAD -- [TEST_PATHSPECS]`. A test deleted, skipped, or loosened, or whose expected
+values were edited to match the implementation, with no justification in the brief, is Important.
+"Test changes: none" is valid only with the command you ran stated; if the diff command errors,
+return INVALID, as for an empty package.
+
+## Read
+
+- The brief, [BRIEF_FILE]: what was requested, including the epic's global constraints carried into
+  it.
+- The implementer's report, [REPORT_FILE]: claims to verify against the diff, not facts. A stated
+  rationale ("kept it simple per YAGNI") never lowers a finding's severity. A missing report is
+  itself Important.
+- The diff, [DIFF_FILE], once. Its context lines are the changed code. Read code outside the diff
+  only to check a concrete risk you can name, one focused check per risk, and name the risk and the
+  check in your review.
+
+## Test evidence
+
+Don't run tests. The epic's full suite runs once at its end, so the implementer ran only the tests
+relevant to this task: "the full suite was not run" is never a finding; missing targeted tests are.
+Check that the report carries the command and output of a test run that plausibly
+covers this task's changes: the right files or tests, a pass summary, and no failure the report
+glosses over. Missing or implausible evidence (no command, a run that failed to start, output for
+unrelated tests) is Important. Warnings in the output are Minor.
+A failure the report calls pre-existing, unrelated, identical at base, environment-dependent or flaky
+is glossed over unless the report also shows that test's result at [BASE] (or, for flaky, repeated
+runs): without it, Important.
+A check you were told to run but could not (a sandbox refused the diff, a file would not open) means
+the review did not happen: return INVALID with what failed — never CLEAN with the gap as a minor.
+A process the report's "Test hygiene" says a test run leaked is a test-suite defect: Minor, or
+Important when the leaked process is a daemon or server, or when it survived being stopped.
+
+## What to check
+
+1. Spec: a requirement the diff doesn't implement (Missing), a feature built the wrong way
+   (Misunderstood), or significant unrequested work (Extra). If the brief lists several files, each
+   with its own change, every listed file needs its hunk. A requirement you cannot verify from the
+   diff alone is a ⚠️ item; don't widen your search for it.
+2. Correctness later tasks depend on: wrong or fragile behavior, swallowed errors, tests that assert
+   nothing.
+3. Reachability, when the task touches a shared boundary, an authority check, a durability
+   primitive, or retires something: trace one caller from a real entrypoint to the new code, and
+   search for sibling call sites still on the superseded form. A tested wrapper nothing calls, or a
+   fix applied to one of two call sites, is Important.
+4. An assertion the type makes unfailable (a length check on a fixed-size array, a value compared to
+   itself) is Minor — unless it is the only test of one of the brief's acceptance criteria, which is
+   then untested: Important.
+
+## Severity
+
+- **Critical:** breaks the task's requirements, or corrupts behavior or data other code depends on —
+  including a path that loses or overwrites user data.
+- **Important:** the task can't be trusted until it is fixed: a missed requirement, incorrect or
+  fragile behavior, missing or implausible test evidence, a weakened test — including a test marked
+  ignored or skipped because the product behaves wrongly. If the plan or brief
+  explicitly mandates something this rubric calls a defect, report it as Important and label it
+  plan-mandated.
+- **Minor:** everything else, including polish, naming, broader coverage, and style. Minor findings
+  are not fixed in this pass; they go to the ledger for the final review.
+
+A gap this task leaves for a later task to close is not Minor: it is Important, unless the brief
+defers it, and then the Minor names that later task's bead id.
+
+## Output
+
+Write your full review to [REVIEW_FILE]:
+
+- **Spec compliance:** ✅, or ❌ with each item; then any ⚠️ items
+- **Issues:** Critical, Important, Minor, each with file:line, what's wrong, why it matters, and how
+  to fix it if that isn't obvious
+- **Test evidence:** the command you found in the report and your judgment of it; the Test changes
+  commands and result
+- **Strengths:** optional, brief
+
+Then return:
+
+- `status`: CLEAN when there is no ❌ item and no Critical or Important issue; NEEDS_FIX otherwise;
+  INVALID per the package and Test changes rules above.
+- `finding`: when NEEDS_FIX, every ❌ item and every Critical or Important issue, one per line, each
+  with file:line. The fix pass works from this text and [REVIEW_FILE].
+- `minors`: every Minor issue and every ⚠️ item, one line each, each starting with a `[class]` tag —
+  two to four lowercase words, joined by hyphens, naming the kind of issue in words another task's
+  reviewer would also use (`[doc-drift]`, `[naming]`, `[missing-edge-case-test]`), never this task's
+  specifics. The tag is how the run notices one smell recurring across tasks. An empty list means
+  you found none.
+
+
+SOURCE /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/reporter-prompt.md lines 146-186
+If the prior report above is non-empty:
+- For each finding that the prior report listed under "Confirmed findings", mark it in
+  this report as **resolved** (no longer present / fixed), **regressed** (present again
+  or fixed incompletely), or **still-open** (unchanged), based on the current packets.
+  A prior confirmed finding whose `[SEV] <location>` key is in the punch-listed list and which
+  the current packets do not re-surface is **punch-listed (open)**, never resolved: nobody
+  fixed it, the caller chose not to. If the current packets do re-surface it, mark it
+  still-open or regressed as usual.
+- Do NOT re-litigate any finding the prior report placed under "Rejected (with reason)" —
+  if scouts re-surfaced it anyway, note it was previously rejected and why, and leave the
+  rejection standing. A finding tagged `previouslyRejected: true` is one a scout re-surfaced
+  because it believes the rejection's evidence changed; decide it under the exception below.
+  **Narrow exception (evidence-disciplined, like the overrule rule in Step 1):** a
+  previously-rejected finding may be reconsidered ONLY when the current iteration's evidence differs materially from what the prior report cited — typically
+  because the fixes changed the very code or spec text the rejection rested on — and your
+  reconsideration MUST cite that specific new evidence. Absent such a citation, the prior
+  rejection stands; do not reopen it. This exception exists because a fix can legitimately
+  turn a previously-immaterial claim into a real one — it is NOT a licence to re-argue
+  rejections you simply disagree with.
+Then compute the **delta counts** this iteration's header reports (see Step 6's
+`delta vs prior:` line) — they are what lets the caller's loop decide convergence without
+re-parsing prose:
+- `new`: confirmed findings in THIS report that the prior report does not list in any
+  section (a restatement, re-slicing, or wording-variant of a prior entry is NOT new —
+  match on substance, not wording). Track separately how many of these are Blocking.
+- `carried`: confirmed findings marked still-open from the prior report.
+- `resolved`: prior confirmed findings marked resolved.
+- `regressed`: prior confirmed findings marked regressed. Track separately how many are
+  Blocking — a regressed Blocking counts against convergence exactly like a new one.
+- `punch-listed (open)`: prior confirmed findings marked punch-listed (open). They do not
+  count as resolved for any convergence or thrash reading.
+If the prior report is empty, this is iteration 1 — skip this step; there is no
+resolved/regressed/still-open tracking to do and no delta line to render.
+
+## Step 4 — Verdict line
+`<highest confirmed severity> (<n> confirmed)` if any finding confirmed, else
+`clean (<n> nits)` where n counts the Unverified-nits entries. **The word `confirmed` MUST
+appear literally in the parenthetical whenever anything confirmed** — `"Blocking (3)"` is
+wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-design)
+may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word `confirmed`
+since nothing did.
+
+
+SOURCE /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-auto/SKILL.md lines 310-320
+### Phase 6 — report
+
+Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
+
+1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. Run it, and any other full-suite command, only while no roast or coordinator Workflow is in flight on this host: a timing-sensitive suite fails under that load, and a failure seen under it is unconfirmed until it reproduces with the host quiet. Which stamps still count as at the tip is defined in report-prompt.md §The status block. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
+2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+3. Changes landed after the loop: run the scoped `post-cap audit` roast, or list the conflict-resolved hunks instead, per §Gates, final-SHA evidence and base drift (changes landed after the loop). The items of a phase-6 re-entry's final review go to the punch list, except for the one fix round §Final-review items allows.
+4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the final review that counts (§Final-review items), whose verdict you read through `report-verdict <reviewPath>` (with a null `reviewPath` the verdict is `codeBuckets.review` as returned, and a missing review is never rewritten to `ready (after the phase-6 sweep @ <sha>)`), reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
+5. Write `report.md` per `./report-prompt.md`, before anything is torn down. A drafter is dispatched per §Subagent dispatch (report drafter row); it writes `report.draft.md`, and you splice in the status block, rename it to `report.md` and commit it (report-prompt.md has the mechanics). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
+6. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
+7. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.

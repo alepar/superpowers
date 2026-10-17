@@ -1,0 +1,12 @@
+Keep the root open and release readiness pending. Accept the implementation leaves on their recorded task evidence, but record the required full-suite sweep as **unmeasured**, not a demonstrated code failure. Targeted tests and compile at e444 do not satisfy the release contract.
+
+Assign the sweep to the super-auto coordinator now: run the ledger’s declared full-suite command against the exact landing SHA while no roast or coordinator Workflow is in flight. Retain command, output, SHA, and `codeBuckets.sweep`. A passing result can resolve readiness attributable solely to the deferred sweep; a failing result follows the prescribed sweep-fix pass.
+
+Carry **F17 as still-open, Should-fix**. r1 confirmed `src/retry.js:42` loses a queued retry during shutdown; its fix was blocked, no fix commit landed, and the intervening change was documentation-only. r2’s silence and the implementer’s unsupported claim establish no resolution. Correct the consolidated report and delta counts, retain the original finding and blocked-fix history, and route fixture restoration and the fix to its owner. Any decision to defer it must explicitly record its canonical key as punch-listed (open).
+
+**Neither V9 nor V10 can complete under the supplied current reviewer workflow.** Both ordinary review packages exited 3, which explicitly requires `INVALID`; no verification-only exception is provided.
+
+- **V9:** Its independent verification substantively covers the criterion: resolved base/head equal full e444, captured and actual tree match `d84541ae…`, source status is clean, and readable live evidence records the exact command/configuration and 12/12 passing tests. Retain this evidence, the criterion assessment, identities, and package failure for an authorized verification-only acceptance path.
+- **V10:** Also retain `INVALID`. Independently, its sole evidence names tree `a15541ae…`, differing from actual `d84541ae…`. Require verification tied to the current source tree before acceptance.
+
+Create **no comment-only commits**. Neither task requires delivered changes, and an artificial diff would not establish valid verification. Retain each INVALID review’s working directory, exact helper command, and output.

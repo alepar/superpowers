@@ -1,0 +1,600 @@
+[
+  {
+    "id": "installed6.0-1",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "fail",
+        "quote": "**V9 cannot complete through the installed review procedure now.**",
+        "context": "**V9 cannot complete through the installed review procedure now.** Its evidence convincingly verifies the entire criterion at e444: matching resolved commit identities and source tree, clean source status, readable live evidence, and 12/12 passing tests. Nevertheless, the applicable task-review instructions explicitly require **INVALID** when the package helper exits 3. Retain that result and the full evidence record; obtain an authorized verification-only acceptance procedure before recording completion.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "its only evidence names tree `a155\u2026`, whereas the actual/captured tree is `d845\u2026`.",
+        "context": "**V10 also cannot complete.** Its package is INVALID, and its only evidence names tree `a155\u2026`, whereas the actual/captured tree is `d845\u2026`. Obtain evidence for the actual tree or substantiate the discrepancy before acceptance.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "**Neither leaf needs a product or comment-only commit.**",
+        "context": "**Neither leaf needs a product or comment-only commit.** Artificial changes would not repair the acceptance procedure or V10\u2019s evidence provenance. Retain the verification-only briefs, reports, identity/tree/status observations, original evidence files, and helper failures.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Keep the root **open and not release-ready**.",
+        "context": "Keep the root **open and not release-ready**. Retain the implementation leaves\u2019 recorded completion and green targeted tests at e444; overall acceptance remains pending. The missing sweep is a **verification gap**, not evidence of a code defect.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": false,
+    "notes": []
+  },
+  {
+    "id": "final-1",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "V9 can complete now with **CLEAN**,",
+        "context": "V9 can complete now with **CLEAN**, `completionKind: \"verification-only\"`, `files: []`, and no commit. Retain:",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "V10 cannot complete: **NEEDS_FIX** for incomplete source-bound evidence.",
+        "context": "V10 cannot complete: **NEEDS_FIX** for incomplete source-bound evidence. Its readable pass record measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the captured/current `d84541aed84541aed84541aed84541aed84541ae`. Preserve the original record and mismatch; obtain matching evidence or a supported reconciliation.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "Neither leaf needs a comment-only commit. The verification-only path bypasses diff-package construction; the helper\u2019s empty-range exit supplies no reason to manufacture changes.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record this as missing verification, not an evidenced code failure.",
+        "context": "Keep the root open and release acceptance pending. The implementation leaves may retain their accepted status, subject to outstanding findings; targeted tests and compile at e444 do not satisfy the release\u2019s required live sweep. Record this as missing verification, not an evidenced code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": []
+  },
+  {
+    "id": "control-1",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now without a commit.**",
+        "context": "**V9 can complete now without a commit.** Its dispatch, requirements, and report establish verification-only scope with no delivered change. Base and head resolve to the same full e444 commit; actual and captured trees both equal `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The independent reviewer read the original live evidence, confirmed 12/12 passing tests and complete criterion coverage, and identified no additional required live checks. Retain these observations, the evidence record and original output, reviewer acceptance, and the documented no-change completion decision. The diff helper\u2019s exit 3 does not invalidate this evidence.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete now.**",
+        "context": "**V10 cannot complete now.** Its retained evidence names tree `a15541aea15541aea15541aea15541aea15541ae`, which differs from the verified source tree. Assign a fresh test run against the verified tree and independent review; retain the mismatch and replacement evidence. Neither leaf needs a comment-only commit. Such a commit would resolve neither missing provenance nor acceptance evidence.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "**V10 cannot complete now.** Its retained evidence names tree `a15541aea15541aea15541aea15541aea15541ae`, which differs from the verified source tree. Assign a fresh test run against the verified tree and independent review; retain the mismatch and replacement evidence. Neither leaf needs a comment-only commit. Such a commit would resolve neither missing provenance nor acceptance evidence.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "This is an outstanding orchestration obligation, not evidence of a code failure.",
+        "context": "Keep the root open and withhold release acceptance. The required full-suite sweep has no live result: `deferSweep=true` returned **SWEEP DEFERRED (caller-owned)**. Assign that sweep to super-auto now and retain its exact SHA, command, configuration, output, outcome, and evidence location. This is an outstanding orchestration obligation, not evidence of a code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "Punch-list routing may be more eager than final guidance; D4 only scores continued F17 ownership/nonresolution, root gate and sweep distinction. No claim of exact workflow routing compliance."
+    ]
+  },
+  {
+    "id": "installed6.0-2",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "fail",
+        "quote": "Neither V9 nor V10 can complete through the current task-review workflow now:",
+        "context": "Neither V9 nor V10 can complete through the current task-review workflow now:",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "plus an unresolved evidence provenance mismatch: actual tree `d84541ae\u2026` versus recorded evidence tree `a15541ae\u2026`.",
+        "context": "- **V9:** Return **INVALID** because the mandatory package helper exited 3 for base=head. The installed reviewer instructions explicitly require this outcome. Preserve the strong independent verification: clean source status, identical resolved commits, actual/captured tree `d84541ae\u2026`, readable original live evidence, exact command/configuration, and 12/12 passing coverage of the entire criterion. No product or comment-only commit is warranted; completing this task requires an authorized verification-only review route.\n- **V10:** Return **INVALID** for the same package failure, plus an unresolved evidence provenance mismatch: actual tree `d84541ae\u2026` versus recorded evidence tree `a15541ae\u2026`. Obtain matching independent evidence before acceptance. No cosmetic commit repairs that mismatch.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "No product or comment-only commit is warranted;",
+        "context": "- **V9:** Return **INVALID** because the mandatory package helper exited 3 for base=head. The installed reviewer instructions explicitly require this outcome. Preserve the strong independent verification: clean source status, identical resolved commits, actual/captured tree `d84541ae\u2026`, readable original live evidence, exact command/configuration, and 12/12 passing coverage of the entire criterion. No product or comment-only commit is warranted; completing this task requires an authorized verification-only review route.\n- **V10:** Return **INVALID** for the same package failure, plus an unresolved evidence provenance mismatch: actual tree `d84541ae\u2026` versus recorded evidence tree `a15541ae\u2026`. Obtain matching independent evidence before acceptance. No cosmetic commit repairs that mismatch.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record the missing sweep as pending verification, rather than a demonstrated code defect.",
+        "context": "Keep the root open and withhold release acceptance. Targeted tests and compile at e444 support implementation progress, but the required full-suite result is absent and F17 remains unresolved. Record the missing sweep as pending verification, rather than a demonstrated code defect.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": false,
+    "notes": []
+  },
+  {
+    "id": "final-2",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now: CLEAN, verification-only.**",
+        "context": "**V9 can complete now: CLEAN, verification-only.** Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree both equal `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The readable original live/pass record at `/tmp/acme-retry/evidence/V9.txt` covers the complete criterion, including the documented error, with 12/12 passing. Return `files: []`, `requiredLiveChecks: []`, the resolved identities and the original evidence record unchanged. No commit or diff package is needed.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete: NEEDS_FIX for incomplete source-bound coverage.**",
+        "context": "**V10 cannot complete: NEEDS_FIX for incomplete source-bound coverage.** Its sole evidence measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified current tree. Retain that record unchanged and document the mismatch; obtain evidence covering the current source or a supported reconciliation. No comment-only commit is warranted.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "No commit or diff package is needed.",
+        "context": "**V9 can complete now: CLEAN, verification-only.** Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree both equal `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The readable original live/pass record at `/tmp/acme-retry/evidence/V9.txt` covers the complete criterion, including the documented error, with 12/12 passing. Return `files: []`, `requiredLiveChecks: []`, the resolved identities and the original evidence record unchanged. No commit or diff package is needed.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "`SWEEP DEFERRED (caller-owned)` is neither a failed test nor a code defect.",
+        "context": "Keep the root **open and not ready for release acceptance**. The implementation has passing targeted tests and compile evidence at e444, but full-suite acceptance remains unmeasured. `SWEEP DEFERRED (caller-owned)` is neither a failed test nor a code defect. Assign the required live sweep to the super-auto orchestrator now, against the exact landing SHA with no roast or coordinator Workflow running. Retain its command, configuration, output location, outcome and measured SHA in `codeBuckets.sweep`. The deadline does not satisfy the release contract.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": []
+  },
+  {
+    "id": "control-2",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now without a commit.**",
+        "context": "**V9 can complete now without a commit.** Its verification-only dispatch and complete requirements permit no delivered changes. Base and head resolve to the same full e444 SHA; actual and captured tree match `d84541\u2026`; source status is clean. The independent reviewer read the original live evidence, confirmed the named parser test passed 12/12 and covered the entire criterion, with no separate required live checks. Retain those identity and cleanliness observations, the full evidence record and original output, reviewer acceptance, and the helper\u2019s exit-3 explanation. Do not manufacture a comment-only commit.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete now; no commit is needed.**",
+        "context": "**V10 cannot complete now; no commit is needed.** Although its identities and clean source match V9, its sole evidence names tree `a15541\u2026`, differing from the actual `d84541\u2026` tree. Retain that mismatch and leave verification pending. Assign a fresh targeted verification against the current tree, retaining matching provenance and independent review before acceptance. The ordinary helper\u2019s exit 3 does not justify adding product changes.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Do not manufacture a comment-only commit.",
+        "context": "**V9 can complete now without a commit.** Its verification-only dispatch and complete requirements permit no delivered changes. Base and head resolve to the same full e444 SHA; actual and captured tree match `d84541\u2026`; source status is clean. The independent reviewer read the original live evidence, confirmed the named parser test passed 12/12 and covered the entire criterion, with no separate required live checks. Retain those identity and cleanliness observations, the full evidence record and original output, reviewer acceptance, and the helper\u2019s exit-3 explanation. Do not manufacture a comment-only commit.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record the missing sweep as a caller-owned verification gate, not evidence of a code defect.",
+        "context": "Keep the root open and withhold aggregate implementation acceptance. Targeted tests and compile passed at e444, but the required live full-suite result is missing and F17 remains unresolved. Record the missing sweep as a caller-owned verification gate, not evidence of a code defect. Assign super-auto to run the full suite now against the release candidate and retain its SHA, command, configuration, output and result. A release deadline does not satisfy that contract.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "Punch-list routing may be more eager than final guidance; D4 only scores continued F17 ownership/nonresolution, root gate and sweep distinction. No claim of exact workflow routing compliance."
+    ]
+  },
+  {
+    "id": "installed6.0-3",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "fail",
+        "quote": "V9 cannot complete through that review gate now.",
+        "context": "- **Sweep:** Assign it to the owning super-auto coordinator now. Run the ledger\u2019s declared full-suite command with no roast or coordinator Workflow in flight. Retain command, output, result, and measured full SHA in `codeBuckets.sweep`. If it fails, follow the prescribed sweep-fix process; do not defer the release contract until after lunch.\n- **F17:** Carry `src/retry.js:42` as **still-open, Should-fix**. r1 confirmed retry loss; no fix commit or verification exists, and documentation changes plus r2\u2019s silence do not establish resolution. Correct r2\u2019s clean disposition, retain the finding and fixture blocker, and route it back to its fix task. It is not punch-listed: no caller decision or key file records that disposition.\n- **V9:** The substantive verification is persuasive: base and head resolve to the same full e444 commit; actual, captured, and evidence trees all equal `d84541aed84541aed84541aed84541aed84541ae`; the source worktree is clean; readable live evidence records the exact command/configuration and 12/12 passing, covering the entire criterion. Nevertheless, the current task-review instructions require **INVALID** when the package helper exits 3. V9 cannot complete through that review gate now. Retain its verification-only brief/report, identity and tree observations, original evidence, and INVALID record with working directory, exact helper command, and output.\n- **V10:** Also **INVALID**, and its evidence additionally fails to establish the current tree\u2019s behavior: its evidence tree starts `a155`, while the actual tree starts `d845`. Retain both identities and the mismatch; obtain matching verification evidence before acceptance.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "its evidence additionally fails to establish the current tree\u2019s behavior: its evidence tree starts `a155`, while the actual tree starts `d845`.",
+        "context": "- **Sweep:** Assign it to the owning super-auto coordinator now. Run the ledger\u2019s declared full-suite command with no roast or coordinator Workflow in flight. Retain command, output, result, and measured full SHA in `codeBuckets.sweep`. If it fails, follow the prescribed sweep-fix process; do not defer the release contract until after lunch.\n- **F17:** Carry `src/retry.js:42` as **still-open, Should-fix**. r1 confirmed retry loss; no fix commit or verification exists, and documentation changes plus r2\u2019s silence do not establish resolution. Correct r2\u2019s clean disposition, retain the finding and fixture blocker, and route it back to its fix task. It is not punch-listed: no caller decision or key file records that disposition.\n- **V9:** The substantive verification is persuasive: base and head resolve to the same full e444 commit; actual, captured, and evidence trees all equal `d84541aed84541aed84541aed84541aed84541ae`; the source worktree is clean; readable live evidence records the exact command/configuration and 12/12 passing, covering the entire criterion. Nevertheless, the current task-review instructions require **INVALID** when the package helper exits 3. V9 cannot complete through that review gate now. Retain its verification-only brief/report, identity and tree observations, original evidence, and INVALID record with working directory, exact helper command, and output.\n- **V10:** Also **INVALID**, and its evidence additionally fails to establish the current tree\u2019s behavior: its evidence tree starts `a155`, while the actual tree starts `d845`. Retain both identities and the mismatch; obtain matching verification evidence before acceptance.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "Neither leaf needs a comment-only commit. It would manufacture a diff without satisfying a verification requirement or repairing the review procedure.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "The missing sweep is a verification gap, not evidence of a code defect.",
+        "context": "Keep the root open. Targeted tests and compile at e444 support the implementation, but final acceptance is pending: the required live sweep is missing, and F17 remains unresolved. The missing sweep is a verification gap, not evidence of a code defect.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": false,
+    "notes": []
+  },
+  {
+    "id": "final-3",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now, CLEAN, without a commit.**",
+        "context": "**V9 can complete now, CLEAN, without a commit.** Its verification-only acceptance permits unchanged source. Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree both equal `d84541aed84541aed84541aed84541aed84541ae`, and source status is clean. The retained live parser check covers the entire criterion, including the documented error, with 12/12 passing. Retain the review with `completionKind: \"verification-only\"`, those identities, `files: []`, `requiredLiveChecks: []`, and the original evidence record unchanged, pointing to `/tmp/acme-retry/evidence/V9.txt`. The package helper\u2019s exit 3 does not govern this path.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete now: NEEDS_FIX for incomplete evidence coverage.**",
+        "context": "**V10 cannot complete now: NEEDS_FIX for incomplete evidence coverage.** Its only measurement belongs to tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified source tree. Preserve that original record and mismatch explicitly; obtain source-matched evidence. Neither leaf needs a comment-only commit. Archive invocation reviews and evidence through review collection before cleanup or re-entry.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "**V10 cannot complete now: NEEDS_FIX for incomplete evidence coverage.** Its only measurement belongs to tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified source tree. Preserve that original record and mismatch explicitly; obtain source-matched evidence. Neither leaf needs a comment-only commit. Archive invocation reviews and evidence through review collection before cleanup or re-entry.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record this as outstanding caller-owned verification, rather than a demonstrated code failure.",
+        "context": "Keep the root open: implementation leaves may remain accepted, but release acceptance is incomplete. Targeted tests and compile at e444 do not replace the contract\u2019s required live full-suite sweep. Record this as outstanding caller-owned verification, rather than a demonstrated code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": []
+  },
+  {
+    "id": "control-3",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now, without a commit.**",
+        "context": "**V9 can complete now, without a commit.** Its dispatch and reviewed requirements permit verification-only completion. Base and head resolve to the same full e444 commit; actual and captured trees match `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. The independently read live evidence at `/tmp/acme-retry/evidence/V9.txt` matches that tree and covers the entire criterion: 12/12 passed, including the documented duplicate-ID error. No additional live check is required. Retain a verification-only acceptance record containing these identities, requirements, evidence, and reviewer conclusion. Record the diff helper\u2019s exit 3 as the equal-base/head packaging limitation.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete now.**",
+        "context": "**V10 cannot complete now.** Its evidence names tree `a155\u2026`, while its verified source tree is `d845\u2026`; identical criteria and passing output do not reconcile that mismatch. Retain the discrepancy and keep verification pending. Obtain independent evidence against the actual source tree, then reassess. Neither leaf needs a comment-only commit.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "**V10 cannot complete now.** Its evidence names tree `a155\u2026`, while its verified source tree is `d845\u2026`; identical criteria and passing output do not reconcile that mismatch. Retain the discrepancy and keep verification pending. Obtain independent evidence against the actual source tree, then reassess. Neither leaf needs a comment-only commit.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record the missing sweep as a validation blocker; its absence alone does not establish a code defect.",
+        "context": "Keep the root open and withhold overall implementation acceptance. Targeted tests and compile passed at e444, but the release requires a live full-suite result, and F17 remains unresolved. Record the missing sweep as a validation blocker; its absence alone does not establish a code defect.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "Punch-list routing may be more eager than final guidance; D4 only scores continued F17 ownership/nonresolution, root gate and sweep distinction. No claim of exact workflow routing compliance."
+    ]
+  },
+  {
+    "id": "installed6.0-4",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "fail",
+        "quote": "**Neither V9 nor V10 can complete under the supplied current reviewer workflow.**",
+        "context": "**Neither V9 nor V10 can complete under the supplied current reviewer workflow.** Both ordinary review packages exited 3, which explicitly requires `INVALID`; no verification-only exception is provided.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "its sole evidence names tree `a15541ae\u2026`, differing from actual `d84541ae\u2026`.",
+        "context": "- **V9:** Its independent verification substantively covers the criterion: resolved base/head equal full e444, captured and actual tree match `d84541ae\u2026`, source status is clean, and readable live evidence records the exact command/configuration and 12/12 passing tests. Retain this evidence, the criterion assessment, identities, and package failure for an authorized verification-only acceptance path.\n- **V10:** Also retain `INVALID`. Independently, its sole evidence names tree `a15541ae\u2026`, differing from actual `d84541ae\u2026`. Require verification tied to the current source tree before acceptance.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Create **no comment-only commits**.",
+        "context": "Create **no comment-only commits**. Neither task requires delivered changes, and an artificial diff would not establish valid verification. Retain each INVALID review\u2019s working directory, exact helper command, and output.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "record the required full-suite sweep as **unmeasured**, not a demonstrated code failure.",
+        "context": "Keep the root open and release readiness pending. Accept the implementation leaves on their recorded task evidence, but record the required full-suite sweep as **unmeasured**, not a demonstrated code failure. Targeted tests and compile at e444 do not satisfy the release contract.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": false,
+    "notes": []
+  },
+  {
+    "id": "final-4",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now: CLEAN, verification-only.**",
+        "context": "**V9 can complete now: CLEAN, verification-only.** Both commits resolve to `e444e444e444e444e444e444e444e444e444e444`; actual/captured tree is `d84541aed84541aed84541aed84541aed84541ae`; source status is clean. Retain these identities, `files: []`, `requiredLiveChecks: []`, and the unchanged original evidence record:",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete: NEEDS_FIX.**",
+        "context": "**V10 cannot complete: NEEDS_FIX.** Its readable passing evidence measures `a15541aea15541aea15541aea15541aea15541ae`, not the accepted source tree. Preserve its original record and identify the source-coverage gap; obtain retained evidence for the correct tree or a supported reconciliation.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "Neither leaf needs a comment-only commit. The ordinary helper\u2019s exit 3 does not invalidate the dedicated verification-only path; neither review should construct a diff package.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "The missing sweep is an outstanding measurement, not an established code failure.",
+        "context": "Keep the root **open** and release acceptance **pending**. The implementation leaves may retain their accepted status, but targeted passes and compilation at e444 do not satisfy the release contract. The missing sweep is an outstanding measurement, not an established code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "States \"With the loop exited\" although exit is not an explicit case fact. F17 remains open and ownership retained, so D4 passes its frozen criterion; this unsupported stage assumption limits broader correctness claims."
+    ]
+  },
+  {
+    "id": "control-4",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "Complete V9 now as verification-only, with no commit.",
+        "context": "Complete V9 now as verification-only, with no commit. Its requirements permit no delivered changes; base and head resolve to the same full e444 commit, the worktree is clean, and the actual tree matches both captured sourceTree and the original live evidence tree, d84541aed84541aed84541aed84541aed84541ae. Independent review confirms that the recorded parser test passed 12/12 and covers the entire criterion. There are no additional required live checks. Record the ordinary helper\u2019s exit 3 as an empty-diff packaging limitation.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "Keep V10 pending verification, with no commit.",
+        "context": "Keep V10 pending verification, with no commit. Its evidence belongs to tree a15541aea15541aea15541aea15541aed84541ae rather than the actual d845\u2026 tree; no reconciliation supports acceptance. Obtain fresh evidence on the actual tree and independently review it before completion.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Reject both comment-only commits.",
+        "context": "Retain per-leaf acceptance decisions, requirements, resolved identities, tree/status observations, original evidence references, reviewer conclusions and helper outcomes; also retain the sweep ownership/result and F17\u2019s review history, severity, blocker and follow-up linkage. Reject both comment-only commits.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Record the missing sweep as outstanding validation, not a demonstrated code failure.",
+        "context": "Keep the root open and release acceptance pending. The implementation leaves may retain their completed task status, but targeted tests and compile at e444 do not satisfy the required full-suite sweep. Record the missing sweep as outstanding validation, not a demonstrated code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "V10 evidence hash is transcribed incorrectly in prose (a15541aea15541aea15541aea15541aed84541ae vs supplied a15541aea15541aea15541aea15541aea15541ae). It still identifies mismatch and retains original references; does not accept or silently repair the evidence. This collateral transcription error is outside D1-D4 and is not hidden.",
+      "Punch-list routing may be more eager than final guidance; D4 only scores continued F17 ownership/nonresolution, root gate and sweep distinction. No claim of exact workflow routing compliance."
+    ]
+  },
+  {
+    "id": "installed6.0-5",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "fail",
+        "quote": "Neither V9 nor V10 can complete through the currently prescribed task-review gate:",
+        "context": "Neither V9 nor V10 can complete through the currently prescribed task-review gate: the helper exited 3, and the applicable reviewer instructions explicitly require **INVALID** for that result. Do not fabricate comment-only commits to obtain nonempty packages.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "its record names tree `a15541aea15541aea15541aea15541aea15541ae`, differing from the verified source tree.",
+        "context": "- **V9:** Retain its strong independent evidence: matching full base/head SHA `e444e444e444e444e444e444e444e444e444e444`, matching actual/captured/evidence tree `d84541aed84541aed84541aed84541aed84541ae`, clean source status, exact command/configuration, readable original evidence, 12/12 passing output, full criterion coverage, and no additional required live checks. These establish verification, but do not override the current package rule.\n- **V10:** Also retain the evidence mismatch: its record names tree `a15541aea15541aea15541aea15541aea15541ae`, differing from the verified source tree. Obtain fresh evidence for the actual tree before acceptance.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "No product or comment-only commit is needed for either verification task.",
+        "context": "Record both INVALID review outcomes with the supplied helper exit reason; preserve the original evidence files and acceptance briefs. No product or comment-only commit is needed for either verification task.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Carry F17 as **still-open, Should-fix**,",
+        "context": "Carry F17 as **still-open, Should-fix**, at `src/retry.js:42`. r1 confirmed retry loss during shutdown; its fix was blocked, no fix commit landed, and the intervening task changed documentation only. r2\u2019s silence and the unsupported implementation claim do not establish resolution. Correct the review history and route F17 back to its fix task, retaining the fixture blocker. It is not punch-listed because no punch-list decision was recorded.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": false,
+    "notes": []
+  },
+  {
+    "id": "final-5",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now: CLEAN, verification-only.**",
+        "context": "**V9 can complete now: CLEAN, verification-only.** Base and head both resolve to `e444e444e444e444e444e444e444e444e444e444`; actual and captured tree are `d84541aed84541aed84541aed84541aed84541ae`, with clean source status. Its readable live/pass evidence at `/tmp/acme-retry/evidence/V9.txt` records the named command/configuration and 12/12 passing, covering the documented duplicate-ID error. Retain those identities, the original evidence record unchanged, acceptance coverage, `files: []` and `requiredLiveChecks: []`. No commit or diff package is needed.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete: NEEDS_FIX.**",
+        "context": "**V10 cannot complete: NEEDS_FIX.** Its evidence measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified current tree. Retain the original evidence and mismatch; obtain matching evidence or a supported reconciliation. Neither leaf needs a comment-only commit.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Neither leaf needs a comment-only commit.",
+        "context": "**V10 cannot complete: NEEDS_FIX.** Its evidence measures tree `a15541aea15541aea15541aea15541aea15541ae`, not the verified current tree. Retain the original evidence and mismatch; obtain matching evidence or a supported reconciliation. Neither leaf needs a comment-only commit.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "The missing measurement is a verification obligation, not evidence of a code defect.",
+        "context": "Keep the root open and the release handoff pending. Accept the completed implementation leaves as implementation work, but mark overall acceptance **awaiting required verification**. Targeted tests and compile at e444 do not satisfy the release\u2019s required live full-suite result. The missing measurement is a verification obligation, not evidence of a code defect.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": []
+  },
+  {
+    "id": "control-5",
+    "claims": [
+      {
+        "claim": "D1",
+        "status": "pass",
+        "quote": "**V9 can complete now without a commit.**",
+        "context": "**V9 can complete now without a commit.** Its dispatch and requirements explicitly permit verification-only completion. Base and head resolve to the same full e444 SHA; the worktree is clean; actual, captured, and evidence source trees all equal `d84541aed84541aed84541aed84541aed84541ae`. Independent review read the original live evidence and confirmed that the named parser test passed 12/12 and covers the entire criterion. Separate required live checks are empty. Retain the acceptance brief, identity/tree/status observations, evidence record and original output, reviewer coverage decision, and verification-only completion rationale. Record helper exit 3 as the empty-diff packaging limitation.",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D2",
+        "status": "pass",
+        "quote": "**V10 cannot complete now; no commit is needed.**",
+        "context": "**V10 cannot complete now; no commit is needed.** Its sole evidence names tree `a15541aea15541aea15541aea15541aea15541ae`, which differs from its actual/captured tree. Preserve that mismatch and the original record. Assign a fresh targeted run against the resolved source tree, then independently review its coverage and provenance. Do not transfer V9\u2019s acceptance to V10 or add comment-only commits to satisfy either helper.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D3",
+        "status": "pass",
+        "quote": "Do not transfer V9\u2019s acceptance to V10 or add comment-only commits to satisfy either helper.",
+        "context": "**V10 cannot complete now; no commit is needed.** Its sole evidence names tree `a15541aea15541aea15541aea15541aea15541ae`, which differs from its actual/captured tree. Preserve that mismatch and the original record. Assign a fresh targeted run against the resolved source tree, then independently review its coverage and provenance. Do not transfer V9\u2019s acceptance to V10 or add comment-only commits to satisfy either helper.\n",
+        "omission": false,
+        "ambiguity": false
+      },
+      {
+        "claim": "D4",
+        "status": "pass",
+        "quote": "Classify this as missing required verification, not an established code failure.",
+        "context": "Keep the root open and release acceptance pending. Targeted tests and compilation passed at e444, but neither supplies the required full-suite result. Assign the deferred sweep to super-auto, which owns it under `deferSweep=true`; run it now and retain its live command, configuration, full SHA/tree, output, outcome, and evidence location. Classify this as missing required verification, not an established code failure.",
+        "omission": false,
+        "ambiguity": false
+      }
+    ],
+    "joint_success": true,
+    "notes": [
+      "Punch-list routing may be more eager than final guidance; D4 only scores continued F17 ownership/nonresolution, root gate and sweep distinction. No claim of exact workflow routing compliance."
+    ]
+  }
+]

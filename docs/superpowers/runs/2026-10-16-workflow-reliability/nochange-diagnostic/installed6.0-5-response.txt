@@ -1,0 +1,12 @@
+Keep the root open and release acceptance pending. Targeted tests and compilation passed at e444, but `SWEEP DEFERRED (caller-owned)` is no full-suite result. Record implementation progress separately from release verification; the missing measurement alone does not establish a code defect.
+
+Assign the required sweep to the super-auto coordinator now. Run the ledger’s declared sweep against the exact SHA that will land, with no roast or coordinator Workflow in flight on the host. Retain command, output, measured SHA, and the stamped `codeBuckets.sweep` result. A confirmed failure enters the prescribed sweep-fix process; an invalid measurement is reported as such.
+
+Carry F17 as **still-open, Should-fix**, at `src/retry.js:42`. r1 confirmed retry loss during shutdown; its fix was blocked, no fix commit landed, and the intervening task changed documentation only. r2’s silence and the unsupported implementation claim do not establish resolution. Correct the review history and route F17 back to its fix task, retaining the fixture blocker. It is not punch-listed because no punch-list decision was recorded.
+
+Neither V9 nor V10 can complete through the currently prescribed task-review gate: the helper exited 3, and the applicable reviewer instructions explicitly require **INVALID** for that result. Do not fabricate comment-only commits to obtain nonempty packages.
+
+- **V9:** Retain its strong independent evidence: matching full base/head SHA `e444e444e444e444e444e444e444e444e444e444`, matching actual/captured/evidence tree `d84541aed84541aed84541aed84541aed84541ae`, clean source status, exact command/configuration, readable original evidence, 12/12 passing output, full criterion coverage, and no additional required live checks. These establish verification, but do not override the current package rule.
+- **V10:** Also retain the evidence mismatch: its record names tree `a15541aea15541aea15541aea15541aea15541ae`, differing from the verified source tree. Obtain fresh evidence for the actual tree before acceptance.
+
+Record both INVALID review outcomes with the supplied helper exit reason; preserve the original evidence files and acceptance briefs. No product or comment-only commit is needed for either verification task.

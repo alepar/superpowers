@@ -1,0 +1,12 @@
+[
+  {
+    "root": "/private/tmp/ufz-after-behavior",
+    "recorded_artifacts": 131,
+    "mismatches": []
+  },
+  {
+    "root": "/private/tmp/ufz-after-behavior/baseline-reference",
+    "recorded_artifacts": 78,
+    "mismatches": []
+  }
+]

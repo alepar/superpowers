@@ -1,0 +1,32 @@
+from pathlib import Path
+import json, hashlib, subprocess, shutil, datetime
+out=Path('/private/tmp/ufz-after-behavior')
+b=Path('/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-baseline')
+r=Path('/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6')
+sha=lambda x:hashlib.sha256(x).hexdigest()
+commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip()
+assert commit=='0bb280edcf5fc6a60499fdfdb090d1819a432963'
+selection={'A':[('super-roast/SKILL.md',1,None),('super-code/SKILL.md',146,193)],'B':[('super-code/task-reviewer-prompt.md',1,None),('super-roast/reporter-prompt.md',145,186),('super-auto/SKILL.md',325,405)],'C':[('super-roast/reporter-prompt.md',120,144),('super-auto/report-prompt.md',1,None),('upstream-feedback/SKILL.md',16,123),('super-code/task-reviewer-prompt.md',124,149),('super-code/task-reviewer-prompt.md',185,None)]}
+manifest=[]
+for case,entries in selection.items():
+ guidance=''
+ for rel,start,end in entries:
+  p=r/'skills'/rel; data=p.read_bytes(); lines=data.splitlines(keepends=True); end=end or len(lines)
+  excerpt=b''.join(lines[start-1:end]); assert start<=end<=len(lines)
+  committed=subprocess.check_output(['git','show',f'{commit}:skills/{rel}'],cwd=r)
+  assert committed==data, f'uncommitted source {p}'
+  target=out/'source-snapshot'/rel; target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes(data)
+  manifest.append({'case':case,'path':str(p),'repository_relative_path':'skills/'+rel,'commit':commit,'start':start,'end':end,'sha256_full':sha(data),'sha256_excerpt':sha(excerpt),'snapshot':str(target)})
+  guidance+=f'SOURCE {p} lines {start}-{end}\n'+excerpt.decode()+'\n\n'
+ (out/f'guidance-{case}.txt').write_text(guidance)
+ shutil.copy2(b/f'scenario-{case}.txt',out/f'scenario-{case}.txt')
+ for rep in range(1,6):
+  prompt=(b/'A-baseline-1-prompt.txt').read_text().replace('/tmp/workflow-reliability-baseline/guidance-A.txt',str(out/f'guidance-{case}.txt')).replace('/tmp/workflow-reliability-baseline/scenario-A.txt',str(out/f'scenario-{case}.txt'))
+  (out/f'{case}-after-{rep}-prompt.txt').write_text(prompt)
+for n in ['after-pack.json','rubric-private.json','scores.json','claim-summary.json','source-manifest.json','report.md','metadata.json','pilot-note.txt']:
+ target=out/'baseline-reference'/n; target.parent.mkdir(exist_ok=True); shutil.copy2(b/n,target)
+(out/'source-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+(out/'freeze-metadata.json').write_text(json.dumps({'frozen_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'commit':commit,'baseline_directory':str(b),'source_selection_note':'Same operative sections, whole sections preserved. A includes newly adjacent review-bundle paragraph before original Worktree topology. B includes added Final-review items/Cap disposition/Run-regression/Review collection contracts contiguous with Phase 6, because phase-6 collection and deferred-finding continuity invoke them. C includes whole expanded upstream Process and added task-base/run-baseline attribution beside Output process tags. No proposed wording.','protocol_deviation':'Parent authorizes up to three concurrent fresh respondents, versus baseline one at a time; all fifteen after trials use at most three concurrently. Cases and rubric unchanged.','model':'gpt-6.1-sol','reasoning_effort':'medium','fork_turns':'none','repetitions_per_case':5,'max_concurrent':3,'exclusions':[]},indent=2)+'\n')
+files=[p for p in out.rglob('*') if p.is_file() and p.name!='frozen-artifact-hashes.json']
+(out/'frozen-artifact-hashes.json').write_text(json.dumps({str(p.relative_to(out)):sha(p.read_bytes()) for p in files},indent=2)+'\n')
+print('Frozen',len(manifest),'source excerpts;',commit)

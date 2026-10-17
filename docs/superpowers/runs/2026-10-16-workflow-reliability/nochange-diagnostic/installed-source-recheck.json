@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/task-reviewer-prompt.md",
+    "snapshot": "/private/tmp/ufz-nochange-diagnostic/source-installed6.0/super-code/task-reviewer-prompt.md",
+    "sha256": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e",
+    "matches_original": true
+  },
+  {
+    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-roast/reporter-prompt.md",
+    "snapshot": "/private/tmp/ufz-nochange-diagnostic/source-installed6.0/super-roast/reporter-prompt.md",
+    "sha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+    "matches_original": true
+  },
+  {
+    "path": "/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-auto/SKILL.md",
+    "snapshot": "/private/tmp/ufz-nochange-diagnostic/source-installed6.0/super-auto/SKILL.md",
+    "sha256": "39d68f8ec80ca60639403b9a13a3684cdfaf3ddeb33165ae02967a24faa65d29",
+    "matches_original": true
+  }
+]

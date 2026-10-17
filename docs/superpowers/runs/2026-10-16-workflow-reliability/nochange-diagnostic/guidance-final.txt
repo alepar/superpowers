@@ -1,0 +1,330 @@
+SOURCE /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-code/task-reviewer-prompt.md lines 1-198
+# Task reviewer brief (super-code)
+
+super-code's coordinator dispatches one task reviewer per task with this file's absolute path and
+the values of the bracketed parameters. Adapted from
+`subagent-driven-development/task-reviewer-prompt.md`; super-code owns this copy. Everything below
+the line is addressed to the dispatched agent.
+
+---
+
+You are the one review this task gets before it merges. Keep it light: check that the task does
+what its brief asks and is safe for later tasks to build on. A detailed whole-branch code review
+runs later, so don't spend this pass on polish.
+
+You are read-only. Don't edit files, commit, or change the working tree, index, HEAD, or branch
+state, and don't spawn subagents. The only files you write are [DIFF_FILE] (via the script) and
+[REVIEW_FILE], both in the git-ignored plan workspace, plus a review-owned filesystem view when
+the Read section requires one.
+
+## Select the review path
+
+Use `[COMPLETION_KIND]` from the dispatch: omitted means `implementation`.
+
+When it is `verification-only`, use this evidence review before package construction:
+
+1. `cd [WORKTREE]`; resolve `[BASE]` and `[HEAD]` as commits. They must be equal.
+   Resolve `git rev-parse [HEAD]^{tree}` and compare it with the captured `sourceTree`.
+   Run `git status --short`; uncommitted source changes make this no-change claim INVALID.
+2. Read the current bead and comments, [BRIEF_FILE], and [REPORT_FILE]. Confirm the task's
+   acceptance is verification-only and permits completion without delivered changes.
+   An implementation requirement returns NEEDS_FIX, even if existing checks pass.
+3. Read retained evidence locations without rerunning tests. Match the source tree, command,
+   configuration and outcome to each acceptance obligation. Select `requiredLiveChecks` from
+   the task requirements. Simulated/fallback output cannot supply an explicitly required live
+   check; failed and unavailable checks remain distinct and unsatisfied.
+4. Write [REVIEW_FILE] with the acceptance coverage and captured identity/check records. Return
+   CLEAN only when coverage is complete, plus `completionKind: "verification-only"`, `base`,
+   `head`, `sourceTree`, `files: []`, `evidence` (the reviewed original records, unchanged), and
+   `requiredLiveChecks`. Unreadable identities or evidence return INVALID; incomplete coverage
+   returns NEEDS_FIX. Do not build [DIFF_FILE] or call review-package for this path.
+
+This path ends at that verdict. The remaining package, test-diff and code-review steps apply
+when `[COMPLETION_KIND]` is `implementation`.
+
+## Build the review package
+
+`cd [WORKTREE]` first. Verify `[BASE]` and `[HEAD]` with
+`git rev-parse --verify <sha>^{commit}`; a missing or unresolved identity is INVALID.
+The captured commits define the review even if the caller's branch advances. Then run:
+
+`bash [SDD_SCRIPTS]/review-package [PLAN_FILE] [BASE] [HEAD] [DIFF_FILE]`
+
+If that exits 3 (an empty range, or a [HEAD] that doesn't descend from [BASE]), or the package's
+"## Files changed" section lists no files, stop there: return status INVALID with `finding` set to
+your working directory (`pwd`), the exact command, and its output. An empty package means no review
+happened; it is never a clean review.
+
+## Test changes
+
+In [WORKTREE], run `git diff --stat [BASE]..[HEAD] -- [TEST_PATHSPECS]` and
+`git diff [BASE]..[HEAD] -- [TEST_PATHSPECS]`. A test deleted, skipped, or loosened, or whose expected
+values were edited to match the implementation, with no justification in the brief, is Important.
+"Test changes: none" is valid only with the command you ran stated; if the diff command errors,
+return INVALID, as for an empty package.
+
+## Read
+
+- The brief, [BRIEF_FILE]: what was requested, including the epic's global constraints carried into
+  it.
+- The implementer's report, [REPORT_FILE]: claims to verify against the diff, not facts. A stated
+  rationale ("kept it simple per YAGNI") never lowers a finding's severity. A missing report is
+  itself Important.
+- The diff, [DIFF_FILE], once. Its context lines are the changed code. Read code outside the diff
+  only to check a concrete risk you can name, one focused check per risk, and name the risk and the
+  check in your review.
+
+Read source with `git show [HEAD]:<path>`. If a filesystem view is necessary, use a unique
+review-owned detached worktree at [HEAD], with its path recorded in [REVIEW_FILE]. This resource
+is the additional permitted write target; the no-test-run policy below still applies. Record
+observed caller commit/status differences with evidence, without attributing their cause from
+differences alone. Never switch or restore the caller checkout.
+
+## Test evidence
+
+Don't run tests. The epic's full suite runs once at its end, so the implementer ran only the tests
+relevant to this task: "the full suite was not run" is never a finding; missing targeted tests are.
+Check that the report carries the command and output of a test run that plausibly
+covers this task's changes: the right files or tests, a pass summary, and no failure the report
+glosses over. Missing or implausible evidence (no command, a run that failed to start, output for
+unrelated tests) is Important. Warnings in the output are Minor.
+The report's optional `evidence` array records `sourceTree` (full tested Git tree hash), `command`,
+`configuration` (string), `outcome` (`pass|fail|unavailable`), `location` and `kind`
+(`live|simulated|fallback`). Example with an illustrative hash:
+`{"sourceTree":"d84541aed84541aed84541aed84541aed84541ae","command":"node smoke.mjs","configuration":"target=staging","outcome":"pass","location":"evidence/smoke.log","kind":"live"}`.
+Check its source identity and whether the command/configuration covers the task acceptance.
+For explicitly required live checks, return `requiredLiveChecks` entries containing the expected
+`sourceTree`, `command`, `configuration`. Matching live/pass evidence supplies that check;
+simulated/fallback success leaves it outstanding. Failed and unavailable remain separate outcomes.
+Missing fields are evidence gaps when required. Judge coverage from the task's requirements;
+the coordinator's exact identity/kind/outcome classification does not establish semantic coverage.
+A failure the report calls pre-existing, unrelated, identical at base, environment-dependent or flaky
+is glossed over unless the report also shows that test's result at [BASE] (or, for flaky, repeated
+runs): without it, Important.
+A check you were told to run but could not (a sandbox refused the diff, a file would not open) means
+the review did not happen: return INVALID with what failed — never CLEAN with the gap as a minor.
+A process the report's "Test hygiene" says a test run leaked is a test-suite defect: Minor, or
+Important when the leaked process is a daemon or server, or when it survived being stopped.
+
+## What to check
+
+1. Spec: a requirement the diff doesn't implement (Missing), a feature built the wrong way
+   (Misunderstood), or significant unrequested work (Extra). If the brief lists several files, each
+   with its own change, every listed file needs its hunk. A requirement you cannot verify from the
+   diff alone is a ⚠️ item; don't widen your search for it.
+2. Correctness later tasks depend on: wrong or fragile behavior, swallowed errors, tests that assert
+   nothing.
+3. Reachability, when the task touches a shared boundary, an authority check, a durability
+   primitive, or retires something: trace one caller from a real entrypoint to the new code, and
+   search for sibling call sites still on the superseded form. A tested wrapper nothing calls, or a
+   fix applied to one of two call sites, is Important.
+4. An assertion the type makes unfailable (a length check on a fixed-size array, a value compared to
+   itself) is Minor — unless it is the only test of one of the brief's acceptance criteria, which is
+   then untested: Important.
+
+## Task-base and run-baseline attribution
+
+Keep a task's local comparison separate from the run's repair obligation. For example, the
+run-start source passes F, task A's source introduces F, and F also fails at task B's base.
+B's base evidence can exonerate B; A remains the run owner until linked fix verification passes.
+A CLEAN verdict for B, a later clean retry, or a terminal task status supplies no such verification.
+Read the relevant ledger Recovery records, introducing source range and fix history. Check that
+each referenced tree is the claimed run-start, task-base, failing or fixed source. The coordinator
+compares exact command/configuration identities; you judge temporal relevance and that they
+measure the same failure. Same display text alone does not establish correspondence.
+
+Return optional `failureAttribution` entries beside the existing `evidence` array. Each entry has
+`failure` (the recorded test/failure key), `command`, `configuration`, and zero-based indices into
+**this reply's** evidence array: `observed` for a failing source, `runBaseline` for an evidenced
+run-start check, `taskBase` for the local base comparison, `verification` for a fix measurement.
+`introducedBy` names the introducing task only when source/fix history establishes it. Copy the
+original evidence records without changing their kind or outcome; retain these associations and
+source-range justification in the review. Indices are not indices into an earlier reply.
+
+A live/fail run-start baseline establishes a pre-run failure, which does not automatically become
+this run's fix scope. Missing, unavailable, simulated or fallback baseline measurements remain an
+attribution gap; preserve any already-known owner. Different commands/configurations need
+separate records or a reviewer-supported source association, never a guessed merge. A claimed
+fix needs a live/pass measurement of the relevant fixed source and exact check, linked here by
+`verification`; an unrelated passing check does not discharge the obligation. Conflicting
+baseline/owner histories remain explicit gaps for reconciliation rather than replacing the owner.
+
+## Severity
+
+- **Critical:** breaks the task's requirements, or corrupts behavior or data other code depends on —
+  including a path that loses or overwrites user data.
+- **Important:** the task can't be trusted until it is fixed: a missed requirement, incorrect or
+  fragile behavior, missing or implausible test evidence, a weakened test — including a test marked
+  ignored or skipped because the product behaves wrongly. If the plan or brief
+  explicitly mandates something this rubric calls a defect, report it as Important and label it
+  plan-mandated.
+- **Minor:** everything else, including polish, naming, broader coverage, and style. Minor findings
+  are not fixed in this pass; they go to the ledger for the final review.
+
+A gap this task leaves for a later task to close is not Minor: it is Important, unless the brief
+defers it, and then the Minor names that later task's bead id.
+
+## Output
+
+Write your full review to [REVIEW_FILE]:
+
+- **Spec compliance:** ✅, or ❌ with each item; then any ⚠️ items
+- **Issues:** Critical, Important, Minor, each with file:line, what's wrong, why it matters, and how
+  to fix it if that isn't obvious
+- **Test evidence:** the command you found in the report and your judgment of it; the Test changes
+  commands and result
+- **Check records:** preserve the source-bound `evidence` and `requiredLiveChecks` arrays you used,
+  with your coverage judgment. Return these arrays in the structured reply too; reference the
+  original measurement locations and retain their kinds/outcomes without relabeling them as
+  tests you ran. Review verdict and measurement outcome remain separate facts.
+- **Failure attribution:** preserve the `failureAttribution` associations, local exoneration and
+  run-owner or baseline gap separately; return these associations with the referenced `evidence`.
+- **Strengths:** optional, brief
+
+Then return:
+
+- `status`: CLEAN when there is no ❌ item and no Critical or Important issue; NEEDS_FIX otherwise;
+  INVALID per the package and Test changes rules above.
+- `finding`: when NEEDS_FIX, every ❌ item and every Critical or Important issue, one per line, each
+  with file:line. The fix pass works from this text and [REVIEW_FILE].
+- `minors`: every Minor issue and every ⚠️ item, one line each, each starting with a `[class]` tag —
+  two to four lowercase words, joined by hyphens, naming the kind of issue in words another task's
+  reviewer would also use (`[doc-drift]`, `[naming]`, `[missing-edge-case-test]`), never this task's
+  specifics. The tag is how the run notices one smell recurring across tasks. An empty list means
+  you found none.
+  Process tags use the small exact vocabulary in `coordinator-workflow.md`: `[cleanup-inspection]`
+  (aliases `[cleanup-inspection-denied]`, `[process-inspection-refused]`) for denied liveness
+  inspection; `[missing-evidence]` (aliases `[evidence-missing]`, `[test-evidence-missing]`) for
+  absent evidence; existing `[suite-not-run]` for a deferred suite. Keep the finding text and source
+  references intact; grouping is separate from finding identity, severity, disposition and scope.
+
+
+SOURCE /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-roast/reporter-prompt.md lines 145-186
+## Step 3 — Prior report handling
+If the prior report above is non-empty:
+- For each finding that the prior report listed under "Confirmed findings", mark it in
+  this report as **resolved** (no longer present / fixed), **regressed** (present again
+  or fixed incompletely), or **still-open** (unchanged), based on the current packets.
+  A prior confirmed finding whose `[SEV] <location>` key is in the punch-listed list and which
+  the current packets do not re-surface is **punch-listed (open)**, never resolved: nobody
+  fixed it, the caller chose not to. If the current packets do re-surface it, mark it
+  still-open or regressed as usual.
+- Do NOT re-litigate any finding the prior report placed under "Rejected (with reason)" —
+  if scouts re-surfaced it anyway, note it was previously rejected and why, and leave the
+  rejection standing. A finding tagged `previouslyRejected: true` is one a scout re-surfaced
+  because it believes the rejection's evidence changed; decide it under the exception below.
+  **Narrow exception (evidence-disciplined, like the overrule rule in Step 1):** a
+  previously-rejected finding may be reconsidered ONLY when the current iteration's evidence differs materially from what the prior report cited — typically
+  because the fixes changed the very code or spec text the rejection rested on — and your
+  reconsideration MUST cite that specific new evidence. Absent such a citation, the prior
+  rejection stands; do not reopen it. This exception exists because a fix can legitimately
+  turn a previously-immaterial claim into a real one — it is NOT a licence to re-argue
+  rejections you simply disagree with.
+Then compute the **delta counts** this iteration's header reports (see Step 6's
+`delta vs prior:` line) — they are what lets the caller's loop decide convergence without
+re-parsing prose:
+- `new`: confirmed findings in THIS report that the prior report does not list in any
+  section (a restatement, re-slicing, or wording-variant of a prior entry is NOT new —
+  match on substance, not wording). Track separately how many of these are Blocking.
+- `carried`: confirmed findings marked still-open from the prior report.
+- `resolved`: prior confirmed findings marked resolved.
+- `regressed`: prior confirmed findings marked regressed. Track separately how many are
+  Blocking — a regressed Blocking counts against convergence exactly like a new one.
+- `punch-listed (open)`: prior confirmed findings marked punch-listed (open). They do not
+  count as resolved for any convergence or thrash reading.
+If the prior report is empty, this is iteration 1 — skip this step; there is no
+resolved/regressed/still-open tracking to do and no delta line to render.
+
+## Step 4 — Verdict line
+`<highest confirmed severity> (<n> confirmed)` if any finding confirmed, else
+`clean (<n> nits)` where n counts the Unverified-nits entries. **The word `confirmed` MUST
+appear literally in the parenthetical whenever anything confirmed** — `"Blocking (3)"` is
+wrong, `"Blocking (3 confirmed)"` is right. This is not cosmetic: a caller (e.g. super-design)
+may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word `confirmed`
+since nothing did.
+
+
+SOURCE /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-auto/SKILL.md lines 325-405
+#### Final-review items
+
+Every `super-code` invocation ends with its own review, recorded in `codeBuckets.review`. It describes that invocation, including `no work landed`; accumulated outstanding findings come from `scope-dispositions --project RUN_MD`. A later ready verdict, task closure or silence supplies no disposition for earlier findings.
+
+Its Must-fix and untested-scope items come from the outstanding full projection after §Review collection, including older invocations. Carry each item's original `ref` with its key. Prefix active step-back keys with `rN ` for the consuming round without changing source identity; an off-label bead is still keyed as `rN [Must-fix] bead <id>`. Read the latest verdict through `report-verdict <reviewPath>` only when non-null. A null `reviewPath` means no review file exists: take the returned verdict into `codeBuckets.review`; `no work landed` with no bundle adds no source or finding (unexpected partial artifacts are preserved with a gap), while any other verdict retains `[Must-fix] untested: whole-epic review` as a collection gap tagged `final review`, with the orchestrator owning recovery. Then:
+
+- An item with a supported recorded rejection stays rejected, unless the final review cites evidence that panel's report did not have (the same narrow exception `super-roast`'s reporter applies).
+- In an autonomous run, while the loop is still running, an item no panel saw becomes a fix bead in §Step 3 — file fix beads, unless supported verification explicitly disposes it. In an interactive run it goes through the scope filter with the round's findings, its key added to the scope keys file.
+- After the loop has exited (a review from a phase-6 re-entry, or from the re-entry before a converged round), it goes to the punch list, tagged `final review`. Decided exception, autonomous runs only, once per run: Must-fix items that are correctness defects (Critical or Important) in a goal-named path, by the in-scope test in scope-filter-prompt.md §Prompt, get one fix round. File them as fix beads (§Step 3 — file fix beads) and re-enter `super-code` once with `deferSweep: true`, before phase 6's sweep, or before the sweep-fix re-run when they came from that re-entry. The post-cap audit covers what lands (§Gates, final-SHA evidence and base drift), with those findings named in its stated intent to re-check. A finding still open there, and that re-entry's own final-review items, go to the punch list.
+- With `skipCodeRoast` there is no loop: file the items as fix beads once, re-enter `super-code` once, and do not review again.
+
+#### Cap disposition
+
+When the loop exits at the cap or at thrash with Blocking findings still confirmed, record the disposition before
+parking: write `roastCodeCapped:` to `run.md` with the unresolved finding ids, the final round's report
+path, and what authority the next step needs (run-state.md item 5 (Roast iteration counts)). `scripts/report-status` counts
+those ids as unresolved Blocking, and a resume and the operator can tell "loop ended with Blocking open" from "converged"
+without reading prose. Any later
+whole-branch roast outside this loop, such as a post-cap audit or a re-review after an operator
+ruling, is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never
+with a fabricated round number.
+
+For every resulting owner/fix/deferred decision, append `finding-route` with the original occurrence ref (run-state.md §Finding continuity records and projection). Punch-listed final-review items carry a nonempty `deferred` reason. Phase 5 and post-cap punch-list input is `bash <this skill's dir>/scripts/scope-dispositions --project RUN_MD --keys`; the detailed projection supplies reasons, owners and evidence gaps. Supported resolution/rejection removes an item from this derived view. A later empty key stream alone establishes nothing: inspect projection gaps and collection status. A passing sweep can support disposition of its matching unmeasured-scope occurrence, with the exact check and SHA, while unrelated code findings stay outstanding.
+
+### Run-regression repair ownership
+
+Keep `super-code`'s `runFailures`/Recovery attribution independently of invocation buckets. Before
+replacing `codeBuckets` after phase 3 or any re-entry, reconcile returned run facts with the prior
+ledger Recovery records and record each open run-regression or attribution gap in the existing
+`parked` list as kind `degraded-verdict`, with the ledger/record id, exact check/source-output
+references and introducing owner or missing attribution evidence. Update that same source entry
+on later invocations; empty new buckets and a later task's base exoneration never erase it. Do not
+mark these entries `resolves-on: sweep`: an overall passing count alone does not associate a fix
+with the recorded failure. Retire the open qualifier only when linked live/pass fix verification
+establishes resolution, retaining the Recovery history and verification pointer.
+
+A run-start live/pass followed by A's failing source and B's failing task base exonerates B while
+A remains the run owner. A failure evidenced at run start is `pre-run`, separately recorded and
+not automatically this run's fix scope. Missing, unavailable or non-live baseline measurements
+remain an attribution gap; they establish neither a passing baseline nor exoneration of a known
+run owner. Match exact commands/configurations and reviewed source chronology, rather than
+merging equal display text. Keep uncertain correspondence explicit.
+
+In the existing code/fix-loop and sweep-fix passes, retain the owner and source references in the
+fix bead/repair assignment for a run-introduced failure even if the latest task is exonerated.
+Reuse an existing open repair assignment rather than filing a duplicate. Resolve attribution
+against recorded run-start/task-base/fix evidence when available; no new mandatory baseline
+phase is added. Do not force unrelated evidenced pre-run failures into repair scope. Existing
+pass limits still apply: a remaining run-regression or attribution gap at the cap is reported in
+Remaining with its owner/evidence; ownership retention creates no additional retry round.
+
+### Phase 6 — report
+
+Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
+
+1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. Run it, and any other full-suite command, only while no roast or coordinator Workflow is in flight on this host: a timing-sensitive suite fails under that load, and a failure seen under it is unconfirmed until it reproduces with the host quiet. Which stamps still count as at the tip is defined in report-prompt.md §The status block. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
+2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: apply §Run-regression repair ownership and file the in-scope failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+3. Changes landed after the loop: run the scoped `post-cap audit` roast, or list the conflict-resolved hunks instead, per §Gates, final-SHA evidence and base drift (changes landed after the loop). The items of a phase-6 re-entry's final review go to the punch list, except for the one fix round §Final-review items allows.
+4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the latest invocation review (§Final-review items), whose verdict you read through `report-verdict <reviewPath>` (with a null `reviewPath` the verdict is `codeBuckets.review` as returned, and a missing review is never rewritten to `ready (after the phase-6 sweep @ <sha>)`), reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
+5. Write `report.md` per `./report-prompt.md`, before anything is torn down. A drafter is dispatched per §Subagent dispatch (report drafter row); it writes `report.draft.md`, and you splice in the status block, rename it to `report.md` and commit it (report-prompt.md has the mechanics). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
+6. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
+7. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.
+
+Throughout all phases, append friction events to `<run-dir>/friction.md` the moment they happen, per `upstream-feedback` §The friction log (written by the enclosing run, read here), and commit it with the `run.md` writes. **Except while a `super-code` coordinator runs** (phase 3 and each fix-loop re-entry): the run worktree is then its integration worktree, where an uncommitted file holds every merge and a commit can race one. In that window, write nothing tracked there — append friction to `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md` (inside super-code's git-ignored workspace) and leave `run.md` alone; when the coordinator returns, move those lines into `<run-dir>/friction.md`, delete the pending file, and commit with that phase's `run.md` write. After each settled Workflow or ordinary invocation, the invoking session runs `run-profile` and appends its complete stdout once, as coordinator-workflow.md / coordinator-subagents.md specify, including qualified or unavailable output. At that settled boundary, complete §Review collection before any re-entry or cleanup. After collection, copy that invocation's existing profile md/json pair from beside its ledger into `<run-dir>/` in the same commit, so timing outlives the worktree. Finish and the collection step do not regenerate or append the profile again.
+
+### Review collection
+
+Before each phase-3 launch or fix-loop re-entry, mint a fresh filesystem-safe `invocationId` and pass it through Workflow args or the ordinary launch protocol, together with the unchanged `runTag`. Commit a `review-collection` intent in `approvals:` before launch: run-state.md §Review collection records gives its JSON. This records the expected workspace and invocation review path with `settled:false`. Leave tracked run files alone while the coordinator is running.
+
+After the invocation settles, at the existing friction/profile collection boundary, run:
+
+```bash
+bash <this skill's dir>/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review REVIEW_PATH_OR_none --verdict RETURNED_REVIEW
+```
+
+Quote the actual arguments. `ID` is the persisted Launch token; `WORKSPACE` is its `.superpowers/sdd/<epic>-plan` directory. Use the returned `reviewPath`, or literal `none` for null; never manufacture a clean review. Add repeated `--required RELATIVE_FILE` arguments for any known required direct inputs not discoverable in the bundle. Collection preserves the invocation's final review, split reviews, direct `.diff` and assembled input tree under `<run-dir>/reviews/<ID>/`. It appends exact `report-verdict --complete --source` records, changing only their artifact pointer to the archive. Completion records include file hashes. Copying identical bytes is idempotent; differing destinations remain untouched and produce a gap.
+
+Run `report-status --collect RUN_MD` to replay pending collection before any subsequent invocation or cleanup. Exit 0 confirms preservation; exit 3 retains durable gaps/pending evidence with the orchestrator as owner. Exit 2/4 establishes no collection. Preserve the source workspace and all archive copies until collection succeeds; a missing required review or split input blocks re-entry/cleanup. Confirm a previously unsettled launch actually ended from its ledger/result before supplying settlement arguments; artifact presence alone is insufficient. Commit the collection and profile/friction records together after settlement. Neither collection nor Finish regenerates or overwrites the invocation bundle.
+
+For each settled roast source already in the committed run directory, append its complete extraction as `finding-source` with an immutable source such as `roast-code/round-N`; record the scope filter's decisions as `finding-route` refs. Keep the existing externally owned roast ledger, triggers and amend workflow; adapt an external disposition only after validating explicit refs and semantic support. Unsupported silence-based dissolution leaves the local finding open. Resume and reporting consume the same local projection.
+
+
+

@@ -1,0 +1,10 @@
+- Leave the clean caller checkout on `feature/payments@2c22`. Do not switch or reset it; that would undo integration’s checkout state.
+- Review `1a11` against `0b00` using read-only Git objects. Reproduce in the detached `/tmp/acme-review` worktree pinned to `1a11`, with generated fixtures and results confined there. Do not run the writing reproduction in `/tmp/acme-billing`.
+- The comparison establishes revision drift: the current caller checkout includes an additional sibling commit. It does not establish that the original review covered `2c22`, or that the sibling commit fixes or causes the parser failure. Keep findings explicitly scoped to `1a11`.
+- Do not delete `/tmp/acme-review`, its generated scratch files, or `/tmp/acme-test-home` before handoff. Their owning server’s exit is unverified. Do not clear unidentified scratch directories.
+- Do not stop the unrelated developer server or use the shared port to identify ownership.
+- Record termination as **requested successfully; exit unverified**. Permission-denied discovery makes the wrapper’s empty arrays inconclusive.
+
+Exact handoff:
+
+> Review remains scoped to `feature/payments@1a11` versus `main@0b00`; reproduction uses detached `/tmp/acme-review` at `1a11`. Caller checkout remains clean and unchanged at `2c22`. Comparison confirms an added sibling commit, so this review does not cover the integrated head. PID 8241’s termination request succeeded, but follow-up discovery failed with permission denied; exit is unverified despite the wrapper’s empty arrays. Retained `/tmp/acme-review`, its generated scratch, and `/tmp/acme-test-home` pending verified process exit. The unrelated server on the same port was untouched.
