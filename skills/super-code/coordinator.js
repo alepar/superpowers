@@ -192,10 +192,28 @@ async function readLedger(stubKey, phaseName, withLanded = false) {
   const first = await read(stubKey, stubKey)
   if (first && ['valid', 'valid-empty', 'missing'].includes(first.ledgerTransport.status)) return first
   const retry = await read(stubKey, stubKey + ':retry')
-  if (retry && ['valid', 'valid-empty', 'missing'].includes(retry.ledgerTransport.status)) return retry
-  // Review source capture and Git lookup are independent observations: retain them
-  // even when the ledger echo is unusable, while never parsing its partial text.
-  return first || retry ? { ...first, ...retry, text: '', ledgerTransport: retry?.ledgerTransport || first.ledgerTransport } : null
+  if (!first && !retry) return null
+  // A retry repairs ledger transport independently of Git lookup and review capture.
+  // Pick each successful source as a unit; failed attempts remain gaps, never errors
+  // attached to another attempt's successful observation (or half a review pair).
+  const attempts = [{out:first, label:stubKey}, {out:retry, label:stubKey + ':retry'}]
+  const sources = [retry, first].filter(Boolean)
+  const git = sources.find(out => Array.isArray(out.landed) && !out.landedError)
+  const reviewOK = out => out && !out.reviewError && /^[0-9a-f]{40,64}$/.test(out.reviewBase || '') && /^[0-9a-f]{40,64}$/.test(out.reviewHead || '')
+  const review = sources.find(reviewOK)
+  const sourceGaps = []
+  for (const {out, label} of attempts) {
+    if (!out) { sourceGaps.push(label + ': source observations unavailable (null dispatch)'); continue }
+    if (!['valid', 'valid-empty', 'missing'].includes(out.ledgerTransport.status)) sourceGaps.push(label + ': ledger transport ' + out.ledgerTransport.status + (out.ledgerTransport.reason ? ' — ' + out.ledgerTransport.reason : ''))
+    if (withLanded && (!Array.isArray(out.landed) || out.landedError)) sourceGaps.push(label + ': Git task-landing lookup failed: ' + (out.landedError || 'not returned'))
+    if (phaseName === 'Finish' && !reviewOK(out)) sourceGaps.push(label + ': review source capture failed: ' + (out.reviewError || 'complete verified base/head not returned'))
+  }
+  const transport = retry || first
+  return {
+    text:transport.text, ledgerTransport:transport.ledgerTransport, sourceGaps,
+    ...(git ? {landed:git.landed} : {landedError:retry?.landedError || first?.landedError}),
+    ...(review ? {reviewBase:review.reviewBase, reviewHead:review.reviewHead} : {reviewError:retry?.reviewError || first?.reviewError}),
+  }
 }
 function checkDigest(out, label) {
   if (out === null) return null
@@ -2114,7 +2132,7 @@ const metricsEvidence = {
   ledger:metricsLedger?.ledgerTransport || {status:'unavailable'},
   completed:[...completed].sort(),
   findings:{status:'unavailable', reason:'finding population requires scope-dispositions --project run.md'},
-  gaps:[...(trackerReconciliationGap ? [trackerReconciliationGap] : []), ...recoveryGaps.map(g => 'recovery: ' + g.reason)],
+  gaps:[...(ledger?.sourceGaps || []), ...(metricsLedger?.sourceGaps || []), ...(trackerReconciliationGap ? [trackerReconciliationGap] : []), ...recoveryGaps.map(g => 'recovery: ' + g.reason)],
 }
 if (ledgerAppendFailed.length) metricsEvidence.gaps.push('ledger appends unavailable: ' + ledgerAppendFailed.join(', '))
 const metricsGit = new Set()

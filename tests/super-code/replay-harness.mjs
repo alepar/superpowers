@@ -3384,6 +3384,58 @@ async function main() {
     check(out.result?.metrics?.[0].includes('merges 1') && out.result?.metricsEvidence?.gaps.some(g => g.includes('git lookup failed')), 'failed Git lookup preserves supported ledger count and adds independent gap', JSON.stringify(out.result?.metricsEvidence))
   }
 
+  scenario('ledger retries retain independent Git and coherent review observations')
+  {
+    // Catches whole-response replacement, an error masking retained success, and
+    // combining reviewBase/reviewHead from separate failed captures.
+    const goodLedger = '# ledger-digest: 1 of 1 lines\nTask 1 (bd-101): complete, review clean'
+    const badLedger = '# ledger-status: unreadable'
+    const gitOK = {landed:['task-bd-999 '+SHA('c')+' '+SHA('d')]}
+    const gitFail = {landedError:'Git attempt failed'}
+    const reviewOK = {reviewBase:SHA('c'),reviewHead:SHA('d')}
+    const reviewFail = {reviewError:'review capture attempt failed'}
+    for (const [name, retryText, firstGit, retryGit, firstReview, retryReview] of [
+      ['ledger recovers; first Git and review succeed', goodLedger, gitOK, gitFail, reviewOK, reviewFail],
+      ['ledger stays unavailable; first Git and review succeed', badLedger, gitOK, gitFail, reviewOK, reviewFail],
+      ['Git recovers while review fails on retry', goodLedger, gitFail, gitOK, reviewOK, reviewFail],
+      ['review recovers while Git fails on retry', goodLedger, gitOK, gitFail, reviewFail, reviewOK],
+      ['both independent sources recover with unavailable ledger', badLedger, gitFail, gitOK, reviewFail, reviewOK],
+    ]) {
+      const out = await run({args:liveArgs(),canned:oneTaskCanned({
+        'read-ledger:finish':{text:badLedger,...firstGit,...firstReview},
+        'read-ledger:finish:retry':{text:retryText,...retryGit,...retryReview},
+      })})
+      assertNoThrow(out)
+      const ev = out.result?.metricsEvidence
+      check(ev?.git?.status === 'observed' && JSON.stringify(ev.git.ids) === '["bd-999"]', name+': successful Git source survives without a failed attempt error', JSON.stringify(ev))
+      const review = promptOf(out.trace, 'final-review') || ''
+      check(review.includes('Captured source: base '+SHA('c')+', head '+SHA('d')), name+': final review uses the complete successful capture')
+      check(ev?.gaps.some(g=>g.includes('Git attempt failed')) && ev?.gaps.some(g=>g.includes('review capture attempt failed')) && ev?.gaps.some(g=>g.includes('read-ledger:finish') && g.includes('unreadable')), name+': failed source attempts remain qualified gaps', JSON.stringify(ev?.gaps))
+      check(ev?.ledger?.status === (retryText === goodLedger ? 'valid' : 'unreadable'), name+': ledger status remains independent')
+      check(out.counts['read-ledger:finish'] === 1 && out.counts['read-ledger:finish:retry'] === 1, name+': retry remains bounded')
+    }
+    for (const [name, firstReview, retryReview, wantReview] of [
+      ['opposite half pairs', {reviewBase:SHA('a')}, {reviewHead:SHA('b')}, false],
+      ['partial retry after complete capture', reviewOK, {reviewHead:SHA('b')}, true],
+      ['complete retry after partial capture', {reviewBase:SHA('a')}, reviewOK, true],
+    ]) {
+      const out = await run({args:liveArgs(),canned:oneTaskCanned({
+        'read-ledger:finish':{text:badLedger,...gitOK,...firstReview},
+        'read-ledger:finish:retry':{text:badLedger,...gitOK,...retryReview},
+      })})
+      assertNoThrow(out)
+      const review = promptOf(out.trace, 'final-review')
+      check(wantReview ? review?.includes('Captured source: base '+SHA('c')+', head '+SHA('d')) : !review && out.result?.review.includes('captured source commits unavailable'), name+': no mixed-attempt review pair', review)
+    }
+    const empty = await run({args:liveArgs(),canned:oneTaskCanned({
+      'read-ledger:finish':{text:badLedger,landed:[],...reviewOK},
+      'read-ledger:finish:retry':null,
+    })})
+    assertNoThrow(empty)
+    check(empty.result?.metricsEvidence?.git?.status === 'observed' && JSON.stringify(empty.result.metricsEvidence.git.ids) === '[]', 'null retry retains successful empty Git observation')
+    check((promptOf(empty.trace, 'final-review') || '').includes('Captured source: base '+SHA('c')+', head '+SHA('d')), 'null retry retains coherent review capture')
+  }
+
   scenario('metrics partial sources retain known durable fix history and source gaps')
   {
     const fix = {version:1,id:'bd-101',kind:'fix',operation:'record',reason:'review fix result',evidence:['review.md','fix.md'],data:{phase:'review',outcome:'FIXED',base:SHA('a'),head:SHA('b')}}
