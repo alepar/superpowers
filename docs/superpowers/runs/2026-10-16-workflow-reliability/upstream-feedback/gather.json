@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "scope": "Pre-audit diagnostics only; final roast/source/status must be added before analysis. No upstream-feedback invocation/analysis or external write yet.",
+  "graphCommand": [
+    "bd",
+    "list",
+    "--label",
+    "sp:super-plan-ufz",
+    "--json",
+    "--status",
+    "all",
+    "--limit",
+    "0"
+  ],
+  "graphExit": 0,
+  "mergeCommand": [
+    "git",
+    "log",
+    "--merges",
+    "--first-parent",
+    "main..HEAD",
+    "--format=%H %s"
+  ],
+  "mergeExit": 0,
+  "ledgerMetricsLines": 105,
+  "installedManifestCount": 1
+}

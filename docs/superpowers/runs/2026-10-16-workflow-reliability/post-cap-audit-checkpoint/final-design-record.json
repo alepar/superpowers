@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sourceSweepHead": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "finalDesignRecordCommit": "fc02689646cef69affc45eee2ac938a8dadc7695",
+  "outsideRunDirChanges": [
+    "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+    "docs/superpowers/specs/INDEX.md"
+  ],
+  "scope": "Post-measurement design notes/index only; executable skills/scripts/tests unchanged. Full-tree stamp is conservatively stale under the pinned report-status contract; earlier37passes retained, not restamped. No additional tests were warranted by these reversible documentation-only edits. Root acceptance remains pending.",
+  "mainUnchanged": true
+}

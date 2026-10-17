@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "reportExists": true,
+  "statusPrefix": "status: completed with 1 unresolved Blocking, 2 escalations",
+  "acceptanceEligible": false,
+  "rootOpen": true,
+  "mainUnchanged": true,
+  "afterSweepOutsideRunDir": [
+    "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+    "docs/superpowers/specs/INDEX.md"
+  ],
+  "runtimeCodeUnchangedSinceSweep": true,
+  "suiteEvidence": "final-sweep-combined-1/result.json:37passed0failed0errors0skipped atf726f0e9; no restamp at later design docs",
+  "ownedTaskWorktrees": 0,
+  "durableRunFiles": 8271,
+  "unsafeEntries": 0,
+  "filesAtLeast100MB": 0,
+  "feedback": "2candidates0survivors0externalwrites; upstream-feedback/analysis.md",
+  "phase7Gate": "report exists, phase report, status not stalled; human choice still pending",
+  "currentReportSha256": "59db6b3a89ccd278ac84eae66159c3c0ba0e806a1e2beb293cc7f1e3b3f147a9"
+}

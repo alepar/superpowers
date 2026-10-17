@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "survivors": 0,
+  "externalWrites": 0,
+  "outcome": "no upstream-worthy findings this run",
+  "decisions": [
+    {
+      "candidate": 1,
+      "route": "retain as local project follow-up; not upstream-feedback",
+      "basis": "The project under development is Superpowers itself. report-verdict, scope-dispositions and run-state were modified by this feature (d84541ae..ee275436). This is a real unresolved product finding-population limitation already retained in the handoff, not a separate upstream report. Installed6.1 defect status and separate ownership are unestablished."
+    },
+    {
+      "candidate": 2,
+      "route": "not attributable to skill instructions from available evidence",
+      "basis": "The recorded event proves the evaluation preparation required unavailable controls, but does not establish the pinned skill required those controls. Targeted search of pinned writing-skills, test-driven-development and super-auto found no raw-API/tool-off/temperature/tool_choice requirement. This limited search does not prove all guidance lacks it; the actionable upstream attribution premise is unsupported."
+    }
+  ],
+  "remainingLocalWork": "Raw report-history extraction and merged-guidance evidence gaps remain open; this triage resolves neither."
+}

@@ -1,0 +1,489 @@
+{
+  "nodes": [
+    {
+      "id": "super-plan-ufz.23",
+      "issue_type": "task",
+      "title": "Start Workflow without forbidden clock or random calls",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.32",
+      "issue_type": "task",
+      "title": "Retain nested resources before outer run removal",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.29",
+      "issue_type": "task",
+      "title": "Bind resumed review invocations to immutable captured source",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.20",
+      "issue_type": "bug",
+      "title": "Classify resume-check dispatch in run profile",
+      "status": "closed",
+      "what": "Covers: test-run-profile.sh coordinator label coverage reports `resume-check` missing after the durable-resume task introduced that real dispatch."
+    },
+    {
+      "id": "super-plan-ufz.30",
+      "issue_type": "task",
+      "title": "Qualify unsupported profile lower-bound and causal claims",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.31",
+      "issue_type": "task",
+      "title": "Restore five missing live-isolation evidence artifacts",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.28",
+      "issue_type": "task",
+      "title": "Normalize temporary path expectations in dispatch-text tests",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.26",
+      "issue_type": "task",
+      "title": "Exclude collected generated inputs from repeated review assembly",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.27",
+      "issue_type": "task",
+      "title": "Keep collected review inputs inside the declared workspace",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.25",
+      "issue_type": "task",
+      "title": "Flush complete finding projections to piped consumers",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.24",
+      "issue_type": "task",
+      "title": "Validate retained archive bytes at read-only acceptance",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.22",
+      "issue_type": "task",
+      "title": "Preserve held task scope through oversized recovery transport",
+      "status": "closed",
+      "what": "Covers (phase-5 round r1):"
+    },
+    {
+      "id": "super-plan-ufz.21",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.20",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.20, tracked separately so super-plan-ufz.20's dependents can start once it is implemented. The merge that lands super-plan-ufz.20 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.19",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.6",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.6, tracked separately so super-plan-ufz.6's dependents can start once it is implemented. The merge that lands super-plan-ufz.6 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.8.8",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.8.3",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.8.3, tracked separately so super-plan-ufz.8.3's dependents can start once it is implemented. The merge that lands super-plan-ufz.8.3 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.8.7",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.8.4",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.8.4, tracked separately so super-plan-ufz.8.4's dependents can start once it is implemented. The merge that lands super-plan-ufz.8.4 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.18",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.5",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.5, tracked separately so super-plan-ufz.5's dependents can start once it is implemented. The merge that lands super-plan-ufz.5 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.8.6",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.8.1",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.8.1, tracked separately so super-plan-ufz.8.1's dependents can start once it is implemented. The merge that lands super-plan-ufz.8.1 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.17",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.4",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.4, tracked separately so super-plan-ufz.4's dependents can start once it is implemented. The merge that lands super-plan-ufz.4 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.16",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.2",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.2, tracked separately so super-plan-ufz.2's dependents can start once it is implemented. The merge that lands super-plan-ufz.2 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.15",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.1",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.1, tracked separately so super-plan-ufz.1's dependents can start once it is implemented. The merge that lands super-plan-ufz.1 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.8.5",
+      "issue_type": "task",
+      "title": "review: super-plan-ufz.8.2",
+      "status": "closed",
+      "what": "Review, fix and merge of super-plan-ufz.8.2, tracked separately so super-plan-ufz.8.2's dependents can start once it is implemented. The merge that lands super-plan-ufz.8.2 closes this bead."
+    },
+    {
+      "id": "super-plan-ufz.14",
+      "issue_type": "task",
+      "title": "Integration sweep: workflow reliability",
+      "status": "closed",
+      "what": "Verify the approved reliability goal across the integrated producers/consumers. Exercise Workflow mechanics through replay and the ordinary-subagent contracts through deterministic dispatch/record fixtures plus coordinator-owned fresh-agent evaluations. Check caller/standalone acceptance, cleanup/report propagation, recovery/admission and finding retention. Add missing cross-boundary integration checks; fix small gaps inline and file blockers for larger ones. No implementation of the concurrent roast-redesign policy."
+    },
+    {
+      "id": "super-plan-ufz.8.4",
+      "issue_type": "task",
+      "title": "Project outstanding findings and supported dispositions",
+      "status": "closed",
+      "what": "Extend existing super-auto run records and scope-dispositions to retain source occurrences, explicit reference links, deferral and supported disposition. Project outstanding/deferred findings mechanically, retaining unsupported inputs. Helpers validate references/evidence fields; agent judges semantic support. No competing roast ledger or six-state lifecycle."
+    },
+    {
+      "id": "super-plan-ufz.8.3",
+      "issue_type": "task",
+      "title": "Carry findings through collection resume and reports",
+      "status": "closed",
+      "what": "Collect settled immutable review bundles into the committed run directory and recover interrupted collection. Route final-review items and punch lists through the validated outstanding projection. Latest review remains distinct from historical obligations."
+    },
+    {
+      "id": "super-plan-ufz.8.2",
+      "issue_type": "task",
+      "title": "Extract complete source finding occurrences",
+      "status": "closed",
+      "what": "Add a complete extraction mode to existing report-verdict, preserving source/section/occurrence identity and original text, including deferred items. Preserve default and --keys behavior. Caller supplies immutable source identity; this helper owns extraction, not storage or semantic disposition."
+    },
+    {
+      "id": "super-plan-ufz.8.1",
+      "issue_type": "task",
+      "title": "Preserve distinct invocation review artifacts",
+      "status": "closed",
+      "what": "Persist per-invocation identity separately from runTag; use it for single/cluster/seam/stub review artifacts and preserve reviewPath/null semantics in both execution paths."
+    },
+    {
+      "id": "super-plan-ufz.13",
+      "issue_type": "task",
+      "title": "Complete reviewed verification-only tasks without artificial commits",
+      "status": "closed",
+      "what": "Use source-bound evidence outcomes to complete verification-only tasks with unchanged HEAD after review against acceptance criteria. Preserve implementation delivery requirements. Scope is task completion behavior, not a new evidence schema."
+    },
+    {
+      "id": "super-plan-ufz.12",
+      "issue_type": "task",
+      "title": "Reconcile persisted recovery facts before resumed admission",
+      "status": "closed",
+      "what": "Reconcile durable recovery facts with Git and tracker before admitting affected work. Reuse valid landed implementation, finish pending tracker closure and preserve unexplained discrepancies. Scope is resume behavior; prerequisite owns the record and digest format."
+    },
+    {
+      "id": "super-plan-ufz.11",
+      "issue_type": "task",
+      "title": "Normalize recurring process classes without merging defects",
+      "status": "closed",
+      "what": "Use a small common process-class/alias vocabulary within existing recurrence recording and reconstruction, preserving each original text. Keep grouping separate from defect identity, severity and scope. Do not pool unrelated product defects or every failing test. The coordinator owns fresh-agent tagging/semantic evaluations; deterministic alias/provenance/negative cases are prepared here."
+    },
+    {
+      "id": "super-plan-ufz.10",
+      "issue_type": "task",
+      "title": "Correct profiler availability bounds and bottleneck claims",
+      "status": "closed",
+      "what": "Keep creation, mapping readiness and dependency readiness distinct in the existing profiler. Bound waits by evidenced availability, keep unknown timestamps unknown and label invocation/residual graph scope. Include planning time in bottleneck diagnosis, label modeled improvements as estimates and separate all-agent from task-slot concurrency. Settle existing profile generation ownership after each settled invocation and append/copy output once. The coordinator owns any fresh-agent interpretation evaluation."
+    },
+    {
+      "id": "super-plan-ufz.9",
+      "issue_type": "task",
+      "title": "Report deterministic reconciled metrics with evidence gaps",
+      "status": "closed",
+      "what": "Validate ledger transport and calculate existing run counts mechanically before interpretation. Distinguish missing/unreadable/truncated/valid-empty; reconcile available Git/tracker evidence before authoritative totals, retaining supported partial results on gaps. Separate latest attempt from history, repaired from deferred/rejected and task landings from base absorption. Report actual ID discrepancies before causal guesses. Keep ordinary execution metadata out of friction-event counts. The coordinator owns fresh-agent interpretation checks; deterministic producers/consumers are tested here."
+    },
+    {
+      "id": "super-plan-ufz.8",
+      "issue_type": "epic",
+      "title": "Preserve invocation findings until supported disposition",
+      "status": "closed",
+      "what": "Give super-code invocation review artifacts unique identities and retain unresolved findings across blocked/retried invocations. Make the punch list an outstanding-deferred view whose resolution requires evidence, including fixes supplied elsewhere. Preserve uncertain matches separately. Consume the parallel roast-redesign team's ledger contract; do not build a replacement roast ledger, redesign triggers or amend workflow. Explicit overlap to settle: that team's vision currently dissolves a finding on later silence, contrary to this approved invariant. The coordinator owns cross-run/agent behavior evaluation."
+    },
+    {
+      "id": "super-plan-ufz.6",
+      "issue_type": "task",
+      "title": "Keep super-auto root acceptance caller-owned",
+      "status": "closed",
+      "what": "Keep deferred sweeps as caller-owned measurement obligations while code findings remain actionable. Under super-auto, prevent root closure before required reviews, measurements and human gates; preserve standalone acceptance ownership. Verification consumes recovery obligations, task evidence and outstanding invocation findings from the named prerequisites. The coordinator owns fresh-agent acceptance scenarios; the implementer owns deterministic gate and status fixtures."
+    },
+    {
+      "id": "super-plan-ufz.7",
+      "issue_type": "task",
+      "title": "Retain run-regression ownership after task exoneration",
+      "status": "closed",
+      "what": "Separate task-base attribution from run-baseline attribution in existing task review and caller evidence handling. A failure already present at task B base can exonerate B, while a failure introduced earlier in this run remains assigned for resolution. Use recorded source/test evidence; do not invent baseline success or force unrelated historical failures into scope. The coordinator owns fresh-agent attribution evaluation; the implementer owns deterministic fixtures and changed contract examples."
+    },
+    {
+      "id": "super-plan-ufz.5",
+      "issue_type": "task",
+      "title": "Record source-bound evidence and check outcomes",
+      "status": "closed",
+      "what": "Extend existing evidence records only for missing source tree, command/configuration, result, location and kind. Distinguish live, simulated and fallback evidence and failed/unavailable required checks. Do not add compulsory phases. Task-completion behavior is a separate dependent task."
+    },
+    {
+      "id": "super-plan-ufz.3",
+      "issue_type": "task",
+      "title": "Recheck admission and refresh external dependency readiness",
+      "status": "closed",
+      "what": "Within the existing scheduler, recheck hold/cancellation/dependency admission after acquiring capacity and before dispatch. Distinguish local implementation readiness from tracker review/blocker/human-gate closure. Refresh external readiness at bounded opportunities while work is in flight. A failed lookup holds only affected work. Exercise both Workflow mechanics and ordinary-subagent contract; the coordinator owns live ordinary-subagent evaluation."
+    },
+    {
+      "id": "super-plan-ufz.4",
+      "issue_type": "task",
+      "title": "Persist recovery obligations and fix history records",
+      "status": "closed",
+      "what": "Extend existing ledger/run artifacts only for missing holds, pending closures, deferred obligations and relevant fix history. Own the durable record/digest contract consumed by recovery, acceptance, attribution and metrics. Resume behavior is a separate dependent task."
+    },
+    {
+      "id": "super-plan-ufz.1",
+      "issue_type": "task",
+      "title": "Pin review inputs and isolate mutable reproductions",
+      "status": "closed",
+      "what": "Bind review source and diff inputs to captured commit identities. Prefer read-only Git retrieval; when filesystem access is needed use a review-owned detached worktree, with isolated mutable build/reproduction outputs. Do not switch or restore the caller checkout. Cover task/final and adversarial reviews using their existing dispatch components. The coordinator owns fresh-agent pressure evaluation; the implementer prepares deterministic fixtures and the behavioral acceptance scenario."
+    },
+    {
+      "id": "super-plan-ufz.2",
+      "issue_type": "task",
+      "title": "Propagate cleanup uncertainty and retain needed resources",
+      "status": "closed",
+      "what": "Carry verified stopped, surviving, unknown and deliberately kept outcomes through existing process/worktree helpers, coordinator Finish, ordinary-subagent instructions and super-auto reporting. Preserve needed worktree/temp resources when owned processes survive or cannot be verified. Do not widen process matching. Keep the helper and its callers together because current worktree cleanup discards stop failure before deleting resources. The coordinator owns any fresh-agent evaluation of changed caller instructions."
+    },
+    {
+      "id": "super-plan-ufz",
+      "issue_type": "epic",
+      "title": "Workflow reliability across interruptions and retries",
+      "status": "open",
+      "what": "Implement the approved workflow reliability design through bounded changes to existing components. Spec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md. Preserve workspace/process safety, fresh admission/recovery, independent evidence and acceptance, finding continuity and truthful metrics. No replacement engine or mandatory six-state finding lifecycle. Root completes only when its acceptance obligations are met; super-auto owns finish."
+    }
+  ],
+  "edges": [
+    {
+      "dependent": "super-plan-ufz.21",
+      "blocker": "super-plan-ufz.20",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.19",
+      "blocker": "super-plan-ufz.6",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.8.8",
+      "blocker": "super-plan-ufz.8.3",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.8.7",
+      "blocker": "super-plan-ufz.8.4",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.18",
+      "blocker": "super-plan-ufz.5",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.8.6",
+      "blocker": "super-plan-ufz.8.1",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.17",
+      "blocker": "super-plan-ufz.4",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.16",
+      "blocker": "super-plan-ufz.2",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.15",
+      "blocker": "super-plan-ufz.1",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.8.5",
+      "blocker": "super-plan-ufz.8.2",
+      "reason": "unstated"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.4",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.8.3",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.7",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.13",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.12",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.2",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.10",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.9",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.3",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.6",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.5",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.8.2",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.20",
+      "reason": "consumes corrected profiler label classification"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.1",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.11",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.8.4",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.14",
+      "blocker": "super-plan-ufz.8.1",
+      "reason": "consumes all leaves (integration sweep)"
+    },
+    {
+      "dependent": "super-plan-ufz.8.4",
+      "blocker": "super-plan-ufz.8.1",
+      "reason": "consumes immutable invocation/artifact identities"
+    },
+    {
+      "dependent": "super-plan-ufz.8.4",
+      "blocker": "super-plan-ufz.8.2",
+      "reason": "consumes complete source occurrence extraction"
+    },
+    {
+      "dependent": "super-plan-ufz.8.3",
+      "blocker": "super-plan-ufz.8.4",
+      "reason": "consumes Complete occurrence extraction and validated outstanding-finding projection."
+    },
+    {
+      "dependent": "super-plan-ufz.13",
+      "blocker": "super-plan-ufz.5",
+      "reason": "consumes Source-bound evidence identity, kind and check outcomes."
+    },
+    {
+      "dependent": "super-plan-ufz.12",
+      "blocker": "super-plan-ufz.4",
+      "reason": "consumes Durable recovery/fix records and compatible digest transport."
+    },
+    {
+      "dependent": "super-plan-ufz.9",
+      "blocker": "super-plan-ufz.8.4",
+      "reason": "consumes Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition."
+    },
+    {
+      "dependent": "super-plan-ufz.9",
+      "blocker": "super-plan-ufz.4",
+      "reason": "consumes Durable recovery facts, compatible digest transport and resume reconciliation of those facts."
+    },
+    {
+      "dependent": "super-plan-ufz.6",
+      "blocker": "super-plan-ufz.8.3",
+      "reason": "consumes Immutable super-code invocation reviews, outstanding invocation-finding consumption and evidence-backed punch-list disposition."
+    },
+    {
+      "dependent": "super-plan-ufz.6",
+      "blocker": "super-plan-ufz.5",
+      "reason": "consumes Evidence identity/kind and reviewed verification-only task completion."
+    },
+    {
+      "dependent": "super-plan-ufz.6",
+      "blocker": "super-plan-ufz.4",
+      "reason": "consumes Durable recovery facts, compatible digest transport and resume reconciliation of those facts."
+    },
+    {
+      "dependent": "super-plan-ufz.7",
+      "blocker": "super-plan-ufz.4",
+      "reason": "consumes Durable recovery facts, compatible digest transport and resume reconciliation of those facts."
+    },
+    {
+      "dependent": "super-plan-ufz.7",
+      "blocker": "super-plan-ufz.5",
+      "reason": "consumes Evidence identity/kind and reviewed verification-only task completion."
+    }
+  ],
+  "scope": "full sp:super-plan-ufz label query with --status all --limit0; descriptions first line; no inferred timing"
+}

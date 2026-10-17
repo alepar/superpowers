@@ -1,0 +1,32 @@
+{
+  "analyst": "gpt-6-astra",
+  "effort": "high",
+  "freshContext": true,
+  "toolsCalled": false,
+  "findings": [
+    {
+      "kind": "defect",
+      "claim": "The pinned workflow's report producers and finding consumers did not share an enforceable format contract, requiring repeated manual adapters and leaving historical finding coverage unestablished.",
+      "evidence": [
+        "Two child reports used headings the current report-verdict helper did not recognize; merge held until same-job format correction, findings unchanged.",
+        "Fresh final review used exact requested Must-fix heading; complete extractor retained2codefindings, but legacy --keys/summary skipped that heading.",
+        "Historical task report intake110rawfiles/79attemptedextractions ->5successes NOTregistered and74strict-formatgaps.",
+        "Exact stage-template headings include arrows; initial route refs plain heading did not match extracted full section."
+      ],
+      "premise": "Verify pinned producer/consumer contract and existing task ownership; establish installed6.1 behavior before claiming current-version defect.",
+      "fixShape": "Shared versioned producer/extractor/key/reference contract; validate before production complete; provenance-preserving historical migration, unsupported input remains gap."
+    },
+    {
+      "kind": "doc-gap",
+      "claim": "The pinned guidance-evaluation preparation assumed execution controls unavailable to ordinary native Codex subagents, leaving the run to devise a separately versioned adapter before any candidate could launch.",
+      "evidence": [
+        "Initial guidance-eval preparation required unavailable raw-API knobs/tool-off injection. Zero candidates launched; original sealed pack and incomplete record retained.",
+        "Separately versioned native adapter preserves semantic contexts/scenarios/rubric before measurement.",
+        "15primary samples/111of150 decisions; original all150 labels retained; INCOMPLETE."
+      ],
+      "premise": "Verify pinned instructions actually required unavailable controls without a native or unsupported-environment path; check existing task ownership and6.1.",
+      "fixShape": "Document capability checks, supported paths, explicit native adapter limitations/versioning, original scenarios/rubric/failures preserved."
+    }
+  ],
+  "transcription": "Compact faithful structured transcription of native analyst result; source quotations retained in gathered friction log."
+}

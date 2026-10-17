@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-16-workflow-reliability
 
 flags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=false
-phase: report
+phase: finish
 codeMechanism: ordinary-subagents
 runTag: workflow-reliability-20261017T054545
 context: Context: codex · planner=475K/auto · implementer=475K/auto · reviewer=475K/auto · finalReview=475K/auto · assembler=475K/auto
@@ -220,4 +220,4 @@ approvals:
 - finding-route · {"ref":{"source":"inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2","section":"Confirmed findings            ← consumed by super-design, one task per finding","position":5},"owner":"super-plan-ufz","deferred":"Normal fix loop ended at thrash with unchanged Blocking count; operator authority required for corrective work beyond that loop. Unresolved finding retained, not accepted or verified."}
 
 baseAbsorbed: 832b051c870ae5c69adfa7f14d770292ab6c1a81 → f726f0e97f57b398832891d3f7d95759ed367eb4, 6 conflicted files
-friction: 17 events
+friction: 19 events

@@ -47,3 +47,6 @@ Design roast round 1 uses the supported manual fan-out rung because Workflow is 
 - PR roast round2 reporter formatting: first verdict counted one Blocking while the report contained five confirmed entries. The same reporter corrected only the count; its first output was preserved and all other content was verified unchanged.
 
 - post-cap audit · Required assembler returned exit2/unavailable on the captured base nested historical run.md archive claim. Pinned6.0 direct captured-Git fallback applies; policy escalation and all source gaps remain open.
+
+- [2026-10-17 post-cap audit] Completed controller receipt records an initially unmaterialized dedupe prompt path and an owed reporter correction for supplied-suite wording and material dissent. Exact engine prompt, first reporter output and corrected report were preserved; no judgment was invented. (Appended from the completed controller receipt.)
+- [2026-10-17 finish] Required design-note/index bookkeeping occurs after the source-bound sweep and touches two files outside the run archive. Preserved the original37-group measurement and conservative stale full-tree qualifier rather than restamping unmeasured docs. Feedback analysis predates this final bookkeeping event.
