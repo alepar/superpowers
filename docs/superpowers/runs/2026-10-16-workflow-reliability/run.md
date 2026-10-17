@@ -10,6 +10,7 @@ idea: Implement the approved simplified workflow reliability spec: preserve work
 branch: super-auto/workflow-reliability
 base: main
 spec: ../../specs/2026-10-16-workflow-reliability-design.md
+epic: super-plan-ufz
 skillSource: /Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills @ d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5 (6.4.2-alepar6.0)
 
 approvals:
