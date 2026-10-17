@@ -1,0 +1,13 @@
+owners:
+- [Blocking] src/a.sh:10 → owner: docs/spec.md §Retry policy
+- [Should-fix] src/b.sh:5; src/c.sh:7 → local
+- [Should-fix] src/d.sh:3 → local
+- [Must-fix] reviewer item, with comma → local
+- [Nit] a | b → local
+amended:
+- docs/spec.md §Retry policy
+work:
+- Fix retry | owns: retry loop; consumes: spec | scripts/retry.sh | covers: [Blocking] src/a.sh:10, [Should-fix] src/b.sh:5; src/c.sh:7
+- Fix d, review and nit | o | f | covers: [Should-fix] src/d.sh:3, r4 [Must-fix] reviewer item, with comma, r4 [Nit] a | b
+unchanged:
+- Existing CLI stays the same
