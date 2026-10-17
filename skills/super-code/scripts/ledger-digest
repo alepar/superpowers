@@ -13,8 +13,10 @@
 #     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
 #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
 #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
-#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
-# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+#     becomes `minor [raw class, if any] [recurrence-id: v1-…] [source-line: N]`. The byte
+#     fingerprint keeps unrelated details distinct; N points into this authoritative ledger.
+#     Original finding text stays on disk; process aliases are resolved only by the coordinator.
+# Every other line (header, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
 # The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
 # an empty ledger from a lost or truncated echo.
 # Line order is kept: latest Task state wins; Recovery fix history remains append-only.
@@ -29,11 +31,23 @@ if [ $# -ne 1 ]; then
 fi
 [ -s "$1" ] || exit 0
 
-awk '
+LC_ALL=C awk '
+BEGIN { for (i = 1; i < 256; i++) ord[sprintf("%c", i)] = i }
+function fingerprint(s, a, b, i, c) {
+  if (match(s, / \[recurrence-id: v1-[0-9]+-[0-9]+-[0-9]+\]$/)) return substr(s, RSTART, RLENGTH)
+  s = trim(s); a = 0; b = 0
+  for (i = 1; i <= length(s); i++) { c = ord[substr(s, i, 1)]; a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }
+  return " [recurrence-id: v1-" length(s) "-" sprintf("%.0f", a) "-" sprintf("%.0f", b) "]"
+}
+function minor(r, text, tag) {
+  text = r; sub(/^minor \(deferred\):[ \t]*/, "", text)
+  tag = match(text, /^\[[A-Za-z0-9][A-Za-z0-9 -]*\]/) ? " " substr(text, RSTART, RLENGTH) : ""
+  return "minor" tag fingerprint(text) " [source-line: " FNR "]"
+}
 function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
 function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
 function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
-function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
+function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) " [source-line: " FNR "]" : "" }
 {
   total++
   line = trim($0)
@@ -61,7 +75,7 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, 
   else if (rest ~ /^cancelled/) s = "cancelled"
   else if (rest ~ /^stacked on/) s = "stacked on " w[3]
   else if (rest ~ /^fix pass/) s = "fix pass " w[3]
-  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
+  else if (rest ~ /^minor \(deferred\):/) s = minor(rest)
   else next
   out[++kept] = head ": " s
 }

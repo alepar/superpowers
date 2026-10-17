@@ -455,7 +455,7 @@ function newAttempt(id) {
   return { id, parents: [], parentAttempts: [], cancelledBy: null, ended: false, split: null, cut: false, merged, resolveMerged, startedAt: landSeq }
 }
 // Run-wide clustering of recurring deferred minors (and blocker causes, via noteRecurrence).
-// Signature = the text with numbers, hashes, paths and quoting normalised away. Threshold: >=5
+// Signature = an explicit process class, else the exact-text fingerprint. Threshold: >=5
 // occurrences or >=3 tasks, reported once per signature as a `Recurring <kind>:` ledger line; the
 // Finish reviewer triages those first.
 const minorClusters = new Map()   // `<kind>:<signature>` -> { count, tasks:Set, sample, reported }
@@ -464,11 +464,33 @@ let recurringReported = 0
 // report ordinal, since the signature text is agent-produced.
 // A reviewer's `[class]` tag (minors) or triage's cause keys the cluster when present; paraphrases of
 // one class never matched as free text. Resume seeds the counts from the ledger (seedRecurrence).
-const classTag = s => { const m = /^\s*\[([a-z0-9][a-z0-9 -]{1,40})\]/i.exec(String(s)); return m ? m[1].trim().toLowerCase() : null }
-const recurrenceSig = (kind, text) => `${kind}:${classTag(text) ?? minorSignature(text)}`
-function seedRecurrence(kind, id, text) {
+const rawClassTag = s => { const m = /^\s*\[([a-z0-9][a-z0-9 -]{1,40})\]/i.exec(String(s)); return m ? m[1] : null }
+const classTag = s => rawClassTag(s)?.trim().toLowerCase() ?? null
+// Exact process tags only. "cleanup-denied" can mean termination denial, so is not an alias.
+// suite-not-run retains the established process class; no generic test-failure class is pooled.
+const processAliases = new Map([
+  ['cleanup-inspection', 'cleanup-inspection'],
+  ['cleanup-inspection-denied', 'cleanup-inspection'],
+  ['process-inspection-refused', 'cleanup-inspection'],
+  ['missing-evidence', 'missing-evidence'],
+  ['evidence-missing', 'missing-evidence'],
+  ['test-evidence-missing', 'missing-evidence'],
+  ['suite-not-run', 'suite-not-run'],
+])
+const processClass = (kind, text) => processAliases.get(classTag(text) ?? (kind === 'blocker' ? String(text).trim().toLowerCase() : null)) ?? null
+// Compact transport identity, not defect identity. Keep in sync with ledger-digest's byte hash.
+function recurrenceId(text) {
+  const carried = /(?:^| )\[recurrence-id: (v1-[0-9]+-[0-9]+-[0-9]+)\](?: \[source-line: [0-9]+\])?$/.exec(String(text))
+  if (carried) return carried[1]
+  const bytes = encodeURIComponent(String(text).replace(/^[ \t\r]+|[ \t\r]+$/g, '')).replace(/%([0-9A-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+  let a = 0, b = 0
+  for (let i = 0; i < bytes.length; i++) { const c = bytes.charCodeAt(i); a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }
+  return 'v1-' + bytes.length + '-' + a + '-' + b
+}
+const recurrenceSig = (kind, text) => `${kind}:${processClass(kind, text) ?? (/^review-package resolved HEAD in \S+ \(\d+ bytes\)$/i.test(String(text)) ? minorSignature(text) : recurrenceId(text))}`
+function seedRecurrence(kind, id, text, sourceLine = null) {
   const sig = recurrenceSig(kind, text)
-  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text, reported: false }
+  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text + (sourceLine ? " [source-line: " + sourceLine + "]" : ""), reported: false }
   cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)
 }
 function noteRecurrence(kind, id, text, phase) {
@@ -479,11 +501,12 @@ function noteRecurrence(kind, id, text, phase) {
   cl.reported = true; recurringReported++
   const sample = String(cl.sample).replace(/\s+/g, ' ').trim()
   const spread = `×${cl.count} across ${cl.tasks.size} task(s)`
-  log(`RECURRING ${kind.toUpperCase()} ${spread} — a cluster at this rate is usually the pipeline reporting its own defect, or one systemic smell, not ${cl.count} independent ${kind === 'minor' ? 'nits' : 'blockers'}: ${sample}`)
-  if (kind === 'blocker') noteSlowness(`recurring blocker ${spread} (${[...cl.tasks].join(', ')}): ${sample} — each instance costs a triage cycle; fix the shared cause once`)
-  queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — ${sample}`,
+  log(`RECURRING ${kind.toUpperCase()} ${spread} — grouped observation for reassessment: ${sample}`)
+  if (kind === 'blocker') noteSlowness(`recurring blocker ${spread} (${[...cl.tasks].join(', ')}): ${sample} — each instance costs a triage cycle; reassess the grouped evidence`)
+  const grouping = processClass(kind, text) ? ' [process-class: ' + processClass(kind, text) + ']' : ''
+  queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — ${sample}`,
     `ledger-recurring:${recurringReported}`, phase,
-    `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')}) — sample elided`)
+    `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — sample elided`)
 }
 // Slowness signals and the cheap action taken (or left for the session); logged as they happen and
 // returned as `slowness`.
@@ -612,10 +635,10 @@ for (const [digestIndex, raw] of (ledger?.text || '').split('\n').entries()) {
   const historicalRange = /commits [a-f0-9]+\.\.[a-f0-9]+/.exec(rest)?.[0]
   if (historicalRange) landedRanges.set(id, historicalRange)
   // Recurrence counts from earlier launches: a minor's class tag, a blocker's triage cause.
-  const minorCls = /^minor \[([^\]]+)\]/.exec(rest)
-  if (minorCls) { seedRecurrence('minor', id, `[${minorCls[1]}]`); continue }
+  const minorText = /^minor (\[.+)$/.exec(rest)
+  if (minorText) { seedRecurrence('minor', id, minorText[1]); continue }
   const cause = /^(?:BLOCKED|pending retry)\S* \[cause: ([^\]]+)\]/.exec(rest)
-  if (cause) seedRecurrence('blocker', id, cause[1])
+  if (cause) seedRecurrence('blocker', id, cause[1], /\[source-line: ([0-9]+)\]$/.exec(rest)?.[1])
   if (rest.startsWith('complete')) {
     resumed.set(id, rest.includes('parked') ? 'parked' : 'complete')
     landed.set(id, /commits [a-f0-9]+\.\.([a-f0-9]+)/.exec(rest)?.[1] ?? landed.get(id) ?? null)
@@ -1119,7 +1142,7 @@ while (true) {
       const taskMinors = r.minors ?? []
       if (taskMinors.length) {
         noteLedger(r.id, taskMinors.map(mn => ledgerLine(r.n, r.id, `minor (deferred): ${mn}`)),
-          taskMinors.map(mn => ledgerLine(r.n, r.id, `minor (deferred): ${classTag(mn) ? `[${classTag(mn)}] ` : ''}text elided — see ${artifacts(r.id).review}`)))
+          taskMinors.map(mn => ledgerLine(r.n, r.id, `minor (deferred): ${rawClassTag(mn) ? `[${rawClassTag(mn)}] ` : ''}text elided — see ${artifacts(r.id).review} [recurrence-id: ${recurrenceId(mn)}]`)))
         for (const mn of taskMinors) { noteRecurrence('minor', r.id, mn, 'Integrate'); deferredMinors.push({ id: r.id, text: String(mn).replace(/\s+/g, ' ').trim() }) }
       }
       // `parked` is recorded HERE, alongside the completed settle: the declined findings are
@@ -2470,7 +2493,7 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge
     : sweepSummary
     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
-  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first and name the class, not the instances: a cluster at that rate is usually a pipeline defect or one systemic smell. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree, source) {

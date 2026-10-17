@@ -664,8 +664,12 @@ parsers read it exactly as they read the raw file. Its first line, `# ledger-dig
 <total> lines`, lets the coordinator tell an empty ledger from a lost or truncated echo: text
 without that header, or with fewer lines than it counts, is an unavailable read (retried once),
 never content — an empty echo once seeded 1 of 29 completions on Resume. The digest also keeps
-each minor's `[class]` tag and each blocker's `[cause: …]`, from which Resume re-seeds the
-recurrence counts. The Resume read also echoes `scripts/already-merged --landed`: the
+each minor's raw `[class]` tag, `[recurrence-id: v1-<bytes>-<hash>-<hash>]` and
+`[source-line: N]` pointer into this ledger, plus each blocker's `[cause: …]` and source-line
+pointer, from which Resume re-seeds recurrence. The fingerprint retains exact-text distinctions without transporting prose;
+the task ID and ledger line retain provenance. These suffixes are transport metadata, not class tags
+or Task status. Original ledger/report text remains authoritative. The Resume read also echoes
+`scripts/already-merged --landed`: the
 `task-<id>` merges git holds on the integration branch, so a landing whose ledger lines were lost
 (an outage during its append) is still known (see "Resume behavior").
 
@@ -1368,20 +1372,26 @@ review reports Minor and ⚠️ items in `RESULT.minors`, and the merge gate wri
 `Task <N> (<id>): minor (deferred): <one-liner>` line per item, in the task's one ledger flush. They
 are written at the merge gate, alongside `parked`, because a minor on a task that never merges is
 part of a blocked task's open state, which the blocker path already carries.
-**Recurring minors are clustered, run-wide** (issue #3 defect 2): the coordinator normalises each
-minor's text (numbers, hashes, paths, quoting stripped) into a signature and counts it across
-tasks; a signature seen ≥5 times or on ≥3 distinct tasks is reported once — a `Recurring minor:
-×N across M task(s) — <sample>` ledger line and a `RECURRING MINOR` log line — and the Finish
-reviewer is told to triage those lines *first* and name the class. Measured: 1,335 individually
-correct deferrals on one run hid a single line recurring ~40 times — the pipeline reporting its
-own empty-review-package defect once per merge, never heard — and ~30 unfalsifiable-assertion
-findings that nobody owned as a class; per-epic triage would not have surfaced either, since the
-distribution was even across nine sub-epics. The key is the reviewer's `[class]` tag on each minor
-(two to four task-independent words, `./task-reviewer-prompt.md`), else the normalised text:
-free-text matching never clustered one class worded five ways ("full suite not run",
-"whole-suite tests not run", …) on a run where it hit seven tasks. The counts survive relaunches:
-minors and pending-retry/BLOCKED lines carry their tag on the ledger, and Resume seeds the clusters
-from them.
+**Recurring minors are clustered, run-wide** (issue #3 defect 2): a signature seen ≥5 times or
+on ≥3 distinct tasks is reported once as a `Recurring minor: ×N across M task(s)` ledger line
+and a `RECURRING MINOR` log line. The small process vocabulary is an exact lookup on `[class]`:
+
+| Process class | Accepted tags |
+| --- | --- |
+| `cleanup-inspection` | `cleanup-inspection`, `cleanup-inspection-denied`, `process-inspection-refused` |
+| `missing-evidence` | `missing-evidence`, `evidence-missing`, `test-evidence-missing` |
+| `suite-not-run` | `suite-not-run` (existing class) |
+
+The first class denotes denied inspection of owned-process liveness; `cleanup-denied` is ambiguous
+and stays distinct, as do survived processes and termination failures. Missing evidence denotes
+absent evidence, independently of a failed live measurement. Unknown tags and untagged findings
+use an exact-text fingerprint, preserving numeric/path distinctions between product bugs and
+assertions. The existing untagged `review-package resolved HEAD in <path> (<N> bytes)` process
+message retains its bounded legacy normalization. Tags are compared without case; original tag
+spelling and ledger/report evidence stay intact. Grouped lines add `[process-class: <canonical>]`;
+this is a grouping fact, not a finding ID. Counts support reassessment: identity, severity,
+disposition and fix scope remain separate judgments. Resume resolves the same aliases from raw
+tags and retains unknown exact-text identities through the compact fingerprint.
 **Blocker entries feed the same detector** (issue #5 defect 7): every triaged blocker — RESOLVE or
 ESCALATE — is counted under the triage agent's `cause` (a short root-cause phrase the TRIAGE schema
 now carries; `detail` is the fallback), in its own `blocker:` namespace with the same threshold,
