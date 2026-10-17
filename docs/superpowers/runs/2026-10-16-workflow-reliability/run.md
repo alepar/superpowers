@@ -31,7 +31,7 @@ stepBackDesign-round-1: patch — correct .8.4 punch-list wording; parent/nested
 graph-pass: depth 5→5 · width 3.4→3.4 · applied 0 · parked 0
 
 codeBuckets:
-  completed: super-plan-ufz.8.2, super-plan-ufz.1, super-plan-ufz.2
+  completed: super-plan-ufz.8.2, super-plan-ufz.1, super-plan-ufz.2, super-plan-ufz.4
   escalated:
   pendingRetry:
   parked:
