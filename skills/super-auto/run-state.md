@@ -296,6 +296,22 @@ retain all known occurrences, manually follow explicit links and supported dispo
 list every unresolved deferred key plus any evidence gaps. Never interpret unavailable output
 as an empty punch list or a clean review.
 
+Projection JSON also carries additive `metrics` over retained sources: raw `occurrences`,
+`occurrenceGroups`, actionable `findings`, supported `repaired`/`rejected`, `outstanding`,
+outstanding `deferred`, `otherSectionGroups`, source kinds, section labels and gap count.
+Actionable groups have an occurrence in Confirmed findings, Must fix, Deferred, Concerns,
+Blockers, Findings or Untested scope; other extraction sections remain separately visible.
+A group counts as repaired only with a supported resolved disposition and no outstanding
+conflict. Rejection/deferral contributes zero repairs. Explicit links can reduce group counts
+without reducing raw occurrence counts. Exit 3 retains these supported partial metrics and gaps.
+The scope is retained sources: absent task-report/roast/final-review populations remain
+unestablished rather than supplying zero run-wide findings. No new run.md field is required.
+
+Report sources preserve the latest invocation verdict separately from durable Recovery fix
+history and the finding projection. A `baseAbsorbed` record supplies zero task landings;
+normal execution-mechanism selection supplies zero friction events. An unavailable ledger can
+still supply known invocation results, labelled with a run-total gap.
+
 ## File format — worked example
 
 An illustrative `run.md` mid-run: the design phase went through two roast

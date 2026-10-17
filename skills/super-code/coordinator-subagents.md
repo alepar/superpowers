@@ -192,6 +192,18 @@ Keep each settled bundle immutable: `<workspace>/final-review-<invocationId>.md`
 `runTag` still groups the enclosing run and processes. `reviewPath` points only to this invocation’s
 written final review (single, seam or stub); no landed work or an unavailable writer leaves null.
 
+Metrics at Finish use `coordinator-workflow.md` §Metrics' four-line contract. First reconcile
+available Git/tracker facts and persist resulting completion lines. Read `ledger-digest` with
+its exact kept/total validation and explicit missing/unreadable status, and independently read
+`already-merged --landed`. Calculate counts mechanically from those observations: unique task
+landings, latest per-task completion states, separate durable Recovery fix history, and actual
+ledger-only/completed-only/Git-only IDs. Report observed source scope and gaps alongside counts.
+For an unavailable ledger, retain known invocation buckets with a run-total gap. For finding
+metrics, consume `scope-dispositions --project <run.md>` JSON (`metrics`, `gaps`); exit 3 keeps
+partial results. Source kinds/populations absent from that projection remain unestablished.
+Append Metrics before final review. Normal execution selection contributes zero friction;
+`baseAbsorbed` contributes zero task landings. The existing profile owner below is unchanged.
+
 Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
 `FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
 During the existing Finish Git inspection, capture `reviewHead` with

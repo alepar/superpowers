@@ -264,6 +264,7 @@ for(let i=1;i<=3;i++)records+=line('route',{ref:ref(i),deferred:'outside goal',o
 records+=line('disposition',{ref:ref(2),disposition:'resolved',judgment:'supported',basis:'another task supplied the fix',evidence:['verification.log @ abc123'],verification:'focused reproduction passes against repaired code'});
 records+=line('disposition',{ref:ref(3),disposition:'rejected',judgment:'supported',basis:'contract permits this case',evidence:['spec.md#contract']});
 fs.writeFileSync(p+'/projection.md',records);
+fs.writeFileSync(p+'/raw-sections.md',records+line('source',{version:1,source:'roast-r1',kind:'roast',artifact:b.artifact,verdict:'ready',occurrences:[{section:'Rejected',position:1,key:'not-a-defect',text:'not-a-defect'},{section:'Not verified',position:1,key:'unavailable probe',text:'unavailable probe'}]}));
 fs.writeFileSync(p+'/linked.md',records+line('link',{refs:[ref(1),ref(1,'inv-b/final')],basis:'verified same obligation'}));
 fs.writeFileSync(p+'/unsupported.md',records+line('disposition',{ref:ref(1),disposition:'resolved',basis:'task succeeded',evidence:['success']}));
 fs.writeFileSync(p+'/bad-ref.md',records+line('disposition',{ref:ref(99),disposition:'resolved',judgment:'supported',basis:'claimed',evidence:['v'],verification:'v'}));
@@ -283,6 +284,15 @@ assert_eq "$code" 0 "projection accepts retained complete extraction and support
 if [ "$code" -eq 0 ]; then
   if node -e 'const p=JSON.parse(process.argv[1]); const a=p.findings.filter(f=>f.outstanding); if(p.findings.length!==5||a.length!==3||a.filter(f=>f.deferred).length!==1)process.exit(1); const first=p.findings.find(f=>f.ref.section==="Deferred OK"&&f.ref.position===1); if(first.occurrences.length!==1||first.occurrences[0].text!=="[Nit] café,format.ts:1 — A\n  original continuation"||first.artifacts.length!==2)process.exit(1)' "$out"; then pass "ambiguous twins remain separate, archive dedupes and original text survives"; else fail "ambiguous twins remain separate, archive dedupes and original text survives"; fi
 fi
+if node -e 'const m=JSON.parse(process.argv[1]).metrics; if(!m || m.occurrences!==5 || m.findings!==5 || m.repaired!==1 || m.rejected!==1 || m.outstanding!==3 || m.deferred!==1)process.exit(1)' "$out"; then pass "deterministic metrics separate repaired rejected deferred and outstanding"; else fail "deterministic metrics separate repaired rejected deferred and outstanding"; fi
+run bash "$S" --project "$T/raw-sections.md"
+if node -e 'const m=JSON.parse(process.argv[1]).metrics; if(!m || m.occurrences!==7 || m.occurrenceGroups!==7 || m.findings!==5 || m.otherSectionGroups!==2 || m.outstanding!==3)process.exit(1)' "$out"; then pass "raw rejected and unverified sections are separate from actionable finding counts"; else fail "raw rejected and unverified sections are separate from actionable finding counts"; fi
+node -e 'console.log("  raw section metrics fixture: "+JSON.stringify(JSON.parse(process.argv[1]).metrics))' "$out"
+run bash "$S" --project "$T/linked.md"
+if node -e 'const m=JSON.parse(process.argv[1]).metrics; if(!m || m.occurrences!==5 || m.findings!==4 || m.outstanding!==2)process.exit(1)' "$out"; then pass "linked occurrences count once as a finding but retain raw occurrence count"; else fail "linked occurrences count once as a finding but retain raw occurrence count"; fi
+run bash "$S" --project "$T/projection.md" --external "$T/external-malformed.json"
+assert_eq "$code" 3 "metric projection preserves gap exit"
+if node -e 'const p=JSON.parse(process.argv[1]); if(!p.metrics || p.metrics.repaired!==1 || p.metrics.scope!=="retained sources (partial)" || !p.gaps.length)process.exit(1)' "$out"; then pass "partial projection retains supported metrics with explicit scope"; else fail "partial projection retains supported metrics with explicit scope"; fi
 run bash "$S" --project "$T/projection.md" --keys
 assert_eq "$out" '[Nit] café,format.ts:1 — A' "keys contain deferred A only; verified B, rejected C and active D excluded"
 run bash "$S" --project "$T/linked.md"

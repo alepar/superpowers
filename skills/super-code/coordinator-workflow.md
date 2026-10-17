@@ -700,8 +700,12 @@ is most of a long ledger. A verbatim echo of a ~90 KB ledger was refused by mode
 every launch once the epic grew; the digest of the same ledger is ~12 KB, and the coordinator's
 parsers read it exactly as they read the raw file. Its first line, `# ledger-digest: <kept> of
 <total> lines`, lets the coordinator tell an empty ledger from a lost or truncated echo: text
-without that header, or with fewer lines than it counts, is an unavailable read (retried once),
-never content — an empty echo once seeded 1 of 29 completions on Resume. The digest also keeps
+without that header, with a kept count greater than total, or with a different number of echoed
+lines is an unavailable read (retried once), never content — an empty echo once seeded 1 of 29 completions on Resume. Missing and unreadable
+files print `# ledger-status: missing|unreadable`; an existing empty file prints
+`# ledger-digest: 0 of 0 lines`. Empty stdout has no established source status. Missing/empty
+source after confirmed appends is unavailable evidence. A failed Git landing lookup has its
+own `landedError`, independent from ledger transport and captured review commits. The digest also keeps
 each minor's raw `[class]` tag, `[recurrence-id: v1-<bytes>-<hash>-<hash>]` and
 `[source-line: N]` pointer into this ledger, plus each blocker's `[cause: …]` and source-line
 pointer, from which Resume re-seeds recurrence. The fingerprint retains exact-text distinctions without transporting prose;
@@ -1546,39 +1550,36 @@ the landed subset:** an escalated or pending-retry leaf's code is not in the tip
 names those ids as `not in this measurement` — a green sweep is evidence for what merged, never for
 the epic.
 
-**Metrics: a run-wide tally, written right before the final review, unconditionally.** One
-mechanical dispatch re-reads the ledger fresh (this run's own appends since Resume's one-time read
-are not in that variable); the script computes four lines from it and one `ledgerAppendPrompt`
-dispatch appends them, in this order:
+**Metrics: observed counts after Finish reconciliation, before the final review.** Finish first
+reconciles unsettled tracker closures and drains their ledger writes, then `read-ledger:finish`
+echoes `ledger-digest` and `already-merged --landed`. The four existing `Metrics:` lines retain
+their prefixes and order: merges, completions, fix-pass, ledger-check. The return also carries
+`metricsEvidence`: ledger transport status, observed Git IDs, completed IDs, durable fix history,
+concrete identity discrepancies and evidence gaps.
 
-```
-Metrics: merges M · merge-failed Mf · rebase-conflicts C · seam-reviews S (fixed F) · check-fails G (fixed H)
-Metrics: completions — review clean A · after fix pass B · parked P · re-entry closes R · dispatched early E · cancelled K
-Metrics: fix-pass — entered E · FIXED X · BLOCKED Y
-Metrics: ledger-check <ok | landed≠completed: L vs N — <likeliest cause> | METRICS INVALID — …> · append-failed K · append-retried J
-```
+- Merges counts unique task IDs with successful `Merge:` lines. Other merge fields describe
+  observed event lines. `baseAbsorbed` contributes zero task landings.
+- Completions classifies the latest retained terminal/unfinished state per task. Stacked counts
+  unique task IDs; cancelled counts latest cancelled states. Earlier durable `Recovery:` fixes
+  remain separate history even after a clean retry. Legacy `fix pass` event lines are labelled as
+  such; exact duplicate durable records count once. FIXED task results establish no repaired
+  finding count by themselves.
+- Ledger-check compares actual ID sets, reporting `ledger-only`, `completed-only`, `git-only`
+  and `ledger-only-git` before interpretation. Equal cardinalities can still disagree. A failed
+  Git lookup or tracker reconciliation is an independent gap; supported ledger counts survive.
+- An unavailable ledger produces four `Metrics: UNAVAILABLE` lines with known in-memory buckets
+  labelled `this invocation only`, plus a run-total gap. Available counts have their observed
+  source scope and gaps on ledger-check. A missing source has no established zero total.
 
-Stub keys: `read-ledger:finish` and `ledger-append:metrics`. It runs even on a run that merged
-nothing. A null re-read (after its one retry) writes `Metrics: UNAVAILABLE …` lines instead of
-zero counts, each carrying this invocation's own buckets, labelled `this invocation only`.
+For finding counts use the JSON `metrics` from `scope-dispositions --project <run.md>` (§run-state
+finding continuity): raw occurrences, actionable groups, supported repaired/rejected, outstanding,
+deferred, source kinds and gaps. Exit 3 retains supported partial results. Missing source
+populations (for example task reviews when only roast/final reviews were retained) stay explicit.
+These findings and durable fix attempts are separate units; neither is inferred from the latest
+invocation verdict. Workflow/ordinary execution selection metadata contributes zero friction
+events. Profile production and its invocation/residual labels retain their existing owner.
 
-- `M` counts success-path `Merge:` lines (no trailing marker); `Mf` counts the ` → blocker` and
-  ` → auth-refused` lines. `C`, `S`, `F` come from `Merge:` lines on both paths; `G` counts lines whose check failed
-  at least once (`fail` and `fail→fixed`), `H` the `fail→fixed` ones.
-- `A`/`B`/`P`/`R` count `complete` lines by variant: `review clean`, `fix pass` (parked included),
-  `parked`, `already merged`. `E` counts `stacked on` lines (tasks dispatched on an unmerged
-  parent), `K` counts `cancelled` lines (stacked attempts stopped because a parent did not merge).
-- `E`/`X`/`Y` count `fix pass` lines, all of them (a retried task's second fix pass is a real
-  dispatch).
-- `ledger-check` cross-checks the ids the ledger shows landed — success-path `Merge:` lines plus
-  re-entry closes, which land without a `Merge:` line — against the in-memory `completed.size`,
-  rather than treating the lossy ledger as authoritative. A mismatch names its likeliest cause: a
-  failed append, a completion settled without its line, an incomplete Resume read (the ledger shows
-  more), or — no landing lines at all while tasks completed — a failed reader, written `METRICS
-  INVALID` because every count on the block is then wrong. Before this split, every legitimate
-  re-entry close read as a mismatch.
-
-The return carries `metrics`, the same four strings. The `Final review:` line (above) rides in the same append.
+The `Final review:` line rides in the same single `ledger-append:metrics` dispatch.
 
 **Friction capture is the invoking session's job, not the Workflow script's.** The Workflow script
 itself cannot write files — it has no I/O (see "Key constraint: the script does no I/O") — so it
@@ -2297,7 +2298,7 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
   },
   "prompts": {
     "stubs": {
-      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"# ledger-status: missing\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
@@ -2339,7 +2340,7 @@ To reproduce or re-verify after a structural edit, run the Workflow tool with th
       "clarify:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"recorded\":true}",
       "ledger:bd-104": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"# ledger-digest: 0 of 1 lines\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",
@@ -2388,7 +2389,7 @@ replay harness at the current revision.
   },
   "prompts": {
     "stubs": {
-      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"# ledger-status: missing\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
@@ -2410,7 +2411,7 @@ replay harness at the current revision.
       "triage:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"decision\":\"ESCALATE\",\"detail\":\"the caching strategy is a design decision the spec does not settle\"}",
       "notify:bd-201": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"sent\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"# ledger-digest: 0 of 1 lines\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}"
     }
@@ -2457,7 +2458,7 @@ the current revision.
   },
   "prompts": {
     "stubs": {
-      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"\"}",
+      "read-ledger": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"text\":\"# ledger-status: missing\"}",
       "ledger-append:launch": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "ledger-append:detector": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "close-epics": [
@@ -2479,7 +2480,7 @@ the current revision.
       "close-check:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[\"bd-301\"]}",
       "merge:bd-301": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"id\":\"bd-301\",\"merged\":true,\"mergeExit\":0,\"mergeHead\":true,\"head\":\"f6f6f6f6666666666666666666666666666666\",\"mergeBase\":\"eeeeeee5555555555555555555555555555555\",\"rebaseConflictFiles\":0,\"ledgerAppended\":true}",
       "worktree-sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"lines\":[]}",
-      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"\"}",
+      "read-ledger:finish": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"reviewBase\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"reviewHead\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"text\":\"# ledger-digest: 0 of 1 lines\"}",
       "ledger-append:metrics": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"appended\":true}",
       "reconcile-buckets": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"closed\":[]}",
       "sweep": "You are a stub. Call no tools. Return exactly this JSON as your structured output: {\"summary\":\"f00dbee \\u2014 12 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>\"}",

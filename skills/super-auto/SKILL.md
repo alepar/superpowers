@@ -175,6 +175,14 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
 
 Phase 7 is entered only through §Invariants I2 (phase-7 gate).
 
+For report/feedback metrics, use the reconciled ledger `Metrics:` source facts and
+`scope-dispositions --project <run.md>` JSON metrics/gaps. Exit 3 retains partial results;
+report counts by retained source population, with missing populations explicit. Latest clean
+invocations keep earlier durable fix history and unresolved finding evidence. Count supported
+resolved groups as repairs, deferred/rejected separately; raw occurrences and linked groups are
+different units. `baseAbsorbed` adds zero task landings, and ordinary execution selection adds
+zero friction events. Profile collection keeps its existing invocation owner and labels.
+
 ### Gates, final-SHA evidence and base drift
 
 **Gates.** A hold that someone outside `super-code` releases is a gate bead: `bd create --type task
