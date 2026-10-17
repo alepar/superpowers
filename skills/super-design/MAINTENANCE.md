@@ -26,3 +26,7 @@ Added 2026-10-16 (super-auto run `2026-10-16-roast-findings-redesign-loop`, desi
 **Why no roast inside.** In the design loop a roast step duplicated the loop's own next round; in the code loop it needed the design budget Amend Mode must not touch. Whether a design roast follows an amendment is the calling loop's decision.
 
 **Why the coverage round is outside the two-round cap.** A full two-round coverage per amend was rejected as disproportionate; one `coverage-amend-<loop>-<K>` round reuses the existing reviewer prompt and inputs.
+
+## step-back-check (2026-10-16)
+
+`step-back-check` moved from `skills/super-auto/scripts/` to `skills/super-design/scripts/` because both roast fix loops (super-auto phase 5 and super-design's Adversarial Review Loop) use it. It gained `--ledger`, the `local|redesign` decision (`patch` is read as `local`), the `triggers:` field checked against the findings ledger's `triggers:` line, and keys matched in canonical form (`[SEV] <location>`, split on `, [`). Its tests moved to `tests/super-design/test-step-back-check.sh`.

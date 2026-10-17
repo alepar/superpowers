@@ -82,28 +82,6 @@ assert_eq "$(printf '%s' "$out" | cut -c1-15)" "JQ_UNAVAILABLE:" "missing jq pri
 assert_eq "$(printf '%s' "$out" | grep -c 'cluster dropped: <id> — ' || true)" "1" "the manual-computation line includes the cluster dropped rule"
 
 echo
-echo "step-back-check"
-SBC="$REPO_ROOT/skills/super-auto/scripts/step-back-check"
-SF="$SCRIPT_DIR/fixtures/step-back-check"
-
-run bash "$SBC" --step-back "$SF/valid-patch.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "valid patch record (no scope:) is ok"
-run bash "$SBC" --step-back "$SF/valid-redesign.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "valid redesign with rN-prefixed, comma-bearing keys is ok"
-run bash "$SBC" --step-back "$SF/unknown-key.md" --keys "$SF/keys.txt"
-assert_eq "$code" 3 "unknown key exits 3"
-assert_eq "$out" "reject: dissolves: unknown key '[Nit] report-prompt.md:40'
-reject: dissolves: unknown key 'r3 [Blocking] nowhere.ts:1'" "unprefixed and unknown keys each get a reject line"
-run bash "$SBC" --step-back "$SF/missing-decision.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "3:reject: decision: missing" "missing decision: is rejected"
-run bash "$SBC" --step-back "$SF/redesign-no-scope.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "3:reject: scope: missing (required for redesign)" "redesign without scope: is rejected"
-
-run bash "$SBC" --step-back "$SF/missing.md" --keys "$SF/keys.txt"
-assert_eq "$code" 2 "missing step-back file exits 2"
-run bash "$SBC" --step-back "$SF/valid-patch.md"
-assert_eq "$code" 2 "missing --keys exits 2"
-
 echo "report-status"
 RS="$REPO_ROOT/skills/super-auto/scripts/report-status"
 RF="$SCRIPT_DIR/fixtures/report-status"
@@ -204,8 +182,6 @@ assert_eq "$code" 2 "no arguments exits 2"
 nojq=$(mktemp -d)
 ln -s "$(command -v bash)" "$nojq/bash"
 ln -s "$(command -v awk)" "$nojq/awk"
-run env PATH="$nojq" bash "$SBC" --step-back "$SF/valid-redesign.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "step-back-check runs with only bash and awk on PATH (no jq)"
 run env PATH="$nojq" bash "$RS" "$RF/escalations.md"
 assert_eq "$code" 0 "report-status runs with only bash and awk on PATH (no jq)"
 rm -rf "$nojq"
