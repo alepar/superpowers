@@ -26,11 +26,12 @@
 #                           degraded flag from report-verdict's default `verdict:` line; headers only
 #                           from the report's `inputs:` and `delta vs prior:` lines. Finding bodies
 #                           are never read. Reports may be given in any order (sorted by ROUND).
-#   --final-review ROUND=F  (code loop only) the round's final-review keys file: `[Must-fix] <item>`
-#                           lines, a leading `rN ` allowed. Rows get `source final-review`; they are
-#                           open while in the highest-round non-empty file passed and
-#                           `resolved@r<that round>` otherwise; with no non-empty file every such row
-#                           stays open. They never feed the mechanical triggers. A round given twice
+#   --final-review ROUND=F  (code loop only) the round's final-review keys file: an optional first
+#                           line `review: ready|not ready|none`, then `[Must-fix] <item>` lines, a
+#                           leading `rN ` allowed. Rows get `source final-review`; they are
+#                           open while in the highest-round reviewed file passed and
+#                           `resolved@r<that round>` otherwise; with no reviewed file every such row
+#                           stays open. The header is never a key row. They never feed the mechanical triggers. A round given twice
 #                           is bad input (exit 2), as for --report.
 #   --punch-list FILE       keys the reporter punch-listed, one per line (leading `rN ` allowed).
 #   --overrides FILE        see "Overrides file".
@@ -42,9 +43,13 @@
 #                     confirmed finding still has a verdict line, so its keys are empty and the round
 #                     is present). Degraded: `[low coverage]` or `[panel-capped: ...]` on the verdict
 #                     line.
-#   --final-review N  absent or empty (the review read `no work landed`, or nothing was keyed): no
-#                     review that round. Such a round is treated like a degraded one: it is never the
-#                     highest-round file, so it resolves nothing.
+#   --final-review N  header `review: ready` or `review: not ready`: a reviewed round, even with zero
+#                     keys, so a clean review resolves every final-review row it does not list.
+#                     Header `review: none` (the review read `no work landed`, or was unavailable):
+#                     no review that round; it must carry no keys (else exit 2), is never the
+#                     highest-round reviewed file, and resolves nothing. Any other header value is
+#                     bad input (exit 2). No header (older files): non-empty means reviewed, absent
+#                     or empty means no review. A no-review round is treated like a degraded one.
 #   --punch-list      absent or empty: no key is `punch-listed`. The caller passes the latest existing
 #                     punch list, because a redesign round writes none.
 #
@@ -194,11 +199,32 @@ if [ "${#finals[@]}" -gt 0 ]; then
     [ "$round" != "$prev_fround" ] || die "bad input: $path: round $round given twice"
     prev_fround=$round
     readable "$path"
-    nkeys=0
+    nkeys=0 hdr='' first=1
     while IFS= read -r k || [ -n "$k" ]; do
+      k=${k%$'\r'}
+      if [ "$first" = 1 ]; then
+        first=0
+        case "$k" in
+          review:*)
+            hdr=$(printf '%s' "${k#review:}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')
+            case "$hdr" in
+              ready|"not ready"|none) ;;
+              *) die "bad input: $path: review header must be ready, not ready or none" ;;
+            esac
+            continue ;;
+        esac
+      fi
       [ -z "$k" ] || { printf 'F\t%s\t%s\t%s\n' "$round" "$path" "$k"; nkeys=$((nkeys + 1)); }
     done < "$path" >> "$stream"
-    printf 'G\t%s\t%s\n' "$round" "$nkeys" >> "$stream"
+    # `die` inside the redirected loop exits the loop's subshell only when piped; here it is a plain
+    # redirect, so the exit is the script's own.
+    if [ "$hdr" = none ] && [ "$nkeys" -gt 0 ]; then die "bad input: $path: review: none must carry no keys"; fi
+    case "$hdr" in
+      ready|"not ready") reviewed=1 ;;
+      none) reviewed=0 ;;
+      *) if [ "$nkeys" -gt 0 ]; then reviewed=1; else reviewed=0; fi ;;
+    esac
+    printf 'G\t%s\t%s\n' "$round" "$reviewed" >> "$stream"
   done <<EOF
 $fsorted
 EOF
