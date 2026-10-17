@@ -128,6 +128,11 @@ assert_eq "$out" "verdict: decision: patch
 kind: step-back
 - summary: the failing check is a one-off typo in the fixture, not a design gap
 path: $FX/step-back.md" "patch: summary only"
+run bash "$R" "$FX/step-back-local.md"
+assert_eq "$out" "verdict: decision: local
+kind: step-back
+- summary: the failing check is a one-off typo in the fixture, not a design gap
+path: $FX/step-back-local.md" "local: summary only"
 run bash "$R" "$FX/step-back-redesign.md"
 assert_eq "$out" "verdict: decision: redesign
 kind: step-back
@@ -215,7 +220,7 @@ assert_has "$out" "[Must-fix] untested: area 12" "area 12 present"
 assert_lacks "$out" "more" "no overflow line"
 
 echo "report-verdict --keys: other kinds refused"
-for k in task-report step-back assembled-digest unknown; do
+for k in task-report step-back step-back-local assembled-digest unknown; do
   run bash "$R" --keys "$FX/$k.md"
   assert_eq "$code" 3 "$k exits 3"
   assert_eq "$out" "" "$k prints nothing on stdout"
