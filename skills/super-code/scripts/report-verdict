@@ -39,6 +39,121 @@
 # 3 for --keys on a kind that has no keys.
 set -euo pipefail
 
+# Complete extraction is deliberately separate from the compact legacy summary/keys parsers.
+# Usage: report-verdict --complete --source IMMUTABLE_SOURCE_ID FILE
+# JSON: {version:1,source,artifact,kind,verdict,occurrences:[{section,position,key,text}]}.
+# Identity is (source, section, position), never artifact: an archive copy keeps the caller's source.
+# Positions are 1-based within each exact section label (including repeated section headings).
+# key is the original first item line without its list marker; roast keys stop before " — ".
+# text keeps that first line and its continuations verbatim, excluding separator blank lines.
+# Node is already used by the coordinator and dispatch helpers; only built-in modules are needed.
+if [ "${1:-}" = "--complete" ]; then
+  if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
+    echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
+    exit 2
+  fi
+  node --input-type=module - "$4" "$3" <<'NODE'
+import fs from 'node:fs';
+
+const [artifact, source] = process.argv.slice(2);
+function invalid(message) { throw new Error(message); }
+try {
+  if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) invalid('invalid immutable source identity');
+  if (!fs.statSync(artifact).isFile()) invalid(`cannot read ${artifact}: not a file`);
+  const raw = new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(artifact));
+  const lines = raw.replace(/\r\n?/g, '\n').split('\n');
+  const status = lines.map(l => l.match(/^[ \t]*(?:\*\*)?[Ss]tatus(?::\*\*|\*\*:|:)[ \t]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b/)).find(Boolean);
+  const roast = lines.find(l => /^super-roast verdict: /.test(l));
+  const exactVerdict = lines.some(l => /^##[ \t]+Verdict[ \t]*$/.test(l));
+  const verdictMarker = /^(?:#+[ \t]*)?\**Verdict\**[ \t]*:?/;
+  let kind, verdict;
+  if (exactVerdict) kind = 'final-review';
+  else if (status) { kind = 'task-report'; verdict = status[1]; }
+  else if (roast !== undefined) { kind = 'roast'; verdict = roast.slice('super-roast verdict: '.length).trim(); }
+  else if (lines.some(l => verdictMarker.test(l))) kind = 'final-review';
+  else invalid('unrecognized finding source');
+
+  if (kind === 'final-review') {
+    let index = lines.findIndex(l => /^#+[ \t]*\**Verdict\**[ \t]*:?/.test(l));
+    if (index < 0) index = lines.findIndex(l => verdictMarker.test(l));
+    verdict = lines[index].replace(/^(?:#+[ \t]*)?\**Verdict/, '')
+      .replace(/^[ \t]*\**[ \t]*:?[ \t]*\**[ \t]*/, '').split('**')[0]
+      .replace(/^[ \t*:]+|[ \t*:]+$/g, '');
+    if (!verdict) {
+      const following = lines.slice(index + 1).find(l => l.trim());
+      if (!following || /^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(following)) invalid('missing verdict value');
+      verdict = following.replace(/^[ \t*:]+|[ \t*:]+$/g, '');
+    }
+  }
+  if (!verdict) invalid('missing verdict value');
+
+  function heading(line) {
+    const match = line.match(/^#+[ \t]+(.*)$/) || line.match(/^\*\*([^*]+)\*\*/);
+    return match ? match[1] : null;
+  }
+  function relevant(section) {
+    if (/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b)/i.test(section)) return true;
+    if (kind === 'final-review') return /^must[- ]fix\b/i.test(section);
+    if (kind === 'roast') return /^(?:confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i.test(section);
+    return false;
+  }
+  function none(text) { return text.toLowerCase().replace(/[ \t.*_`]+/g, '') === 'none'; }
+  const occurrences = [], positions = new Map();
+  let section = null, active = false, sectionSeen = false, hasContent = false, item = null;
+  function flushItem() {
+    if (!item) return;
+    while (item.lines.length > 1 && !item.lines.at(-1).trim()) item.lines.pop();
+    const first = item.lines[0];
+    if (none(first)) {
+      if (item.lines.length > 1) invalid(`none marker has finding text in ${section}`);
+    } else {
+      const position = (positions.get(section) || 0) + 1;
+      positions.set(section, position);
+      const key = kind === 'roast' ? first.split(' — ')[0] : first;
+      occurrences.push({section, position, key, text:item.lines.join('\n')});
+    }
+    item = null;
+  }
+  function closeSection() {
+    flushItem();
+    if (active && !hasContent) invalid(`empty finding section: ${section}`);
+  }
+  for (const line of lines) {
+    const label = heading(line);
+    if (label !== null) {
+      closeSection();
+      section = label;
+      active = relevant(section);
+      if (active) sectionSeen = true;
+      hasContent = false;
+      continue;
+    }
+    if (!active) continue;
+    const bullet = line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
+    if (bullet) {
+      flushItem();
+      if (!bullet[1].trim()) invalid(`empty finding item in ${section}`);
+      item = {lines:[bullet[1]]};
+      hasContent = true;
+    } else if (item) {
+      item.lines.push(line);
+    } else if (none(line)) {
+      hasContent = true;
+    } else if (line.trim()) {
+      invalid(`finding text without a list marker in ${section}`);
+    }
+  }
+  closeSection();
+  if (!sectionSeen) invalid('missing finding sections');
+  console.log(JSON.stringify({version:1, source, artifact, kind, verdict, occurrences}));
+} catch (error) {
+  console.error(`report-verdict: --complete: ${error.message}`);
+  process.exitCode = 2;
+}
+NODE
+  exit $?
+fi
+
 keys=0
 if [ $# -eq 2 ] && [ "$1" = "--keys" ]; then
   keys=1
