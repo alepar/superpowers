@@ -53,7 +53,8 @@ assert_eq "$code:$out" "0:ok" "patch is accepted as local"
 run bash "$SBC" --step-back "$SF/redesign-triggers-none.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
 assert_eq "$code:$out" "3:reject: triggers: none with decision redesign" "redesign with triggers: none is rejected"
 run bash "$SBC" --step-back "$SF/redesign-cites-recurrence.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-no-progress.md"
-assert_eq "$code:$out" "3:reject: triggers: 'recurrence' is mechanical and the ledger does not list it" "a cited mechanical trigger absent from the ledger is rejected"
+assert_eq "$code:$out" "3:reject: triggers: 'recurrence' is mechanical and the ledger does not list it
+reject: triggers: ledger lists 'no-progress' and the record drops it" "a cited mechanical trigger absent from the ledger is rejected (and the ledger trigger it drops)"
 run bash "$SBC" --step-back "$SF/redesign-cites-recurrence.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-recurrence.md"
 assert_eq "$code:$out" "0:ok" "a cited mechanical trigger the ledger lists is ok"
 run bash "$SBC" --step-back "$SF/redesign-semantic.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
@@ -71,6 +72,20 @@ printf 'round: 2\n' > "$nt"
 run bash "$SBC" --step-back "$SF/local-no-triggers.md" --keys "$SF/keys.txt" --ledger "$nt"
 assert_eq "$code" 2 "ledger without a triggers: line exits 2"
 rm -f "$nt"
+
+echo "step-back-check: trigger sets"
+
+run bash "$SBC" --step-back "$SF/redesign-evidence-commas.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-both.md"
+assert_eq "$code:$out" "0:ok" "triggers copied verbatim, evidence with commas, parse like the ledger line"
+run bash "$SBC" --step-back "$SF/redesign-drops-trigger.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-both.md"
+assert_eq "$code:$out" "3:reject: triggers: ledger lists 'recurrence' and the record drops it
+reject: triggers: ledger lists 'no-progress' and the record drops it" "a redesign record dropping ledger triggers is rejected, in ledger order"
+run bash "$SBC" --step-back "$SF/redesign-drops-trigger.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "0:ok" "semantic-only record against a ledger with no triggers stays ok"
+run bash "$SBC" --step-back "$SF/redesign-misspelled-semantic.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-no-progress.md"
+assert_eq "$code:$out" "3:reject: triggers: 'shared-causes' is mechanical and the ledger does not list it" "a misspelled semantic trigger is treated as an unlisted mechanical one"
+run bash "$SBC" --step-back "$SF/redesign-unknown-remains.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "3:reject: remains: unknown key 'r9 [Blocking] nowhere.ts:1'" "an unknown key in remains: is rejected"
 
 echo "step-back-check: key forms"
 

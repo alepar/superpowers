@@ -20,7 +20,10 @@
 #              trigger; `redesign` is rejected with `triggers: none`; a cited mechanical trigger the
 #              ledger does not list is rejected; a missing triggers: field is rejected. Without
 #              --ledger the triggers: field is not required (callers mid-upgrade) and the
-#              ledger-dependent checks do not run.
+#              ledger-dependent checks do not run. Both triggers: lines are parsed by the same
+#              paren-aware scanner (evidence may hold commas; the record may cite bare names), and
+#              for `redesign` the two mechanical sets must be equal: a ledger trigger the record
+#              drops is rejected, as is a cited trigger the ledger lacks.
 #   scope:     for `redesign`, present and starting with `inside` or `outside`.
 #   keys:      every `dissolves:` and `remains:` key, in canonical form `[SEV] <location>`, matches a
 #              KEYS_FILE line after both lose any leading `rN `. A list is split only on `, [` (or
@@ -57,6 +60,31 @@ awk -v haveledger="$([ -n "$ledger" ] && echo 1 || echo 0)" -v ledgertriggers="$
   function value(s) { sub(/^[ \t]*[a-z]+:/, "", s); return trim(s) }
   function reject(r) { rejects[++nr] = "reject: " r }
   function canon(k) { k = trim(k); sub(/^r[0-9]+ /, "", k); return k }
+  # The one trigger-line scanner (record and ledger). Fills set[name] and ord[1..n] with the trigger
+  # names in `s` and returns n. A name is `[a-z][a-z-]*`, optionally followed by `(evidence)` whose
+  # parentheses nest and whose text may hold commas; names are separated by `,`. `none` is empty.
+  function names(s, set, ord,   n, c, d, i) {
+    split("", set); split("", ord); n = 0
+    s = trim(s)
+    if (tolower(s) == "none") return 0
+    while (s != "") {
+      if (match(s, /^[a-z][a-z-]*/)) {
+        c = substr(s, 1, RLENGTH); s = substr(s, RLENGTH + 1)
+        if (!(c in set)) { set[c] = 1; ord[++n] = c }
+        if (substr(s, 1, 1) == "(") {
+          d = 0
+          for (i = 1; i <= length(s); i++) {
+            ch = substr(s, i, 1)
+            if (ch == "(") d++
+            else if (ch == ")" && --d == 0) break
+          }
+          s = substr(s, i + 1)
+        }
+      }
+      sub(/^[^a-z]*/, "", s)
+    }
+    return n
+  }
   function checkkey(field, k,   c) { c = canon(k); if (c != "" && !(c in known)) reject(field ": unknown key \047" trim(k) "\047") }
   function checkkeys(field, v,   s) {
     v = trim(v)
@@ -81,29 +109,21 @@ awk -v haveledger="$([ -n "$ledger" ] && echo 1 || echo 0)" -v ledgertriggers="$
       else if (scope !~ /^(inside|outside)([^a-z]|$)/) reject("scope: \047" scope "\047 does not start with inside or outside")
     }
     if (haveledger == 1) {
-      # Names in the ledger line: `name(` after the start or a ", " separator (evidence may hold
-      # commas); a value with no "(" is a bare comma list of names. `none` lists nothing.
-      s = ledgertriggers
-      if (tolower(s) == "none") s = ""
-      else if (index(s, "(") == 0) { m = split(s, bare, /,[ \t]*/); s = ""; for (i = 1; i <= m; i++) s = s (i > 1 ? ", " : "") bare[i] "(" }
-      while (match(s, /(^|, )[a-z-]+\(/)) {
-        n = substr(s, RSTART, RLENGTH); sub(/^, /, "", n); sub(/\($/, "", n)
-        lnames[n] = 1; mech = mech (mech == "" ? "" : ", ") n
-        s = substr(s, RSTART + RLENGTH)
-      }
+      nl = names(ledgertriggers, lnames, lorder)
+      for (i = 1; i <= nl; i++) mech = mech (mech == "" ? "" : ", ") lorder[i]
       if (!hastriggers) reject("triggers: missing")
       else {
         none = (tolower(triggers) == "none")
         if (decision == "local" && mech != "") reject("decision: local while ledger names mechanical trigger(s): " mech)
         if (decision == "redesign" && none) reject("triggers: none with decision redesign")
-        if (!none) {
-          m = split(triggers, cited, /,[ \t]*/)
-          for (i = 1; i <= m; i++) {
-            c = trim(cited[i]); sub(/\(.*$/, "", c)
-            if (c == "" || index(SEMANTIC, " " c " ") > 0) continue
-            if (!(c in lnames)) reject("triggers: \047" c "\047 is mechanical and the ledger does not list it")
-          }
+        nc = names(triggers, cnames, corder)
+        for (i = 1; i <= nc; i++) {
+          c = corder[i]
+          if (index(SEMANTIC, " " c " ") > 0) continue
+          if (!(c in lnames)) reject("triggers: \047" c "\047 is mechanical and the ledger does not list it")
         }
+        if (decision == "redesign")
+          for (i = 1; i <= nl; i++) if (!(lorder[i] in cnames)) reject("triggers: ledger lists \047" lorder[i] "\047 and the record drops it")
       }
     }
     checkkeys("dissolves", dissolves)
