@@ -106,3 +106,5 @@ codeBuckets:
 roastCodeRound: 1
 
 roast-code: 2026-10-16-workflow-reliability-roast-pr-1.md
+
+stepBackCode-round-1: patch — Apply bounded repairs to existing components and complete the named review/evidence gaps; independent defects and repeated confirmations do not justify redesign, and caller-owned sweep/acceptance obligations remain separate.
