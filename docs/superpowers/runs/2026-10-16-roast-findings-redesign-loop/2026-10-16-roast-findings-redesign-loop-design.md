@@ -379,4 +379,13 @@ Digest:
 
 ## Post-Implementation Notes
 
+**Changes vs. original design (2026-10-17).** The design and code roasts tightened it in place; no decision of the vision changed.
+- `dissolved@rN` overrides are written only inside the taken redesign branch, count only from round N on, and are removed (ledger rebuilt) on every abort path, live or resumed; `step-back-check` rejects `dissolves:`/`remains:` on a non-redesign record and compares mechanical triggers both ways with a paren-aware parser.
+- A redesign round's bead filing carries §Step 3's lifecycle duties: reopen the root epic, `bd supersede` obsoleted beads (`supersedes:` field), and, in the design loop, the Integration-sweep edge.
+- The calling loop, not Amend Mode, writes the cycle's `applied` state; the code loop's post-amend design roast is an ordinary numbered round owned by the caller.
+- The final-review keys file says whether a review ran, so a clean review resolves keys and a no-review round does not; the punch list merges the latest existing file across redesign rounds.
+- The redesign step-back line is written only after the branch is chosen; resume replays a redesign only through its `redesign-<loop>-<K>` record.
+- Known open at merge (report.md Remaining): the `id_of` raw-title lookup (JSON-escaped titles), an empty-`work:` loop in the design-loop sweep wiring, `amend-check` fail-closed git handling and CommonMark fence parsing, and the final review's untested-scope list.
+
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
