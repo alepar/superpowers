@@ -2253,16 +2253,33 @@ if (!metricsLedger || !['valid', 'valid-empty'].includes(metricsEvidence.ledger.
 // null seam review whose stub also returned null). The Workflow returns only the verdict line
 // (`review`) and that path, never a body.
 const landedWork = !!(completed.size || confirmedLandings.size)
-const finalSource = metricsLedger && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewBase || '') && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewHead || '') ? { base: metricsLedger.reviewBase, head: metricsLedger.reviewHead } : null
+// Resume from the immutable compact fact, never retarget an unsettled invocation to Finish's tip.
+// The actual producer guard rereads the authoritative ledger immediately before any artifact write.
+let finalSource = metricsLedger && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewBase || '') && /^[0-9a-f]{40,64}$/.test(metricsLedger.reviewHead || '') ? { base: metricsLedger.reviewBase, head: metricsLedger.reviewHead } : null
+let persistedReviewSource = null, reviewSourceGap = false
+for (const line of ((ledger?.text || '') + '\n' + (metricsLedger?.text || '')).split('\n')) {
+  if (!line.startsWith('Recovery:')) continue
+  let r
+  try { r = JSON.parse(line.slice(9)) } catch { continue }
+  const source = r.data?.reviewSource
+  if (source?.invocationId !== invocationId && r.id !== 'review-source:' + invocationId) continue
+  if (recoveryProblem(r) || r.kind !== 'deferred' || r.operation !== 'record' || source?.invocationId !== invocationId || !/^[0-9a-f]{40,64}$/.test(source.base || '') || !/^[0-9a-f]{40,64}$/.test(source.head || '')) { reviewSourceGap = true; continue }
+  if (persistedReviewSource && (persistedReviewSource.base !== source.base || persistedReviewSource.head !== source.head)) reviewSourceGap = true
+  persistedReviewSource = source
+}
+if (persistedReviewSource) finalSource = { base: persistedReviewSource.base, head: persistedReviewSource.head }
+if (reviewSourceGap) finalSource = null
 const reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`
 const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
 const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
+let frSourceRefusal = null
 let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
 if (landedWork && invocationPersisted && finalSource) {
   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
   const reviewThreshold = Math.floor(reviewWindow * 0.4)
   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+  if (asm?.exit === 2 && String(asm.cause || '').startsWith('review source guard:')) frSourceRefusal = asm.cause
   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
@@ -2276,6 +2293,7 @@ if (landedWork && invocationPersisted && finalSource) {
   const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)
   const k = asm?.clusters ?? frClusters.length
   frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
+    : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'
     : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
@@ -2295,7 +2313,8 @@ const notReadyWith = (verdict, unrev) => {
 let review, reviewWritten = false
 if (!landedWork) review = 'no work landed'
 else if (!invocationPersisted) review = 'FINAL REVIEW UNAVAILABLE — invocation identity persistence unavailable; no review artifacts were authorized'
-else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
+else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (reviewSourceGap ? 'persisted invocation source binding is invalid or conflicting' : metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
+else if (frSourceRefusal) review = 'FINAL REVIEW UNAVAILABLE — partial bundle preserved: ' + frSourceRefusal
 else if (frMode !== 'split') {
   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
     { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
@@ -2321,7 +2340,7 @@ else if (frMode !== 'split') {
   reviewWritten = !!seamVerdict
   if (!seamVerdict) {
     unreviewed.push('seam')
-    const stub = await dispatch(() => finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath), 'final-review:stub',
+    const stub = await dispatch(() => finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath, finalSource), 'final-review:stub',
       { label: 'final-review:stub', phase: 'Finish', ...tier('mechanical'), schema: STUB_WRITTEN })
     if (stub?.written !== true) log(`final-review: the seam review was unavailable and no stub write was confirmed — ${reviewPath} was not written; reviewPath is null`)
     else reviewWritten = true
@@ -2466,7 +2485,8 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
   const sections = profile.sections.map(k => ASSEMBLER_SECTIONS[k]).join('\n')
   if (['final-review', 'roast-code'].includes(consumer) && (!base || !head)) throw new Error('assemblePrompt: captured base and head are required')
   const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
-  return `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
+  const outDir = workspaceAbs + '/assembled/' + consumer + '-' + (consumer === 'final-review' ? invocationId : runTag) + '-' + instance
+  return (consumer === 'final-review' ? reviewWriteGuard(base, head, outDir) : '') + `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function planPrompt(epicId, ids, planFileName, reentryIds = [], mode = 'refill') {
@@ -2848,6 +2868,15 @@ function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines
   return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger; never write it from a task worktree). If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append each line below as its own new physical line, in order, with exactly the text between its tags (the tags are delimiters, not ledger content):\n${body}\nReport appended true when done. ${finalAnswerRule(structured)}`
 }
 
+// Runs inside the existing producer dispatch: persists source before output, and refuses retries
+// over partial bytes. Shell-quote all identity/path arguments; no checkout mutation is involved.
+function reviewWriteGuard(base, head, artifact) {
+  if (!base || !head) throw new Error('reviewWriteGuard: captured base and head are required')
+  const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
+  const command = 'node ' + quote(codeSkill + '/scripts/dispatch-text.mjs') + ' --ledger ' + quote(workspaceAbs + '/progress.md') + ' bind-review-source --invocation-id ' + quote(invocationId) + ' --base ' + quote(base) + ' --head ' + quote(head) + ' --artifact ' + quote(artifact)
+  return 'BEFORE ANY ARTIFACT WRITE, run `' + command + '`. It persists or verifies the immutable invocation/source fact. On failure, preserve every existing bundle file and return unavailable (no verdict; stub written false; assembler exit 2 with cause prefixed \"review source guard:\"). Do not run the remaining write steps. Existing partial contents must never be replaced, even on same-source retry. The binding append to the existing ledger is authorized; other caller files remain read-only. '
+}
+
 // The review-file format every final-review prompt fixes; scripts/report-verdict's final-review recogniser is its parser.
 function reviewSource(repo, base, head) {
   if (!base || !head) throw new Error('reviewSource: captured base and head are required')
@@ -2873,12 +2902,12 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge
     : sweepSummary
     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
-  return `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return reviewWriteGuard(base, head, reviewPath) + `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree, source) {
   // One cluster of the split final review: the cluster's files and slices only, against the spec.
-  return `Final review of cluster ${n} (${name}) of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${clusterPath}. ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are the files and slices that ${dir}/clusters.json lists for the cluster named ${name}, under ${dir}/, plus ${dir}/digest.md for context; review that cluster only, against the epic's spec (\`bd show ${epicId} --json\` and any design doc it references), and open other source files only to check a named risk. Judge the cluster on its own terms: spec requirements it fails to meet, defects, untested scope. Another reviewer judges how the clusters compose. Write your whole review to ${clusterPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return reviewWriteGuard(source.base, source.head, clusterPath) + `Final review of cluster ${n} (${name}) of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${clusterPath}. ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are the files and slices that ${dir}/clusters.json lists for the cluster named ${name}, under ${dir}/, plus ${dir}/digest.md for context; review that cluster only, against the epic's spec (\`bd show ${epicId} --json\` and any design doc it references), and open other source files only to check a named risk. Judge the cluster on its own terms: spec requirements it fails to meet, defects, untested scope. Another reviewer judges how the clusters compose. Write your whole review to ${clusterPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
 function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integrationBranch, integrationWorktree, unreviewed = [], source) {
@@ -2886,12 +2915,12 @@ function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integratio
   // verdict files and the cross-cluster hunks, never the clusters' full slices.
   const files = clusterPaths.length ? clusterPaths.join(', ') : 'none — no cluster review completed'
   const gaps = unreviewed.length ? ` These clusters have no review file, so name them in your Must fix section as unreviewed: ${unreviewed.join('; ')}.` : ''
-  return `Final seam review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are only the cluster review files (${files}) and the cross-cluster hunks and interfaces: the diff hunks of files in one cluster that reference symbols defined in another, which you find from ${dir}/clusters.json and \`git diff ${source.base}..${source.head}\` in ${integrationWorktree}.${gaps} Judge how the clusters compose against the epic's spec (\`bd show ${epicId} --json\`): interfaces that disagree, requirements that fall between clusters, behavior that only breaks once every cluster is merged. Do not re-review a cluster's own files. Write your whole review to ${reviewPath}. ${reviewFileFormat()} Your Must fix before landing section carries every cluster's must-fix items forward plus your own. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+  return reviewWriteGuard(source.base, source.head, reviewPath) + `Final seam review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, source.base, source.head)} Your inputs are only the cluster review files (${files}) and the cross-cluster hunks and interfaces: the diff hunks of files in one cluster that reference symbols defined in another, which you find from ${dir}/clusters.json and \`git diff ${source.base}..${source.head}\` in ${integrationWorktree}.${gaps} Judge how the clusters compose against the epic's spec (\`bd show ${epicId} --json\`): interfaces that disagree, requirements that fall between clusters, behavior that only breaks once every cluster is merged. Do not re-review a cluster's own files. Write your whole review to ${reviewPath}. ${reviewFileFormat()} Your Must fix before landing section carries every cluster's must-fix items forward plus your own. Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 
-function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath) {
+function finalReviewStubPrompt(clusterPaths, unreviewed, reviewPath, source) {
   // Mechanical: the seam review returned null, but the handoff file must exist. Lists the cluster files.
-  return `Write ${reviewPath} with exactly this content, and change nothing else: a "## Verdict" heading, then the line "not ready (unreviewed: ${unreviewed.join(', ')})"; a "## Must fix before landing" heading, then the line "- the seam review did not run; see the cluster files"; a line "Cluster files:" followed by one bullet per path (${clusterPaths.length ? clusterPaths.join(', ') : 'none'}); then an empty "## Untested scope" heading and an empty "## Deferred OK" heading. Report written true and path ${reviewPath}. ${finalAnswerRule(true)}`
+  return reviewWriteGuard(source.base, source.head, reviewPath) + `Write ${reviewPath} with exactly this content, and change nothing else: a "## Verdict" heading, then the line "not ready (unreviewed: ${unreviewed.join(', ')})"; a "## Must fix before landing" heading, then the line "- the seam review did not run; see the cluster files"; a line "Cluster files:" followed by one bullet per path (${clusterPaths.length ? clusterPaths.join(', ') : 'none'}); then an empty "## Untested scope" heading and an empty "## Deferred OK" heading. Report written true and path ${reviewPath}. ${finalAnswerRule(true)}`
 }
 
 function ledgerLine(n, id, rest) {
