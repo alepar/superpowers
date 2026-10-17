@@ -19,7 +19,10 @@
 #   N > 0, M > 0 or pendingRetry non-empty  -> status: completed with N unresolved Blocking, M escalations
 #   otherwise                               -> status: clean
 # The two non-stalled forms take ` [degraded: q1, q2, ...]` when any qualifier applies.
-# N: finding keys in `roastCodeCapped:` plus, unless it ends `stopped`, in `roastDesignCapped:`.
+# N: the distinct finding keys in `roastCodeCapped:`, in `roastDesignCapped:` unless it ends
+#   `stopped`, and in every Blocking row of either findings ledger whose status is `disputed`
+#   (vision §4: a disputed Blocking finding is never cleared, whether or not the roast still
+#   confirms it). A key is counted once however many of these hold it; `rN ` prefixes are ignored.
 # M: parked `escalation` records plus ids in codeBuckets.escalated.
 #
 # Fields read, each with its writer and what its absent or other form gives:
@@ -30,6 +33,9 @@
 #   roastDesignCapped: super-design §Adversarial Review Loop (root only). Absent: nothing; a last
 #     slot other than `stopped` counts as `proceeded`.
 #   roastCodeCapped: SKILL.md §Cap disposition, on a cap or thrash exit with Blocking open. Absent: nothing.
+#   findingsLedger, findingsLedgerDesign: the loops' ledgers (super-design/scripts/findings-ledger
+#     rows `- <key> · raised r<M>@<sha> · <status> · …`), paths relative to RUN_MD's directory.
+#     Absent: nothing. A pointer to a missing file: qualifier `findings ledger not found: <path>`.
 #   codeBuckets: run-state.md item 6 at each phase 3->4 transition and re-entry; `sweep` rewritten by
 #     SKILL.md §Phase 6 — report steps 1 and 2. No block at phase report, finish or done: `final
 #     review: none recorded` and `sweep: none recorded`; no block earlier: nothing. A bucket line
@@ -37,7 +43,7 @@
 #     `none recorded` forms).
 #
 # Qualifiers, in this order, each once: `design roast capped-blocking` (roastDesignCapped not
-# stopped); each parked `degraded-verdict` record's qualifier (the bracketed text in its part before
+# stopped); `findings ledger not found: <path>`, per missing ledger; each parked `degraded-verdict` record's qualifier (the bracketed text in its part before
 # ` — `, else that part), skipped for a ` · resolves-on: sweep` record when --tip is given and the
 # sweep is a stamped pass at the tip (the sweep rules below give it no qualifier); `plan roast
 # skipped` / `code roast skipped` (flags); then the codeBuckets ones: missing-bucket qualifiers,
@@ -364,13 +370,38 @@ RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$t
     for (i = 1; i <= n; i++) if (trim(p[i]) != "") c++
     return c
   }
-  # Finding keys (`[SEV] <loc>` or `rN [SEV] <loc>`) may hold commas: count one per key start.
-  function countkeys(v,   s, c) {
-    if (isempty(v)) return 0
-    if (index(v, "[") == 0) return countids(v)
-    s = "," v; c = 0
-    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) { c++; s = substr(s, RSTART + RLENGTH) }
-    return c
+  # Adds each finding key of a capped list to the unresolved set. Keys (`[SEV] <loc>` or
+  # `rN [SEV] <loc>`) may hold commas, so they split only on `, [` / `, rN [`.
+  # A list without brackets holds bare ids, each its own entry.
+  function addkeys(v,   s, k, n, ids, j) {
+    v = trim(v)
+    if (isempty(v)) return
+    if (index(v, "[") == 0) { n = split(v, ids, ","); for (j = 1; j <= n; j++) if (trim(ids[j]) != "") unres["id:" trim(ids[j])] = 1; return }
+    s = v
+    sub(/^(r[0-9]+ )?/, "", s)
+    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) {
+      k = trim(substr(s, 1, RSTART - 1)); if (k != "") unres[k] = 1
+      s = substr(s, RSTART + RLENGTH - 1)
+    }
+    s = trim(s); if (s != "") unres[s] = 1
+  }
+  # Adds the key of every Blocking ledger row whose status is disputed. Fields split on ` · `; the
+  # key is everything before the `raised r<M>` field, so a ` · ` inside a key cannot shift it.
+  function readledger(path,   f, line, n, p, i, r, key) {
+    f = path
+    if (f !~ /^\//) f = ENVIRON["RS_RUNDIR"] "/" f
+    if ((getline line < f) < 0) { addq("findings ledger not found: " path); return }
+    do {
+      sub(/\r$/, "", line)
+      if (line !~ /^- \[Blocking\] /) continue
+      n = split(substr(line, 3), p, / · /); r = 0
+      for (i = 2; i <= n; i++) if (p[i] ~ /^raised r[0-9]+/) { r = i; break }
+      if (!r || r == n) continue
+      if (trim(p[r + 1]) !~ /^disputed/) continue
+      key = p[1]; for (i = 2; i < r; i++) key = key " · " p[i]
+      unres[trim(key)] = 1
+    } while ((getline line < f) > 0)
+    close(f)
   }
   function addq(q) { q = trim(q); if (q != "" && !(q in seenq)) { seenq[q] = 1; qs[++nq] = q } }
   # The qualifier sits in the part before ` — `; the free-text tail may hold brackets of its own.
@@ -407,10 +438,12 @@ RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$t
   /^codeBuckets:/ { block = "cb"; havecb = 1; next }
   /^roastDesignCapped:/ {
     n = split(after($0, "roastDesignCapped:"), p, / · /)
-    if (n < 2 || trim(p[n]) !~ /^stopped/) { dcapped = 1; blocking += countkeys(p[1]) }
+    if (n < 2 || trim(p[n]) !~ /^stopped/) { dcapped = 1; capd = p[1] }
     next
   }
-  /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); blocking += countkeys(p[1]); next }
+  /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); capc = p[1]; next }
+  /^findingsLedger:/ { ledc = after($0, "findingsLedger:"); next }
+  /^findingsLedgerDesign:/ { ledd = after($0, "findingsLedgerDesign:"); next }
   block == "parked" && /^[ \t]*- / {
     n = split($0, p, / · /)
     res = (n > 3 && trim(p[n]) ~ /^resolves-on:[ \t]*sweep$/)
@@ -431,6 +464,10 @@ RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$t
     if (!("skipPlanRoast" in flag) || !("skipCodeRoast" in flag)) { print "flags: line lacks skipPlanRoast= or skipCodeRoast=" > "/dev/stderr"; exit 2 }
     if (phase !~ /^(design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish|done)$/) { print "not a phase token: " phase > "/dev/stderr"; exit 2 }
     if (dcapped) addq("design roast capped-blocking")
+    addkeys(capc); addkeys(capd)
+    if (ledc != "") readledger(ledc)
+    if (ledd != "") readledger(ledd)
+    blocking = 0; for (k in unres) blocking++
     sweepok = tip != "" && havecb && trim(cb["sweep"]) != "" && sweepq(trim(cb["sweep"])) == ""
     for (i = 1; i <= ndv; i++) if (!(dvsweep[i] && sweepok)) addq(dv[i])
     if (truthy(flag["skipPlanRoast"])) addq("plan roast skipped")

@@ -22,7 +22,7 @@
 #                     with at most one leading space starting `- `, `* `, `<n>. ` or `<n>) ` (deeper
 #                     indents are sub-bullets, skipped); a lone `none` is no items. The `Untested scope`
 #                     section gives the `untested:` lines by the same rule.
-#   4. step-back    - a `decision: patch|redesign` line; items are `summary:` (and for redesign
+#   4. step-back    - a `decision: patch|local|redesign` line; items are `summary:` (and for redesign
 #                     `changes:` and `scope:`).
 #   5. assembled    - a `fits: yes|no (<total> of <threshold>)` line; items are the
 #                     `cluster-fits: <name> no (...)` lines.
@@ -338,10 +338,10 @@ if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?';
   exit 0
 fi
 
-line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|redesign)' || true)
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|local|redesign)([^A-Za-z0-9_-]|$)' || true)
 if [ -n "$line" ]; then
   keys_refuse
-  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|redesign).*/\1/')
+  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|local|redesign)([^A-Za-z0-9_-]|$).*/\1/')
   r=0; [ "$value" = redesign ] && r=1
   items_step_back "$r" | emit "decision: $value" step-back
   exit 0

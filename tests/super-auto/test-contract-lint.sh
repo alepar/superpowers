@@ -3,9 +3,11 @@
 # §Field table; (b) every §<Heading>, <file> §<Heading> and run-state.md item <N> (<label>)
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
-# (unchanged fixtures from 2bf1d53 plus explicit run-state-added-fields/formats additions);
-# example status lines have a shape report-status prints; (findings) complete source retention,
-# shared outstanding projection, collection recovery and null reviewPath rules are present. Then it
+# (fixtures from 2bf1d53 with explicit added-fields/formats for finding continuity; appended
+# redesign fields and formats pin the ledger, budget, replay states and decision vocabulary);
+# example status lines match report-status; (findings) complete source retention, outstanding
+# projection, collection recovery and null reviewPath rules remain present; (step1) both loops
+# preserve ordered outcomes, Amend Mode sequencing and the effective-cap formula. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -49,7 +51,7 @@ check_example() { # SKILL_DIR
         else top[l] = 1
       }
     }
-    function norm(s) { gsub(/-round-[0-9]+/, "-round-<N>", s); return s }
+    function norm(s) { gsub(/-round-[0-9]+/, "-round-<N>", s); sub(/-(code|design)-[0-9]+$/, "-<loop>-<K>", s); return s }
     /^#/ || /^[ \t]*$/ { next }
     /^[A-Za-z][A-Za-z0-9-]*:/ {
       k = norm(substr($0, 1, index($0, ":") - 1)); block = k
@@ -197,12 +199,160 @@ check_status_examples() { # SKILL_DIR
 check_keys_rule() { # SKILL_DIR
   local a b
   grep '^- I8 ' "$1/SKILL.md" | grep -qF 'scope-dispositions --project' || echo "SKILL.md: I8 does not name scope-dispositions --project"
+  grep '^- I8 ' "$1/SKILL.md" | grep -qF 'report-verdict --keys' || echo "SKILL.md: I8 does not name report-verdict --keys"
   grep -qF 'report-verdict --complete --source' "$1/SKILL.md" || echo "SKILL.md: collection does not retain complete extraction"
   grep -qF 'scope-dispositions --project' "$1/report-prompt.md" || echo "report-prompt.md: Remaining does not consume projection"
   grep -qF 'report-status --collect' "$1/resume.md" || echo "resume.md: pending collection recovery is absent"
   for b in SKILL.md report-prompt.md; do
     { grep -qF 'null `reviewPath`' "$1/$b" && grep -qF '[Must-fix] untested: whole-epic review' "$1/$b"; } || echo "$b: no null reviewPath rule"
   done
+}
+
+check_disputed() { # SKILL_DIR
+  local para cap
+  para=$(awk '/^## / { s = ($0 == "## Disputed Blocking findings"); next } s' "$1/report-prompt.md")
+  [ -n "$para" ] || { echo "(disputed) report-prompt.md: no §Disputed Blocking findings paragraph"; return; }
+  printf '%s' "$para" | grep -qF 'roastCodeCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastCodeCapped:"
+  printf '%s' "$para" | grep -qF 'roastDesignCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastDesignCapped:"
+  printf '%s' "$para" | grep -qF 'counts every Blocking row of either findings ledger whose status is `disputed`' || echo "(disputed) report-prompt.md: disputed route does not count disputed ledger rows"
+  cap=$(awk '/^#+ / { s = ($0 == "#### Cap disposition"); next } s' "$1/SKILL.md")
+  printf '%s' "$cap" | grep -qF 'roastCodeCapped:' || echo "(disputed) SKILL.md: §Cap disposition does not write roastCodeCapped:"
+}
+
+check_report_rows() { # SKILL_DIR
+  local rp="$1/report-prompt.md" row t
+  row=$(grep '^| Remaining |' "$rp" || true)
+  [ -n "$row" ] || { echo "(report rows) report-prompt.md: no Remaining row"; return; }
+  for t in '`disputed`' 'redesign budget spent' 'redesign gate not computable' 'redesign declined by human' 'redesign aborted' 'redesign incomplete' 'amend roast finding not fixed'; do
+    printf '%s' "$row" | grep -qF -- "$t" || echo "(report rows) report-prompt.md: Remaining row lacks $t"
+  done
+  row=$(grep '^| Gotchas & surprises |' "$rp" || true)
+  [ -n "$row" ] || { echo "(report rows) report-prompt.md: no Gotchas & surprises row"; return; }
+  for t in 'redesign-<code|design>-<K>' '`state`' '`designRoast`'; do
+    printf '%s' "$row" | grep -qF -- "$t" || echo "(report rows) report-prompt.md: Gotchas & surprises row lacks $t"
+  done
+}
+
+check_itercap() { # SKILLS_ROOT
+  local all ok
+  grep -qF 'config.iterationCap' "$1/super-roast/SKILL.md" || echo "(iterationCap) super-roast/SKILL.md does not name config.iterationCap"
+  all=$(grep -o 'config\.iterationCap' "$1/super-auto/SKILL.md" | wc -l)
+  ok=$(grep -oE 'config\.iterationCap` = `3 \+ redesignCycles-(code|design)`' "$1/super-auto/SKILL.md" | wc -l)
+  [ "$all" -gt 0 ] || echo "(iterationCap) super-auto/SKILL.md never names config.iterationCap"
+  [ "$all" = "$ok" ] || echo "(iterationCap) super-auto/SKILL.md: $((all - ok)) config.iterationCap mention(s) do not read 3 + redesignCycles-code|design"
+}
+
+# (step1) The ordered procedures the loops run from prose. item N of a section = the text from the
+# line starting "N. " up to the next numbered line; item_has asserts each key sits in the item of
+# its number, so a swapped, merged or deleted item moves a key out of its place and is caught.
+section() { # FILE START_REGEX END_REGEX
+  awk -v a="$2" -v b="$3" 's == 0 && $0 ~ a { s = 1; print; next } s && $0 ~ b { exit } s { print }' "$1"
+}
+item_text() { # SECTION_FILE N
+  awk -v n="$2" '$0 ~ /^[0-9]+\. / { cur = $0; sub(/\..*/, "", cur); on = (cur == n) } on { print }' "$1" | collapse
+}
+item_has() { # LABEL SECTION_FILE N KEY...
+  local label=$1 sec=$2 n=$3 txt k; shift 3
+  txt=$(item_text "$sec" "$n")
+  [ -n "$txt" ] || { echo "(step1) $label: item $n is missing"; return; }
+  for k in "$@"; do
+    case "$txt" in *"$k"*) ;; *) echo "(step1) $label: item $n lacks '$k'" ;; esac
+  done
+}
+check_step1() { # SKILLS_ROOT
+  local sa="$1/super-auto/SKILL.md" sd="$1/super-design/SKILL.md" f i txt a b
+  # super-auto §Step 1 — step back
+  f="$T/s1-auto"; section "$sa" '^#### Step 1 — step back$' '^#### Step 2' > "$f"
+  item_has "super-auto Step 1" "$f" 1 'step-back keys file'
+  item_has "super-auto Step 1" "$f" 2 'findings-ledger'
+  item_has "super-auto Step 1" "$f" 3 'thrash — lastGood breach' 'redesign-code-<K>' 'higher than the previous round'
+  item_has "super-auto Step 1" "$f" 4 'step-back-prompt.md'
+  item_has "super-auto Step 1" "$f" 5 'step-back-check' 'exit 0' 'exit 3' 'exit 2'
+  item_has "super-auto Step 1" "$f" 6 'redesign declined by human'
+  item_has "super-auto Step 1" "$f" 7 'Choose the branch' '`local`' 'scope: inside' 'scope: outside' 'redesign budget spent' 'thrash exit' 'dissolved@r'
+  for i in 1 2 3 4 5 6; do
+    case "$(item_text "$f" $i)" in *'dissolved@r<N>'*) echo "(step1) super-auto Step 1: item $i writes a dissolved line before the branch item" ;; esac
+  done
+  # super-design §Adversarial Review Loop, Step 1
+  f="$T/s1-design"; section "$sd" '^\*\*Step 1 — before fixing\.\*\*' '^\*\*Redesign cycle\.\*\*' > "$f"
+  item_has "super-design Step 1" "$f" 1 'Keys file'
+  item_has "super-design Step 1" "$f" 2 'Ledger' 'findings-ledger'
+  item_has "super-design Step 1" "$f" 3 'Last-known-good breach' 'thrash — lastGood breach' 'higher than the previous round'
+  item_has "super-design Step 1" "$f" 4 'Step-back' 'step-back-prompt.md'
+  item_has "super-design Step 1" "$f" 5 'Check' 'step-back-check' 'Exit 0' 'Exit 3' 'Exit 2'
+  item_has "super-design Step 1" "$f" 6 'Interactive runs' 'redesign declined by human'
+  item_has "super-design Step 1" "$f" 7 'Branch' '`local`' 'scope `inside`' 'scope `outside`' 'redesign budget spent' 'thrash exit' 'dissolved@r'
+  for i in 1 2 3 4 5 6; do
+    case "$(item_text "$f" $i)" in *'dissolved@r<N>'*) echo "(step1) super-design Step 1: item $i writes a dissolved line before the branch item" ;; esac
+  done
+  # super-design §Amend Mode steps 1-7
+  f="$T/s1-amend"; section "$sd" '^## Amend Mode$' '^## Parallelism' > "$f"
+  item_has "Amend Mode" "$f" 1 'Dispatch the amend designer'
+  item_has "Amend Mode" "$f" 2 'Validate' 'amend-check' 'exit 2' 'git checkout HEAD --' 'aborted — amend rejected'
+  txt=$(item_text "$f" 2)
+  case "${txt%%On \`ok\`*}" in *estore*) echo "(step1) Amend Mode: step 2 restores on exit 2 (bad input), which is not a reject" ;; esac
+  item_has "Amend Mode" "$f" 3 'Commit' 'specs-committed'
+  item_has "Amend Mode" "$f" 4 'File the' 'bd update' 'bd create' 'beads-filed'
+  txt=$(item_text "$f" 4); a=${txt%%bd update*}; b=${txt%%bd create*}
+  [ "${#a}" -lt "${#b}" ] || echo "(step1) Amend Mode: step 4 files with bd create before it reopens with bd update"
+  item_has "Amend Mode" "$f" 5 'Disputes' 'disputed@r'
+  item_has "Amend Mode" "$f" 6 'Coverage' 'coverage-amend-<loop>-<K>'
+  item_has "Amend Mode" "$f" 7 'Return' 'applied'
+  # the effective cap and the budget compare are spelled one way in both loops
+  for f in "$sa" "$sd"; do
+    txt=$(collapse < "$f")
+    printf '%s' "$txt" | grep -oE 'redesignCycles(-[a-z*]+)?' | sort -u | grep -vxE 'redesignCycles-(code|design|\*)' \
+      | sed "s|^|(step1) ${f#"$1"/}: redesignCycles is not suffixed -code or -design: |" || true
+    printf '%s' "$txt" | grep -oE '3 *\+ *`?redesignCycles[^ ]*' | sed 's/[`,.;:)]*$//' | grep -vE '^3 \+ `?redesignCycles-(code|design)$' \
+      | sed "s|^|(step1) ${f#"$1"/}: effective cap is not spelled 3 + redesignCycles-<loop>: |" || true
+    printf '%s' "$txt" | grep -oE 'redesignCycles-(code|design)` *< *[0-9]+' | grep -vE '< 2$' \
+      | sed "s|^|(step1) ${f#"$1"/}: redesign budget compare is not < 2: |" || true
+  done
+  grep -oE '3 *\+ *`?redesignCycles[^ ]*' "$1/super-auto/run-state.md" | sed 's/[`,.;:)]*$//' | grep -vE '^3 \+ `?redesignCycles-(code|design)$' \
+    | sed 's|^|(step1) super-auto/run-state.md: effective cap is not spelled 3 + redesignCycles-<loop>: |' || true
+}
+
+# (abort) Every abort route writes `aborted` before it removes the round's dissolved override lines
+# and parks `redesign aborted`, and the `aborted` replay repeats both, so a crash anywhere in the
+# abort resumes into a replay that finishes it.
+bullet_text() { # FILE START_REGEX -> the bullet from its first line to the next bullet or blank line
+  awk -v a="$2" 's == 0 && $0 ~ a { s = 1; print; next } s && (/^- / || /^$/) { exit } s { print }' "$1" | collapse
+}
+abort_has() { # LABEL TEXT KEY...
+  local label=$1 txt=$2 k; shift 2
+  [ -n "$txt" ] || { echo "(abort) $label: bullet is missing"; return; }
+  for k in "$@"; do
+    case "$txt" in *"$k"*) ;; *) echo "(abort) $label: lacks '$k'" ;; esac
+  done
+}
+abort_before() { # LABEL TEXT FIRST SECOND
+  local a=${2%%"$3"*} b=${2%%"$4"*}
+  case "$2" in *"$3"*"$4"*) ;; *) echo "(abort) $1: '$3' does not come before '$4'"; return ;; esac
+  [ "${#a}" -lt "${#b}" ] || echo "(abort) $1: '$3' does not come before '$4'"
+}
+check_abort() { # SKILLS_ROOT
+  local sa="$1/super-auto/SKILL.md" sd="$1/super-design/SKILL.md" rs="$1/super-auto/resume.md" f txt
+  f="$T/ab-auto"; section "$sa" '^#### Redesign cycle$' '^#### ' > "$f"
+  txt=$(item_text "$f" 2)
+  abort_has "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted'
+  abort_before "super-auto Redesign cycle item 2" "$txt" '`aborted — <reason>`' 'dissolved@r<N>'
+  txt=$(bullet_text "$sd" '^- `aborted — <reason>`')
+  abort_has "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted'
+  abort_before "super-design Redesign cycle aborted bullet" "$txt" 'rewrite the state' 'dissolved@r<N>'
+  f="$T/ab-resume"; section "$rs" '^## Redesign cycle replay$' '^## ' > "$f"
+  txt=$(bullet_text "$f" '^- `amend-checked`')
+  abort_has "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>' 'redesign aborted' 'lastGood'
+  abort_before "resume.md amend-checked bullet" "$txt" 'aborted — amend rejected on resume' 'dissolved@r<N>'
+  txt=$(bullet_text "$f" '^- `aborted — <reason>`')
+  abort_has "resume.md aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild' 'redesign aborted' 'unless'
+  f="$T/ab-reentry"; section "$sd" '^\*\*Resuming a redesign cycle\*\*' '^\*\*A partially-written' > "$f"
+  txt=$(bullet_text "$f" '^- `amend-checked`')
+  abort_has "super-design Re-entry amend-checked bullet" "$txt" 'dissolved@r<N>' 'redesign aborted' 'lastGood'
+  abort_before "super-design Re-entry amend-checked bullet" "$txt" 'aborted — amend rejected on resume' 'dissolved@r<N>'
+  abort_has "super-design Re-entry aborted bullet" "$(bullet_text "$f" '^- `aborted — …`')" 'dissolved@r<N>' 'redesign aborted' 'unless'
+  f="$T/ab-phase"; section "$rs" '^## Resuming at a phase$' '^## ' > "$f"
+  txt=$(grep -F 'dissolved' "$f" | collapse)
+  case "$txt" in *aborted*) ;; *) echo "(abort) resume.md: the dissolved-skip rule does not name a non-aborted record" ;; esac
 }
 
 lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
@@ -212,6 +362,11 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_baseline "$1/super-auto"
   check_status_examples "$1/super-auto"
   check_keys_rule "$1/super-auto"
+  check_disputed "$1/super-auto"
+  check_report_rows "$1/super-auto"
+  check_itercap "$1"
+  check_step1 "$1"
+  check_abort "$1"
 }
 
 echo "contract lint: live tree"
@@ -248,6 +403,8 @@ copy; sed 's/^| `roastCodeRound` |/| `roastCodeRounds` |/' "$REPO_ROOT/skills/su
 expect_caught "a renamed field-table field fails the baseline" "lost baseline field: roastCodeRound"
 copy; sed '/^- I8 /s/scope-dispositions --project/scope-dispositions/g' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
 expect_caught "I8 without projection fails" "I8 does not name scope-dispositions --project"
+copy; sed '/^- I8 /s/report-verdict --keys/report-verdict/g' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "I8 without --keys fails" "I8 does not name report-verdict --keys"
 copy; grep -vF 'whole-epic review' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "report-prompt without the null reviewPath rule fails" "report-prompt.md: no null reviewPath rule"
 
@@ -261,6 +418,55 @@ copy; sed '/^| `approvals · finding-source` |/d' "$REPO_ROOT/skills/super-auto/
 expect_caught "dropping an approved added field fails" "lost baseline field: approvals · finding-source"
 copy; sed 's/<complete extraction JSON>/<unapproved replacement>/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
 expect_caught "changed approved added format fails" "lacks baseline line format: - finding-source · <complete extraction JSON>"
+copy; sed 's/^| `redesign-<loop>-<K>` |\(.*\)beads-filed\\|/| `redesign-<loop>-<K>` |\1/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "a redesign record row missing the beads-filed state fails the baseline" "lacks baseline line format: redesign-<code|design>-<K>"
+copy; sed 's/`local \\| redesign`/`patch \\| redesign`/g' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "a step-back decision vocabulary without local fails the baseline" 'lacks baseline line format: its decision `local | redesign`'
+copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/ or `roastDesignCapped:`//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a disputed route that drops roastDesignCapped fails" "disputed route does not name roastDesignCapped:"
+copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/of either findings ledger/of the code ledger/' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a disputed route that stops counting disputed ledger rows fails" "disputed route does not count disputed ledger rows"
+copy; sed 's/`redesign incomplete`/`redesign unfinished`/' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a Remaining row that drops redesign incomplete fails" "Remaining row lacks redesign incomplete"
+copy; sed '/^| Gotchas/s/ and its `designRoast`//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a Gotchas row that drops designRoast fails" 'Gotchas & surprises row lacks `designRoast`'
+copy; sed 's/config.iterationCap` = `3 + redesignCycles-code`/config.iterationCap` = `3`/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto config.iterationCap that is a bare 3 fails" "config.iterationCap mention(s) do not read"
+
+copy; sed -e 's/^4\. Dispatch the step-back/5. Dispatch the step-back/' -e 's/^5\. Check it with/4. Check it with/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "swapping two Step 1 items fails" "super-auto Step 1: item 4 lacks 'step-back-prompt.md'"
+copy; awk '/^6\. Interactive runs: a `redesign`/ { next } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "deleting the interactive-decline item fails" "super-auto Step 1: item 6 is missing"
+copy; sed 's/3 + redesignCycles-code/3 + redesignCycles/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a bare 3 + redesignCycles in super-auto fails" "redesignCycles is not suffixed"
+copy; sed 's/`redesignCycles-code` < 2/`redesignCycles-code` < 3/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a redesign budget compare other than < 2 fails" "redesign budget compare is not < 2"
+copy; sed 's/^\(.*\)\(thrash exit\)/\1thrash stop/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a branch item that loses its thrash outcome fails" "item 7 lacks 'thrash exit'"
+copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
+awk '/^3\. \*\*Commit\*\*/ { three = $0; next } /^4\. \*\*File the/ && three != "" { print; next } { print }' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
+expect_caught "a missing Amend Mode step 3 fails" "Amend Mode: item 3"
+copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
+sed 's/bd update/bd reopen/g' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
+expect_caught "an Amend Mode step 4 that no longer reopens first fails" "Amend Mode: item 4 lacks 'bd update'"
+copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
+sed '/^7\. \*\*Branch/,/^\*\*Redesign cycle/s/`redesignCycles-design` < 2/`redesignCycles-design` < 4/' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
+expect_caught "a super-design budget compare other than < 2 fails" "super-design/SKILL.md: redesign budget compare is not < 2"
+
+copy; awk '/^2\. On `aborted`/ { gsub(/remove from `<run-dir>\/findings-overrides.md` the `dissolved@r<N>` lines Step 1 wrote for this round.s record and rebuild the ledger \(Step 1 item 2.s invocation\), /, ""); gsub(/dissolved@r<N>/, "dropped") } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto Redesign cycle item 2 without the removal fails" "super-auto Redesign cycle item 2: lacks 'dissolved@r<N>'"
+copy; sed '/^- `amend-checked`/s/dissolved@r<N>/dropped/g' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume amend-checked bullet without the removal fails" "resume.md amend-checked bullet: lacks 'dissolved@r<N>'"
+copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
+awk '/^- `aborted — <reason>`/ { on = 1 } on && /^$/ { on = 0 } on { gsub(/dissolved@r<N>/, "dropped") } { print }' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
+expect_caught "a super-design aborted bullet without the removal fails" "super-design Redesign cycle aborted bullet: lacks 'dissolved@r<N>'"
+
+copy; sed '/^- `aborted — <reason>`: the round runs/s/redesign aborted/redesign dropped/' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume aborted bullet without the park fails" "resume.md aborted bullet: lacks 'redesign aborted'"
+copy; sed '/^- `amend-checked`/s/lastGood/pre-amendment base/g' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume amend-checked bullet that re-checks against HEAD fails" "resume.md amend-checked bullet: lacks 'lastGood'"
+copy; awk '/^2\. On `aborted`/ { sub(/rewrite the state to `aborted — <reason>` first, so a crash in what follows resumes into resume.md §Redesign cycle replay.s `aborted — <reason>` bullet, which repeats these same idempotent steps. /, ""); sub(/; park a/, "; rewrite the state to `aborted — <reason>`; park a") } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto abort that removes before it rewrites the state fails" "super-auto Redesign cycle item 2: '\`aborted — <reason>\`' does not come before 'dissolved@r<N>'"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then

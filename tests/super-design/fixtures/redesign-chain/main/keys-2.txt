@@ -1,0 +1,6 @@
+r1 [Blocking] src/retry.sh:10
+r1 [Blocking] src/auth.sh:42
+r1 [Should-fix] src/cache.sh:7; src/cache.sh:31
+r2 [Blocking] src/retry.sh:10
+r2 [Blocking] src/auth.sh:42
+r2 [Must-fix] reviewer item

@@ -82,28 +82,6 @@ assert_eq "$(printf '%s' "$out" | cut -c1-15)" "JQ_UNAVAILABLE:" "missing jq pri
 assert_eq "$(printf '%s' "$out" | grep -c 'cluster dropped: <id> — ' || true)" "1" "the manual-computation line includes the cluster dropped rule"
 
 echo
-echo "step-back-check"
-SBC="$REPO_ROOT/skills/super-auto/scripts/step-back-check"
-SF="$SCRIPT_DIR/fixtures/step-back-check"
-
-run bash "$SBC" --step-back "$SF/valid-patch.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "valid patch record (no scope:) is ok"
-run bash "$SBC" --step-back "$SF/valid-redesign.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "valid redesign with rN-prefixed, comma-bearing keys is ok"
-run bash "$SBC" --step-back "$SF/unknown-key.md" --keys "$SF/keys.txt"
-assert_eq "$code" 3 "unknown key exits 3"
-assert_eq "$out" "reject: dissolves: unknown key '[Nit] report-prompt.md:40'
-reject: dissolves: unknown key 'r3 [Blocking] nowhere.ts:1'" "unprefixed and unknown keys each get a reject line"
-run bash "$SBC" --step-back "$SF/missing-decision.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "3:reject: decision: missing" "missing decision: is rejected"
-run bash "$SBC" --step-back "$SF/redesign-no-scope.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "3:reject: scope: missing (required for redesign)" "redesign without scope: is rejected"
-
-run bash "$SBC" --step-back "$SF/missing.md" --keys "$SF/keys.txt"
-assert_eq "$code" 2 "missing step-back file exits 2"
-run bash "$SBC" --step-back "$SF/valid-patch.md"
-assert_eq "$code" 2 "missing --keys exits 2"
-
 echo "report-status"
 RS="$REPO_ROOT/skills/super-auto/scripts/report-status"
 RF="$SCRIPT_DIR/fixtures/report-status"
@@ -199,6 +177,21 @@ qualifier: code findings parked" "parked escalation plus codeBuckets.escalated c
 assert_eq "$(rs_status "$RF/roast-skipped.md")" "status: clean [degraded: plan roast skipped, code roast skipped]" "skipped roasts (t/f flag values) are qualifiers"
 assert_eq "$(rs_status "$RF/code-capped.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking"
 assert_eq "$(rs_status "$RF/code-thrash.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped written at a thrash exit counts its keys"
+assert_eq "$(rs_status "$RF/disputed-capped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking ledger row whose key roastCodeCapped also holds counts once"
+assert_eq "$(rs_status "$RF/disputed-design-capped-proceeded.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "a disputed Blocking design-ledger row whose key a proceeded roastDesignCapped also holds counts once"
+assert_eq "$(rs_status "$RF/disputed-design-capped-stopped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking design-ledger row counts though the stopped roastDesignCapped holding its key does not"
+run bash "$RS" "$RF/disputed-uncapped.md" --tip 9e8d7c6
+assert_eq "$code:$out" "0:status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking ledger row counts as unresolved with no cap line (the roast no longer confirms it); disputed Should-fix, resolved and dissolved Blocking rows do not"
+sed "s/^findingsLedger: .*/findingsLedger: no-such-ledger.md/" "$RF/disputed-uncapped.md" > "$T/ledger-missing.md"
+assert_eq "$(rs_status "$T/ledger-missing.md" --tip 9e8d7c6)" "status: clean [degraded: findings ledger not found: no-such-ledger.md]" "a findings-ledger pointer to a missing file is a qualifier"
+run bash "$RS" "$RF/degraded-redesign-parks.md" --tip 3f9c2e1
+assert_eq "$out" "status: clean [degraded: redesign budget spent, redesign gate not computable, redesign declined by human, redesign aborted, redesign incomplete, amend roast finding not fixed]
+qualifier: redesign budget spent
+qualifier: redesign gate not computable
+qualifier: redesign declined by human
+qualifier: redesign aborted
+qualifier: redesign incomplete
+qualifier: amend roast finding not fixed" "the six redesign park texts each give one qualifier line, in record order"
 assert_eq "$(rs_status "$RF/design-capped-proceeded.md")" "status: completed with 2 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking, code roast skipped]" "proceeded design cap counts its keys and leads the qualifiers"
 assert_eq "$(rs_status "$RF/design-capped-unparseable.md")" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "design cap with no stopped/proceeded slot counts as proceeded"
 run bash "$RS" "$RF/design-capped-stopped.md"
@@ -281,8 +274,6 @@ assert_eq "$code" 2 "no arguments exits 2"
 nojq=$(mktemp -d)
 ln -s "$(command -v bash)" "$nojq/bash"
 ln -s "$(command -v awk)" "$nojq/awk"
-run env PATH="$nojq" bash "$SBC" --step-back "$SF/valid-redesign.md" --keys "$SF/keys.txt"
-assert_eq "$code:$out" "0:ok" "step-back-check runs with only bash and awk on PATH (no jq)"
 run env PATH="$nojq" bash "$RS" "$RF/escalations.md"
 assert_eq "$code" 0 "report-status runs with only bash and awk on PATH (no jq)"
 rm -rf "$nojq"

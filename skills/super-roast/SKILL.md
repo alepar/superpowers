@@ -50,7 +50,7 @@ line when writing the report file (e.g. `mode: PR (assumed — input is a branch
 | mode | `design` or `PR` — see When to Use |
 | the artifact | design mode: a spec file or settled tree; PR mode: `branch@sha` vs `base@sha` — the caller supplies the base to diff against |
 | report-location override | directory the report is written to instead of the default below |
-| iteration `N` | printed in the report header (`iteration: N of 3`); this skill is stateless, so the caller carries the count. A caller running a whole-branch roast *after* its fix loop's cap has tripped passes the literal `post-cap audit` instead of a number — the header accepts it, and the run is never counted as a fourth round |
+| iteration `N` | printed in the report header (`iteration: N of <config.iterationCap>`); this skill is stateless, so the caller carries the count. A caller running a whole-branch roast *after* its fix loop's cap has tripped passes the literal `post-cap audit` instead of a number — the header accepts it, and the run is never counted as a round past the cap |
 | prior report path (rounds ≥ 2) | lets the run skip re-litigating what `## Rejected (with reason)` already settled — and switches the run into its late-round shape: scouts get the iterations-≥2 materiality bar ("no material findings" is a valid, expected outcome; manufacturing marginal findings is the failure mode) in place of round 1's high-recall section, and a `regression` lens/lane joins the roster to review what the fixes themselves touched (see the scout prompt files' "Iteration stance" sections) |
 | punch-listed keys (optional, rounds ≥ 2) | the prior round's confirmed findings the caller's scope filter deliberately left unfixed, one `[SEV] <location>` key per line (`assemble-args --punch-listed FILE`). A prior finding on this list that the round does not re-surface is reported `punch-listed (open)`, never resolved |
 | autonomous (optional) | see Mode selection above and the Handoff exception in The Process step 7 |
@@ -108,8 +108,7 @@ In PR mode with a stated intent (Inputs), pass `--artifact "<branch@sha> vs <bas
    `./reporter-prompt.md` and Output below.
 7. **Handoff** — report only; the caller (e.g. `super-design`) decides whether to loop a fix pass
    and re-roast. A re-roast reviews the full artifact each round — under the late-round stance,
-   with the `regression` lens covering what the fixes themselves touched (step 3) — capped at 3
-   iterations, and
+   with the `regression` lens covering what the fixes themselves touched (step 3) — capped at `config.iterationCap` iterations (default 3; a caller's redesign cycles raise it), and
    stops early on no progress **or on a `[converged]` verdict** (zero Blocking of any
    provenance on a non-degraded round ≥ 2 — see Report format below); both the cap-out and the clean exit **pause for the human** —
    super-roast never declares its own loop finished. **Exception when the caller states the run is
@@ -130,6 +129,8 @@ config keys:
 
 Non-empty domains never trigger widening — the domain scouts themselves cover that ground.
 PR mode has no equivalent: `config.coreLanes` always runs, and triage only ever adds lanes.
+
+`config.iterationCap` is the caller's fix-loop cap (default 3). It is printed as the `N of <cap>` header label; this skill stays stateless and the caller enforces the cap.
 
 **Domain scouts come from a template, not from `prompts.scouts`.** Domains are open-ended free
 text that triage produces *at runtime*, while `args.prompts` is assembled *before* the engine
@@ -182,7 +183,7 @@ budget:
 
 ```
 super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
-mode: design | PR        iteration: N of 3
+mode: design | PR        iteration: N of <cap>
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
 delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking) · <P> punch-listed (open)   ← iterations ≥ 2 only

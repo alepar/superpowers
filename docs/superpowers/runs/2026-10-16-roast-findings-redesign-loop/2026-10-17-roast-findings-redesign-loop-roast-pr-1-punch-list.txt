@@ -1,0 +1,5 @@
+[Nit] skills/super-design/scripts/amend-check:244
+[Nit] skills/super-auto/resume.md:43
+[Nit] skills/super-auto/resume.md:29
+[Nit] skills/super-auto/SKILL.md:171
+[Nit] skills/super-design/scripts/findings-ledger:157

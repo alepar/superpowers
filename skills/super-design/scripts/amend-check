@@ -1,0 +1,310 @@
+#!/usr/bin/env bash
+# Validates one amend record before Amend Mode, or a resume, acts on it.
+#
+#   amend-check --loop code|design --amend AMEND_FILE --ledger LEDGER_FILE --specs SPEC... [--base REV]
+#
+# AMEND_FILE: the amend designer's record, `amend-<loop>-<K>.md`. LEDGER_FILE: the findings ledger
+# findings-ledger wrote. SPEC...: the spec paths the designer may edit; the first is the root spec.
+# REV: the git revision the spec diff is taken against (default HEAD); the specs are compared in
+# the working tree, so the check runs before anything is committed.
+#
+# Owns: the record grammar and the rules a record must pass. A field header is a line at column 0
+# (`owners:`, `amended:`, `work:`, `supersedes:`, `unchanged:`); its items are the `- ` lines that follow.
+#   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason>   (arrow ` → ` or ` -> `)
+#   amended:   - <spec> §<section>        (`amended: none` inline lists no section)
+#   work:      - <title> | <description> | <files> | covers: <key>, <key>
+#   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none` or absent lists nothing)
+#   unchanged: - <bullet>
+# Keys are canonical `[SEV] <location>` (a leading `rN ` is stripped everywhere; `; ` multi-location
+# keys are kept whole). Open ledger rows are those with status `open` or `open (returned rN)`, roast
+# and final-review alike. `covers:` is the last ` | ` field of a work: line, so a ` | ` inside a key
+# is safe; its keys split only on `, [`.
+# Rules, checked in this order, each printing `reject: <rule>: <detail>`:
+#   owners    every open key is in owners:, and every owners: key is an open key, each key once
+#   work      every work: line covers at least one key
+#   reverse   every non-disputed open key is in some work: covers:; under --loop design a key that
+#             is `owner:` a section listed in amended: also passes (a `local` key still needs a work:
+#             line); under --loop code it does not, since only a bead changes code
+#   supersedes under --loop code any item rejects; under --loop design each item is `<id> -> <title>`
+#             (id a single `[A-Za-z0-9._-]+` token) and its title equals a work: line title
+#   amended   every `<spec> §<section>` in amended: has a changed line inside that section in
+#             `git diff REV -- SPECS`
+#   goal      the `## Goal` body text (fence-aware) is identical between REV and the working tree,
+#             and no diff line falls inside it; a Goal present on one side only is a change
+#   unchanged the root spec has an `## Unchanged behavior` section
+# Spec paths are compared normalised: `./docs/x.md` and `docs/x.md` are the same spec, in --specs and
+# in owners: and amended: alike. A spec absent from REV and untracked (one the amendment created) is diffed as
+# all-added, so its sections count as changed; its Goal is new, not edited, so the goal rule skips it.
+#
+# Does not: edit or restore specs, file beads, write overrides (Amend Mode does), or re-check the
+# step-back record (step-back-check does). It has no side effects, so resume re-runs it on the
+# record plus the working-tree diff before anything is committed.
+# A new amend rule goes in this script and nowhere else.
+# Role: the gate Amend Mode and resume pass before acting on a record; no caller acts on an amend
+# file this script has not passed.
+#
+# Prints `ok`, or one `reject:` line per problem. Pure bash, awk and git: needs no jq.
+# Exit 0 ok, 3 rejected, 2 bad input; a git failure is exit 2, never a reject.
+set -euo pipefail
+
+usage() { echo "usage: amend-check --loop code|design --amend AMEND_FILE --ledger LEDGER_FILE --specs SPEC... [--base REV]" >&2; exit 2; }
+loop='' amend='' ledger='' base=HEAD specs=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --loop) [ $# -ge 2 ] || usage; loop=$2; shift 2 ;;
+    --amend) [ $# -ge 2 ] || usage; amend=$2; shift 2 ;;
+    --ledger) [ $# -ge 2 ] || usage; ledger=$2; shift 2 ;;
+    --base) [ $# -ge 2 ] || usage; base=$2; shift 2 ;;
+    --specs)
+      shift
+      while [ $# -gt 0 ] && [ "${1#--}" = "$1" ]; do specs+=("$1"); shift; done ;;
+    *) usage ;;
+  esac
+done
+case "$loop" in code|design) ;; *) usage ;; esac
+[ -n "$amend" ] && [ -n "$ledger" ] && [ "${#specs[@]}" -gt 0 ] || usage
+[ -f "$amend" ] || { echo "amend file not found: $amend" >&2; exit 2; }
+[ -f "$ledger" ] || { echo "ledger not found: $ledger" >&2; exit 2; }
+for sp in "${specs[@]}"; do [ -f "$sp" ] || { echo "spec not found: $sp" >&2; exit 2; }; done
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+rejects="$tmp/rejects"; : > "$rejects"
+
+# --- git: base revision, per-spec hunks and base-side text. Any failure is exit 2. ---
+git rev-parse --verify --quiet "${base}^{commit}" >/dev/null 2>&1 || { echo "git: cannot resolve --base '$base' to a commit (or not a git repository)" >&2; exit 2; }
+top=$(git rev-parse --show-toplevel 2>/dev/null) || { echo "git: not a git repository" >&2; exit 2; }
+top=$(cd "$top" && pwd -P)
+i=0
+for sp in "${specs[@]}"; do
+  i=$((i + 1))
+  abs="$(cd "$(dirname "$sp")" && pwd -P)/$(basename "$sp")"
+  rel=${abs#"$top"/}
+  [ "$rel" != "$abs" ] || { echo "spec is outside the git repository: $sp" >&2; exit 2; }
+  if git cat-file -e "$base:$rel" 2>/dev/null; then
+    git diff -U0 --no-color --no-ext-diff "$base" -- "$abs" > "$tmp/diff.$i" 2>/dev/null || { echo "git diff failed for $sp against $base" >&2; exit 2; }
+    git show "$base:$rel" > "$tmp/base.$i" 2>/dev/null || { echo "git show failed for $base:$rel" >&2; exit 2; }
+  else
+    # not in REV: a new spec. Diff it against /dev/null so every line counts as added (git diff REV
+    # alone omits an untracked file). --no-index exits 1 when the files differ.
+    rc=0; git diff -U0 --no-color --no-ext-diff --no-index -- /dev/null "$abs" > "$tmp/diff.$i" 2>/dev/null || rc=$?
+    [ "$rc" -le 1 ] || { echo "git diff failed for $sp against $base" >&2; exit 2; }
+    : > "$tmp/base.$i"; : > "$tmp/new.$i"
+  fi
+done
+
+# --- parse the ledger's open keys ---
+awk '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  /^- / {
+    s = substr($0, 3)
+    if (!match(s, / · raised r[0-9]+@/)) next
+    key = substr(s, 1, RSTART - 1)
+    rest = substr(s, RSTART + RLENGTH)
+    p = index(rest, " · ")
+    if (p == 0) next
+    rest = substr(rest, p + 3)
+    p = index(rest, " · ")
+    status = trim(p ? substr(rest, 1, p - 1) : rest)
+    if (status == "open" || status ~ /^open \(returned r[0-9]+\)$/) { key = trim(key); sub(/^r[0-9]+ /, "", key); print key }
+  }
+' "$ledger" | awk '!seen[$0]++' > "$tmp/open.txt"
+
+# --- parse the record into owners.txt, amended.txt, work.txt (tab-separated); malformed lines reject ---
+awk -v dir="$tmp" '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function stripr(k) { k = trim(k); sub(/^r[0-9]+ /, "", k); return k }
+  function reject(r) { print "reject: " r >> (dir "/rejects.parse") }
+  function secsplit(s, what,   p) {
+    p = index(s, "§")
+    if (p == 0) { reject(what ": expected <spec> §<section>: " s); return 0 }
+    spec = trim(substr(s, 1, p - 1)); sec = trim(substr(s, p + length("§")))
+    if (spec == "" || sec == "") { reject(what ": expected <spec> §<section>: " s); return 0 }
+    return 1
+  }
+  function owner(item,   s, off, n, p1, p2, p, l, j, tail, key) {
+    s = item; off = 0; n = 0
+    while (1) {
+      p1 = index(s, " → "); p2 = index(s, " -> ")
+      if (p1 == 0 && p2 == 0) break
+      if (p2 == 0 || (p1 > 0 && p1 < p2)) { p = p1; l = length(" → ") } else { p = p2; l = 4 }
+      apos[++n] = off + p; alen[n] = l
+      off += p + l - 1; s = substr(s, p + l)
+    }
+    for (j = n; j >= 1; j--) {
+      tail = substr(item, apos[j] + alen[j]); key = stripr(substr(item, 1, apos[j] - 1))
+      if (tail ~ /^local[ \t\r]*$/) { print key "\tlocal\t\t" >> (dir "/owners.txt"); return }
+      if (tail ~ /^disputed:/) { sub(/^disputed:[ \t]*/, "", tail); print key "\tdisputed\t\t" trim(tail) >> (dir "/owners.txt"); return }
+      if (tail ~ /^owner:/) {
+        sub(/^owner:[ \t]*/, "", tail)
+        if (secsplit(tail, "owners")) print key "\towner\t" spec "\t" sec >> (dir "/owners.txt")
+        return
+      }
+    }
+    reject("owners: line is not <key> -> owner: <spec> §<section> | local | disputed: <reason>: " item)
+  }
+  function work(item,   p, last, rest, title, c, k) {
+    last = 0; rest = item; p = 0
+    while (match(rest, /[ \t]\|[ \t]*covers:/)) { last = p + RSTART; p += RSTART + RLENGTH - 1; rest = substr(rest, RSTART + RLENGTH) }
+    title = trim(item); sub(/ \|.*$/, "", title)
+    if (!last) { print title "\t" >> (dir "/work.txt"); return }
+    c = substr(item, p + 1)
+    nk = 0
+    while (match(c, /,[ \t]*(r[0-9]+ )?\[/)) { addkey(title, substr(c, 1, RSTART - 1)); c = substr(c, RSTART + 1) }
+    addkey(title, c)
+    if (nk == 0) print title "\t" >> (dir "/work.txt")
+  }
+  function supersede(item,   p1, p2, p, l, id, title) {
+    p1 = index(item, " → "); p2 = index(item, " -> ")
+    if (p1 == 0 && p2 == 0) { reject("supersedes: malformed line: " item); return }
+    if (p2 == 0 || (p1 > 0 && p1 < p2)) { p = p1; l = length(" → ") } else { p = p2; l = 4 }
+    id = trim(substr(item, 1, p - 1)); title = trim(substr(item, p + l))
+    if (id !~ /^[A-Za-z0-9._-]+$/ || title == "") { reject("supersedes: malformed line: " item); return }
+    print id "\t" title >> (dir "/supersedes.txt")
+  }
+  function addkey(title, k) { k = stripr(k); if (k == "" || tolower(k) == "none") return; nk++; print title "\t" k >> (dir "/work.txt") }
+  { sub(/\r$/, "") }
+  /^(owners|amended|work|unchanged|supersedes):/ {
+    field = $0; sub(/:.*/, "", field)
+    rest = $0; sub(/^[a-z]+:[ \t]*/, "", rest); rest = trim(rest)
+    if (field == "amended" && rest != "" && tolower(rest) != "none" && secsplit(rest, "amended")) print spec "\t" sec >> (dir "/amended.txt")
+    next
+  }
+  /^[A-Za-z][A-Za-z_-]*:/ { field = ""; next }
+  /^[ \t]*- / && field != "" {
+    item = $0; sub(/^[ \t]*- /, "", item); item = trim(item)
+    if (field == "owners") owner(item)
+    else if (field == "work") work(item)
+    else if (field == "supersedes") supersede(item)
+    else if (field == "amended") { if (secsplit(item, "amended")) print spec "\t" sec >> (dir "/amended.txt") }
+  }
+' "$amend"
+for f in owners.txt amended.txt work.txt supersedes.txt rejects.parse; do [ -f "$tmp/$f" ] || : > "$tmp/$f"; done
+
+spec_index() { # a spec as written in the record -> index into specs[], or empty
+  local want=${1#./} j=0 sp
+  for sp in "${specs[@]}"; do
+    j=$((j + 1)); sp=${sp#./}
+    if [ "$sp" = "$want" ] || [ "${sp%/"$want"}" != "$sp" ] || [ "${want%/"$sp"}" != "$want" ]; then echo "$j"; return; fi
+  done
+}
+# spec_key SPEC: the spec column the reverse rule compares, `#<index>` for a --specs entry, else the path without `./`.
+spec_key() { local idx; idx=$(spec_index "$1"); if [ -n "$idx" ]; then echo "#$idx"; else echo "${1#./}"; fi; }
+while IFS= read -r line; do # only owner rows carry a spec; a tab IFS would collapse the others' empty fields
+  IFS=$'\t' read -r k kind sp sec <<< "$line"
+  if [ "$kind" = owner ]; then printf '%s\towner\t%s\t%s\n' "$k" "$(spec_key "$sp")" "$sec"; else printf '%s\n' "$line"; fi
+done < "$tmp/owners.txt" > "$tmp/owners.norm"
+while IFS=$'\t' read -r sp sec; do
+  printf '%s\t%s\n' "$(spec_key "$sp")" "$sec"
+done < "$tmp/amended.txt" > "$tmp/amended.norm"
+
+# --- checks 1-3: owners both ways, work covers, reverse rule ---
+awk -F'\t' -v loop="$loop" -v dir="$tmp" '
+  function reject(r) { print "reject: " r >> (dir "/rejects") }
+  FILENAME == ARGV[1] { open[$0] = 1; order[++no] = $0; next }
+  FILENAME == ARGV[2] { if (($1 in okind) && !($1 in dup)) { dup[$1] = 1; reject("owners: duplicate key: " $1) } okind[$1] = $2; ospec[$1] = $3; osec[$1] = $4; oorder[++nw] = $1; next }
+  FILENAME == ARGV[3] { amended[$1 SUBSEP $2] = 1; next }
+  FILENAME == ARGV[4] { if ($2 == "") nocover[$1] = 1; else covered[$2] = 1; titles[++nt] = $1; next }
+  END {
+    for (i = 1; i <= no; i++) if (!(order[i] in okind)) reject("owners: open item missing from owners: " order[i])
+    for (i = 1; i <= nw; i++) if (!(oorder[i] in open)) reject("owners: not an open ledger key: " oorder[i])
+    for (i = 1; i <= nt; i++) if ((titles[i] in nocover) && !(titles[i] in shown)) { shown[titles[i]] = 1; reject("work: no covers: " titles[i]) }
+    for (i = 1; i <= no; i++) {
+      k = order[i]
+      if (!(k in okind) || okind[k] == "disputed" || (k in covered)) continue
+      if (loop == "design" && okind[k] == "owner" && ((ospec[k] SUBSEP osec[k]) in amended)) continue
+      reject("reverse: open item not covered by a work: line: " k)
+    }
+  }
+' "$tmp/open.txt" "$tmp/owners.norm" "$tmp/amended.norm" "$tmp/work.txt"
+
+# --- check 3b: supersedes: lines (code loop supersedes nothing; design titles match a work: line) ---
+awk -F'\t' -v loop="$loop" -v dir="$tmp" '
+  FILENAME == ARGV[1] { wt[$1] = 1; next }
+  {
+    if (loop == "code") print "reject: supersedes: code loop supersedes nothing: " $1 >> (dir "/rejects")
+    else if (!($2 in wt)) print "reject: supersedes: no work: line titled: " $2 >> (dir "/rejects")
+  }
+' "$tmp/work.txt" "$tmp/supersedes.txt"
+
+# --- section helpers ---
+# ranges FILE TEXT [LEVEL]: "start-end" per heading whose text equals TEXT; a section runs to the next
+# heading of the same or a higher level (code fences are skipped).
+ranges() {
+  awk -v want="$2" -v lvl="${3:-}" '
+    function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+    /^(```|~~~)/ { fence = !fence }
+    !fence && /^#+[ \t]/ {
+      match($0, /^#+/); l = RLENGTH
+      if (l <= 6) {
+        if (cur && l <= curlvl) { print cur "-" (NR - 1); cur = 0 }
+        if (!cur && trim(substr($0, l + 1)) == want && (lvl == "" || lvl == l)) { cur = NR; curlvl = l }
+      }
+    }
+    END { if (cur) print cur "-" NR }
+  ' "$1"
+}
+# goal_body FILE: the lines strictly between the real `## Goal` heading (fence-aware) and the next
+# heading of level <= 2, trailing whitespace trimmed. Prints nothing when there is no Goal.
+goal_body() {
+  awk '
+    /^(```|~~~)/ { fence = !fence }
+    !fence && /^#+[ \t]/ {
+      match($0, /^#+/); l = RLENGTH
+      t = substr($0, l + 1); sub(/^[ \t]+/, "", t); sub(/[ \t\r]+$/, "", t)
+      if (ing && l <= 2) ing = 0
+      if (!ing && l == 2 && t == "Goal") { ing = 1; next }
+    }
+    ing { sub(/[ \t\r]+$/, ""); print }
+  ' "$1"
+}
+# touched DIFF NEWRANGES BASERANGES: prints 1 when an added line falls in a new range or a removed line in a base range.
+touched() {
+  awk -v nr="$2" -v br="$3" '
+    function hit(ranges, s, e,   n, a, i, p) {
+      n = split(ranges, a, " ")
+      for (i = 1; i <= n; i++) { split(a[i], p, "-"); if (s <= p[2] + 0 && e >= p[1] + 0) return 1 }
+      return 0
+    }
+    /^@@ / {
+      h = $2; t = $3; sub(/^-/, "", h); sub(/^\+/, "", t)
+      split(h, x, ","); split(t, y, ",")
+      a = x[1] + 0; b = (x[2] == "" ? 1 : x[2] + 0); c = y[1] + 0; d = (y[2] == "" ? 1 : y[2] + 0)
+      if (d > 0 && hit(nr, c, c + d - 1)) found = 1
+      if (b > 0 && hit(br, a, a + b - 1)) found = 1
+    }
+    END { print found ? 1 : 0 }
+  ' "$1"
+}
+
+# --- check 4: every amended section has a changed line inside it ---
+while IFS=$'\t' read -r aspec asec; do
+  [ -n "$aspec" ] || continue
+  idx=$(spec_index "$aspec")
+  if [ -z "$idx" ]; then echo "reject: amended: spec is not in --specs: $aspec §$asec" >> "$rejects"; continue; fi
+  nr=$(ranges "${specs[$((idx - 1))]}" "$asec" | tr '\n' ' ')
+  br=$(ranges "$tmp/base.$idx" "$asec" | tr '\n' ' ')
+  if [ -z "$nr$br" ]; then echo "reject: amended: section not found in $aspec: §$asec" >> "$rejects"; continue; fi
+  [ "$(touched "$tmp/diff.$idx" "$nr" "$br")" = 1 ] || echo "reject: amended: no changed line in section: $aspec §$asec" >> "$rejects"
+done < <(awk '!seen[$0]++' "$tmp/amended.txt")
+
+# --- check 5: the ## Goal body is unchanged: same text, and no diff line inside it ---
+i=0
+for sp in "${specs[@]}"; do
+  i=$((i + 1))
+  [ ! -e "$tmp/new.$i" ] || continue
+  nr=$(ranges "$sp" Goal 2 | tr '\n' ' ')
+  br=$(ranges "$tmp/base.$i" Goal 2 | tr '\n' ' ')
+  [ -n "$nr$br" ] || continue
+  if [ -z "$nr" ] || [ -z "$br" ] || [ "$(touched "$tmp/diff.$i" "$nr" "$br")" = 1 ] \
+     || [ "$(goal_body "$sp")" != "$(goal_body "$tmp/base.$i")" ]; then
+    echo "reject: goal: ## Goal changed in $sp" >> "$rejects"
+  fi
+done
+
+# --- check 6: the root spec has ## Unchanged behavior ---
+[ -n "$(ranges "${specs[0]}" "Unchanged behavior")" ] || echo "reject: unchanged: root spec ${specs[0]} has no ## Unchanged behavior section" >> "$rejects"
+
+cat "$tmp/rejects.parse" "$rejects" > "$tmp/all"
+if [ -s "$tmp/all" ]; then cat "$tmp/all"; exit 3; fi
+echo ok

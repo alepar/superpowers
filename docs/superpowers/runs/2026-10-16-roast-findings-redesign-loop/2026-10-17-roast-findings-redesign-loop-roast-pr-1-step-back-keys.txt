@@ -1,0 +1,27 @@
+r1 [Should-fix] skills/super-auto/SKILL.md:263
+r1 [Should-fix] skills/super-design/scripts/step-back-check:109
+r1 [Should-fix] skills/super-design/scripts/findings-ledger:263
+r1 [Should-fix] skills/super-design/scripts/findings-ledger:245
+r1 [Nit] tests/super-design/test-redesign-chain.sh:89
+r1 [Nit] skills/super-design/scripts/amend-check:244
+r1 [Nit] skills/super-design/scripts/step-back-check:100
+r1 [Nit] skills/super-design/scripts/step-back-check:93; skills/super-design/scripts/step-back-check:99
+r1 [Nit] skills/super-auto/resume.md:43
+r1 [Nit] skills/super-auto/resume.md:29
+r1 [Nit] skills/super-auto/SKILL.md:171
+r1 [Nit] skills/super-design/scripts/findings-ledger:157
+r1 [Must-fix] skills/super-auto/SKILL.md §Redesign cycle (with super-design §Amend Mode's code-loop row): reopen the root epic (`bd update <epicId> --status open`) before Amend Mode files its beads, or before the step-4 super-code re-entry. Today the only reopen is in §Step 3, which a redesign round skips. super-code then sees `rootClosed` (close-in-tree-epics reads the epic's status, and bd does not reopen a closed parent on `bd create --parent`), stops with `root-closed`, and no `sp:redesign-code-<K>` or `sp:redesign-code-<K>-roast` bead runs.
+r1 [Must-fix] skills/super-auto/resume.md:29: limit "findings … missing as beads are re-filed" and "only findings with no matching record go through the scope-filter pass" to rounds with no non-aborted `redesign-code-<K>` record for that round. Then a resume of a redesign round neither duplicates Amend Mode's `sp:redesign-code-<K>` beads nor runs the scope filter (spec §3, "Skipped in a redesign round"). (From cluster 3.)
+r1 [Must-fix] skills/super-design/SKILL.md §Amend Mode step 4 and skills/super-design/amend-prompt.md: make the spec §4 design-loop supersede executable. Have the designer name the obsoleted open bead ids, for example in a design-only `supersedes:` field, and have step 4 run `bd supersede` on each one, skipping beads already closed. Today only a loop-table cell mentions it, so the beads for the replaced decision stay open beside the new work beads. (From cluster 5.)
+r1 [Must-fix] untested: The code-loop redesign path end to end has no test: Step 1 starts a cycle, Amend Mode files beads, super-code re-enters on the run's epic, and the beads execute. That gap is how the closed-epic defect went unseen. Every script stage is tested only in isolation or in the chain test, which runs no bd or super-code.
+r1 [Must-fix] untested: Everything spec §7 lists as prose-only, for both loops, has no script test: Step 1 ordering against the exit tests, forced redesign or thrash after two rejects, the ledger exit-2 degrade, the interactive decline, budget and effective-cap arithmetic, the lastGood breach, the extension-round replacement rule, Amend Mode's sequence (clean-spec precondition, restore, retry, no abort after the commit), title-deduped bead filing, coverage-amend outside the cap, and resume and Re-entry state dispatch. (Clusters 2, 3, 5, 8.)
+r1 [Must-fix] untested: Spec §7's manual acceptance has not run yet: replaying the 2026-10-15 coordinator-subagent-compaction round-1 code roast through findings-ledger and the amend designer. The spec assigns it to the report phase. (Clusters 2, 3, 5.)
+r1 [Must-fix] untested: The roast round after a redesign round has no defined punch-list input, because the redesign round writes no punch-list file. Nothing checks what super-auto passes as `--punch-listed` there.
+r1 [Must-fix] untested: run-state-formats-2bf1d53.txt does not pin the `redesign-<loop>-<K>` line format, its state and `designRoast` vocabulary, or the changed `stepBack…-round-<N>` forms. So contract-lint does not verify the record formats that spec lines 284-285 claim it does. (Cluster 6.)
+r1 [Must-fix] untested: The disputed-Blocking route before `roastCodeCapped:` is prose only. disputed-capped.md tests only report-status counting the key, and no fixture covers a disputed key in `roastDesignCapped:`. (Cluster 6.)
+r1 [Must-fix] untested: report-prompt.md's new Remaining and Gotchas sources have no fixture checking that a drafted report lists `disputed` rows or the six new park texts. (Cluster 3.)
+r1 [Must-fix] untested: findings-ledger has no fixture for: a key first raised in a degraded round, a missing round N-1, the `[panel-capped: N unverified]` qualifier, a returned Nit not firing recurrence, duplicate final-review rounds, or an override targeting a final-review row. (Clusters 5, 8.)
+r1 [Must-fix] untested: amend-check has no case for: a newly created untracked spec, a duplicate `owners:` key, `./`-prefixed vs bare spec paths, a `## Goal` heading inside a code fence, a design-loop `local` item without a `work:` line, or a multi-`--specs` root choice. (Clusters 5, 8.)
+r1 [Must-fix] untested: step-back-check has no case for: cited triggers carrying parenthesised evidence with commas, a misspelled semantic trigger, or an unknown key in `remains:`. (Clusters 5, 8.)
+r1 [Must-fix] untested: test-redesign-chain.sh runs amend-check against the pre-dissolve ledger (`L2-pre.md`), not the post-dissolve ledger that Step 1 actually hands Amend Mode. (Cluster 8.)
+r1 [Must-fix] untested: test-report-verdict.sh does not assert the exit code of the `decision: local` case, and has no near-miss token case such as `localized`. (Cluster 7.)
