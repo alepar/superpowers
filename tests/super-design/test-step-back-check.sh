@@ -98,6 +98,17 @@ assert_eq "$code:$out" "0:ok" "a key containing ', ' is split only on ', [' into
 run bash "$SBC" --step-back "$SF/dissolves-comma-key.md" --keys "$SF/keys.txt"
 assert_eq "$out" "reject: dissolves: unknown key '[Should-fix] §3 Step 1 item 2, item 5'" "the comma-bearing key stays whole when it is unknown"
 
+echo "step-back-check: redesign-only fields"
+
+run bash "$SBC" --step-back "$SF/local-with-dissolves.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "3:reject: dissolves: only a redesign record may list keys (decision local)" "dissolves: on a local record is rejected"
+run bash "$SBC" --step-back "$SF/local-with-remains.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "3:reject: remains: only a redesign record may list keys (decision local)" "remains: on a local record is rejected"
+run bash "$SBC" --step-back "$SF/patch-with-dissolves.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "3:reject: dissolves: only a redesign record may list keys (decision local)" "dissolves: on a patch record is rejected (patch is read as local)"
+run bash "$SBC" --step-back "$SF/local-dissolves-none.md" --keys "$SF/keys.txt" --ledger "$SF/ledger-none.md"
+assert_eq "$code:$out" "0:ok" "dissolves: none and remains: none on a local record are ok"
+
 echo "step-back-check: no jq"
 nojq=$(mktemp -d)
 ln -s "$(command -v bash)" "$nojq/bash"
