@@ -23,10 +23,10 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `epic` | `epic: <root epic id>` | 3 | super-design |
 | `branch` | `branch: super-auto/<slug>` | 3 | super-auto, at creation |
 | `base` | `base: <the branch this run merges back into>` | 3 | super-auto, at creation |
-| `roast-design` | `roast-design: <report path>, <report path>, …` | 3 | super-design |
+| `roast-design` | `roast-design: <report path>, <report path>, …` | 3 | super-design; super-auto (appends each phase-5 amend design roast report, SKILL.md §Redesign cycle step 3) |
 | `roast-code` | `roast-code: <report path>, <report path>, …` | 3 | super-auto |
 | `findingsLedger` | `findingsLedger: <path>`, the code loop's findings ledger | 3 | super-auto, when the loop first builds its ledger |
-| `findingsLedgerDesign` | `findingsLedgerDesign: <path>`, the design loop's findings ledger | 3 | super-design, when the loop first builds its ledger |
+| `findingsLedgerDesign` | `findingsLedgerDesign: <path>`, the design loop's findings ledger | 3 | super-design, when the loop first builds its ledger; super-auto, when a phase-5 amend design roast builds it first (SKILL.md §Redesign cycle step 3) |
 | `skillSource` | `skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)`, only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache | 3 | super-auto |
 | `codeMechanism` | `codeMechanism: Workflow \| ordinary-subagents`, chosen from the calling session's loaded tools, updated before a code re-entry when capability changes | 3 | super-auto |
 | `runTag` | `runTag: <slug>-<UTC yyyymmddThhmmss>`, minted once; passed to every super-code invocation as `args.runTag` | 3 | super-auto, at pre-flight |
@@ -36,7 +36,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `friction` | `friction: <N> events \| none recorded` | 3 | super-auto (SKILL.md §Phase 6 — report step 4) |
 | `parked` | `parked:` then one `- <source report> · <kind> · "<text>"` line per item, a `degraded-verdict` line optionally ending ` · resolves-on: sweep`; kind one of `escalation \| beyond-cap \| degraded-verdict \| graph-change` (source `graph-pass` for a graph change) | 4 | super-design (phases 1–2); super-auto (phase 3 on) |
 | `graph-pass` | owned by `super-design` §Parallelism Pass (root only) | 4 | super-design |
-| `roastDesignRound` | `roastDesignRound: <N>` | 5 | super-design, every round |
+| `roastDesignRound` | `roastDesignRound: <N>` | 5 | super-design, every round; super-auto, for each phase-5 amend design roast (SKILL.md §Redesign cycle step 3) |
 | `roastCodeRound` | `roastCodeRound: <N>` | 5 | super-auto, every round |
 | `roastDesignCapped` | `roastDesignCapped: <unresolved finding ids> · <extension report path> · stopped \| proceeded` | 5 | super-design |
 | `redesignCycles-code` | `redesignCycles-code: <K>`, single-valued | 5 | super-auto, when Step 1 starts a cycle |
@@ -80,7 +80,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    A stall at phases 1–5 writes `report.md` (status line per report-prompt.md §The status block) but leaves `phase` where it was. A stall at phase 6 leaves `phase: report` with a `stalled` status line, which is why the phase-7 gate also checks the status line (SKILL.md §Invariants I2 (phase-7 gate)).
 
-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. `findingsLedger` and `findingsLedgerDesign` point to the loops' findings ledgers (built by `super-design/scripts/findings-ledger`), each written when its loop first builds one. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. `findingsLedger` and `findingsLedgerDesign` point to the loops' findings ledgers (built by `super-design/scripts/findings-ledger`), each written when its loop first builds one. `roast-design:` lists every design roast report in round order: phase 2's rounds, then each phase-5 amend design roast report, which `super-auto` appends when that round's report is written (SKILL.md §Redesign cycle step 3), so the list always matches `roastDesignRound`. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
 
    Path-valued pointers are relative to the run directory (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`), never bare filenames or full repo-relative paths: one convention, so two writers produce compatible files.
 
@@ -100,7 +100,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    Parking is mode-independent: a `beyond-cap` or `degraded-verdict` item is recorded the same way whether autonomous mode or a human answered, noting who chose, because the question was raised and an unverified Blocking candidate survived it either way. These items carry open concerns and self-made calls a resumed session never saw raised.
 
-5. **Roast iteration counts** — `roastDesignRound` and `roastCodeRound`, each written every round by the skill running that round (`roastDesignRound` by `super-design`, whose loop runs inside its own invocation; `roastCodeRound` by `super-auto`), so a restart never resets a cap. Each loop owns its cap and thrash rules in its exits: SKILL.md §Loop exits for the code loop, and for the design loop `super-design` §Adversarial Review Loop (root only). This file does not restate them.
+5. **Roast iteration counts** — `roastDesignRound` and `roastCodeRound`, each written every round by the skill running that round (`roastDesignRound` by `super-design`, whose loop runs inside its own invocation, and by `super-auto` for a phase-5 amend design roast, SKILL.md §Redesign cycle step 3, which increments it and so spends the design loop's cap; `roastCodeRound` by `super-auto`), so a restart never resets a cap. Each loop owns its cap and thrash rules in its exits: SKILL.md §Loop exits for the code loop, and for the design loop `super-design` §Adversarial Review Loop (root only). This file does not restate them.
 
    `redesignCycles-code` and `redesignCycles-design` count the redesign cycles each loop has started. Each is single-valued, written by the loop that owns it the moment its Step 1 starts a cycle, and never reset: a restart, a resume and a later cycle only raise it. They are what the loops' caps are computed from, so a lost or reset counter would hand a run back budget it already spent.
 
@@ -207,8 +207,9 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 ## File format — worked example
 
 An illustrative `run.md` mid-run: the design phase went through two roast
-rounds (one still parked as an escalation) and the run is now one round into
-code roast.
+rounds (one still parked as an escalation), then code roast ran three rounds.
+Round 3's step-back started redesign cycle 1, whose amend design roast ran as
+design roast round 3; that cycle is now applied, and code roast round 4 is next.
 
 ```markdown
 # super-auto run — 2026-07-31-per-tenant-rate-limiter
@@ -224,10 +225,10 @@ spec: 2026-07-31-per-tenant-rate-limiter-design.md
 epic: bd-412
 branch: super-auto/per-tenant-rate-limiter
 base: main
-roast-design: 2026-07-31-per-tenant-rate-limiter-roast-design-1.md, 2026-07-31-per-tenant-rate-limiter-roast-design-2.md
-roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md
-findingsLedger: 2026-08-01-per-tenant-rate-limiter-findings-ledger-code.md
-findingsLedgerDesign: 2026-07-31-per-tenant-rate-limiter-findings-ledger-design.md
+roast-design: 2026-07-31-per-tenant-rate-limiter-roast-design-1.md, 2026-07-31-per-tenant-rate-limiter-roast-design-2.md, 2026-08-01-per-tenant-rate-limiter-roast-design-3.md
+roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md, 2026-08-01-per-tenant-rate-limiter-roast-pr-2.md, 2026-08-01-per-tenant-rate-limiter-roast-pr-3.md
+findingsLedger: findings-ledger.md
+findingsLedgerDesign: findings-ledger-design.md
 
 roastDesignRound: 3
 roastCodeRound: 3
@@ -245,7 +246,7 @@ parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
 - 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
-- 2026-08-01-per-tenant-rate-limiter-roast-pr-3.md · degraded-verdict · "amend roast finding not fixed — [Should-fix] docs/per-tenant-rate-limiter-design.md §Retry policy"
+- 2026-08-01-per-tenant-rate-limiter-roast-design-3.md · degraded-verdict · "amend roast finding not fixed — [Should-fix] 2026-07-31-per-tenant-rate-limiter-design.md §Retry policy"
 
 codeBuckets:
   completed: bd-413, bd-414
