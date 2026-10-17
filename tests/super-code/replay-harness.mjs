@@ -1719,7 +1719,12 @@ async function main() {
   {
     for (const kind of ['hold', 'deferred']) {
       const scoped = { version: 1, id: 'bd-101', kind, operation: 'record', reason: 'required evidence unavailable', evidence: ['source.md'], data: { taskId: 'bd-101' } }
-      const diagnostic = { ...scoped, id: 'run-failure:old', kind: 'deferred', data: { owner: 'caller', runFailure: { failure: 'old failure', command: 'npm test', history: [{ task: 'bd-102' }] } } }
+      const identity = { failure: 'old failure', command: 'npm test', configuration: 'target=staging' }
+      const baseline = { sourceTree: SHA('a'), command: identity.command, configuration: identity.configuration, outcome: 'pass', location: 'evidence/old-baseline.log', kind: 'live' }
+      const observed = { ...baseline, sourceTree: SHA('b'), outcome: 'fail', location: 'evidence/old-failure.log' }
+      const diagnostic = { ...scoped, id: 'run-failure:old', kind: 'deferred', evidence: [baseline.location, observed.location], data: { owner: 'caller', runFailure: { ...identity, history: [
+        { task: 'bd-102', dispatch: 'review:bd-102', claim: { ...identity, runBaseline: 0, observed: 1, introducedBy: 'bd-old' }, evidence: [baseline, observed] },
+      ] } } }
       const out = await run({ args: liveArgs(), canned: oneTaskCanned({
         'read-ledger': { text: [scoped, diagnostic].map(r => 'Recovery: ' + JSON.stringify(r)).join('\n') },
         'bd-ready': [{ ids: ['bd-101', 'bd-102'] }, { ids: [] }],
@@ -1730,6 +1735,9 @@ async function main() {
       assertNoThrow(out)
       check(!out.counts['impl:bd-101'] && out.counts['impl:bd-102'] === 1 && out.result?.completed.includes('bd-102'), kind + ' holds only affected work while unrelated work proceeds')
       check(out.result?.recovery?.obligations.some(r => JSON.stringify(r) === JSON.stringify(diagnostic)), 'runFailure diagnostics survive without becoming generic repair work')
+      const failure = out.result?.runFailures?.find(r => r.id === diagnostic.id)
+      check(failure?.owner === 'bd-old' && failure?.classification === 'run-introduced' && failure?.state === 'open' && failure?.gaps.length === 0, 'unscoped diagnostic retains its open introducing owner alongside unrelated admission')
+      check(failure?.comparisons.length === 1 && JSON.stringify(failure.comparisons[0].runBaseline) === JSON.stringify(baseline) && JSON.stringify(failure.comparisons[0].observed) === JSON.stringify(observed), 'resumed diagnostic exposes the original source-bound baseline and failing observation')
       check(out.result?.stopReason === 'recovery-held', 'persisted obligation prevents a clean resumed finish')
     }
     const lane = { version: 1, id: 'merge-lane', kind: 'hold', operation: 'record', reason: 'dirty integration', evidence: ['merge:bd-101'], data: { taskId: 'bd-101' } }
