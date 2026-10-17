@@ -154,6 +154,7 @@ run(r=>r.runFailures=[{id:'regression',classification:'run-introduced',state:'op
 run(r=>r.runFailures=[{id:'unknown',classification:'gap',state:'open',owner:null}],3,/unknown/);
 run(r=>r.runFailures=[{id:'old-failure',classification:'pre-run',state:'open',owner:null}],0);
 run(r=>r.runFailures=[{id:'fixed',classification:'run-introduced',state:'verified',owner:'task-A'}],0);
+run(r=>r.runFailures=[{id:'fixed-with-gap',classification:'run-introduced',state:'verified',owner:'task-A',gaps:['conflicting source history']}],3,/conflicting source history/);
 run(r=>{r.recovery.obligations=[{...deferred,id:'old-failure',data:{runFailure:{}}}];r.runFailures=[{id:'old-failure',classification:'pre-run',state:'open',owner:null}]},0);
 run(r=>r.requirements=[],3,/requirements/);
 run(r=>r.sourceTree=other,3,/source/);

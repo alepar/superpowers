@@ -129,6 +129,7 @@ else{
   if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
   failures.set(f.id,f);
   if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
+  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
   if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
  }
  for(const r of current.recovery.obligations){
