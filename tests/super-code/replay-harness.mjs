@@ -524,6 +524,7 @@ async function main() {
     assertNoThrow(resumed)
     check(resumed.result?.completed?.includes('bd-101') && resumed.result?.verificationCompletions?.[0]?.sourceTree === SHA('d') && !resumed.counts['impl:bd-101'], 'resume reuses reviewed verification with unchanged source')
     check(resumed.result?.metrics?.some(l => /merges 0/.test(l)) && resumed.result?.metrics?.some(l => /ledger-check ok/.test(l)), 'verification completion does not increment task landings or invalidate ledger accounting')
+    check(resumed.result?.metricsEvidence?.completed?.includes('bd-101') && JSON.stringify(resumed.result?.metricsEvidence?.ledger?.landings) === '[]' && JSON.stringify(resumed.result?.metricsEvidence?.discrepancies?.completedOnly) === '[]', 'reconciled metrics retain verification completion without a fictitious missing landing')
     for (const [name, extra] of [
       ['missing evidence', { 'impl:bd-101': { ...impl, evidence: [] }, 'review:bd-101': { ...review, evidence: [] } }],
       ['stale source', { 'review:bd-101': { ...review, sourceTree: SHA('e') } }],
@@ -581,6 +582,13 @@ async function main() {
     const pending = await run({ args: liveArgs(), canned: canned({ 'close-only:bd-101': null }) })
     assertNoThrow(pending)
     check(!pending.result?.completed?.length && pending.result?.closureUnconfirmed?.includes('bd-101') && pending.result?.verificationCompletions?.length === 1, 'unavailable closure preserves verified basis and remains unconfirmed')
+    const finishClosed = await run({ args: liveArgs(), canned: canned({
+      'close-only:bd-101': null, 'reconcile-buckets': { closed: ['bd-101'] },
+      'read-ledger:finish': { text: digest, landed: [], reviewBase: SHA('a'), reviewHead: SHA('a') },
+    }) })
+    assertNoThrow(finishClosed)
+    check(finishClosed.trace.findIndex(t => t.label === 'reconcile-buckets') < finishClosed.trace.findIndex(t => t.label === 'read-ledger:finish') && finishClosed.result?.metricsEvidence?.completed?.includes('bd-101'), 'Finish-only verification closure is reconciled before metric source capture')
+    check(finishClosed.result?.metrics?.[1].includes('verification-only 1') && finishClosed.result?.metrics?.[3].startsWith('Metrics: ledger-check ok') && JSON.stringify(finishClosed.result?.metricsEvidence?.discrepancies?.completedOnly) === '[]', 'Finish-only verification contributes a completion and zero missing landings')
     const pendingLines = pending.trace.filter(t => /^ledger/.test(t.label)).flatMap(t => extractLedgerLines(t.prompt)).join('\n')
     const recovered = await run({ args: liveArgs(), canned: canned({ 'read-ledger': { text: pendingLines }, 'bd-ready': [{ ids: [] }, { ids: [] }], 'resume-check:bd-101': { landed: false, sourceVerified: true, closed: [], open: ['bd-101'] } }) })
     assertNoThrow(recovered)
