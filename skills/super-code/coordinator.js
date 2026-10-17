@@ -225,6 +225,7 @@ async function readLedger(stubKey, phaseName, withLanded = false) {
   return {
     text:transport.text, ledgerTransport:transport.ledgerTransport, sourceGaps,
     ...(acquireIdentity ? {invocationId:selectedIdentity ?? transport.invocationId} : {}),
+    ...(Array.isArray(transport.recoveryRecords) ? { recoveryRecords:transport.recoveryRecords } : {}),
     ...(git ? {landed:git.landed} : {landedError:retry?.landedError || first?.landedError}),
     ...(review ? {reviewBase:review.reviewBase, reviewHead:review.reviewHead} : {reviewError:retry?.reviewError || first?.reviewError}),
   }
@@ -387,7 +388,7 @@ const EDGE_CUTS = { type: 'object', properties: { applied:{ type:'array', items:
 const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['rootClosed','closedThisRun'] }
 // Ledger reads carry digest text and independent source outcomes; parsing stays here.
 // `landed`: <branch> <tip> <merge> lines, or landedError when Git lookup failed.
-const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, invocationId: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
+const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, invocationId: { type: 'string' }, recoveryRecords: { type: 'array', items: { type: 'object', properties: { source: {type:'string'}, line: {type:'integer'}, text: {type:'string'} }, required: ['source', 'line', 'text'] } }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, sourceVerified: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
@@ -412,6 +413,7 @@ const verificationCompletions = new Map() // independently reviewed no-change ba
 const verificationCandidates = new Set() // a tracker close cannot supply missing acceptance review
 const fixHistory = []
 const recoveryGaps = []
+let recoveryTransportHeld = false // unresolved retained pointers cannot supply a safe admission scope
 function recoveryProblem(r) {
   const text = v => typeof v === 'string' && v.trim().length > 0
   if (!r || r.version !== 1) return 'unsupported recovery version'
@@ -770,8 +772,33 @@ for (const [digestIndex, raw] of (ledger?.text || '').split('\n').entries()) {
   const line = raw.trim()
   const recoveryPointer = /^Recovery gap: ([0-9]+) (.+)$/.exec(line)
   if (recoveryPointer) {
-    recoveryGaps.push({ source: recoveryPointer[2], line: Number(recoveryPointer[1]), reason: 'Recovery record exceeds compact transport limit' })
-    log('recovery record gap: oversized record retained at ' + recoveryPointer[2] + ':' + recoveryPointer[1])
+    const source = recoveryPointer[2], sourceLine = Number(recoveryPointer[1])
+    // Resolve only a pointer into our own authoritative append-only ledger. Preserve the whole
+    // record (including additive/unknown fields); a projection cannot validate a later clear.
+    const copies = Array.isArray(ledger?.recoveryRecords)
+      ? ledger.recoveryRecords.filter(r => r && r.source === source && r.line === sourceLine) : []
+    const recovered = (source === ledgerPath || source === workspaceAbs + '/progress.md')
+      && Number.isSafeInteger(sourceLine) && sourceLine > 0 && copies.length === 1
+      ? checkDigest(copies[0], 'retained recovery line ' + sourceLine) : null
+    const records = (recovered?.text || '').split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('# ledger-digest:'))
+    // A counted empty result, missing source, truncated echo or malformed record is a gap, never
+    // an empty obligation set. Keep its source pointer visible and hold admission if scope is lost.
+    let record = null
+    if (records.length === 1 && records[0].startsWith('Recovery:')) {
+      try { record = JSON.parse(records[0].slice('Recovery:'.length)) } catch {}
+    }
+    if (record && !recoveryProblem(record)) {
+      readRecovery(records[0], digestIndex + 1)
+    } else {
+      recoveryTransportHeld = true
+      recoveryGaps.push({ source, line: sourceLine, reason: 'Recovery record exceeds compact transport limit; authoritative recovery unavailable or invalid' })
+      log('recovery record gap: oversized record retained at ' + source + ':' + sourceLine + '; admission held until its scope is recovered')
+    }
+    continue
+  }
+  if (line.startsWith('Recovery gap:')) {
+    recoveryTransportHeld = true
+    recoveryGap(line, 'malformed retained Recovery pointer; admission scope unavailable', digestIndex + 1)
     continue
   }
   if (line.startsWith('Recovery:')) { readRecovery(line, digestIndex + 1); continue }
@@ -893,6 +920,7 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
 }
 await drainLedger()
 const recoveryAdmissionReason = id => {
+  if (recoveryTransportHeld) return 'recovery: retained record scope unavailable'
   if (resumeHolds.has(id)) return 'recovery: ' + resumeHolds.get(id)
   for (const r of recoveryObligations.values()) {
     if (!['hold', 'deferred'].includes(r.kind)) continue
@@ -2370,7 +2398,7 @@ if (closureUnconfirmed.length) {
   stopReason = 'closure-unconfirmed'
   log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
 }
-if (!integrationBlocked && (resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => resumedObligationKeys.has(key) && (r.kind === 'hold' || (r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
+if (!integrationBlocked && (recoveryTransportHeld || resumeHolds.size || [...recoveryObligations.entries()].some(([key, r]) => resumedObligationKeys.has(key) && (r.kind === 'hold' || (r.kind === 'deferred' && (r.data.taskId || r.data.affectedIds?.length)))))) {
   stopReason = 'recovery-held'
   log('recovery held: persisted admission obligations remain unresolved; unrelated eligible work was allowed to proceed')
 }
@@ -2875,7 +2903,10 @@ function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, c
   const identityStep = acquireIdentity ? " Mint this fresh invocation's identity here, outside the Workflow script: run `uuidgen` once and return `inv-<uuidgen stdout, trimmed>` as structured `invocationId`. Use a filesystem-safe token (1-128 ASCII letters, digits, underscores or hyphens, starting with a letter or digit). Never copy a prior Launch identity or derive it from runTag. If minting fails, omit invocationId and report the failure; preserve the ledger text independently." : ''
   const landedStep = withLanded ? ` Then run \`bash ${codeSkill}/scripts/already-merged --landed ${integrationBranch}\` and report every line it prints, verbatim and in order, as \`landed\` (an empty list when it exits 0 and prints nothing; if it exits non-zero, omit landed and report landedError with the exact command and error — it never changes \`text\` or \`scriptError\`).` : ''
   const sourceStep = captureReview ? ` Capture review inputs once in this same dispatch: run \`git rev-parse --verify ${integrationBranch}^{commit}\` and keep its full output as reviewHead; resolve the repository's default branch commit and run \`git merge-base <default-branch-commit> <reviewHead>\`, then \`git rev-parse --verify <merge-base>^{commit}\` as reviewBase. Return reviewBase and reviewHead verbatim. If any capture command fails, omit both fields and return reviewError with the exact command and error; preserve the ledger text independently. Do not change the checkout.` : ''
-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${identityStep}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
+  const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
+  const recoveryCommand = 'bash ' + quote(codeSkill + '/scripts/ledger-digest') + ' --recovery-line N ' + quote(ledgerPath)
+  const recoveryStep = ' For each Recovery gap: N SOURCE pointer in that output, run `' + recoveryCommand + '` with N replaced by that pointer\'s exact source line number. Return recoveryRecords with one entry per pointer: source and line copied exactly from the pointer, and text containing every line of that targeted command\'s output verbatim, including its counting header or missing/unreadable status. Retrieve only pointers whose SOURCE is ' + ledgerPath + ' or ' + workspaceAbs + '/progress.md; leave any other pointer unresolved. Do not project fields, summarize records, or invent an empty recovery result. Preserve the original compact text independently if retrieval fails.'
+  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${identityStep}${recoveryStep}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
 }
 
 function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines, structured = false) {

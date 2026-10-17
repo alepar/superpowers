@@ -21,19 +21,30 @@
 # an empty ledger from a lost or truncated echo.
 # Line order is kept: latest Task state wins; Recovery fix history remains append-only.
 #
-# Usage: bash ledger-digest LEDGER_PATH
+# Usage: bash ledger-digest [--recovery-line N] LEDGER_PATH
+# Targeted recovery transports that one retained Recovery record verbatim, without the cap.
+# It never projects fields or rewrites the ledger; the coordinator validates the full record.
 # Missing/unreadable ledgers print # ledger-status: <status>; valid empty files print a zero
 # counting header. These observations exit 0; exits 2 on a bad argument.
 set -euo pipefail
 
+recovery_line=0
+if [ "${1:-}" = --recovery-line ]; then
+  if [ $# -ne 3 ] || [[ ! "$2" =~ ^[1-9][0-9]*$ ]]; then
+    echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
+    exit 2
+  fi
+  recovery_line=$2
+  shift 2
+fi
 if [ $# -ne 1 ]; then
-  echo "usage: ledger-digest LEDGER_PATH" >&2
+  echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
   exit 2
 fi
 if [ ! -e "$1" ]; then echo '# ledger-status: missing'; exit 0; fi
 if [ ! -f "$1" ] || [ ! -r "$1" ]; then echo '# ledger-status: unreadable'; exit 0; fi
 
-if digest=$(LC_ALL=C awk '
+if digest=$(LC_ALL=C awk -v recovery_line="$recovery_line" '
 BEGIN { for (i = 1; i < 256; i++) ord[sprintf("%c", i)] = i }
 function fingerprint(s, a, b, i, c) {
   if (match(s, / \[recurrence-id: v1-[0-9]+-[0-9]+-[0-9]+\]$/)) return substr(s, RSTART, RLENGTH)
@@ -53,6 +64,10 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, 
 {
   total++
   line = trim($0)
+  if (recovery_line) {
+    if (FNR == recovery_line && line ~ /^Recovery:/) out[++kept] = line
+    next
+  }
   if (line ~ /^Recovery:/) {
     out[++kept] = length(line) > 4096 ? "Recovery gap: " FNR " " FILENAME : line
     next
