@@ -77,7 +77,7 @@ BIN="$TMPROOT/bin"; ST="$TMPROOT/bd-state"
 mkdir -p "$BIN"
 cat > "$BIN/bd" <<'STUB'
 #!/usr/bin/env bash
-# Stub bd: one file per bead under $BD_STATE (lines: status=, parent=, labels=, title=, epic=).
+# Stub bd: one file per bead under $BD_STATE (lines: status=, parent=, labels=, title=, epic=, deps=).
 set -u
 echo "$*" >> "$BD_STATE/calls.log"
 get() { sed -n "s/^$2=//p" "$BD_STATE/bead-$1" 2>/dev/null; }
@@ -103,7 +103,14 @@ case "$cmd" in
     n=$(( $(ls "$BD_STATE" | grep -c '^bead-') + 1 )); id="new-$n"
     printf 'status=open\nparent=%s\nlabels=%s\ntitle=%s\n' "$parent" "$labels" "$title" > "$BD_STATE/bead-$id"
     echo "$id" ;;
-  show) printf '[\n  {\n    "id": "%s",\n    "status": "%s"\n  }\n]\n' "$1" "$(get "$1" status)" ;;
+  show)
+    # Like bd 1.3.0: the bead's own fields at 4 spaces, each dependency's id/status at 8 spaces.
+    printf '[\n  {\n    "id": "%s",\n    "status": "%s",\n    "dependencies": [' "$1" "$(get "$1" status)"
+    sep=''
+    for dep in $(get "$1" deps | tr ',' ' '); do
+      printf '%s\n      {\n        "id": "%s",\n        "status": "%s"\n      }' "$sep" "$dep" "$(get "$dep" status)"; sep=','
+    done
+    printf '\n    ]\n  }\n]\n' ;;
   supersede) put "$1" status closed ;;
   ready)
     echo "["; first=1
@@ -124,10 +131,10 @@ chmod +x "$BIN/bd"
 block=$(awk '/^4\. \*\*File the/ { on = 1 } on && /^ *```bash/ { inb = 1; next } inb && /^ *```/ { exit } inb { sub(/^   /, ""); print }' "$REPO_ROOT/skills/super-design/SKILL.md")
 if [ -n "$block" ]; then pass "filing block extracted from SKILL.md"; else fail "filing block extracted from SKILL.md"; fi
 
-seed() { # seed: root epic closed, bd-7 open under it, bd-9 closed
+seed() { # seed: root epic closed, bd-7 open under it with closed dependency bd-9, bd-9 closed
   rm -rf "$ST"; mkdir -p "$ST"
   printf 'status=closed\nparent=\nlabels=sp:ep-1\ntitle=root\nepic=1\n' > "$ST/bead-ep-1"
-  printf 'status=open\nparent=ep-1\nlabels=sp:ep-1\ntitle=old retry\n' > "$ST/bead-bd-7"
+  printf 'status=open\nparent=ep-1\nlabels=sp:ep-1\ntitle=old retry\ndeps=bd-9\n' > "$ST/bead-bd-7"
   printf 'status=closed\nparent=ep-1\nlabels=sp:ep-1\ntitle=old b\n' > "$ST/bead-bd-9"
 }
 file_beads() { # file_beads LOOP LABEL RECORD: sets $out and $code
