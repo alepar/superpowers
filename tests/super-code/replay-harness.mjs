@@ -1690,6 +1690,29 @@ async function main() {
     }) })
     assertNoThrow(failedAppend)
     check(failedAppend.result?.stopReason === 'recovery-held' && failedAppend.result?.recovery?.obligations.some(r => r.kind === 'pending-closure' && r.id === 'bd-101'), 'unconfirmed recovery clear append remains unresolved after writer drain')
+    for (const appendResult of [null, { appended: false }]) {
+      const partial = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text: 'Recovery: ' + JSON.stringify(extended) },
+        'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+        'resume-check:bd-101': { landed: true, closed: ['bd-101'], open: ['bd-112', 'bd-109'] },
+        'close-only:bd-101': { status: 'CLOSED' },
+        'ledger:bd-101': appendResult, 'ledger:bd-101:retry': appendResult,
+      }) })
+      assertNoThrow(partial)
+      check(partial.counts['close-only:bd-101'] === 1 && partial.counts['close-check:bd-101'] === 1, 'partial recovery confirms tracker closure before attempting its durable clear')
+      check(partial.counts['ledger:bd-101'] === 1 && (partial.counts['ledger:bd-101:retry'] ?? 0) === (appendResult === null ? 1 : 0), 'partial recovery uses the bounded task ledger append path')
+      check(partial.result?.stopReason === 'recovery-held' && !partial.result?.completed.includes('bd-101'), 'failed partial-close append holds recovery instead of reporting completed')
+      check(JSON.stringify(partial.result?.recovery?.obligations.find(r => r.kind === 'pending-closure')) === JSON.stringify(extended), 'failed partial-close append retains the exact original obligation')
+      const durable = partial.trace.filter(t => !t.label.startsWith('ledger:bd-101')).flatMap(t => extractLedgerLines(t.prompt))
+      const restarted = await run({ args: liveArgs(), canned: oneTaskCanned({
+        'read-ledger': { text: ['Recovery: ' + JSON.stringify(extended), ...durable].join('\n') },
+        'bd-ready': { ids: [] }, 'close-epics': { rootClosed: true, closedThisRun: [] },
+        'resume-check:bd-101': { landed: true, closed: ['bd-101', 'bd-112', 'bd-109'], open: [] },
+      }) })
+      assertNoThrow(restarted)
+      check(restarted.counts['resume-check:bd-101'] === 1 && !restarted.counts['close-only:bd-101'] && !restarted.counts['impl:bd-101'] && !restarted.counts['review:bd-101'] && !restarted.counts['merge:bd-101'], 'restart after failed partial-close append observes facts without repeating closure or implementation')
+      check(restarted.result?.completed.includes('bd-101') && !restarted.result?.recovery?.obligations.some(r => r.kind === 'pending-closure'), 'restart settles partial closure after its durable clear is confirmed')
+    }
   }
 
   scenario('recovery resume: durable scoped holds preserve unrelated eligibility and diagnostic deferrals')

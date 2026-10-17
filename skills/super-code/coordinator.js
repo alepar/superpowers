@@ -255,7 +255,7 @@ function flushLedger(id, phase) {
   if (!entries || !entries.length) return
   const lines = entries.flatMap(e => flatLines(e.line))
   const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
-  queueLedger(lines, `ledger:${id}`, phase, elided)
+  return queueLedger(lines, `ledger:${id}`, phase, elided)
 }
 function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
@@ -1306,7 +1306,7 @@ while (true) {
   }
   // Already-merged re-entry: close the task bead (and its RESOLVEd blocker bead), settle completed,
   // and mark the completion line as a re-entry close. Runs outside the queue.
-  const confirmClosure = async (r, closeFirst = false) => {
+  const confirmClosure = async (r, closeFirst = false, deferClear = false) => {
     const required = [r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean)
     const repair = async () => {
       const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
@@ -1321,7 +1321,7 @@ while (true) {
       const check = await dispatch(() => reconcileBucketsPrompt(required, []), `close-check:${r.id}`,
         { label: `close-check:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RECONCILE })
       if (check && required.every(id => check.closed?.includes(id))) {
-        clearPendingClosure(r.id, required.map(id => 'bead:' + id))
+        if (!deferClear) clearPendingClosure(r.id, required.map(id => 'bead:' + id))
         closuresConfirmed++; return true
       }
       if (observation === 0 && check && !closeFirst && !await repair()) return false
@@ -1343,11 +1343,27 @@ while (true) {
   const closeAlreadyMerged = async r => {
     if (!landed.has(r.id)) landed.set(r.id, null)
     completed.delete(r.id)
-    if (!await confirmClosure(r, true)) { recordPendingClosure(r); return }
+    const key = 'pending-closure:' + r.id
+    const pending = resumedObligationKeys.has(key) && recoveryObligations.get(key)
+    if (!await confirmClosure(r, true, !!pending)) { recordPendingClosure(r); return }
+    const clear = pending && 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed',
+      evidence: ['git:' + landed.get(r.id), ...[r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean).map(id => 'bead:' + id)], data: {} })
+    if (clear) noteLedger(r.id, clear, clear)
+    noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review${landedParked.has(r.id) ? ', 1 parked' : ''})`))
+    if (pending) {
+      // Resumed partial closure uses the same confirmation ordering as the all-closed
+      // Resume path: write clear + completion together before reducing the obligation.
+      const written = await flushLedger(r.id, 'Integrate').catch(() => null)
+      if (!written || written.appended === false) {
+        resumeHolds.set(r.id, 'recovery reconciliation append unavailable')
+        log(r.id + ': recovery held — reconciliation append unavailable; original obligation retained')
+        return
+      }
+      readRecovery(clear)
+    }
     settle(r.id, completed)
     if (landedParked.has(r.id)) parked.add(r.id)
     blockerBeadOf.delete(r.id)
-    noteLedger(r.id, ledgerLine(r.n, r.id, `complete (already merged into ${integrationBranch} before this re-entry — bead closed, no new review${landedParked.has(r.id) ? ', 1 parked' : ''})`))
     markMerged(r.att)
     topUpHook()
   }
