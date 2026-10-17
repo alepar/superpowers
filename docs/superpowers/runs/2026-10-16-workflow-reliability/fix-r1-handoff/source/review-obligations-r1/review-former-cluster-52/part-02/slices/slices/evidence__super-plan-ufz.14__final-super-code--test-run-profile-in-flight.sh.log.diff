@@ -1,0 +1,25 @@
+diff --git a/evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.log b/evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.log
+new file mode 100644
+index 00000000..dbb80ae1
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/final-super-code--test-run-profile-in-flight.sh.log
+@@ -0,0 +1,19 @@
++run-profile --in-flight: Claude Code
++  [PASS] exits 0
++  [PASS] unfinished dispatches only, oldest first, unknown ages last; other epic's run and finished agents skipped
++  [PASS] another session: no lines, exit 0
++run-profile --in-flight: Codex
++  [PASS] exits 0
++  [PASS] only the child whose last task event is task_started
++  [PASS] unknown coordinator: no lines
++run-profile --in-flight: unreadable roots and bad args
++  [PASS] claude: exits 0
++  [PASS] claude: unreadable root
++  [PASS] codex: exits 0
++  [PASS] codex: unreadable root
++  [PASS] missing --harness exits 2
++  [PASS] bad --harness exits 2
++run-profile --in-flight: scans only the named session (3000 unrelated sessions and rollouts present)
++  [PASS] both harnesses in 215 ms (< 2000)
++  [PASS] run-profile.mjs parses
++run-profile-in-flight: all tests passed

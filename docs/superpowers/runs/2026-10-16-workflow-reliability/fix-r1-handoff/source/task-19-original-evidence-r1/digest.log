@@ -1,0 +1,130 @@
+run-digest: card part
+  [PASS] exits 0
+  [PASS] card is byte-identical to the card file
+  [PASS] card is never cut by a small budget
+run-digest: state part
+  [PASS] exits 0
+  [PASS] heading
+  [PASS] header line
+  [PASS] scripts dir
+  [PASS] last state per id wins in the counts
+  [PASS] ledger tail header
+  [PASS] tail carries ledger-digest lines
+  [FAIL] open in-tree beads, not the epic, not closed, not out-of-tree
+    missing line: open beads: 3 — E.2, E.3, E.5
+  [PASS] in-flight count
+  [PASS] in-flight line verbatim
+  [PASS] trailing unknown becomes age unknown
+  [PASS] digest header is dropped
+run-digest: all part
+  [PASS] starts with the card's first line
+  [PASS] state comes after the card
+  [PASS] all fits its budget (7233 <= 18000)
+run-digest: budgets with a maximal ledger
+  [PASS] state within 9000 (8972 <= 9000)
+  [PASS] dropped in-flight lines are summarised
+  [PASS] in-flight count survives trimming
+  [PASS] all within 18000 (17143 <= 18000)
+  [PASS] all starts with the whole card
+  [PASS] state within 2000 (1977 <= 2000)
+  [PASS] heading survives a small budget
+  [PASS] 120 open beads counted
+  [PASS] ids capped at 40
+run-digest: missing fields
+  [PASS] no ledger field
+  [PASS] no epic field
+  [PASS] no epic/session
+  [PASS] standalone phase
+  [PASS] empty stdin
+  [PASS] card still prints for empty stdin
+  [PASS] state line after the card
+run-digest: a ledger with no Task lines
+  [PASS] ledger-launch/state: exits 0
+  [PASS] ledger-launch/state: heading prints
+  [PASS] ledger-launch/state: zero counts
+  [PASS] ledger-launch/state: no tail line
+  [PASS] ledger-launch/all: exits 0
+  [PASS] ledger-launch/all: heading prints
+  [PASS] ledger-launch/all: zero counts
+  [PASS] ledger-launch/all: no tail line
+  [PASS] ledger-launch/all: starts with the card's first line
+  [PASS] ledger-empty/state: exits 0
+  [PASS] ledger-empty/state: heading prints
+  [PASS] ledger-empty/state: zero counts
+  [PASS] ledger-empty/state: no tail line
+  [PASS] ledger-empty/all: exits 0
+  [PASS] ledger-empty/all: heading prints
+  [PASS] ledger-empty/all: zero counts
+  [PASS] ledger-empty/all: no tail line
+  [PASS] ledger-empty/all: starts with the card's first line
+  [PASS] ledger-header/state: exits 0
+  [PASS] ledger-header/state: heading prints
+  [PASS] ledger-header/state: zero counts
+  [PASS] ledger-header/state: no tail line
+  [PASS] ledger-header/all: exits 0
+  [PASS] ledger-header/all: heading prints
+  [PASS] ledger-header/all: zero counts
+  [PASS] ledger-header/all: no tail line
+  [PASS] ledger-header/all: starts with the card's first line
+run-digest: a failing source degrades only its section
+  [PASS] exits 0
+  [PASS] failing bd
+  [PASS] other sections still print
+  [PASS] run-profile unknown line printed as the section
+  [PASS] no count line for it
+  [PASS] failing run-profile
+run-digest: slow sources share one deadline
+  [PASS] one slow source: finished in 3268 ms (3268 <= 4500)
+  [PASS] one slow source: ledger real
+  [PASS] one slow source: beads unknown
+  [PASS] one slow source: in-flight real
+  [PASS] two slow sources: finished in 2890 ms (2890 <= 4500)
+  [PASS] two slow sources: ledger unknown
+  [PASS] two slow sources: beads real
+  [PASS] two slow sources: in-flight unknown
+  [PASS] three slow sources: finished in 3071 ms (3071 <= 4500)
+  [PASS] three slow sources: ledger unknown
+  [PASS] three slow sources: beads unknown
+  [PASS] three slow sources: in-flight unknown
+run-digest: explicit ledger source availability
+  [PASS] missing is retained independently from other sources
+  [PASS] missing never supplies zero totals
+  [PASS] missing preserves available tracker facts
+  [PASS] unreadable is retained independently from other sources
+  [PASS] unreadable never supplies zero totals
+  [PASS] unreadable preserves available tracker facts
+  [PASS] truncated transport never supplies partial authoritative totals
+run-digest: bad arguments
+  [PASS] bad --part exits 2
+  [PASS] missing --budget exits 2
+  [PASS] missing --part exits 2
+  [PASS] non-numeric --budget exits 2
+coordinator-card: size and contents
+  [PASS] card is 6518 bytes (6000-9000)
+  [PASS] card heading
+  [PASS] card mentions: run_in_background
+  [PASS] card mentions: sleep 2700
+  [PASS] card mentions: Claude Code only
+  [PASS] card mentions: wait_agent
+  [PASS] card mentions: list_agents
+  [PASS] card mentions: report-verdict
+  [PASS] card mentions: ledger-digest
+  [PASS] card mentions: run-digest
+  [PASS] card mentions: ready-in-tree
+  [PASS] card mentions: epic-tree
+  [PASS] card mentions: run-marker
+  [PASS] card mentions: one merge
+  [PASS] card mentions: refill
+  [PASS] card mentions: early unblock
+  [PASS] card mentions: fresh agent
+  [PASS] card mentions: one fresh agent, one job
+  [PASS] card mentions: run-state.md
+  [PASS] card mentions: never re-invoke super-auto
+  [PASS] card mentions: §Phase 5
+  [PASS] card mentions: §Final-review items
+  [PASS] card mentions: §Finish
+  [PASS] keepalive paragraph verbatim
+  [PASS] read rule paragraph verbatim
+  [PASS] Workflow-mode guard line verbatim
+
+run-digest: 1 failure(s)

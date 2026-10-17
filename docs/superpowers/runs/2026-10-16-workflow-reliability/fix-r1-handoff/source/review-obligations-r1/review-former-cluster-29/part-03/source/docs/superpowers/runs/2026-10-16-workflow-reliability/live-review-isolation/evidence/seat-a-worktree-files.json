@@ -1,0 +1,11 @@
+{
+  "caller-sentinel.txt": "aa116ea1e33d8930bdc304890783acad5e9d7ca1c9396adddf44c60fe18f702f",
+  "reproduce.mjs": "932455a50da5b0ffe832cdbe1b04845ba145fbe4b7206f8ce3eb42f5530b2104",
+  "README.md": "0f56ce29dfc14e2af8e13dfbadcafa892d09d13b146fee3f65f6b8381b08711b",
+  "caller-session.txt": "37943edd83f080b70e8f9ac3cfe7075acbf651a3c8977d589ca5fa8ba34672fd",
+  ".gitignore": "61477fa955b66813bcda54211958ed1264e5ec5c4d6c85b2633f8b88fa69bded",
+  ".git": "dbf839a582d1bd36e1e2f9c5ae4a62246a31dd45b8cbd3f5d795ee238f73f7d2",
+  "integration.txt": "ce479994b4ce1244b76ade9faa6bc9b98615ccafd512c058dc4e4408a4fb84a4",
+  "lib/generated.mjs": "3b79489c5dda2afc7e9c360db68e83673f8b65b9ccf1e2c7cfd662646c7de272",
+  "lib/format.mjs": "04224c0c2d9a4f36e0bf3e5525690b4bd2d0d9f8b560a7b169418dd502142804"
+}

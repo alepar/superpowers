@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "verdict": "prepared",
+  "bundle": "guidance-eval-r1",
+  "sourceArms": {
+    "source-binding": {
+      "baseline": "1d0ab308f09598c8c2826cfbca2af119a631d37a",
+      "after": "7db21aaec321ce133ad792f9ffc0e05879e4cf40"
+    },
+    "outer-cleanup": {
+      "baseline": "1d0ab308f09598c8c2826cfbca2af119a631d37a",
+      "after": "cd01f8e6e94c76db1104ba8911d6c4f085f444ad"
+    }
+  },
+  "config": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/config.json",
+    "relativePath": "config.json",
+    "sha256": "47740a5bf9ca9f96a49608b98a880d5f85b7a388491828cece5e8b67a3c1e5f8",
+    "bytes": 2218
+  },
+  "promptPaths": {
+    "source-binding": {
+      "scenario": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/prompts/source-binding.json",
+        "relativePath": "prompts/source-binding.json",
+        "sha256": "b8647fa687747739aac16151d80f3f7020bb2c64997394a78caf7303e3bbc0a2",
+        "bytes": 8393
+      },
+      "baselineContext": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/source-binding-baseline.txt",
+        "relativePath": "contexts/source-binding-baseline.txt",
+        "sha256": "32e4b542030cabd9a8f620117c289eb740d7b897f6d6ccadfd802b8a1d30a8cb",
+        "bytes": 301748
+      },
+      "afterContext": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/source-binding-after.txt",
+        "relativePath": "contexts/source-binding-after.txt",
+        "sha256": "c0b4f7ae84aca541b2d34cfd363c869f99b7d8371519c2dbf53b773717a50b2f",
+        "bytes": 303841
+      },
+      "baselineMessages": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/source-binding-baseline.json",
+        "relativePath": "messages/source-binding-baseline.json",
+        "sha256": "f2b901960ee4ad6666eab187cd119c84681c8406009956f3f3ebacc2c43415dc",
+        "bytes": 316213
+      },
+      "afterMessages": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/source-binding-after.json",
+        "relativePath": "messages/source-binding-after.json",
+        "sha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "bytes": 318329
+      }
+    },
+    "outer-cleanup": {
+      "scenario": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/prompts/outer-cleanup.json",
+        "relativePath": "prompts/outer-cleanup.json",
+        "sha256": "5023eb5145f73f1a573d0146c9621c041c4407f1d917a6deac6ce85e331b382c",
+        "bytes": 10715
+      },
+      "baselineContext": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/outer-cleanup-baseline.txt",
+        "relativePath": "contexts/outer-cleanup-baseline.txt",
+        "sha256": "f69bbebd7ae215826b307c03281df4af0fb9486a428d23301fd423a6444c417c",
+        "bytes": 150352
+      },
+      "afterContext": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/outer-cleanup-after.txt",
+        "relativePath": "contexts/outer-cleanup-after.txt",
+        "sha256": "a15076ff6245cc1d6f16d86626e107f46bd29d8c203461059f064f865580101c",
+        "bytes": 160295
+      },
+      "baselineMessages": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/outer-cleanup-baseline.json",
+        "relativePath": "messages/outer-cleanup-baseline.json",
+        "sha256": "b44a8e9881c59cb8aa22f771c2b0aec3b9aaae270e32ff64cc4fb3b898b64496",
+        "bytes": 163055
+      },
+      "afterMessages": {
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/outer-cleanup-after.json",
+        "relativePath": "messages/outer-cleanup-after.json",
+        "sha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "bytes": 173129
+      }
+    }
+  },
+  "rubric": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/rubric.json",
+    "relativePath": "rubric.json",
+    "sha256": "d32f1e1690d243d47da5c3e2f8372ed898e12a2f409533077728f0dab3e9a1e3",
+    "bytes": 12417
+  },
+  "runPlan": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/run-plan.md",
+    "relativePath": "run-plan.md",
+    "sha256": "eb85aa3f648a875edb73ff63dfc9c0906aa761b7192ef65e21ccefda8dfc050b",
+    "bytes": 4339
+  },
+  "schedule": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/schedule.json",
+    "relativePath": "schedule.json",
+    "sha256": "a762eafe0a280771cc94d56f8b75c921b8543fd63de13007234db5c68e73f774",
+    "bytes": 11194
+  },
+  "provenance": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/provenance.json",
+    "relativePath": "provenance.json",
+    "sha256": "a232f39d72337af5af1508ceb92b7f9fee901231cb448cf2267877e056ffe40a",
+    "bytes": 24036
+  },
+  "report": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/preparation.md",
+    "relativePath": "preparation.md",
+    "sha256": "29fb44d838ac525229bb029bbef26bc142db8f4e7df116a39fbeb5b9ff464beb",
+    "bytes": 2671
+  },
+  "expectedN": 5,
+  "expectedCount": 20,
+  "sampleCount": 20,
+  "candidateRunsStarted": 0,
+  "families": 2,
+  "armsPerFamily": 2,
+  "casesPerSample": {
+    "source-binding": 6,
+    "outer-cleanup": 9
+  },
+  "historicalRED": "Actual historical mechanical defects motivate this prospective evaluation; no retroactive baseline agent behavior claim.",
+  "freezePolicy": "Do not alter inputs after candidate outcomes. Future results belong outside this frozen directory."
+}

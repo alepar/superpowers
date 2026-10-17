@@ -1,0 +1,63 @@
+{
+  "id": "super-plan-ufz.26",
+  "status": "BLOCKED",
+  "canonicalStatus": "BLOCKED",
+  "scopeHeld": true,
+  "blockerBead": null,
+  "completionKind": "implementation",
+  "base": "18b0b6d5fdfa772f3aa74d53706d6a4615b4ae86",
+  "head": "a66116ef122b57f308920f09ec3d34eb8f2b871b",
+  "stacked": false,
+  "reopened": false,
+  "files": [
+    "evidence/super-plan-ufz.26/investigation.txt",
+    "evidence/super-plan-ufz.26/red-hygiene-corrected.log",
+    "evidence/super-plan-ufz.26/red-hygiene.log",
+    "evidence/super-plan-ufz.26/red-source-tree.txt",
+    "evidence/super-plan-ufz.26/red.log",
+    "evidence/super-plan-ufz.26/red2-hygiene.log",
+    "evidence/super-plan-ufz.26/red2-source-tree.txt",
+    "evidence/super-plan-ufz.26/red2.log",
+    "tests/super-auto/generated-review-inputs-r1.sh"
+  ],
+  "finding": "Coordinator-owned scope amendment pending; clean RED-only handoff to a fresh implementation owner. No production edits; this held handoff does not consume implementation retry budget.",
+  "report": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md",
+  "evidence": [
+    {
+      "sourceTree": "b961e615a65df862a0cf08e234617fee0005def2",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh",
+      "configuration": "baseline pre-fix assembler recipe; real collector; original fixture",
+      "outcome": "fail",
+      "location": "evidence/super-plan-ufz.26/red.log",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "0d0136c5b6cb8463da7d976bc0f48b5a6986718c",
+      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh",
+      "configuration": "baseline pre-fix assembler recipe; real collector; complete finding-text assertion",
+      "outcome": "fail",
+      "location": "evidence/super-plan-ufz.26/red2.log",
+      "kind": "live"
+    }
+  ],
+  "requiredLiveChecks": [],
+  "pendingChecks": [
+    "bash tests/super-auto/generated-review-inputs-r1.sh",
+    "bash tests/super-auto/test-scripts.sh",
+    "Coordinator-owned bounded instruction evaluation if operative prompts change"
+  ],
+  "concerns": [
+    "The defect is reproduced but not fixed; no GREEN result.",
+    "Fixture default --review-inputs interface is provisional and unimplemented; fresh owner must align it with the forthcoming amendment.",
+    "Assertions after the inv-2 exclusion failure, cycles 3\u20135, later product edit, final archive hashes and post-source-cleanup replay are unmeasured."
+  ],
+  "cleanup": {
+    "exit": 0,
+    "lines": [
+      "stopped: 29238 ? \u2014 cwd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.26"
+    ],
+    "survived": [],
+    "note": "Command identity unavailable; no evidence attributes this process to a test. Earlier per-test checks returned 0 with no matches. Final cleanup overlapped a read-only Git identity capture."
+  },
+  "humanAction": []
+}

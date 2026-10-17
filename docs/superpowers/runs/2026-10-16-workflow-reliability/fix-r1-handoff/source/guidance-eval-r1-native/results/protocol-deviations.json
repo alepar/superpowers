@@ -1,0 +1,50 @@
+{
+  "deviations": [
+    {
+      "timestamp": "2026-10-17T15:13:55.658386+00:00",
+      "type": "observable-inherited-common-context-drift",
+      "discovered": "Postcollection visible initial-prefix hash comparison; not observed before remaining launches. No retry or rerun.",
+      "priorCandidates": [
+        "candidate_001",
+        "candidate_002",
+        "candidate_003",
+        "candidate_004",
+        "candidate_005",
+        "candidate_006",
+        "candidate_007",
+        "candidate_008",
+        "candidate_009",
+        "candidate_010",
+        "candidate_011",
+        "candidate_012",
+        "candidate_013",
+        "candidate_014",
+        "candidate_015",
+        "candidate_016"
+      ],
+      "affectedCandidates": [
+        "candidate_017",
+        "candidate_018",
+        "candidate_019",
+        "candidate_020"
+      ],
+      "previousVisiblePrefixSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb",
+      "changedVisiblePrefixSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548",
+      "change": "Inherited user AGENTS.md contributor release checklist gained five test commands. Canonical frozen system/user payloads did not change.",
+      "addedLines": [
+        "bash tests/super-design/test-findings-ledger.sh",
+        "bash tests/super-design/test-step-back-check.sh",
+        "bash tests/super-design/test-amend-check.sh",
+        "bash tests/super-design/test-redesign-chain.sh",
+        "bash tests/super-design/test-redesign-cycle-filing.sh"
+      ],
+      "primaryTreatment": "Affected samples and all their cases unmeasurable under rubric-adapter observedUnmeasurableConditions: observable common configuration deviates from freeze. Preserve independent textual semantic labels as secondary non-primary observations. No retrospective relevance waiver or protocol change.",
+      "unknownProviderConditions": "Accepted unexposed revision/sampling/prefix limitations alone remain accepted, distinct from this actually observed visible drift."
+    }
+  ],
+  "intakeFailure": {
+    "sample": "candidate_011",
+    "cause": "INTAKE_INCOMPLETE: The message 0 chunk at offset 84000 failed with FileNotFoundError because the loader invocation used `/codex/c3/` instead of `/codex/codex-3/` in the payload path. Full intake was not completed.",
+    "primaryTreatment": "all nine cases unmeasurable; no retry"
+  }
+}

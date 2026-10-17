@@ -1,0 +1,435 @@
+# Review package: 1d0ab308f09598c8c2826cfbca2af119a631d37a..b8b46857b723b73817bf6fc82ad1998de60fed74
+
+## Commits
+b8b46857 fix: acquire Workflow invocation identity in Resume dispatch
+
+## Files changed
+ skills/super-code/coordinator-subagents.md |  10 ++-
+ skills/super-code/coordinator-workflow.md  |  10 ++-
+ skills/super-code/coordinator.js           |  30 ++++++--
+ tests/super-code/invocation-start-r1.mjs   | 119 +++++++++++++++++++++++++++++
+ tests/super-code/replay-harness.mjs        |  34 ++++++++-
+ 5 files changed, 188 insertions(+), 15 deletions(-)
+
+## Diff
+diff --git a/skills/super-code/coordinator-subagents.md b/skills/super-code/coordinator-subagents.md
+index 75904231..4e9293b4 100644
+--- a/skills/super-code/coordinator-subagents.md
++++ b/skills/super-code/coordinator-subagents.md
+@@ -144,22 +144,28 @@ measurements. Only linked live/pass fix verification marks the obligation verifi
+ status and later empty buckets do not. Retain verified history; a later linked failing observation
+ reopens the obligation. Return `runFailures` with the same id/owner/classification/state,
+ comparisons, taskExonerations, gaps and evidence references as Workflow. On re-entry reconstruct
+ from these Recovery records independently of Task status, preserving malformed/oversized gaps.
+ This adds no retry round or caller acceptance gate.
+ 
+ Three things keep the run measurable and resumable:
+ 
+ - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`
+   §Pre-flight (step 2's run-identity bullets): the `Context:` line, the runTag, and the marker guard.
+-  Mint `invocationId` as `inv-$(uuidgen)` for each new invocation; retain it across an explicit
+-  unsettled resume only. A settled return (including blocked) followed by another invocation
++  In this ordinary-subagent path, the caller runs `uuidgen` outside Workflow and sets
++  `invocationId` to `inv-<trimmed uuidgen stdout>` for each new invocation before constructing
++  Launch or dispatching review work. Validate the token below; a missing/unsafe result stops
++  before Launch or review output. In the Workflow path, pass that caller-minted token in args,
++  or omit it so the existing Resume `read-ledger` mechanical dispatch mints externally and
++  returns structured `invocationId`; the script validates and persists it. Retain the token
++  across an explicit unsettled resume only (pass it in Workflow args); neither path mints on
++  that resume. A settled return (including blocked) followed by another invocation
+   gets a fresh token even with the same runTag. Use 1–128 ASCII letters, digits, `_` or `-`,
+   starting with a letter or digit. Do not copy the latest Launch identity just because runTag matches.
+   Register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register
+   nor clear. Before the first task dispatch, append `Launch: mechanism ordinary-subagents ·
+   epic <id> · runTag <tag> · invocationId <token> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
+   earlyUnblock <on or off> · sweep <command or deferred> · mergeCheck <build-only command or none>`
+   to the ledger and confirm it was written before any review bundle output. Append another one
+   with the same identity on explicit unsettled resume. A failed write is an evidence gap: no review
+   assembly/writer dispatch; report review unavailable and `reviewPath: null`. `dispatch-text` reads
+   this persisted field for final assembly and single/cluster/seam/stub review modes; it refuses
+diff --git a/skills/super-code/coordinator-workflow.md b/skills/super-code/coordinator-workflow.md
+index 8a40bacb..c0b394a8 100644
+--- a/skills/super-code/coordinator-workflow.md
++++ b/skills/super-code/coordinator-workflow.md
+@@ -62,22 +62,28 @@ cap is `concurrency` as given, and a log line says it was not checked.
+ `max`) passed beside each dispatch's model. Defaults: `mechanical` low; `planner`, `triage` and
+ `finalReview` high; `implementer` and `reviewer` (which also runs the merge) inherit the session's
+ effort. dryRun stubs take none.
+ 
+ `runTag` is **optional**: the run's tag, `<epicId or slug>-<UTC yyyymmddThhmmss>`. A caller
+ (`super-auto`) passes its own; a standalone pre-flight mints `<epicId>-…`. It groups processes and
+ non-review assembly directories; absent, it is the epic id.
+ 
+ `invocationId` owns this invocation’s review bundle. Before launch, the caller mints a fresh
+ filesystem-safe token (1–128 ASCII letters, digits, `_` or `-`, starting with a letter or digit;
+-for example `inv-$(uuidgen)`) and passes it in args. The script mints one when omitted. The existing
+-`Launch: args` append persists it and is awaited; only `appended: true` authorizes review assembly
++for example `inv-$(uuidgen)`) and passes it in args. When omitted, the existing `read-ledger`
++Resume mechanical dispatch runs `uuidgen` outside the Workflow VM and returns `inv-<uuid>` in
++structured `invocationId`. The script validates that token before constructing Launch; it never
++calls clock/random globals to allocate an identity or copies one from the prior ledger. A missing
++or unsafe acquired identity stops before Launch or review output. A ledger-transport retry retains
++an already selected valid token, requesting minting only when no valid token was acquired; Workflow
++replay reuses the recorded dispatch result. Explicit args never request minting. The existing
++`Launch: args` append persists the selected token and is awaited; only `appended: true` authorizes review assembly
+ and review writers. A persistence gap leaves an explicit unavailable review and `reviewPath: null`.
+ For an explicit resume of an unsettled invocation, copy its recorded `invocationId` into args
+ alongside `resumeFromRunId`; replay retains the same paths. After an invocation has returned a
+ settled result, the next invocation mints a new identity, including after a blocked result, even
+ when `runTag` stays the same. Never infer resume identity from the latest Launch solely by runTag.
+ 
+ The immutable bundle is `<workspace>/final-review-<invocationId>.md`, its direct-input `.diff`,
+ `final-review-<invocationId>.cluster-<n>.md`, and
+ `assembled/final-review-<invocationId>-final/`. Single, seam and stub writers share only that
+ invocation’s final path. The dot before `cluster` cannot occur in invocation tokens, so a
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index c9c2553f..5178f5c3 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -13,24 +13,25 @@ export const meta = {
+   ],
+ }
+ 
+ // args: { epicId, integrationBranch, integrationWorktree?, skillsRoot, dryRun, config } — see the
+ // Coordinator contract. `integrationWorktree` is optional; pass it whenever the caller created the
+ // worktree itself, since no string derivation can recover a caller-chosen path.
+ const A = typeof args === 'string' ? JSON.parse(args) : args
+ const { epicId, integrationBranch, config, dryRun = false, prompts } = A || {}
+ // runTag groups the enclosing run; invocationId owns one immutable review bundle.
+ // Callers reuse a persisted invocationId only when resuming that unsettled invocation.
+-// A fresh launch without an explicit identity mints one before its Launch line is persisted.
++// The existing Resume mechanical dispatch mints an omitted identity outside this Workflow VM.
+ const runTag = (A && typeof A.runTag === 'string' && A.runTag.trim()) || epicId
+-const invocationId = A?.invocationId === undefined ? 'inv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14) : A.invocationId
+-if (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
++const safeInvocationId = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(value)
++let invocationId = A?.invocationId
++if (invocationId !== undefined && !safeInvocationId(invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
+ // skillsRoot: absolute path of the skills/ directory. Agents run inside project worktrees, so every
+ // template and script path is built from it.
+ const skillsRoot = A && typeof A.skillsRoot === 'string' ? A.skillsRoot.replace(/\/+$/, '') : ''
+ // Fail fast: undefined args crash late + cryptically (see "Authoring pitfalls"). Validate + log here.
+ if (!epicId || !integrationBranch || !config || !skillsRoot) throw new Error('coordinator args missing (epicId, integrationBranch, config and skillsRoot are required): ' + JSON.stringify(A))
+ log('coordinator: epic=' + epicId + ' branch=' + integrationBranch + ' skillsRoot=' + skillsRoot + ' dryRun=' + !!dryRun)
+ // Model and reasoning effort per role: mechanical dispatches run low, planner/triage/final review
+ // high, implementer and reviewer inherit the session. `config.efforts` overrides per role.
+ // Model per role defaults to SKILL.md's tiering table; `config.models` overrides per role.
+ const MODEL_DEFAULTS = { planner: 'opus', triage: 'opus', finalReview: 'opus', implementer: 'sonnet', reviewer: 'sonnet', mechanical: 'sonnet' }
+@@ -185,21 +186,29 @@ async function dispatch(buildReal, stubKey, opts) {
+     return null
+   }
+   if (opts.schema === RESULT) { recordCheckEvidence(out, opts.label); recordFailureAttribution(out, opts.label) }
+   return out
+ }
+ // Every ledger read goes through readLedger: the digest echo, retried once on a null (a refusal or a
+ // transient death) before the call site's degraded path runs.
+ // `withLanded` also lists Git task landings, independently from the ledger transport.
+ async function readLedger(stubKey, phaseName, withLanded = false) {
+   const opts = { label: stubKey, phase: phaseName, schema: LEDGER_TEXT, ...tier('mechanical') }
+-  const read = async (key, label) => checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish'), key, { ...opts, label }), label)
++  const acquireIdentity = phaseName === 'Resume' && invocationId === undefined
++  let selectedIdentity
++  const read = async (key, label) => {
++    const out = checkDigest(await dispatch(() => readLedgerPrompt(integrationWorktree, ledgerPath, withLanded, phaseName === 'Finish', acquireIdentity && selectedIdentity === undefined), key, { ...opts, label }), label)
++    // Ledger transport can need a retry after minting succeeded. Keep that token as a unit;
++    // the retry repairs transport without allocating another identity for this invocation.
++    if (acquireIdentity && selectedIdentity === undefined && safeInvocationId(out?.invocationId)) selectedIdentity = out.invocationId
++    return out
++  }
+   const first = await read(stubKey, stubKey)
+   if (first && ['valid', 'valid-empty', 'missing'].includes(first.ledgerTransport.status)) return first
+   const retry = await read(stubKey, stubKey + ':retry')
+   if (!first && !retry) return null
+   // A retry repairs ledger transport independently of Git lookup and review capture.
+   // Pick each successful source as a unit; failed attempts remain gaps, never errors
+   // attached to another attempt's successful observation (or half a review pair).
+   const attempts = [{out:first, label:stubKey}, {out:retry, label:stubKey + ':retry'}]
+   const sources = [retry, first].filter(Boolean)
+   const git = sources.find(out => Array.isArray(out.landed) && !out.landedError)
+@@ -208,20 +217,21 @@ async function readLedger(stubKey, phaseName, withLanded = false) {
+   const sourceGaps = []
+   for (const {out, label} of attempts) {
+     if (!out) { sourceGaps.push(label + ': source observations unavailable (null dispatch)'); continue }
+     if (!['valid', 'valid-empty', 'missing'].includes(out.ledgerTransport.status)) sourceGaps.push(label + ': ledger transport ' + out.ledgerTransport.status + (out.ledgerTransport.reason ? ' — ' + out.ledgerTransport.reason : ''))
+     if (withLanded && (!Array.isArray(out.landed) || out.landedError)) sourceGaps.push(label + ': Git task-landing lookup failed: ' + (out.landedError || 'not returned'))
+     if (phaseName === 'Finish' && !reviewOK(out)) sourceGaps.push(label + ': review source capture failed: ' + (out.reviewError || 'complete verified base/head not returned'))
+   }
+   const transport = retry || first
+   return {
+     text:transport.text, ledgerTransport:transport.ledgerTransport, sourceGaps,
++    ...(acquireIdentity ? {invocationId:selectedIdentity ?? transport.invocationId} : {}),
+     ...(git ? {landed:git.landed} : {landedError:retry?.landedError || first?.landedError}),
+     ...(review ? {reviewBase:review.reviewBase, reviewHead:review.reviewHead} : {reviewError:retry?.reviewError || first?.reviewError}),
+   }
+ }
+ function checkDigest(out, label) {
+   if (out === null) return null
+   const lines = String(out.text ?? '').split('\n').map(l => l.trim()).filter(Boolean)
+   let status, reason
+   const marker = /^# ledger-status: (missing|unreadable)$/.exec(lines[0] || '')
+   const h = /^# ledger-digest: (\d+) of (\d+) lines$/.exec(lines[0] || '')
+@@ -370,21 +380,21 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum:
+ const MERGE   = { type: 'object', properties: { id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','aborted','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, detachedHead:{type:'string'}, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'}, cleanup:{ type:'array', items:{type:'string'} }, alreadyMerged:{type:'boolean'} }, required: ['id','merged'] }
+ // Edge-audit return shape (edgeAuditPrompt): openLeaves and depth from scripts/tree-shape;
+ // `changes` use super-design's graph-pass vocabulary, each judged safe or not. Only
+ // `config.edgeCuts: 'apply-safe'` applies the safe ones.
+ const EDGE_CHANGE = { type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'}, kind:{type:'string', enum:['drop','narrow','repoint']}, add:{ type:'array', items:{ type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'} }, required:['dependent','blocker'] } }, safe:{type:'boolean'}, reason:{type:'string'} }, required:['dependent','blocker','kind','safe','reason'] }
+ const EDGE_AUDIT = { type: 'object', properties: { openLeaves:{type:'integer'}, depth:{type:'integer'}, changes:{ type:'array', items: EDGE_CHANGE }, summary:{type:'string'}, scriptError:{type:'string'} }, required: ['openLeaves','depth','changes','summary'] }
+ const EDGE_CUTS = { type: 'object', properties: { applied:{ type:'array', items: EDGE_CHANGE }, skipped:{ type:'array', items:{ type:'object', properties:{ dependent:{type:'string'}, blocker:{type:'string'}, reason:{type:'string'} }, required:['dependent','blocker','reason'] } } }, required: ['applied','skipped'] }
+ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, closedThisRun: { type: 'array', items: { type: 'string' } }, scriptError: {type:'string'} }, required: ['rootClosed','closedThisRun'] }
+ // Ledger reads carry digest text and independent source outcomes; parsing stays here.
+ // `landed`: <branch> <tip> <merge> lines, or landedError when Git lookup failed.
+-const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
++const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, invocationId: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'}, landedError: {type:'string'} }, required: ['text'] }
+ const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
+ const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, sourceVerified: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
+ // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
+ // closed; a reopen's list; a cancelled task's worktree removal.
+ const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
+ const ASSEMBLED = { type:'object', properties:{ dir:{type:'string'}, exit:{type:'integer'}, fits:{type:'string'}, clusterFits:{type:'array', items:{type:'string'}}, clusters:{type:'integer'}, cause:{type:'string'} }, required:['dir','exit'] }
+ const FINAL_VERDICT = { type:'object', properties:{ verdict:{type:'string'}, path:{type:'string'} }, required:['verdict'] }
+ const STUB_WRITTEN = { type:'object', properties:{ written:{type:'boolean'}, path:{type:'string'} }, required:['written'] }
+ const REOPENED = { type: 'object', properties: { reopened: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['reopened'] }
+ const DISCARD = { type: 'object', properties: { discarded: {type:'boolean'}, reopened: { type: 'array', items: {type:'string'} }, cleanup: { type: 'array', items: {type:'string'} }, scriptError: {type:'string'} }, required: ['discarded'] }
+@@ -724,20 +734,25 @@ function addEdge(dependent, blocker, reason, source) {
+   return true
+ }
+ 
+ // Resume from the ledger, read once before the round loop: after that, this process's own buckets
+ // reflect every append. Runs in the integration worktree, which owns the ledger.
+ phase('Resume')
+ const ledger = await readLedger('read-ledger', 'Resume', true)
+ // Null ledger read: reconstruct nothing, loudly. `bd ready` still guards closed work, but prior
+ // pendingRetry bounds are lost.
+ if (!ledger) log('resume: ledger read unavailable (null dispatch) — proceeding with an empty reconstruction; bd ready remains the authority on closed work, but prior-run pendingRetry bounds are lost for this run')
++if (invocationId === undefined) {
++  if (ledger?.invocationId === undefined) throw new Error('coordinator invocationId unavailable from Resume mechanical dispatch — no Launch or review artifacts authorized')
++  if (!safeInvocationId(ledger.invocationId)) throw new Error('coordinator invocationId must be a filesystem-safe token (1-128 letters, digits, underscores or hyphens)')
++  invocationId = ledger.invocationId
++}
+ // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
+ // (dryRun stub tables omitted).
+ const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, rootAcceptance, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+   'ledger-append:launch', 'Resume')
+ const invocationPersisted = launchIdentity?.appended === true
+ if (!invocationPersisted) log('invocation identity persistence unavailable — review artifacts will not be created')
+ // Optional baseline (config.sweepBaseline): the same sweep at the starting tip, so Finish can tell a
+ // regression this run made from breakage it started with. Off by default; never under deferSweep.
+ let baselineSummary = null
+ if (config.sweepBaseline === true && !deferSweep) {
+@@ -2825,27 +2840,28 @@ function recordClarificationPrompt(id, detail) {
+   // MECHANICAL. PAIRED with the implementer template's `bd comments <id>` read — the write must
+   // land exactly where that read looks, or the RESOLVE retry re-runs the task blind.
+   return `Record the clarification below as a comment on bead ${id}: run \`bd comment ${id} <text>\` with the text between the tags, verbatim (the next implementer reads it with \`bd comments ${id}\`). Report recorded true when the command succeeded.\n<clarification>\n${String(detail).trim()}\n</clarification> ${finalAnswerRule(false)}`
+ }
+ 
+ function notifyPrompt(id, detail) {
+   // MECHANICAL: a fixed notification on ESCALATE — see "Escalation = notify + quarantine + continue".
+   return `Send a notification (PushNotification or the configured messaging tool, if available) that task ${id} is ESCALATED: ${detail}. Report sent true/false. ${finalAnswerRule(false)}`
+ }
+ 
+-function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, captureReview = false) {
++function readLedgerPrompt(integrationWorktree, ledgerPath, withLanded = false, captureReview = false, acquireIdentity = false) {
+   // MECHANICAL echo of scripts/ledger-digest: the lines this script parses, free text cut, so the
+   // echo stays small however long the ledger grows. Parsing happens here as plain JS. `withLanded`
+   // adds the task merges git holds; that script's failure never voids the ledger read.
++  const identityStep = acquireIdentity ? " Mint this fresh invocation's identity here, outside the Workflow script: run `uuidgen` once and return `inv-<uuidgen stdout, trimmed>` as structured `invocationId`. Use a filesystem-safe token (1-128 ASCII letters, digits, underscores or hyphens, starting with a letter or digit). Never copy a prior Launch identity or derive it from runTag. If minting fails, omit invocationId and report the failure; preserve the ledger text independently." : ''
+   const landedStep = withLanded ? ` Then run \`bash ${codeSkill}/scripts/already-merged --landed ${integrationBranch}\` and report every line it prints, verbatim and in order, as \`landed\` (an empty list when it exits 0 and prints nothing; if it exits non-zero, omit landed and report landedError with the exact command and error — it never changes \`text\` or \`scriptError\`).` : ''
+   const sourceStep = captureReview ? ` Capture review inputs once in this same dispatch: run \`git rev-parse --verify ${integrationBranch}^{commit}\` and keep its full output as reviewHead; resolve the repository's default branch commit and run \`git merge-base <default-branch-commit> <reviewHead>\`, then \`git rev-parse --verify <merge-base>^{commit}\` as reviewBase. Return reviewBase and reviewHead verbatim. If any capture command fails, omit both fields and return reviewError with the exact command and error; preserve the ledger text independently. Do not change the checkout.` : ''
+-  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
++  return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger). Run \`bash ${codeSkill}/scripts/ledger-digest ${ledgerPath}\` and report everything it prints, verbatim and in order, as \`text\` (including its counting header or explicit missing/unreadable status; empty stdout is unavailable transport). Do not read the ledger file yourself, do not create it, do not summarize. ${scriptOutcomeRule()}${identityStep}${landedStep}${sourceStep} ${finalAnswerRule(true)}`
+ }
+ 
+ function ledgerAppendPrompt(integrationWorktree, ledgerPath, planFileName, lines, structured = false) {
+   // Mechanical append, in order; lines arrive already flattened. Creates the ledger's identity header
+   // on a fresh ledger's first append.
+   const body = lines.map(l => `<ledger-line>${l}</ledger-line>`).join('\n')
+   return `Working directory: ${integrationWorktree} (the integration worktree, which owns the ledger; never write it from a task worktree). If ${ledgerPath} does not exist yet, create its parent directory and the file with this exact first line: "# SDD ledger — plan: ${planFileName}". Then append each line below as its own new physical line, in order, with exactly the text between its tags (the tags are delimiters, not ledger content):\n${body}\nReport appended true when done. ${finalAnswerRule(structured)}`
+ }
+ 
+ // The review-file format every final-review prompt fixes; scripts/report-verdict's final-review recogniser is its parser.
+diff --git a/tests/super-code/invocation-start-r1.mjs b/tests/super-code/invocation-start-r1.mjs
+new file mode 100644
+index 00000000..c6ef3166
+--- /dev/null
++++ b/tests/super-code/invocation-start-r1.mjs
+@@ -0,0 +1,119 @@
++#!/usr/bin/env node
++// Exercise the real coordinator startup with Workflow's nondeterministic globals disabled.
++// The mechanical Resume dispatch is simulated; its UUID command runs outside the Workflow VM.
++import assert from 'node:assert/strict'
++import { readFileSync } from 'node:fs'
++import { execFileSync } from 'node:child_process'
++import vm from 'node:vm'
++
++const source = readFileSync(new URL('../../skills/super-code/coordinator.js', import.meta.url), 'utf8')
++const cut = source.search(/^while \(true\) \{$/m)
++assert.ok(cut > 0, 'real coordinator round-loop boundary exists')
++const builders = source.indexOf('\nfunction cleanupOutcomeRule()')
++assert.ok(builders > cut, 'real coordinator prompt-builder boundary exists')
++const body = source.slice(0, cut).replace(/^export const meta/m, 'const meta') +
++  '\nreturn { invocationId, invocationPersisted, assembly: assemblePrompt("final-review", "final", {base:"a".repeat(40), head:"b".repeat(40)}), review: finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, "plan.md", "deferred", [], {base:"a".repeat(40), head:"b".repeat(40)}) }\n' + source.slice(builders)
++
++const priorLedger = '# ledger-digest: 1 of 1 lines\nLaunch: args {"runTag":"same-run","invocationId":"inv-prior"}'
++async function start({ invocationId, mint = true, append = true, replies } = {}) {
++  const logs = [], trace = []
++  const args = { epicId: 'epic', integrationBranch: 'branch', integrationWorktree: '/fixture',
++    skillsRoot: '/skills', runTag: 'same-run', config: {}, ...(invocationId === undefined ? {} : { invocationId }) }
++  const context = vm.createContext({ args, log: m => logs.push(m), phase() {},
++    async agent(prompt, opts) {
++      trace.push({ prompt, ...opts })
++      if (opts.label === 'read-ledger' || opts.label === 'read-ledger:retry') {
++        const reply = replies ? replies[opts.label === 'read-ledger' ? 0 : 1] : { text: priorLedger }
++        if (reply === null) return null
++        if (invocationId === undefined && mint && !replies) {
++          assert.match(prompt, /uuidgen/, 'omitted-ID startup requests minting at the mechanical boundary')
++          assert.ok(opts.schema.properties.invocationId, 'mechanical output admits the minted identity')
++          reply.invocationId = 'inv-' + execFileSync('uuidgen', { encoding: 'utf8' }).trim()
++        }
++        return reply
++      }
++      if (opts.label === 'ledger-append:launch') return { appended: append }
++      throw new Error('unexpected startup dispatch: ' + opts.label)
++    },
++  })
++  vm.runInContext('Date.now = () => { throw new Error("forbidden Date.now") }; Math.random = () => { throw new Error("forbidden Math.random") }', context)
++  try {
++    const result = await vm.runInContext('(async () => {\n' + body + '\n})()', context)
++    return { result, logs, trace }
++  } catch (error) { return { error, logs, trace } }
++}
++
++const first = await start()
++assert.equal(first.error, undefined, 'omitted-ID startup survives forbidden clock/random globals: ' + first.error?.message)
++assert.ok(first.logs.some(m => m.startsWith('coordinator:')), 'startup reaches logging')
++assert.deepEqual(first.trace.map(t => t.label), ['read-ledger', 'ledger-append:launch'], 'identity acquisition uses existing startup dispatches only')
++assert.ok(first.result.invocationPersisted, 'launch persistence is confirmed before artifact builders')
++assert.ok(first.trace[1].prompt.includes('"invocationId":"' + first.result.invocationId + '"'), 'Launch persists the minted token')
++assert.ok(first.result.review.includes('/final-review-' + first.result.invocationId + '.md'), 'review destination uses minted identity')
++assert.ok(first.result.assembly.includes('/assembled/final-review-' + first.result.invocationId + '-final'), 'assembly destination uses minted identity')
++
++const second = await start()
++assert.equal(second.error, undefined)
++assert.notEqual(first.result.invocationId, second.result.invocationId, 'fresh launches sharing runTag have distinct identities')
++assert.notEqual(first.result.review, second.result.review, 'fresh review artifacts remain distinct')
++assert.notEqual(first.result.assembly, second.result.assembly, 'fresh assembly directories remain distinct')
++assert.notEqual(first.result.invocationId, 'inv-prior', 'fresh identity never copies a previous Launch')
++
++const explicit = await start({ invocationId: 'inv-explicit' })
++assert.equal(explicit.error, undefined)
++assert.equal(explicit.result.invocationId, 'inv-explicit', 'explicit identity remains unchanged')
++assert.ok(!explicit.trace[0].prompt.includes('uuidgen'), 'explicit resume does not mint a replacement token')
++const resumed = await start({ invocationId: first.result.invocationId })
++assert.equal(resumed.error, undefined)
++assert.equal(resumed.result.review, first.result.review, 'explicit unsettled resume retains review identity')
++
++const replayed = await start({ replies: [{ text: priorLedger, invocationId: first.result.invocationId }] })
++assert.equal(replayed.error, undefined)
++assert.equal(replayed.result.review, first.result.review, 'reusing recorded Resume output preserves omitted-ID review identity')
++assert.equal(replayed.result.assembly, first.result.assembly, 'reusing recorded Resume output preserves assembly identity')
++
++const unavailable = await start({ mint: false })
++assert.match(unavailable.error?.message ?? '', /invocationId.*unavailable/, 'missing identity fails visibly')
++assert.equal(unavailable.trace.length, 1, 'missing identity never appends a fabricated Launch token')
++const unsafe = await start({ invocationId: '../escape' })
++assert.match(unsafe.error?.message ?? '', /filesystem-safe/)
++assert.equal(unsafe.trace.length, 0, 'unsafe explicit identity fails before dispatch')
++const unsafeAcquired = await start({ mint: false, replies: [{ text: priorLedger, invocationId: '../escape' }] })
++assert.match(unsafeAcquired.error?.message ?? '', /filesystem-safe/, 'unsafe mechanical identity fails visibly')
++assert.equal(unsafeAcquired.trace.length, 1, 'unsafe acquired identity cannot append Launch or authorize artifacts')
++
++// Transport repair must not mint twice or drop a valid identity already selected on the first read.
++const repaired = await start({ replies: [
++  { text: 'broken transport', invocationId: 'inv-selected' }, { text: priorLedger },
++] })
++assert.equal(repaired.error, undefined)
++assert.equal(repaired.result.invocationId, 'inv-selected', 'retry reconstruction preserves selected identity')
++assert.deepEqual(repaired.trace.map(t => t.label), ['read-ledger', 'read-ledger:retry', 'ledger-append:launch'])
++assert.ok(!repaired.trace[1].prompt.includes('uuidgen'), 'transport retry does not mint over a valid selected token')
++assert.ok(repaired.trace[2].prompt.includes('"invocationId":"inv-selected"'), 'Launch uses the selected token after retry')
++const retryUnavailable = await start({ replies: [{ text: 'broken transport', invocationId: 'inv-before-null' }, null] })
++assert.equal(retryUnavailable.error, undefined)
++assert.equal(retryUnavailable.result.invocationId, 'inv-before-null', 'a failed transport retry retains the first valid identity')
++assert.ok(!retryUnavailable.trace[1].prompt.includes('uuidgen'), 'a failed retry was not asked to remint')
++const recovered = await start({ replies: [null, { text: priorLedger, invocationId: 'inv-recovered' }] })
++assert.equal(recovered.error, undefined)
++assert.equal(recovered.result.invocationId, 'inv-recovered', 'retry can acquire when initial dispatch supplied no identity')
++assert.match(recovered.trace[1].prompt, /uuidgen/, 'retry requests minting when identity is still unavailable')
++const missingAfterRetry = await start({ replies: [{ text: 'bad transport' }, { text: priorLedger }] })
++assert.match(missingAfterRetry.error?.message ?? '', /invocationId.*unavailable/)
++assert.deepEqual(missingAfterRetry.trace.map(t => t.label), ['read-ledger', 'read-ledger:retry'], 'no fabricated identity after repaired transport')
++const unsafeAfterRetry = await start({ replies: [null, { text: priorLedger, invocationId: 'a.b' }] })
++assert.match(unsafeAfterRetry.error?.message ?? '', /filesystem-safe/)
++assert.equal(unsafeAfterRetry.trace.length, 2, 'unsafe retry identity cannot append Launch')
++const preserved = await start({ replies: [{ text: 'bad transport', invocationId: 'inv-kept' }, { text: priorLedger, invocationId: 'inv-replacement' }] })
++assert.equal(preserved.error, undefined)
++assert.equal(preserved.result.invocationId, 'inv-kept', 'unsolicited retry token cannot replace a selected valid identity')
++const explicitRetry = await start({ invocationId: 'inv-explicit', replies: [{ text: 'bad transport' }, { text: priorLedger, invocationId: 'inv-ignored' }] })
++assert.equal(explicitRetry.error, undefined)
++assert.equal(explicitRetry.result.invocationId, 'inv-explicit')
++assert.ok(explicitRetry.trace.every(t => !t.prompt.includes('uuidgen')), 'explicit identity never requests minting, including retries')
++
++const gap = await start({ invocationId: 'inv-gap', append: false })
++assert.equal(gap.error, undefined)
++assert.equal(gap.result.invocationPersisted, false, 'failed persistence leaves review output unauthorized')
++console.log('PASS: omitted-ID and explicit startup, distinct artifacts, resume, missing/unsafe identity, persistence gap, transport retry, recorded-result replay (16 startups; Workflow-like sandbox; mechanical agent simulated)')
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index f894ea21..5f1693cb 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -1593,25 +1593,51 @@ async function main() {
+         for (const file of files) { mkdirSync(path.dirname(file), { recursive: true }); writeFileSync(file, invocationId) }
+         bundles.push(files)
+       }
+       check(bundles[0].every(file => readFileSync(file, 'utf8') === 'inv-first'), 'second invocation leaves the earlier synthetic bundle unchanged')
+       check(!bundles[1].some(file => bundles[0].includes(file)), 'single and split bundles have disjoint paths')
+       const resumed = await run({ args: liveArgs({ runTag: 'shared-run', invocationId: 'inv-first' }), canned: oneTaskCanned({
+         'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}' },
+       }) })
+       assertNoThrow(resumed)
+       check(resumed.result?.reviewPath === `${FR_WS}/final-review-inv-first.md`, 'explicitly resumed invocation reuses its recorded identity', resumed.result?.reviewPath)
++      check(!promptOf(resumed.trace, 'read-ledger')?.includes('uuidgen'), 'explicit resume never requests minting')
+       const freshArgs = liveArgs({ runTag: 'shared-run', invocationId: undefined })
+-      const fresh = await run({ args: freshArgs, canned: oneTaskCanned({ 'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}' } }) })
+-      const freshLaunch = extractLedgerLine(promptOf(fresh.trace, 'ledger-append:launch'))
+-      const minted = freshLaunch?.startsWith('Launch: args ') ? JSON.parse(freshLaunch.slice(13)).invocationId : null
+-      check(typeof minted === 'string' && minted !== 'inv-first' && minted !== 'shared-run', 'fresh invocation mints its own token instead of copying the last launch', freshLaunch)
++      const freshBundles = []
++      for (const [invocationId, split] of [['inv-fresh-a', false], ['inv-fresh-b', true]]) {
++        const reviewPath = `${FR_WS}/final-review-${invocationId}.md`
++        const dir = `${FR_WS}/assembled/final-review-${invocationId}-final`
++        const fresh = await run({ args: freshArgs, canned: oneTaskCanned({
++          'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}', invocationId },
++          'assemble:final': { dir, exit: 0, fits: split ? 'fits: no (300000 of 80000)' : 'fits: yes (12000 of 80000)',
++            clusterFits: split ? ['cluster-fits: alpha yes (60000 of 80000)'] : [], clusters: split ? 1 : 0 },
++          'final-review': { verdict: 'ready', path: reviewPath },
++          'final-review:cluster:1': { verdict: 'ready', path: `${FR_WS}/final-review-${invocationId}.cluster-1.md` },
++          'final-review:seam': { verdict: 'ready', path: reviewPath },
++        }) })
++        assertNoThrow(fresh)
++        const freshLaunch = extractLedgerLine(promptOf(fresh.trace, 'ledger-append:launch'))
++        const minted = freshLaunch?.startsWith('Launch: args ') ? JSON.parse(freshLaunch.slice(13)).invocationId : null
++        check(typeof minted === 'string' && minted !== 'inv-first' && minted !== 'shared-run', 'fresh invocation mints its own token instead of copying the last launch', freshLaunch)
++        check(minted === invocationId, 'Launch persists exactly the fresh mechanical boundary token', minted)
++        check(JSON.stringify(fresh.trace.slice(0, 2).map(t => t.label)) === '["read-ledger","ledger-append:launch"]', 'Resume acquisition precedes the existing acknowledged Launch append with no extra dispatch')
++        const resume = fresh.trace[0]
++        check(resume.prompt.includes('uuidgen') && !!resume.opts.schema.properties.invocationId, 'omitted-ID Resume requests external minting and its structured identity field')
++        check(fresh.trace[1].opts.schema.required.includes('appended'), 'fresh Launch requests persistence acknowledgment')
++        const assembly = promptOf(fresh.trace, 'assemble:final')?.match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
++        check(assembly === dir && fresh.result?.reviewPath === reviewPath, 'fresh assembly and review destinations use the supplied token', JSON.stringify([assembly, fresh.result?.reviewPath]))
++        const reviewLabel = split ? 'final-review:seam' : 'final-review'
++        check(promptOf(fresh.trace, reviewLabel)?.includes(reviewPath), 'review writer uses this fresh invocation destination')
++        if (split) check(promptOf(fresh.trace, 'final-review:cluster:1')?.includes(`${FR_WS}/final-review-${invocationId}.cluster-1.md`), 'fresh split cluster uses its invocation identity')
++        freshBundles.push({ assembly, reviewPath: fresh.result?.reviewPath })
++      }
++      check(freshBundles[0].assembly !== freshBundles[1].assembly && freshBundles[0].reviewPath !== freshBundles[1].reviewPath, 'two fresh launches sharing args and prior ledger have distinct assembly and review destinations')
+     } finally { rmSync(temp, { recursive: true, force: true }) }
+   }
+ 
+   scenario('invocation identity persistence gaps and unsafe tokens never create review artifacts')
+   {
+     for (const reply of [null, { appended: false }]) {
+       const out = await run({ args: liveArgs({ invocationId: 'inv-gap' }), canned: oneTaskCanned({ 'ledger-append:launch': reply, 'ledger-append:launch:retry': reply }) })
+       assertNoThrow(out)
+       check(!out.counts['assemble:final'] && !out.counts['final-review'] && out.result?.reviewPath === null, 'unconfirmed identity persistence suppresses assembly and final review', JSON.stringify(out.result))
+       check(out.result?.review?.includes('invocation identity'), 'persistence gap is explicit in the unavailable review', out.result?.review)

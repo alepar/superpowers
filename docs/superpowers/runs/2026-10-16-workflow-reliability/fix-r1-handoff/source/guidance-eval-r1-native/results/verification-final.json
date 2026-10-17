@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-10-17T15:22:09.087067+00:00",
+  "validation": "pass",
+  "canonicalStatus": "INCOMPLETE",
+  "reportSha256": "4cb75bbc940c07f9b4b7aee1653fd1b14abfd2988d56f6895a30df485bcb26a9",
+  "rawResponses": 20,
+  "distinctCandidateIds": 20,
+  "completeIntakeSamples": 19,
+  "primaryMeasurableSamples": 15,
+  "plannedCases": 150,
+  "primaryCaseCounts": {
+    "pass": 108,
+    "fail": 3,
+    "unmeasurable": 39
+  },
+  "native42FrozenFilesUnchanged": true,
+  "original54SnapshotFilesUnchanged": true,
+  "allScoredInputHashesReverified": true,
+  "reportAndLedgerCountsConsistent": true
+}

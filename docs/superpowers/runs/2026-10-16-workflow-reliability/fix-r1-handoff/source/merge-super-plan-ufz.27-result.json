@@ -1,0 +1,17 @@
+{
+  "id": "super-plan-ufz.27",
+  "merged": true,
+  "mergeCommit": "c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+  "head": "b03e84a6cedae8498866d89a4dd4a59829a62fe1",
+  "mergeBase": "5bbc02c6b754ed94b6fa50f5c1225d75664c2a99",
+  "rebaseConflictFiles": 0,
+  "seamOverlap": [],
+  "check": "none",
+  "mergeExit": 0,
+  "mergeHead": true,
+  "beadClosed": false,
+  "closure": "auto-review refused; explicit human approval pending; no retry or workaround",
+  "cleanup": "kept own worktree and temp; bead closure prerequisite not met",
+  "stopProcessesExit": 0,
+  "stopProcessesOutput": []
+}

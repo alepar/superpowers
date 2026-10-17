@@ -1,0 +1,2009 @@
+{
+  "ordinal": 5,
+  "sampleId": "source-binding-after-2",
+  "nativeSampleId": "candidate_005",
+  "family": "source-binding",
+  "arm": "after",
+  "replicate": 2,
+  "agentId": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+  "taskName": "/root/run_native_guidance_eval_ufz_r1/candidate_005",
+  "startedAt": "2026-10-17T14:54:46.706Z",
+  "launchArgumentsSha256": "12d6810773d579f2b19e2efe44a0dcd9f23f63729e5401952da286fd86765b62",
+  "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "providerRequestId": null,
+  "status": "completed",
+  "errors": [],
+  "cliVersion": "0.163.0",
+  "sourceSessionPath": "/Users/alepar/.aisw/profiles/codex/protonmail/sessions/2026/10/17/rollout-2026-10-17T07-54-46-01a14a5b-b5a7-7442-8101-cc6133b46a5d.jsonl",
+  "observedConfiguration": [
+    {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    }
+  ],
+  "automatedToolReviewFlags": [
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:54:51.606Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c39bc24819b8c9afb64ade99234",
+          "status": "completed",
+          "call_id": "call_36c5c5f439bf4460b3ebc3288d81677b",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 0\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248889.741346
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:54:54.942Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c3cfcf0819ba5dfffc7575f9901",
+          "status": "completed",
+          "call_id": "call_6cea75a82da4428bb49841154e5fc145",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 12000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248892.9945848
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:54:58.766Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c40d790819b80fa930e091df010",
+          "status": "completed",
+          "call_id": "call_110241e90a5a4dffaa8afee4579d64a9",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 24000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248897.3845322
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:02.065Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c441b8c819bb0c39783062ecf10",
+          "status": "completed",
+          "call_id": "call_a3e5e85fb8af495c94c97ebb011b0a38",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 36000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248900.1134112
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:06.986Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c478bc8819b9fcd760377bee41e",
+          "status": "completed",
+          "call_id": "call_cdf4d0d923ee404ea20823164972d581",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 48000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248903.7278204
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:10.390Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c4c7b80819ba608c2a5aa24b945",
+          "status": "completed",
+          "call_id": "call_7fbf7f1277f4456880864720f153aa7b",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 60000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248908.504404
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:14.846Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c50c64c819bb4203ef1d823ea25",
+          "status": "completed",
+          "call_id": "call_f0efbf6295d640c688e57cd3f156c26f",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 72000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248912.798353
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:19.502Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c559bb4819bad016f28e68630d8",
+          "status": "completed",
+          "call_id": "call_9749fa68749c4080b8c901cb71d11f98",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 84000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248917.614367
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:22.648Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c58c518819ba422d2aed7a6aac5",
+          "status": "completed",
+          "call_id": "call_323db981746347a693a7438e363f9bfc",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 96000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248920.7765007
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:25.951Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c5c0ff0819bb6b7eab146e0ed5e",
+          "status": "completed",
+          "call_id": "call_e30a6cc34223464691d908749eba5831",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 108000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248924.0677528
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:30.250Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c6066c8819b87bfb51e7d30128a",
+          "status": "completed",
+          "call_id": "call_18ac7678b0b645e48de837fc2b29a54d",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 120000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248928.4101586
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:33.519Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c639240819b99c1558b42717c2a",
+          "status": "completed",
+          "call_id": "call_705660c037f14afbab4d1311b543d470",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 132000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248931.5773742
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:37.156Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c675ce0819ba20b76ba10d56154",
+          "status": "completed",
+          "call_id": "call_27d137b151f84312a1d8dc5989abc15c",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 144000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248935.3689775
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:41.158Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c6b3600819bb2b62804de6cee8a",
+          "status": "completed",
+          "call_id": "call_2fdeee64bbcb4e9ba7c21198c224de88",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 156000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248939.2167408
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:44.398Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c6e9af4819bb198f002c713dde8",
+          "status": "completed",
+          "call_id": "call_558d7fd371f142c393172b79341e3d67",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 168000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248942.6168485
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:47.529Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c719c54819b9d58d04a688b647d",
+          "status": "completed",
+          "call_id": "call_6c285f02ef6648549c36096372eeda09",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 180000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248945.6187203
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:51.038Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c754870819ba6fdffe9b4ac6297",
+          "status": "completed",
+          "call_id": "call_37e17669328e44d7a1daeff9e3a8e28a",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 192000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248949.2887793
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:55.299Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c793eac819ba7ee9e2756551538",
+          "status": "completed",
+          "call_id": "call_ede91dda899845708f244a444010c7aa",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 204000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248953.3514147
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:55:59.338Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c7d4f88819b8a4df39d18202f1d",
+          "status": "completed",
+          "call_id": "call_3db718170eb448eb9032956b7f8165fe",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 216000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248957.3851316
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:03.150Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c815630819bb18e78f9301f03e7",
+          "status": "completed",
+          "call_id": "call_a0ca4f90b8944e4786fbb4cec555d1ba",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 228000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248961.3443723
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:07.965Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c860ea8819b869824ac2ee521dd",
+          "status": "completed",
+          "call_id": "call_882a49a5df6548b893a50cb0ee1bdd5d",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 240000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248966.0630028
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:11.067Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c8942e4819ba86c5f8bd6761e3a",
+          "status": "completed",
+          "call_id": "call_8bbb39dea927433aa349de0bdce0d5d4",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 252000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248969.5412948
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:15.122Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c8d1af8819b9635e4b0d3f18132",
+          "status": "completed",
+          "call_id": "call_f92fc86f3c354a0f8ee06930ef0c15fd",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 264000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248973.119919
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:20.313Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c927258819bb4c868019eb4a90c",
+          "status": "completed",
+          "call_id": "call_2457991e4c4a498fb5dd91eb49044aa4",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 276000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248978.4534476
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:23.980Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c963698819ba243bb9f03d44719",
+          "status": "completed",
+          "call_id": "call_cabf96837e994d289731cb07c53ee208",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 288000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248982.2187045
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:29.730Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c9bd368819bab00a338d260bf46",
+          "status": "completed",
+          "call_id": "call_1e616cdda65f4a83b459a08c774026dc",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 0 300000\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248987.8315158
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T14:56:33.146Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_01af163a7c1b7177016ad38c9f2d70819b990fe51d420a5eb5",
+          "status": "completed",
+          "call_id": "call_095777d806cf4f93b1ef247e7315d584",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5 1 0\",max_output_tokens:16000});text(r.output);\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+            "create_time": 1792248991.1854267
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    }
+  ],
+  "finishedAt": "2026-10-17T14:57:49.405Z",
+  "responsePath": "results/responses/candidate_005.txt",
+  "responseSha256": "876b00f80e281b2e4f1f81135a8e1eca1a08ba7d4fafc88570b3cfb3e119b919",
+  "responseBytes": 19522,
+  "transcriptPath": "results/transcripts/candidate_005.jsonl",
+  "transcriptSha256": "a3a0bfe61428ff2d868d96f64d3fa541854420e197f1255c2641c611db655a67",
+  "intakeExpectedChunks": 27,
+  "intakeObservedChunks": 27,
+  "intakeComplete": true,
+  "intakeReceipts": [
+    {
+      "timestamp": "2026-10-17T14:54:51.702Z",
+      "receipt": {
+        "chunkSha256": "3deaf846d8e4022597c7ff7818c612a7289e1a5c7ea4d50618a72bea762ecfed",
+        "endExclusive": 12000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 0
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:54:55.027Z",
+      "receipt": {
+        "chunkSha256": "dfa3a25f07ac042d5c906e5303c8a744972b77377f9cef5259cdb70aecefda1e",
+        "endExclusive": 24000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 12000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:54:58.851Z",
+      "receipt": {
+        "chunkSha256": "7d0c1a8ad5f408802797e24f3d6b023c24a1b60eb2eef8bac93fe2682cc5d21d",
+        "endExclusive": 36000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 24000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:02.162Z",
+      "receipt": {
+        "chunkSha256": "5887d2c9fa2d41348650834137d00d7443f96257cc9656d835e48dc96b988de6",
+        "endExclusive": 48000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 36000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:07.082Z",
+      "receipt": {
+        "chunkSha256": "e0024adbb511b8421a20e2066fd7a753784f0cee3b14f5f9eaf76d4fe18528a1",
+        "endExclusive": 60000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 48000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:10.471Z",
+      "receipt": {
+        "chunkSha256": "62ebde5075568a435fa2569356965e6ab8821f5b284839e3da1959475d1fbe39",
+        "endExclusive": 72000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 60000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:15.766Z",
+      "receipt": {
+        "chunkSha256": "b643b146bc0f9c0a45b664955c85dca9cbded266e9353fd452c5e97e58b32fd8",
+        "endExclusive": 84000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 72000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:19.594Z",
+      "receipt": {
+        "chunkSha256": "0b5b5e276d6dfdb12dfbd9d7c97fffb894e213d77ee1e1a7339d026da045de52",
+        "endExclusive": 96000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 84000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:22.737Z",
+      "receipt": {
+        "chunkSha256": "7689f5a36a89f6fefe631b0c99111b5203dd58c0d3b70311d5f4d1ba2e317b6c",
+        "endExclusive": 108000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 96000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:26.037Z",
+      "receipt": {
+        "chunkSha256": "88ee280fa6f87ab6bbfd8f4b3c3857c25837361e7c7aaa27bc64ae89cd083dd2",
+        "endExclusive": 120000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 108000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:30.340Z",
+      "receipt": {
+        "chunkSha256": "f86936eef136535c04a91c36715abd959a15534fd936361a549634889ab657f7",
+        "endExclusive": 132000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 120000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:33.607Z",
+      "receipt": {
+        "chunkSha256": "98a8c125010df6884af8068d5407b9bf874190656f79b8d2780296bde2cd23b1",
+        "endExclusive": 144000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 132000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:37.244Z",
+      "receipt": {
+        "chunkSha256": "0e66dfac5b34771b4ad14abd332d5780d33e2e6452afd787d43e0a6cc8b5ad8d",
+        "endExclusive": 156000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 144000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:41.254Z",
+      "receipt": {
+        "chunkSha256": "ea794ee0d9d60088c9ba6905ccac28c134de161d74f6983b726ae73447daf073",
+        "endExclusive": 168000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 156000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:44.488Z",
+      "receipt": {
+        "chunkSha256": "7eb6fcd7982d4e6f51bb008901a9cde98297a20015e6cced2dc9d434f0f4cd4c",
+        "endExclusive": 180000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 168000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:47.615Z",
+      "receipt": {
+        "chunkSha256": "d389e8a466306fce2cecaf9f776a40cc9e44a01c6ebdaaea121b1366f8ab3faf",
+        "endExclusive": 192000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 180000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:51.135Z",
+      "receipt": {
+        "chunkSha256": "e39c503f1b6e8a8c6a5f0245698ade0ffdad1ed21eb62ee14b35d94b3166c0a3",
+        "endExclusive": 204000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 192000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:55.391Z",
+      "receipt": {
+        "chunkSha256": "d29d7c65cfb1ab6bd3c0cafceddd4abe4b1cdb9644307b424a574d64d17766f5",
+        "endExclusive": 216000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 204000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:55:59.430Z",
+      "receipt": {
+        "chunkSha256": "5a6414c0024f2d11ec00d50d452639b972d7dff3ddf27088ba2219687fd7b2d8",
+        "endExclusive": 228000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 216000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:03.233Z",
+      "receipt": {
+        "chunkSha256": "93d46394ae3eb9a81f40f9e701d75dd1f1c708b180d54ea5b08ef610239dab8d",
+        "endExclusive": 240000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 228000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:08.051Z",
+      "receipt": {
+        "chunkSha256": "8db037ddcc220f088c32fb30b3fbc5416ee38c50790a75d35d225d6c0e00fd68",
+        "endExclusive": 252000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 240000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:11.164Z",
+      "receipt": {
+        "chunkSha256": "8947caa60184a5a6052fdc49a647cc4f408796133a5b8a380a99f63c446ec94e",
+        "endExclusive": 264000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 252000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:15.213Z",
+      "receipt": {
+        "chunkSha256": "d0bc931d2d52c6e05e57b4a700cc0743119cc3bc1f29e8b88ba1754cd80dca35",
+        "endExclusive": 276000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 264000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:20.401Z",
+      "receipt": {
+        "chunkSha256": "233bc6e38888b05053a9210c5b130c5714b40a0a64ebbfab31494f9be743178b",
+        "endExclusive": 288000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 276000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:24.069Z",
+      "receipt": {
+        "chunkSha256": "1dc0c61004d14ae4fe0e0b23641c013c30ff46dca68a0e0adc74be8b59461345",
+        "endExclusive": 300000,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 288000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:29.815Z",
+      "receipt": {
+        "chunkSha256": "05a16eb45999a42618b786edb0f7cfa67bdce865d286469f8dc25a207ff4f30a",
+        "endExclusive": 303664,
+        "messageCharacters": 303664,
+        "messageIndex": 0,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "system",
+        "start": 300000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T14:56:33.233Z",
+      "receipt": {
+        "chunkSha256": "f76cd8d40ffbe9f77577c9e4110b4cbf410a5ab0b0b6b809f6e3b2273147471b",
+        "endExclusive": 7025,
+        "messageCharacters": 7025,
+        "messageIndex": 1,
+        "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+        "role": "user",
+        "start": 0
+      },
+      "exactBodyVerified": true
+    }
+  ],
+  "availableUsageRecords": [
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c38a56c819bb97f8682b2e60b45",
+      "usage": {
+        "input_tokens": 21611,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 182,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21793
+      },
+      "turn_token_usage": {
+        "input_tokens": 21611,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 182,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21793
+      },
+      "thread_token_usage": {
+        "input_tokens": 21611,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 182,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21793
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c3c1eb0819b9b5582a19a7eb388",
+      "usage": {
+        "input_tokens": 24655,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 24838
+      },
+      "turn_token_usage": {
+        "input_tokens": 46266,
+        "cached_input_tokens": 40960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 365,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 46631
+      },
+      "thread_token_usage": {
+        "input_tokens": 46266,
+        "cached_input_tokens": 40960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 365,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 46631
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c3ff724819ba0a94b8f0f9144ed",
+      "usage": {
+        "input_tokens": 27757,
+        "cached_input_tokens": 24448,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 27940
+      },
+      "turn_token_usage": {
+        "input_tokens": 74023,
+        "cached_input_tokens": 65408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 548,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 74571
+      },
+      "thread_token_usage": {
+        "input_tokens": 74023,
+        "cached_input_tokens": 65408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 548,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 74571
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c4368cc819ba04ea828a65241a9",
+      "usage": {
+        "input_tokens": 30891,
+        "cached_input_tokens": 27520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 31074
+      },
+      "turn_token_usage": {
+        "input_tokens": 104914,
+        "cached_input_tokens": 92928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 731,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 105645
+      },
+      "thread_token_usage": {
+        "input_tokens": 104914,
+        "cached_input_tokens": 92928,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 731,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 105645
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c46763c819b922467696d6e5e66",
+      "usage": {
+        "input_tokens": 33974,
+        "cached_input_tokens": 30720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 34157
+      },
+      "turn_token_usage": {
+        "input_tokens": 138888,
+        "cached_input_tokens": 123648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 914,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 139802
+      },
+      "thread_token_usage": {
+        "input_tokens": 138888,
+        "cached_input_tokens": 123648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 914,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 139802
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c4b6730819bb861ab52e52b1797",
+      "usage": {
+        "input_tokens": 37062,
+        "cached_input_tokens": 33792,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 37245
+      },
+      "turn_token_usage": {
+        "input_tokens": 175950,
+        "cached_input_tokens": 157440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1097,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 177047
+      },
+      "thread_token_usage": {
+        "input_tokens": 175950,
+        "cached_input_tokens": 157440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1097,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 177047
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c4ec9b8819bb41f1d0492ce1a3c",
+      "usage": {
+        "input_tokens": 40123,
+        "cached_input_tokens": 36864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 40306
+      },
+      "turn_token_usage": {
+        "input_tokens": 216073,
+        "cached_input_tokens": 194304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1280,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 217353
+      },
+      "thread_token_usage": {
+        "input_tokens": 216073,
+        "cached_input_tokens": 194304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1280,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 217353
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c545344819bb25d534a455acda7",
+      "usage": {
+        "input_tokens": 43276,
+        "cached_input_tokens": 39936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 43459
+      },
+      "turn_token_usage": {
+        "input_tokens": 259349,
+        "cached_input_tokens": 234240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1463,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 260812
+      },
+      "thread_token_usage": {
+        "input_tokens": 259349,
+        "cached_input_tokens": 234240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1463,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 260812
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c57e988819b9ff0c51c0c83bab3",
+      "usage": {
+        "input_tokens": 46500,
+        "cached_input_tokens": 43136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 46683
+      },
+      "turn_token_usage": {
+        "input_tokens": 305849,
+        "cached_input_tokens": 277376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1646,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 307495
+      },
+      "thread_token_usage": {
+        "input_tokens": 305849,
+        "cached_input_tokens": 277376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1646,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 307495
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c5b1114819b83e613cf1a7009f0",
+      "usage": {
+        "input_tokens": 49794,
+        "cached_input_tokens": 46336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 49977
+      },
+      "turn_token_usage": {
+        "input_tokens": 355643,
+        "cached_input_tokens": 323712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1829,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 357472
+      },
+      "thread_token_usage": {
+        "input_tokens": 355643,
+        "cached_input_tokens": 323712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1829,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 357472
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c5e64c4819b9c4bb59d7022432a",
+      "usage": {
+        "input_tokens": 53031,
+        "cached_input_tokens": 49664,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 53214
+      },
+      "turn_token_usage": {
+        "input_tokens": 408674,
+        "cached_input_tokens": 373376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2012,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 410686
+      },
+      "thread_token_usage": {
+        "input_tokens": 408674,
+        "cached_input_tokens": 373376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2012,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 410686
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c629f64819b885f07316c628133",
+      "usage": {
+        "input_tokens": 56191,
+        "cached_input_tokens": 52864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 56374
+      },
+      "turn_token_usage": {
+        "input_tokens": 464865,
+        "cached_input_tokens": 426240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2195,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 467060
+      },
+      "thread_token_usage": {
+        "input_tokens": 464865,
+        "cached_input_tokens": 426240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2195,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 467060
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c65fbc4819b80fdaa3c998b5dd1",
+      "usage": {
+        "input_tokens": 59200,
+        "cached_input_tokens": 56064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 59383
+      },
+      "turn_token_usage": {
+        "input_tokens": 524065,
+        "cached_input_tokens": 482304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2378,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 526443
+      },
+      "thread_token_usage": {
+        "input_tokens": 524065,
+        "cached_input_tokens": 482304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2378,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 526443
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c69b76c819b896177a143515d1f",
+      "usage": {
+        "input_tokens": 62576,
+        "cached_input_tokens": 59008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 62759
+      },
+      "turn_token_usage": {
+        "input_tokens": 586641,
+        "cached_input_tokens": 541312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2561,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 589202
+      },
+      "thread_token_usage": {
+        "input_tokens": 586641,
+        "cached_input_tokens": 541312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2561,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 589202
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c6d95a4819b8445cf2e97f326c9",
+      "usage": {
+        "input_tokens": 65867,
+        "cached_input_tokens": 62336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 66050
+      },
+      "turn_token_usage": {
+        "input_tokens": 652508,
+        "cached_input_tokens": 603648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2744,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 655252
+      },
+      "thread_token_usage": {
+        "input_tokens": 652508,
+        "cached_input_tokens": 603648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2744,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 655252
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c70c1ec819bb01b4c162cac057f",
+      "usage": {
+        "input_tokens": 68798,
+        "cached_input_tokens": 65664,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 68981
+      },
+      "turn_token_usage": {
+        "input_tokens": 721306,
+        "cached_input_tokens": 669312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2927,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 724233
+      },
+      "thread_token_usage": {
+        "input_tokens": 721306,
+        "cached_input_tokens": 669312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2927,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 724233
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c73eaf4819bbb65523d1d61d3af",
+      "usage": {
+        "input_tokens": 71999,
+        "cached_input_tokens": 68608,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 72182
+      },
+      "turn_token_usage": {
+        "input_tokens": 793305,
+        "cached_input_tokens": 737920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3110,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 796415
+      },
+      "thread_token_usage": {
+        "input_tokens": 793305,
+        "cached_input_tokens": 737920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3110,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 796415
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c779468819b834cd2c4b7c637ca",
+      "usage": {
+        "input_tokens": 75174,
+        "cached_input_tokens": 71808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 75357
+      },
+      "turn_token_usage": {
+        "input_tokens": 868479,
+        "cached_input_tokens": 809728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3293,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 871772
+      },
+      "thread_token_usage": {
+        "input_tokens": 868479,
+        "cached_input_tokens": 809728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3293,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 871772
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c7be640819b9043c12d65dd2c83",
+      "usage": {
+        "input_tokens": 78265,
+        "cached_input_tokens": 75008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 78448
+      },
+      "turn_token_usage": {
+        "input_tokens": 946744,
+        "cached_input_tokens": 884736,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3476,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 950220
+      },
+      "thread_token_usage": {
+        "input_tokens": 946744,
+        "cached_input_tokens": 884736,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3476,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 950220
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c7ffc08819b95f3505e1c39de3e",
+      "usage": {
+        "input_tokens": 81408,
+        "cached_input_tokens": 78080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 81591
+      },
+      "turn_token_usage": {
+        "input_tokens": 1028152,
+        "cached_input_tokens": 962816,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3659,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1031811
+      },
+      "thread_token_usage": {
+        "input_tokens": 1028152,
+        "cached_input_tokens": 962816,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3659,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1031811
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c83ac94819b91f6d65019e1b86c",
+      "usage": {
+        "input_tokens": 85033,
+        "cached_input_tokens": 81280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 85216
+      },
+      "turn_token_usage": {
+        "input_tokens": 1113185,
+        "cached_input_tokens": 1044096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3842,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1117027
+      },
+      "thread_token_usage": {
+        "input_tokens": 1113185,
+        "cached_input_tokens": 1044096,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3842,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1117027
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c885f8c819b83b8a830139a2cc5",
+      "usage": {
+        "input_tokens": 88220,
+        "cached_input_tokens": 84864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 88403
+      },
+      "turn_token_usage": {
+        "input_tokens": 1201405,
+        "cached_input_tokens": 1128960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4025,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1205430
+      },
+      "thread_token_usage": {
+        "input_tokens": 1201405,
+        "cached_input_tokens": 1128960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4025,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1205430
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c8bf0a8819bae6e99758542277b",
+      "usage": {
+        "input_tokens": 91696,
+        "cached_input_tokens": 88064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 91879
+      },
+      "turn_token_usage": {
+        "input_tokens": 1293101,
+        "cached_input_tokens": 1217024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4208,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1297309
+      },
+      "thread_token_usage": {
+        "input_tokens": 1293101,
+        "cached_input_tokens": 1217024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4208,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1297309
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c8fc1f0819baeb226fb2d1b311b",
+      "usage": {
+        "input_tokens": 95465,
+        "cached_input_tokens": 91520,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 95648
+      },
+      "turn_token_usage": {
+        "input_tokens": 1388566,
+        "cached_input_tokens": 1308544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4391,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1392957
+      },
+      "thread_token_usage": {
+        "input_tokens": 1388566,
+        "cached_input_tokens": 1308544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4391,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1392957
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c94c7e8819ba03f58005050aef2",
+      "usage": {
+        "input_tokens": 99173,
+        "cached_input_tokens": 95232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 99356
+      },
+      "turn_token_usage": {
+        "input_tokens": 1487739,
+        "cached_input_tokens": 1403776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4574,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1492313
+      },
+      "thread_token_usage": {
+        "input_tokens": 1487739,
+        "cached_input_tokens": 1403776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4574,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1492313
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c9886b0819ba5c3da552fd0d438",
+      "usage": {
+        "input_tokens": 102884,
+        "cached_input_tokens": 98944,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 183,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 103067
+      },
+      "turn_token_usage": {
+        "input_tokens": 1590623,
+        "cached_input_tokens": 1502720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4757,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1595380
+      },
+      "thread_token_usage": {
+        "input_tokens": 1590623,
+        "cached_input_tokens": 1502720,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4757,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1595380
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38c9e1200819bbc4b3e1df5111a39",
+      "usage": {
+        "input_tokens": 104194,
+        "cached_input_tokens": 102656,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 182,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 104376
+      },
+      "turn_token_usage": {
+        "input_tokens": 1694817,
+        "cached_input_tokens": 1605376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4939,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1699756
+      },
+      "thread_token_usage": {
+        "input_tokens": 1694817,
+        "cached_input_tokens": 1605376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4939,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 1699756
+      }
+    },
+    {
+      "thread_id": "01a14a5b-b5a7-7442-8101-cc6133b46a5d",
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_01af163a7c1b7177016ad38ca183bc819b8d90c4f61320b0b3",
+      "usage": {
+        "input_tokens": 106090,
+        "cached_input_tokens": 104064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5012,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 111102
+      },
+      "turn_token_usage": {
+        "input_tokens": 1800907,
+        "cached_input_tokens": 1709440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9951,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 1810858
+      },
+      "thread_token_usage": {
+        "input_tokens": 1800907,
+        "cached_input_tokens": 1709440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9951,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 1810858
+      }
+    }
+  ],
+  "availableTurnContexts": [
+    {
+      "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "disabled_plugin_ids": [],
+      "cwd": "/Users/alepar/AleCode/superpowers",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "permission_profile": {
+        "type": "managed",
+        "file_system": {
+          "type": "restricted",
+          "entries": [
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "root"
+                }
+              },
+              "access": "read"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers"
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "slash_tmp"
+                }
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "tmpdir"
+                }
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.git"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.agents"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.codex"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.aws"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            }
+          ]
+        },
+        "network": "restricted"
+      },
+      "file_system_sandbox_policy": {
+        "kind": "restricted",
+        "entries": [
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "root"
+              }
+            },
+            "access": "read"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers"
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "slash_tmp"
+              }
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "tmpdir"
+              }
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.git"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.agents"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.codex"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.aws"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          }
+        ]
+      },
+      "model": "gpt-6.1-sol",
+      "comp_hash": "3000",
+      "collaboration_mode": {
+        "mode": "default",
+        "settings": {
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "high",
+          "developer_instructions": null
+        }
+      },
+      "multi_agent_version": "v2",
+      "realtime_active": false,
+      "cyber_access_program": "standard",
+      "effort": "high",
+      "summary": "none"
+    }
+  ],
+  "terminationEvents": [
+    {
+      "timestamp": "2026-10-17T14:57:49.457Z",
+      "ordinal": 153,
+      "type": "event_msg",
+      "payload": {
+        "type": "task_complete",
+        "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+        "turn_id": "01a14a5b-b5d7-7b53-bad0-0773ba97526e",
+        "last_agent_message": "{\n  \"cases\": [\n    {\n      \"caseId\": \"A\",\n      \"decision\": \"Retain the persisted source pair and preserve the partial bundle. A same-source rewrite of the existing directory is not authorized.\",\n      \"orderedActions\": [\n        \"Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read\",\n        \"Use the recorded inv-atlas-017 binding, not the newer live integration tip.\",\n        \"Withhold the assembler's directory-emptying step. Any assembly dispatch must run the shared source/output guard first; the existing directory requires refusal before artifact writes.\",\n        \"Append the review gap and existing finding references to the ledger, then return current delivery facts to the caller.\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-017\",\n        \"base\": \"1111111111111111111111111111111111111111\",\n        \"head\": \"2222222222222222222222222222222222222222\",\n        \"why\": \"This explicit unsettled resume retains its valid persisted binding.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/digest.md\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/slices/src__quota.ts.diff\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"append\": \"Final review unavailable: inv-atlas-017 retains bound source 1111111111111111111111111111111111111111..2222222222222222222222222222222222222222; partial assembled output already exists and is preserved. Size result and canonical final review are absent. F-17 remains unresolved in assembled/final-review-inv-atlas-017-final/digest.md.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"FINAL REVIEW UNAVAILABLE — existing partial bundle prevents rewrite\",\n        \"reviewPath\": null,\n        \"evidenceGaps\": [\n          \"Assembler size result was not returned.\",\n          \"Canonical final review does not exist.\",\n          \"All task commits landed, but caller acceptance and the caller-owned final suite remain outstanding.\",\n          \"No successful review or test pass at 3333333333333333333333333333333333333333 is established.\"\n        ],\n        \"remainingFinding\": \"F-17: src/quota.ts:88 may allow a tenant to consume another tenant's quota; unresolved and retained in the partial bundle.\"\n      },\n      \"nextSafeCheck\": \"Confirm the stored binding through bind-review-source --read. No destructive action or review-bundle output write is permitted at this state; only the ledger gap append is proposed.\"\n    },\n    {\n      \"caseId\": \"B\",\n      \"decision\": \"Reject the proposed same-identity source change. Continue to recognize only the persisted old pair, preserve its partial output, and report review unavailable.\",\n      \"orderedActions\": [\n        \"Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read\",\n        \"Discard the pending write proposal using head 3333333333333333333333333333333333333333 with inv-atlas-017; do not replace the stored binding.\",\n        \"Permit no assembler cleanup, package write or reviewer write into the existing bundle. A shared guard presented with the proposed new pair must reject the source mismatch.\",\n        \"Record the mismatch and preserved F-17 evidence in the ledger. A review of the new tip requires a separately authorized fresh invocation; do not create one implicitly.\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-017\",\n        \"base\": \"1111111111111111111111111111111111111111\",\n        \"head\": \"2222222222222222222222222222222222222222\",\n        \"why\": \"The stored binding controls this unsettled resume. Fresh Git inspection does not replace it.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"append\": \"Final review unavailable: rejected proposed inv-atlas-017 source change from head 2222222222222222222222222222222222222222 to 3333333333333333333333333333333333333333. Original binding and finding-bearing partial bundle preserved; F-17 unresolved. No proposed new-source output was written.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"FINAL REVIEW UNAVAILABLE — source mismatch proposal rejected; existing partial bundle preserved\",\n        \"reviewPath\": null,\n        \"evidenceGaps\": [\n          \"No canonical final review exists for this invocation.\",\n          \"Head 3333333333333333333333333333333333333333 has no observed successful review or test pass.\",\n          \"All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.\"\n        ],\n        \"remainingFinding\": \"F-17 remains unresolved in the original inv-atlas-017 partial bundle.\"\n      },\n      \"nextSafeCheck\": \"Read and confirm the original persisted binding. Permit only the ledger discrepancy append now; no new-tip review may use inv-atlas-017.\"\n    },\n    {\n      \"caseId\": \"C\",\n      \"decision\": \"Preserve the unbound legacy partial and report final review unavailable. Do not guess its source, clear it, rebuild it or bypass it with a direct review.\",\n      \"orderedActions\": [\n        \"Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read\",\n        \"Treat the absent binding and existing unauthenticated bundle as an evidence gap. Do not bind those bytes to either the guessed old pair or current tip.\",\n        \"Withhold assembly, directory cleanup, direct .diff creation and final-review writers; the shared guard must refuse an existing unbound bundle.\",\n        \"Append the source gap and F-17 artifact reference to the ledger and hand back delivery facts with a null reviewPath.\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-017\",\n        \"base\": null,\n        \"head\": null,\n        \"why\": \"Neither a persisted reviewSource fact nor independently authenticated captured metadata establishes the legacy bundle's source.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"append\": \"Final review unavailable: inv-atlas-017 has an existing unbound legacy assembled bundle with no authenticated captured base/head. No source binding was invented and no bundle bytes were replaced. F-17 remains unresolved in assembled/final-review-inv-atlas-017-final/digest.md.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"FINAL REVIEW UNAVAILABLE — existing unbound legacy bundle\",\n        \"reviewPath\": null,\n        \"evidenceGaps\": [\n          \"The legacy bundle's captured source cannot be authenticated from this packet.\",\n          \"No completed canonical final review is established.\",\n          \"All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.\",\n          \"Current head 3333333333333333333333333333333333333333 has no observed successful review or test pass.\"\n        ],\n        \"remainingFinding\": \"F-17 remains unresolved. Its source artifact is preserved even though the artifact's Git source binding is unestablished.\"\n      },\n      \"nextSafeCheck\": \"Seek an independently authenticated original binding or capture record without modifying the legacy bytes. Until such evidence exists, permit only the ledger gap append.\"\n    },\n    {\n      \"caseId\": \"D\",\n      \"decision\": \"Honor the observed guard refusal. Dispatch no direct fallback reviewer, replacement assembler or stub writer.\",\n      \"orderedActions\": [\n        \"Retain the actual exit 2 guard result and its exact cause as evidence.\",\n        \"Apply the guard-refusal route before the generic assembler-failure table: preserve the partial bundle and return reviewPath null.\",\n        \"Append the guard refusal and unresolved F-17 reference to the ledger, drain the ledger writer, and hand back current delivery facts.\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-017\",\n        \"base\": \"1111111111111111111111111111111111111111\",\n        \"head\": \"2222222222222222222222222222222222222222\",\n        \"why\": \"The valid stored pair survives the refusal unchanged.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"append\": \"Final review unavailable: assembler exit 2; review source guard: output already exists: /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final. No direct-input fallback dispatched. Partial bundle and unresolved F-17 preserved.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"FINAL REVIEW UNAVAILABLE — review source guard: output already exists: /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final\",\n        \"reviewPath\": null,\n        \"evidenceGaps\": [\n          \"The observed guard refusal prevents final-review output for this attempted continuation.\",\n          \"The canonical final-review-inv-atlas-017.md does not exist.\",\n          \"All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.\",\n          \"No successful review or test pass at head 3333333333333333333333333333333333333333 is established.\"\n        ],\n        \"remainingFinding\": \"F-17 remains unresolved in the preserved partial digest and quota diff.\"\n      },\n      \"nextSafeCheck\": \"Use the stored binding and recorded guard cause for reconciliation. A separately authorized fresh invocation can establish a new bundle; no review-bundle write or destructive action is permitted now.\"\n    },\n    {\n      \"caseId\": \"E\",\n      \"decision\": \"Proceed with the clean fresh invocation, binding and reviewing the captured old pair despite the later live-branch advance.\",\n      \"orderedActions\": [\n        \"Run before any artifact/package write: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222\",\n        \"Require successful persistence for inv-atlas-018. Keep the caller-owned suite deferral visible and append the supported Metrics before final review.\",\n        \"Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md assemble --consumer final-review --instance final --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222 --threshold <40-percent-of-finalReview-window>\",\n        \"Dispatch the generated assembly instructions. Its guard must pass before the first bundle write; creation of the previously absent inv-atlas-018 assembly directory is then permitted.\",\n        \"Given the stipulated exit 0, fits yes and usable directory, generate final-review --mode single with --dir pointing to that directory and the same explicit --base and --head, then dispatch a fresh reviewer.\",\n        \"Have source reads use git show 2222222222222222222222222222222222222222:<path>; any filesystem source view uses a unique detached review worktree. Keep mutable outputs separate and leave the running checkout untouched.\",\n        \"After the stipulated successful canonical write, read: bash <skills-root>/super-code/scripts/report-verdict /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-018\",\n        \"base\": \"1111111111111111111111111111111111111111\",\n        \"head\": \"2222222222222222222222222222222222222222\",\n        \"why\": \"The verified Finish capture is persisted before output and remains fixed throughout assembly and review.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"content\": \"Persist inv-atlas-018 reviewSource with the captured pair before output; retain caller-owned suite deferral, supported Metrics and final-review mode/result.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-018-final\",\n          \"content\": \"First review-bundle output, permitted only after binding persistence and guard success; assemble exclusively from the captured pair.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md\",\n          \"content\": \"Canonical review written by the guarded single reviewer.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"Use the successfully written review's observed verdict; its verdict is not supplied by this packet. Coverage is limited to 1111111111111111111111111111111111111111..2222222222222222222222222222222222222222.\",\n        \"reviewPath\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md\",\n        \"evidenceGaps\": [\n          \"The non-null path is justified only after the stipulated successful canonical write.\",\n          \"This review does not cover live head 3333333333333333333333333333333333333333.\",\n          \"All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.\",\n          \"No test pass at the newer head is established.\"\n        ],\n        \"remainingFinding\": \"Do not infer that F-17 was resolved. Retain any F-17 evidence in supplied or subsequently produced artifacts; no supported resolution is provided.\"\n      },\n      \"nextSafeCheck\": \"Confirm binding persistence before assembly; after the successful write, obtain the actual verdict through report-verdict and report its captured-source coverage.\"\n    },\n    {\n      \"caseId\": \"F\",\n      \"decision\": \"Use the ordinary assembler-unavailable fallback: one uncapped direct-input final review with the stored source pair.\",\n      \"orderedActions\": [\n        \"Retain the observed assembler exit 2 and cause size tool unavailable. It is not a review-source guard refusal.\",\n        \"Generate: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md final-review --mode single --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222\",\n        \"Use direct inputs without --dir and without --capped. Require the shared source/output guard before the first direct .diff package or review output write.\",\n        \"Dispatch one fresh reviewer using the generated instructions. Read captured source with git show at head 2222222222222222222222222222222222222222 or a unique detached review worktree; do not edit or restore the running checkout.\",\n        \"Record Final review: single (assembler unavailable), retaining caller-owned suite deferral and supported Metrics. Await the reviewer; do not report completion from the planned dispatch.\",\n        \"If a canonical file is successfully written, read its verdict through report-verdict and return that path. A null reviewer result leaves FINAL REVIEW UNAVAILABLE and reviewPath null.\"\n      ],\n      \"source\": {\n        \"invocationId\": \"inv-atlas-019\",\n        \"base\": \"1111111111111111111111111111111111111111\",\n        \"head\": \"2222222222222222222222222222222222222222\",\n        \"why\": \"The valid stored pair applies equally to direct-input fallback; live branch movement does not replace it.\"\n      },\n      \"preservedPaths\": [\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration\",\n        \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\"\n      ],\n      \"proposedWrites\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md\",\n          \"append\": \"Final review: single (assembler unavailable). inv-atlas-019 retains source 1111111111111111111111111111111111111111..2222222222222222222222222222222222222222; assembler exit 2, cause size tool unavailable.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-019.diff\",\n          \"content\": \"First direct-input package write permitted after guard success, using only the stored pair.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-019.md\",\n          \"content\": \"Proposed canonical reviewer output; not yet observed written.\"\n        }\n      ],\n      \"handoff\": {\n        \"review\": \"FINAL REVIEW PENDING — uncapped direct-input fallback selected; reviewer completion unobserved\",\n        \"reviewPath\": null,\n        \"evidenceGaps\": [\n          \"Assembly sizing is unavailable.\",\n          \"The fallback reviewer has not completed and no canonical output write is observed.\",\n          \"All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.\",\n          \"Any eventual review covers only the stored pair, not head 3333333333333333333333333333333333333333.\"\n        ],\n        \"remainingFinding\": \"No resolution of F-17 is established. Preserve any available finding source and carry it into the review handoff.\"\n      },\n      \"nextSafeCheck\": \"Run the direct-review source/output guard, then await the reviewer. Return a non-null canonical path only after its successful write is confirmed.\"\n    }\n  ]\n}",
+        "started_at": 1792248886,
+        "completed_at": 1792249069,
+        "duration_ms": 182709,
+        "time_to_first_token_ms": 2945
+      }
+    }
+  ],
+  "finishReason": null,
+  "finishReasonUnknown": "Provider finish reason not separately exposed; native final message observed.",
+  "toolCallCount": 27,
+  "classification": "complete-intake-awaiting-semantic-score",
+  "nativeLaunchRequest": {
+    "timestamp": "2026-10-17T14:54:46.689Z",
+    "callId": "call_7eff642e23a34fbfbce37e296dbf7172",
+    "nativeItemId": "fc_0faa03d8c55c2c93016ad38c2e7454819abbb7647cdb135e39",
+    "toolNamespace": "collaboration",
+    "toolName": "spawn_agent",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "forkTurns": "none",
+    "messageArgumentEncryptedAtRest": true,
+    "rawNativeRequestRecord": {
+      "timestamp": "2026-10-17T14:54:46.689Z",
+      "ordinal": 250,
+      "type": "response_item",
+      "payload": {
+        "type": "function_call",
+        "status": "completed",
+        "id": "fc_0faa03d8c55c2c93016ad38c2e7454819abbb7647cdb135e39",
+        "name": "spawn_agent",
+        "namespace": "collaboration",
+        "arguments": "{\"task_name\":\"candidate_005\",\"message\":\"gAAAAABq04w2oxdef_6HcvvpPSe4lG-LJusqwv-u18AKS47RYJbY-TUTNGTmxTkfmP_W-sJ_ZechYbMWfOwKX7mwD3thuS46wJT9MfNXQUJK6LBQBsH9SmFxL-vK0GbCWyy7OM-9iWYlfmQjhpyK5fttfdSnq4Mnk8C7GEOBPInvbr-Rj25omlD9WFhqdia2ni7tm2UaUbQJlBMThMZP4auGiYtUq1YbZ57NYFpVQNuCxhIDm2e4uoe-Lw9Johkr3VEhTeNYC7ayhW3Tapt4AP68mIBz7dCLewsSrvq66DAYL9m0w57Vv83GJYw14xE6qO1Lv8YWHcuBp8Ip_xq6Q1-0Ul14lrKL3IzrXuQYfiZ9audk6wTbpPknZxhD5OUF7MNfpKX7MRhxMIXtfoeNIe4T2dHydPcrrhTyC5J_IVPRsmggOrhlVCIg7TyAdP3MIQlZ8O7JT1wSHis4emhrCtdndY0Gj5rW-WT3P3zQOc9BXL9EWq5ZZzebZsiIoiREesjD_Ax3rbH2bdAwQQcjAeYBKZovgZvTY7Cc1uVxk5EmgEemGmNLc9TdJlllZpsti7wBtxWzbsYJQtCJaKbnDuVUmixZlcbFHiKwgXgzpqks6xe4yZhNCecjVcvvyddCONm2QQPVZ5pfPETJ_TuUp1hiwxOda1O9J3aadNXFO34VoFFu4dq-TeN9N95G_DOqfvbk70HegENKVIIi8iMW_uCqGh8Vt_EFF3rdB7KtNbHp5V1u7-K9Y9Msg0tNkDr67QMAVM8Jp3nO_lWAzY_0z9WdjuOD4eEA45PZkTbkacqmX7LaNVQfFcpXKOEXbxEDPopO8J3bgT5Eot8SLePA08qd7tFKfFI__o1MT0b2RbplRyJ0jhqRmirWIoqQdKE2DmRBCJEVozafZ1VOHItbVkTCKXYAUFE2uzQ7K1vJ-V-ZVYpVKeanNnY96Y894wN1S8n2TIdun2j_gNcVX9QSEZu-qc10OfJZFSL3NJlqroydKam8V45NBXc7VeUW9v-HnM13WFG_GoyF80h8XQwBhNABoV7wl28q3VbzvdqQbHEs8IibDRzAXaX2N6oxmZAmgZ43ySFFzmUT-qqjwPYX0Psau0Er_IVEgPuDpPnG5ydriWcnxgBfozyK7FRX3H5fRSjOL3azk9xD8r0xY-5zurtLS6RXjPX1x8JFuFkPNv2pNmh15d6T2E5rZ9cEGpCaUdRfijxPYRNfYffV2VEWM2GRDKK7ezJif6BpP2khu2zDK587-xM0ThQTitBdUeO46rWpCBfMqGGhmfBSme3MrihBaKY3ZOEBhuiiU17xCNV5Ywkzup_z8t_vc2-QJq8NXUgDRXOrbXqpJp3l939XeZIaAO1OHGJY0Z_W6DRjVYkCzfkCSovicfN4V035jQPdG9bYDWLCV9oiLmiJenSsPh8_j-VZ5VdZLoKdCzFaPwpIv8xLpYkYsPxCTR7PXoDuGJuRWdhRzO1KxiO-ENOnX_gOQOF9ezb2GFihj57FwIO3vsDubuuhcLvU-1LlQ44trhnKsuZt8xn6cJpRf5CN_A0Nd_KH6uXj1WsoJyjrHHhEDlFWv_ITVsXSWLt5sPxucWQeOZu5sDql6JHTEPlOR585y3KejYV5iND18OPhQHWP5daQ8ZWDsr-VgXyG1utCDO6d0HKpCKStmIKI23mZEqAM2opBsrGXudjBtMx9qOvUxAQEM6GIQCgVWZhjfzkyM9do4frGWhA1-cnJT-K6Q9IRH5FqW0nsWJKyr-SSDBsEM_TciOCB6cW5RHsUsaR0zNTbdC2_tS__R94cXz-l-3Ly4t3qc2bjU0HQk7Vq65BVPHsW6D-xxmFTthHk3G_C3pkh-9SkjYPPyRAyOWB1skjld6z8lQ4T35mLVZC67vZKV1MGp8i6go_AnZwTLE7g_9X25mQDGmy2etsXcKe3oGSAwsVjz9ns54JaJoJSYFMxRRcRbD9ITb9B117finq8bS6zzC_cOyU8Sm5_-9OSROsxuHGdV5AdR3yKzbuPYfbVUQJz632YRzoSpJSFTFJ0qsoCjJK9_dieUZoiOokCz2ohLvpB2tDD3BUJfLFGDFk5CISfKsSc8roE4tN3Rxp7L9gYmKBFw4-agprkgrwui-WVSXsEviai7tGBuXq62ZNB8wm9pV07w0ksCUsKsX1QoTPTPqI3Ce_Go0IThfgXFxIVKLL0bUCvEktWQdKGXEUTMJjK4mcMmqwA6WtGxnNhbtWWjDWeTb0FlVehdu-S-0CsGKAEdOj1z9BG-GP4oelXpI9YnAPm9pC_wEO8JzSyIJMZArDCH3CCW9bQ804FYMRUb4OM7OQH8Y5cAzRaez1a0_rD5A5eQZarBmxQxU8oc_O8wCmdBEpjQ0NN6orWNzrqg03M686nYiym1J1qSGJScXeEQ8TmariCAS8hSedQzqVBJQYRmoRcMzYNAzrnRvT8W0EKSU4n9vdWu3RguA0f-2nLuzArB_PQJ9HM8O7ywnqEDtd3FIuartUsGjzO_zVZ7Sk-KqCCYNpJcS7sUNZJ4IKc8MdWsDiEby6KRC1-frXZ8YAOa1h533Va3d8iwZ-Ex3g3W0YZzr7gSDdlQGzJIvMFwqfR-J7rQ--YLYKdeeUJsn8IAq1eKhMRrPd9BF4-wBltEqBtSy5-PcgTRFx7qLFrIDWbgbK7l0knb94k6PzsVDWMn81UiIsJlRObHnDSEAr1gAbnVYzhAX0SHfQHWE72_8yVm4PEMxBmLRspUmGOB07VZUGiar59NFjK3F3MLJfEPrirtorcQ4TOOIPz9y3BlLDsDWEZd6Uc_PGEAhatnXBDP3zEBqxH_Jp_dLEZ1YLwlcb-tdu9TKyfTVuvYTYq_Y3j8JuOW6lLAaN8_F4P4uqDEapceAVc0QlSFtJkgHtqSwqX_6ELFqTfxz1k-YG-Ez1qfM5TD3SomEK0bonx2cRPhBdl1Gu-vhQNOyRhvzeVHTSEsCuuOOh7ayAM2F1RxuGbCtDO4F9_5hS4jQD_y8M_2PsZXG4IwkBE3eF4X7208nHrzpEYQlAF_jI5nrIpt81nj-yOJWSq-VrYu_pK495yZfQZ4IEOMaIdmWcKAteVoEtkWc4lk5vks8ne-VFDSEVM_TtizMWjIH9crwbH7hN9prIonm9b5TNAvhO1Qm-gt3TAoQEX3HTNfSqJoTae8cpmYXjWXiGcNKahQKhaIbwQkZs2sR-lMO4nsYnHBq-YSSj6BrCL-9Yp0Wmg_TXJC7wbn19y85W1wZi-py0ndzFVgQr_OkdT7v0W7GLR-QDL8xV04rx1vI-iVYatkEzF_sg2FkcUYPgvhk-puUzoAwNe9ex7-G2fz3LEW02C3ka8GoWUHPIaOyUUiUrqukdcb5SDrX83lyfO_FZ848NWSIGnjFwgdaBgfOblHPl3rI-s3mOQbmYpYwPx9jLshZsig7nGocFM3Uy7gDgGH5ZNzu83Gvbq7eZVftSUlWVZgpU_aBUK5OTMxUjsGAvzGKF6FyBLy9tIIlPKE-IQEJWsNT6eA4DaSFNMWvEWva2zBJQo81d0m3SI9SnzKrndQdYNJkIqlnACTpRItmR9w8lPq7lrXfz70-EoFnliWt0-6L5A8tMt0uZ9e9l0D2lQ0IFBftmWBqB8eNYR1uKvQPNivD_TK5ktD28dpmbwShrFIqLe_Ukynjxa49M5uXAOjA8f7bg-Y_9WChzp-dYb8fqQ2oY3WeXXILeMivvbvzn-ecOAG4og6npeL-eTHAr-8LW4fXizZqWDh1RWDHI6IsFi0hCI-fcej5iooLAHMtTgHwp2cGDDfwBzWaJViQ19QwmuUDvCCLypTZ3RjGzXVjfE7DmY_A2VbnrjP3PNT_OXfOJYQg11P5IfMNoZtuGyAhyxuXWI878oduGLUzRmDETVkL7GjNEVQx3RHZlNiiDmSrvgPLKVdmFxV40K7h5jPfk-P0sfgs5adpJrWKr3SoIfeIN8X1mikOVOKWSIhGjPQtdrg3ZPSiWj--8qUlZrEle19ipHSgY0wwHf4vfzRB8_AREaghjCS8nDUgH8xgPHRbNgTXLcFFsPzloirWwD7d43NAE7SncYanizTIUVZl-bRGzoF9463WG8zXcPvR1fb04_Ta8GqmqbMiMQK0TSabxg-Z3awnFrdCMeMBGsR4ESibY3VZPOLeuQnXtlaFVnB3o1mRzMaDlrIyV9cI8bTRH6CHv4_pKEgQ_9CLd06Y9ls8Z3txRJfrIiRVabwYVJ02QGGeN8mMWyWdkCrhzjd1996LTaPDgMCiegJgTNKeuAQfqqWj-x9HAH5ArohEeFkP7leVYTScx3_UlUnubPd-Y0C3M1NkBc4HqePaoaUUMJfFVsb7OFxCb339bTscsVhQhVEt6nQp91EqoT0nPfwT1ybYsV9qM=\",\"fork_turns\":\"none\",\"model\":\"gpt-6.1-sol\",\"reasoning_effort\":\"high\"}",
+        "call_id": "call_7eff642e23a34fbfbce37e296dbf7172",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a14a57-a3a9-7f62-ad8b-1b8a2090304b",
+          "create_time": 1792248878.5653167
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "user_input_order": 17
+      }
+    }
+  },
+  "providerResponseIds": [
+    "resp_01af163a7c1b7177016ad38c38a56c819bb97f8682b2e60b45",
+    "resp_01af163a7c1b7177016ad38c3c1eb0819b9b5582a19a7eb388",
+    "resp_01af163a7c1b7177016ad38c3ff724819ba0a94b8f0f9144ed",
+    "resp_01af163a7c1b7177016ad38c4368cc819ba04ea828a65241a9",
+    "resp_01af163a7c1b7177016ad38c46763c819b922467696d6e5e66",
+    "resp_01af163a7c1b7177016ad38c4b6730819bb861ab52e52b1797",
+    "resp_01af163a7c1b7177016ad38c4ec9b8819bb41f1d0492ce1a3c",
+    "resp_01af163a7c1b7177016ad38c545344819bb25d534a455acda7",
+    "resp_01af163a7c1b7177016ad38c57e988819b9ff0c51c0c83bab3",
+    "resp_01af163a7c1b7177016ad38c5b1114819b83e613cf1a7009f0",
+    "resp_01af163a7c1b7177016ad38c5e64c4819b9c4bb59d7022432a",
+    "resp_01af163a7c1b7177016ad38c629f64819b885f07316c628133",
+    "resp_01af163a7c1b7177016ad38c65fbc4819b80fdaa3c998b5dd1",
+    "resp_01af163a7c1b7177016ad38c69b76c819b896177a143515d1f",
+    "resp_01af163a7c1b7177016ad38c6d95a4819b8445cf2e97f326c9",
+    "resp_01af163a7c1b7177016ad38c70c1ec819bb01b4c162cac057f",
+    "resp_01af163a7c1b7177016ad38c73eaf4819bbb65523d1d61d3af",
+    "resp_01af163a7c1b7177016ad38c779468819b834cd2c4b7c637ca",
+    "resp_01af163a7c1b7177016ad38c7be640819b9043c12d65dd2c83",
+    "resp_01af163a7c1b7177016ad38c7ffc08819b95f3505e1c39de3e",
+    "resp_01af163a7c1b7177016ad38c83ac94819b91f6d65019e1b86c",
+    "resp_01af163a7c1b7177016ad38c885f8c819b83b8a830139a2cc5",
+    "resp_01af163a7c1b7177016ad38c8bf0a8819bae6e99758542277b",
+    "resp_01af163a7c1b7177016ad38c8fc1f0819baeb226fb2d1b311b",
+    "resp_01af163a7c1b7177016ad38c94c7e8819ba03f58005050aef2",
+    "resp_01af163a7c1b7177016ad38c9886b0819ba5c3da552fd0d438",
+    "resp_01af163a7c1b7177016ad38c9e1200819bbc4b3e1df5111a39",
+    "resp_01af163a7c1b7177016ad38ca183bc819b8d90c4f61320b0b3"
+  ],
+  "providerRequestIdReason": "Separate provider request ID not exposed; actual native call ID and provider response IDs preserved."
+}

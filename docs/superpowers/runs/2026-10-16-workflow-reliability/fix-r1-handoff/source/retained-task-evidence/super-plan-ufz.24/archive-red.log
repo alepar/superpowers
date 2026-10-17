@@ -1,0 +1,30 @@
+PASS: complete matching archive remains eligible and unchanged
+PASS: matching archive remains eligible after source cleanup
+node:internal/assert/utils:146
+  throw error;
+  ^
+
+AssertionError [ERR_ASSERTION]: {"owner":"super-auto","sourceTree":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","eligible":true,"pending":[],"gaps":[],"nonblockingFindings":[]}
+
+
+0 !== 3
+
+    at cli ([stdin]:24:96)
+    at gate ([stdin]:30:76)
+    at [stdin]:42:3
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:485:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:483:60)
+    at evalFunction (node:internal/process/execution:317:30)
+    at evalTypeScript (node:internal/process/execution:329:3)
+    at node:internal/main/eval_stdin:51:5 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 0,
+  expected: 3,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

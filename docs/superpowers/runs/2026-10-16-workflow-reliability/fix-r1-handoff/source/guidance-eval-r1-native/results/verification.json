@@ -1,0 +1,538 @@
+{
+  "timestamp": "2026-10-17T15:13:13.208258+00:00",
+  "status": "verified-with-observed-common-context-deviation",
+  "frozenFileChecks": [
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/candidate-wrapper.template.txt",
+      "sha256": "fb54f835ba972d732a1b3c0e1e7664b9b4c77c4a771aa72a5ad642f50c4ef262"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/config.json",
+      "sha256": "e30611634af7dbadea1c1046fa21757a4aa6769d374e7759fead6c1a33e2f1cd"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/index.json",
+      "sha256": "f2db4fbcc1d9fc7cebbd1bae06be7cfb950e363bfd1e6f3b9788a3567bed0ae9"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_001.json",
+      "sha256": "b0680851b41191acc7561717084c8f68f56bd2f78e57b4a505d04bbef9a0bf81"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_002.json",
+      "sha256": "16ada22e4586a042830780af37db05d3814ea379da37212933e2d60af40fbf36"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_003.json",
+      "sha256": "eb6afcba112c649d3f2cab3f53280f5fa2318535b065063c9a1f7dd1504e3e9d"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_004.json",
+      "sha256": "63e8abe38e4b1cc5c8e57471e2e0f3a13b3d040fcf13c5e2fcb82c2b8cb387f3"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_005.json",
+      "sha256": "12d6810773d579f2b19e2efe44a0dcd9f23f63729e5401952da286fd86765b62"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_006.json",
+      "sha256": "872eb0870c56d1045e53617ae419a0fc97d5a8bc4e655be5bc5df697b1a18368"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_007.json",
+      "sha256": "c871f0e51dceb685af228378af454de8f232c3c738e49a3983d7197fad2da5e5"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_008.json",
+      "sha256": "6bffdd6569ba90142acd2cd23b7280b21baf5eeeaae31d72e0182139f1f19669"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_009.json",
+      "sha256": "bc0ad3a9eff146b9e2123867ce7220129873177f4eb1d59bbebc4197ed7d6f89"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_010.json",
+      "sha256": "6272a46b8b66e205db2fa47b9aec7fea4c5f62eeebbf218a2975864eeb348e7e"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_011.json",
+      "sha256": "776c41da10005d405855e5ed9cda277292cd303b949578247d689e342f8625b0"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_012.json",
+      "sha256": "6621a35be62d5c33293d18709535f7cc6cb50ddf2936a39f3c48e7bc73b42aed"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_013.json",
+      "sha256": "931b8510fca89d87001495b055705eb67d4fb0242811683f378c2a1440c549b0"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_014.json",
+      "sha256": "8eb9864937147f774a98106755d3b1b0101c4b94b3ff2c57f2fc14535953b799"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_015.json",
+      "sha256": "31ae0d56078196d66a47219cfca65ab587eb5594d28e12da50c0ba8b532d37c0"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_016.json",
+      "sha256": "1b17e8b44b39274deba6acbe192ea30a219791c413cef0feea93366f19c96a25"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_017.json",
+      "sha256": "bed69da366d06f04a56ce233e022744cd1f8a51bfc12a0da94be0b71888a3b43"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_018.json",
+      "sha256": "ad9bc9e39112b1d1e959fad9f9633d3a7eea10c15a1237d7588812c33ddf6b26"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_019.json",
+      "sha256": "1d0a98b2ffada6ec52f013b68b6854a2255c92aa2d364c5c64444a76b4962ea4"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/launches/candidate_020.json",
+      "sha256": "f68b875c8afeaef505f37297cae817869abb76c1aef501cd34a219e185a0bc25"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py",
+      "sha256": "487eaf3818e9f310dfb5d20b8e3073875fea193590729a3b5a0fc0e3356a000a"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/observables.json",
+      "sha256": "7965f7318a61cda3e5465f41385561f55fb693c00318d4e7bd1345eb0e60b000"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/original-pack-snapshot.json",
+      "sha256": "a4371995001dc7f320bf90f10929a86544b0c1e7abe97cd16bc0b5e80620eead"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p24.json",
+      "sha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json",
+      "sha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p71.json",
+      "sha256": "f2b901960ee4ad6666eab187cd119c84681c8406009956f3f3ebacc2c43415dc"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p93.json",
+      "sha256": "b44a8e9881c59cb8aa22f771c2b0aec3b9aaae270e32ff64cc4fb3b898b64496"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/preparation.md",
+      "sha256": "e1bfa63257617eb604d5479ec725190298916dad599a1be6abb671c058acf02e"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/provenance.json",
+      "sha256": "070bb87700ea38ddbcd621f389f729c0383d0d9a7991dcc0dd302fef659deb5f"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/rubric-adapter.json",
+      "sha256": "9ccfd208c98e7660a54d1a9db1690eb7d6073bbd2c7aba18fcf7af66730beeb0"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/run-plan.md",
+      "sha256": "e44a89fec9f3227bc306b48efa9d8a8173a39dea4c0531ef9c96f27a86daf8e7"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/schedule.json",
+      "sha256": "87ed769e37a31ad72a9b83d59d34a5d504ccb7ebe1d5a5c891289cf392c0737f"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/contexts/outer-cleanup-after.txt",
+      "sha256": "a15076ff6245cc1d6f16d86626e107f46bd29d8c203461059f064f865580101c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/contexts/outer-cleanup-baseline.txt",
+      "sha256": "f69bbebd7ae215826b307c03281df4af0fb9486a428d23301fd423a6444c417c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/contexts/source-binding-after.txt",
+      "sha256": "c0b4f7ae84aca541b2d34cfd363c869f99b7d8371519c2dbf53b773717a50b2f"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/contexts/source-binding-baseline.txt",
+      "sha256": "32e4b542030cabd9a8f620117c289eb740d7b897f6d6ccadfd802b8a1d30a8cb"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/prompts/outer-cleanup.json",
+      "sha256": "5023eb5145f73f1a573d0146c9621c041c4407f1d917a6deac6ce85e331b382c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/prompts/source-binding.json",
+      "sha256": "b8647fa687747739aac16151d80f3f7020bb2c64997394a78caf7303e3bbc0a2"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/semantic/rubric.json",
+      "sha256": "d32f1e1690d243d47da5c3e2f8372ed898e12a2f409533077728f0dab3e9a1e3"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/config.json",
+      "sha256": "47740a5bf9ca9f96a49608b98a880d5f85b7a388491828cece5e8b67a3c1e5f8"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/outer-cleanup-after.txt",
+      "sha256": "a15076ff6245cc1d6f16d86626e107f46bd29d8c203461059f064f865580101c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/outer-cleanup-baseline.txt",
+      "sha256": "f69bbebd7ae215826b307c03281df4af0fb9486a428d23301fd423a6444c417c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/source-binding-after.txt",
+      "sha256": "c0b4f7ae84aca541b2d34cfd363c869f99b7d8371519c2dbf53b773717a50b2f"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/contexts/source-binding-baseline.txt",
+      "sha256": "32e4b542030cabd9a8f620117c289eb740d7b897f6d6ccadfd802b8a1d30a8cb"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/evaluation-report.md",
+      "sha256": "77f172c96ea9aa8f0f2efdd0a085c8c8a35371f7011fe12e6f7a158266f2bcb0"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/execution.json",
+      "sha256": "0c6d3d924a669cf45f25499e3f82b98c2c22b53a1b4ead5d75d9282e92961c6c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/freeze.json",
+      "sha256": "13b270ad5e4322e4bdbfe28d0cd70f2c303b8dbc6b3dded1a5703de0511b5878"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/index.json",
+      "sha256": "89a7ceef91edf282a2a31cc62253fa88bd454fb07a08b97b2a9ff864cefb6b1f"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/outer-cleanup-after.json",
+      "sha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/outer-cleanup-baseline.json",
+      "sha256": "b44a8e9881c59cb8aa22f771c2b0aec3b9aaae270e32ff64cc4fb3b898b64496"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/source-binding-after.json",
+      "sha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/messages/source-binding-baseline.json",
+      "sha256": "f2b901960ee4ad6666eab187cd119c84681c8406009956f3f3ebacc2c43415dc"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/methodology/SKILL.md",
+      "sha256": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/methodology/testing-skills-with-subagents.md",
+      "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/preparation.md",
+      "sha256": "29fb44d838ac525229bb029bbef26bc142db8f4e7df116a39fbeb5b9ff464beb"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/prompts/outer-cleanup.json",
+      "sha256": "5023eb5145f73f1a573d0146c9621c041c4407f1d917a6deac6ce85e331b382c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/prompts/source-binding.json",
+      "sha256": "b8647fa687747739aac16151d80f3f7020bb2c64997394a78caf7303e3bbc0a2"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/provenance/outer-cleanup-instruction-diff.patch",
+      "sha256": "030a16e16b01c27734b5ddb4fe0166087f3cbeab533f01c24e27722b7ed68c26"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/provenance/source-binding-instruction-diff.patch",
+      "sha256": "317b168f99af49ab0c7ccc8e264331b10b45f9c910c94ce90092c30c0f811683"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/provenance.json",
+      "sha256": "a232f39d72337af5af1508ceb92b7f9fee901231cb448cf2267877e056ffe40a"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/baseline/skills/super-code/coordinator.js",
+      "sha256": "c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/baseline/skills/super-code/scripts/dispatch-text.mjs",
+      "sha256": "9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/baseline/skills/super-code/scripts/remove-task-worktree",
+      "sha256": "be6c064dd3e79dbc964fb37e7d7bc94e15f4ba56b2a1b72ce80c70f633f1bbdc"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/baseline/skills/super-code/scripts/stop-run-processes",
+      "sha256": "c9813e9fa2a6c496547ef8de39084d6bc81a4b095cb0bbdba35e8882c0665c10"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/outercleanup/skills/super-code/scripts/remove-task-worktree",
+      "sha256": "be6c064dd3e79dbc964fb37e7d7bc94e15f4ba56b2a1b72ce80c70f633f1bbdc"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/outercleanup/skills/super-code/scripts/stop-run-processes",
+      "sha256": "c9813e9fa2a6c496547ef8de39084d6bc81a4b095cb0bbdba35e8882c0665c10"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/sourcebinding/skills/super-code/coordinator.js",
+      "sha256": "81acbc384c1be5b3eeef5d24a2ed0260a6a285b9984253cea9ecc5aac5b6a650"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/audit-only/sourcebinding/skills/super-code/scripts/dispatch-text.mjs",
+      "sha256": "dfeb741bc443952717d4b94aac2e726573351f98e0185f18f0dd77decf8717b1"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/after/skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/after/skills/super-auto/SKILL.md",
+      "sha256": "aaa1149f71664a9a7604635d90bba79ad751170dbab77993ca4638dd33738638"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/after/skills/super-auto/report-prompt.md",
+      "sha256": "981d30d2548ec1fadbf80025e535b5a7cf3341fa089374b17fad2f96a85a0555"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/after/skills/super-auto/resume.md",
+      "sha256": "5a61499e12b831c76c121a856b4e503ca08bd032cd59e6d601fc9e4c37b0dd66"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/after/skills/super-auto/run-state.md",
+      "sha256": "d12e634de0e8eacab70f4b60f550a04c9ddbd1f7da42e56f93eb08c5e970484d"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/baseline/skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "980a8ee5cbe7b9ec0ff36bfd2ef760b2302c7fe669722cdfd1b62ffc61f06f25"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/baseline/skills/super-auto/SKILL.md",
+      "sha256": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/baseline/skills/super-auto/report-prompt.md",
+      "sha256": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/baseline/skills/super-auto/resume.md",
+      "sha256": "5a61499e12b831c76c121a856b4e503ca08bd032cd59e6d601fc9e4c37b0dd66"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/outer-cleanup/baseline/skills/super-auto/run-state.md",
+      "sha256": "716095d0cd48d0bfa1d1bcec51eae658f680ae6c230a8458e05d3732bb27f4ca"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/after/skills/super-code/SKILL.md",
+      "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/after/skills/super-code/assembler-prompt.md",
+      "sha256": "568914df8c84689e4d46ab2344168aa10aa36ef664454a77149c9936ab958d2d"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/after/skills/super-code/coordinator-card.md",
+      "sha256": "166e35087547ddc2bbfd0dd0b4678f8c9f0b036aba833ce92639060853997765"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/after/skills/super-code/coordinator-subagents.md",
+      "sha256": "8f4f91c8ba5a4406480ee130a5630cf53a5849c28ddc9fdd0fa4a3830d36129a"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/after/skills/super-code/coordinator-workflow.md",
+      "sha256": "494cfbceae25837a38ee343ebd69cf5f3e26aefc663affe5e26447dfd24242e7"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/SKILL.md",
+      "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/assembler-prompt.md",
+      "sha256": "568914df8c84689e4d46ab2344168aa10aa36ef664454a77149c9936ab958d2d"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/coordinator-card.md",
+      "sha256": "166e35087547ddc2bbfd0dd0b4678f8c9f0b036aba833ce92639060853997765"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/coordinator-subagents.md",
+      "sha256": "c424ed4fed05577ac7cc4792f941f78bdf4d87effd7aba93c4bdd4eb64a00048"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/raw/source-binding/baseline/skills/super-code/coordinator-workflow.md",
+      "sha256": "518141aba262927f76223855626210123f0cdff3741bf77da59794dd0614a730"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/responses/index.json",
+      "sha256": "7f302520f91fa48bdb91361defcfa6481d83ef2787fad60947d0d7b6c131a0a3"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/rubric.json",
+      "sha256": "d32f1e1690d243d47da5c3e2f8372ed898e12a2f409533077728f0dab3e9a1e3"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/run-plan.md",
+      "sha256": "eb85aa3f648a875edb73ff63dfc9c0906aa761b7192ef65e21ccefda8dfc050b"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/schedule.json",
+      "sha256": "a762eafe0a280771cc94d56f8b75c921b8543fd63de13007234db5c68e73f774"
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1/scores.json",
+      "sha256": "e84d0da24d5243771e999fdbcee2bc1c08fbc7cc9ed4d182aa2270118df9f3f9"
+    }
+  ],
+  "nativeFrozenFileCount": 42,
+  "originalSnapshotFileCount": 54,
+  "originalSealedFileCount": 49,
+  "originalPackUnchanged": true,
+  "nativeFrozenPreparationUnchanged": true,
+  "launchAttempts": 20,
+  "distinctCandidates": 20,
+  "peakActiveCandidates": 3,
+  "launchOrdinalOrderVerified": true,
+  "exactPreparedLaunchArgumentsRetained": "results/prelaunch.json",
+  "providerRequestSerialization": "Native runner log encrypts message argument at rest; frozen exact call arguments retained as requested, payload identity/coverage verified independently from candidate receipts. No claim of provider-system injection.",
+  "rawResponses": 20,
+  "completeIntakeSamples": 19,
+  "intakeFailedSamples": [
+    "candidate_011"
+  ],
+  "verifiedCompleteChunks": 407,
+  "expectedChunks": 415,
+  "modelEffortAllVerified": true,
+  "visiblePrefixHashes": [
+    {
+      "candidate": "candidate_001",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_002",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_003",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_004",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_005",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_006",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_007",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_008",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_009",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_010",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_011",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_012",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_013",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_014",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_015",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_016",
+      "visibleInheritedContextSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb"
+    },
+    {
+      "candidate": "candidate_017",
+      "visibleInheritedContextSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548"
+    },
+    {
+      "candidate": "candidate_018",
+      "visibleInheritedContextSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548"
+    },
+    {
+      "candidate": "candidate_019",
+      "visibleInheritedContextSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548"
+    },
+    {
+      "candidate": "candidate_020",
+      "visibleInheritedContextSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548"
+    }
+  ],
+  "distinctVisiblePrefixHashes": 2,
+  "serializedProviderPrefix": null,
+  "prefixLimitation": "Hashes cover visible common initial instruction records, not hidden serialized provider prefix or tool schema; those remain unexposed.",
+  "noRetriesOrReplacement": true,
+  "commonContextDriftDetected": true,
+  "primaryEligibleSamples": 15,
+  "commonContextDeviation": {
+    "timestamp": "2026-10-17T15:13:55.658386+00:00",
+    "type": "observable-inherited-common-context-drift",
+    "discovered": "Postcollection visible initial-prefix hash comparison; not observed before remaining launches. No retry or rerun.",
+    "priorCandidates": [
+      "candidate_001",
+      "candidate_002",
+      "candidate_003",
+      "candidate_004",
+      "candidate_005",
+      "candidate_006",
+      "candidate_007",
+      "candidate_008",
+      "candidate_009",
+      "candidate_010",
+      "candidate_011",
+      "candidate_012",
+      "candidate_013",
+      "candidate_014",
+      "candidate_015",
+      "candidate_016"
+    ],
+    "affectedCandidates": [
+      "candidate_017",
+      "candidate_018",
+      "candidate_019",
+      "candidate_020"
+    ],
+    "previousVisiblePrefixSha256": "b0578d7a6d6271c574210df163ed6ad8375ddfb7e82c670fdc4dd1518191a7cb",
+    "changedVisiblePrefixSha256": "cb89e3de1e50d0ebd9dd538327f71b50ea1ecec78c72438ebac4583d86cc6548",
+    "change": "Inherited user AGENTS.md contributor release checklist gained five test commands. Canonical frozen system/user payloads did not change.",
+    "addedLines": [
+      "bash tests/super-design/test-findings-ledger.sh",
+      "bash tests/super-design/test-step-back-check.sh",
+      "bash tests/super-design/test-amend-check.sh",
+      "bash tests/super-design/test-redesign-chain.sh",
+      "bash tests/super-design/test-redesign-cycle-filing.sh"
+    ],
+    "primaryTreatment": "Affected samples and all their cases unmeasurable under rubric-adapter observedUnmeasurableConditions: observable common configuration deviates from freeze. Preserve independent textual semantic labels as secondary non-primary observations. No retrospective relevance waiver or protocol change.",
+    "unknownProviderConditions": "Accepted unexposed revision/sampling/prefix limitations alone remain accepted, distinct from this actually observed visible drift."
+  }
+}

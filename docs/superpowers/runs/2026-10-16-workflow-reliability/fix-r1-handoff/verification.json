@@ -1,0 +1,53 @@
+{
+  "verifiedUtc": "2026-10-17T16:17:24.786790+00:00",
+  "scope": "Artifact containment, integrity and retention only; no product tests or new semantic review",
+  "manifestEntriesVerified": 714,
+  "badEntries": [],
+  "symlinks": [],
+  "exactDirectoryChecks": [
+    {
+      "directory": "guidance-eval-r1",
+      "files": 54,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "guidance-eval-r1-native",
+      "files": 140,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "review-obligations-r1",
+      "files": 242,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "retained-task-evidence",
+      "files": 49,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "task-19-fix-evidence-r1",
+      "files": 29,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "task-19-original-evidence-r1",
+      "files": 20,
+      "exactFilePathAndHashMatch": true
+    },
+    {
+      "directory": "task-25-evidence",
+      "files": 18,
+      "exactFilePathAndHashMatch": true
+    }
+  ],
+  "priorFindingCollectionLinesRetained": 62,
+  "frictionMarkerCount": 1,
+  "pendingFrictionRetained": true,
+  "runMdSha256": "9ce9f423e4844fda7fc819043e9edd09e08827ff0bb71c245ba4a9667e1dc8f2",
+  "immutableReviewSha256": "5e0e7c471b864ed5e01b175583a8df3a2981c01e426d0e483ec1310e20500feb",
+  "phase": "roast-code",
+  "roastCodeRound": 1,
+  "reviewCoverageComplete": false,
+  "selectionProvenanceGapsUnresolved": 690
+}

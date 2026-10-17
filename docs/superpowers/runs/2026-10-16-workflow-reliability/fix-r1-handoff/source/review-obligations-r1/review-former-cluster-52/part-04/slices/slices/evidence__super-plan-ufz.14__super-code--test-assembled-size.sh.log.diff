@@ -1,0 +1,56 @@
+diff --git a/evidence/super-plan-ufz.14/super-code--test-assembled-size.sh.log b/evidence/super-plan-ufz.14/super-code--test-assembled-size.sh.log
+new file mode 100644
+index 00000000..367108f1
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/super-code--test-assembled-size.sh.log
+@@ -0,0 +1,50 @@
++assembled-size: size and fits lines
++  [PASS] exits 0 when it fits
++  [PASS] size line for diffstat.txt (bytes / 4)
++  [PASS] size line for digest.md
++  [PASS] size line for a slice, path relative to the dir
++  [PASS] fits: yes; total is digest + slices, not diffstat
++  [PASS] size lines are sorted by path
++  [PASS] exits 0 when it does not fit
++  [PASS] fits: no when over the threshold
++  [PASS] total equal to the threshold fits
++  [PASS] no clusters.json: no cluster-fits lines
++  [PASS] output is recognised by report-verdict
++  [PASS] report-verdict reads the fits verdict
++assembled-size: clusters
++  [PASS] valid clusters: exit 0
++  [PASS] cluster sum over its slices; over threshold is no
++  [PASS] a missing slice file counts 0
++  [PASS] cluster-fits lines are in file order
++  [PASS] clusters.json is not a size line
++  [PASS] report-verdict surfaces a cluster reported no as an item
++  [PASS] a changed file in two clusters: exit 3
++  [PASS] names the file and its cluster count
++  [PASS] bad coverage with inputs under the threshold: still exit 3
++  [PASS] exit 3 still prints a valid fits: yes line
++ok: fits line precedes the first coverage line
++  [PASS] no cluster-fits lines on bad coverage
++  [PASS] a changed file in no cluster: exit 3
++  [PASS] names the uncovered file
++  [PASS] a cluster file that is not changed: exit 3
++  [PASS] names the stray cluster file
++assembled-size: --clusters-required
++  [PASS] no clusters.json: exit 3
++  [PASS] says so
++  [PASS] after the size and fits lines
++  [PASS] empty clusters array: exit 3
++  [PASS] says so for an empty array
++  [PASS] an empty clusters.json without --clusters-required is fine
++  [PASS] unparsable clusters.json with --clusters-required: exit 3
++assembled-size: no jq
++  [PASS] clusters.json without jq: exit 4
++  [PASS] prints the JQ_UNAVAILABLE line
++  [PASS] no clusters.json needs no jq
++assembled-size: bad usage
++  [PASS] missing dir: exit 2
++  [PASS] non-integer threshold: exit 2
++  [PASS] no threshold: exit 2
++  [PASS] unknown option: exit 2
++  [PASS] no arguments: exit 2
++
++assembled-size: all tests passed

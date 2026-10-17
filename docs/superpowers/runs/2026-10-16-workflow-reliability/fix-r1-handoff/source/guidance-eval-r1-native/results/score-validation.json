@@ -1,0 +1,977 @@
+{
+  "timestamp": "2026-10-17T15:20:24.846560+00:00",
+  "validation": "pass",
+  "sampleRecords": 20,
+  "caseRecords": 150,
+  "criterionRecords": 970,
+  "evidenceSpansChecked": 1227,
+  "allCriterionCoverageAndLabelsVerified": true,
+  "allVerbatimResponseSpansAndPointersVerified": true,
+  "allFrozenAndResponseHashesVerified": true,
+  "original54SnapshotFilesUnchanged": true,
+  "native42FrozenFilesUnchanged": true,
+  "primarySampleCounts": {
+    "pass": 13,
+    "fail": 2,
+    "unmeasurable": 5
+  },
+  "primaryCaseCounts": {
+    "pass": 108,
+    "fail": 3,
+    "unmeasurable": 39
+  },
+  "secondaryTextualSampleCounts": {
+    "pass": 16,
+    "fail": 3
+  },
+  "secondaryTextualCaseCounts": {
+    "pass": 137,
+    "fail": 4
+  },
+  "familyArms": {
+    "source-binding/baseline": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 4,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 24,
+        "unmeasurable": 6
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 5
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 30
+      },
+      "samples": [
+        "candidate_001",
+        "candidate_006",
+        "candidate_009",
+        "candidate_014",
+        "candidate_017"
+      ]
+    },
+    "source-binding/after": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 4,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 24,
+        "unmeasurable": 6
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 5
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 30
+      },
+      "samples": [
+        "candidate_002",
+        "candidate_005",
+        "candidate_010",
+        "candidate_013",
+        "candidate_018"
+      ]
+    },
+    "outer-cleanup/after": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 3,
+        "unmeasurable": 2
+      },
+      "primaryCaseCounts": {
+        "pass": 27,
+        "unmeasurable": 18
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 4
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 36
+      },
+      "samples": [
+        "candidate_003",
+        "candidate_008",
+        "candidate_011",
+        "candidate_016",
+        "candidate_019"
+      ]
+    },
+    "outer-cleanup/baseline": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "fail": 2,
+        "pass": 2,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 33,
+        "fail": 3,
+        "unmeasurable": 9
+      },
+      "secondaryTextualSampleCounts": {
+        "fail": 3,
+        "pass": 2
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 41,
+        "fail": 4
+      },
+      "samples": [
+        "candidate_004",
+        "candidate_007",
+        "candidate_012",
+        "candidate_015",
+        "candidate_020"
+      ]
+    }
+  },
+  "sampleMatrix": [
+    {
+      "sample": "candidate_001",
+      "family": "source-binding",
+      "arm": "baseline",
+      "replicate": 1,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_002",
+      "family": "source-binding",
+      "arm": "after",
+      "replicate": 1,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_003",
+      "family": "outer-cleanup",
+      "arm": "after",
+      "replicate": 1,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_004",
+      "family": "outer-cleanup",
+      "arm": "baseline",
+      "replicate": 1,
+      "primaryLabel": "fail",
+      "secondaryLabel": "fail",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "fail",
+          "secondary": "fail"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_005",
+      "family": "source-binding",
+      "arm": "after",
+      "replicate": 2,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_006",
+      "family": "source-binding",
+      "arm": "baseline",
+      "replicate": 2,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_007",
+      "family": "outer-cleanup",
+      "arm": "baseline",
+      "replicate": 2,
+      "primaryLabel": "fail",
+      "secondaryLabel": "fail",
+      "cases": {
+        "A": {
+          "primary": "fail",
+          "secondary": "fail"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "fail",
+          "secondary": "fail"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_008",
+      "family": "outer-cleanup",
+      "arm": "after",
+      "replicate": 2,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_009",
+      "family": "source-binding",
+      "arm": "baseline",
+      "replicate": 3,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_010",
+      "family": "source-binding",
+      "arm": "after",
+      "replicate": 3,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_011",
+      "family": "outer-cleanup",
+      "arm": "after",
+      "replicate": 3,
+      "primaryLabel": "unmeasurable",
+      "secondaryLabel": null,
+      "cases": {
+        "A": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "B": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "C": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "D": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "E": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "F": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "G": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "H": {
+          "primary": "unmeasurable",
+          "secondary": null
+        },
+        "I": {
+          "primary": "unmeasurable",
+          "secondary": null
+        }
+      }
+    },
+    {
+      "sample": "candidate_012",
+      "family": "outer-cleanup",
+      "arm": "baseline",
+      "replicate": 3,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_013",
+      "family": "source-binding",
+      "arm": "after",
+      "replicate": 4,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_014",
+      "family": "source-binding",
+      "arm": "baseline",
+      "replicate": 4,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_015",
+      "family": "outer-cleanup",
+      "arm": "baseline",
+      "replicate": 4,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_016",
+      "family": "outer-cleanup",
+      "arm": "after",
+      "replicate": 4,
+      "primaryLabel": "pass",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "pass",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "pass",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_017",
+      "family": "source-binding",
+      "arm": "baseline",
+      "replicate": 5,
+      "primaryLabel": "unmeasurable",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_018",
+      "family": "source-binding",
+      "arm": "after",
+      "replicate": 5,
+      "primaryLabel": "unmeasurable",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_019",
+      "family": "outer-cleanup",
+      "arm": "after",
+      "replicate": 5,
+      "primaryLabel": "unmeasurable",
+      "secondaryLabel": "pass",
+      "cases": {
+        "A": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "E": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        }
+      }
+    },
+    {
+      "sample": "candidate_020",
+      "family": "outer-cleanup",
+      "arm": "baseline",
+      "replicate": 5,
+      "primaryLabel": "unmeasurable",
+      "secondaryLabel": "fail",
+      "cases": {
+        "A": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "B": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "C": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "D": {
+          "primary": "unmeasurable",
+          "secondary": "fail"
+        },
+        "E": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "F": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "G": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "H": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        },
+        "I": {
+          "primary": "unmeasurable",
+          "secondary": "pass"
+        }
+      }
+    }
+  ],
+  "semanticFailures": [
+    {
+      "sample": "candidate_004",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The first ordered action invokes remove-task-worktree, whose selected operation can remove task-format. Persisting run/report retention facts is ordered third. Required persistence therefore follows permitted leaf teardown."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "A",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The second ordered action removes task-format; the third writes the retention and pending-verification facts and the fourth archives them. This permits leaf teardown before required durable persistence."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The third ordered action permits task-format removal after a successful leaf check, but the fifth first records the refusal and retention facts in run/report. Verification before deletion does not satisfy persistence before teardown."
+    },
+    {
+      "sample": "candidate_020",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "unmeasurable",
+      "secondaryTextualLabel": "fail",
+      "reason": "The second ordered action permits task-format removal after leaf verification; the fourth writes the pending cleanup facts. This is a secondary textual persistence-before-teardown failure; common-context drift invalidates its primary score."
+    }
+  ],
+  "semanticAmbiguities": [],
+  "primaryUnmeasurableIds": [
+    "candidate_011",
+    "candidate_017",
+    "candidate_018",
+    "candidate_019",
+    "candidate_020"
+  ]
+}

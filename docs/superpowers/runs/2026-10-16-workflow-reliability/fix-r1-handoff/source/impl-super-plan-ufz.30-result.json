@@ -1,0 +1,50 @@
+{
+  "id": "super-plan-ufz.30",
+  "status": "IMPLEMENTED",
+  "canonicalStatus": "IMPLEMENTED",
+  "completionKind": "implementation",
+  "files": [
+    "docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md",
+    "docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json"
+  ],
+  "base": "c3fac4369c7c737e2e7f9f7250fd253b21442d12",
+  "head": "0b3ff13eb7894c36625e4320eb426fc366b4953c",
+  "stacked": false,
+  "reopened": false,
+  "sourceTree": "d807eeb58c5aefe49829da9e56d36cf16ee0f6a4",
+  "report": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md",
+  "evidence": [
+    {
+      "sourceTree": "d807eeb58c5aefe49829da9e56d36cf16ee0f6a4",
+      "command": "cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log",
+      "configuration": "baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#verification-output",
+      "kind": "live"
+    },
+    {
+      "sourceTree": "d807eeb58c5aefe49829da9e56d36cf16ee0f6a4",
+      "command": "cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log",
+      "configuration": "exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots",
+      "outcome": "pass",
+      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md#test-hygiene",
+      "kind": "live"
+    }
+  ],
+  "requiredLiveChecks": [
+    {
+      "sourceTree": "d807eeb58c5aefe49829da9e56d36cf16ee0f6a4",
+      "command": "cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 && TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.30 node .superpowers/task-30/compare-profile.mjs > .superpowers/task-30/claim-green.log && cat .superpowers/task-30/claim-green.log",
+      "configuration": "baseline=c3fac4369c7c737e2e7f9f7250fd253b21442d12; native Node; two historical profile artifacts; no product execution"
+    },
+    {
+      "sourceTree": "d807eeb58c5aefe49829da9e56d36cf16ee0f6a4",
+      "command": "cd /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers && bash skills/super-code/scripts/stop-run-processes --check /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30 /tmp/sp-bce79baa/super-plan-ufz.30 > /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log && cat /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.30/.superpowers/task-30/hygiene-final.log",
+      "configuration": "exact task .30 worktree and /tmp/sp-bce79baa/super-plan-ufz.30 roots; cwd outside target roots"
+    }
+  ],
+  "humanAction": [],
+  "concerns": [
+    "Bounded historical interpretation correction only; independent review, final sweep, changed-instruction evaluation and root/human acceptance remain caller-owned. No historical graph reconstruction or new measurement was performed."
+  ]
+}

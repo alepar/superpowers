@@ -1,0 +1,218 @@
+diff --git a/skills/finishing-a-development-branch/SKILL.md b/skills/finishing-a-development-branch/SKILL.md
+index 3ac10d50..44a2aae3 100644
+--- a/skills/finishing-a-development-branch/SKILL.md
++++ b/skills/finishing-a-development-branch/SKILL.md
+@@ -193,8 +193,9 @@ git branch -D <feature-branch>
+ **Runs for every option, and for confirmed discards.** The worktree is
+ disposable scaffolding: by this point the commits are always preserved —
+ merged locally, pushed via PR, or sitting on a branch in the shared repo —
+-or intentionally discarded. The superpowers-created worktree goes away in
+-all cases.
++or intentionally discarded. Remove the superpowers-created worktree only
++after the removal preconditions below are satisfied; delivery may finish
++with cleanup pending.
+ 
+ Worktree removal must run from outside the worktree. Option 1 and the
+ discard path have already changed directory to the main repo root; Options
+@@ -208,6 +209,34 @@ cd "$MAIN_ROOT"
+ Use the `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` values captured in Step 2,
+ from before any directory change.
+ 
++### Removal preconditions
++
++Before any worktree/temp deletion or workspace-exit operation that removes resources, reconcile
++`git worktree list --porcelain` with the caller's retained resources and actual nested directories.
++Clean Git status does not protect dirty ignored nested `.worktrees/` children. Never delete a
++parent containing retained descendants or retained temporary resources, or required unarchived evidence.
++Task cleanup exit 3 or 4 keeps those resources and their containing parents; unavailable or
++missing cleanup results leave them unchecked. A later zero exit clears no retained path without
++fresh verification. Explicit discard confirmation covers only the named work, not other retained
++nested resources.
++
++Verify owned processes before deleting resources they may need. For `super-auto`, use its
++§Phase 7 — cleanup preconditions: allow the caller's verified leaf sweep first, then require
++successful final parent/root verification before this step removes the parent. The existing
++`stop-run-processes` helper refuses parents still containing nested worktrees; a refusal is
++unknown inspection, not a reason to bypass guards, widen process matching or remove the parent.
++Use the existing helper from outside its roots with the explicit worktree/temp paths. Preserve
++resources when processes survived, are deliberately kept, or inspection/termination is unknown
++(including unavailable tooling, pending parent verification, missing results or unconfirmed
++exit-zero empty wrapper output). Only confirmed helper success for the final roots plus no
++retained descendants permits removal. Never kill by name or traverse process families.
++
++If these preconditions cannot be established, leave the worktree and dependent temporary roots
++in place. Report the exact retained paths, reasons, exit statuses and pending safe check. Honor
++the human's merge/PR/keep choice independently: completion of that choice does not claim cleanup.
++When a caller owns durable run/report state, give it these facts before deleting any source it
++still needs, so it can record cleanup pending and archive required evidence.
++
+ **Before deleting the branch:** if the feature branch is still checked out in a worktree, `git
+ branch -d` fails. Leave that worktree first — via your platform's workspace-exit tool if it has one,
+ otherwise from the main repo root — then delete. This bites specifically on the path
+@@ -217,7 +246,7 @@ where the rule below declines to clean it up, and the branch stays checked out.
+ **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
+ 
+ **If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers
+-created this worktree — we own cleanup:
++created this worktree — after the preconditions pass, remove it:
+ 
+ ```bash
+ git worktree remove "$WORKTREE_PATH"
+@@ -245,7 +274,7 @@ Worktree removal refused — these files were never committed:
+ Which?
+ ```
+ 
+-Carry out the choice, then remove the worktree.
++Carry out the choice, then re-check the removal preconditions before removing the worktree.
+ 
+ **Otherwise:** The host environment owns this workspace — leave it in
+ place. If your platform provides a workspace-exit tool, use it.
+@@ -267,7 +296,7 @@ place. If your platform provides a workspace-exit tool, use it.
+ | "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
+ | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
+ | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
+-| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. The worktree is disposable scaffolding: remove it, and re-establish a workspace if feedback needs work. |
++| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. Remove the worktree after the removal preconditions pass; retain it when nested resources or process verification require that. Re-establish a workspace if later feedback needs work. |
+ | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
+ | "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
+ | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
+diff --git a/skills/super-auto/SKILL.md b/skills/super-auto/SKILL.md
+index 8d18dc38..8a4df047 100644
+--- a/skills/super-auto/SKILL.md
++++ b/skills/super-auto/SKILL.md
+@@ -171,10 +171,71 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
+ | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent returns nothing or a non-zero `exit`, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
+ | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
+ | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
+-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping, since the report on disk says otherwise. Before removing this run's worktree, remove the task worktrees nested under it: `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>` from the run worktree, which stops their processes and keeps anything uncommitted or unmerged (list what it kept to the human). Once `done` is written, `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. Then stop the run's remaining processes, including any watcher you started on the ledger or run directory: `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`, run from outside the run worktree, and list any `survived:` line to the human. |
++| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping. Supply §Phase 7 — cleanup preconditions to the finisher: its Step 6 must wait for these checks, and any retained/unknown resource prevents removal of its containing parent. Delivery and the human's branch choice can finish while cleanup stays pending; record the retained facts before writing `done` and clearing the marker with `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. No process sweep or required state write may be deferred until after its resources are removed. |
+ 
+ Phase 7 is entered only through §Invariants I2 (phase-7 gate).
+ 
++### Phase 7 — cleanup preconditions
++
++A clean parent Git status does not protect dirty ignored `.worktrees/` descendants. The
++finisher's branch choice never authorizes deleting retained work or process-dependent resources.
++Inventory registered nested worktrees, retained temporary roots and existing
++`codeBuckets.worktreesKept`/`processSweep` facts before any cleanup. Keep their exact paths,
++reasons and helper exit statuses; missing results remain unconfirmed.
++
++1. Verify run-owned processes **before deleting each dependent resource**. Use the existing
++   `stop-run-processes` ownership matching, from outside the roots being checked. While nested
++   worktrees exist, use valid leaf task roots and their own temporary roots (and the separate run
++   directory when safe); do not pass their outer integration parent. A refused parent root is
++   unknown inspection, never permission to broaden roots or kills. Parent verification remains
++   pending until step 3; this permits only independently verified leaf cleanup, not deletion of
++   the parent or shared temporary resources. `survived:` means observed alive; `unknown:` or
++   unavailable inspection means unverified; `kept:` means deliberately preserved. Each retains
++   all resources dependent on that outcome. A real invocation of the fail-closed helper with a
++   captured exit 0 verifies discovery/termination for its supplied roots; legitimately empty
++   stdout is allowed only with that confirmed execution. An exit-zero empty output from a
++   wrapper, missing dispatch result or unavailable helper supplies no such proof.
++2. Sweep task worktrees with
++   `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>`.
++   The helper verifies leaf processes before deleting their resources. If task-specific roots
++   themselves contain registered children, work from the innermost leaves rather than retrying
++   a refused broad root. Honor exit 3 or 4 and every `kept:`/`unknown:`/`survived:` resource: retain
++   its worktree/temp roots **and every containing parent**, even when Git says the parent is clean.
++   Exit 2, an unavailable invocation or missing output is also unverified, not successful cleanup.
++   Preserve explicit temporary resources with their retained task; do not delete a common temp
++   root while any dependent worktree or process is retained. Inspect `git worktree list --porcelain`
++   afterward and reconcile all retained/unchecked paths, including ignored unregistered nested
++   work and evidence. A zero sweep status alone cannot clear earlier retention without verifying
++   the named resource is now safe. If anything remains retained, defer parent removal.
++3. Only after no retained descendants or retained dependent temporary resources remain, verify the
++   parent/run roots with
++   `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`
++   plus any separately recorded run temporary roots, from outside all supplied roots. If a root
++   overlaps the caller/ancestor cwd or is otherwise refused, retain it as unknown; never bypass
++   the helper's root guards. Capture the actual exit and inspection facts before the finisher's
++   Step 6 or any temp deletion. Only verified termination/discovery, no surviving/unknown/kept
++   processes, and a reconciled inventory with no retained descendants permit ordinary parent
++   removal. Leave process ownership matching unchanged.
++
++Apply every applicable refusal below before the positive row; these are cleanup facts, not
++mutually exclusive run states. `retain` includes containing parents and dependent temp roots.
++
++| Fact | Evidence / precondition | Parent action |
++|---|---|---|
++| `task-retained` | Task cleanup exit 3 or 4, or retained/unchecked task resources | `retain` |
++| `resource-retained` | Any retained descendant worktree, ignored work, temp root or required unarchived evidence | `retain` |
++| `process-survived` | Owned process observed alive after attempted termination | `retain` |
++| `process-unknown` | Inspection/termination unavailable or root refused | `retain` |
++| `process-kept` | Deliberately preserved owned process | `retain` |
++| `process-unconfirmed` | Final parent verification pending or invocation/result missing | `retain` |
++| `verified-clear` | Confirmed successful final process verification and no retained descendants/resources | `remove` |
++
++Persist phase-7 cleanup facts through run-state.md and update report.md's Remaining section
++before teardown. Keep stopped, survived, unknown and deliberately kept outcomes distinct.
++If cleanup remains pending, report each preserved parent/worktree/temp path, reason and next
++safe check to the human. `phase: done` records completed delivery/choice, not verified cleanup;
++never remove a retained parent to make that status look tidy.
++
+ For report/feedback metrics, use the reconciled ledger `Metrics:` source facts and
+ `scope-dispositions --project <run.md>` JSON metrics/gaps. Exit 3 retains partial results;
+ report counts by retained source population, with missing populations explicit. Latest clean
+diff --git a/skills/super-auto/report-prompt.md b/skills/super-auto/report-prompt.md
+index 0ce90cd3..a54a4253 100644
+--- a/skills/super-auto/report-prompt.md
++++ b/skills/super-auto/report-prompt.md
+@@ -74,6 +74,23 @@ After the status block come these sections, each item ending with the source it
+ | Entrypoints | Where to start reading, in order | the task tree's dependency order and the diff against `base`: root-most module first, then its public interface, then the primary caller |
+ | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records; `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast; the fixes of a `sweepFix:` pass, its regression-only bead if any, and its re-run result |
+ 
++## Phase-7 cleanup updates
++
++The orchestrator refreshes Remaining after phase-7 cleanup decisions and before teardown, using
++`run.md`'s existing `codeBuckets.worktreesKept` and `processSweep` facts. Preserve task cleanup
++exit 3 or 4, each retained nested worktree/temp path and its containing parent, and the reason
++that prevents deletion. Report stopped, survived, unknown and deliberately kept processes as
++distinct outcomes, with the resources they still need; a refused parent root, pending final
++parent verification, missing invocation/result or unconfirmed exit-zero empty wrapper output
++is unknown inspection. A successful leaf sweep does not verify the parent. Only final verified
++process termination/discovery with no retained descendants permits ordinary parent cleanup.
++
++Delivery and the human's branch choice may finish while cleanup remains pending. Keep those
++cleanup obligations in Remaining even with `phase: done`, naming exact paths, helper exit/reason
++and the next safe verification. Do not turn retained resources into a clean status or replace
++the authoritative status line with a hand-written cleanup verdict. Archive required source
++artifacts and persist this update before the finisher can remove their containing worktree.
++
+ ## Smells
+ 
+ Smells are derived, not guessed. `super-code` already records every signal that means "this was hard": a parked finding is one a task's fix pass declined with a reason before the task merged, and a task whose review needed a fix pass merged that fix without a second review. Read those signals back rather than re-judging the code. This is the one section that surfaces work that passed review: a parked finding cleared the gate, and the reader should still know a judge argued against it.
+diff --git a/skills/super-auto/run-state.md b/skills/super-auto/run-state.md
+index 1e06a94a..e82ce94e 100644
+--- a/skills/super-auto/run-state.md
++++ b/skills/super-auto/run-state.md
+@@ -438,6 +438,30 @@ codeBuckets:
+   processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
+ ```
+ 
++## Phase-7 cleanup facts
++
++The existing `codeBuckets.worktreesKept` and `codeBuckets.processSweep` also carry phase-7 cleanup
++results. Before finishing can remove the outer worktree, refresh these facts from actual helper
++results and the retained-resource inventory (SKILL.md §Phase 7 — cleanup preconditions).
++Retain each task cleanup exit 3 or 4 with its exact worktree/temp paths and reason, and include
++containing parent paths that cannot be removed. Refused roots, pending final parent inspection,
++unavailable invocations and missing results are unknown/unchecked, not verified empty.
++
++Keep stopped (verified terminated), survived (observed alive), unknown (inspection/termination
++unverified) and kept (deliberately preserved) facts distinct, with their resource dependencies.
++A verified no-match helper invocation can establish zero processes; an unconfirmed exit-zero
++empty wrapper output cannot. A successful leaf sweep establishes only its own resources' safety;
++final parent verification must happen after no retained descendants remain and before deletion.
++Clear a retained fact only after its named resource has been freshly verified safe, not because
++another invocation returned zero. Existing phase-3 bucket replacement must preserve unresolved
++phase-7 cleanup facts if implementation is re-entered.
++
++Write these facts and update report.md Remaining before teardown; preserve required unarchived
++evidence. `phase: done` can record completed delivery and the human's branch choice while cleanup
++remains pending. On resume, inspect these retained paths before attempting cleanup again; do not
++re-merge or delete a preserved parent merely because the delivery phase is done. No new field,
++cleanup engine or change to root acceptance is introduced.
++
+ ## The resume rule
+ 
+ Resume from the recorded `phase`; never re-ask the flags and never reset a counter (SKILL.md §Resume).

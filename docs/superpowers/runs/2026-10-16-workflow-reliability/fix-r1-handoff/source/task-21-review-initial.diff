@@ -1,0 +1,144 @@
+# Review package: 5bfbb92331652df67d9af367f0f81baa8267f020..22634c4c57e190dea56db60710b6de4f9327bfad
+
+## Commits
+22634c4c fix: revalidate retained archive integrity at acceptance
+
+## Files changed
+ skills/super-auto/scripts/report-status  | 20 ++++++++-
+ tests/super-auto/archive-integrity-r1.sh | 70 ++++++++++++++++++++++++++++++++
+ 2 files changed, 88 insertions(+), 2 deletions(-)
+
+## Diff
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index e3be73b4..a1fd59cb 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -271,34 +271,50 @@ case "$stalled" in
+   *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
+ esac
+ [ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+ rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+ 
+ continuity=''
+ if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }' "$run"; then
+   if command -v node >/dev/null 2>&1; then
+     script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+     continuity=$(node - "$script_dir" "$run" <<'STATUS'
+-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+ const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
+ const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
+  typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
+  (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
+  typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
+  Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
+  (r.complete===undefined || typeof r.complete==='boolean') &&
+  (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
+  (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
+  (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
+  (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
+ for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
+-let pending=0;for(const r of latest.values()){if(!r.complete)pending++;errors+=(r.gaps||[]).length}
++// Collection metadata describes the last preservation attempt. Recheck retained bytes
++// on every read; status and acceptance must never repair or recollect an archive.
++let pending=0;const integrityGaps=[];
++for(const r of latest.values()){
++ let invalid=false;
++ for(const f of r.files||[]){
++  const file=path.join(path.dirname(path.resolve(run)),'reviews',r.invocationId,f.path);
++  let actual;
++  try{if(!fs.lstatSync(file).isFile())throw Error();actual=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}
++  catch{integrityGaps.push(r.invocationId+': archive unavailable: '+f.path);invalid=true;continue}
++  if(actual!==f.sha256){integrityGaps.push(r.invocationId+': archive integrity mismatch: '+f.path);invalid=true}
++ }
++ if(!r.complete||invalid)pending++;
++ errors+=(r.gaps||[]).length;
++}
++errors+=integrityGaps.length;
++for(const g of integrityGaps)console.log('review collection gap: '+g);
+ if(pending)console.log('review collections pending: '+pending);
+ if(errors)console.log('review collection gaps: '+errors);
+ if(/^- finding-/m.test(text)){
+  const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+  try{if(![0,3].includes(p.status))throw Error();const d=JSON.parse(p.stdout),n=d.findings.filter(f=>f.outstanding).length;if(n)console.log('outstanding findings: '+n);if(d.gaps.length)console.log('finding evidence gaps: '+d.gaps.length)}catch{console.log('finding projection unavailable — retain known findings')}
+ }else if([...latest.values()].some(r=>r.reviewPath!==null))console.log('finding evidence gaps: source extraction unavailable');
+ STATUS
+ )
+   else
+     continuity='finding projection unavailable — retain known findings; review collection unverified'
+diff --git a/tests/super-auto/archive-integrity-r1.sh b/tests/super-auto/archive-integrity-r1.sh
+new file mode 100644
+index 00000000..b1daa324
+--- /dev/null
++++ b/tests/super-auto/archive-integrity-r1.sh
+@@ -0,0 +1,70 @@
++#!/usr/bin/env bash
++# The read-only caller gate must catch missing or changed retained archive bytes.
++set -euo pipefail
++SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
++REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
++T=$(mktemp -d "${TMPDIR:-/tmp}/archive-integrity.XXXXXX")
++trap 'rm -rf "$T"' EXIT
++node - "$REPO_ROOT/skills/super-auto/scripts/report-status" "$T" <<'NODE'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
++const [script,tmp]=process.argv.slice(2),id='integrity',prefix='final-review-'+id,tree='a'.repeat(40);
++const workspace=path.join(tmp,'work'),dir=path.join(tmp,'run'),run=path.join(dir,'run.md'),archive=path.join(dir,'reviews',id);
++fs.mkdirSync(workspace,{recursive:true});fs.mkdirSync(dir,{recursive:true});
++const review='## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n';
++const files=new Map([
++ [prefix+'.md.diff','direct package original\n'],
++ [prefix+'.md',review],
++ [prefix+'.cluster-1.md',review],
++ ['assembled/'+prefix+'-final/clusters.json','{"clusters":[{"name":"core","slices":["slices/core.diff"]}]}\n'],
++ ['assembled/'+prefix+'-final/slices/core.diff','assembled input original\n'],
++ ['required-input.diff','declared input original\n']
++]);
++for(const [rel,bytes]of files){const file=path.join(workspace,rel);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,bytes)}
++const acceptance={version:1,owner:'super-auto',sourceTree:tree,requirements:[
++ {id:'review',kind:'review',owner:'super-auto'},
++ {id:'sweep',kind:'measurement',owner:'super-auto',command:'suite',configuration:'quiet',requiredLive:true},
++ {id:'finish',kind:'human',owner:'human'}],
++ evidence:[{sourceTree:tree,command:'suite',configuration:'quiet',kind:'live',outcome:'pass',location:'sweep.log'}],
++ reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:'reviews/'+id+'/'+prefix+'.md'}],
++ decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['human-choice']}],
++ recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
++fs.writeFileSync(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\ncodeBuckets:\n  escalated: none\n  pendingRetry: none\n  parked: none\n  stalled: false\n  review: ready\n  sweep: 1 — 1 passed, 0 failed, 0 errors; command: suite @ aaaaaaa\napprovals:\n- root-acceptance · '+JSON.stringify(acceptance)+'\n');
++function cli(args,want){const p=cp.spawnSync('bash',[script,...args],{encoding:'utf8'});assert.equal(p.status,want,p.stdout+p.stderr);assert.equal(p.stderr,'');return p.stdout}
++cli(['--collect',run,'--invocation',id,'--workspace',workspace,'--review',path.join(workspace,prefix+'.md'),'--verdict','ready','--required','required-input.diff'],0);
++const collection=fs.readFileSync(run,'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.slice('- review-collection · '.length))).at(-1);
++assert.equal(collection.complete,true);
++assert.deepEqual(collection.files.map(f=>f.path).sort(),[...files.keys()].sort(),'fixture must retain direct, cluster, assembled and declared files');
++function snapshot(){const result=[];function walk(dir){for(const name of fs.readdirSync(dir).sort()){const file=path.join(dir,name),st=fs.statSync(file);result.push([path.relative(tmp,file),st.mtimeMs,st.mode,st.isFile()?fs.readFileSync(file).toString('base64'):null]);if(st.isDirectory())walk(file)}}walk(tmp);return result}
++function gate(want,expectedGap){const before=snapshot();const d=JSON.parse(cli(['--acceptance',run,'--tree',tree],want));assert.equal(d.eligible,want===0);assert.deepEqual(d.pending,[]);if(expectedGap)assert.ok(d.gaps.includes(expectedGap),JSON.stringify(d));else assert.deepEqual(d.gaps,[]);assert.deepEqual(snapshot(),before,'acceptance must preserve run text, bytes, mtimes and inventory');return d}
++gate(0);
++console.log('PASS: complete matching archive remains eligible and unchanged');
++// The archive must stand alone after collection; no recollection or source repair is allowed.
++fs.renameSync(workspace,workspace+'-removed');
++gate(0);
++console.log('PASS: matching archive remains eligible after source cleanup');
++for(const [rel,bytes]of files){
++ const file=path.join(archive,rel);
++ for(const mode of ['missing','corrupted']){
++  if(mode==='missing')fs.unlinkSync(file);else fs.writeFileSync(file,'changed archive bytes\n');
++  const message='review collection gap: '+id+': '+(mode==='missing'?'archive unavailable: ':'archive integrity mismatch: ')+rel;
++  gate(3,message);
++  const before=snapshot(),ordinary=cli([run],0);
++  assert.ok(ordinary.includes('qualifier: '+message),ordinary);
++  assert.match(ordinary,/qualifier: review collections pending: 1/);
++  assert.deepEqual(snapshot(),before,'ordinary status must also remain read-only');
++  console.log('PASS: '+mode+' '+rel+' blocks acceptance with a specific gap');
++  fs.writeFileSync(file,bytes);
++  gate(0);
++ }
++}
++// An integrity gap must not replace independent pending acceptance obligations.
++fs.unlinkSync(path.join(archive,prefix+'.md.diff'));
++acceptance.decisions=[];
++fs.appendFileSync(run,'- root-acceptance · '+JSON.stringify(acceptance)+'\n');
++const before=snapshot(),pending=JSON.parse(cli(['--acceptance',run,'--tree',tree],3));
++assert.equal(pending.eligible,false);assert.deepEqual(pending.pending,['finish: human decision pending; owner: human']);
++assert.ok(pending.gaps.includes('review collection gap: '+id+': archive unavailable: '+prefix+'.md.diff'));
++assert.deepEqual(snapshot(),before);
++console.log('PASS: integrity gaps preserve independent human acceptance obligations');
++console.log('archive integrity: 15 scenarios passed');
++NODE

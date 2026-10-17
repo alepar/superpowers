@@ -1,0 +1,16 @@
+{
+  "task": "super-plan-ufz.27",
+  "approval": "Approve closing super-plan-ufz.27",
+  "source": "explicit user async question reply",
+  "command": "bd close super-plan-ufz.27",
+  "exit": 0,
+  "closed": true,
+  "cleanupExit": 0,
+  "cleanup": [
+    "removed own task worktree",
+    "deleted task-super-plan-ufz.27",
+    "removed /tmp/sp-bce79baa/super-plan-ufz.27"
+  ],
+  "priorRejectedAttemptPreserved": "merge-super-plan-ufz.27-result.json",
+  "processAssurance": "cleanup helper completed; no independent global process absence claim"
+}

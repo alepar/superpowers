@@ -1,0 +1,90 @@
+{
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "parts": [
+    {
+      "oldCluster": 9,
+      "part": 1,
+      "package": "review-obligations-r1/review-former-cluster-9/part-01",
+      "status": "ready",
+      "estimatedTokens": 471
+    },
+    {
+      "oldCluster": 29,
+      "part": 1,
+      "package": "review-obligations-r1/review-former-cluster-29/part-01",
+      "status": "ready",
+      "estimatedTokens": 28652
+    },
+    {
+      "oldCluster": 29,
+      "part": 2,
+      "package": "review-obligations-r1/review-former-cluster-29/part-02",
+      "status": "ready",
+      "estimatedTokens": 134449,
+      "cause": "usage-limit interruption; no completed report",
+      "retry": "fresh agent after usage-limit interruption; no old completed report"
+    },
+    {
+      "oldCluster": 29,
+      "part": 3,
+      "package": "review-obligations-r1/review-former-cluster-29/part-03",
+      "status": "ready",
+      "estimatedTokens": 124987
+    },
+    {
+      "oldCluster": 29,
+      "part": 4,
+      "package": "review-obligations-r1/review-former-cluster-29/part-04",
+      "status": "ready",
+      "estimatedTokens": 87536
+    },
+    {
+      "oldCluster": 29,
+      "part": 5,
+      "package": "review-obligations-r1/review-former-cluster-29/part-05",
+      "status": "ready",
+      "estimatedTokens": 76151
+    },
+    {
+      "oldCluster": 52,
+      "part": 1,
+      "package": "review-obligations-r1/review-former-cluster-52/part-01",
+      "status": "ready",
+      "estimatedTokens": 100309,
+      "cause": "usage-limit interruption; no completed report",
+      "retry": "fresh agent after usage-limit interruption; no old completed report"
+    },
+    {
+      "oldCluster": 52,
+      "part": 2,
+      "package": "review-obligations-r1/review-former-cluster-52/part-02",
+      "status": "ready",
+      "estimatedTokens": 115592
+    },
+    {
+      "oldCluster": 52,
+      "part": 3,
+      "package": "review-obligations-r1/review-former-cluster-52/part-03",
+      "status": "running",
+      "estimatedTokens": 137275,
+      "recovery": "Prior named agent absent from restored agent roster and no completed part report on disk; fresh bounded replacement dispatched, no coverage inferred.",
+      "agent": "/root/review_gap_52_p3_recovery"
+    },
+    {
+      "oldCluster": 52,
+      "part": 4,
+      "package": "review-obligations-r1/review-former-cluster-52/part-04",
+      "status": "running",
+      "estimatedTokens": 139420,
+      "recovery": "Prior named agent absent from restored agent roster and no completed part report on disk; fresh bounded replacement dispatched, no coverage inferred.",
+      "agent": "/root/review_gap_52_p4_recovery"
+    },
+    {
+      "oldCluster": 52,
+      "part": 5,
+      "package": "review-obligations-r1/review-former-cluster-52/part-05",
+      "status": "ready",
+      "estimatedTokens": 3148
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+PASS: omitted-ID and explicit startup, distinct artifacts, resume, missing/unsafe identity, persistence gap, transport retry, recorded-result replay (16 startups; Workflow-like sandbox; mechanical agent simulated)

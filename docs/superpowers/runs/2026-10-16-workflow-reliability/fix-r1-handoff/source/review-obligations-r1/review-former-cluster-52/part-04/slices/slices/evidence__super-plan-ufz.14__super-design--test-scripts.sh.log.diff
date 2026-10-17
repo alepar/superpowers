@@ -1,0 +1,79 @@
+diff --git a/evidence/super-plan-ufz.14/super-design--test-scripts.sh.log b/evidence/super-plan-ufz.14/super-design--test-scripts.sh.log
+new file mode 100644
+index 00000000..bb4590d3
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/super-design--test-scripts.sh.log
+@@ -0,0 +1,73 @@
++coverage-precheck
++  [PASS] flags minus ledger, unstated edge, citations incl. inherited epic edge and transitive path
++  [PASS] exit 0
++  [PASS] missing ledger excludes nothing
++  [PASS] two ledger keys: exit 0 under the system awk
++  [PASS] two ledger keys: both flags excluded
++  [PASS] unknown root exits 2
++  [PASS] no jq exits 4
++  [PASS] no jq prints a JQ_UNAVAILABLE: instruction
++  [PASS] missing argument exits 2
++requirements-tally
++  [PASS] union by id: mapped by any, unmapped (or unlisted) by any; R-new deduped; blockless review named
++  [PASS] exit 0
++  [PASS] single reviewer
++  [PASS] missing review file exits 2
++coverage-divergence
++  [PASS] grew and mostly novel (type match is case-insensitive)
++  [PASS] shrinking round is not widening
++  [PASS] missing argument exits 2
++graph-shape
++  [PASS] epic edge waits for the subtree; sweep/contract edges count but are exempt; closed/blocker beads and off-path leaf edges dropped
++  [PASS] exit 0
++  [PASS] a wait cycle still exits 0
++  [PASS] cycle edge ignored
++  [PASS] a file-split edge is exempt even on the critical path
++  [PASS] unknown root exits 2
++  [PASS] no jq exits 4
++  [PASS] no jq prints a JQ_UNAVAILABLE: instruction
++coverage-inputs
++  [PASS] goal sections only, one line per bead in numeric tree order, declarations kept, blocks deps only
++  [PASS] exit 0
++  [PASS] spec prose and description detail stay out
++  [PASS] a spec naming no tree bead is reported
++  [PASS] byte count reported on stderr
++  [PASS] explicit ownership input exits 0
++  [PASS] explicit goal attaches to correct owner
++  [PASS] prefix ownership input exits 0
++  [PASS] prefix goal attaches to correct owner
++  [PASS] fallback ownership input exits 0
++  [PASS] fallback goal attaches to correct owner
++  [PASS] conflict ownership input exits 0
++  [PASS] conflict explicit owner never guesses a sibling
++  [PASS] unknown ownership input exits 0
++  [PASS] unknown explicit owner never guesses a sibling
++  [PASS] single ownership input exits 0
++  [PASS] single goal attaches to correct owner
++  [PASS] malformed ownership input exits 0
++  [PASS] malformed explicit owner never guesses a sibling
++  [PASS] empty ownership input exits 0
++  [PASS] empty explicit owner never guesses a sibling
++  [PASS] non-id ownership input exits 0
++  [PASS] non-id explicit owner never guesses a sibling
++  [PASS] fallback ambiguity is reported
++  [PASS] conflict ambiguity is reported
++  [PASS] inline and formatted declarations retain complete ownership and boundary pointers
++  [PASS] malformed dump exits 2
++  [PASS] non-array dump exits 2
++  [PASS] unknown root exits 2
++  [PASS] missing root spec exits 2
++  [PASS] no jq exits 4
++  [PASS] no jq prints a JQ_UNAVAILABLE: instruction
++prompt-text: shaped units
++  [PASS] SKILL.md has: one feature in one subsystem
++  [PASS] SKILL.md has: Tightly coupled
++  [PASS] SKILL.md has: checkable list
++  [PASS] SKILL.md has: - [ ]
++  [PASS] SKILL.md has: heavy mutual calls or imports
++  [PASS] promotion prompt has: one feature in one subsystem
++  [PASS] promotion prompt has: tightly coupled files
++  [PASS] promotion prompt has: heavy mutual calls or imports
++  [PASS] promotion prompt has no ~5+ number
++
++All super-design script tests passed

@@ -1,0 +1,198 @@
+{
+  "verdict": "incomplete",
+  "status": "INCOMPLETE",
+  "reportPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/evaluation-report.md",
+  "planned": 20,
+  "completed": 19,
+  "failed": 1,
+  "ambiguous": 0,
+  "countDefinitions": {
+    "completed": "scheduled samples with complete canonical-payload intake and semantic case answers",
+    "failed": "failed-intake scheduled samples; primary semantic failures are reported separately",
+    "ambiguous": "semantic ambiguous cases"
+  },
+  "rawResponses": 20,
+  "primaryMeasurableSamples": 15,
+  "primarySampleCounts": {
+    "pass": 13,
+    "fail": 2,
+    "unmeasurable": 5
+  },
+  "primaryCaseCounts": {
+    "pass": 108,
+    "fail": 3,
+    "unmeasurable": 39
+  },
+  "sourceArmResults": {
+    "baseline": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 4,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 24,
+        "unmeasurable": 6
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 5
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 30
+      },
+      "samples": [
+        "candidate_001",
+        "candidate_006",
+        "candidate_009",
+        "candidate_014",
+        "candidate_017"
+      ]
+    },
+    "after": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 4,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 24,
+        "unmeasurable": 6
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 5
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 30
+      },
+      "samples": [
+        "candidate_002",
+        "candidate_005",
+        "candidate_010",
+        "candidate_013",
+        "candidate_018"
+      ]
+    }
+  },
+  "outerArmResults": {
+    "after": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "pass": 3,
+        "unmeasurable": 2
+      },
+      "primaryCaseCounts": {
+        "pass": 27,
+        "unmeasurable": 18
+      },
+      "secondaryTextualSampleCounts": {
+        "pass": 4
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 36
+      },
+      "samples": [
+        "candidate_003",
+        "candidate_008",
+        "candidate_011",
+        "candidate_016",
+        "candidate_019"
+      ]
+    },
+    "baseline": {
+      "plannedSamples": 5,
+      "primarySampleCounts": {
+        "fail": 2,
+        "pass": 2,
+        "unmeasurable": 1
+      },
+      "primaryCaseCounts": {
+        "pass": 33,
+        "fail": 3,
+        "unmeasurable": 9
+      },
+      "secondaryTextualSampleCounts": {
+        "fail": 3,
+        "pass": 2
+      },
+      "secondaryTextualCaseCounts": {
+        "pass": 41,
+        "fail": 4
+      },
+      "samples": [
+        "candidate_004",
+        "candidate_007",
+        "candidate_012",
+        "candidate_015",
+        "candidate_020"
+      ]
+    }
+  },
+  "primaryUnmeasurableSamples": [
+    "candidate_011",
+    "candidate_017",
+    "candidate_018",
+    "candidate_019",
+    "candidate_020"
+  ],
+  "primarySemanticFailureCases": [
+    {
+      "sample": "candidate_004",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The first ordered action invokes remove-task-worktree, whose selected operation can remove task-format. Persisting run/report retention facts is ordered third. Required persistence therefore follows permitted leaf teardown."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "A",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The second ordered action removes task-format; the third writes the retention and pending-verification facts and the fourth archives them. This permits leaf teardown before required durable persistence."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The third ordered action permits task-format removal after a successful leaf check, but the fifth first records the refusal and retention facts in run/report. Verification before deletion does not satisfy persistence before teardown."
+    }
+  ],
+  "secondarySemanticFailureCases": [
+    {
+      "sample": "candidate_004",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The first ordered action invokes remove-task-worktree, whose selected operation can remove task-format. Persisting run/report retention facts is ordered third. Required persistence therefore follows permitted leaf teardown."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "A",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The second ordered action removes task-format; the third writes the retention and pending-verification facts and the fourth archives them. This permits leaf teardown before required durable persistence."
+    },
+    {
+      "sample": "candidate_007",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "fail",
+      "secondaryTextualLabel": "fail",
+      "reason": "The third ordered action permits task-format removal after a successful leaf check, but the fifth first records the refusal and retention facts in run/report. Verification before deletion does not satisfy persistence before teardown."
+    },
+    {
+      "sample": "candidate_020",
+      "caseId": "D",
+      "criterion": "O6",
+      "primaryLabel": "unmeasurable",
+      "secondaryTextualLabel": "fail",
+      "reason": "The second ordered action permits task-format removal after leaf verification; the fourth writes the pending cleanup facts. This is a secondary textual persistence-before-teardown failure; common-context drift invalidates its primary score."
+    }
+  ],
+  "noRuntimeClaim": true
+}

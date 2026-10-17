@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "bundle": "guidance-eval-r1-native",
+  "protocol": "native-read-only-intake-v1",
+  "preparedAt": "2026-10-17T14:49:46.168125+00:00",
+  "purpose": "Premeasurement interface/metadata adaptation only. No candidates, scoring, guidance changes or runtime execution.",
+  "samplesPerArmPerFamily": 5,
+  "familyCount": 2,
+  "armsPerFamily": 2,
+  "expectedSampleCount": 20,
+  "candidateRunsStarted": 0,
+  "launch": {
+    "tool": "collaboration.spawn_agent",
+    "fork_turns": "none",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high"
+  },
+  "oneNewAgentPerScheduledSample": true,
+  "reuseAgents": false,
+  "maxActiveCandidateChildren": 3,
+  "ordering": "Preserve original predeclared schedule exactly; dispatch in ordinal order without feedback or adaptive choice.",
+  "sampling": "Descriptive five fresh agents per arm/family; fork_turns:none avoids parent conversation. Freshness is not proof of statistical independence or a random seed.",
+  "toolAccess": {
+    "technicallyEnabled": true,
+    "permitted": "Only complete frozen-payload intake via loader.py and exec_command; no mutations, live scenario commands, other file reads, network, Herdr, bd or child agents.",
+    "afterIntake": "No tools. Candidate choices remain textual."
+  },
+  "contextDelivery": {
+    "method": "One neutral task wrapper referencing an opaque byte-identical canonical messages file; decoded original system and user content is consumed completely in sequential read-only tool chunks.",
+    "systemMessageInjection": false,
+    "originalRoles": "Original roles remain payload metadata. Content arrives as task/tool data under real inherited harness instructions.",
+    "fullInputReceiptRequired": true,
+    "contextTruncationAllowed": false,
+    "silentSummarizationAllowed": false,
+    "wrapperDifferencesAllowed": [
+      "opaque payload path",
+      "expected digest",
+      "message lengths",
+      "chunk counts"
+    ]
+  },
+  "metadataPolicy": "Freeze exposed model alias, reasoning effort, fork setting, wrapper, loader and shared tool surface before launch. Unknown exact revision, sampling, token limits, usage, serialized inherited prefix and provider IDs are disclosed unknowns, not automatic semantic unmeasurability. Observed incomplete input/output, wrong payload, contamination, outage or unequal exposed configuration remains unmeasurable as applicable.",
+  "retryPolicy": "Exactly twenty scheduled fresh candidate launches. No hidden retries, replacement samples, follow-up turns or outcome-conditioned prompt repair. A failed launch/loading/output remains in its original denominator; supplemental runs require a separately versioned prospective amendment.",
+  "semanticRubric": "semantic/rubric.json is byte-identical to original rubric.json. rubric-adapter.json changes intake/interface bookkeeping only; all family criteria, labels, controls, reporting and ambiguity decisions are preserved.",
+  "results": "execution.json starts empty and is excluded from preparation freeze. Append available call arguments, IDs, timestamps, tool transcripts, raw final text, errors and hashes without rewriting frozen files. Store collected artifacts under a distinct results/ subdirectory created only during authorized collection.",
+  "holdCommonAcrossArms": [
+    "exposed launch configuration",
+    "candidate wrapper template",
+    "loader implementation and chunk size",
+    "allowed intake-only tool policy",
+    "ordinary inherited harness/tool context",
+    "result retention rules",
+    "semantic scoring and reporting rules"
+  ],
+  "unknowns": [
+    "exact provider revision behind model alias",
+    "effective temperature/top_p/seed",
+    "input context window",
+    "effective output token cap",
+    "provider usage and finish reason unless exposed",
+    "exact serialized inherited harness prefix",
+    "technical enforcement of no-mutation/no-other-read instructions"
+  ],
+  "limitations": [
+    "Common inherited safety instructions may affect both arms and mask incremental effects.",
+    "Shared model alias/settings do not prove exact provider revision equivalence across time.",
+    "Full file-read receipts establish visible intake coverage, not hidden backend retention or absence of undetected internal truncation.",
+    "Tools remain available; behavioral isolation is not an adversarial security boundary.",
+    "No actual runtime source binding, cleanup, process termination or tool-free behavior is established."
+  ]
+}

@@ -1,0 +1,8 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-pid b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-pid
+new file mode 100644
+index 00000000..43313f13
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/controller-pid
+@@ -0,0 +1 @@
++41210
+\ No newline at end of file

@@ -1,0 +1,195 @@
+# Review package: c3fac4369c7c737e2e7f9f7250fd253b21442d12..0b3ff13eb7894c36625e4320eb426fc366b4953c
+
+## Commits
+0b3ff13e docs: qualify historical workflow profile model claims
+
+## Files changed
+ .../profile-implementation.json                     | 21 +++++++++++----------
+ .../profile-implementation.md                       | 20 ++++++++++++--------
+ 2 files changed, 23 insertions(+), 18 deletions(-)
+
+## Diff
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json
+index 330e9bbc..3273d16e 100644
+--- a/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.json
+@@ -20,21 +20,21 @@
+     "start": "2026-10-16T15:11:02.184Z",
+     "lastLanding": "2026-10-17T08:54:07.186Z",
+     "end": "2026-10-17T08:57:41.055Z",
+     "graphMs": 63785002,
+     "wallMs": 63998871
+   },
+   "graphScope": "observed invocation/residual graph",
+   "diagnosis": {
+     "planningMs": 285704,
+     "windowMs": 63785002,
+-    "dominant": "task graph"
++    "dominant": "unknown"
+   },
+   "shape": {
+     "beads": 18,
+     "edges": 29,
+     "depth": 5,
+     "width": 3.6,
+     "levels": [
+       10,
+       4,
+       2,
+@@ -1962,33 +1962,34 @@
+     "graphChain": [
+       "super-plan-ufz.20",
+       "super-plan-ufz.14"
+     ],
+     "whatIfs": [
+       {
+         "kind": "cut",
+         "target": "cut super-plan-ufz.14 <- super-plan-ufz.20",
+         "ms": 63699059,
+         "savingMs": 989000,
+-        "note": "payoff if this edge were cut — whether it can be is a design call",
++        "note": "model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown",
+         "estimate": true
+       },
+       {
+         "kind": "faster",
+         "target": "faster super-plan-ufz.14",
+         "ms": 63771921.5,
+         "savingMs": 916137.5,
+-        "note": "its implement time halved",
++        "note": "its implement time halved in the model; model-relative saving, not a demonstrated actual reduction",
+         "estimate": true
+       }
+     ],
+-    "verdict": "graph-bound"
++    "verdict": "inconclusive",
++    "qualification": "Model-only minimum 17h58m (lowerBoundMs retained as a legacy model field) exceeds the observed 17h43m graph window by 903,057 ms; it is not an established historical lower bound or causal diagnosis. The model uses the observed residual .20 → .14 edge and dispatch release boundaries where readiness is unknown. .14 dispatch 2026-10-17T08:19:58.131Z precedes .20 creation 2026-10-17T08:27:13.000Z and dispatch 08:31:40.461Z; both readiness and waits remain unknown. No enforced historical dependency or pre-creation wait is inferred. Planning 5m remains included; the critical-path record contains a 14h26m wait and all-agent concurrency has 83% no-agent time over the 17h47m wall window. These observations do not establish the delay cause or task parallelism alone as a remedy. All-agent peak 6 and task-slot peak/cap 3 retain distinct meanings; what-if savings are relative to the model baseline, not demonstrated actual reductions."
+   },
+   "unmeasured": [
+     "availability/readiness timing unknown for 2 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary",
+     "27 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code)",
+     "coordinator rows counted from the session start (no invocation found)"
+   ],
+   "context": {
+     "agents": [
+       {
+         "harness": "codex",
+@@ -5380,33 +5381,33 @@
+       },
+       "reasons": [
+         "coordinator rows counted from the session start (no invocation found)"
+       ]
+     }
+   },
+   "summary": [
+     "Profile: super-plan-ufz · 1 invocation · 2026-10-16T15:11Z → 2026-10-17T08:57Z · wall 17h47m (task graph 17h43m, after the last landing 4m) · agents 110 (timed 110) · beads dispatched 18, landed 18, planned 18",
+     "Profile: graph scope — observed invocation/residual graph; historical topology is unknown",
+     "Profile: shape — 18 beads · 29 edges · depth 5 · width 3.6 · beads per level 10/4/2/1/1 · widest fan-out super-plan-ufz.4 (5 direct, 5 transitive dependents)",
+-    "Profile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever",
++    "Profile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck",
+     "Profile: critical path — 17h43m = implement 1h42m · review 7m · fix 6m · merge 9m · seam 4m · planning 5m · other 17m · startup 2m · dispatch 5m · slot 39s · wait 15h05m · unmeasured-gap 57s · of which other beads' merge-lane turns 3m",
+-    "Profile: diagnosis — planning 5m (0% of first dispatch to last landing)",
++    "Profile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy",
+     "Profile: critical chain — legacy other 6m → reliability other 3m → continuity other 2m → coverage other 45s → design other 5m → reliability other 20s → … 3 more … → super-plan-ufz.5 implement+review+merge+seam 12m → super-plan-ufz.7 implement+review+fix+merge+seam 21m → super-plan-ufz.8.4 implement 9m → super-plan-ufz.8.3 implement 12m → super-plan-ufz.6 implement+review+merge+seam 22m → super-plan-ufz.14 implement+review+merge 33m",
+-    "Profile: bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0",
++    "Profile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: \"wait_agent\" 45s, \"wait_agent\" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0",
+     "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 4h12m over 13 of 18 landed beads — waited-for-merge 5m (1) · slot 3h30m (7) · unexplained 37m (5)",
+     "Profile: early unblock — 8 landed beads had in-run blockers · stacked on an implementation 4 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 1",
+     "Profile: rework — 45s of dispatch time in attempts that did not land — super-plan-ufz.14 45s (?; landed later)",
+     "Profile: tests — implementers and fixers, summed: 11m running tests and 21m polling background runs, 13% of their 3h59m · 0 Bash call(s) ran into the 10-minute tool limit",
+-    "Profile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving",
++    "Profile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings",
+     "Profile: merge lane — busy 30m of 2h33m (20%) · seam reviews and fixes 9m (30% of busy) · 28 merge dispatches, first try not merged for 10 of 18 · queue wait 31m total, peak 2 waiting · stack-parent wait 0s",
+     "Profile: concurrency — 110 dispatches over 17h47m · a dispatch running 3h02m (17%) · dispatches at once: 0 for 83% · 1 for 4% · 2 for 7% · 3+ for 6% of the time · peak 6",
+     "Profile: dispatch time by kind, summed — impl 3h39m (19) · review 22m (18) · merge 21m (28) · fix 20m (4) · plan 14m (3) · seam-review 9m (11) · not named for a bead: seam 23m (5) · baseline 12m (1) · legacy 11m (2) · older 7m (1) · nochange 6m (1) · design 5m (2) · after 5m (1) · cross 4m (1) · 8 more 20m (13)",
+     "Profile: runtime — peak 6 agents at once · slot cap 3",
+     "Profile: concurrency scope — all-agent concurrency peak 6 · task-slot concurrency peak 3, cap 3 (ordinary chains retain a slot through merge)",
+-    "Profile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained",
+-    "Profile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained",
++    "Profile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained",
++    "Profile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained",
+     "Profile: context — agents 196 (measured 196) · peak≥80% 0 · tasks>1 2 · compacted 1 agents, 3 compactions (cap 1 · early 2) · coordinator 330K/475K (69%), 3 compactions · max coordinator 69%",
+     "Profile: context agent — coordinator peak 330K/475K (69%) · first 20K · compactions 3 (cap 1, early 2)",
+     "Profile: context agent — impl_super_plan_ufz_14_integrated peak 277K/475K (58%) · first 21K · compactions 0",
+     "Profile: unmeasured — availability/readiness timing unknown for 2 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary; 27 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code); coordinator rows counted from the session start (no invocation found)"
+   ]
+ }
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md
+index fa14c549..91e73eb2 100644
+--- a/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/profile-implementation.md
+@@ -1,33 +1,33 @@
+ # Run profile — super-plan-ufz
+ 
+ ```
+ Profile: super-plan-ufz · 1 invocation · 2026-10-16T15:11Z → 2026-10-17T08:57Z · wall 17h47m (task graph 17h43m, after the last landing 4m) · agents 110 (timed 110) · beads dispatched 18, landed 18, planned 18
+ Profile: graph scope — observed invocation/residual graph; historical topology is unknown
+ Profile: shape — 18 beads · 29 edges · depth 5 · width 3.6 · beads per level 10/4/2/1/1 · widest fan-out super-plan-ufz.4 (5 direct, 5 transitive dependents)
+-Profile: bound — graph lower bound 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs actual 17h43m (101%) → graph-bound: the 2-bead dependency chain set the pace — reshaping it is the lever
++Profile: bound — model-only minimum 17h58m along super-plan-ufz.20 → super-plan-ufz.14 (unlimited slots and merge lanes) · model of the run 17h58m (cap 3, one merge lane) vs observed 17h43m (101%) → inconclusive: model exceeds the observed graph window; no established historical lower bound or causal bottleneck
+ Profile: critical path — 17h43m = implement 1h42m · review 7m · fix 6m · merge 9m · seam 4m · planning 5m · other 17m · startup 2m · dispatch 5m · slot 39s · wait 15h05m · unmeasured-gap 57s · of which other beads' merge-lane turns 3m
+-Profile: diagnosis — planning 5m (0% of first dispatch to last landing)
++Profile: diagnosis — planning 5m (0% of first dispatch to last landing); the window includes a 14h26m wait and 83% no-agent time (all-agent wall window); cause unknown, task parallelism alone is not an established remedy
+ Profile: critical chain — legacy other 6m → reliability other 3m → continuity other 2m → coverage other 45s → design other 5m → reliability other 20s → … 3 more … → super-plan-ufz.5 implement+review+merge+seam 12m → super-plan-ufz.7 implement+review+fix+merge+seam 21m → super-plan-ufz.8.4 implement 9m → super-plan-ufz.8.3 implement 12m → super-plan-ufz.6 implement+review+merge+seam 22m → super-plan-ufz.14 implement+review+merge 33m
+-Profile: bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: "wait_agent" 45s, "wait_agent" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0
++Profile: bottleneck — observed task-path contribution, not an established causal bottleneck — super-plan-ufz.14 — 34m on the critical path (3%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: "wait_agent" 45s, "wait_agent" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0
+ Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 4h12m over 13 of 18 landed beads — waited-for-merge 5m (1) · slot 3h30m (7) · unexplained 37m (5)
+ Profile: early unblock — 8 landed beads had in-run blockers · stacked on an implementation 4 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 1
+ Profile: rework — 45s of dispatch time in attempts that did not land — super-plan-ufz.14 45s (?; landed later)
+ Profile: tests — implementers and fixers, summed: 11m running tests and 21m polling background runs, 13% of their 3h59m · 0 Bash call(s) ran into the 10-minute tool limit
+-Profile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-ifs model the real saving
++Profile: redo — on the critical path, up to retries 11m (super-plan-ufz.14) — from a bead's first attempt to its final one; the what-if savings are model-relative estimates, not established elapsed-time savings
+ Profile: merge lane — busy 30m of 2h33m (20%) · seam reviews and fixes 9m (30% of busy) · 28 merge dispatches, first try not merged for 10 of 18 · queue wait 31m total, peak 2 waiting · stack-parent wait 0s
+ Profile: concurrency — 110 dispatches over 17h47m · a dispatch running 3h02m (17%) · dispatches at once: 0 for 83% · 1 for 4% · 2 for 7% · 3+ for 6% of the time · peak 6
+ Profile: dispatch time by kind, summed — impl 3h39m (19) · review 22m (18) · merge 21m (28) · fix 20m (4) · plan 14m (3) · seam-review 9m (11) · not named for a bead: seam 23m (5) · baseline 12m (1) · legacy 11m (2) · older 7m (1) · nochange 6m (1) · design 5m (2) · after 5m (1) · cross 4m (1) · 8 more 20m (13)
+ Profile: runtime — peak 6 agents at once · slot cap 3
+ Profile: concurrency scope — all-agent concurrency peak 6 · task-slot concurrency peak 3, cap 3 (ordinary chains retain a slot through merge)
+-Profile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — payoff if this edge were cut — whether it can be is a design call; first dispatch to last landing, planning retained
+-Profile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved; first dispatch to last landing, planning retained
++Profile: what-if estimate — cut super-plan-ufz.14 <- super-plan-ufz.20 → 17h42m (−16m, 2%) — model-relative saving if this residual edge were cut; historical enforcement and feasibility unknown; first dispatch to last landing, planning retained
++Profile: what-if estimate — faster super-plan-ufz.14 → 17h43m (−15m, 1%) — its implement time halved in the model; model-relative saving, not a demonstrated actual reduction; first dispatch to last landing, planning retained
+ Profile: context — agents 196 (measured 196) · peak≥80% 0 · tasks>1 2 · compacted 1 agents, 3 compactions (cap 1 · early 2) · coordinator 330K/475K (69%), 3 compactions · max coordinator 69%
+ Profile: context agent — coordinator peak 330K/475K (69%) · first 20K · compactions 3 (cap 1, early 2)
+ Profile: context agent — impl_super_plan_ufz_14_integrated peak 277K/475K (58%) · first 21K · compactions 0
+ Profile: unmeasured — availability/readiness timing unknown for 2 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary; 27 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code); coordinator rows counted from the session start (no invocation found)
+ ```
+ 
+ ## Per bead
+ 
+ Offsets are from the run's first dispatch. `wait` starts at evidenced creation/mapping/dependency availability, bounded by invocation start; unknown readiness means unknown wait. Creation, mapping and dependency timestamps stay distinct in JSON. `stack` waits for parents to merge; `queue` waits for the single merge lane; `lane` is its lane turn (merge plus seam work).
+ 
+@@ -151,28 +151,32 @@ Offsets are from the run's first dispatch. `wait` starts at evidenced creation/m
+ | wait_agent | poll | wait_agent | 30s |
+ | wait_agent | poll | wait_agent | 17s |
+ | exec | poll | node evidence/super-plan-ufz.14/capture-source.mjs | 10s |
+ | exec | poll | node evidence/super-plan-ufz.14/verify-eval-sources.mjs /Us… | 9s |
+ | exec | edit | bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/… | 8s |
+ | exec | poll | apply_patch, write_stdin | 8s |
+ | exec | edit | bash /Users/alepar/.codex/plugins/cache/superpowers-alepar/… | 8s |
+ 
+ ## Schedule model
+ 
+-Landed beads replayed with their measured implement, review+fix and lane times; creation, mapping and invocation bounds retained, with dispatch as the conservative release when readiness is unknown. In-model dependencies release at their modeled implementation/merge times; known releases outside the model stay fixed. Window: first dispatch to last landing; planning retained. Model of the run: 17h58m against 17h43m measured. Estimates, not measurements.
++Landed beads replayed with their measured implement, review+fix and lane times; creation, mapping and invocation bounds retained, with dispatch as the conservative release when readiness is unknown. In-model dependencies release at their modeled implementation/merge times; known releases outside the model stay fixed. Window: first dispatch to last landing; planning retained. Model of the run: 17h58m against 17h43m measured. The model-only minimum (the retained JSON field `lowerBoundMs`) exceeds the observed graph window by 903,057 ms, so it is not an established historical lower bound. Savings below are relative to that modeled baseline, not the observed duration. Estimates, not measurements.
++
++The retained .14 dispatch at 2026-10-17T08:19:58.131Z precedes .20 creation at 2026-10-17T08:27:13.000Z and .20 dispatch at 08:31:40.461Z. Readiness and wait duration for both tasks remain unknown. The observed residual .20 → .14 edge does not establish a dependency enforced at the earlier .14 dispatch; no historical topology or pre-creation wait is inferred. The model applies that residual edge and retains dispatch as the release boundary where readiness is unknown. These assumptions limit the causal interpretation.
++
++Planning remains included (5m); the critical-path record also contains a 14h26m wait, and all-agent concurrency records no dispatched agent for 83% of the 17h47m wall window. These observations do not establish the cause of the delay or that changing task parallelism alone would remove it. All-agent peak 6 and task-slot peak/cap 3 retain their distinct meanings. The task-path contribution above identifies measured work, not an established cause of the whole run duration.
+ 
+ | scenario | makespan | saving |
+ |---|---|---|
+ | as run (cap 3, one merge lane) | 17h58m | - |
+ | unlimited slots | 17h58m | 0s |
+ | unlimited merge lanes | 17h58m | 0s |
+-| graph lower bound (both) | 17h58m | 0s |
++| model-only minimum (both; not a historical lower bound) | 17h58m | 0s |
+ | cut super-plan-ufz.14 <- super-plan-ufz.20 | 17h42m | 16m |
+ | faster super-plan-ufz.14 | 17h43m | 15m |
+ 
+ ## Timeline
+ 
+ each bead's final attempt; critical-path steps are marked crit.
+ 
+ ```mermaid
+ gantt
+   dateFormat x

@@ -1,0 +1,5 @@
+FAIL worktree/helper-throws: leaked=[5054] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure assertions-before-error=0
+FAIL worktree/ps-unavailable: leaked=[5785] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim') assertions-before-error=0
+FAIL processes/helper-throws: leaked=[6335,6349,6352,6353,6354,6355] retained-fixture-dirs=1 sentinel-preserved=true error=injected helper failure assertions-before-error=0
+FAIL processes/ps-unavailable: leaked=[7200,7212,7214,7216,7218,7219] retained-fixture-dirs=1 sentinel-preserved=true error=Cannot read properties of null (reading 'trim') assertions-before-error=1
+fixture failure probe: 0 passed, 4 failed

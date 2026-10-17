@@ -1,0 +1,24 @@
+Profile: super-plan-ufz · 1 invocation · 2026-10-16T15:11Z → 2026-10-17T15:31Z · wall 24h21m (task graph 24h17m, after the last landing 3m) · agents 240 (timed 240) · beads dispatched 29, landed 29, planned 29
+Profile: graph scope — observed invocation/residual graph; historical topology is unknown
+Profile: shape — 29 beads · 29 edges · depth 5 · width 5.8 · beads per level 21/4/2/1/1 · widest fan-out super-plan-ufz.4 (5 direct, 5 transitive dependents)
+Profile: bound — graph lower bound 24h16m (unlimited slots and merge lanes) · model of the run 24h16m (cap 3, one merge lane) vs actual 24h17m (100%) → bead-bound: super-plan-ufz.31 alone set the pace — split it or make it faster
+Profile: critical path — 24h17m = implement 2h24m · review 14m · fix 6m · merge 14m · seam 13m · planning 5m · finish 3m · other 1h22m · startup 2m · dispatch 11m · slot 39s · wait 15h23m · unmeasured-gap 3h59m · of which other beads' merge-lane turns 3m
+Profile: diagnosis — planning 5m (0% of first dispatch to last landing)
+Profile: critical chain — legacy other 6m → reliability other 3m → continuity other 2m → coverage other 45s → design other 5m → reliability other 20s → … 17 more … → assemble other 1m → final-review finish 3m → super-plan-ufz.29 implement+review+merge 17m → super-plan-ufz.22 implement+review+seam+merge 29m → super-plan-ufz.28 implement+review+merge 9m → super-plan-ufz.31 implement+review+merge 9m
+Profile: bottleneck — super-plan-ufz.14 — 34m on the critical path (2%) · implement 31m · review 1m · merge 58s · dispatch 28s · wait 58s · implement on the path 31m: test 14s · poll 7m · git 4s · read 1s · edit 29s · shell 42s · other 2s · model 22m (longest: "wait_agent" 45s, "wait_agent" 30s) · 2 attempts (?, IMPLEMENTED) · dependents 0
+Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 4h12m over 13 of 29 landed beads — waited-for-merge 5m (1) · slot 3h30m (7) · unexplained 37m (5)
+Profile: early unblock — 8 landed beads had in-run blockers · stacked on an implementation 4 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 1
+Profile: rework — 15m of dispatch time in attempts that did not land — super-plan-ufz.26 6m (?; landed later) · super-plan-ufz.23 3m (?; landed later) · super-plan-ufz.32 3m (?; landed later) · 2 more
+Profile: tests — implementers and fixers, summed: 18m running tests and 24m polling background runs, 11% of their 6h14m · 0 Bash call(s) ran into the 10-minute tool limit
+Profile: redo — on the critical path, up to retries 4h10m (super-plan-ufz.14, super-plan-ufz.29) — from a bead's first attempt to its final one; the what-ifs model the real saving
+Profile: merge lane — busy 1h00m of 9h08m (11%) · seam reviews and fixes 26m (44% of busy) · 40 merge dispatches, first try not merged for 11 of 27 · queue wait 40m total, peak 2 waiting · stack-parent wait 0s
+Profile: concurrency — 240 dispatches over 24h21m · a dispatch running 5h24m (22%) · dispatches at once: 0 for 78% · 1 for 6% · 2 for 6% · 3+ for 10% of the time · peak 6
+Profile: dispatch time by kind, summed — impl 5h36m (34) · review 47m (30) · fix 37m (6) · merge 35m (40) · final-review 28m (11) · plan 19m (4) · seam-review 9m (11) · not named for a bead: final 1h06m (55) · run 34m (2) · roast 26m (2) · seam 23m (5) · baseline 12m (1) · legacy 11m (2) · assess 10m (4) · prepare 8m (2) · 18 more 1h09m (31)
+Profile: runtime — peak 6 agents at once · slot cap 3
+Profile: concurrency scope — all-agent concurrency peak 6 · task-slot concurrency peak 3, cap 3 (ordinary chains retain a slot through merge)
+Profile: what-if estimate — none saves more than 1% of the modelled 24h16m; first dispatch to last landing, planning retained
+Profile: context — agents 388 (measured 388) · peak≥80% 0 · tasks>1 4 · compacted 1 agents, 4 compactions (cap 1 · early 3) · coordinator 330K/475K (69%), 4 compactions · max coordinator 69%
+Profile: context agent — coordinator peak 330K/475K (69%) · first 20K · compactions 4 (cap 1, early 3)
+Profile: context agent — impl_super_plan_ufz_14_integrated peak 277K/475K (58%) · first 21K · compactions 0
+Profile: context agent — run_native_guidance_eval_ufz_r1 peak 247K/475K (52%) · first 21K · compactions 0
+Profile: unmeasured — availability/readiness timing unknown for 13 bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary; 104 dispatch(es) not named for a bead of super-plan-ufz, in the run-level lines only (coordinator-subagents.md names dispatches <kind>_<bead id> on Codex, <kind>:<bead id> on Claude Code); coordinator rows counted from the session start (no invocation found)

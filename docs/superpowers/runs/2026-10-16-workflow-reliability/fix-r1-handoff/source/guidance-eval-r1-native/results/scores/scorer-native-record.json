@@ -1,0 +1,17 @@
+{
+  "agentId": "01a14a6d-9f18-7a80-99a4-b188808ef4e0",
+  "taskName": "/root/run_native_guidance_eval_ufz_r1/native_semantic_scorer",
+  "startedAt": "2026-10-17T15:14:20.582Z",
+  "finishedAt": "2026-10-17T15:19:18.788Z",
+  "cliVersion": "0.163.0",
+  "observedModelEffort": [
+    {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    }
+  ],
+  "providerRevision": null,
+  "providerFinishReason": null,
+  "transcriptPath": "results/transcripts/native_semantic_scorer.jsonl",
+  "transcriptSha256": "6c53411ae9243d73f3f280054b0c624614c46836a15b8583f261f767168b5b5b"
+}

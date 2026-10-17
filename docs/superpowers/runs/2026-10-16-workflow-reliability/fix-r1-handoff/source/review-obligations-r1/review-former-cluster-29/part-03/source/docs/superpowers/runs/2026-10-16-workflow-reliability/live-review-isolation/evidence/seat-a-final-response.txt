@@ -1,0 +1,8 @@
+- **claim:** Negative amounts from -99 through -1 cents lose their sign.
+- **location:** `lib/format.mjs:1`
+- **category:** `correctness`
+- **external:** false
+- **evidence:** Live reproduction returned `$0.50` for -50 cents; boundary checks confirmed the defect for -99 and -1.
+- **kind:** `ISSUE`
+
+Report and chronological evidence: [response.md](/private/tmp/ufz-live-isolation/seat-a/response.md). Caller commit/status changes are recorded without attributing their cause.

@@ -1,0 +1,20 @@
+173-byte hold preserves its task scope
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: held task must not dispatch
+
+1 !== 0
+
+    at held (file:///private/tmp/sp-bce79baa/super-plan-ufz.22/base/tests/super-code/recovery-hold-scope-r1.mjs:61:10)
+    at file:///private/tmp/sp-bce79baa/super-plan-ufz.22/base/tests/super-code/recovery-hold-scope-r1.mjs:74:5 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

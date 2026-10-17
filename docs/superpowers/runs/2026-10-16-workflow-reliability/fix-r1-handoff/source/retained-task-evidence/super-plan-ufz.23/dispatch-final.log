@@ -1,0 +1,47 @@
+dispatch-text: evidence classification shares the Workflow record contract
+  [FAIL] ordinary record classification exits 0
+    expected: 0
+    got:      1
+  [FAIL] ordinary results preserve provenance, failed/unavailable and required-live gaps
+    expected: 0
+    got:      1
+dispatch-text: verification-only evidence review
+  [FAIL] verification review dispatch exits 0
+    expected: 0
+    got:      1
+  [FAIL] ordinary review transports explicit verification intent
+    missing: [COMPLETION_KIND] = verification-only
+  [FAIL] ordinary review transports the fixed tree
+    missing: "sourceTree":"dddddddddddddddddddddddddddddddddddddddd"
+  [FAIL] ordinary review transports retained measurement references
+    missing: evidence/live.log
+  [FAIL] evidence review reads the existing report
+    missing: [REPORT_FILE] = /tmp/sp-bce79baa/super-plan-ufz.23/dispatch-text.Ml9tGW/ws/task-2-report.md
+  [FAIL] evidence review branches before nonempty-diff packaging
+    missing: EVIDENCE REVIEW
+  [FAIL] legacy review keeps implementation intent
+    missing: [COMPLETION_KIND] = implementation
+  [FAIL] reviewed verification produces ordinary closure dispatch
+    expected: 0
+    got:      1
+  [FAIL] closure observes tracker status first
+    missing: STATUS CHECK FIRST
+  [FAIL] closure carries independent review identity
+    missing: task-review.md
+  [PASS] verification closure claims no Git landing
+  [FAIL] verification closure retains cleanup outcomes
+    missing: Cleanup exits are data
+  [FAIL] unreviewed verification cannot dispatch closure
+    expected: 2
+    got:      1
+dispatch-text: implement
+  [FAIL] exits 0
+    expected: 0
+    got:      1
+  [FAIL] writes <ledger dir>/dispatch/<label>.md and prints only its path
+    expected: /tmp/sp-bce79baa/super-plan-ufz.23/dispatch-text.Ml9tGW/ws/dispatch/impl-ep.2.md
+    got:      
+cat: /tmp/sp-bce79baa/super-plan-ufz.23/dispatch-text.Ml9tGW/ws/dispatch/impl-ep.2.md: No such file or directory
+real 0.74
+user 0.53
+sys 0.18

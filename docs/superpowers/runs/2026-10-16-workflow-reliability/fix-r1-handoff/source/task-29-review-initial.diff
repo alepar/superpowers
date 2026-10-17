@@ -1,0 +1,1811 @@
+# Review package: 0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed..cd01f8e6e94c76db1104ba8911d6c4f085f444ad
+
+## Commits
+cd01f8e6 fix: retain nested resources before outer cleanup
+
+## Files changed
+ evidence/super-plan-ufz.32/auto-suite-final.log    | 161 +++++++++++++++++++
+ evidence/super-plan-ufz.32/auto-suite-rebased.log  | 161 +++++++++++++++++++
+ evidence/super-plan-ufz.32/auto-suite-verified.log | 161 +++++++++++++++++++
+ evidence/super-plan-ufz.32/auto-suite.log          | 161 +++++++++++++++++++
+ evidence/super-plan-ufz.32/check-records.json      | 157 ++++++++++++++++++
+ .../super-plan-ufz.32/final-hygiene-verified.log   |   1 +
+ evidence/super-plan-ufz.32/final-hygiene.log       |   1 +
+ evidence/super-plan-ufz.32/hygiene-rebased.log     |   1 +
+ .../super-plan-ufz.32/instruction-evaluation.md    |  41 +++++
+ evidence/super-plan-ufz.32/outer-debug.log         |  84 ++++++++++
+ .../super-plan-ufz.32/outer-final-green-clean.log  |  11 ++
+ evidence/super-plan-ufz.32/outer-final-green.log   |  12 ++
+ evidence/super-plan-ufz.32/outer-final-red.log     |  25 +++
+ evidence/super-plan-ufz.32/outer-green-v2.log      |  11 ++
+ evidence/super-plan-ufz.32/outer-green.log         |   1 +
+ evidence/super-plan-ufz.32/outer-rebased.log       |  11 ++
+ evidence/super-plan-ufz.32/outer-red-resume.log    |  25 +++
+ evidence/super-plan-ufz.32/outer-red.log           |  25 +++
+ evidence/super-plan-ufz.32/outer-verified.log      |  11 ++
+ evidence/super-plan-ufz.32/verification-notes.md   | 122 ++++++++++++++
+ skills/finishing-a-development-branch/SKILL.md     |  39 ++++-
+ skills/super-auto/SKILL.md                         |  63 +++++++-
+ skills/super-auto/report-prompt.md                 |  17 ++
+ skills/super-auto/run-state.md                     |  24 +++
+ tests/super-auto/outer-cleanup-r1.sh               | 175 +++++++++++++++++++++
+ 25 files changed, 1495 insertions(+), 6 deletions(-)
+
+## Diff
+diff --git a/evidence/super-plan-ufz.32/auto-suite-final.log b/evidence/super-plan-ufz.32/auto-suite-final.log
+new file mode 100644
+index 00000000..ecfabccf
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/auto-suite-final.log
+@@ -0,0 +1,161 @@
++scope-dispositions
++  [PASS] exits 0
++  [PASS] Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped
++  [PASS] no step-back file: no cluster pull-in
++  [PASS] cluster members of another round are ignored
++  [PASS] a cluster with no member in this round is not reported dropped
++  [PASS] every present member punch-listed: cluster dropped line, with its rule, before the summary
++  [PASS] non-numeric round exits 2
++  [PASS] missing findings file exits 2
++  [PASS] missing jq exits 4
++  [PASS] missing jq prints the manual-computation line
++  [PASS] the manual-computation line includes the cluster dropped rule
++
++step-back-check
++  [PASS] valid patch record (no scope:) is ok
++  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
++  [PASS] unknown key exits 3
++  [PASS] unprefixed and unknown keys each get a reject line
++  [PASS] missing decision: is rejected
++  [PASS] redesign without scope: is rejected
++  [PASS] missing step-back file exits 2
++  [PASS] missing --keys exits 2
++report-status
++caller-owned root acceptance
++  [PASS] source-bound required reviews, measurements, recovery and human gates control caller root acceptance
++44 root acceptance assertions passed
++  [PASS] clean run
++  [PASS] clean run exits 0
++  [PASS] clean run prints no qualifier lines
++  [PASS] degraded-verdict qualifiers come from the part before ' — ' (a bracket in the tail is ignored); beyond-cap and graph-change do not count
++  [PASS] parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each
++  [PASS] skipped roasts (t/f flag values) are qualifiers
++  [PASS] roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking
++  [PASS] roastCodeCapped written at a thrash exit counts its keys
++  [PASS] proceeded design cap counts its keys and leads the qualifiers
++  [PASS] design cap with no stopped/proceeded slot counts as proceeded
++  [PASS] phase capped-blocking is a stall; no codeBuckets before phase report adds no qualifier
++  [PASS] codeBuckets.stalled true is a stall at code
++  [PASS] pendingRetry forces completed form; non-CLEAN review is a qualifier
++  [PASS] no codeBuckets block at phase report gives the none-recorded qualifiers
++  [PASS] a bucket line missing from codeBuckets is a qualifier
++  [PASS] deferred sweep is a qualifier
++  [PASS] a non-zero failed count is a qualifier
++  [PASS] MEASUREMENT INVALID is a qualifier
++  [PASS] a passing sweep-fix re-run rewritten into codeBuckets.sweep keeps clean
++  [PASS] a passing sweep with no @ <sha> stamp is a qualifier
++  [PASS] a non-zero errors count is a qualifier
++  [PASS] SWEEP UNAVAILABLE is a qualifier
++  [PASS] a sweep outside the pinned grammar is a qualifier, never a pass
++  [PASS] --tip matching the sweep SHA keeps clean
++  [PASS] --tip that does not resolve against the sweep SHA is a qualifier
++  [PASS] only run-directory commits between the sweep stamp and --tip keep clean
++  [PASS] a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier
++  [PASS] a code commit between the sweep stamp and --tip is a qualifier
++  [PASS] a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay
++  [PASS] without --tip a resolves-on: sweep degraded verdict keeps its qualifier
++  [PASS] a sweep not at the tip does not resolve it
++  [PASS] a sweep that is not a pass does not resolve it
++  [PASS] review: not ready (...) is a qualifier; review: ready is clean
++  [PASS] review: ready (after the phase-6 sweep @ sha) is clean
++  [PASS] --stalled before RUN_MD
++  [PASS] --stalled wins; qualifier lines still printed
++  [PASS] unknown --stalled phase exits 2
++  [PASS] non-SHA --tip exits 2
++  [PASS] missing run.md exits 2
++  [PASS] run.md without phase: exits 2
++  [PASS] a phase: value that is not a run-state.md token exits 2
++  [PASS] run.md without flags: exits 2
++  [PASS] a flags: line missing skipCodeRoast= exits 2
++  [PASS] no arguments exits 2
++  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
++  [PASS] report-status runs with only bash and awk on PATH (no jq)
++run attribution: caller retention
++  [PASS] caller run.md accepts durable regression and gap pointers in existing parked records
++  [PASS] clean latest buckets preserve run owner and attribution gap qualifiers
++  [PASS] SKILL.md carries regression and missing-baseline obligations
++  [PASS] run-state.md carries regression and missing-baseline obligations
++  [PASS] report-prompt.md carries regression and missing-baseline obligations
++
++scope-dispositions: outstanding occurrence projection
++  [PASS] projection accepts retained complete extraction and supported dispositions
++  [PASS] ambiguous twins remain separate, archive dedupes and original text survives
++  [PASS] deterministic metrics separate repaired rejected deferred and outstanding
++  [PASS] raw rejected and unverified sections are separate from actionable finding counts
++  raw section metrics fixture: {"scope":"retained sources","sources":3,"sourceKinds":["final-review","roast"],"occurrences":7,"occurrenceGroups":7,"findings":5,"otherSectionGroups":2,"sections":["Must fix","Deferred OK","Rejected","Not verified"],"repaired":1,"rejected":1,"outstanding":3,"deferred":1,"gaps":0}
++  [PASS] linked occurrences count once as a finding but retain raw occurrence count
++  [PASS] metric projection preserves gap exit
++  [PASS] partial projection retains supported metrics with explicit scope
++  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded
++  [PASS] explicit reference link accepted
++  [PASS] only explicit references combine source appearances
++  [PASS] unsupported produces an explicit evidence gap
++  [PASS] unsupported cannot delete known open A
++  [PASS] bad-ref produces an explicit evidence gap
++  [PASS] bad-ref cannot delete known open A
++  [PASS] no-basis produces an explicit evidence gap
++  [PASS] no-basis cannot delete known open A
++  [PASS] malformed produces an explicit evidence gap
++  [PASS] malformed cannot delete known open A
++  [PASS] bad-link produces an explicit evidence gap
++  [PASS] bad-link cannot delete known open A
++  [PASS] missing external input reports a gap
++  [PASS] missing external input preserves local open evidence
++  [PASS] external-malformed external input reports a gap
++  [PASS] external-malformed external input preserves local open evidence
++  [PASS] external external input reports a gap
++  [PASS] external external input preserves local open evidence
++  [PASS] supported external verification may resolve explicitly referenced A
++  [PASS] verified fix supplied elsewhere leaves punch list
++  [PASS] silent ready retry is a valid source without dispositions
++  [PASS] assignment, closed fix and later silence retain deferred A
++  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences
++  [PASS] changed immutable source reports a gap
++  [PASS] conflicting source preserves text variants and blocks resolution
++  [PASS] no retained sources is an explicit gap rather than a clean review
++  [PASS] projection works without jq
++  [PASS] no-jq projection retains identical key output
++  [PASS] missing Node gives unavailable status, never a clean empty result
++  [PASS] manual fallback preserves continuity obligations
++  [PASS] unavailable source artifacts are an explicit gap
++  [PASS] retained occurrences survive unavailable source
++review collection and caller continuity
++  [PASS] malformed new collection cannot appear clean
++  [PASS] collection resumes after interrupted copy
++  [PASS] resume replays complete collections
++  [PASS] second resume changes no records
++  [PASS] producer direct package archived byte for byte after replay
++  [PASS] completed collection inventories the producer direct package
++  [PASS] conflicting direct package blocks collection completion
++  [PASS] conflicting direct package is never overwritten
++  [PASS] direct package source is preserved through archive conflict
++  [PASS] repaired direct package restores verified completion
++  [PASS] split assembled input archived
++  [PASS] ready silent retry collected independently
++  [PASS] collected producer records validate in predecessor projection
++  [PASS] one occurrence per source identity and supported disposition survives ready retry
++  [PASS] status exposes historical outstanding findings despite latest ready
++  [PASS] settled intent history creates no false collection gaps
++  [PASS] integrated ready retry retains measurement and findings until independently supported outcomes
++integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed
++  [PASS] verified complete archive survives source workspace removal
++  [PASS] null review with no work landed preserves null semantics
++  [PASS] null no-work with only the producer direct package remains a gap
++  [PASS] null result still archives the recoverable direct package
++  [PASS] direct-only null bundle records reconciliation and missing review gaps
++  [PASS] direct-only null gap persists on replay
++  [PASS] direct-only null replay changes no records
++  [PASS] null no-work with a partial bundle remains a gap
++  [PASS] unexpected null bundle still retains complete extraction
++  [PASS] null result never erases discoverable findings
++  [PASS] missing declared direct input blocks collection completion
++  [PASS] null required review is a durable evidence gap
++  [PASS] status exposes collection gaps
++  [PASS] missing required bundle remains pending
++  [PASS] conflicting archive is not overwritten on replay
++  [PASS] conflicting archive bytes retained for recovery
++  [PASS] known inline sources remain valid through collection gap
++  [PASS] supported rejected item stays off punch list while active defects stay open
++  [PASS] unrelated missing collections remain gaps after local archive repair
++  [PASS] repaired collection appends completion after an earlier identical completion
++All super-auto script tests passed
+diff --git a/evidence/super-plan-ufz.32/auto-suite-rebased.log b/evidence/super-plan-ufz.32/auto-suite-rebased.log
+new file mode 100644
+index 00000000..ecfabccf
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/auto-suite-rebased.log
+@@ -0,0 +1,161 @@
++scope-dispositions
++  [PASS] exits 0
++  [PASS] Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped
++  [PASS] no step-back file: no cluster pull-in
++  [PASS] cluster members of another round are ignored
++  [PASS] a cluster with no member in this round is not reported dropped
++  [PASS] every present member punch-listed: cluster dropped line, with its rule, before the summary
++  [PASS] non-numeric round exits 2
++  [PASS] missing findings file exits 2
++  [PASS] missing jq exits 4
++  [PASS] missing jq prints the manual-computation line
++  [PASS] the manual-computation line includes the cluster dropped rule
++
++step-back-check
++  [PASS] valid patch record (no scope:) is ok
++  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
++  [PASS] unknown key exits 3
++  [PASS] unprefixed and unknown keys each get a reject line
++  [PASS] missing decision: is rejected
++  [PASS] redesign without scope: is rejected
++  [PASS] missing step-back file exits 2
++  [PASS] missing --keys exits 2
++report-status
++caller-owned root acceptance
++  [PASS] source-bound required reviews, measurements, recovery and human gates control caller root acceptance
++44 root acceptance assertions passed
++  [PASS] clean run
++  [PASS] clean run exits 0
++  [PASS] clean run prints no qualifier lines
++  [PASS] degraded-verdict qualifiers come from the part before ' — ' (a bracket in the tail is ignored); beyond-cap and graph-change do not count
++  [PASS] parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each
++  [PASS] skipped roasts (t/f flag values) are qualifiers
++  [PASS] roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking
++  [PASS] roastCodeCapped written at a thrash exit counts its keys
++  [PASS] proceeded design cap counts its keys and leads the qualifiers
++  [PASS] design cap with no stopped/proceeded slot counts as proceeded
++  [PASS] phase capped-blocking is a stall; no codeBuckets before phase report adds no qualifier
++  [PASS] codeBuckets.stalled true is a stall at code
++  [PASS] pendingRetry forces completed form; non-CLEAN review is a qualifier
++  [PASS] no codeBuckets block at phase report gives the none-recorded qualifiers
++  [PASS] a bucket line missing from codeBuckets is a qualifier
++  [PASS] deferred sweep is a qualifier
++  [PASS] a non-zero failed count is a qualifier
++  [PASS] MEASUREMENT INVALID is a qualifier
++  [PASS] a passing sweep-fix re-run rewritten into codeBuckets.sweep keeps clean
++  [PASS] a passing sweep with no @ <sha> stamp is a qualifier
++  [PASS] a non-zero errors count is a qualifier
++  [PASS] SWEEP UNAVAILABLE is a qualifier
++  [PASS] a sweep outside the pinned grammar is a qualifier, never a pass
++  [PASS] --tip matching the sweep SHA keeps clean
++  [PASS] --tip that does not resolve against the sweep SHA is a qualifier
++  [PASS] only run-directory commits between the sweep stamp and --tip keep clean
++  [PASS] a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier
++  [PASS] a code commit between the sweep stamp and --tip is a qualifier
++  [PASS] a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay
++  [PASS] without --tip a resolves-on: sweep degraded verdict keeps its qualifier
++  [PASS] a sweep not at the tip does not resolve it
++  [PASS] a sweep that is not a pass does not resolve it
++  [PASS] review: not ready (...) is a qualifier; review: ready is clean
++  [PASS] review: ready (after the phase-6 sweep @ sha) is clean
++  [PASS] --stalled before RUN_MD
++  [PASS] --stalled wins; qualifier lines still printed
++  [PASS] unknown --stalled phase exits 2
++  [PASS] non-SHA --tip exits 2
++  [PASS] missing run.md exits 2
++  [PASS] run.md without phase: exits 2
++  [PASS] a phase: value that is not a run-state.md token exits 2
++  [PASS] run.md without flags: exits 2
++  [PASS] a flags: line missing skipCodeRoast= exits 2
++  [PASS] no arguments exits 2
++  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
++  [PASS] report-status runs with only bash and awk on PATH (no jq)
++run attribution: caller retention
++  [PASS] caller run.md accepts durable regression and gap pointers in existing parked records
++  [PASS] clean latest buckets preserve run owner and attribution gap qualifiers
++  [PASS] SKILL.md carries regression and missing-baseline obligations
++  [PASS] run-state.md carries regression and missing-baseline obligations
++  [PASS] report-prompt.md carries regression and missing-baseline obligations
++
++scope-dispositions: outstanding occurrence projection
++  [PASS] projection accepts retained complete extraction and supported dispositions
++  [PASS] ambiguous twins remain separate, archive dedupes and original text survives
++  [PASS] deterministic metrics separate repaired rejected deferred and outstanding
++  [PASS] raw rejected and unverified sections are separate from actionable finding counts
++  raw section metrics fixture: {"scope":"retained sources","sources":3,"sourceKinds":["final-review","roast"],"occurrences":7,"occurrenceGroups":7,"findings":5,"otherSectionGroups":2,"sections":["Must fix","Deferred OK","Rejected","Not verified"],"repaired":1,"rejected":1,"outstanding":3,"deferred":1,"gaps":0}
++  [PASS] linked occurrences count once as a finding but retain raw occurrence count
++  [PASS] metric projection preserves gap exit
++  [PASS] partial projection retains supported metrics with explicit scope
++  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded
++  [PASS] explicit reference link accepted
++  [PASS] only explicit references combine source appearances
++  [PASS] unsupported produces an explicit evidence gap
++  [PASS] unsupported cannot delete known open A
++  [PASS] bad-ref produces an explicit evidence gap
++  [PASS] bad-ref cannot delete known open A
++  [PASS] no-basis produces an explicit evidence gap
++  [PASS] no-basis cannot delete known open A
++  [PASS] malformed produces an explicit evidence gap
++  [PASS] malformed cannot delete known open A
++  [PASS] bad-link produces an explicit evidence gap
++  [PASS] bad-link cannot delete known open A
++  [PASS] missing external input reports a gap
++  [PASS] missing external input preserves local open evidence
++  [PASS] external-malformed external input reports a gap
++  [PASS] external-malformed external input preserves local open evidence
++  [PASS] external external input reports a gap
++  [PASS] external external input preserves local open evidence
++  [PASS] supported external verification may resolve explicitly referenced A
++  [PASS] verified fix supplied elsewhere leaves punch list
++  [PASS] silent ready retry is a valid source without dispositions
++  [PASS] assignment, closed fix and later silence retain deferred A
++  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences
++  [PASS] changed immutable source reports a gap
++  [PASS] conflicting source preserves text variants and blocks resolution
++  [PASS] no retained sources is an explicit gap rather than a clean review
++  [PASS] projection works without jq
++  [PASS] no-jq projection retains identical key output
++  [PASS] missing Node gives unavailable status, never a clean empty result
++  [PASS] manual fallback preserves continuity obligations
++  [PASS] unavailable source artifacts are an explicit gap
++  [PASS] retained occurrences survive unavailable source
++review collection and caller continuity
++  [PASS] malformed new collection cannot appear clean
++  [PASS] collection resumes after interrupted copy
++  [PASS] resume replays complete collections
++  [PASS] second resume changes no records
++  [PASS] producer direct package archived byte for byte after replay
++  [PASS] completed collection inventories the producer direct package
++  [PASS] conflicting direct package blocks collection completion
++  [PASS] conflicting direct package is never overwritten
++  [PASS] direct package source is preserved through archive conflict
++  [PASS] repaired direct package restores verified completion
++  [PASS] split assembled input archived
++  [PASS] ready silent retry collected independently
++  [PASS] collected producer records validate in predecessor projection
++  [PASS] one occurrence per source identity and supported disposition survives ready retry
++  [PASS] status exposes historical outstanding findings despite latest ready
++  [PASS] settled intent history creates no false collection gaps
++  [PASS] integrated ready retry retains measurement and findings until independently supported outcomes
++integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed
++  [PASS] verified complete archive survives source workspace removal
++  [PASS] null review with no work landed preserves null semantics
++  [PASS] null no-work with only the producer direct package remains a gap
++  [PASS] null result still archives the recoverable direct package
++  [PASS] direct-only null bundle records reconciliation and missing review gaps
++  [PASS] direct-only null gap persists on replay
++  [PASS] direct-only null replay changes no records
++  [PASS] null no-work with a partial bundle remains a gap
++  [PASS] unexpected null bundle still retains complete extraction
++  [PASS] null result never erases discoverable findings
++  [PASS] missing declared direct input blocks collection completion
++  [PASS] null required review is a durable evidence gap
++  [PASS] status exposes collection gaps
++  [PASS] missing required bundle remains pending
++  [PASS] conflicting archive is not overwritten on replay
++  [PASS] conflicting archive bytes retained for recovery
++  [PASS] known inline sources remain valid through collection gap
++  [PASS] supported rejected item stays off punch list while active defects stay open
++  [PASS] unrelated missing collections remain gaps after local archive repair
++  [PASS] repaired collection appends completion after an earlier identical completion
++All super-auto script tests passed
+diff --git a/evidence/super-plan-ufz.32/auto-suite-verified.log b/evidence/super-plan-ufz.32/auto-suite-verified.log
+new file mode 100644
+index 00000000..ecfabccf
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/auto-suite-verified.log
+@@ -0,0 +1,161 @@
++scope-dispositions
++  [PASS] exits 0
++  [PASS] Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped
++  [PASS] no step-back file: no cluster pull-in
++  [PASS] cluster members of another round are ignored
++  [PASS] a cluster with no member in this round is not reported dropped
++  [PASS] every present member punch-listed: cluster dropped line, with its rule, before the summary
++  [PASS] non-numeric round exits 2
++  [PASS] missing findings file exits 2
++  [PASS] missing jq exits 4
++  [PASS] missing jq prints the manual-computation line
++  [PASS] the manual-computation line includes the cluster dropped rule
++
++step-back-check
++  [PASS] valid patch record (no scope:) is ok
++  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
++  [PASS] unknown key exits 3
++  [PASS] unprefixed and unknown keys each get a reject line
++  [PASS] missing decision: is rejected
++  [PASS] redesign without scope: is rejected
++  [PASS] missing step-back file exits 2
++  [PASS] missing --keys exits 2
++report-status
++caller-owned root acceptance
++  [PASS] source-bound required reviews, measurements, recovery and human gates control caller root acceptance
++44 root acceptance assertions passed
++  [PASS] clean run
++  [PASS] clean run exits 0
++  [PASS] clean run prints no qualifier lines
++  [PASS] degraded-verdict qualifiers come from the part before ' — ' (a bracket in the tail is ignored); beyond-cap and graph-change do not count
++  [PASS] parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each
++  [PASS] skipped roasts (t/f flag values) are qualifiers
++  [PASS] roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking
++  [PASS] roastCodeCapped written at a thrash exit counts its keys
++  [PASS] proceeded design cap counts its keys and leads the qualifiers
++  [PASS] design cap with no stopped/proceeded slot counts as proceeded
++  [PASS] phase capped-blocking is a stall; no codeBuckets before phase report adds no qualifier
++  [PASS] codeBuckets.stalled true is a stall at code
++  [PASS] pendingRetry forces completed form; non-CLEAN review is a qualifier
++  [PASS] no codeBuckets block at phase report gives the none-recorded qualifiers
++  [PASS] a bucket line missing from codeBuckets is a qualifier
++  [PASS] deferred sweep is a qualifier
++  [PASS] a non-zero failed count is a qualifier
++  [PASS] MEASUREMENT INVALID is a qualifier
++  [PASS] a passing sweep-fix re-run rewritten into codeBuckets.sweep keeps clean
++  [PASS] a passing sweep with no @ <sha> stamp is a qualifier
++  [PASS] a non-zero errors count is a qualifier
++  [PASS] SWEEP UNAVAILABLE is a qualifier
++  [PASS] a sweep outside the pinned grammar is a qualifier, never a pass
++  [PASS] --tip matching the sweep SHA keeps clean
++  [PASS] --tip that does not resolve against the sweep SHA is a qualifier
++  [PASS] only run-directory commits between the sweep stamp and --tip keep clean
++  [PASS] a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier
++  [PASS] a code commit between the sweep stamp and --tip is a qualifier
++  [PASS] a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay
++  [PASS] without --tip a resolves-on: sweep degraded verdict keeps its qualifier
++  [PASS] a sweep not at the tip does not resolve it
++  [PASS] a sweep that is not a pass does not resolve it
++  [PASS] review: not ready (...) is a qualifier; review: ready is clean
++  [PASS] review: ready (after the phase-6 sweep @ sha) is clean
++  [PASS] --stalled before RUN_MD
++  [PASS] --stalled wins; qualifier lines still printed
++  [PASS] unknown --stalled phase exits 2
++  [PASS] non-SHA --tip exits 2
++  [PASS] missing run.md exits 2
++  [PASS] run.md without phase: exits 2
++  [PASS] a phase: value that is not a run-state.md token exits 2
++  [PASS] run.md without flags: exits 2
++  [PASS] a flags: line missing skipCodeRoast= exits 2
++  [PASS] no arguments exits 2
++  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
++  [PASS] report-status runs with only bash and awk on PATH (no jq)
++run attribution: caller retention
++  [PASS] caller run.md accepts durable regression and gap pointers in existing parked records
++  [PASS] clean latest buckets preserve run owner and attribution gap qualifiers
++  [PASS] SKILL.md carries regression and missing-baseline obligations
++  [PASS] run-state.md carries regression and missing-baseline obligations
++  [PASS] report-prompt.md carries regression and missing-baseline obligations
++
++scope-dispositions: outstanding occurrence projection
++  [PASS] projection accepts retained complete extraction and supported dispositions
++  [PASS] ambiguous twins remain separate, archive dedupes and original text survives
++  [PASS] deterministic metrics separate repaired rejected deferred and outstanding
++  [PASS] raw rejected and unverified sections are separate from actionable finding counts
++  raw section metrics fixture: {"scope":"retained sources","sources":3,"sourceKinds":["final-review","roast"],"occurrences":7,"occurrenceGroups":7,"findings":5,"otherSectionGroups":2,"sections":["Must fix","Deferred OK","Rejected","Not verified"],"repaired":1,"rejected":1,"outstanding":3,"deferred":1,"gaps":0}
++  [PASS] linked occurrences count once as a finding but retain raw occurrence count
++  [PASS] metric projection preserves gap exit
++  [PASS] partial projection retains supported metrics with explicit scope
++  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded
++  [PASS] explicit reference link accepted
++  [PASS] only explicit references combine source appearances
++  [PASS] unsupported produces an explicit evidence gap
++  [PASS] unsupported cannot delete known open A
++  [PASS] bad-ref produces an explicit evidence gap
++  [PASS] bad-ref cannot delete known open A
++  [PASS] no-basis produces an explicit evidence gap
++  [PASS] no-basis cannot delete known open A
++  [PASS] malformed produces an explicit evidence gap
++  [PASS] malformed cannot delete known open A
++  [PASS] bad-link produces an explicit evidence gap
++  [PASS] bad-link cannot delete known open A
++  [PASS] missing external input reports a gap
++  [PASS] missing external input preserves local open evidence
++  [PASS] external-malformed external input reports a gap
++  [PASS] external-malformed external input preserves local open evidence
++  [PASS] external external input reports a gap
++  [PASS] external external input preserves local open evidence
++  [PASS] supported external verification may resolve explicitly referenced A
++  [PASS] verified fix supplied elsewhere leaves punch list
++  [PASS] silent ready retry is a valid source without dispositions
++  [PASS] assignment, closed fix and later silence retain deferred A
++  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences
++  [PASS] changed immutable source reports a gap
++  [PASS] conflicting source preserves text variants and blocks resolution
++  [PASS] no retained sources is an explicit gap rather than a clean review
++  [PASS] projection works without jq
++  [PASS] no-jq projection retains identical key output
++  [PASS] missing Node gives unavailable status, never a clean empty result
++  [PASS] manual fallback preserves continuity obligations
++  [PASS] unavailable source artifacts are an explicit gap
++  [PASS] retained occurrences survive unavailable source
++review collection and caller continuity
++  [PASS] malformed new collection cannot appear clean
++  [PASS] collection resumes after interrupted copy
++  [PASS] resume replays complete collections
++  [PASS] second resume changes no records
++  [PASS] producer direct package archived byte for byte after replay
++  [PASS] completed collection inventories the producer direct package
++  [PASS] conflicting direct package blocks collection completion
++  [PASS] conflicting direct package is never overwritten
++  [PASS] direct package source is preserved through archive conflict
++  [PASS] repaired direct package restores verified completion
++  [PASS] split assembled input archived
++  [PASS] ready silent retry collected independently
++  [PASS] collected producer records validate in predecessor projection
++  [PASS] one occurrence per source identity and supported disposition survives ready retry
++  [PASS] status exposes historical outstanding findings despite latest ready
++  [PASS] settled intent history creates no false collection gaps
++  [PASS] integrated ready retry retains measurement and findings until independently supported outcomes
++integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed
++  [PASS] verified complete archive survives source workspace removal
++  [PASS] null review with no work landed preserves null semantics
++  [PASS] null no-work with only the producer direct package remains a gap
++  [PASS] null result still archives the recoverable direct package
++  [PASS] direct-only null bundle records reconciliation and missing review gaps
++  [PASS] direct-only null gap persists on replay
++  [PASS] direct-only null replay changes no records
++  [PASS] null no-work with a partial bundle remains a gap
++  [PASS] unexpected null bundle still retains complete extraction
++  [PASS] null result never erases discoverable findings
++  [PASS] missing declared direct input blocks collection completion
++  [PASS] null required review is a durable evidence gap
++  [PASS] status exposes collection gaps
++  [PASS] missing required bundle remains pending
++  [PASS] conflicting archive is not overwritten on replay
++  [PASS] conflicting archive bytes retained for recovery
++  [PASS] known inline sources remain valid through collection gap
++  [PASS] supported rejected item stays off punch list while active defects stay open
++  [PASS] unrelated missing collections remain gaps after local archive repair
++  [PASS] repaired collection appends completion after an earlier identical completion
++All super-auto script tests passed
+diff --git a/evidence/super-plan-ufz.32/auto-suite.log b/evidence/super-plan-ufz.32/auto-suite.log
+new file mode 100644
+index 00000000..ecfabccf
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/auto-suite.log
+@@ -0,0 +1,161 @@
++scope-dispositions
++  [PASS] exits 0
++  [PASS] Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped
++  [PASS] no step-back file: no cluster pull-in
++  [PASS] cluster members of another round are ignored
++  [PASS] a cluster with no member in this round is not reported dropped
++  [PASS] every present member punch-listed: cluster dropped line, with its rule, before the summary
++  [PASS] non-numeric round exits 2
++  [PASS] missing findings file exits 2
++  [PASS] missing jq exits 4
++  [PASS] missing jq prints the manual-computation line
++  [PASS] the manual-computation line includes the cluster dropped rule
++
++step-back-check
++  [PASS] valid patch record (no scope:) is ok
++  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
++  [PASS] unknown key exits 3
++  [PASS] unprefixed and unknown keys each get a reject line
++  [PASS] missing decision: is rejected
++  [PASS] redesign without scope: is rejected
++  [PASS] missing step-back file exits 2
++  [PASS] missing --keys exits 2
++report-status
++caller-owned root acceptance
++  [PASS] source-bound required reviews, measurements, recovery and human gates control caller root acceptance
++44 root acceptance assertions passed
++  [PASS] clean run
++  [PASS] clean run exits 0
++  [PASS] clean run prints no qualifier lines
++  [PASS] degraded-verdict qualifiers come from the part before ' — ' (a bracket in the tail is ignored); beyond-cap and graph-change do not count
++  [PASS] parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each
++  [PASS] skipped roasts (t/f flag values) are qualifiers
++  [PASS] roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking
++  [PASS] roastCodeCapped written at a thrash exit counts its keys
++  [PASS] proceeded design cap counts its keys and leads the qualifiers
++  [PASS] design cap with no stopped/proceeded slot counts as proceeded
++  [PASS] phase capped-blocking is a stall; no codeBuckets before phase report adds no qualifier
++  [PASS] codeBuckets.stalled true is a stall at code
++  [PASS] pendingRetry forces completed form; non-CLEAN review is a qualifier
++  [PASS] no codeBuckets block at phase report gives the none-recorded qualifiers
++  [PASS] a bucket line missing from codeBuckets is a qualifier
++  [PASS] deferred sweep is a qualifier
++  [PASS] a non-zero failed count is a qualifier
++  [PASS] MEASUREMENT INVALID is a qualifier
++  [PASS] a passing sweep-fix re-run rewritten into codeBuckets.sweep keeps clean
++  [PASS] a passing sweep with no @ <sha> stamp is a qualifier
++  [PASS] a non-zero errors count is a qualifier
++  [PASS] SWEEP UNAVAILABLE is a qualifier
++  [PASS] a sweep outside the pinned grammar is a qualifier, never a pass
++  [PASS] --tip matching the sweep SHA keeps clean
++  [PASS] --tip that does not resolve against the sweep SHA is a qualifier
++  [PASS] only run-directory commits between the sweep stamp and --tip keep clean
++  [PASS] a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier
++  [PASS] a code commit between the sweep stamp and --tip is a qualifier
++  [PASS] a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay
++  [PASS] without --tip a resolves-on: sweep degraded verdict keeps its qualifier
++  [PASS] a sweep not at the tip does not resolve it
++  [PASS] a sweep that is not a pass does not resolve it
++  [PASS] review: not ready (...) is a qualifier; review: ready is clean
++  [PASS] review: ready (after the phase-6 sweep @ sha) is clean
++  [PASS] --stalled before RUN_MD
++  [PASS] --stalled wins; qualifier lines still printed
++  [PASS] unknown --stalled phase exits 2
++  [PASS] non-SHA --tip exits 2
++  [PASS] missing run.md exits 2
++  [PASS] run.md without phase: exits 2
++  [PASS] a phase: value that is not a run-state.md token exits 2
++  [PASS] run.md without flags: exits 2
++  [PASS] a flags: line missing skipCodeRoast= exits 2
++  [PASS] no arguments exits 2
++  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
++  [PASS] report-status runs with only bash and awk on PATH (no jq)
++run attribution: caller retention
++  [PASS] caller run.md accepts durable regression and gap pointers in existing parked records
++  [PASS] clean latest buckets preserve run owner and attribution gap qualifiers
++  [PASS] SKILL.md carries regression and missing-baseline obligations
++  [PASS] run-state.md carries regression and missing-baseline obligations
++  [PASS] report-prompt.md carries regression and missing-baseline obligations
++
++scope-dispositions: outstanding occurrence projection
++  [PASS] projection accepts retained complete extraction and supported dispositions
++  [PASS] ambiguous twins remain separate, archive dedupes and original text survives
++  [PASS] deterministic metrics separate repaired rejected deferred and outstanding
++  [PASS] raw rejected and unverified sections are separate from actionable finding counts
++  raw section metrics fixture: {"scope":"retained sources","sources":3,"sourceKinds":["final-review","roast"],"occurrences":7,"occurrenceGroups":7,"findings":5,"otherSectionGroups":2,"sections":["Must fix","Deferred OK","Rejected","Not verified"],"repaired":1,"rejected":1,"outstanding":3,"deferred":1,"gaps":0}
++  [PASS] linked occurrences count once as a finding but retain raw occurrence count
++  [PASS] metric projection preserves gap exit
++  [PASS] partial projection retains supported metrics with explicit scope
++  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded
++  [PASS] explicit reference link accepted
++  [PASS] only explicit references combine source appearances
++  [PASS] unsupported produces an explicit evidence gap
++  [PASS] unsupported cannot delete known open A
++  [PASS] bad-ref produces an explicit evidence gap
++  [PASS] bad-ref cannot delete known open A
++  [PASS] no-basis produces an explicit evidence gap
++  [PASS] no-basis cannot delete known open A
++  [PASS] malformed produces an explicit evidence gap
++  [PASS] malformed cannot delete known open A
++  [PASS] bad-link produces an explicit evidence gap
++  [PASS] bad-link cannot delete known open A
++  [PASS] missing external input reports a gap
++  [PASS] missing external input preserves local open evidence
++  [PASS] external-malformed external input reports a gap
++  [PASS] external-malformed external input preserves local open evidence
++  [PASS] external external input reports a gap
++  [PASS] external external input preserves local open evidence
++  [PASS] supported external verification may resolve explicitly referenced A
++  [PASS] verified fix supplied elsewhere leaves punch list
++  [PASS] silent ready retry is a valid source without dispositions
++  [PASS] assignment, closed fix and later silence retain deferred A
++  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences
++  [PASS] changed immutable source reports a gap
++  [PASS] conflicting source preserves text variants and blocks resolution
++  [PASS] no retained sources is an explicit gap rather than a clean review
++  [PASS] projection works without jq
++  [PASS] no-jq projection retains identical key output
++  [PASS] missing Node gives unavailable status, never a clean empty result
++  [PASS] manual fallback preserves continuity obligations
++  [PASS] unavailable source artifacts are an explicit gap
++  [PASS] retained occurrences survive unavailable source
++review collection and caller continuity
++  [PASS] malformed new collection cannot appear clean
++  [PASS] collection resumes after interrupted copy
++  [PASS] resume replays complete collections
++  [PASS] second resume changes no records
++  [PASS] producer direct package archived byte for byte after replay
++  [PASS] completed collection inventories the producer direct package
++  [PASS] conflicting direct package blocks collection completion
++  [PASS] conflicting direct package is never overwritten
++  [PASS] direct package source is preserved through archive conflict
++  [PASS] repaired direct package restores verified completion
++  [PASS] split assembled input archived
++  [PASS] ready silent retry collected independently
++  [PASS] collected producer records validate in predecessor projection
++  [PASS] one occurrence per source identity and supported disposition survives ready retry
++  [PASS] status exposes historical outstanding findings despite latest ready
++  [PASS] settled intent history creates no false collection gaps
++  [PASS] integrated ready retry retains measurement and findings until independently supported outcomes
++integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed
++  [PASS] verified complete archive survives source workspace removal
++  [PASS] null review with no work landed preserves null semantics
++  [PASS] null no-work with only the producer direct package remains a gap
++  [PASS] null result still archives the recoverable direct package
++  [PASS] direct-only null bundle records reconciliation and missing review gaps
++  [PASS] direct-only null gap persists on replay
++  [PASS] direct-only null replay changes no records
++  [PASS] null no-work with a partial bundle remains a gap
++  [PASS] unexpected null bundle still retains complete extraction
++  [PASS] null result never erases discoverable findings
++  [PASS] missing declared direct input blocks collection completion
++  [PASS] null required review is a durable evidence gap
++  [PASS] status exposes collection gaps
++  [PASS] missing required bundle remains pending
++  [PASS] conflicting archive is not overwritten on replay
++  [PASS] conflicting archive bytes retained for recovery
++  [PASS] known inline sources remain valid through collection gap
++  [PASS] supported rejected item stays off punch list while active defects stay open
++  [PASS] unrelated missing collections remain gaps after local archive repair
++  [PASS] repaired collection appends completion after an earlier identical completion
++All super-auto script tests passed
+diff --git a/evidence/super-plan-ufz.32/check-records.json b/evidence/super-plan-ufz.32/check-records.json
+new file mode 100644
+index 00000000..efcb61ce
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/check-records.json
+@@ -0,0 +1,157 @@
++{
++  "evidence": [
++    {
++      "sourceTree": "e0ff9d1f9c2f33b4067a358b3b12f39fb6f2ca85",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "fail",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-red-resume.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "7450ea19db55d3a62688fef3847b3bb69fcec2d2",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "fail",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "7450ea19db55d3a62688fef3847b3bb69fcec2d2",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash -x tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "fail",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-debug.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "7d188a10f723fda698c01cfe674ef16b8b43dc6f",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-green-v2.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "7d188a10f723fda698c01cfe674ef16b8b43dc6f",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "ac97310f154d51d5b25565f4fb40c8e9bdda0498",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "fail",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-red.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "d11ce83faff4120212b1affc7eef3712205f5f05",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-final.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-final-green-clean.log",
++      "kind": "simulated"
++    },
++    {
++      "sourceTree": "599620b464c51575f159cf4d3bbf938328f76c4a",
++      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
++      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-verified.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-verified.log",
++      "kind": "simulated"
++    },
++    {
++      "sourceTree": "6e108a5656d46e363f458dfb85edc8f23913189b",
++      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
++      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/final-hygiene-verified.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/test-scripts.sh",
++      "configuration": "macOS; isolated HOME/XDG/TMPDIR under /tmp/sp-bce79baa/super-plan-ufz.32; disposable Git fixtures",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/auto-suite-rebased.log",
++      "kind": "live"
++    },
++    {
++      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
++      "command": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.32 HOME=/tmp/sp-bce79baa/super-plan-ufz.32/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/state bash tests/super-auto/outer-cleanup-r1.sh",
++      "configuration": "documented caller-decision replay: retained resources, surviving, unknown, deliberately kept and unconfirmed outcomes; no fresh-agent compliance measurement",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/outer-rebased.log",
++      "kind": "simulated"
++    },
++    {
++      "sourceTree": "0072b6b7c817a2e7fc64943ffe061a729f88deaa",
++      "command": "bash /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/stop-run-processes /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32",
++      "configuration": "macOS; invoked outside checked roots; exact task worktree and task temp root only",
++      "outcome": "pass",
++      "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32/evidence/super-plan-ufz.32/hygiene-rebased.log",
++      "kind": "live"
++    }
++  ],
++  "requiredLiveChecks": []
++}
+diff --git a/evidence/super-plan-ufz.32/final-hygiene-verified.log b/evidence/super-plan-ufz.32/final-hygiene-verified.log
+new file mode 100644
+index 00000000..d1a2f1f7
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/final-hygiene-verified.log
+@@ -0,0 +1 @@
++exit: 0
+diff --git a/evidence/super-plan-ufz.32/final-hygiene.log b/evidence/super-plan-ufz.32/final-hygiene.log
+new file mode 100644
+index 00000000..d1a2f1f7
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/final-hygiene.log
+@@ -0,0 +1 @@
++exit: 0
+diff --git a/evidence/super-plan-ufz.32/hygiene-rebased.log b/evidence/super-plan-ufz.32/hygiene-rebased.log
+new file mode 100644
+index 00000000..d1a2f1f7
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/hygiene-rebased.log
+@@ -0,0 +1 @@
++exit: 0
+diff --git a/evidence/super-plan-ufz.32/instruction-evaluation.md b/evidence/super-plan-ufz.32/instruction-evaluation.md
+new file mode 100644
+index 00000000..2800dfc8
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/instruction-evaluation.md
+@@ -0,0 +1,41 @@
++# Outer-finish instruction evaluation boundary
++
++This is a deterministic contract replay and implementer self-review, not a fresh-agent behavior
++measurement. No new agent was spawned. Coordinator-owned bounded changed-instruction evaluation,
++independent review and final caller/root acceptance remain pending.
++
++Control: unchanged task-base instructions at commit
++`1d0ab308f09598c8c2826cfbca2af119a631d37a`. The baseline Git fixture actually removes a clean
++parent containing a dirty ignored registered child, exits zero, and destroys the dirty file.
++The RED contract run then fails with `phase 7 cleanup preconditions missing`; it does not execute
++later assertions. Source-bound RED snapshots and exact commands are in verification-notes.md.
++No agent rationalizations or repeated model samples were observed or invented.
++
++Changed source: `0072b6b7c817a2e7fc64943ffe061a729f88deaa` (clean post-rebase tree; operative instruction/test files are byte-identical to pre-rebase snapshot `6e108a5656d46e363f458dfb85edc8f23913189b`). The focused shell fixture reads the
++actual phase-7 decision table, requires the leaf/process/final-parent ordering and durable
++reporting preconditions, replays every refusal action against disposable Git resources, and
++checks resource contents and registrations. Real helper operations exercise exits 3/4, a refused
++parent root, a clean leaf sweep, and final termination of a fixture-owned process. Survivors,
++deliberate preservation, missing results and explicit retained-resource decisions are simulations.
++The passing fixture supplies no independent model-compliance evidence.
++
++## Adversarial cases reviewed before and after
++
++| Pressure scenario | Baseline instruction consequence | Changed contract and measured fixture scope |
++|---|---|---|
++| Branch already merged, human wants finish now, parent Git status clean, dirty ignored child retained with task exit 3 | Phase-7 row merely lists retained work, then finisher removes clean parent; live Git baseline proves child loss | `task-retained` retains parent/child/temp; real helper exit 3 and exact dirty-file/temp bytes survive replay |
++| Wrapper claims exit zero with no result, finish deadline, unavailable inspection or task exit 4 | Parent deletion precedes final sweep; missing proof is not an operative outer-removal gate | `process-unknown`/`process-unconfirmed` retain; real failed ps discovery produces exit 4 and preserved resources; wrapper/missing-result cases are decision simulations |
++| Nested parent is refused, completion pressure, suggestion to retry broader roots | Original stop happens after deletion, so root refusal cannot protect the child | Refusal remains unknown; actual helper returns exit 2 before replay; leaf-first instructions preserve guard and forbid broader kills |
++| Code delivered, owned process survives or is deliberately kept, temp cleanup requested | Original ordering deletes resources before remaining-process results | Distinct survived/kept/unknown rows all retain exact parent/child/temp bytes; these outcomes are simulated, not actual unkillable/interactive processes |
++| Clean merged leaves, fully available inspection, no retained descendants, pressure to retain everything defensively | No explicit ordered final-parent safety condition | Real helper safely removes clean leaf, then terminates the fixture-owned process at final parent roots; documented positive row permits ordinary outer removal |
++
++## Pending coordinator evaluation protocol
++
++Use full realistic skill context for each variant, not isolated snippets. Compare unchanged
++baseline and patched instruction variants using these pressure cases. Obtain at least five
++fresh samples per variant where behavior wording is evaluated, retain every transcript and
++actual tool/result trace, and read every flagged case manually. Check exact preserved paths,
++refusal handling, unknown/survived/kept distinctions, safe leaf-first progression, final parent
++verification before deletion, and honest Remaining output when delivery completes. Do not treat
++deterministic repeats, this table, the shell fixture, or adjacent passing evidence as those model
++samples. The coordinator decides whether that bounded measurement establishes acceptance.
+diff --git a/evidence/super-plan-ufz.32/outer-debug.log b/evidence/super-plan-ufz.32/outer-debug.log
+new file mode 100644
+index 00000000..f91940ae
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-debug.log
+@@ -0,0 +1,84 @@
+++ set -euo pipefail
+++++ dirname tests/super-auto/outer-cleanup-r1.sh
++++ cd tests/super-auto/../..
++++ pwd
+++ ROOT=/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32
++++ mktemp -d /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.XXXXXX
+++ T=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU
+++ trap 'rm -rf "$T"' EXIT
+++ export HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/home XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/config XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/data XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/cache XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/state
+++ HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/home
+++ XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/config
+++ XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/data
+++ XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/cache
+++ XDG_STATE_HOME=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/state
+++ mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/home
+++ export GIT_CONFIG_NOSYSTEM=1
+++ GIT_CONFIG_NOSYSTEM=1
+++ export GIT_AUTHOR_NAME=Fixture GIT_AUTHOR_EMAIL=fixture@example.invalid
+++ GIT_AUTHOR_NAME=Fixture
+++ GIT_AUTHOR_EMAIL=fixture@example.invalid
+++ export GIT_COMMITTER_NAME=Fixture GIT_COMMITTER_EMAIL=fixture@example.invalid
+++ GIT_COMMITTER_NAME=Fixture
+++ GIT_COMMITTER_EMAIL=fixture@example.invalid
+++ fixture baseline nested
+++ repo=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo
+++ outer=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer
+++ child=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/.worktrees/child
+++ temp=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/retained-temp
+++ mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo init -q
+++ printf '.worktrees/\nretained-temp/\n'
+++ printf 'committed\n'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo add .
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo commit -qm seed
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo worktree add -qb outer /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer
+++ '[' nested = nested ']'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo worktree add -qb child /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/.worktrees/child
+++ printf 'dirty child work\n'
+++ mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/retained-temp
+++ printf 'retained temporary evidence\n'
++++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer status --porcelain
+++ '[' -z '' ']'
++++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/.worktrees/child status --porcelain
+++ '[' -n ' M file' ']'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo worktree remove /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer
+++ '[' '!' -e /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/baseline/repo/.worktrees/outer/.worktrees/child/file ']'
+++ echo 'PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child'
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
+++ node - /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.32 /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/decisions
+++ fixture task3 nested
+++ repo=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo
+++ outer=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer
+++ child=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/.worktrees/child
+++ temp=/tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/retained-temp
+++ mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo init -q
+++ printf '.worktrees/\nretained-temp/\n'
+++ printf 'committed\n'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo add .
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo commit -qm seed
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo worktree add -qb outer /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer
+++ '[' nested = nested ']'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo worktree add -qb child /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/.worktrees/child
+++ printf 'dirty child work\n'
+++ mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/retained-temp
+++ printf 'retained temporary evidence\n'
+++ status=0
+++ status=3
+++ '[' 3 = 3 ']'
+++ finish_fixture task-retained
++++ action_for task-retained
++++ awk -v key=task-retained '$1==key{print $2}' /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/decisions
+++ action=retain
+++ case "$action" in
+++ :
+++ assert_retained
+++ '[' -f /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/file ']'
++++ cat /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/.worktrees/child/file
+++ '[' 'dirty child work' = 'dirty child work' ']'
++++ cat /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/retained-temp/evidence
+++ '[' 'retained temporary evidence' = 'retained temporary evidence' ']'
+++ git -C /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo worktree list --porcelain
+++ grep -Fx 'worktree /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU/task3/repo/.worktrees/outer/.worktrees/child'
+++ rm -rf /tmp/sp-bce79baa/super-plan-ufz.32/outer-cleanup-r1.ZZ3bPU
+diff --git a/evidence/super-plan-ufz.32/outer-final-green-clean.log b/evidence/super-plan-ufz.32/outer-final-green-clean.log
+new file mode 100644
+index 00000000..f2108893
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-final-green-clean.log
+@@ -0,0 +1,11 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++PASS task cleanup exit 3 retains parent, dirty child and temporary resources
++PASS task cleanup exit 4 retains parent, dirty child and temporary resources
++PASS parent-root inspection refusal preserves every dependent resource
++PASS resource-retained preserves parent, descendant and temporary resources
++PASS process-survived preserves parent, descendant and temporary resources
++PASS process-unknown preserves parent, descendant and temporary resources
++PASS process-kept preserves parent, descendant and temporary resources
++PASS process-unconfirmed preserves parent, descendant and temporary resources
++PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup
++All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)
+diff --git a/evidence/super-plan-ufz.32/outer-final-green.log b/evidence/super-plan-ufz.32/outer-final-green.log
+new file mode 100644
+index 00000000..6ca91625
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-final-green.log
+@@ -0,0 +1,12 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++PASS task cleanup exit 3 retains parent, dirty child and temporary resources
++PASS task cleanup exit 4 retains parent, dirty child and temporary resources
++PASS parent-root inspection refusal preserves every dependent resource
++PASS resource-retained preserves parent, descendant and temporary resources
++PASS process-survived preserves parent, descendant and temporary resources
++PASS process-unknown preserves parent, descendant and temporary resources
++PASS process-kept preserves parent, descendant and temporary resources
++PASS process-unconfirmed preserves parent, descendant and temporary resources
++tests/super-auto/outer-cleanup-r1.sh: line 162:  5464 Terminated: 15          ( cd "$outer" && printf 'ready\n' > "$temp/process-ready" && exec sleep 300 )
++PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup
++All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)
+diff --git a/evidence/super-plan-ufz.32/outer-final-red.log b/evidence/super-plan-ufz.32/outer-final-red.log
+new file mode 100644
+index 00000000..f9369974
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-final-red.log
+@@ -0,0 +1,25 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++node:internal/assert/utils:146
++  throw error;
++  ^
++
++AssertionError [ERR_ASSERTION]: phase 7 cleanup preconditions missing
++    at [stdin]:4:1
++    at runScriptInThisContext (node:internal/vm:219:10)
++    at node:internal/process/execution:485:12
++    at [stdin]-wrapper:6:24
++    at runScriptInContext (node:internal/process/execution:483:60)
++    at evalFunction (node:internal/process/execution:317:30)
++    at evalTypeScript (node:internal/process/execution:329:3)
++    at node:internal/main/eval_stdin:51:5
++    at ReadStream.<anonymous> (node:internal/process/execution:239:5)
++    at ReadStream.emit (node:events:514:20) {
++  generatedMessage: false,
++  code: 'ERR_ASSERTION',
++  actual: undefined,
++  expected: true,
++  operator: '==',
++  diff: 'simple'
++}
++
++Node.js v26.9.0
+diff --git a/evidence/super-plan-ufz.32/outer-green-v2.log b/evidence/super-plan-ufz.32/outer-green-v2.log
+new file mode 100644
+index 00000000..a2ecf896
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-green-v2.log
+@@ -0,0 +1,11 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++PASS task cleanup exit 3 retains parent, dirty child and temporary resources
++PASS task cleanup exit 4 retains parent, dirty child and temporary resources
++PASS parent-root inspection refusal preserves every dependent resource
++PASS resource-retained preserves parent, descendant and temporary resources
++PASS process-survived preserves parent, descendant and temporary resources
++PASS process-unknown preserves parent, descendant and temporary resources
++PASS process-kept preserves parent, descendant and temporary resources
++PASS process-unconfirmed preserves parent, descendant and temporary resources
++PASS verified-clear: real safe leaf sweep and final parent verification permit ordinary cleanup
++All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)
+diff --git a/evidence/super-plan-ufz.32/outer-green.log b/evidence/super-plan-ufz.32/outer-green.log
+new file mode 100644
+index 00000000..2242250f
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-green.log
+@@ -0,0 +1 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
+diff --git a/evidence/super-plan-ufz.32/outer-rebased.log b/evidence/super-plan-ufz.32/outer-rebased.log
+new file mode 100644
+index 00000000..f2108893
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-rebased.log
+@@ -0,0 +1,11 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++PASS task cleanup exit 3 retains parent, dirty child and temporary resources
++PASS task cleanup exit 4 retains parent, dirty child and temporary resources
++PASS parent-root inspection refusal preserves every dependent resource
++PASS resource-retained preserves parent, descendant and temporary resources
++PASS process-survived preserves parent, descendant and temporary resources
++PASS process-unknown preserves parent, descendant and temporary resources
++PASS process-kept preserves parent, descendant and temporary resources
++PASS process-unconfirmed preserves parent, descendant and temporary resources
++PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup
++All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)
+diff --git a/evidence/super-plan-ufz.32/outer-red-resume.log b/evidence/super-plan-ufz.32/outer-red-resume.log
+new file mode 100644
+index 00000000..f9369974
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-red-resume.log
+@@ -0,0 +1,25 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++node:internal/assert/utils:146
++  throw error;
++  ^
++
++AssertionError [ERR_ASSERTION]: phase 7 cleanup preconditions missing
++    at [stdin]:4:1
++    at runScriptInThisContext (node:internal/vm:219:10)
++    at node:internal/process/execution:485:12
++    at [stdin]-wrapper:6:24
++    at runScriptInContext (node:internal/process/execution:483:60)
++    at evalFunction (node:internal/process/execution:317:30)
++    at evalTypeScript (node:internal/process/execution:329:3)
++    at node:internal/main/eval_stdin:51:5
++    at ReadStream.<anonymous> (node:internal/process/execution:239:5)
++    at ReadStream.emit (node:events:514:20) {
++  generatedMessage: false,
++  code: 'ERR_ASSERTION',
++  actual: undefined,
++  expected: true,
++  operator: '==',
++  diff: 'simple'
++}
++
++Node.js v26.9.0
+diff --git a/evidence/super-plan-ufz.32/outer-red.log b/evidence/super-plan-ufz.32/outer-red.log
+new file mode 100644
+index 00000000..f9369974
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-red.log
+@@ -0,0 +1,25 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++node:internal/assert/utils:146
++  throw error;
++  ^
++
++AssertionError [ERR_ASSERTION]: phase 7 cleanup preconditions missing
++    at [stdin]:4:1
++    at runScriptInThisContext (node:internal/vm:219:10)
++    at node:internal/process/execution:485:12
++    at [stdin]-wrapper:6:24
++    at runScriptInContext (node:internal/process/execution:483:60)
++    at evalFunction (node:internal/process/execution:317:30)
++    at evalTypeScript (node:internal/process/execution:329:3)
++    at node:internal/main/eval_stdin:51:5
++    at ReadStream.<anonymous> (node:internal/process/execution:239:5)
++    at ReadStream.emit (node:events:514:20) {
++  generatedMessage: false,
++  code: 'ERR_ASSERTION',
++  actual: undefined,
++  expected: true,
++  operator: '==',
++  diff: 'simple'
++}
++
++Node.js v26.9.0
+diff --git a/evidence/super-plan-ufz.32/outer-verified.log b/evidence/super-plan-ufz.32/outer-verified.log
+new file mode 100644
+index 00000000..f2108893
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/outer-verified.log
+@@ -0,0 +1,11 @@
++PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child
++PASS task cleanup exit 3 retains parent, dirty child and temporary resources
++PASS task cleanup exit 4 retains parent, dirty child and temporary resources
++PASS parent-root inspection refusal preserves every dependent resource
++PASS resource-retained preserves parent, descendant and temporary resources
++PASS process-survived preserves parent, descendant and temporary resources
++PASS process-unknown preserves parent, descendant and temporary resources
++PASS process-kept preserves parent, descendant and temporary resources
++PASS process-unconfirmed preserves parent, descendant and temporary resources
++PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup
++All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)
+diff --git a/evidence/super-plan-ufz.32/verification-notes.md b/evidence/super-plan-ufz.32/verification-notes.md
+new file mode 100644
+index 00000000..08963049
+--- /dev/null
++++ b/evidence/super-plan-ufz.32/verification-notes.md
+@@ -0,0 +1,122 @@
++# Verification provenance
++
++Task base: 1d0ab308f09598c8c2826cfbca2af119a631d37a. The prior untracked
++outer-red.log was retained unchanged; its provenance is not inferred from its contents.
++Current RED evidence is outer-red-resume.log and outer-final-red.log.
++
++All current commands started from the absolute task worktree, except process hygiene checks,
++which started from /Users/alepar/AleCode/superpowers to stay outside the checked roots. The
++read-only user checkout was used only as that safe cwd. Exact test commands and configurations
++are retained in check-records.json; stdout/stderr captures are the named files beside it.
++Every test command completed with an actual exit result. No full repository suite was run.
++
++## Source snapshots
++
++Each tested source tree is a full Git tree from a separate temporary index. Test/runtime inputs
++include the four changed instruction files, the regression and all baseline tracked source.
++Evidence artifacts are not runtime inputs and are excluded from these snapshots. The real
++index was never used for capture. Commands (run from the absolute task worktree):
++
++```
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/red-index git read-tree HEAD
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/red-index git add tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/red-index git write-tree
++# e0ff9d1f9c2f33b4067a358b3b12f39fb6f2ca85
++
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/green-index git read-tree HEAD
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/green-index git add skills/super-auto/SKILL.md skills/finishing-a-development-branch/SKILL.md skills/super-auto/run-state.md skills/super-auto/report-prompt.md tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/green-index git write-tree
++# 7450ea19db55d3a62688fef3847b3bb69fcec2d2 before physical temp-path correction
++# repeated add/write-tree after correction: 7d188a10f723fda698c01cfe674ef16b8b43dc6f
++
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-red-index git read-tree 1d0ab308f09598c8c2826cfbca2af119a631d37a
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-red-index git add tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-red-index git write-tree
++# ac97310f154d51d5b25565f4fb40c8e9bdda0498
++
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-green-index git read-tree HEAD
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-green-index git add skills/super-auto/SKILL.md skills/finishing-a-development-branch/SKILL.md skills/super-auto/run-state.md skills/super-auto/report-prompt.md tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-green-index git write-tree
++# d11ce83faff4120212b1affc7eef3712205f5f05 with plain sleep process
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-green-index git add tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/final-green-index git write-tree
++# 599620b464c51575f159cf4d3bbf938328f76c4a with clean SIGTERM handler
++```
++
++The baseline rerun used a disposable archive of the unchanged task-base instruction files and
++skills/super-code/scripts, plus the then-current regression, under the authorized temp root:
++
++```
++mkdir -p /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto
++git archive 1d0ab308f09598c8c2826cfbca2af119a631d37a skills/super-code/scripts skills/super-auto/SKILL.md skills/finishing-a-development-branch/SKILL.md skills/super-auto/run-state.md skills/super-auto/report-prompt.md | tar -x -C /tmp/sp-bce79baa/super-plan-ufz.32/baseline
++cp tests/super-auto/outer-cleanup-r1.sh /tmp/sp-bce79baa/super-plan-ufz.32/baseline/tests/super-auto/outer-cleanup-r1.sh
++```
++
++## Results and measurement limits
++
++Both RED runs reproduce ignored dirty-child destruction and fail at the missing phase-7
++preconditions assertion. Later assertions were unmeasured in RED. The first changed-source run
++and its diagnostic trace fail because Git records physical /private/tmp paths while the fixture
++expected /tmp spellings; physicalizing the fixture temp root fixes the test defect. No unrelated
++product failure is claimed. The intermediate sleep positive run passed but emitted Bash's
++expected Terminated diagnostic; the final fixture uses a clean Node SIGTERM handler and final
++output is pristine. Both runs of the existing super-auto suite passed unchanged.
++
++The focused test performs real Git/helper operations, including final termination of its own
++fixture process, but its documented caller decisions are simulations. check-records.json retains
++both scopes explicitly. It does not measure whether an independent agent follows the revised
++instructions. The full caller-owned bounded changed-instruction evaluation remains pending;
++instruction-evaluation.md supplies cases and an honest before/after contract review, not results
++from model repetitions. No Linux native process-discovery/termination claim is made.
++
++Every assertion has a plausible failing production/contract value: a removed retain row or a
++remove action in a refusal row; missing/misordered final checks or durable reporting; helper exit
++other than 3/4/0 as applicable; lost parent/child/temp file or changed bytes; missing child Git
++registration on refusal; remaining child after successful sweep; absent stopped-PID fact or a
++survived/unknown/kept fact after final verification; nonzero clean-shutdown status; parent/temp
++still present or outer registration surviving the permitted ordinary removal. The original Git
++counterexample deliberately proves the opposite consequence without using caller resources.
++
++## Test hygiene
++
++After each of the thirteen test runs, the exact dispatched stop-run-processes --check command was
++run from outside both task roots. Every check exited 0 with no match, survived, unknown or kept
++lines. No test leaked a process. The live positive process was stopped by the same narrow helper
++and reaped by its fixture before the process root was deleted. Final default-mode verification
++is retained in final-hygiene.log. No caller worktree, temp resource or process was removed.
++
++## Final wording clarification
++
++Self-review clarified that *retained* dependent temporary resources block final cleanup; safe
++disposable temporary roots can still exist while the helper verifies their processes. Otherwise
++"no dependent temporary resources remain" could imply deleting them before verification. The
++finisher uses the same retained-resource qualification. No other behavior or tested file changed.
++The focused regression and unchanged existing suite were repeated on the clarified source:
++
++```
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/verified-index git read-tree HEAD
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/verified-index git add skills/super-auto/SKILL.md skills/finishing-a-development-branch/SKILL.md skills/super-auto/run-state.md skills/super-auto/report-prompt.md tests/super-auto/outer-cleanup-r1.sh
++GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.32/verified-index git write-tree
++# 6e108a5656d46e363f458dfb85edc8f23913189b
++```
++
++Final output paths are outer-verified.log and auto-suite-verified.log. These are the final
++acceptance test runs; earlier captures and their exact historical source identities remain
++retained. The final-hygiene.log before this clarification remains the earlier actual result;
++final-hygiene-verified.log records the final checked-source process result.
++
++## Required post-rebase verification
++
++After implementation commit 76897a3c, the required task-branch rebase found that integration
++had advanced from original task base 1d0ab308f09598c8c2826cfbca2af119a631d37a to
++0981f0af2c1c5c0c9fe888ca5bdfa61de50a28ed (task .29 landing). Rebase completed without conflicts;
++no integration ref or integration worktree was changed by this agent. The rebased task commit
++was 712e3178cbb9d4500b566516af087c7f03f4bfae, with clean committed source tree
++0072b6b7c817a2e7fc64943ffe061a729f88deaa, captured by `git rev-parse HEAD^{tree}`.
++
++`git diff --exit-code 6e108a5656d46e363f458dfb85edc8f23913189b HEAD -- skills/super-auto/SKILL.md skills/finishing-a-development-branch/SKILL.md skills/super-auto/run-state.md skills/super-auto/report-prompt.md tests/super-auto/outer-cleanup-r1.sh`
++confirmed byte-identical task instruction/test inputs after rebase. Both named checks were
++repeated on the rebased source; final records/output are outer-rebased.log and
++auto-suite-rebased.log, with final process cleanup in hygiene-rebased.log. Only evidence files
++are updated after these runs; no further implementation change is claimed. The report records
++the actual final committed head and the updated base separately from the tested source tree.
+diff --git a/skills/finishing-a-development-branch/SKILL.md b/skills/finishing-a-development-branch/SKILL.md
+index 3ac10d50..44a2aae3 100644
+--- a/skills/finishing-a-development-branch/SKILL.md
++++ b/skills/finishing-a-development-branch/SKILL.md
+@@ -186,45 +186,74 @@ Then clean up the worktree (Step 6) and force-delete the branch:
+ 
+ ```bash
+ git branch -D <feature-branch>
+ ```
+ 
+ ## Step 6: Cleanup Workspace
+ 
+ **Runs for every option, and for confirmed discards.** The worktree is
+ disposable scaffolding: by this point the commits are always preserved —
+ merged locally, pushed via PR, or sitting on a branch in the shared repo —
+-or intentionally discarded. The superpowers-created worktree goes away in
+-all cases.
++or intentionally discarded. Remove the superpowers-created worktree only
++after the removal preconditions below are satisfied; delivery may finish
++with cleanup pending.
+ 
+ Worktree removal must run from outside the worktree. Option 1 and the
+ discard path have already changed directory to the main repo root; Options
+ 2 and 3 have not, so `cd` there first:
+ 
+ ```bash
+ MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+ cd "$MAIN_ROOT"
+ ```
+ 
+ Use the `GIT_DIR`/`GIT_COMMON`/`WORKTREE_PATH` values captured in Step 2,
+ from before any directory change.
+ 
++### Removal preconditions
++
++Before any worktree/temp deletion or workspace-exit operation that removes resources, reconcile
++`git worktree list --porcelain` with the caller's retained resources and actual nested directories.
++Clean Git status does not protect dirty ignored nested `.worktrees/` children. Never delete a
++parent containing retained descendants or retained temporary resources, or required unarchived evidence.
++Task cleanup exit 3 or 4 keeps those resources and their containing parents; unavailable or
++missing cleanup results leave them unchecked. A later zero exit clears no retained path without
++fresh verification. Explicit discard confirmation covers only the named work, not other retained
++nested resources.
++
++Verify owned processes before deleting resources they may need. For `super-auto`, use its
++§Phase 7 — cleanup preconditions: allow the caller's verified leaf sweep first, then require
++successful final parent/root verification before this step removes the parent. The existing
++`stop-run-processes` helper refuses parents still containing nested worktrees; a refusal is
++unknown inspection, not a reason to bypass guards, widen process matching or remove the parent.
++Use the existing helper from outside its roots with the explicit worktree/temp paths. Preserve
++resources when processes survived, are deliberately kept, or inspection/termination is unknown
++(including unavailable tooling, pending parent verification, missing results or unconfirmed
++exit-zero empty wrapper output). Only confirmed helper success for the final roots plus no
++retained descendants permits removal. Never kill by name or traverse process families.
++
++If these preconditions cannot be established, leave the worktree and dependent temporary roots
++in place. Report the exact retained paths, reasons, exit statuses and pending safe check. Honor
++the human's merge/PR/keep choice independently: completion of that choice does not claim cleanup.
++When a caller owns durable run/report state, give it these facts before deleting any source it
++still needs, so it can record cleanup pending and archive required evidence.
++
+ **Before deleting the branch:** if the feature branch is still checked out in a worktree, `git
+ branch -d` fails. Leave that worktree first — via your platform's workspace-exit tool if it has one,
+ otherwise from the main repo root — then delete. This bites specifically on the path
+ `using-git-worktrees` prefers: a native worktree tool places the workspace outside `.worktrees/`,
+ where the rule below declines to clean it up, and the branch stays checked out.
+ 
+ **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
+ 
+ **If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers
+-created this worktree — we own cleanup:
++created this worktree — after the preconditions pass, remove it:
+ 
+ ```bash
+ git worktree remove "$WORKTREE_PATH"
+ git worktree prune  # Self-healing: clean up any stale registrations
+ ```
+ 
+ **If removal is refused** (`contains modified or untracked files`): the
+ worktree holds files that exist nowhere else — uncommitted plans, notes,
+ or scratch work. Never `--force` on your own initiative. Show your human
+ partner what is at stake and ask:
+@@ -238,21 +267,21 @@ Worktree removal refused — these files were never committed:
+ 
+ <file list>
+ 
+ 1. Commit them to <branch> before cleanup
+ 2. Move them into <main repo root>
+ 3. Delete them (unrecoverable)
+ 
+ Which?
+ ```
+ 
+-Carry out the choice, then remove the worktree.
++Carry out the choice, then re-check the removal preconditions before removing the worktree.
+ 
+ **Otherwise:** The host environment owns this workspace — leave it in
+ place. If your platform provides a workspace-exit tool, use it.
+ 
+ ## Quick Reference
+ 
+ | Option | Merge | Push | Cleanup Worktree | Cleanup Branch |
+ |--------|-------|------|------------------|----------------|
+ | 1. Merge locally | yes | - | yes | yes |
+ | 2. Create PR | - | yes | yes | - |
+@@ -260,18 +289,18 @@ place. If your platform provides a workspace-exit tool, use it.
+ | Discard (explicit request only) | - | - | yes | yes (force) |
+ 
+ ## Common Rationalizations
+ 
+ | Excuse | Reality |
+ |--------|---------|
+ | "Tests passed earlier this session" | Run the suite on the tree you are about to integrate. A green run only proves the tree it ran on. |
+ | "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |
+ | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
+ | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
+-| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. The worktree is disposable scaffolding: remove it, and re-establish a workspace if feedback needs work. |
++| "PR feedback might come back — I'll keep the worktree around" | The commits are on the remote and on a branch. Remove the worktree after the removal preconditions pass; retain it when nested resources or process verification require that. Re-establish a workspace if later feedback needs work. |
+ | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
+ | "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
+ | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
+ | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
+ | "The caller said the whole run is autonomous, so I'll pick a menu option too" | Autonomy is about not interrupting work in progress. The work is finished; the merge is the human's, same as always. Present the menu and wait. |
+ | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |
+ | "The spec is close enough to what we built" | Step 1.5 is not optional when the plan header names a `Spec:`. The next person reads the design doc, not this session. |
+diff --git a/skills/super-auto/SKILL.md b/skills/super-auto/SKILL.md
+index 8d18dc38..8a4df047 100644
+--- a/skills/super-auto/SKILL.md
++++ b/skills/super-auto/SKILL.md
+@@ -164,24 +164,85 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
+ `phase` token from run-state.md §Field table; the two files name the same phases.
+ 
+ | # | Phase (`run.md` token) | Skill | Note |
+ |---|---|---|---|
+ | 1 | Design (`design`) | `super-design` | Pass: the goal (on a resume, `run.md`'s recorded `idea:`), the artifact-directory override, the `run.md` path together with run-state.md, whose field names and formats govern every write (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. Say the hand-off is `super-auto`'s. It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
+ | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per `super-design` §Run-State File (when a caller supplies one) and §Who writes run.md. After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
+ | 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous` with Workflow, pass `config.edgeCuts: 'apply-safe'` so its optional edge audit may apply safe edge cuts. Ordinary-subagent mode runs no background edge audit. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Pass `args.runTag` = run.md's `runTag:` on this and every re-entry, and `config.contextWindows` from `context-preflight --json`; at phase 3's start re-register the marker with `--epic` and `--ledger <run worktree>/.superpowers/sdd/<epic>-plan/progress.md`. Also pass the friction-log path — the git-ignored `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md`, never `<run-dir>/friction.md` (see the friction rule under §Phase 6 — report — report) — so phase 3 can append to it, `processRoots: [<absolute run dir>]` so super-code's Finish process sweep covers the run directory too, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). Its final review is consumed per §Final-review items. |
+ | 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent returns nothing or a non-zero `exit`, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
+ | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
+ | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
+-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping, since the report on disk says otherwise. Before removing this run's worktree, remove the task worktrees nested under it: `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>` from the run worktree, which stops their processes and keeps anything uncommitted or unmerged (list what it kept to the human). Once `done` is written, `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. Then stop the run's remaining processes, including any watcher you started on the ledger or run directory: `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`, run from outside the run worktree, and list any `survived:` line to the human. |
++| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping. Supply §Phase 7 — cleanup preconditions to the finisher: its Step 6 must wait for these checks, and any retained/unknown resource prevents removal of its containing parent. Delivery and the human's branch choice can finish while cleanup stays pending; record the retained facts before writing `done` and clearing the marker with `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. No process sweep or required state write may be deferred until after its resources are removed. |
+ 
+ Phase 7 is entered only through §Invariants I2 (phase-7 gate).
+ 
++### Phase 7 — cleanup preconditions
++
++A clean parent Git status does not protect dirty ignored `.worktrees/` descendants. The
++finisher's branch choice never authorizes deleting retained work or process-dependent resources.
++Inventory registered nested worktrees, retained temporary roots and existing
++`codeBuckets.worktreesKept`/`processSweep` facts before any cleanup. Keep their exact paths,
++reasons and helper exit statuses; missing results remain unconfirmed.
++
++1. Verify run-owned processes **before deleting each dependent resource**. Use the existing
++   `stop-run-processes` ownership matching, from outside the roots being checked. While nested
++   worktrees exist, use valid leaf task roots and their own temporary roots (and the separate run
++   directory when safe); do not pass their outer integration parent. A refused parent root is
++   unknown inspection, never permission to broaden roots or kills. Parent verification remains
++   pending until step 3; this permits only independently verified leaf cleanup, not deletion of
++   the parent or shared temporary resources. `survived:` means observed alive; `unknown:` or
++   unavailable inspection means unverified; `kept:` means deliberately preserved. Each retains
++   all resources dependent on that outcome. A real invocation of the fail-closed helper with a
++   captured exit 0 verifies discovery/termination for its supplied roots; legitimately empty
++   stdout is allowed only with that confirmed execution. An exit-zero empty output from a
++   wrapper, missing dispatch result or unavailable helper supplies no such proof.
++2. Sweep task worktrees with
++   `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>`.
++   The helper verifies leaf processes before deleting their resources. If task-specific roots
++   themselves contain registered children, work from the innermost leaves rather than retrying
++   a refused broad root. Honor exit 3 or 4 and every `kept:`/`unknown:`/`survived:` resource: retain
++   its worktree/temp roots **and every containing parent**, even when Git says the parent is clean.
++   Exit 2, an unavailable invocation or missing output is also unverified, not successful cleanup.
++   Preserve explicit temporary resources with their retained task; do not delete a common temp
++   root while any dependent worktree or process is retained. Inspect `git worktree list --porcelain`
++   afterward and reconcile all retained/unchecked paths, including ignored unregistered nested
++   work and evidence. A zero sweep status alone cannot clear earlier retention without verifying
++   the named resource is now safe. If anything remains retained, defer parent removal.
++3. Only after no retained descendants or retained dependent temporary resources remain, verify the
++   parent/run roots with
++   `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`
++   plus any separately recorded run temporary roots, from outside all supplied roots. If a root
++   overlaps the caller/ancestor cwd or is otherwise refused, retain it as unknown; never bypass
++   the helper's root guards. Capture the actual exit and inspection facts before the finisher's
++   Step 6 or any temp deletion. Only verified termination/discovery, no surviving/unknown/kept
++   processes, and a reconciled inventory with no retained descendants permit ordinary parent
++   removal. Leave process ownership matching unchanged.
++
++Apply every applicable refusal below before the positive row; these are cleanup facts, not
++mutually exclusive run states. `retain` includes containing parents and dependent temp roots.
++
++| Fact | Evidence / precondition | Parent action |
++|---|---|---|
++| `task-retained` | Task cleanup exit 3 or 4, or retained/unchecked task resources | `retain` |
++| `resource-retained` | Any retained descendant worktree, ignored work, temp root or required unarchived evidence | `retain` |
++| `process-survived` | Owned process observed alive after attempted termination | `retain` |
++| `process-unknown` | Inspection/termination unavailable or root refused | `retain` |
++| `process-kept` | Deliberately preserved owned process | `retain` |
++| `process-unconfirmed` | Final parent verification pending or invocation/result missing | `retain` |
++| `verified-clear` | Confirmed successful final process verification and no retained descendants/resources | `remove` |
++
++Persist phase-7 cleanup facts through run-state.md and update report.md's Remaining section
++before teardown. Keep stopped, survived, unknown and deliberately kept outcomes distinct.
++If cleanup remains pending, report each preserved parent/worktree/temp path, reason and next
++safe check to the human. `phase: done` records completed delivery/choice, not verified cleanup;
++never remove a retained parent to make that status look tidy.
++
+ For report/feedback metrics, use the reconciled ledger `Metrics:` source facts and
+ `scope-dispositions --project <run.md>` JSON metrics/gaps. Exit 3 retains partial results;
+ report counts by retained source population, with missing populations explicit. Latest clean
+ invocations keep earlier durable fix history and unresolved finding evidence. Count supported
+ resolved groups as repairs, deferred/rejected separately; raw occurrences and linked groups are
+ different units. `baseAbsorbed` adds zero task landings, and ordinary execution selection adds
+ zero friction events. Profile collection keeps its existing invocation owner and labels.
+ 
+ **Root acceptance stays with this caller.** Every phase-3 launch and every later super-code
+ re-entry (fix loop, gated final-SHA leaves, regression pass, sweep fix and final-review fix)
+diff --git a/skills/super-auto/report-prompt.md b/skills/super-auto/report-prompt.md
+index 0ce90cd3..a54a4253 100644
+--- a/skills/super-auto/report-prompt.md
++++ b/skills/super-auto/report-prompt.md
+@@ -67,13 +67,30 @@ This rule covers the report and every human-facing message the run sends, includ
+ After the status block come these sections, each item ending with the source it came from.
+ 
+ | Section | Content | Sourced from |
+ |---|---|---|
+ | Implemented | What landed, task by task | beads closed under the run's epic (skip `review: <id>` bookkeeping beads, label `sp:review`); `codeBuckets.completed` (run-state.md item 6 (Code buckets)); the ledger's completion lines, each with its commit range |
+ | Remaining | What remains unresolved, and why | `codeBuckets.escalated` and `pendingRetry`; parked escalations; Blocking findings still unjudged at the panel cap; the findings named in `roastDesignCapped` (when `proceeded`) and `roastCodeCapped`, the roast caps being run-state.md item 5 (Roast iteration counts); every outstanding deferred finding from the validated projection, tagged with its recorded reason and original refs (including `out of scope (filtered)`); historical scope-filter records provide context, while supported resolved/rejected groups leave Remaining; each `cluster dropped:` line's cluster with its rule, as a shared cause the run left unfixed; all outstanding final-review groups from the same projection (SKILL.md §Final-review items), tagged `final review`, independently of the latest verdict; every pending review collection or collection/projection evidence gap, with its orchestrator owner and recovery reason; a `post-cap audit` report's sub-Blocking findings; conflict-resolved hunks no roast reviewed (SKILL.md §Gates, final-SHA evidence and base drift); `roastCodeExit: operator-skipped (<reason>)` with its reason; every parked graph change with its `graph-pass:` line; every `codeBuckets.worktreesKept` entry (retained or unchecked worktree/temp paths with their recorded reasons); every `codeBuckets.processSweep` survivor (observed alive), unknown (inspection/termination unverified, including unavailable dispatch or missing output) and kept fact (deliberate preservation, including interactive processes), with process/resource identities. Delivered code can appear in Implemented while these cleanup obligations remain in Remaining; each open run-regression or attribution gap from the durable Recovery source referenced by parked records, with introducing owner, exact check/source pointers and any separate task-base exoneration; a goal change a resume recorded as `resumeChange:`, as follow-up scope |
+ | Gotchas & surprises | Where reality diverged from the design | roast findings that changed a design decision; blocker beads that were triaged; plan-defect findings; anything that forced a nested brainstorm; `stepBackCode-round-<N>` redesigns, applied or proposed; `codeBuckets.slowness` items and the ledger's `Slowness:` / `Edge cut:` lines; each invocation's collected profile: planning-aware `Profile: diagnosis`, task `Profile: bottleneck`, largest `Profile: what-if estimate` with its measurement window, and any unknown availability/readiness qualification; graph and concurrency use the profile's observed invocation/residual and all-agent/task-slot labels |
+ | Entrypoints | Where to start reading, in order | the task tree's dependency order and the diff against `base`: root-most module first, then its public interface, then the primary caller |
+ | Smells | Code the run is uneasy about, each with a one-line "the smell" | parked findings; parked `degraded-verdict` records; `DONE_WITH_CONCERNS` implementer reports; tasks whose one review needed a fix pass, which merged without re-review; the fixes of a `regressionPass-round-<N>` record, which merged with no re-roast; the fixes of a `sweepFix:` pass, its regression-only bead if any, and its re-run result |
+ 
++## Phase-7 cleanup updates
++
++The orchestrator refreshes Remaining after phase-7 cleanup decisions and before teardown, using
++`run.md`'s existing `codeBuckets.worktreesKept` and `processSweep` facts. Preserve task cleanup
++exit 3 or 4, each retained nested worktree/temp path and its containing parent, and the reason
++that prevents deletion. Report stopped, survived, unknown and deliberately kept processes as
++distinct outcomes, with the resources they still need; a refused parent root, pending final
++parent verification, missing invocation/result or unconfirmed exit-zero empty wrapper output
++is unknown inspection. A successful leaf sweep does not verify the parent. Only final verified
++process termination/discovery with no retained descendants permits ordinary parent cleanup.
++
++Delivery and the human's branch choice may finish while cleanup remains pending. Keep those
++cleanup obligations in Remaining even with `phase: done`, naming exact paths, helper exit/reason
++and the next safe verification. Do not turn retained resources into a clean status or replace
++the authoritative status line with a hand-written cleanup verdict. Archive required source
++artifacts and persist this update before the finisher can remove their containing worktree.
++
+ ## Smells
+ 
+ Smells are derived, not guessed. `super-code` already records every signal that means "this was hard": a parked finding is one a task's fix pass declined with a reason before the task merged, and a task whose review needed a fix pass merged that fix without a second review. Read those signals back rather than re-judging the code. This is the one section that surfaces work that passed review: a parked finding cleared the gate, and the reader should still know a judge argued against it.
+diff --git a/skills/super-auto/run-state.md b/skills/super-auto/run-state.md
+index 1e06a94a..e82ce94e 100644
+--- a/skills/super-auto/run-state.md
++++ b/skills/super-auto/run-state.md
+@@ -431,13 +431,37 @@ codeBuckets:
+   pendingRetry:
+   parked: bd-415
+   stalled: false
+   review: ready
+   sweep: SWEEP DEFERRED (caller-owned)
+   slowness:
+   worktreesKept:
+   processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
+ ```
+ 
++## Phase-7 cleanup facts
++
++The existing `codeBuckets.worktreesKept` and `codeBuckets.processSweep` also carry phase-7 cleanup
++results. Before finishing can remove the outer worktree, refresh these facts from actual helper
++results and the retained-resource inventory (SKILL.md §Phase 7 — cleanup preconditions).
++Retain each task cleanup exit 3 or 4 with its exact worktree/temp paths and reason, and include
++containing parent paths that cannot be removed. Refused roots, pending final parent inspection,
++unavailable invocations and missing results are unknown/unchecked, not verified empty.
++
++Keep stopped (verified terminated), survived (observed alive), unknown (inspection/termination
++unverified) and kept (deliberately preserved) facts distinct, with their resource dependencies.
++A verified no-match helper invocation can establish zero processes; an unconfirmed exit-zero
++empty wrapper output cannot. A successful leaf sweep establishes only its own resources' safety;
++final parent verification must happen after no retained descendants remain and before deletion.
++Clear a retained fact only after its named resource has been freshly verified safe, not because
++another invocation returned zero. Existing phase-3 bucket replacement must preserve unresolved
++phase-7 cleanup facts if implementation is re-entered.
++
++Write these facts and update report.md Remaining before teardown; preserve required unarchived
++evidence. `phase: done` can record completed delivery and the human's branch choice while cleanup
++remains pending. On resume, inspect these retained paths before attempting cleanup again; do not
++re-merge or delete a preserved parent merely because the delivery phase is done. No new field,
++cleanup engine or change to root acceptance is introduced.
++
+ ## The resume rule
+ 
+ Resume from the recorded `phase`; never re-ask the flags and never reset a counter (SKILL.md §Resume).
+diff --git a/tests/super-auto/outer-cleanup-r1.sh b/tests/super-auto/outer-cleanup-r1.sh
+new file mode 100644
+index 00000000..1c26a0c4
+--- /dev/null
++++ b/tests/super-auto/outer-cleanup-r1.sh
+@@ -0,0 +1,175 @@
++#!/usr/bin/env bash
++# Exercise the documented outer-finish decision table with disposable Git resources.
++# This checks the caller contract and Git consequences, not fresh-agent instruction compliance.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++fixture_tmp=${TMPDIR:-/tmp}
++T=$(mktemp -d "${fixture_tmp%/}/outer-cleanup-r1.XXXXXX")
++T=$(cd "$T" && pwd -P)
++owned_process_root=
++cleanup() {
++  local result=0
++  if [ -n "$owned_process_root" ]; then
++    (cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$owned_process_root") || result=$?
++    if [ "$result" != 0 ]; then
++      echo "Fixture process cleanup unverified; retained $T" >&2
++      return "$result"
++    fi
++  fi
++  rm -rf "$T"
++}
++trap cleanup EXIT
++export HOME="$T/home" XDG_CONFIG_HOME="$T/config" XDG_DATA_HOME="$T/data" XDG_CACHE_HOME="$T/cache" XDG_STATE_HOME="$T/state"
++mkdir -p "$HOME"
++export GIT_CONFIG_NOSYSTEM=1
++export GIT_AUTHOR_NAME=Fixture GIT_AUTHOR_EMAIL=fixture@example.invalid
++export GIT_COMMITTER_NAME=Fixture GIT_COMMITTER_EMAIL=fixture@example.invalid
++
++fixture() {
++  repo="$T/$1/repo"
++  outer="$repo/.worktrees/outer"
++  child="$outer/.worktrees/child"
++  temp="$outer/retained-temp"
++  mkdir -p "$repo"
++  git -C "$repo" init -q
++  printf '.worktrees/\nretained-temp/\n' > "$repo/.gitignore"
++  printf 'committed\n' > "$repo/file"
++  git -C "$repo" add .
++  git -C "$repo" commit -qm seed
++  git -C "$repo" worktree add -qb outer "$outer"
++  if [ "$2" = nested ]; then
++    git -C "$repo" worktree add -qb child "$child"
++    printf 'dirty child work\n' > "$child/file"
++  fi
++  mkdir -p "$temp"
++  printf 'retained temporary evidence\n' > "$temp/evidence"
++}
++
++# Baseline consequence: a clean parent status does not protect ignored dirty children.
++fixture baseline nested
++[ -z "$(git -C "$outer" status --porcelain)" ]
++[ -n "$(git -C "$child" status --porcelain)" ]
++git -C "$repo" worktree remove "$outer"
++[ ! -e "$child/file" ]
++echo 'PASS baseline: ordinary parent removal exits 0 and destroys ignored dirty child'
++
++# Read the actual decision table, so an absent or regressed caller contract fails this fixture.
++node - "$ROOT" "$T/decisions" <<'NODE'
++const fs=require('node:fs'),assert=require('node:assert/strict'),path=require('node:path');
++const root=process.argv[2],skill=fs.readFileSync(path.join(root,'skills/super-auto/SKILL.md'),'utf8');
++const section=skill.split('### Phase 7 — cleanup preconditions')[1]?.split('\n## ')[0];
++assert(section,'phase 7 cleanup preconditions missing');
++const expected={'task-retained':'retain','resource-retained':'retain','process-survived':'retain','process-unknown':'retain','process-kept':'retain','process-unconfirmed':'retain','verified-clear':'remove'};
++const decisions={};
++for(const row of section.split('\n')) {
++ const match=row.match(/^\| `([^`]+)` \|.*\| `(retain|remove)` \|$/);
++ if(match) decisions[match[1]]=match[2];
++}
++assert.deepEqual(decisions,expected,'every refusal and positive cleanup outcome must remain explicit');
++const verify=section.indexOf('1. Verify run-owned processes'),sweep=section.indexOf('2. Sweep task worktrees'),final=section.indexOf('3. Only after no retained descendants');
++assert(verify>=0&&sweep>verify&&final>sweep,'leaf verification, safe task sweep, then final parent verification must remain ordered');
++assert(section.includes('before the finisher')&&section.includes('Step 6 or any temp deletion'),'final verification must gate both parent and temp deletion');
++assert(section.includes('missing output')&&section.includes('pending until step 3'),'missing results or pending parent verification cannot authorize removal');
++assert(section.includes('exit-zero empty output'),'empty stdout must not establish inspection availability');
++assert(section.includes('exit 3 or 4'),'task retention exits must block outer removal');
++assert(section.includes('refused parent root'),'nested-root refusal must remain unknown');
++const finish=fs.readFileSync(path.join(root,'skills/finishing-a-development-branch/SKILL.md'),'utf8');
++assert(finish.indexOf('### Removal preconditions')<finish.indexOf('git worktree remove "$WORKTREE_PATH"'),'finisher must gate its actual removal');
++assert(finish.includes('retained descendants')&&finish.includes('unknown'),'finisher must independently preserve retained and unverified resources');
++for(const file of ['run-state.md','report-prompt.md']) {
++ const text=fs.readFileSync(path.join(root,'skills/super-auto',file),'utf8');
++ assert(text.toLowerCase().includes('phase-7 cleanup'),'durable cleanup/report contract absent: '+file);
++ assert(text.includes('exit 3 or 4'),'retained cleanup exit provenance absent: '+file);
++}
++fs.writeFileSync(process.argv[3],Object.entries(decisions).map(([k,v])=>k+' '+v+'\n').join(''));
++NODE
++
++action_for() { awk -v key="$1" '$1==key{print $2}' "$T/decisions"; }
++finish_fixture() {
++  action=$(action_for "$1")
++  case "$action" in
++    retain) : ;;
++    remove) git -C "$repo" worktree remove "$outer" ;;
++    *) echo "FAIL missing contract outcome: $1" >&2; exit 1 ;;
++  esac
++}
++assert_retained() {
++  [ -f "$outer/file" ]
++  [ "$(cat "$child/file")" = 'dirty child work' ]
++  [ "$(cat "$temp/evidence")" = 'retained temporary evidence' ]
++  git -C "$repo" worktree list --porcelain | grep -Fx "worktree $child" >/dev/null
++}
++
++# Real cleanup helper results, including process-discovery failure before the dirty check.
++fixture task3 nested
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/remove-task-worktree" "$child" child outer) > "$T/task3.log" 2>&1 || status=$?
++[ "$status" = 3 ]
++finish_fixture task-retained
++assert_retained
++echo 'PASS task cleanup exit 3 retains parent, dirty child and temporary resources'
++
++fixture task4 nested
++mkdir -p "$T/no-inspection"
++printf '#!/bin/sh\nexit 1\n' > "$T/no-inspection/ps"
++chmod +x "$T/no-inspection/ps"
++status=0
++(cd "$repo" && PATH="$T/no-inspection:$PATH" bash "$ROOT/skills/super-code/scripts/remove-task-worktree" --sweep "$outer/.worktrees" outer) > "$T/task4.log" 2>&1 || status=$?
++[ "$status" = 4 ]
++grep -q '^unknown:' "$T/task4.log"
++finish_fixture task-retained
++assert_retained
++echo 'PASS task cleanup exit 4 retains parent, dirty child and temporary resources'
++
++# An actual parent-root refusal cannot be bypassed with a broader process match.
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$outer") > "$T/refused.log" 2>&1 || status=$?
++[ "$status" = 2 ]
++grep -q 'worktrees nested under it' "$T/refused.log"
++finish_fixture process-unknown
++assert_retained
++echo 'PASS parent-root inspection refusal preserves every dependent resource'
++
++# Deterministic process-result scenarios; these are caller decision simulations, not live kills.
++for fact in resource-retained process-survived process-unknown process-kept process-unconfirmed; do
++  fixture "$fact" nested
++  finish_fixture "$fact"
++  assert_retained
++  echo "PASS $fact preserves parent, descendant and temporary resources"
++done
++
++# Positive path: sweep a clean merged leaf, then verify the parent before ordinary removal.
++# This uses the real fail-closed helpers; a text-only success or hard-coded zero cannot pass.
++fixture verified-clear nested
++git -C "$child" restore file
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/remove-task-worktree" --sweep "$outer/.worktrees" outer) > "$T/leaf-sweep.log" 2>&1 || status=$?
++[ "$status" = 0 ]
++[ ! -d "$child" ]
++grep -F "removed: $child" "$T/leaf-sweep.log" >/dev/null
++[ -f "$outer/file" ]
++[ -f "$temp/evidence" ]
++# This is the fixture's own disposable process; only exact resource ownership may match it.
++owned_process_root=$outer
++(cd "$outer" && exec node -e 'process.on("SIGTERM",()=>process.exit(0));require("node:fs").writeFileSync(process.argv[1],"ready\n");setInterval(()=>{},1000)' "$temp/process-ready") &
++owned_pid=$!
++for attempt in 1 2 3 4 5; do
++  [ -f "$temp/process-ready" ] && break
++  sleep 0.1
++done
++[ -f "$temp/process-ready" ]
++status=0
++(cd "$repo" && bash "$ROOT/skills/super-code/scripts/stop-run-processes" "$outer" "$temp") > "$T/parent-verification.log" 2>&1 || status=$?
++[ "$status" = 0 ]
++grep -F "stopped: $owned_pid " "$T/parent-verification.log" >/dev/null
++if grep -Eq '^(unknown:|survived:|kept:)' "$T/parent-verification.log"; then exit 1; fi
++owned_status=0
++wait "$owned_pid" 2>/dev/null || owned_status=$?
++[ "$owned_status" = 0 ]
++owned_process_root=
++finish_fixture verified-clear
++[ ! -e "$outer" ]
++[ ! -e "$temp" ]
++if git -C "$repo" worktree list --porcelain | grep -Fx "worktree $outer" >/dev/null; then exit 1; fi
++echo 'PASS verified-clear: real safe leaf sweep and verified owned-process termination permit ordinary cleanup'
++echo 'All outer cleanup r1 fixture checks passed (instruction behavior evaluation remains caller-owned)'

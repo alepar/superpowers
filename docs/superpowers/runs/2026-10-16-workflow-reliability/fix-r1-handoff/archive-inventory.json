@@ -1,0 +1,68 @@
+{
+  "payloadManifest": "archive-manifest.json",
+  "auxiliaryFiles": [
+    {
+      "path": "fix-r1-handoff/archive-manifest.json",
+      "bytes": 417440,
+      "sha256": "0511edc29c2401eb9879e6f72e5d79efd3cea158e443ac2bfa744baff5c83e90"
+    },
+    {
+      "path": "fix-r1-handoff/collection-result.json",
+      "bytes": 1342,
+      "sha256": "c7d9a0019d815bdcd39406bc838eeda04f49220b0cae0041b9d7951f5bc45c80"
+    },
+    {
+      "path": "fix-r1-handoff/collector.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-r1-handoff/collector.stdout",
+      "bytes": 21,
+      "sha256": "9cd7471aa346ff6bf667fd5aceb8f3d9bdb2a0cf62cf54648f3dc5a78562a550"
+    },
+    {
+      "path": "fix-r1-handoff/extractor-current.complete.json",
+      "bytes": 22379,
+      "sha256": "0ed912d9869943c7b975a3816f740eae8069060fdfa4f7c109acc039962afd81"
+    },
+    {
+      "path": "fix-r1-handoff/extractor-verification.json",
+      "bytes": 599,
+      "sha256": "8914cbb455dd83b579ec902bb54b883a93d2cf1ae4e498e2d05f4da8e6cf306e"
+    },
+    {
+      "path": "fix-r1-handoff/friction-before-handoff.md",
+      "bytes": 3010,
+      "sha256": "fca1142a832a6f1af89820bbec5abcbfe93f48c582b5ea26e4ead2e76ed21522"
+    },
+    {
+      "path": "fix-r1-handoff/historical-package-identity-proof.json",
+      "bytes": 119029,
+      "sha256": "01f7ddef8c9c17d8212c86880138dbd31ccbb89c36fb2cf1f72bab499dd31459"
+    },
+    {
+      "path": "fix-r1-handoff/policy-relocation-proof.json",
+      "bytes": 483,
+      "sha256": "205b8ecd580846900da1ee751f3fe07a1f35d99ea1687cd5b3dda68a62c4dead"
+    },
+    {
+      "path": "fix-r1-handoff/report-reference-provenance.json",
+      "bytes": 62375,
+      "sha256": "76e2f00736a50e41110d8f304c42dec252b105753837f9435495baa2a90f7262"
+    },
+    {
+      "path": "fix-r1-handoff/run-before-handoff.md",
+      "bytes": 459631,
+      "sha256": "c99a12f9e4deda438d28f9b7e8844e4188a7b3dfa02667da8f87fd7c637e55b4"
+    },
+    {
+      "path": "fix-r1-handoff/verification.json",
+      "bytes": 1497,
+      "sha256": "05767f735e79caa2738151ebb5e6086bfdcbdbd67563712ede50b4eb1ca64f38"
+    }
+  ],
+  "payloadFiles": 714,
+  "payloadBytes": 43181262,
+  "note": "Manifest maps all copied payload/reused collector files; auxiliary files hashed here. This inventory and caller output exclude themselves to avoid recursive hashes."
+}

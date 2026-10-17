@@ -1,0 +1,40 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: omitted-ID startup survives forbidden clock/random globals: forbidden Date.now
++ actual - expected
+
++ Error: forbidden Date.now
++     at Date.now (evalmachine.<anonymous>:1:26)
++     at evalmachine.<anonymous>:26:68
++     at evalmachine.<anonymous>:904:3
++     at Script.runInContext (node:vm:150:12)
++     at Object.runInContext (node:vm:302:6)
++     at start (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/tests/super-code/invocation-start-r1.mjs:39:29)
++     at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/tests/super-code/invocation-start-r1.mjs:44:21
++     at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
++     at async node:internal/modules/esm/loader:650:26
++     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+- undefined
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/tests/super-code/invocation-start-r1.mjs:45:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: Error: forbidden Date.now
+      at Date.now (evalmachine.<anonymous>:1:26)
+      at evalmachine.<anonymous>:26:68
+      at evalmachine.<anonymous>:904:3
+      at Script.runInContext (node:vm:150:12)
+      at Object.runInContext (node:vm:302:6)
+      at start (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/tests/super-code/invocation-start-r1.mjs:39:29)
+      at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/tests/super-code/invocation-start-r1.mjs:44:21
+      at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+      at async node:internal/modules/esm/loader:650:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5),
+  expected: undefined,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

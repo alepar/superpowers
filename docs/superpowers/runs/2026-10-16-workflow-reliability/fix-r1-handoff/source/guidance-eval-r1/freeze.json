@@ -1,0 +1,252 @@
+{
+  "algorithm": "sha256",
+  "indexSha256": "89a7ceef91edf282a2a31cc62253fa88bd454fb07a08b97b2a9ff864cefb6b1f",
+  "files": [
+    {
+      "relativePath": "config.json",
+      "sha256": "47740a5bf9ca9f96a49608b98a880d5f85b7a388491828cece5e8b67a3c1e5f8",
+      "bytes": 2218
+    },
+    {
+      "relativePath": "contexts/outer-cleanup-after.txt",
+      "sha256": "a15076ff6245cc1d6f16d86626e107f46bd29d8c203461059f064f865580101c",
+      "bytes": 160295
+    },
+    {
+      "relativePath": "contexts/outer-cleanup-baseline.txt",
+      "sha256": "f69bbebd7ae215826b307c03281df4af0fb9486a428d23301fd423a6444c417c",
+      "bytes": 150352
+    },
+    {
+      "relativePath": "contexts/source-binding-after.txt",
+      "sha256": "c0b4f7ae84aca541b2d34cfd363c869f99b7d8371519c2dbf53b773717a50b2f",
+      "bytes": 303841
+    },
+    {
+      "relativePath": "contexts/source-binding-baseline.txt",
+      "sha256": "32e4b542030cabd9a8f620117c289eb740d7b897f6d6ccadfd802b8a1d30a8cb",
+      "bytes": 301748
+    },
+    {
+      "relativePath": "index.json",
+      "sha256": "89a7ceef91edf282a2a31cc62253fa88bd454fb07a08b97b2a9ff864cefb6b1f",
+      "bytes": 6620
+    },
+    {
+      "relativePath": "messages/outer-cleanup-after.json",
+      "sha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+      "bytes": 173129
+    },
+    {
+      "relativePath": "messages/outer-cleanup-baseline.json",
+      "sha256": "b44a8e9881c59cb8aa22f771c2b0aec3b9aaae270e32ff64cc4fb3b898b64496",
+      "bytes": 163055
+    },
+    {
+      "relativePath": "messages/source-binding-after.json",
+      "sha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+      "bytes": 318329
+    },
+    {
+      "relativePath": "messages/source-binding-baseline.json",
+      "sha256": "f2b901960ee4ad6666eab187cd119c84681c8406009956f3f3ebacc2c43415dc",
+      "bytes": 316213
+    },
+    {
+      "relativePath": "methodology/SKILL.md",
+      "sha256": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b",
+      "bytes": 26360
+    },
+    {
+      "relativePath": "methodology/testing-skills-with-subagents.md",
+      "sha256": "c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade",
+      "bytes": 12558
+    },
+    {
+      "relativePath": "preparation.md",
+      "sha256": "29fb44d838ac525229bb029bbef26bc142db8f4e7df116a39fbeb5b9ff464beb",
+      "bytes": 2671
+    },
+    {
+      "relativePath": "prompts/outer-cleanup.json",
+      "sha256": "5023eb5145f73f1a573d0146c9621c041c4407f1d917a6deac6ce85e331b382c",
+      "bytes": 10715
+    },
+    {
+      "relativePath": "prompts/source-binding.json",
+      "sha256": "b8647fa687747739aac16151d80f3f7020bb2c64997394a78caf7303e3bbc0a2",
+      "bytes": 8393
+    },
+    {
+      "relativePath": "provenance/outer-cleanup-instruction-diff.patch",
+      "sha256": "030a16e16b01c27734b5ddb4fe0166087f3cbeab533f01c24e27722b7ed68c26",
+      "bytes": 21385
+    },
+    {
+      "relativePath": "provenance/source-binding-instruction-diff.patch",
+      "sha256": "317b168f99af49ab0c7ccc8e264331b10b45f9c910c94ce90092c30c0f811683",
+      "bytes": 5206
+    },
+    {
+      "relativePath": "provenance.json",
+      "sha256": "a232f39d72337af5af1508ceb92b7f9fee901231cb448cf2267877e056ffe40a",
+      "bytes": 24036
+    },
+    {
+      "relativePath": "raw/audit-only/baseline/skills/super-code/coordinator.js",
+      "sha256": "c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c",
+      "bytes": 292746
+    },
+    {
+      "relativePath": "raw/audit-only/baseline/skills/super-code/scripts/dispatch-text.mjs",
+      "sha256": "9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda",
+      "bytes": 17789
+    },
+    {
+      "relativePath": "raw/audit-only/baseline/skills/super-code/scripts/remove-task-worktree",
+      "sha256": "be6c064dd3e79dbc964fb37e7d7bc94e15f4ba56b2a1b72ce80c70f633f1bbdc",
+      "bytes": 7639
+    },
+    {
+      "relativePath": "raw/audit-only/baseline/skills/super-code/scripts/stop-run-processes",
+      "sha256": "c9813e9fa2a6c496547ef8de39084d6bc81a4b095cb0bbdba35e8882c0665c10",
+      "bytes": 11730
+    },
+    {
+      "relativePath": "raw/audit-only/outercleanup/skills/super-code/scripts/remove-task-worktree",
+      "sha256": "be6c064dd3e79dbc964fb37e7d7bc94e15f4ba56b2a1b72ce80c70f633f1bbdc",
+      "bytes": 7639
+    },
+    {
+      "relativePath": "raw/audit-only/outercleanup/skills/super-code/scripts/stop-run-processes",
+      "sha256": "c9813e9fa2a6c496547ef8de39084d6bc81a4b095cb0bbdba35e8882c0665c10",
+      "bytes": 11730
+    },
+    {
+      "relativePath": "raw/audit-only/sourcebinding/skills/super-code/coordinator.js",
+      "sha256": "81acbc384c1be5b3eeef5d24a2ed0260a6a285b9984253cea9ecc5aac5b6a650",
+      "bytes": 296010
+    },
+    {
+      "relativePath": "raw/audit-only/sourcebinding/skills/super-code/scripts/dispatch-text.mjs",
+      "sha256": "dfeb741bc443952717d4b94aac2e726573351f98e0185f18f0dd77decf8717b1",
+      "bytes": 21833
+    },
+    {
+      "relativePath": "raw/outer-cleanup/after/skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c",
+      "bytes": 13605
+    },
+    {
+      "relativePath": "raw/outer-cleanup/after/skills/super-auto/SKILL.md",
+      "sha256": "aaa1149f71664a9a7604635d90bba79ad751170dbab77993ca4638dd33738638",
+      "bytes": 73010
+    },
+    {
+      "relativePath": "raw/outer-cleanup/after/skills/super-auto/report-prompt.md",
+      "sha256": "981d30d2548ec1fadbf80025e535b5a7cf3341fa089374b17fad2f96a85a0555",
+      "bytes": 13320
+    },
+    {
+      "relativePath": "raw/outer-cleanup/after/skills/super-auto/resume.md",
+      "sha256": "5a61499e12b831c76c121a856b4e503ca08bd032cd59e6d601fc9e4c37b0dd66",
+      "bytes": 10578
+    },
+    {
+      "relativePath": "raw/outer-cleanup/after/skills/super-auto/run-state.md",
+      "sha256": "d12e634de0e8eacab70f4b60f550a04c9ddbd1f7da42e56f93eb08c5e970484d",
+      "bytes": 49046
+    },
+    {
+      "relativePath": "raw/outer-cleanup/baseline/skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "980a8ee5cbe7b9ec0ff36bfd2ef760b2302c7fe669722cdfd1b62ffc61f06f25",
+      "bytes": 11259
+    },
+    {
+      "relativePath": "raw/outer-cleanup/baseline/skills/super-auto/SKILL.md",
+      "sha256": "6571134c1aebdf5574182a7ab1db0f90d41e86b9d534ffb37a1ec8914e7c5434",
+      "bytes": 68423
+    },
+    {
+      "relativePath": "raw/outer-cleanup/baseline/skills/super-auto/report-prompt.md",
+      "sha256": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
+      "bytes": 12072
+    },
+    {
+      "relativePath": "raw/outer-cleanup/baseline/skills/super-auto/resume.md",
+      "sha256": "5a61499e12b831c76c121a856b4e503ca08bd032cd59e6d601fc9e4c37b0dd66",
+      "bytes": 10578
+    },
+    {
+      "relativePath": "raw/outer-cleanup/baseline/skills/super-auto/run-state.md",
+      "sha256": "716095d0cd48d0bfa1d1bcec51eae658f680ae6c230a8458e05d3732bb27f4ca",
+      "bytes": 47284
+    },
+    {
+      "relativePath": "raw/source-binding/after/skills/super-code/SKILL.md",
+      "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6",
+      "bytes": 46583
+    },
+    {
+      "relativePath": "raw/source-binding/after/skills/super-code/assembler-prompt.md",
+      "sha256": "568914df8c84689e4d46ab2344168aa10aa36ef664454a77149c9936ab958d2d",
+      "bytes": 3078
+    },
+    {
+      "relativePath": "raw/source-binding/after/skills/super-code/coordinator-card.md",
+      "sha256": "166e35087547ddc2bbfd0dd0b4678f8c9f0b036aba833ce92639060853997765",
+      "bytes": 6518
+    },
+    {
+      "relativePath": "raw/source-binding/after/skills/super-code/coordinator-subagents.md",
+      "sha256": "8f4f91c8ba5a4406480ee130a5630cf53a5849c28ddc9fdd0fa4a3830d36129a",
+      "bytes": 23122
+    },
+    {
+      "relativePath": "raw/source-binding/after/skills/super-code/coordinator-workflow.md",
+      "sha256": "494cfbceae25837a38ee343ebd69cf5f3e26aefc663affe5e26447dfd24242e7",
+      "bytes": 223764
+    },
+    {
+      "relativePath": "raw/source-binding/baseline/skills/super-code/SKILL.md",
+      "sha256": "b1cddafcf9bcaae2503baa461ae40a91baa04239816914c94da1261c7ce2c1b6",
+      "bytes": 46583
+    },
+    {
+      "relativePath": "raw/source-binding/baseline/skills/super-code/assembler-prompt.md",
+      "sha256": "568914df8c84689e4d46ab2344168aa10aa36ef664454a77149c9936ab958d2d",
+      "bytes": 3078
+    },
+    {
+      "relativePath": "raw/source-binding/baseline/skills/super-code/coordinator-card.md",
+      "sha256": "166e35087547ddc2bbfd0dd0b4678f8c9f0b036aba833ce92639060853997765",
+      "bytes": 6518
+    },
+    {
+      "relativePath": "raw/source-binding/baseline/skills/super-code/coordinator-subagents.md",
+      "sha256": "c424ed4fed05577ac7cc4792f941f78bdf4d87effd7aba93c4bdd4eb64a00048",
+      "bytes": 22098
+    },
+    {
+      "relativePath": "raw/source-binding/baseline/skills/super-code/coordinator-workflow.md",
+      "sha256": "518141aba262927f76223855626210123f0cdff3741bf77da59794dd0614a730",
+      "bytes": 222695
+    },
+    {
+      "relativePath": "rubric.json",
+      "sha256": "d32f1e1690d243d47da5c3e2f8372ed898e12a2f409533077728f0dab3e9a1e3",
+      "bytes": 12417
+    },
+    {
+      "relativePath": "run-plan.md",
+      "sha256": "eb85aa3f648a875edb73ff63dfc9c0906aa761b7192ef65e21ccefda8dfc050b",
+      "bytes": 4339
+    },
+    {
+      "relativePath": "schedule.json",
+      "sha256": "a762eafe0a280771cc94d56f8b75c921b8543fd63de13007234db5c68e73f774",
+      "bytes": 11194
+    }
+  ],
+  "excludedSelf": "freeze.json"
+}

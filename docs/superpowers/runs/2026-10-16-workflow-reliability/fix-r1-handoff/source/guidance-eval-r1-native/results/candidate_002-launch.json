@@ -1,0 +1,19 @@
+{
+  "ordinal": 2,
+  "sampleId": "source-binding-after-1",
+  "nativeSampleId": "candidate_002",
+  "family": "source-binding",
+  "arm": "after",
+  "replicate": 1,
+  "agentId": "unavailable",
+  "taskName": "/root/run_native_guidance_eval_ufz_r1/candidate_002",
+  "startedAt": "2026-10-17T14:51:44.616760+00:00",
+  "launchArgumentsSha256": "16ada22e4586a042830780af37db05d3814ea379da37212933e2d60af40fbf36",
+  "payloadSha256": "d06dfc811a2d12e15b41738d35782017de8c282fb8f51d5b6e8733b3d78c69f5",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "providerRequestId": null,
+  "status": "running",
+  "errors": []
+}

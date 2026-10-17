@@ -1,0 +1,14 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-final-response.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-final-response.txt
+new file mode 100644
+index 00000000..0dab1c5e
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-a-final-response.txt
+@@ -0,0 +1,8 @@
++- **claim:** Negative amounts from -99 through -1 cents lose their sign.
++- **location:** `lib/format.mjs:1`
++- **category:** `correctness`
++- **external:** false
++- **evidence:** Live reproduction returned `$0.50` for -50 cents; boundary checks confirmed the defect for -99 and -1.
++- **kind:** `ISSUE`
++
++Report and chronological evidence: [response.md](/private/tmp/ufz-live-isolation/seat-a/response.md). Caller commit/status changes are recorded without attributing their cause.

@@ -1,0 +1,4 @@
+worktree /private/tmp/ufz-live-isolation/caller
+HEAD 9323074ae09c0501a41d428382f7eac0f2d506b2
+branch refs/heads/integration
+

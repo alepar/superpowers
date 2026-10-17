@@ -1,0 +1,497 @@
+# Source-bound bounded review evidence package
+
+Base: d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5
+Head: ee275436bc69c3dd77cf1753399e0f93b44f2cff
+Invocation: inv-c96916a964634bb0bb5f2bd3b8e1769b
+This is selected evidence, not a complete branch patch. No omitted-scope clearance is implied.
+
+## Read-only in-memory recovery/acceptance probe
+Executed as node with the following stdin from W. Source read from the captured clean checkout. All synthetic acceptance facts and mocked consumers are controls, not actual human or run acceptance.
+
+```js
+const fs=require('fs'),vm=require('vm'),cp=require('child_process');
+const root=process.cwd(),p=root+'/.superpowers/sdd/super-plan-ufz-plan';
+const source=fs.readFileSync(root+'/skills/super-code/coordinator.js','utf8').replace(/^export const meta/m,'const meta');
+const cut=source.indexOf('// Resume from the ledger, read once before the round loop:');
+const fn=new (Object.getPrototypeOf(async function(){}).constructor)('args','agent','log','phase','pipeline','parallel','budget','workflow',source.slice(0,cut)+'return {readRecovery,recoveryObligations};\n'+source.slice(cut));
+(async()=>{
+ const b=await fn({epicId:'ep',integrationBranch:'integ',integrationWorktree:root,skillsRoot:root+'/skills',invocationId:'probe',config:{}},()=>{throw Error('no operational dispatch')},()=>{},()=>{},()=>{},()=>{},undefined,undefined);
+ const line=fs.readFileSync(p+'/progress.md','utf8').split('\n').find(l=>l.startsWith('Recovery:')&&l.includes('review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b'));
+ b.readRecovery(line); const obligations=[...b.recoveryObligations.values()];
+ const tree=cp.execFileSync('git',['rev-parse','ee275436^{tree}'],{encoding:'utf8'}).trim();
+ const base={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'caller'},{id:'sweep',kind:'measurement',owner:'caller',command:'test',configuration:'probe',requiredLive:true},{id:'finish',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'test',configuration:'probe',outcome:'pass',location:'probe:memory',kind:'live'}],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:'probe:memory'}],decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['probe:memory']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],gaps:[],requiredLiveChecks:[]},runFailures:[]};
+ const accept=fs.readFileSync(root+'/skills/super-auto/scripts/report-status','utf8').split("<<'ACCEPTANCE'\n")[1].split('\nACCEPTANCE')[0];
+ for(const [name,obs] of [['control',[]],['real-source-binding',obligations]]){
+  const lines=[],s={...base,recovery:{obligations:obs,gaps:[]}};
+  const context={require:(name)=>name==='node:fs'?{readFileSync:()=> 'approvals:\n- root-acceptance · '+JSON.stringify(s)+'\n'}:name==='node:child_process'?{spawnSync:(_cmd,args)=>({status:0,stdout:args.includes('--project')?JSON.stringify({findings:[],gaps:[]}):''})}:require(name),console:{log:x=>lines.push(x),error:x=>lines.push('error:'+x)},process:{argv:['node','-',root+'/skills/super-auto/scripts','--acceptance','/memory/run.md','--tree',tree],env:{},exit:code=>{throw {exitCode:code}}}};
+  let exitCode;try{vm.runInNewContext(accept,context)}catch(e){if(e.exitCode===undefined)throw e;exitCode=e.exitCode}
+  console.log(JSON.stringify({name,exitCode,result:JSON.parse(lines[0])}));
+ }
+ console.log(JSON.stringify({retainedByActualCoordinator:obligations}));
+})();
+
+```
+
+Observed exit: 0
+```jsonl
+{"name":"control","exitCode":0,"result":{"owner":"super-auto","sourceTree":"f062b7c7ec1b967aa64952fad937ff6982cdb084","eligible":true,"pending":[],"gaps":[],"nonblockingFindings":[]}}
+{"name":"real-source-binding","exitCode":3,"result":{"owner":"super-auto","sourceTree":"f062b7c7ec1b967aa64952fad937ff6982cdb084","eligible":false,"pending":[],"gaps":["review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b: measurement identity unavailable"],"nonblockingFindings":[]}}
+{"retainedByActualCoordinator":[{"version":1,"id":"review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b","kind":"deferred","operation":"record","reason":"immutable invocation review source","evidence":["/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/progress.md"],"data":{"reviewSource":{"invocationId":"inv-c96916a964634bb0bb5f2bd3b8e1769b","base":"d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5","head":"ee275436bc69c3dd77cf1753399e0f93b44f2cff"}}}]}
+```
+
+Initial probe setup attempt omitted skillsRoot and exited 1 before executing the scenario; adding the required argument produced the observations above. This was fixture setup, not a product startup failure.
+
+## Captured selector failure
+```json
+{
+  "dir": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/assembled/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-final",
+  "exit": 2,
+  "fits": "unavailable",
+  "clusterFits": [],
+  "clusters": 0,
+  "cause": "review input selection: ee275436bc69c3dd77cf1753399e0f93b44f2cff:docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/run.md:87 inv-mvc60k41-xt8p35rk04d: incomplete split bundle: missing or non-regular captured file: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/clusters.json"
+}
+```
+```json
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "status": "unavailable",
+  "changed": 5587,
+  "slices": 0,
+  "archives": 22,
+  "omitted": 0,
+  "gaps": 690
+}
+```
+First retained gaps:
+```json
+[
+  "ee275436bc69c3dd77cf1753399e0f93b44f2cff:docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/run.md:87 inv-mvc60k41-xt8p35rk04d: incomplete split bundle: missing or non-regular captured file: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/clusters.json",
+  "ee275436bc69c3dd77cf1753399e0f93b44f2cff:docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/run.md:87 inv-mvc60k41-xt8p35rk04d: missing or non-regular captured file: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/clusters.json",
+  "ee275436bc69c3dd77cf1753399e0f93b44f2cff:docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/run.md:87 inv-mvc60k41-xt8p35rk04d: missing or non-regular captured file: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-1-stages/evidence-observability/reviews/inv-mvc60k41-xt8p35rk04d/assembled/final-review-inv-mvc60k41-xt8p35rk04d-final/diffstat.txt"
+]
+```
+The complete 690 gaps remain at the original sidecar; no omission or complete archive coverage is inferred.
+
+## Original isolation-manifest retention check
+Read every manifest-listed captured-head blob with git show and compare SHA-256.
+```json
+{"capturedHead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff", "manifestEntries": 81, "hashMatches": 81, "gaps": []}
+```
+
+## Captured product hashes
+skills/super-code/coordinator.js sha256 770395ccc586aebb49f9e851fdd818f7141e7c083ee00f0c84da7d15a1b816b7
+skills/super-code/scripts/dispatch-text.mjs sha256 e2bf8e7fdc891b466d56bcd669c1c5f82f8849785e3f7dc82eb6bce0f6937b38
+skills/super-auto/scripts/report-status sha256 fd29d9fcafa34e75cb33273b442009221f26c922d427cd0a9f67c14cf3c35be8
+skills/super-code/assembler-prompt.md sha256 4a1f50e330a1433212109e2f804d6ca7dc468751e88dd03c49f7764f28be9a7e
+
+## Exact selected source excerpts
+
+skills/super-code/coordinator.js:407-450
+```
+407: const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
+408: 
+409: // Additive durable facts, independent of settle()'s latest terminal status. The ledger remains
+410: // the source: obligations are keyed by kind/id, while every fix attempt stays in history.
+411: const recoveryObligations = new Map()
+412: const verificationCompletions = new Map() // independently reviewed no-change basis, not a Git landing
+413: const verificationCandidates = new Set() // a tracker close cannot supply missing acceptance review
+414: const fixHistory = []
+415: const recoveryGaps = []
+416: let recoveryTransportHeld = false // unresolved retained pointers cannot supply a safe admission scope
+417: function recoveryProblem(r) {
+418:   const text = v => typeof v === 'string' && v.trim().length > 0
+419:   if (!r || r.version !== 1) return 'unsupported recovery version'
+420:   if (!text(r.id) || !['hold', 'pending-closure', 'deferred', 'fix'].includes(r.kind)
+421:       || !['record', 'clear'].includes(r.operation) || !text(r.reason)
+422:       || !Array.isArray(r.evidence) || !r.evidence.length || !r.evidence.every(text)
+423:       || !r.data || typeof r.data !== 'object' || Array.isArray(r.data)) return 'invalid recovery fields or missing evidence'
+424:   if (r.data.runFailure !== undefined && !validRunFailure(r.data.runFailure)) return 'invalid run failure history'
+425:   if (r.kind === 'fix' && r.operation !== 'record') return 'fix history is append-only'
+426:   if (r.kind === 'pending-closure' && r.data.verification) {
+427:     const v = r.data.verification
+428:     if (v.reviewStatus !== 'CLEAN' || !text(v.reportPath) || !text(v.reviewPath) || verificationProblem(v, v)) return 'invalid verification completion basis'
+429:   }
+430:   return null
+431: }
+432: function readRecovery(line, digestLine = null) {
+433:   const gap = reason => recoveryGap(line, reason, digestLine)
+434:   let r
+435:   try { r = JSON.parse(line.slice('Recovery:'.length).trim()) } catch { return gap('invalid JSON') }
+436:   const problem = recoveryProblem(r)
+437:   if (problem) return gap(problem)
+438:   if (r.kind === 'pending-closure' && r.data.verification) {
+439:     const text = v => typeof v === 'string' && v.trim().length > 0
+440:     const v = r.data.verification
+441:     verificationCompletions.set(r.id, v)
+442:     if (text(v.reviewBead)) reviewBeadOf.set(r.id, v.reviewBead)
+443:     if (text(v.blockerBead)) blockerBeadOf.set(r.id, v.blockerBead)
+444:   }
+445:   if (r.kind === 'fix') {
+446:     fixHistory.push(r)
+447:   } else if (r.operation === 'clear') recoveryObligations.delete(r.kind + ':' + r.id)
+448:   else recoveryObligations.set(r.kind + ':' + r.id, r)
+449:   return r
+450: }
+```
+
+skills/super-code/coordinator.js:2317-2371
+```
+2317: const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
+2318: const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
+2319: let frSourceRefusal = null
+2320: let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
+2321: if (landedWork && invocationPersisted && finalSource) {
+2322:   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
+2323:   const reviewThreshold = Math.floor(reviewWindow * 0.4)
+2324:   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
+2325:     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+2326:   if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
+2327:   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
+2328:   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
+2329:     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
+2330:   frDir = asm?.dir ?? null
+2331:   frAsmClusters = asm?.clusters ?? null
+2332:   // Exit 3 (bad clusters.json coverage) caps only when the inputs also do not fit; `fits: yes` means a
+2333:   // single review on direct inputs, uncapped.
+2334:   const exit3Fits = !!(asm && asm.exit === 3 && fm && fm[1] === 'yes')
+2335:   if (asm && asm.exit === 3 && !exit3Fits) frMode = 'capped'
+2336:   else if (asm && asm.exit === 0 && fm && frDir) frMode = fm[1] === 'yes' ? 'single' : (frClusters.length ? 'split' : 'capped')
+2337:   const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)
+2338:   const k = asm?.clusters ?? frClusters.length
+2339:   frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
+2340:     : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'
+2341:     : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
+2342:     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
+2343:     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
+2344: }
+2345: await appendLedger(frLine ? [...metrics, frLine] : metrics,
+2346:   'ledger-append:metrics', { label: 'ledger-append:metrics', phase: 'Finish', ...tier('mechanical') })
+2347: // Null final-review ("Null dispatch policy"): an explicit UNAVAILABLE string — never silence, and
+2348: // never anything a reader could mistake for "reviewed, no findings".
+2349: const FINAL_REVIEW_UNAVAILABLE = `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
+2350: // A verdict that cannot be `ready`: keeps the reviewer's own summary and names what went unreviewed.
+2351: const notReadyWith = (verdict, unrev) => {
+2352:   const v = String(verdict ?? '').trim()
+2353:   if (v.startsWith('not ready (') && v.includes('unreviewed: ') && unrev.every(u => v.includes(u))) return v
+2354:   const inner = /^not ready \((.*)\)$/s.exec(v)?.[1]
+2355:   return `not ready (${inner ? inner + '; ' : ''}unreviewed: ${unrev.join(', ')})`
+2356: }
+2357: let review, reviewWritten = false
+2358: if (!landedWork) review = 'no work landed'
+2359: else if (!invocationPersisted) review = 'FINAL REVIEW UNAVAILABLE — invocation identity persistence unavailable; no review artifacts were authorized'
+2360: else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (reviewSourceGap ? 'persisted invocation source binding is invalid or conflicting' : metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
+2361: else if (frSourceRefusal) review = 'FINAL REVIEW UNAVAILABLE — partial bundle preserved: ' + frSourceRefusal
+2362: else if (frMode !== 'split') {
+2363:   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
+2364:     { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
+2365:     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
+2366:   const v = String(single?.verdict ?? '').trim()
+2367:   reviewWritten = !!v
+2368:   review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
+2369: } else {
+2370:   const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
+2371:   if (Number.isFinite(frAsmClusters) && frAsmClusters > frClusters.length) unreviewed.push((frAsmClusters - frClusters.length) + ' cluster(s) in clusters.json with no parsable cluster-fits line')
+```
+
+skills/super-code/coordinator.js:2920-2957
+```
+2920: }
+2921: 
+2922: // Runs inside the existing producer dispatch: persists source before output, and refuses retries
+2923: // over partial bytes. Shell-quote all identity/path arguments; no checkout mutation is involved.
+2924: function reviewWriteGuard(base, head, artifact) {
+2925:   if (!base || !head) throw new Error('reviewWriteGuard: captured base and head are required')
+2926:   const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
+2927:   const command = 'node ' + quote(codeSkill + '/scripts/dispatch-text.mjs') + ' --ledger ' + quote(workspaceAbs + '/progress.md') + ' bind-review-source --invocation-id ' + quote(invocationId) + ' --base ' + quote(base) + ' --head ' + quote(head) + ' --artifact ' + quote(artifact)
+2928:   return 'BEFORE ANY ARTIFACT WRITE, run `' + command + '`. It persists or verifies the immutable invocation/source fact. On failure, preserve every existing bundle file and return unavailable (no verdict; stub written false; assembler exit 2 with cause prefixed \"review source guard:\"). Do not run the remaining write steps. Existing partial contents must never be replaced, even on same-source retry. The binding append to the existing ledger is authorized; other caller files remain read-only. '
+2929: }
+2930: 
+2931: // The review-file format every final-review prompt fixes; scripts/report-verdict's final-review recogniser is its parser.
+2932: function reviewSource(repo, base, head) {
+2933:   if (!base || !head) throw new Error('reviewSource: captured base and head are required')
+2934:   return `Captured source: base ${base}, head ${head}. Use \`git diff ${base}..${head}\` and \`git show ${head}:<path>\` in ${repo}. Verify both with \`git rev-parse --verify <sha>^{commit}\` before reading. If a filesystem view is needed, create a unique review-owned detached worktree at ${head}; mutable reproductions use its own output/temp directory. Record caller commit/status changes as observed evidence; differences alone do not attribute their cause. Never switch or restore the caller checkout.`
+2935: }
+2936: function reviewFileFormat() {
+2937:   return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
+2938: }
+2939: function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
+2940:   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+2941:   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+2942:   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
+2943:   const selectionGap = 'Before reviewing, inspect ' + workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json when present. If unreadable, malformed, unavailable or carrying selection/evidence gaps, preserve that explicit gap and return unavailable without writing a verdict or a direct package. An assembler cause prefixed "review input selection:" also remains unavailable through fallback. '
+2944:   const pkg = dir
+2945:     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+2946:     : planPath
+2947:     ? `Build the review package from ${integrationWorktree}: run \`bash ${sddScripts}/review-package ${planPath} ${base} ${head} ${reviewPath}.diff\` and read the file it writes.`
+2948:     : `Review \`git diff ${base}..${head}\` from ${integrationWorktree}.`
+2949:   const cappedNote = capped
+2950:     ? `The inputs exceed your window and no usable clusters exist: review what you can, and your verdict must be \`not ready (… unreviewed: inputs exceed the window and no usable clusters)\`. `
+2951:     : ''
+2952:   const sweep = sweepSummary === SWEEP_DEFERRED
+2953:     ? `The full-suite sweep is deferred to the caller, who runs it after this invocation: no full-suite measurement of this branch exists yet — say so in your verdict rather than treating the branch as tested.`
+2954:     : sweepSummary
+2955:     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
+2956:     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
+2957:   return reviewWriteGuard(base, head, reviewPath) + `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${selectionGap}${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+```
+
+skills/super-code/scripts/dispatch-text.mjs:147-164
+```
+147:     }))
+148:     const blob = p => {
+149:       const entry = tree.get(p)
+150:       if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
+151:       return git('cat-file', 'blob', entry.oid)
+152:     }
+153:     const archives = [], claims = new Map()
+154:     for (const run of tree.keys()) {
+155:       if (posix.basename(run) !== 'run.md') continue
+156:       let text
+157:       try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
+158:       const latest = new Map(), identities = new Map(), savedHashes = new Map()
+159:       let approvals = false
+160:       for (const [lineNumber, line] of text.split('\n').entries()) {
+161:         if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
+162:         if (!line.startsWith('- review-collection')) continue
+163:         try {
+164:           if (!approvals || !line.startsWith('- review-collection · ')) throw Error('record outside approvals or invalid prefix')
+```
+
+skills/super-code/scripts/dispatch-text.mjs:190-259
+```
+190:         if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
+191:         if (r.reviewPath === null) {
+192:           if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
+193:         } else {
+194:           if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) gap(context + ': incomplete claimed final report')
+195:           for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
+196:         }
+197:         if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
+198:         const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
+199:         if (inputs.length) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
+200:         const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
+201:         if (clusters.length || files.has(assembled + 'clusters.json')) {
+202:           try {
+203:             const m = JSON.parse(blob(posix.join(archive, assembled + 'clusters.json')).toString())
+204:             if (!files.has(assembled + 'clusters.json') || !Array.isArray(m.clusters) || (clusters.length && !m.clusters.length)) throw Error('missing manifest')
+205:             for (const [n, c] of m.clusters.entries()) {
+206:               if ((clusters.length && !files.has(prefix + '.cluster-' + (n + 1) + '.md')) || !Array.isArray(c.slices)) throw Error('missing cluster report or slices')
+207:               for (const slice of c.slices) if (!safe(slice) || !files.has(assembled + slice)) throw Error('missing claimed cluster slice')
+208:             }
+209:           } catch (e) { gap(context + ': incomplete split bundle: ' + e.message) }
+210:         }
+211:         for (const [relative, sha256] of files) {
+212:           const p = posix.join(archive, relative)
+213:           try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
+214:           catch (e) { gap(context + ': ' + e.message) }
+215:           if (relative.startsWith(assembled) || relative === prefix + '.md.diff') {
+216:             const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
+217:             if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
+218:             claims.set(p, claim)
+219:           }
+220:         }
+221:         archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
+222:       }
+223:     }
+224:     return { tree, blob, archives, claims }
+225:   }
+226:   let selected = changed, omitted = [], archives = [], slices = []
+227:   try {
+228:     const before = snapshot(base), after = snapshot(head)
+229:     archives = after.archives
+230:     // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
+231:     for (const [p, claim] of before.claims) {
+232:       try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
+233:       catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }
+234:     }
+235:     if (!gaps.length) {
+236:       omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
+237:       selected = changed.filter(p => !after.claims.has(p))
+238:     }
+239:     writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected) : '')
+240:     if (!gaps.length) {
+241:       mkdirSync(join(out, 'slices'), { recursive: true })
+242:       for (const [n, p] of selected.entries()) {
+243:         // Ordinals avoid collisions and platform filename limits for arbitrary Git paths.
+244:         const slice = 'slices/' + String(n + 1).padStart(6, '0') + '.diff'
+245:         writeFileSync(join(out, slice), git('diff', '--no-renames', base + '..' + head, '--', p))
+246:         slices.push({ path: p, slice })
+247:       }
+248:     }
+249:   } catch (e) { gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
+250:   const result = { base, head, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+251:   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
+252:   writeFileSync(join(out, 'generated-input-provenance.md'), [
+253:     '## Generated-input provenance',
+254:     'Captured range: ' + base + '..' + head,
+255:     'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',
+256:     'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
+257:     ...omitted.map(o => '- ' + JSON.stringify(o)),
+258:     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
+259:     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
+```
+
+skills/super-code/scripts/dispatch-text.mjs:287-331
+```
+287:     const launch = launchFrom(line)
+288:     if (launch.invocationId !== invocationId || (!launch.reviewBase && !launch.reviewHead)) continue
+289:     if (!fullCommit(launch.reviewBase) || !fullCommit(launch.reviewHead)) fail('invalid captured source in persisted Launch')
+290:     if (boundSource && (boundSource.base !== launch.reviewBase || boundSource.head !== launch.reviewHead)) fail('conflicting persisted invocation source bindings; preserve bundle')
+291:     boundSource = { invocationId, base: launch.reviewBase, head: launch.reviewHead }
+292:     continue
+293:   }
+294:   if (!line.startsWith('Recovery:')) continue
+295:   let r
+296:   try { r = JSON.parse(line.slice(9)) } catch { continue }
+297:   const source = r.data?.reviewSource
+298:   if (source?.invocationId !== invocationId && r.id !== 'review-source:' + invocationId) continue
+299:   if (r.version !== 1 || r.kind !== 'deferred' || r.operation !== 'record' || !source || source.invocationId !== invocationId || !fullCommit(source.base) || !fullCommit(source.head)) fail('invalid persisted invocation source binding; preserve bundle as an evidence gap')
+300:   if (boundSource && (boundSource.base !== source.base || boundSource.head !== source.head)) fail('conflicting persisted invocation source bindings; preserve bundle')
+301:   boundSource = source
+302: }
+303: if (reviewOutput) {
+304:   if (boundSource && ((o.base && o.base !== boundSource.base) || (o.head && o.head !== boundSource.head))) fail('invocation source mismatch; preserve existing partial bundle and use a fresh invocation identity for new source')
+305:   if (kind === 'bind-review-source') {
+306:     if (o.read) {
+307:       if (!boundSource) fail('missing persisted invocation source binding')
+308:       console.log(JSON.stringify(boundSource))
+309:       process.exit(0)
+310:     }
+311:     if (!fullCommit(o.base) || !fullCommit(o.head)) fail('bind-review-source needs --base and --head as full captured commits (or --read)')
+312:     if (!boundSource) {
+313:       const prefix = 'final-review-' + invocationId
+314:       const artifacts = readdirSync(ws).some(n => n === prefix + '.md' || n.startsWith(prefix + '.md.') || n.startsWith(prefix + '.cluster-'))
+315:       let assembled = false
+316:       try { assembled = readdirSync(join(ws, 'assembled')).some(n => n.startsWith(prefix + '-')) } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
+317:       if (artifacts || assembled) fail('missing invocation source binding for existing partial bundle; preserve evidence gap')
+318:       boundSource = { invocationId, base: o.base, head: o.head }
+319:       const record = { version: 1, id: 'review-source:' + invocationId, kind: 'deferred', operation: 'record', reason: 'immutable invocation review source', evidence: [resolve(o.ledger)], data: { reviewSource: boundSource } }
+320:       try { writeFileSync(o.ledger, '\nRecovery: ' + JSON.stringify(record) + '\n', { flag: 'a' }) } catch (e) { fail('source binding persistence unavailable: ' + e.message) }
+321:     }
+322:     if (o.artifact) {
+323:       for (const path of [o.artifact, o.artifact + '.diff']) {
+324:         try { lstatSync(path); fail('partial artifact already exists; preserve it without rewriting: ' + path) } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
+325:       }
+326:     }
+327:     console.log(JSON.stringify(boundSource))
+328:     process.exit(0)
+329:   }
+330:   if (!boundSource && (!fullCommit(o.base) || !fullCommit(o.head))) fail('missing invocation source binding or full captured --base and --head; bind before artifact writes')
+331: }
+```
+
+skills/super-auto/scripts/report-status:102-115
+```
+102:  const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);
+103:  const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);
+104:  const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);
+105:  for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');
+106:  function measure(q,label){
+107:   if(!identity(q)){gap(label+': measurement identity unavailable');return false}
+108:   const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));
+109:   // Contradictory outcomes at an immutable source do not silently turn into a pass.
+110:   if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;
+111:   const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');
+112:   wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;
+113:  }
+114:  for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');
+115:  for(const q of requirements.values()){
+```
+
+skills/super-auto/scripts/report-status:125-146
+```
+125:  for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));
+126:  for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));
+127:  const failures=new Map();
+128:  for(const f of current.runFailures){
+129:   if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
+130:   failures.set(f.id,f);
+131:   if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
+132:   for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
+133:   if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
+134:  }
+135:  for(const r of current.recovery.obligations){
+136:   if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
+137:   if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
+138:   if(r.kind==='deferred'){
+139:    const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
+140:    // Deferred final-suite records predate any tested tree. The caller explicitly binds
+141:    // their exact IDs to the final measurement; a pass cannot clear another obligation.
+142:    if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);
+143:    else measure({...r.data,requiredLive:true},r.id);
+144:   }
+145:   else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
+146:  }
+```
+
+skills/super-code/assembler-prompt.md:15-39
+```
+15: [ASSEMBLED_SIZE] (the size script's command), [REVIEW_INPUTS] (the selection command), [LEDGER], [WORKSPACE], [SPEC_PATHS].
+16: 
+17: 1. `cd [WORKTREE]`. Review consumers (`final-review`, `roast-code`) receive captured commit
+18:    identities as [BASE] and [HEAD]; verify both with `git rev-parse --verify <sha>^{commit}`.
+19:    Other consumers resolve command-valued inputs once before collecting their data.
+20:    Empty the instance directory first:
+21:    `rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices`.
+22: 2. For `final-review` and `roast-code`, run `[REVIEW_INPUTS]` exactly once. It reads collection
+23:    claims and payload hashes from captured Git, writes selected `diffstat.txt`, `slices/`,
+24:    `review-inputs.json` (changed paths and path-to-slice mapping) and
+25:    `generated-input-provenance.md`. These are the authoritative selected inputs for steps 3–5.
+26:    On any nonzero exit, preserve those outputs and relay `exit: 2`, `fits: unavailable`,
+27:    `clusterFits: []`, `clusters: 0`, `dir: [OUT_DIR]`, with `cause` prefixed
+28:    `review input selection:` and the command's explicit evidence gap. Stop here; an invalid
+29:    provenance refusal remains unavailable through any fallback, never a clean assembly.
+30:    For other consumers, run `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
+31: 3. Write `[OUT_DIR]/digest.md` with one `## <name>` heading per [SECTIONS] line, in that order, each
+32:    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has
+33:    nothing gets the line `none`.
+34: 4. Review consumers use only the helper's `review-inputs.json` changed list and slices mapping;
+35:    selection excludes only exact hash-verified manifest payloads, retaining collection metadata,
+36:    final/cluster reports, findings and unclaimed files. Do not reslice or re-enumerate the full range.
+37:    For other consumers, slices are one file per changed source file, `git diff [BASE]..[HEAD] -- <file>` written to
+38:    `[OUT_DIR]/slices/<path with each / replaced by __>.diff`.
+39:    Open source with `git show [HEAD]:<path>` so a concurrent caller advance cannot change it.
+```
+
+## Pinned authority
+pinned-policy-6.0/skills/super-code/coordinator-workflow.md:1279-1308
+sha256 61c515df7d90b624bb7987ab625dbe05ede2b409819e325e6ec2462adb9aa8e4
+```
+**The final review is size-switched.** After the Metrics re-read and before its append, one
+mechanical `assemble:final` dispatch (`assemblePrompt('final-review', 'final', …)`) gathers the review
+inputs into `<workspace>/assembled/final-review-<runTag>-final/` and measures them. The window is
+`config.contextWindows.finalReview`, else `FINAL_REVIEW_FALLBACK_WINDOW.workflow` (200K, defined once
+beside `MODEL_DEFAULTS` in `coordinator.js`; the ordinary-subagent coordinator uses its `ordinary`
+entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply:
+
+| Assembler reply | Mode | Dispatches | Ledger line |
+|---|---|---|---|
+| null, no parsable `fits:` line, or `exit` not 0/3 | `single` on direct inputs, uncapped | `final-review` | `Final review: single (assembler unavailable)` |
+| `exit` 3 with `fits: no` or no `fits:` line, or `fits: no` with no `cluster-fits:` lines | `single` on direct inputs, **capped** | `final-review` | `Final review: single (no usable clusters — capped)` |
+| `exit` 3 with `fits: yes` | `single` on direct inputs, uncapped | `final-review` | `Final review: single (inputs fit; clusters.json rejected — direct inputs)` |
+| `fits: yes` | `single` on the digest and slices | `final-review` | `Final review: single (inputs <N>K <= 40% of <W>K) · clusters <k>` |
+| `fits: no` | `split` | `final-review:cluster:<n>` for each `cluster-fits: <name> yes` (concurrent, in batches of the concurrency cap), then `final-review:seam` | `Final review: split (inputs <N>K > 40% of <W>K) · clusters <k>` |
+
+The `Final review:` line is appended in the same dispatch as the four `Metrics:` lines. Clusters come
+from the assembler's `clusters.json` (import and call edges, else directory), never from a declared
+key. A cluster still `cluster-fits: no` after the assembler's one re-cluster is not dispatched and is
+listed `unreviewed`. Cluster reviewers write `<workspace>/final-review-<runTag>-cluster-<n>.md`; the
+seam reviewer, given only those files and the cross-cluster hunks and interfaces, writes the handoff
+file. **`<workspace>/final-review-<runTag>.md` exists whenever `reviewPath` is non-null**: the single or seam
+reviewer writes it, and on a null seam review a mechanical `final-review:stub` dispatch writes a stub
+that lists the cluster files; only a null stub leaves it absent, and `reviewPath` is then null. The
+Workflow returns `review` (the verdict line) and `reviewPath` (that file, or null when no file was
+written) and never a body; callers read the file through `report-verdict`. Anything unreviewed — a null
+cluster or seam review, an over-window cluster — makes `review` `not ready (<summary>; unreviewed: …)`,
+never `ready`; a capped single review is forced to `not ready (… unreviewed: inputs exceed the window
+and no usable clusters)`. A null single review keeps today's `FINAL REVIEW UNAVAILABLE` string and returns `reviewPath` null.
+
+**The sweep runs here, once, before the final review — mandatory whenever work landed, unless the
+```
+
+## Preserved input integrity
+.superpowers/sdd/super-plan-ufz-plan/assemble-final-fix-r1-result.json sha256 08f7f2a0b96965e1336c1d176172ff4a7507c8e0aabc5fb64512ddb484b72685
+.superpowers/sdd/super-plan-ufz-plan/assembled/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-final/review-inputs.json sha256 c838e1390ca298afea5a1d8d5e4f5b2b6a74ab696ba8768d7e7780f39ff4707e
+.superpowers/sdd/super-plan-ufz-plan/dispatch/final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-single.md sha256 4f9907f92274c5900c9c2ead96c885c02dd8a65ecb262575d835a6699aaf9aa8

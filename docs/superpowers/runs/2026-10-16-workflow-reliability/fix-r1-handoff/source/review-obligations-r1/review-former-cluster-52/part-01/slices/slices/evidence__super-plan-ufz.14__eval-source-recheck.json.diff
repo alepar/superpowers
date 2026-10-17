@@ -1,0 +1,146 @@
+diff --git a/evidence/super-plan-ufz.14/eval-source-recheck.json b/evidence/super-plan-ufz.14/eval-source-recheck.json
+new file mode 100644
+index 00000000..44f9fcf9
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/eval-source-recheck.json
+@@ -0,0 +1,140 @@
++{
++  "checks": [
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-roast/SKILL.md",
++      "range": [
++        1,
++        320
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-code/SKILL.md",
++      "range": [
++        146,
++        193
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-code/task-reviewer-prompt.md",
++      "range": [
++        1,
++        198
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-roast/reporter-prompt.md",
++      "range": [
++        145,
++        186
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-auto/SKILL.md",
++      "range": [
++        325,
++        405
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-roast/reporter-prompt.md",
++      "range": [
++        120,
++        144
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-auto/report-prompt.md",
++      "range": [
++        1,
++        79
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/upstream-feedback/SKILL.md",
++      "range": [
++        16,
++        123
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-code/task-reviewer-prompt.md",
++      "range": [
++        124,
++        149
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "behavior-after",
++      "file": "skills/super-code/task-reviewer-prompt.md",
++      "range": [
++        185,
++        198
++      ],
++      "full": true,
++      "excerpt": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/super-roast/scout-prompts-pr.md",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/super-roast/scripts/assemble-args.mjs",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/super-code/coordinator.js",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/super-code/scripts/dispatch-text.mjs",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/super-code/task-reviewer-prompt.md",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "skills/subagent-driven-development/scripts/review-package",
++      "full": true
++    },
++    {
++      "evidence": "live-review-isolation",
++      "file": "coordinator.js:2852-2880",
++      "full": true
++    }
++  ],
++  "passed": true
++}

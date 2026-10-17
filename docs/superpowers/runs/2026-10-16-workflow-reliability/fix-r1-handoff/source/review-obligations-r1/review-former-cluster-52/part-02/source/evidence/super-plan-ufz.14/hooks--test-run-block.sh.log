@@ -1,0 +1,77 @@
+== no marker
+  [PASS] no marker, card: no output, exit 0
+  [PASS] no marker, state: no output, exit 0
+== by session id
+  [PASS] card text
+  [PASS] hookEventName
+  [PASS] state text
+== by cwd
+  [PASS] cwd match
+== by own fallback marker
+  [PASS] fallback marker written
+  [PASS] fallback match
+== refusals
+  [PASS] task-worktree cwd: no output
+  [PASS] subagent, other session: no output
+  [PASS] subagent, same session: no output
+  [PASS] empty agent_id is not a subagent
+== run-digest modes
+  [PASS] fail: state fallback
+  [PASS] fail: card file
+  [PASS] hang: state fallback
+  [PASS] hang: exit 0
+  [PASS] hang: under 7 s (5776 ms)
+  [PASS] ctrl: no control bytes
+  [PASS] ctrl: text survives
+  [PASS] ctrl: quote and backslash survive
+  [PASS] big: 9000 bytes pass through untouched
+== size cut (Claude entry)
+  [PASS] edge 9500: untouched
+  [PASS] lines over cap: 9429 bytes <= 9500
+  [PASS] lines over cap: output is a prefix of the payload
+  [PASS] lines over cap: no U+FFFD
+  [PASS] lines over cap: cut at a line boundary
+  [PASS] lines over cap: last line whole
+  [PASS] lines over cap: shorter than input
+  [PASS] multibyte cut: 9499 bytes <= 9500
+  [PASS] multibyte cut: output is a prefix of the payload
+  [PASS] multibyte cut: no U+FFFD
+  [PASS] multibyte cut: exact byte count
+== stdin shapes
+  [PASS] pretty-printed stdin
+  [PASS] never-closing stdin returns in 2262 ms
+  [PASS] never-closing stdin: exit 0
+  [PASS] never-closing stdin: no output
+== hooks.json
+  [PASS] hooks.json: original entry intact, two compact entries
+== session-start-codex
+  [PASS] codex: card then state
+  [PASS] codex: hookEventName
+  [PASS] codex: CODEX_THREAD_ID fallback, no source field
+  [PASS] codex: no cwd fallback (child with own id and coordinator cwd): no output
+  [PASS] codex: non-matching id: no output, exit 0
+  [PASS] codex: realistic child payload (own session_id, coordinator cwd): no output
+  [PASS] codex: task-worktree cwd, other id: no output
+  [PASS] codex: no id, no cwd: no output
+  [PASS] codex fallback: marker file written
+  [PASS] codex fallback: own session-keyed fallback marker found by cwd
+  [PASS] codex fallback: another session in the same worktree gets nothing
+  [PASS] codex: 17900-byte newline-free payload cut to exactly 17500
+  [PASS] codex lines over cap: 17465 bytes <= 17500
+  [PASS] codex lines over cap: output is a prefix of the payload
+  [PASS] codex lines over cap: no U+FFFD
+  [PASS] codex lines over cap: cut at a line boundary
+  [PASS] codex lines over cap: last line whole
+  [PASS] codex multibyte cut: 17499 bytes <= 17500
+  [PASS] codex multibyte cut: output is a prefix of the payload
+  [PASS] codex multibyte cut: no U+FFFD
+  [PASS] codex multibyte cut: exact byte count
+  [PASS] codex: ctrl: no control bytes
+  [PASS] codex: fail: card file then fallback
+  [PASS] codex: hang: card file
+  [PASS] codex: hang: fallback line
+  [PASS] codex: hang: exit 0
+  [PASS] codex: hang under 7 s (5713 ms)
+== hooks-codex.json
+  [PASS] hooks-codex.json: one compact entry, limit 6000, fixed command
+test-run-block: all tests passed

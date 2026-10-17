@@ -1,0 +1,204 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/verification.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/verification.json
+new file mode 100644
+index 00000000..4d894794
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/verification.json
+@@ -0,0 +1,198 @@
++{
++  "time": 1792225059.287932,
++  "checks": [
++    {
++      "name": "captured commits still resolve",
++      "pass": true,
++      "evidence": {
++        "base": "96ba44f6f5ced6166997c74aee1ba374b6c3fe0f",
++        "head": "7ddd110053fb302c4f6a0bd645ddbf28c512c563"
++      }
++    },
++    {
++      "name": "two legitimate caller advances retained",
++      "pass": true,
++      "evidence": {
++        "advance1": "25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa",
++        "advance2": "9323074ae09c0501a41d428382f7eac0f2d506b2",
++        "log": "9323074ae09c0501a41d428382f7eac0f2d506b2 legitimate concurrent integration two fixes signed sub-dollar amount\n25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa legitimate concurrent integration one\n7ddd110053fb302c4f6a0bd645ddbf28c512c563 format cents without floating point\n96ba44f6f5ced6166997c74aee1ba374b6c3fe0f fixture base"
++      }
++    },
++    {
++      "name": "caller remains on integration branch",
++      "pass": true,
++      "evidence": "refs/heads/integration"
++    },
++    {
++      "name": "preserved throughout observation: caller/caller-sentinel.txt",
++      "pass": true,
++      "evidence": [
++        "aa116ea1e33d8930bdc304890783acad5e9d7ca1c9396adddf44c60fe18f702f"
++      ]
++    },
++    {
++      "name": "preserved throughout observation: caller/build/caller-output.txt",
++      "pass": true,
++      "evidence": [
++        "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9"
++      ]
++    },
++    {
++      "name": "preserved throughout observation: caller/lib/generated.mjs",
++      "pass": true,
++      "evidence": [
++        "f5d2e8f319f757ef6e661b3647daef5fc3dfef1ba03d4c7895a0827af50ff552"
++      ]
++    },
++    {
++      "name": "preserved throughout observation: seat-b/existing-output.txt",
++      "pass": true,
++      "evidence": [
++        "56f7f4069d3219ba689341f8e85482abd327ba50da39abe63054f647c1c88529"
++      ]
++    },
++    {
++      "name": "caller pending edit preserved",
++      "pass": true,
++      "evidence": "M caller-session.txt"
++    },
++    {
++      "name": "only expected caller tracked dirt",
++      "pass": true,
++      "evidence": "M caller-session.txt"
++    },
++    {
++      "name": "seat-a owns detached captured worktree",
++      "pass": true,
++      "evidence": {
++        "head": "7ddd110053fb302c4f6a0bd645ddbf28c512c563",
++        "path": "/private/tmp/ufz-live-isolation/seat-a/review-worktree"
++      }
++    },
++    {
++      "name": "seat-b owns detached captured worktree",
++      "pass": true,
++      "evidence": {
++        "head": "7ddd110053fb302c4f6a0bd645ddbf28c512c563",
++        "path": "/private/tmp/ufz-live-isolation/seat-b/review-worktree"
++      }
++    },
++    {
++      "name": "A source generation isolated",
++      "pass": true,
++      "evidence": {
++        "A": "M lib/generated.mjs",
++        "B": "M lib/generated.mjs"
++      }
++    },
++    {
++      "name": "A live reproduction wrote owned build output",
++      "pass": true,
++      "evidence": [
++        "/private/tmp/ufz-live-isolation/seat-a/repro-output/amounts.json"
++      ]
++    },
++    {
++      "name": "A reproduction exercised captured negative-sign defect",
++      "pass": true,
++      "evidence": [
++        {
++          "cents": -150,
++          "actual": "$-1.50"
++        },
++        {
++          "cents": -50,
++          "actual": "$0.50"
++        },
++        {
++          "cents": 0,
++          "actual": "$0.00"
++        },
++        {
++          "cents": 50,
++          "actual": "$0.50"
++        },
++        {
++          "cents": 150,
++          "actual": "$1.50"
++        }
++      ]
++    },
++    {
++      "name": "seat-a Git trace has no checkout repair or caller mutation",
++      "pass": true,
++      "evidence": []
++    },
++    {
++      "name": "seat-a re-read captured source after second caller advance",
++      "pass": true,
++      "evidence": {
++        "commands": 9,
++        "nonzero_exits": []
++      }
++    },
++    {
++      "name": "seat-a raw detailed response exists",
++      "pass": true,
++      "evidence": "/private/tmp/ufz-live-isolation/seat-a/response.md"
++    },
++    {
++      "name": "seat-b Git trace has no checkout repair or caller mutation",
++      "pass": true,
++      "evidence": []
++    },
++    {
++      "name": "seat-b re-read captured source after second caller advance",
++      "pass": true,
++      "evidence": {
++        "commands": 10,
++        "nonzero_exits": [
++          {
++            "argv": [
++              "node",
++              "--input-type=module",
++              "-e",
++              "import {formatAmount} from \"./lib/format.mjs\"; const failures=[]; for(let cents=-200;cents<=200;cents++){const expected=\"$\"+(cents<0?\"-\":\"\")+Math.floor(Math.abs(cents)/100)+\".\"+String(Math.abs(cents)%100).padStart(2,\"0\");const actual=formatAmount(cents);if(actual!==expected)failures.push({cents,expected,actual});} console.log(JSON.stringify({checked:401,failures:failures.length,first:failures[0],last:failures.at(-1)})); if(failures.length)process.exitCode=1;"
++            ],
++            "exit": 1,
++            "stderr": ""
++          }
++        ]
++      }
++    },
++    {
++      "name": "seat-b raw detailed response exists",
++      "pass": true,
++      "evidence": "/private/tmp/ufz-live-isolation/seat-b/response.md"
++    },
++    {
++      "name": "B direct-input package pins captured pair",
++      "pass": true,
++      "evidence": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff"
++    },
++    {
++      "name": "independent mutable outputs remain in each seat",
++      "pass": true,
++      "evidence": {
++        "A": "/private/tmp/ufz-live-isolation/seat-a/repro-output",
++        "B": "/private/tmp/ufz-live-isolation/seat-b/output"
++      }
++    },
++    {
++      "name": "B direct-input final artifact exists",
++      "pass": true,
++      "evidence": "final-review-seat-b-live.md"
++    },
++    {
++      "name": "evaluated product sources unchanged since capture",
++      "pass": true,
++      "evidence": []
++    }
++  ],
++  "pass": true,
++  "observations": 244,
++  "base": "96ba44f6f5ced6166997c74aee1ba374b6c3fe0f",
++  "head": "7ddd110053fb302c4f6a0bd645ddbf28c512c563",
++  "advance1": "25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa",
++  "advance2": "9323074ae09c0501a41d428382f7eac0f2d506b2"
++}

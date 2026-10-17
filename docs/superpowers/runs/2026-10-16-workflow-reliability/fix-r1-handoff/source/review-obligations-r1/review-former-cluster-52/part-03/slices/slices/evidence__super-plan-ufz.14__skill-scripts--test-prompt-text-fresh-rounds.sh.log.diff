@@ -1,0 +1,23 @@
+diff --git a/evidence/super-plan-ufz.14/skill-scripts--test-prompt-text-fresh-rounds.sh.log b/evidence/super-plan-ufz.14/skill-scripts--test-prompt-text-fresh-rounds.sh.log
+new file mode 100644
+index 00000000..2ed86477
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/skill-scripts--test-prompt-text-fresh-rounds.sh.log
+@@ -0,0 +1,17 @@
++fresh-rounds: codex-tools.md
++  [PASS] no resume-the-implementer instruction
++  [PASS] no ban on fresh implementers
++  [PASS] super-code/super-auto fix-rounds bullet
++  [PASS] fresh spawn
++  [PASS] SDD resumes rounds 1-3
++  [PASS] SDD fresh from round 4
++fresh-rounds: coordinator-subagents.md
++  [PASS] fresh agent per round
++  [PASS] steering that adds work is a new round
++  [PASS] bounded improvised brief
++  [PASS] assembler route
++  [PASS] assembler fallback ledger line
++fresh-rounds: coordinator-workflow.md
++  [PASS] improvised-dispatch rule
++  [PASS] rule states the bound
++test-prompt-text-fresh-rounds: all tests passed

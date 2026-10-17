@@ -1,0 +1,47 @@
+diff --git a/evidence/super-plan-ufz.14/pre-rebase-required-results.json b/evidence/super-plan-ufz.14/pre-rebase-required-results.json
+new file mode 100644
+index 00000000..b924a6a0
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/pre-rebase-required-results.json
+@@ -0,0 +1,41 @@
++[
++  {
++    "command": "node tests/super-code/replay-harness.mjs",
++    "code": 1,
++    "signal": null,
++    "seconds": 26.957,
++    "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--replay-harness.mjs.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.225,
++      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--replay-harness.mjs.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-dispatch-text.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 10.41,
++    "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-dispatch-text.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.128,
++      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-dispatch-text.sh.hygiene.log"
++    }
++  },
++  {
++    "command": "bash tests/super-code/test-report-verdict.sh",
++    "code": 0,
++    "signal": null,
++    "seconds": 2.835,
++    "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-report-verdict.sh.log",
++    "hygiene": {
++      "code": 0,
++      "signal": null,
++      "seconds": 2.216,
++      "log": "evidence/super-plan-ufz.14/pre-rebase-super-code--test-report-verdict.sh.hygiene.log"
++    }
++  }
++]

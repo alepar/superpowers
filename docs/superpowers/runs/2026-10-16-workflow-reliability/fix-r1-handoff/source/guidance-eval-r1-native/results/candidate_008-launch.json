@@ -1,0 +1,19 @@
+{
+  "ordinal": 8,
+  "sampleId": "outer-cleanup-after-2",
+  "nativeSampleId": "candidate_008",
+  "family": "outer-cleanup",
+  "arm": "after",
+  "replicate": 2,
+  "agentId": "unavailable",
+  "taskName": "/root/run_native_guidance_eval_ufz_r1/candidate_008",
+  "startedAt": "2026-10-17T14:58:07.381511+00:00",
+  "launchArgumentsSha256": "6bffdd6569ba90142acd2cd23b7280b21baf5eeeaae31d72e0182139f1f19669",
+  "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "providerRequestId": null,
+  "status": "running",
+  "errors": []
+}

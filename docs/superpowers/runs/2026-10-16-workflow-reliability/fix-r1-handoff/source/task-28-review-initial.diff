@@ -1,0 +1,863 @@
+# Review package: 69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551..7d5abfe28d01de5153d5905e48f057869ceb2a5e
+
+## Commits
+7d5abfe2 fix: retain five original live-isolation evidence artifacts
+
+## Files changed
+ .../final-review-seat-b-live.md                    |  29 +
+ .../final-review-seat-b-live.md.diff               |  17 +
+ .../sdd/ufz-live-review-plan/progress.md           |   2 +
+ .../ufz-live-review-plan/ufz-live-review-plan.md   |   2 +
+ .../caller/build/caller-output.txt                 |   1 +
+ .../retained-equivalents/provenance.json           | 761 +++++++++++++++++++++
+ 6 files changed, 812 insertions(+)
+
+## Diff
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md
+new file mode 100644
+index 00000000..222cd1aa
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md
+@@ -0,0 +1,29 @@
++# Seat B review evidence
++
++## Chronological decisions and phase 1
++- Verified both captured commits as commits before reading source. Caller initially had HEAD 7ddd110053fb302c4f6a0bd645ddbf28c512c563 and clean porcelain status.
++- Created unique detached review worktree /private/tmp/ufz-live-isolation/seat-b/review-worktree at captured head and dedicated output/temp directories under seat-b/output. Caller was never switched or restored.
++- Context said assembler was unavailable with controlled exit 3; the requested assembler actually executed successfully with exit 0 and wrote the declared .diff package. Read that package and independently inspected captured git diff and git show inputs. The prior claimed failure is not evidence of present unavailability.
++- Independently read bd spec, spec.json, captured README.md and plan before reading the progress ledger. No design document reference was present.
++- Own finding: Important, lib/format.mjs:1 loses negative sign for every integer from -99 to -1 cents. Math.trunc(cents / 100) becomes negative zero, which string concatenation renders as 0; remainder is made absolute. README explicitly requires retaining these signs. -50 formats as $0.50 instead of $-0.50.
++- Ran captured reproduce.mjs only inside review worktree with dedicated OUT_DIR and TMPDIR. Observed -150 => $-1.50, -50 => $0.50, 0 => $0.00, 50 => $0.50, 150 => $1.50. It modified review-owned lib/generated.mjs and produced review-owned outputs; no caller reproduction was run.
++- Phase 1 findings were written before reading the ledger. No conclusion about cause of any caller changes is supported by differences alone.
++
++## Phase 2 and final evidence
++- After stage2, caller HEAD was 9323074ae09c0501a41d428382f7eac0f2d506b2 and porcelain status was ` M caller-session.txt`. These differ from initial observations. Their cause is not attributed. Never switched, restored or edited caller source.
++- Re-read captured diff and captured lib/format.mjs; both remained identical to phase 1. Review concerns captured head 7ddd110053fb302c4f6a0bd645ddbf28c512c563 regardless of current caller HEAD.
++- Only after recording independent findings, read progress.md. It contains Launch metadata and a statement that assembler is unavailable with controlled exit 3. It contains no recurring minor/blocker clusters, deferred minor findings, parked findings/completions, or BLOCKED-AUTH coverage entries to triage. The requested assembler execution in this seat nevertheless succeeded; that observable result takes precedence over the ledger claim about availability.
++- An additional independent oracle checked all 401 integer inputs from -200 to 200 in review worktree. It returned exit 1 with exactly 99 failures, from -99 through -1. Other tested amounts matched the sign/magnitude oracle.
++- Read seat-b/existing-output.txt; its content was `seat B prior output: preserve exactly` and was left untouched.
++- No sweep result is available. These targeted checks do not establish a whole-epic test sweep. Inputs outside -200..200 were not executed; broad integer limits and noninteger input semantics were not specified or validated.
++- No permission refusals occurred. No caller source writes, caller checkout restoration, branch ref moves, commits, bead mutations, Herdr writes, additional agents, or cleanup were performed. Review-owned worktree and outputs remain for evaluator inventory.
++
++## Verdict
++not ready (negative sub-dollar amounts lose their required sign)
++## Must fix before landing
++- Important: lib/format.mjs:1 must preserve the sign for -99 through -1 cents; all 99 fail the captured README requirement, including -50 producing $0.50 instead of $-0.50.
++## Untested scope
++- No sweep result is available; only captured source inspection, the five-input reproduction and an independent integer oracle covering -200..200 were performed.
++- Caller now points at 9323074ae09c0501a41d428382f7eac0f2d506b2 with caller-session.txt modified; this verdict covers captured head 7ddd110053fb302c4f6a0bd645ddbf28c512c563, not the later checkout.
++## Deferred OK
++- none
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff
+new file mode 100644
+index 00000000..d11e0390
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff
+@@ -0,0 +1,17 @@
++# Review package: 96ba44f6f5ced6166997c74aee1ba374b6c3fe0f..7ddd110053fb302c4f6a0bd645ddbf28c512c563
++
++## Commits
++7ddd110 format cents without floating point
++
++## Files changed
++ lib/format.mjs | 2 +-
++ 1 file changed, 1 insertion(+), 1 deletion(-)
++
++## Diff
++diff --git a/lib/format.mjs b/lib/format.mjs
++index 5d1308b..9d96e25 100644
++--- a/lib/format.mjs
+++++ b/lib/format.mjs
++@@ -1 +1 @@
++-export function formatAmount(cents) { return '$' + (cents / 100).toFixed(2); }
+++export function formatAmount(cents) { return '$' + Math.trunc(cents / 100) + '.' + String(Math.abs(cents % 100)).padStart(2, '0'); }
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/progress.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/progress.md
+new file mode 100644
+index 00000000..f5919ff8
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/progress.md
+@@ -0,0 +1,2 @@
++Launch: args {"epicId": "ufz-live-review", "integrationBranch": "integration", "integrationWorktree": "/private/tmp/ufz-live-isolation/caller", "invocationId": "seat-b-live", "runTag": "live-isolation", "reviewBase": "96ba44f6f5ced6166997c74aee1ba374b6c3fe0f", "reviewHead": "7ddd110053fb302c4f6a0bd645ddbf28c512c563", "config": {"mergeCheck": "none"}}
++assembler: unavailable — controlled fixture exit 3, direct-input review required
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md
+new file mode 100644
+index 00000000..6335fd44
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md
+@@ -0,0 +1,2 @@
++# Fixture review plan
++Review integer-cent formatting against README.md.
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/build/caller-output.txt b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/build/caller-output.txt
+new file mode 100644
+index 00000000..07187bf1
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/caller/build/caller-output.txt
+@@ -0,0 +1 @@
++caller build output immutable
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/retained-equivalents/provenance.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/retained-equivalents/provenance.json
+new file mode 100644
+index 00000000..0b01a619
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/retained-equivalents/provenance.json
+@@ -0,0 +1,761 @@
++{
++  "task": "super-plan-ufz.31",
++  "restorationDate": "2026-10-17",
++  "kind": "historical-artifact-retention-restoration",
++  "baselineCommit": "e3749b014f6939cb82f5e79a33dc020f5b3961f0",
++  "baselineTree": "79fc403800ff3b89c60012d61d7e55f5f0e7099d",
++  "originalManifest": "artifact-manifest.json",
++  "originalManifestSha256": "d243d1672c8aa91015656b6e7bde54a6c0ba6abe138398c9121580f45e1669ac",
++  "before": {
++    "entries": 81,
++    "hashMatches": 76,
++    "missing": [
++      "caller/build/caller-output.txt",
++      "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md"
++    ],
++    "hashMismatches": [],
++    "capturedHead": "612ea0a7e4d64480bdd01e0ac842b539115342ee",
++    "capturedHeadMissing": [
++      "caller/build/caller-output.txt",
++      "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md"
++    ]
++  },
++  "restored": [
++    {
++      "originalIdentity": "caller/build/caller-output.txt",
++      "expectedSha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
++      "retainedLocation": "caller/build/caller-output.txt",
++      "retainedSha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
++      "bytes": 30,
++      "status": "hash-match",
++      "sourceLocation": "/private/tmp/ufz-live-isolation/caller/build/caller-output.txt",
++      "sourceSha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
++      "method": "Exact byte copy from original live-exercise directory; no regeneration."
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "expectedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "retainedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "bytes": 4072,
++      "status": "hash-match",
++      "sourceLocation": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "sourceSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "method": "Exact byte copy from original live-exercise directory; no regeneration."
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "expectedSha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "retainedSha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
++      "bytes": 436,
++      "status": "hash-match",
++      "sourceLocation": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "sourceSha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
++      "method": "Exact byte copy from original live-exercise directory; no regeneration."
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "expectedSha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "retainedSha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
++      "bytes": 597,
++      "status": "hash-match",
++      "sourceLocation": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "sourceSha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
++      "method": "Exact byte copy from original live-exercise directory; no regeneration."
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
++      "expectedSha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
++      "retainedSha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
++      "bytes": 72,
++      "status": "hash-match",
++      "sourceLocation": "/private/tmp/ufz-live-isolation/caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
++      "sourceSha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
++      "method": "Exact byte copy from original live-exercise directory; no regeneration."
++    }
++  ],
++  "after": {
++    "entries": 81,
++    "hashMatches": 81,
++    "missing": [],
++    "hashMismatches": [],
++    "original76ByteIdenticalToBaseline": 76,
++    "manifestUnchanged": true,
++    "historicalReportUnchanged": true
++  },
++  "audit": [
++    {
++      "originalIdentity": "unavailable-assembler.py",
++      "expectedSha256": "dd6d5c6917f1995bb95d386735dbfc95a357273ebc4618a954f8e6d96d6ffcd9",
++      "retainedLocation": "unavailable-assembler.py",
++      "retainedSha256": "dd6d5c6917f1995bb95d386735dbfc95a357273ebc4618a954f8e6d96d6ffcd9",
++      "bytes": 106,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-manifest.json",
++      "expectedSha256": "ea91bd580a3448385127f020cc830cdfb7d60af92244a324de79747ddbde218f",
++      "retainedLocation": "source-manifest.json",
++      "retainedSha256": "ea91bd580a3448385127f020cc830cdfb7d60af92244a324de79747ddbde218f",
++      "bytes": 1742,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "spec.json",
++      "expectedSha256": "dfbc00d37e6d00a221ca3e0b10fc0530bdb8ffd47c34871097afb99f12ae738b",
++      "retainedLocation": "spec.json",
++      "retainedSha256": "dfbc00d37e6d00a221ca3e0b10fc0530bdb8ffd47c34871097afb99f12ae738b",
++      "bytes": 195,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "controller.py",
++      "expectedSha256": "cde9137728108a2ef8ab06a7ef052d43de655e35ffd930acbab5517ee50dc2bc",
++      "retainedLocation": "controller.py",
++      "retainedSha256": "cde9137728108a2ef8ab06a7ef052d43de655e35ffd930acbab5517ee50dc2bc",
++      "bytes": 3025,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "report.md",
++      "expectedSha256": "8b20e8ef30478559d164711c4241bba9477952e768b42afaa605c266e39d38c0",
++      "retainedLocation": "report.md",
++      "retainedSha256": "8b20e8ef30478559d164711c4241bba9477952e768b42afaa605c266e39d38c0",
++      "bytes": 9192,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "identities.json",
++      "expectedSha256": "bfa9653806d0981fd916a405d827e3e0ef4d35c3200d19497c268eabbcc1f92c",
++      "retainedLocation": "identities.json",
++      "retainedSha256": "bfa9653806d0981fd916a405d827e3e0ef4d35c3200d19497c268eabbcc1f92c",
++      "bytes": 255,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "cleanup.py",
++      "expectedSha256": "f16e8c4af2175f837bbab34d84d929a1d4f379cc0b944e319d402e22d9b7282b",
++      "retainedLocation": "cleanup.py",
++      "retainedSha256": "f16e8c4af2175f837bbab34d84d929a1d4f379cc0b944e319d402e22d9b7282b",
++      "bytes": 1546,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "setup.py",
++      "expectedSha256": "cd6b8fd3c745c11fe64fea02ab967fd7e1611db4b347082ebd51f838e2c9fe77",
++      "retainedLocation": "setup.py",
++      "retainedSha256": "cd6b8fd3c745c11fe64fea02ab967fd7e1611db4b347082ebd51f838e2c9fe77",
++      "bytes": 8586,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "record-command.py",
++      "expectedSha256": "46d248ab3c29e7a277a2b7b5c23e25c7a138019fcca5a5c644292f44ddf755c6",
++      "retainedLocation": "record-command.py",
++      "retainedSha256": "46d248ab3c29e7a277a2b7b5c23e25c7a138019fcca5a5c644292f44ddf755c6",
++      "bytes": 1177,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "verify.py",
++      "expectedSha256": "d0cf7808d8f4bdd60c57c10cde2baa572cbfccb86a8014ef263fa383f2a1ba8d",
++      "retainedLocation": "verify.py",
++      "retainedSha256": "d0cf7808d8f4bdd60c57c10cde2baa572cbfccb86a8014ef263fa383f2a1ba8d",
++      "bytes": 5416,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "write-report.py",
++      "expectedSha256": "667e0174b256ca124c18428006fa7a6e395680465dac7e1bdbffd5d604f99132",
++      "retainedLocation": "write-report.py",
++      "retainedSha256": "667e0174b256ca124c18428006fa7a6e395680465dac7e1bdbffd5d604f99132",
++      "bytes": 9171,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-worktree-before-cleanup.tar.gz",
++      "expectedSha256": "e7762274456b71aaa3af2ed8780dba7301839e71d9fc28f74ee4ff606e44917b",
++      "retainedLocation": "evidence/seat-b-worktree-before-cleanup.tar.gz",
++      "retainedSha256": "e7762274456b71aaa3af2ed8780dba7301839e71d9fc28f74ee4ff606e44917b",
++      "bytes": 1320,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-git-trace.jsonl",
++      "expectedSha256": "3274a87b49b3eac4047c0d8848f95339c5557e3b15cbf2df47de11f62babb5cb",
++      "retainedLocation": "evidence/seat-a-git-trace.jsonl",
++      "retainedSha256": "3274a87b49b3eac4047c0d8848f95339c5557e3b15cbf2df47de11f62babb5cb",
++      "bytes": 72074,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/controller-pid",
++      "expectedSha256": "69bf59c08157f7b598a992ddd2b82400cf4f6c83808357efea32f3a460294a36",
++      "retainedLocation": "evidence/controller-pid",
++      "retainedSha256": "69bf59c08157f7b598a992ddd2b82400cf4f6c83808357efea32f3a460294a36",
++      "bytes": 5,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/observations.jsonl",
++      "expectedSha256": "e2eb419049e375e277aa519be7e6e05fb3ce78f0dba966d16422fbb1773d3887",
++      "retainedLocation": "evidence/observations.jsonl",
++      "retainedSha256": "e2eb419049e375e277aa519be7e6e05fb3ce78f0dba966d16422fbb1773d3887",
++      "bytes": 268570,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-commands.jsonl",
++      "expectedSha256": "0508f5a3a7d36bca9266e0a3c1f033576c84e83e5a36a1a7e3ec00934528267f",
++      "retainedLocation": "evidence/seat-a-commands.jsonl",
++      "retainedSha256": "0508f5a3a7d36bca9266e0a3c1f033576c84e83e5a36a1a7e3ec00934528267f",
++      "bytes": 33716,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/pr-args.json",
++      "expectedSha256": "8a3696f6009bd878e57e859e94c17f5209461e7caee21bccd5ac0dd14aa754c9",
++      "retainedLocation": "evidence/pr-args.json",
++      "retainedSha256": "8a3696f6009bd878e57e859e94c17f5209461e7caee21bccd5ac0dd14aa754c9",
++      "bytes": 139791,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/verifier-first.py",
++      "expectedSha256": "a8ef6bc37e74c7814b2190b856676ac20eb362da196b6a411d8322e768f389e7",
++      "retainedLocation": "evidence/verifier-first.py",
++      "retainedSha256": "a8ef6bc37e74c7814b2190b856676ac20eb362da196b6a411d8322e768f389e7",
++      "bytes": 4990,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/verifier-commands.jsonl",
++      "expectedSha256": "02a20e6cf339b6470dd5c47026368c531f2c95a6a494be69be198545f5b933e8",
++      "retainedLocation": "evidence/verifier-commands.jsonl",
++      "retainedSha256": "02a20e6cf339b6470dd5c47026368c531f2c95a6a494be69be198545f5b933e8",
++      "bytes": 18163,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/verifier-git-trace.jsonl",
++      "expectedSha256": "a23890176b845fbef7e532a39ad38ee1daa9a431f1704379fa55f927b5bf9ba1",
++      "retainedLocation": "evidence/verifier-git-trace.jsonl",
++      "retainedSha256": "a23890176b845fbef7e532a39ad38ee1daa9a431f1704379fa55f927b5bf9ba1",
++      "bytes": 151412,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/worktrees-after-cleanup.txt",
++      "expectedSha256": "15244213b39f9395b7c3107266554cbfd900bc86328bf80e7f0a211ddb454f8c",
++      "retainedLocation": "evidence/worktrees-after-cleanup.txt",
++      "retainedSha256": "15244213b39f9395b7c3107266554cbfd900bc86328bf80e7f0a211ddb454f8c",
++      "bytes": 125,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/harness-limitations.txt",
++      "expectedSha256": "ffa533746b9860187d2f707125c72f028bc15574938f60b762bd8fb28dd5a9da",
++      "retainedLocation": "evidence/harness-limitations.txt",
++      "retainedSha256": "ffa533746b9860187d2f707125c72f028bc15574938f60b762bd8fb28dd5a9da",
++      "bytes": 741,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-worktree-files.json",
++      "expectedSha256": "e54dbfec0d37b647177ac43dee31f709d18aed432028013355e9c1240984887d",
++      "retainedLocation": "evidence/seat-a-worktree-files.json",
++      "retainedSha256": "e54dbfec0d37b647177ac43dee31f709d18aed432028013355e9c1240984887d",
++      "bytes": 788,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-final-response.txt",
++      "expectedSha256": "025a09081980972c41ab8ea7f49438b16d5bea630587fa0510a18d4d54234cad",
++      "retainedLocation": "evidence/seat-b-final-response.txt",
++      "retainedSha256": "025a09081980972c41ab8ea7f49438b16d5bea630587fa0510a18d4d54234cad",
++      "bytes": 202,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/agent-dispatch.json",
++      "expectedSha256": "c4197dc640e258be735f0674b31838c53dda7736b6b001a9c8d6e7afffab6baa",
++      "retainedLocation": "evidence/agent-dispatch.json",
++      "retainedSha256": "c4197dc640e258be735f0674b31838c53dda7736b6b001a9c8d6e7afffab6baa",
++      "bytes": 1165,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-worktree-files.json",
++      "expectedSha256": "6da335e7642f0c66e3e1034105264a6ce5ff357ae90c99c4445fd7cee3a79735",
++      "retainedLocation": "evidence/seat-b-worktree-files.json",
++      "retainedSha256": "6da335e7642f0c66e3e1034105264a6ce5ff357ae90c99c4445fd7cee3a79735",
++      "bytes": 788,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/controller-result.json",
++      "expectedSha256": "34df0d82fe5758195b788de9a0f2755cf51015b615ae1895d2525fa13a9defc0",
++      "retainedLocation": "evidence/controller-result.json",
++      "retainedSha256": "34df0d82fe5758195b788de9a0f2755cf51015b615ae1895d2525fa13a9defc0",
++      "bytes": 94,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/controller-commands.jsonl",
++      "expectedSha256": "c0cd7d0222d9df5710f36e4de269f73e321f92f0aad33e02be456046852ee610",
++      "retainedLocation": "evidence/controller-commands.jsonl",
++      "retainedSha256": "c0cd7d0222d9df5710f36e4de269f73e321f92f0aad33e02be456046852ee610",
++      "bytes": 7126,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-internal-worktree-resets.json",
++      "expectedSha256": "d09d6c404d52c5358ad70990a2a78d3e51587ebc6b06b8aa438a574201c9b5d5",
++      "retainedLocation": "evidence/seat-a-internal-worktree-resets.json",
++      "retainedSha256": "d09d6c404d52c5358ad70990a2a78d3e51587ebc6b06b8aa438a574201c9b5d5",
++      "bytes": 323,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/setup-commands.jsonl",
++      "expectedSha256": "a2536f90252ebaffcc08934903784d4e5b3a1f5f1a1dbff6b11e9fa0f99818b8",
++      "retainedLocation": "evidence/setup-commands.jsonl",
++      "retainedSha256": "a2536f90252ebaffcc08934903784d4e5b3a1f5f1a1dbff6b11e9fa0f99818b8",
++      "bytes": 10309,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-commands.jsonl",
++      "expectedSha256": "2d5ea6b66cea773ad2355fa32746a48e105759a8b5c6a3a275b7b49bfb175826",
++      "retainedLocation": "evidence/seat-b-commands.jsonl",
++      "retainedSha256": "2d5ea6b66cea773ad2355fa32746a48e105759a8b5c6a3a275b7b49bfb175826",
++      "bytes": 38102,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-final-response.txt",
++      "expectedSha256": "55c5193e80f03673ff1b28ded76015dcaa273e648843aff4ddf101eb644fbd52",
++      "retainedLocation": "evidence/seat-a-final-response.txt",
++      "retainedSha256": "55c5193e80f03673ff1b28ded76015dcaa273e648843aff4ddf101eb644fbd52",
++      "bytes": 477,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/cleanup.json",
++      "expectedSha256": "297b18da279f5f81481c303a983f3997d9f7f3c647e3831549c8c57fe04c5223",
++      "retainedLocation": "evidence/cleanup.json",
++      "retainedSha256": "297b18da279f5f81481c303a983f3997d9f7f3c647e3831549c8c57fe04c5223",
++      "bytes": 743,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-internal-worktree-resets.json",
++      "expectedSha256": "92d96d7fb7d4b2b54fa58fed1c6f87fb41b9057c48eb1f80435de199a40391de",
++      "retainedLocation": "evidence/seat-b-internal-worktree-resets.json",
++      "retainedSha256": "92d96d7fb7d4b2b54fa58fed1c6f87fb41b9057c48eb1f80435de199a40391de",
++      "bytes": 323,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-git-trace.jsonl",
++      "expectedSha256": "d190a0aae3528c119e0b46c5c1a57f544155e71fa8968237e9381a4e0b069959",
++      "retainedLocation": "evidence/seat-b-git-trace.jsonl",
++      "retainedSha256": "d190a0aae3528c119e0b46c5c1a57f544155e71fa8968237e9381a4e0b069959",
++      "bytes": 85778,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/verification.json",
++      "expectedSha256": "4b986d00060e58474d4ab6d3aeeefd787f27c9eb82ebe6a5d3a7d01fe3264bc1",
++      "retainedLocation": "evidence/verification.json",
++      "retainedSha256": "4b986d00060e58474d4ab6d3aeeefd787f27c9eb82ebe6a5d3a7d01fe3264bc1",
++      "bytes": 6105,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/controller-git-trace.jsonl",
++      "expectedSha256": "780d2136cbed0e4768a10b31dd571023023389d3d882f3795cd70138a35b2219",
++      "retainedLocation": "evidence/controller-git-trace.jsonl",
++      "retainedSha256": "780d2136cbed0e4768a10b31dd571023023389d3d882f3795cd70138a35b2219",
++      "bytes": 45829,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-worktree.diff",
++      "expectedSha256": "02640e8e91627108ef0d124acdcb1fc435ecd6aa8d65c8bad43c894855f50bcc",
++      "retainedLocation": "evidence/seat-a-worktree.diff",
++      "retainedSha256": "02640e8e91627108ef0d124acdcb1fc435ecd6aa8d65c8bad43c894855f50bcc",
++      "bytes": 206,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-a-worktree-before-cleanup.tar.gz",
++      "expectedSha256": "bbba84e68c27ea1d7b83c644c26f3c6cd34c9fcbf649cb67b51fa473041b3fcb",
++      "retainedLocation": "evidence/seat-a-worktree-before-cleanup.tar.gz",
++      "retainedSha256": "bbba84e68c27ea1d7b83c644c26f3c6cd34c9fcbf649cb67b51fa473041b3fcb",
++      "bytes": 1327,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/seat-b-worktree.diff",
++      "expectedSha256": "02640e8e91627108ef0d124acdcb1fc435ecd6aa8d65c8bad43c894855f50bcc",
++      "retainedLocation": "evidence/seat-b-worktree.diff",
++      "retainedSha256": "02640e8e91627108ef0d124acdcb1fc435ecd6aa8d65c8bad43c894855f50bcc",
++      "bytes": 206,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "evidence/verification-first.json",
++      "expectedSha256": "7af7acb819ea1af590129f5cb59e3a6bd94b32a3f4d78009c4cb6b95acdfb8f6",
++      "retainedLocation": "evidence/verification-first.json",
++      "retainedSha256": "7af7acb819ea1af590129f5cb59e3a6bd94b32a3f4d78009c4cb6b95acdfb8f6",
++      "bytes": 6424,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "bin/bd",
++      "expectedSha256": "fc8e72ede88ad7dc9ce6b7ae5b36d05021797c65843a2bf7bfe8a95fd55aad71",
++      "retainedLocation": "bin/bd",
++      "retainedSha256": "fc8e72ede88ad7dc9ce6b7ae5b36d05021797c65843a2bf7bfe8a95fd55aad71",
++      "bytes": 207,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__super-code__coordinator.js",
++      "expectedSha256": "c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c",
++      "retainedLocation": "source-excerpts/skills__super-code__coordinator.js",
++      "retainedSha256": "c0809cda1726438999896b786bf199585d71dd35e949784ef37833c251fb410c",
++      "bytes": 292746,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__super-code__scripts__dispatch-text.mjs",
++      "expectedSha256": "9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda",
++      "retainedLocation": "source-excerpts/skills__super-code__scripts__dispatch-text.mjs",
++      "retainedSha256": "9eef3159838598ca243c1509db1ef18325cdd439af985083f6c12d2aa8f93fda",
++      "bytes": 17789,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__subagent-driven-development__scripts__review-package",
++      "expectedSha256": "bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6",
++      "retainedLocation": "source-excerpts/skills__subagent-driven-development__scripts__review-package",
++      "retainedSha256": "bc5ede61d5579255ad4f167beb3a8035bd3e339b38cf35e604201f65f37dd0a6",
++      "bytes": 2590,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/review-source-and-final.txt",
++      "expectedSha256": "59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd",
++      "retainedLocation": "source-excerpts/review-source-and-final.txt",
++      "retainedSha256": "59a34a2622846567cacbde00a80e04b8f36c280c2da80d12e9201b882184dccd",
++      "bytes": 5244,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__super-roast__scripts__assemble-args.mjs",
++      "expectedSha256": "df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4",
++      "retainedLocation": "source-excerpts/skills__super-roast__scripts__assemble-args.mjs",
++      "retainedSha256": "df42cad6bf4870d5c47d49645067abfdfe7d237699b97adaae7011b9c5e7a8a4",
++      "bytes": 19189,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__super-roast__scout-prompts-pr.md",
++      "expectedSha256": "485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60",
++      "retainedLocation": "source-excerpts/skills__super-roast__scout-prompts-pr.md",
++      "retainedSha256": "485c9378985059ed56eb770b19da8af8e0c01b855285a1bf02380020418b1f60",
++      "bytes": 32980,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "source-excerpts/skills__super-code__task-reviewer-prompt.md",
++      "expectedSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
++      "retainedLocation": "source-excerpts/skills__super-code__task-reviewer-prompt.md",
++      "retainedSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
++      "bytes": 13172,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-a/phase-1.md",
++      "expectedSha256": "de99536ca394fc9866c2caf72c6f16393cad88084c1e70cadc9d300c1fb54700",
++      "retainedLocation": "seat-a/phase-1.md",
++      "retainedSha256": "de99536ca394fc9866c2caf72c6f16393cad88084c1e70cadc9d300c1fb54700",
++      "bytes": 773,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-a/response.md",
++      "expectedSha256": "d3c42296d8fdbc531cacf16c51729dc37621b91082abfcb239a49a3473038c4d",
++      "retainedLocation": "seat-a/response.md",
++      "retainedSha256": "d3c42296d8fdbc531cacf16c51729dc37621b91082abfcb239a49a3473038c4d",
++      "bytes": 2947,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/caller-sentinel.txt",
++      "expectedSha256": "aa116ea1e33d8930bdc304890783acad5e9d7ca1c9396adddf44c60fe18f702f",
++      "retainedLocation": "caller/caller-sentinel.txt",
++      "retainedSha256": "aa116ea1e33d8930bdc304890783acad5e9d7ca1c9396adddf44c60fe18f702f",
++      "bytes": 33,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/reproduce.mjs",
++      "expectedSha256": "932455a50da5b0ffe832cdbe1b04845ba145fbe4b7206f8ce3eb42f5530b2104",
++      "retainedLocation": "caller/reproduce.mjs",
++      "retainedSha256": "932455a50da5b0ffe832cdbe1b04845ba145fbe4b7206f8ce3eb42f5530b2104",
++      "bytes": 608,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/README.md",
++      "expectedSha256": "0f56ce29dfc14e2af8e13dfbadcafa892d09d13b146fee3f65f6b8381b08711b",
++      "retainedLocation": "caller/README.md",
++      "retainedSha256": "0f56ce29dfc14e2af8e13dfbadcafa892d09d13b146fee3f65f6b8381b08711b",
++      "bytes": 255,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/caller-session.txt",
++      "expectedSha256": "bc18b033081ea19a51a852df7efc2fc1e7581ed08d6b23bb1e06eaf0183a89b9",
++      "retainedLocation": "caller/caller-session.txt",
++      "retainedSha256": "bc18b033081ea19a51a852df7efc2fc1e7581ed08d6b23bb1e06eaf0183a89b9",
++      "bytes": 53,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/.gitignore",
++      "expectedSha256": "61477fa955b66813bcda54211958ed1264e5ec5c4d6c85b2633f8b88fa69bded",
++      "retainedLocation": "caller/.gitignore",
++      "retainedSha256": "61477fa955b66813bcda54211958ed1264e5ec5c4d6c85b2633f8b88fa69bded",
++      "bytes": 21,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/integration.txt",
++      "expectedSha256": "8c9eae4edcd40cdb8b62bf7603cb0cf608519b69abc5afc24405d7b48de81fe9",
++      "retainedLocation": "caller/integration.txt",
++      "retainedSha256": "8c9eae4edcd40cdb8b62bf7603cb0cf608519b69abc5afc24405d7b48de81fe9",
++      "bytes": 36,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "prompts/seat-b-operative.md",
++      "expectedSha256": "5c25497eac9e6647414e95e7d25169dc07cb3ba7a545237b0b3302943c85c44e",
++      "retainedLocation": "prompts/seat-b-operative.md",
++      "retainedSha256": "5c25497eac9e6647414e95e7d25169dc07cb3ba7a545237b0b3302943c85c44e",
++      "bytes": 5646,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "prompts/seat-b-task.md",
++      "expectedSha256": "8e6b16e43e008bb2076ed26f35d58ccc1b3d4e08673cc4a0ffa73b11e3b94376",
++      "retainedLocation": "prompts/seat-b-task.md",
++      "retainedSha256": "8e6b16e43e008bb2076ed26f35d58ccc1b3d4e08673cc4a0ffa73b11e3b94376",
++      "bytes": 2609,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "prompts/seat-a-operative.md",
++      "expectedSha256": "c84d81a64281e6724f59f2f984d35c15186c81c660c52a038a58a1e9212e5d11",
++      "retainedLocation": "prompts/seat-a-operative.md",
++      "retainedSha256": "c84d81a64281e6724f59f2f984d35c15186c81c660c52a038a58a1e9212e5d11",
++      "bytes": 6572,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "prompts/seat-a-task.md",
++      "expectedSha256": "c821a0a539d5303933827ef4dc9fd601f65f751cc9cb5effee48e72f4a86fa8f",
++      "retainedLocation": "prompts/seat-a-task.md",
++      "retainedSha256": "c821a0a539d5303933827ef4dc9fd601f65f751cc9cb5effee48e72f4a86fa8f",
++      "bytes": 2506,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-b/existing-output.txt",
++      "expectedSha256": "56f7f4069d3219ba689341f8e85482abd327ba50da39abe63054f647c1c88529",
++      "retainedLocation": "seat-b/existing-output.txt",
++      "retainedSha256": "56f7f4069d3219ba689341f8e85482abd327ba50da39abe63054f647c1c88529",
++      "bytes": 38,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-b/response.md",
++      "expectedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "retainedLocation": "seat-b/response.md",
++      "retainedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "bytes": 4072,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/seat-b.phase1",
++      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "retainedLocation": "control/seat-b.phase1",
++      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/seat-a.ready",
++      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "retainedLocation": "control/seat-a.ready",
++      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/stage1",
++      "expectedSha256": "cb92c7e5b5a877bc40530f2e636f20fd323171ab4c468cb7e6ebc06efbf51551",
++      "retainedLocation": "control/stage1",
++      "retainedSha256": "cb92c7e5b5a877bc40530f2e636f20fd323171ab4c468cb7e6ebc06efbf51551",
++      "bytes": 41,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/seat-b.ready",
++      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "retainedLocation": "control/seat-b.ready",
++      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/finished",
++      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "retainedLocation": "control/finished",
++      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/seat-a.phase1",
++      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "retainedLocation": "control/seat-a.phase1",
++      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++      "bytes": 0,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "control/stage2",
++      "expectedSha256": "5918089f20e374d70361429ff98b8dc43f7a4ba30c712e3a9569002273c2230a",
++      "retainedLocation": "control/stage2",
++      "retainedSha256": "5918089f20e374d70361429ff98b8dc43f7a4ba30c712e3a9569002273c2230a",
++      "bytes": 41,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-b/output/build/amounts.json",
++      "expectedSha256": "5e67038bd1d7bf0d0bc0ebf6f58c47ba32e291c1dbed196882a98aea36138d39",
++      "retainedLocation": "seat-b/output/build/amounts.json",
++      "retainedSha256": "5e67038bd1d7bf0d0bc0ebf6f58c47ba32e291c1dbed196882a98aea36138d39",
++      "bytes": 247,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-b/output/tmp/repro-temp.txt",
++      "expectedSha256": "3cde2f6f52ba0ea1f5b9121f2d646326acc5258a3ba5b3c828f27cf847f86e19",
++      "retainedLocation": "seat-b/output/tmp/repro-temp.txt",
++      "retainedSha256": "3cde2f6f52ba0ea1f5b9121f2d646326acc5258a3ba5b3c828f27cf847f86e19",
++      "bytes": 24,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/lib/generated.mjs",
++      "expectedSha256": "f5d2e8f319f757ef6e661b3647daef5fc3dfef1ba03d4c7895a0827af50ff552",
++      "retainedLocation": "caller/lib/generated.mjs",
++      "retainedSha256": "f5d2e8f319f757ef6e661b3647daef5fc3dfef1ba03d4c7895a0827af50ff552",
++      "bytes": 32,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/lib/format.mjs",
++      "expectedSha256": "6bd929261aef2c32c8862489ae0857478865d85e5323b0562bc9c570d103beea",
++      "retainedLocation": "caller/lib/format.mjs",
++      "retainedSha256": "6bd929261aef2c32c8862489ae0857478865d85e5323b0562bc9c570d103beea",
++      "bytes": 168,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/build/caller-output.txt",
++      "expectedSha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
++      "retainedLocation": "caller/build/caller-output.txt",
++      "retainedSha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
++      "bytes": 30,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "expectedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
++      "retainedSha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
++      "bytes": 4072,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "expectedSha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
++      "retainedSha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
++      "bytes": 436,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "expectedSha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
++      "retainedSha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
++      "bytes": 597,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
++      "expectedSha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
++      "retainedLocation": "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
++      "retainedSha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
++      "bytes": 72,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-a/repro-output/amounts.json",
++      "expectedSha256": "5e67038bd1d7bf0d0bc0ebf6f58c47ba32e291c1dbed196882a98aea36138d39",
++      "retainedLocation": "seat-a/repro-output/amounts.json",
++      "retainedSha256": "5e67038bd1d7bf0d0bc0ebf6f58c47ba32e291c1dbed196882a98aea36138d39",
++      "bytes": 247,
++      "status": "hash-match"
++    },
++    {
++      "originalIdentity": "seat-a/repro-output/repro-temp.txt",
++      "expectedSha256": "3cde2f6f52ba0ea1f5b9121f2d646326acc5258a3ba5b3c828f27cf847f86e19",
++      "retainedLocation": "seat-a/repro-output/repro-temp.txt",
++      "retainedSha256": "3cde2f6f52ba0ea1f5b9121f2d646326acc5258a3ba5b3c828f27cf847f86e19",
++      "bytes": 24,
++      "status": "hash-match"
++    }
++  ],
++  "archiveInspection": {
++    "archives": [
++      "evidence/seat-a-worktree-before-cleanup.tar.gz",
++      "evidence/seat-b-worktree-before-cleanup.tar.gz"
++    ],
++    "missingBasenamesFound": [],
++    "finalReviewDuplicate": "seat-b/response.md",
++    "duplicateSuppliesOnly": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md"
++  },
++  "retentionNotes": [
++    "All five artifacts were restored at their original manifest identities, so no equivalent mapping or original expected hash change is needed.",
++    "Force-add the five original paths because build and .superpowers fixture directories are ignored. Verify their committed Git blobs, not just worktree existence.",
++    "This repair preserves all original historical observations, failures, source revisions and limitations. It supplies retention evidence only; no live behavioral exercise was rerun.",
++    "The unchanged report raw-evidence map now resolves to the actual direct-input diff package, final review, fixture plan and progress ledger; caller output sentinel is retained separately at its original manifest path.",
++    "Caller-owned final sweep, behavioral assessment, independent review and root/human acceptance remain pending."
++  ]
++}

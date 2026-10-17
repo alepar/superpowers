@@ -1,0 +1,506 @@
+{
+  "cases": [
+    {
+      "caseId": "A",
+      "deliveryState": "Merge and acceptance complete; phase done may coexist with pending cleanup.",
+      "removeNow": [
+        "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format"
+      ],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "reason": "Exit 3 retained unique uncommitted scratch/tenant-debug.txt."
+        },
+        {
+          "path": "/tmp/atlas-task-quota-tmp",
+          "reason": "Contains the retained child's unique repro.json."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Contains the retained child; final parent process verification is pending."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Common temporary resources remain protected while the dependent child is retained."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Final parent/run/common-temp inspection has not occurred."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ],
+        "verifiedLeaf": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format"
+      },
+      "orderedActions": [
+        "From /tmp/atlas-guidance, persist the exit-3 retention, exact dependencies and pending parent inspection in run.md and report.md Remaining before deleting anything.",
+        "Remove only the independently verified leaf with git worktree remove /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format.",
+        "Reconcile git worktree list --porcelain and the filesystem inventory; retain the quota child, both dependent temporary roots and outer parent.",
+        "Record phase: done and clear the run marker after preserving the delivery and cleanup facts; archive these durable records outside the retained worktree.",
+        "Defer final parent verification and parent removal until the retained child and its dependencies are safely resolved."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — exit 3, unique uncommitted diagnosis; /tmp/atlas-task-quota-tmp — unique associated repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; /tmp/atlas-run-tmp — dependent common temporary root retained",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: final parent/run/common-temp verification pending; these are recorded outcomes, not a verified absence of processes",
+        "report Remaining": "Cleanup pending for the quota child, its repro root, the common temporary root and containing outer worktree. The clean format leaf may be removed independently.",
+        "helperExits": [
+          "Actual leaf sweep: 3.",
+          "Format leaf process check: confirmed successful.",
+          "Final parent process check: not executed."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "Inspect and preserve the quota child's unique diagnosis and repro without deleting either. After their retention is resolved, perform fresh leaf cleanup, reconcile inventory, then invoke the final parent/run/temp process check from /tmp/atlas-guidance.",
+      "humanHandback": "Merged and accepted. The clean format leaf can be removed; quota diagnosis, repro and their containing resources remain intact with cleanup pending."
+    },
+    {
+      "caseId": "B",
+      "deliveryState": "Merge and acceptance complete; cleanup remains pending.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "reason": "Actual cleanup exit 4 left process inspection unknown despite clean, merged Git content."
+        },
+        {
+          "path": "/tmp/atlas-task-quota-tmp",
+          "reason": "Required by the child's test process; inspection was unavailable."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Containing parent of the unchecked child."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Common temporary root remains protected while the dependent child/process is retained."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "/tmp/atlas-task-quota-tmp"
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "Use /tmp/atlas-guidance as cwd. Retain the named child and dependent temporary resources now.",
+        "Persist the actual exit 4 and unknown inspection in codeBuckets.worktreesKept, codeBuckets.processSweep and report.md Remaining.",
+        "Preserve the later unrelated wrapper's zero result as a separate observation; do not use it to clear the quota obligation.",
+        "Record phase: done, preserve and archive the cleanup facts, and clear the run marker without deleting retained resources.",
+        "Recover inspection capability and check the exact child/temp roots first. Reconcile inventory before attempting final parent verification."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — exit 4, inspection unavailable; /tmp/atlas-task-quota-tmp — test-process dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; /tmp/atlas-run-tmp — dependent common temporary root retained",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: quota child/temp inspection unavailable; final parent inspection pending; no survival was observed",
+        "report Remaining": "Retain the exact quota child, child temp, common temp and outer parent until fresh inspection establishes their safety.",
+        "helperExits": [
+          "Actual task cleanup: 4.",
+          "Unrelated leaf wrapper: 0; supplies no quota-child verification.",
+          "Final parent verification: pending."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "From /tmp/atlas-guidance, once inspection is available, run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota /tmp/atlas-task-quota-tmp and capture the actual invocation, output and exit. This proposed check has no observed result yet.",
+      "humanHandback": "Merged and accepted. Cleanup is pending because quota process inspection was unavailable; no surviving process was established."
+    },
+    {
+      "caseId": "C",
+      "deliveryState": "Merge and acceptance complete; cleanup remains pending because processes survived or were deliberately preserved.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Required by surviving pid 4102 and contains the run directory used by kept pid 4103."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "reason": "Required by deliberately kept interactive-terminal pid 4103."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Required by surviving pid 4102."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [
+          {
+            "pid": 4101,
+            "resource": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas"
+          }
+        ],
+        "survived": [
+          {
+            "pid": 4102,
+            "resources": [
+              "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+              "/tmp/atlas-run-tmp"
+            ]
+          }
+        ],
+        "unknown": [],
+        "kept": [
+          {
+            "pid": 4103,
+            "reason": "Interactive terminal deliberately preserved.",
+            "resource": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas"
+          }
+        ],
+        "uncheckedRoots": []
+      },
+      "orderedActions": [
+        "From /tmp/atlas-guidance, preserve the outer worktree, run directory and common temporary root now.",
+        "Write the actual exit-3 result and distinct stopped/survived/kept facts into run.md and report.md Remaining.",
+        "Record phase: done, archive the updated durable records outside the worktree and clear the marker.",
+        "Do not delete the run directory because pid 4101 stopped: pid 4103 still requires it, and pid 4102 still requires its containing parent and common temporary root.",
+        "Leave deliberately kept pid 4103 intact. Recheck owned-process outcomes through the existing helper when the survivor can be resolved and the interactive resource is no longer deliberately retained."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas — surviving pid 4102 and kept pid 4103 dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — kept interactive terminal pid 4103; /tmp/atlas-run-tmp — surviving pid 4102 dependency",
+        "codeBuckets.processSweep": "stopped 1 · survived 1 · unknown 0 · kept 1 — stopped: pid 4101; survived: pid 4102 using outer worktree and common temp; kept: pid 4103 interactive terminal using run directory",
+        "report Remaining": "Outer worktree, run directory and common temp retained for pid 4102 and pid 4103. Stopping pid 4101 does not release resources shared with those processes.",
+        "helperExits": [
+          "Actual final parent/run/temp helper: 3.",
+          "No subsequent successful verification."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "Reinspect the exact parent/run/temp roots from /tmp/atlas-guidance using stop-run-processes with unchanged ownership matching. Capture any remaining survived or kept outcomes; removal requires a fresh verified-clear result after deliberate retention ends.",
+      "humanHandback": "Merged and accepted. Cleanup remains pending for surviving pid 4102 and deliberately kept interactive terminal pid 4103; their exact worktree/run/temp resources remain intact."
+    },
+    {
+      "caseId": "D",
+      "deliveryState": "Merge and acceptance complete; parent cleanup pending. Independent leaf cleanup may proceed through its own verification.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format",
+          "reason": "Retain until its own actual leaf process verification succeeds; parent refusal supplies no leaf result."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "reason": "Contains unique uncommitted scratch/tenant-debug.txt."
+        },
+        {
+          "path": "/tmp/atlas-task-quota-tmp",
+          "reason": "Contains the dirty child's unique repro.json."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Contains retained children; parent process check was refused."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Common temporary dependency remains protected while the quota child is retained."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Parent inspection refused because its root contains registered children."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "/tmp/atlas-task-quota-tmp",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "Use /tmp/atlas-guidance as cwd. Record the actual parent helper exit 2 as unknown inspection; remove no resource on that evidence.",
+        "Persist the dirty child/temp retention, containing parent, common-temp dependency and pending leaf/parent checks in run.md and report.md Remaining.",
+        "Run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format. Capture its actual exit and output before deleting this leaf.",
+        "If that check establishes verified-clear safety, remove only task-format with ordinary git worktree remove. Its verification result is not supplied by this snapshot.",
+        "Retain task-quota, its temp, the common temp and the outer worktree. Do not retry with the whole repository root, kill by command name or traverse process families.",
+        "After all retained descendants and dependencies are resolved, reconcile inventory and perform final parent/run/temp verification. Delivery may be recorded done while these checks remain pending."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format — leaf process check pending; /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — unique dirty diagnosis; /tmp/atlas-task-quota-tmp — unique repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — retained descendants and refused parent check; /tmp/atlas-run-tmp — dependent common temporary root",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: parent inspection refused, exit 2; leaf inspection results remain pending",
+        "report Remaining": "Parent process inspection is unknown, not a survival or termination observation. Quota evidence and dependent roots remain retained. Format leaf cleanup awaits its own check.",
+        "helperExits": [
+          "Actual broad parent stop-run-processes: 2.",
+          "Proposed format leaf check: no result yet."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "From /tmp/atlas-guidance, check only /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format with the real stop-run-processes helper, then act on its captured result.",
+      "humanHandback": "Merged and accepted. A safe independent leaf check can continue; the dirty quota child, repro and containing resources remain preserved. The parent refusal will not be bypassed."
+    },
+    {
+      "caseId": "E",
+      "deliveryState": "Merge and acceptance complete; final parent cleanup unconfirmed.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "No confirmed final parent/root process inspection."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "reason": "Run root remains unchecked and lies inside the retained parent."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Final process inspection is unconfirmed."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Wrapper skipped the unavailable helper.",
+          "Separate parent-check dispatch has no result."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "From /tmp/atlas-guidance, retain the parent and common temporary root now.",
+        "Record wrapper exit 0 together with its explicit skipped-launch log; record the separate dispatch result as missing. Neither establishes helper execution.",
+        "Write unknown final inspection and the retained paths into run.md and report.md Remaining, preserve the authoritative status and archive the updated records.",
+        "Record phase: done and clear the marker without claiming cleanup completed.",
+        "Recover the helper path and reconcile the outstanding dispatch before a fresh final-root check. Capture a real helper invocation and result before any deletion."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas — final helper unavailable and dispatch result missing; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — unchecked run root; /tmp/atlas-run-tmp — unchecked dependent temporary root",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: outer, run and common-temp roots lack confirmed final inspection",
+        "report Remaining": "Parent and common temp preserved pending actual final helper execution. Successful leaf sweeps and empty wrapper stdout supply no parent verification.",
+        "helperExits": [
+          "Wrapper: 0, but actual helper launch was skipped.",
+          "Separate parent-check dispatch: result missing.",
+          "Actual final helper exit: unavailable."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "After recovering the helper and reconciling the missing dispatch, run from /tmp/atlas-guidance: bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas /tmp/atlas-run-tmp. Retain the actual invocation, exit and inspection facts.",
+      "humanHandback": "Merged and accepted. Parent and common temp remain because final inspection never produced a confirmed helper result."
+    },
+    {
+      "caseId": "F",
+      "deliveryState": "Merge and acceptance complete; verified-clear cleanup may proceed.",
+      "removeNow": [
+        "/tmp/atlas-run-tmp",
+        "/tmp/atlas-guidance/.worktrees/super-auto-atlas"
+      ],
+      "preserveNow": [],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [],
+        "kept": [],
+        "uncheckedRoots": [],
+        "verifiedClearRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "Keep cwd at /tmp/atlas-guidance. Retain the already written and externally archived run/report facts, reconciled inventory and actual final-helper invocation/result.",
+        "The required order is satisfied: leaf-first cleanup and inventory reconciliation, state/report preservation, then confirmed final parent/run/temp verification with exit 0 before resource deletion.",
+        "Ensure phase: done and the cleared run marker are durably recorded outside the soon-to-be-removed worktree; preserve the authoritative report status.",
+        "Remove the verified-clear common temporary root with ordinary directory deletion restricted to /tmp/atlas-run-tmp.",
+        "Run git worktree remove /tmp/atlas-guidance/.worktrees/super-auto-atlas, then git worktree prune.",
+        "After successful worktree removal, run git branch -d super-auto/atlas. Record actual deletion results in the external cleanup record; a removal refusal would require retaining the resource and investigating without force."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 0 · kept 0 — confirmed real fail-closed helper execution, exit 0, legitimately empty stdout, inspection available",
+        "report Remaining": "No pending cleanup obligation; retain the verified inventory and helper evidence in the external archive.",
+        "helperExits": [
+          "Leaf cleanup: verified successful.",
+          "Final parent/run/common-temp helper: confirmed executed, exit 0.",
+          "Resource deletion results: record only after executing the proposed removals."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "After ordinary removals, inspect git worktree list --porcelain and confirm the named temporary root is absent; record the actual outcomes without rerunning delivery or requesting another merge choice.",
+      "humanHandback": "Merged and accepted. Verified-clear parent and temporary resources can now be removed, followed by deletion of the merged run branch."
+    },
+    {
+      "caseId": "G",
+      "deliveryState": "Already phase done with marker cleared; resume only the recorded pending cleanup.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "reason": "Earlier exit-4 inspection obligation has no fresh discharge."
+        },
+        {
+          "path": "/tmp/atlas-task-quota-tmp",
+          "reason": "Retained dependency of the unchecked quota child."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Durably retained containing parent."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Keep any existing common run-temp dependency while the quota resource remains retained."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Recorded quota-child/temp process inspection remains unavailable or unverified."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota",
+          "/tmp/atlas-task-quota-tmp",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ],
+        "separateSuccessfulScope": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format"
+      },
+      "orderedActions": [
+        "From /tmp/atlas-guidance, read and reconcile the recorded quota-child/temp retention with current registered and unregistered resource inventory.",
+        "Preserve the prior exit-4 facts in run.md and report.md Remaining. The format-only successful sweep does not discharge them.",
+        "Leave phase: done and the cleared marker unchanged. Do not merge again, repeat the integration menu or erase retained facts.",
+        "Check the exact quota leaf and its temporary root with the real helper. Retain them until its actual result supports cleanup.",
+        "Only after named retention is freshly resolved and leaf cleanup is reconciled may final parent/run/temp verification enable parent removal."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — historical exit 4 still unresolved; /tmp/atlas-task-quota-tmp — retained dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; existing /tmp/atlas-run-tmp dependency remains protected",
+        "codeBuckets.processSweep": "Preserve the prior unknown inspection facts and counts; append the format-only success with its exact scope without replacing the unresolved quota or parent obligations.",
+        "report Remaining": "Previously recorded quota-child/temp and parent retention remains pending. Name the historical exit 4 and require fresh verification of those exact resources.",
+        "helperExits": [
+          "Historical quota task cleanup: 4, unresolved.",
+          "Later format-only sweep: successful; no quota coverage.",
+          "Fresh quota and final parent checks: no result yet."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "From /tmp/atlas-guidance, run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota /tmp/atlas-task-quota-tmp and capture its actual result. Reconcile resource inventory before any later parent check.",
+      "humanHandback": "The run remains delivered and done. Tidying resumes at the unresolved quota inspection; the recorded child, repro and containing parent remain intact."
+    },
+    {
+      "caseId": "H",
+      "deliveryState": "Merge and acceptance complete; cleanup pending for unregistered unique evidence and final inspection.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes",
+          "reason": "Contains unique unarchived session.txt diagnosis from an interrupted child."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Contains the only associated repro."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Contains required unarchived ignored evidence; final parent verification pending."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Orphan resource and final parent/run/temp process inspection remain unconfirmed."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "From /tmp/atlas-guidance, add the unregistered orphan-notes directory and common-temp repro to the retained-resource inventory.",
+        "Before removal, write their exact paths, uniqueness and unarchived status into run.md and report.md Remaining; preserve the authoritative report status.",
+        "Archive the diagnosis and associated repro outside the outer worktree, preserving relative identity and verifying the copies. A proposed archive is not completed preservation.",
+        "Check ownership/process safety for the orphan leaf and its temporary dependency from outside their roots before any deletion.",
+        "After evidence preservation and leaf cleanup are actually confirmed, reconcile filesystem and registered-worktree inventory, then perform final parent/run/temp verification.",
+        "Record phase: done and clear the marker after durable handback facts are preserved, while retaining all currently unresolved resources."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes — unique unarchived session.txt; /tmp/atlas-run-tmp — only associated repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent and pending final verification",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: final parent/run/temp inspection pending; orphan resource process coverage unestablished",
+        "report Remaining": "Retain /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes/session.txt and its only repro in /tmp/atlas-run-tmp, together with the containing parent, until verified preservation and process-safe cleanup.",
+        "helperExits": [
+          "Actual task sweep: 0; does not establish preservation or safety of the discovered unregistered evidence.",
+          "Final parent process verification: pending."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "Verify an external archive of session.txt and the associated repro, then inspect their exact resource roots using unchanged helper ownership matching. No parent deletion before the subsequent final parent/run/temp check succeeds.",
+      "humanHandback": "Merged and accepted. Unique interrupted-child diagnosis and its only repro remain preserved in place; archiving and final process verification are pending."
+    },
+    {
+      "caseId": "I",
+      "deliveryState": "Merge and acceptance complete; cleanup waits for the scheduled final parent check.",
+      "removeNow": [],
+      "preserveNow": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "reason": "Final parent process verification has only been scheduled."
+        },
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "reason": "Run root remains pending final verification."
+        },
+        {
+          "path": "/tmp/atlas-run-tmp",
+          "reason": "Final temporary-root inspection has not executed."
+        }
+      ],
+      "processOutcomes": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "Final parent/run/temp verification pending execution."
+        ],
+        "kept": [],
+        "uncheckedRoots": [
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas",
+          "/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas",
+          "/tmp/atlas-run-tmp"
+        ]
+      },
+      "orderedActions": [
+        "Use /tmp/atlas-guidance as cwd and preserve the parent and common temporary root now.",
+        "Persist final-verification-pending facts in run.md and report.md Remaining and archive them outside the outer worktree; preserve the authoritative status.",
+        "Execute the scheduled real final helper check for the exact parent, run and common-temp roots; retain actual invocation, output and exit.",
+        "Only a confirmed successful inspection with no survived, unknown or kept outcomes, together with the reconciled clear inventory, enables ordinary temporary-root and worktree deletion.",
+        "Record phase: done and clear the marker independently of cleanup completion. Do not repeat the merge choice."
+      ],
+      "durableFacts": {
+        "codeBuckets.worktreesKept": "/tmp/atlas-guidance/.worktrees/super-auto-atlas — final parent verification pending; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — pending run-root verification; /tmp/atlas-run-tmp — pending final inspection",
+        "codeBuckets.processSweep": "stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: outer, run and common-temp final checks scheduled but not executed",
+        "report Remaining": "Parent and common temp retained until actual final helper execution and captured verified-clear result. Successful leaf checks do not discharge this pending step.",
+        "helperExits": [
+          "Actual leaf sweep: 0.",
+          "Actual leaf process verification: 0.",
+          "Final parent/run/temp helper: not executed; no exit exists."
+        ],
+        "reportStatus": "Preserve the authoritative status line."
+      },
+      "nextSafeCheck": "From /tmp/atlas-guidance execute bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas /tmp/atlas-run-tmp. Capture actual execution and exit; confirmed exit 0 with clear inspection may enable removal, but no such outcome is asserted now.",
+      "humanHandback": "Merged and accepted. Cleanup waits only for the final parent/run/temp process check; the resources remain intact until its actual result is verified."
+    }
+  ]
+}

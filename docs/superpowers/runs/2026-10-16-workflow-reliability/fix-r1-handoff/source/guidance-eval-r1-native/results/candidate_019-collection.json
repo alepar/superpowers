@@ -1,0 +1,1253 @@
+{
+  "ordinal": 19,
+  "sampleId": "outer-cleanup-after-5",
+  "nativeSampleId": "candidate_019",
+  "family": "outer-cleanup",
+  "arm": "after",
+  "replicate": 5,
+  "agentId": "01a14a67-fb72-7233-bc81-c0c122586add",
+  "taskName": "/root/run_native_guidance_eval_ufz_r1/candidate_019",
+  "startedAt": "2026-10-17T15:08:11.006Z",
+  "launchArgumentsSha256": "1d0a98b2ffada6ec52f013b68b6854a2255c92aa2d364c5c64444a76b4962ea4",
+  "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "fork_turns": "none",
+  "providerRequestId": null,
+  "status": "completed",
+  "errors": [],
+  "cliVersion": "0.163.0",
+  "sourceSessionPath": "/Users/alepar/.aisw/profiles/codex/protonmail/sessions/2026/10/17/rollout-2026-10-17T08-08-11-01a14a67-fb72-7233-bc81-c0c122586add.jsonl",
+  "observedConfiguration": [
+    {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    }
+  ],
+  "automatedToolReviewFlags": [
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:15.516Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f5db098819bb9b79c6e7436555d",
+          "status": "completed",
+          "call_id": "call_f722f5a585d546bea146d2eeee4f8df1",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 0\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249693.6963358
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:19.500Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f60cd30819ba3dc7347e4c8d5e0",
+          "status": "completed",
+          "call_id": "call_09cfeb4d123b4563bf529b2248b86677",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 12000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249696.8086782
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:23.851Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f659600819bb7aaf0e1f4159bfc",
+          "status": "completed",
+          "call_id": "call_375599eefb5d4cf4851f11e3251bf90e",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 24000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249701.6157942
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:27.434Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f69b4f8819ba0e033c89f0c84cb",
+          "status": "completed",
+          "call_id": "call_1dda69287f7e4a93829ac75fa8f7cec5",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 36000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249705.7528358
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:30.788Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f6cefe0819ba0b847daa26da236",
+          "status": "completed",
+          "call_id": "call_37ca1bfec49445949e210a034dd8b2fb",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 48000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249708.942682
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:34.230Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f706dc0819bab180d5a78e0828e",
+          "status": "completed",
+          "call_id": "call_39ff9a255442485ab15ec12ec15bef26",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 60000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249712.4399898
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:37.356Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f738f1c819b99be09114224375b",
+          "status": "completed",
+          "call_id": "call_fc7c0256bc5c4a1c9b1898306b295f79",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 72000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249715.5656385
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:40.626Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f76e354819ba87e81d78dc9a589",
+          "status": "completed",
+          "call_id": "call_44815748a37b48259b2d8f194eb21aa4",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 84000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249718.893135
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:44.730Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f7ab4c8819b9017736505197afe",
+          "status": "completed",
+          "call_id": "call_f6de27ef20bd401b9d931fd52fea054e",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 96000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249722.7120173
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:48.129Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f7e2de0819ba26cf43b7240e5f0",
+          "status": "completed",
+          "call_id": "call_d578e746946f4f4386c3cd05895c7d43",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 108000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249726.1838732
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:52.326Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f821a2c819b937271bb8e550c73",
+          "status": "completed",
+          "call_id": "call_3333dd1033ae4b0ca8471bb6a41c9b74",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 120000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249730.108246
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:08:57.260Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f878210819bbb1fa1fec8de4865",
+          "status": "completed",
+          "call_id": "call_16dd5a4849954b78adab95dc4e98c602",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 132000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249735.5131104
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:09:02.566Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f8c177c819bad2b7737e216091e",
+          "status": "completed",
+          "call_id": "call_613c7fbae28e4046a6257e75f5e2edf4",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 144000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249740.0978172
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:09:06.157Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f903384819ba80b4886ad0fc75e",
+          "status": "completed",
+          "call_id": "call_6e8195331e9f49b7a619799a91e4e50e",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 0 156000\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249744.2351367
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    },
+    {
+      "call": {
+        "timestamp": "2026-10-17T15:09:09.823Z",
+        "payload": {
+          "type": "custom_tool_call",
+          "id": "ctc_010d4d2f3bcbdee1016ad38f940bbc819b9459449901e1e10d",
+          "status": "completed",
+          "call_id": "call_cfe4fa881a75442d9329901e3a8bb9c1",
+          "name": "exec",
+          "input": "text(await tools.exec_command({cmd:\"python3 /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/loader.py /Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/guidance-eval-r1-native/payloads/p46.json 1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70 1 0\",max_output_tokens:16000}));\n",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+            "create_time": 1792249748.149156
+          }
+        }
+      },
+      "flag": "Review complete tool call for intake-only compliance"
+    }
+  ],
+  "finishedAt": "2026-10-17T15:11:07.963Z",
+  "responsePath": "results/responses/candidate_019.txt",
+  "responseSha256": "c8fc2daf6229af73f3fbea8a9deeddcf5f4dda3ec9ed8e68e8795591ad1413f5",
+  "responseBytes": 32655,
+  "transcriptPath": "results/transcripts/candidate_019.jsonl",
+  "transcriptSha256": "9dcc750ef8905294765cfb7300e938f978945897bcf519e28a294702c2db0d37",
+  "intakeExpectedChunks": 15,
+  "intakeObservedChunks": 15,
+  "intakeComplete": true,
+  "intakeReceipts": [
+    {
+      "timestamp": "2026-10-17T15:08:15.605Z",
+      "receipt": {
+        "chunkSha256": "144e2473c881ab3ff5e812e88f5b0c2a5c420567a6558737dbec52dfe82755af",
+        "endExclusive": 12000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 0
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:19.618Z",
+      "receipt": {
+        "chunkSha256": "5ce1785aa927be5e8e9688c96a874aea58e5d76e435b761ff4629114637edac6",
+        "endExclusive": 24000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 12000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:23.936Z",
+      "receipt": {
+        "chunkSha256": "fac92899c0195f111e8d0260c7e259a6b4072725924aaf3c27b029adb2ff2b6c",
+        "endExclusive": 36000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 24000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:27.521Z",
+      "receipt": {
+        "chunkSha256": "63618d17e2f45e41b380db1c0084d60cbf843a9a3ceb41857d1856e7eabf42c8",
+        "endExclusive": 48000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 36000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:30.873Z",
+      "receipt": {
+        "chunkSha256": "a05a7a1f7d30b17248030ae991829df90e12db97e4166d463daf368c26eb9988",
+        "endExclusive": 60000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 48000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:34.317Z",
+      "receipt": {
+        "chunkSha256": "1430f2f9700a79ef1f5e2b6b46496c441f04b3a8ef7d785fd8279554b95f79ae",
+        "endExclusive": 72000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 60000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:37.441Z",
+      "receipt": {
+        "chunkSha256": "5ce482c69c7a76e309b2fa18e7bb676902ac1ac9782f9183c2c52197f8b59aa6",
+        "endExclusive": 84000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 72000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:40.713Z",
+      "receipt": {
+        "chunkSha256": "c77c30a5ed48883b0ec0f2dba79433765e467b68e2ca2de682aa9f51ff40b169",
+        "endExclusive": 96000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 84000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:44.814Z",
+      "receipt": {
+        "chunkSha256": "cb4f7eba63b40c350b05bacea1ce3544d13b1ed088d598f4c1e872f2f24643f9",
+        "endExclusive": 108000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 96000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:48.216Z",
+      "receipt": {
+        "chunkSha256": "e8f821147627e2d8cb36937d4b098c104757f5e94e8e349c44874a6f340bc015",
+        "endExclusive": 120000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 108000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:52.413Z",
+      "receipt": {
+        "chunkSha256": "056afe2cf4b458e641a3dcbec6f9e5c9056d995dac84fa4ebfe4e4c66efa7ba2",
+        "endExclusive": 132000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 120000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:08:57.352Z",
+      "receipt": {
+        "chunkSha256": "7d95be98e40a75e977d0e5d725e84dfb1b00881e82c0fc4c32d9f354c813d18c",
+        "endExclusive": 144000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 132000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:09:02.652Z",
+      "receipt": {
+        "chunkSha256": "3d56b26414379c7b863ba44ebbb26047de4a1693efd86a23ed8ed9b4b7837b67",
+        "endExclusive": 156000,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 144000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:09:06.242Z",
+      "receipt": {
+        "chunkSha256": "1f52f36c550201325b61bfb1c727045f60a8833228306e110b279defdb648f08",
+        "endExclusive": 160761,
+        "messageCharacters": 160761,
+        "messageIndex": 0,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "system",
+        "start": 156000
+      },
+      "exactBodyVerified": true
+    },
+    {
+      "timestamp": "2026-10-17T15:09:09.911Z",
+      "receipt": {
+        "chunkSha256": "0b4a91616c51c5fd4210e7fb961cf59d6a555e3d47a55bc5a20def6a4e646014",
+        "endExclusive": 9348,
+        "messageCharacters": 9348,
+        "messageIndex": 1,
+        "payloadSha256": "1a048f3ac4e032f57a02afe08a74307ee4c9b909a78c77b5cd6900d33da84a70",
+        "role": "user",
+        "start": 0
+      },
+      "exactBodyVerified": true
+    }
+  ],
+  "availableUsageRecords": [
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f5c623c819ba6a42bbeee49d3f3",
+      "usage": {
+        "input_tokens": 21683,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 175,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21858
+      },
+      "turn_token_usage": {
+        "input_tokens": 21683,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 175,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21858
+      },
+      "thread_token_usage": {
+        "input_tokens": 21683,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 175,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 21858
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f601504819bb74cdd0c7a0d7c74",
+      "usage": {
+        "input_tokens": 24919,
+        "cached_input_tokens": 20480,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 25095
+      },
+      "turn_token_usage": {
+        "input_tokens": 46602,
+        "cached_input_tokens": 40960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 351,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 46953
+      },
+      "thread_token_usage": {
+        "input_tokens": 46602,
+        "cached_input_tokens": 40960,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 351,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 46953
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f63fd6c819b8c6078fdab0a9012",
+      "usage": {
+        "input_tokens": 28325,
+        "cached_input_tokens": 24704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 28501
+      },
+      "turn_token_usage": {
+        "input_tokens": 74927,
+        "cached_input_tokens": 65664,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 527,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 75454
+      },
+      "thread_token_usage": {
+        "input_tokens": 74927,
+        "cached_input_tokens": 65664,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 527,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 75454
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f68922c819ba7f16faf80949f8f",
+      "usage": {
+        "input_tokens": 31377,
+        "cached_input_tokens": 28160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 31553
+      },
+      "turn_token_usage": {
+        "input_tokens": 106304,
+        "cached_input_tokens": 93824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 703,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 107007
+      },
+      "thread_token_usage": {
+        "input_tokens": 106304,
+        "cached_input_tokens": 93824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 703,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 107007
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f6c1934819b83513d019ab95a3f",
+      "usage": {
+        "input_tokens": 34667,
+        "cached_input_tokens": 31232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 34843
+      },
+      "turn_token_usage": {
+        "input_tokens": 140971,
+        "cached_input_tokens": 125056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 879,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 141850
+      },
+      "thread_token_usage": {
+        "input_tokens": 140971,
+        "cached_input_tokens": 125056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 879,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 141850
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f6f31d8819bad3ac8eef6e6f9b1",
+      "usage": {
+        "input_tokens": 37686,
+        "cached_input_tokens": 34432,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 37862
+      },
+      "turn_token_usage": {
+        "input_tokens": 178657,
+        "cached_input_tokens": 159488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1055,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 179712
+      },
+      "thread_token_usage": {
+        "input_tokens": 178657,
+        "cached_input_tokens": 159488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1055,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 179712
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f72a344819ba7f091cb09e11e2f",
+      "usage": {
+        "input_tokens": 41006,
+        "cached_input_tokens": 37504,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 41182
+      },
+      "turn_token_usage": {
+        "input_tokens": 219663,
+        "cached_input_tokens": 196992,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1231,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 220894
+      },
+      "thread_token_usage": {
+        "input_tokens": 219663,
+        "cached_input_tokens": 196992,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1231,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 220894
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f75e3a4819bbf08c68751779a7e",
+      "usage": {
+        "input_tokens": 44822,
+        "cached_input_tokens": 40832,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 44998
+      },
+      "turn_token_usage": {
+        "input_tokens": 264485,
+        "cached_input_tokens": 237824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1407,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 265892
+      },
+      "thread_token_usage": {
+        "input_tokens": 264485,
+        "cached_input_tokens": 237824,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1407,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 265892
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f7968a8819b9029c9246f8f55c6",
+      "usage": {
+        "input_tokens": 48090,
+        "cached_input_tokens": 44672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 48266
+      },
+      "turn_token_usage": {
+        "input_tokens": 312575,
+        "cached_input_tokens": 282496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1583,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 314158
+      },
+      "thread_token_usage": {
+        "input_tokens": 312575,
+        "cached_input_tokens": 282496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1583,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 314158
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f7d28a8819bada17ca426a4c83e",
+      "usage": {
+        "input_tokens": 51120,
+        "cached_input_tokens": 47872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 51296
+      },
+      "turn_token_usage": {
+        "input_tokens": 363695,
+        "cached_input_tokens": 330368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1759,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 365454
+      },
+      "thread_token_usage": {
+        "input_tokens": 363695,
+        "cached_input_tokens": 330368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1759,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 365454
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f807ce4819b989fedc5146bed84",
+      "usage": {
+        "input_tokens": 54382,
+        "cached_input_tokens": 50944,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 54558
+      },
+      "turn_token_usage": {
+        "input_tokens": 418077,
+        "cached_input_tokens": 381312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1935,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 420012
+      },
+      "thread_token_usage": {
+        "input_tokens": 418077,
+        "cached_input_tokens": 381312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1935,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 420012
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f84c4e8819bb2c201f6814d5a3c",
+      "usage": {
+        "input_tokens": 57556,
+        "cached_input_tokens": 54144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 57732
+      },
+      "turn_token_usage": {
+        "input_tokens": 475633,
+        "cached_input_tokens": 435456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2111,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 477744
+      },
+      "thread_token_usage": {
+        "input_tokens": 475633,
+        "cached_input_tokens": 435456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2111,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 477744
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f89b040819b944bc39debbef49b",
+      "usage": {
+        "input_tokens": 60686,
+        "cached_input_tokens": 57344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 60862
+      },
+      "turn_token_usage": {
+        "input_tokens": 536319,
+        "cached_input_tokens": 492800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2287,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 538606
+      },
+      "thread_token_usage": {
+        "input_tokens": 536319,
+        "cached_input_tokens": 492800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2287,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 538606
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f8f099c819b9517ee877028c545",
+      "usage": {
+        "input_tokens": 63994,
+        "cached_input_tokens": 60544,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 176,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 64170
+      },
+      "turn_token_usage": {
+        "input_tokens": 600313,
+        "cached_input_tokens": 553344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2463,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 602776
+      },
+      "thread_token_usage": {
+        "input_tokens": 600313,
+        "cached_input_tokens": 553344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2463,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 602776
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f92b224819b857fe769a9e0bbeb",
+      "usage": {
+        "input_tokens": 65518,
+        "cached_input_tokens": 63872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 175,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 65693
+      },
+      "turn_token_usage": {
+        "input_tokens": 665831,
+        "cached_input_tokens": 617216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2638,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 668469
+      },
+      "thread_token_usage": {
+        "input_tokens": 665831,
+        "cached_input_tokens": 617216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2638,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 668469
+      }
+    },
+    {
+      "thread_id": "01a14a67-fb72-7233-bc81-c0c122586add",
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "session_id": "01a14543-7d0c-7e30-b8e3-6e6ba68ccfc5",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "response_id": "resp_010d4d2f3bcbdee1016ad38f964ae0819b81e6c8bc361b81ca",
+      "usage": {
+        "input_tokens": 67962,
+        "cached_input_tokens": 65280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 7688,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 75650
+      },
+      "turn_token_usage": {
+        "input_tokens": 733793,
+        "cached_input_tokens": 682496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10326,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 744119
+      },
+      "thread_token_usage": {
+        "input_tokens": 733793,
+        "cached_input_tokens": 682496,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10326,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 744119
+      }
+    }
+  ],
+  "availableTurnContexts": [
+    {
+      "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+      "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+      "disabled_plugin_ids": [],
+      "cwd": "/Users/alepar/AleCode/superpowers",
+      "approval_policy": "on-request",
+      "approvals_reviewer": "auto_review",
+      "sandbox_policy": {
+        "type": "workspace-write",
+        "network_access": false,
+        "exclude_tmpdir_env_var": false,
+        "exclude_slash_tmp": false
+      },
+      "permission_profile": {
+        "type": "managed",
+        "file_system": {
+          "type": "restricted",
+          "entries": [
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "root"
+                }
+              },
+              "access": "read"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers"
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "slash_tmp"
+                }
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "special",
+                "value": {
+                  "kind": "tmpdir"
+                }
+              },
+              "access": "write"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.git"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.agents"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.codex"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            },
+            {
+              "path": {
+                "type": "path",
+                "path": "/Users/alepar/AleCode/superpowers/.aws"
+              },
+              "access": "read",
+              "missing_path_behavior": "skip"
+            }
+          ]
+        },
+        "network": "restricted"
+      },
+      "file_system_sandbox_policy": {
+        "kind": "restricted",
+        "entries": [
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "root"
+              }
+            },
+            "access": "read"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers"
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "slash_tmp"
+              }
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "special",
+              "value": {
+                "kind": "tmpdir"
+              }
+            },
+            "access": "write"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.git"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.agents"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.codex"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          },
+          {
+            "path": {
+              "type": "path",
+              "path": "/Users/alepar/AleCode/superpowers/.aws"
+            },
+            "access": "read",
+            "missing_path_behavior": "skip"
+          }
+        ]
+      },
+      "model": "gpt-6.1-sol",
+      "comp_hash": "3000",
+      "collaboration_mode": {
+        "mode": "default",
+        "settings": {
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "high",
+          "developer_instructions": null
+        }
+      },
+      "multi_agent_version": "v2",
+      "realtime_active": false,
+      "cyber_access_program": "standard",
+      "effort": "high",
+      "summary": "none"
+    }
+  ],
+  "terminationEvents": [
+    {
+      "timestamp": "2026-10-17T15:11:08.012Z",
+      "ordinal": 93,
+      "type": "event_msg",
+      "payload": {
+        "type": "task_complete",
+        "root_turn_id": "01a14a3c-98c5-7151-8e27-7439ffb2f60a",
+        "turn_id": "01a14a67-fba6-75d3-998d-8ec8206de499",
+        "last_agent_message": "{\n  \"cases\": [\n    {\n      \"caseId\": \"A\",\n      \"deliveryState\": \"Merge and acceptance complete; phase done may coexist with pending cleanup.\",\n      \"removeNow\": [\n        \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format\"\n      ],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"reason\": \"Exit 3 retained unique uncommitted scratch/tenant-debug.txt.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-task-quota-tmp\",\n          \"reason\": \"Contains the retained child's unique repro.json.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Contains the retained child; final parent process verification is pending.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Common temporary resources remain protected while the dependent child is retained.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Final parent/run/common-temp inspection has not occurred.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ],\n        \"verifiedLeaf\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format\"\n      },\n      \"orderedActions\": [\n        \"From /tmp/atlas-guidance, persist the exit-3 retention, exact dependencies and pending parent inspection in run.md and report.md Remaining before deleting anything.\",\n        \"Remove only the independently verified leaf with git worktree remove /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format.\",\n        \"Reconcile git worktree list --porcelain and the filesystem inventory; retain the quota child, both dependent temporary roots and outer parent.\",\n        \"Record phase: done and clear the run marker after preserving the delivery and cleanup facts; archive these durable records outside the retained worktree.\",\n        \"Defer final parent verification and parent removal until the retained child and its dependencies are safely resolved.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — exit 3, unique uncommitted diagnosis; /tmp/atlas-task-quota-tmp — unique associated repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; /tmp/atlas-run-tmp — dependent common temporary root retained\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: final parent/run/common-temp verification pending; these are recorded outcomes, not a verified absence of processes\",\n        \"report Remaining\": \"Cleanup pending for the quota child, its repro root, the common temporary root and containing outer worktree. The clean format leaf may be removed independently.\",\n        \"helperExits\": [\n          \"Actual leaf sweep: 3.\",\n          \"Format leaf process check: confirmed successful.\",\n          \"Final parent process check: not executed.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"Inspect and preserve the quota child's unique diagnosis and repro without deleting either. After their retention is resolved, perform fresh leaf cleanup, reconcile inventory, then invoke the final parent/run/temp process check from /tmp/atlas-guidance.\",\n      \"humanHandback\": \"Merged and accepted. The clean format leaf can be removed; quota diagnosis, repro and their containing resources remain intact with cleanup pending.\"\n    },\n    {\n      \"caseId\": \"B\",\n      \"deliveryState\": \"Merge and acceptance complete; cleanup remains pending.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"reason\": \"Actual cleanup exit 4 left process inspection unknown despite clean, merged Git content.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-task-quota-tmp\",\n          \"reason\": \"Required by the child's test process; inspection was unavailable.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Containing parent of the unchecked child.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Common temporary root remains protected while the dependent child/process is retained.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"/tmp/atlas-task-quota-tmp\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"Use /tmp/atlas-guidance as cwd. Retain the named child and dependent temporary resources now.\",\n        \"Persist the actual exit 4 and unknown inspection in codeBuckets.worktreesKept, codeBuckets.processSweep and report.md Remaining.\",\n        \"Preserve the later unrelated wrapper's zero result as a separate observation; do not use it to clear the quota obligation.\",\n        \"Record phase: done, preserve and archive the cleanup facts, and clear the run marker without deleting retained resources.\",\n        \"Recover inspection capability and check the exact child/temp roots first. Reconcile inventory before attempting final parent verification.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — exit 4, inspection unavailable; /tmp/atlas-task-quota-tmp — test-process dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; /tmp/atlas-run-tmp — dependent common temporary root retained\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: quota child/temp inspection unavailable; final parent inspection pending; no survival was observed\",\n        \"report Remaining\": \"Retain the exact quota child, child temp, common temp and outer parent until fresh inspection establishes their safety.\",\n        \"helperExits\": [\n          \"Actual task cleanup: 4.\",\n          \"Unrelated leaf wrapper: 0; supplies no quota-child verification.\",\n          \"Final parent verification: pending.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"From /tmp/atlas-guidance, once inspection is available, run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota /tmp/atlas-task-quota-tmp and capture the actual invocation, output and exit. This proposed check has no observed result yet.\",\n      \"humanHandback\": \"Merged and accepted. Cleanup is pending because quota process inspection was unavailable; no surviving process was established.\"\n    },\n    {\n      \"caseId\": \"C\",\n      \"deliveryState\": \"Merge and acceptance complete; cleanup remains pending because processes survived or were deliberately preserved.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Required by surviving pid 4102 and contains the run directory used by kept pid 4103.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"reason\": \"Required by deliberately kept interactive-terminal pid 4103.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Required by surviving pid 4102.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [\n          {\n            \"pid\": 4101,\n            \"resource\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\"\n          }\n        ],\n        \"survived\": [\n          {\n            \"pid\": 4102,\n            \"resources\": [\n              \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n              \"/tmp/atlas-run-tmp\"\n            ]\n          }\n        ],\n        \"unknown\": [],\n        \"kept\": [\n          {\n            \"pid\": 4103,\n            \"reason\": \"Interactive terminal deliberately preserved.\",\n            \"resource\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\"\n          }\n        ],\n        \"uncheckedRoots\": []\n      },\n      \"orderedActions\": [\n        \"From /tmp/atlas-guidance, preserve the outer worktree, run directory and common temporary root now.\",\n        \"Write the actual exit-3 result and distinct stopped/survived/kept facts into run.md and report.md Remaining.\",\n        \"Record phase: done, archive the updated durable records outside the worktree and clear the marker.\",\n        \"Do not delete the run directory because pid 4101 stopped: pid 4103 still requires it, and pid 4102 still requires its containing parent and common temporary root.\",\n        \"Leave deliberately kept pid 4103 intact. Recheck owned-process outcomes through the existing helper when the survivor can be resolved and the interactive resource is no longer deliberately retained.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas — surviving pid 4102 and kept pid 4103 dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — kept interactive terminal pid 4103; /tmp/atlas-run-tmp — surviving pid 4102 dependency\",\n        \"codeBuckets.processSweep\": \"stopped 1 · survived 1 · unknown 0 · kept 1 — stopped: pid 4101; survived: pid 4102 using outer worktree and common temp; kept: pid 4103 interactive terminal using run directory\",\n        \"report Remaining\": \"Outer worktree, run directory and common temp retained for pid 4102 and pid 4103. Stopping pid 4101 does not release resources shared with those processes.\",\n        \"helperExits\": [\n          \"Actual final parent/run/temp helper: 3.\",\n          \"No subsequent successful verification.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"Reinspect the exact parent/run/temp roots from /tmp/atlas-guidance using stop-run-processes with unchanged ownership matching. Capture any remaining survived or kept outcomes; removal requires a fresh verified-clear result after deliberate retention ends.\",\n      \"humanHandback\": \"Merged and accepted. Cleanup remains pending for surviving pid 4102 and deliberately kept interactive terminal pid 4103; their exact worktree/run/temp resources remain intact.\"\n    },\n    {\n      \"caseId\": \"D\",\n      \"deliveryState\": \"Merge and acceptance complete; parent cleanup pending. Independent leaf cleanup may proceed through its own verification.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format\",\n          \"reason\": \"Retain until its own actual leaf process verification succeeds; parent refusal supplies no leaf result.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"reason\": \"Contains unique uncommitted scratch/tenant-debug.txt.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-task-quota-tmp\",\n          \"reason\": \"Contains the dirty child's unique repro.json.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Contains retained children; parent process check was refused.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Common temporary dependency remains protected while the quota child is retained.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Parent inspection refused because its root contains registered children.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"/tmp/atlas-task-quota-tmp\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"Use /tmp/atlas-guidance as cwd. Record the actual parent helper exit 2 as unknown inspection; remove no resource on that evidence.\",\n        \"Persist the dirty child/temp retention, containing parent, common-temp dependency and pending leaf/parent checks in run.md and report.md Remaining.\",\n        \"Run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format. Capture its actual exit and output before deleting this leaf.\",\n        \"If that check establishes verified-clear safety, remove only task-format with ordinary git worktree remove. Its verification result is not supplied by this snapshot.\",\n        \"Retain task-quota, its temp, the common temp and the outer worktree. Do not retry with the whole repository root, kill by command name or traverse process families.\",\n        \"After all retained descendants and dependencies are resolved, reconcile inventory and perform final parent/run/temp verification. Delivery may be recorded done while these checks remain pending.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format — leaf process check pending; /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — unique dirty diagnosis; /tmp/atlas-task-quota-tmp — unique repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — retained descendants and refused parent check; /tmp/atlas-run-tmp — dependent common temporary root\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: parent inspection refused, exit 2; leaf inspection results remain pending\",\n        \"report Remaining\": \"Parent process inspection is unknown, not a survival or termination observation. Quota evidence and dependent roots remain retained. Format leaf cleanup awaits its own check.\",\n        \"helperExits\": [\n          \"Actual broad parent stop-run-processes: 2.\",\n          \"Proposed format leaf check: no result yet.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"From /tmp/atlas-guidance, check only /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format with the real stop-run-processes helper, then act on its captured result.\",\n      \"humanHandback\": \"Merged and accepted. A safe independent leaf check can continue; the dirty quota child, repro and containing resources remain preserved. The parent refusal will not be bypassed.\"\n    },\n    {\n      \"caseId\": \"E\",\n      \"deliveryState\": \"Merge and acceptance complete; final parent cleanup unconfirmed.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"No confirmed final parent/root process inspection.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"reason\": \"Run root remains unchecked and lies inside the retained parent.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Final process inspection is unconfirmed.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Wrapper skipped the unavailable helper.\",\n          \"Separate parent-check dispatch has no result.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"From /tmp/atlas-guidance, retain the parent and common temporary root now.\",\n        \"Record wrapper exit 0 together with its explicit skipped-launch log; record the separate dispatch result as missing. Neither establishes helper execution.\",\n        \"Write unknown final inspection and the retained paths into run.md and report.md Remaining, preserve the authoritative status and archive the updated records.\",\n        \"Record phase: done and clear the marker without claiming cleanup completed.\",\n        \"Recover the helper path and reconcile the outstanding dispatch before a fresh final-root check. Capture a real helper invocation and result before any deletion.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas — final helper unavailable and dispatch result missing; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — unchecked run root; /tmp/atlas-run-tmp — unchecked dependent temporary root\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: outer, run and common-temp roots lack confirmed final inspection\",\n        \"report Remaining\": \"Parent and common temp preserved pending actual final helper execution. Successful leaf sweeps and empty wrapper stdout supply no parent verification.\",\n        \"helperExits\": [\n          \"Wrapper: 0, but actual helper launch was skipped.\",\n          \"Separate parent-check dispatch: result missing.\",\n          \"Actual final helper exit: unavailable.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"After recovering the helper and reconciling the missing dispatch, run from /tmp/atlas-guidance: bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas /tmp/atlas-run-tmp. Retain the actual invocation, exit and inspection facts.\",\n      \"humanHandback\": \"Merged and accepted. Parent and common temp remain because final inspection never produced a confirmed helper result.\"\n    },\n    {\n      \"caseId\": \"F\",\n      \"deliveryState\": \"Merge and acceptance complete; verified-clear cleanup may proceed.\",\n      \"removeNow\": [\n        \"/tmp/atlas-run-tmp\",\n        \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\"\n      ],\n      \"preserveNow\": [],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [],\n        \"kept\": [],\n        \"uncheckedRoots\": [],\n        \"verifiedClearRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"Keep cwd at /tmp/atlas-guidance. Retain the already written and externally archived run/report facts, reconciled inventory and actual final-helper invocation/result.\",\n        \"The required order is satisfied: leaf-first cleanup and inventory reconciliation, state/report preservation, then confirmed final parent/run/temp verification with exit 0 before resource deletion.\",\n        \"Ensure phase: done and the cleared run marker are durably recorded outside the soon-to-be-removed worktree; preserve the authoritative report status.\",\n        \"Remove the verified-clear common temporary root with ordinary directory deletion restricted to /tmp/atlas-run-tmp.\",\n        \"Run git worktree remove /tmp/atlas-guidance/.worktrees/super-auto-atlas, then git worktree prune.\",\n        \"After successful worktree removal, run git branch -d super-auto/atlas. Record actual deletion results in the external cleanup record; a removal refusal would require retaining the resource and investigating without force.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 0 · kept 0 — confirmed real fail-closed helper execution, exit 0, legitimately empty stdout, inspection available\",\n        \"report Remaining\": \"No pending cleanup obligation; retain the verified inventory and helper evidence in the external archive.\",\n        \"helperExits\": [\n          \"Leaf cleanup: verified successful.\",\n          \"Final parent/run/common-temp helper: confirmed executed, exit 0.\",\n          \"Resource deletion results: record only after executing the proposed removals.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"After ordinary removals, inspect git worktree list --porcelain and confirm the named temporary root is absent; record the actual outcomes without rerunning delivery or requesting another merge choice.\",\n      \"humanHandback\": \"Merged and accepted. Verified-clear parent and temporary resources can now be removed, followed by deletion of the merged run branch.\"\n    },\n    {\n      \"caseId\": \"G\",\n      \"deliveryState\": \"Already phase done with marker cleared; resume only the recorded pending cleanup.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"reason\": \"Earlier exit-4 inspection obligation has no fresh discharge.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-task-quota-tmp\",\n          \"reason\": \"Retained dependency of the unchecked quota child.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Durably retained containing parent.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Keep any existing common run-temp dependency while the quota resource remains retained.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Recorded quota-child/temp process inspection remains unavailable or unverified.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota\",\n          \"/tmp/atlas-task-quota-tmp\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ],\n        \"separateSuccessfulScope\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-format\"\n      },\n      \"orderedActions\": [\n        \"From /tmp/atlas-guidance, read and reconcile the recorded quota-child/temp retention with current registered and unregistered resource inventory.\",\n        \"Preserve the prior exit-4 facts in run.md and report.md Remaining. The format-only successful sweep does not discharge them.\",\n        \"Leave phase: done and the cleared marker unchanged. Do not merge again, repeat the integration menu or erase retained facts.\",\n        \"Check the exact quota leaf and its temporary root with the real helper. Retain them until its actual result supports cleanup.\",\n        \"Only after named retention is freshly resolved and leaf cleanup is reconciled may final parent/run/temp verification enable parent removal.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota — historical exit 4 still unresolved; /tmp/atlas-task-quota-tmp — retained dependency; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent retained; existing /tmp/atlas-run-tmp dependency remains protected\",\n        \"codeBuckets.processSweep\": \"Preserve the prior unknown inspection facts and counts; append the format-only success with its exact scope without replacing the unresolved quota or parent obligations.\",\n        \"report Remaining\": \"Previously recorded quota-child/temp and parent retention remains pending. Name the historical exit 4 and require fresh verification of those exact resources.\",\n        \"helperExits\": [\n          \"Historical quota task cleanup: 4, unresolved.\",\n          \"Later format-only sweep: successful; no quota coverage.\",\n          \"Fresh quota and final parent checks: no result yet.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"From /tmp/atlas-guidance, run bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/task-quota /tmp/atlas-task-quota-tmp and capture its actual result. Reconcile resource inventory before any later parent check.\",\n      \"humanHandback\": \"The run remains delivered and done. Tidying resumes at the unresolved quota inspection; the recorded child, repro and containing parent remain intact.\"\n    },\n    {\n      \"caseId\": \"H\",\n      \"deliveryState\": \"Merge and acceptance complete; cleanup pending for unregistered unique evidence and final inspection.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes\",\n          \"reason\": \"Contains unique unarchived session.txt diagnosis from an interrupted child.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Contains the only associated repro.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Contains required unarchived ignored evidence; final parent verification pending.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Orphan resource and final parent/run/temp process inspection remain unconfirmed.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"From /tmp/atlas-guidance, add the unregistered orphan-notes directory and common-temp repro to the retained-resource inventory.\",\n        \"Before removal, write their exact paths, uniqueness and unarchived status into run.md and report.md Remaining; preserve the authoritative report status.\",\n        \"Archive the diagnosis and associated repro outside the outer worktree, preserving relative identity and verifying the copies. A proposed archive is not completed preservation.\",\n        \"Check ownership/process safety for the orphan leaf and its temporary dependency from outside their roots before any deletion.\",\n        \"After evidence preservation and leaf cleanup are actually confirmed, reconcile filesystem and registered-worktree inventory, then perform final parent/run/temp verification.\",\n        \"Record phase: done and clear the marker after durable handback facts are preserved, while retaining all currently unresolved resources.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes — unique unarchived session.txt; /tmp/atlas-run-tmp — only associated repro; /tmp/atlas-guidance/.worktrees/super-auto-atlas — containing parent and pending final verification\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 1 · kept 0 — unknown: final parent/run/temp inspection pending; orphan resource process coverage unestablished\",\n        \"report Remaining\": \"Retain /tmp/atlas-guidance/.worktrees/super-auto-atlas/.worktrees/orphan-notes/session.txt and its only repro in /tmp/atlas-run-tmp, together with the containing parent, until verified preservation and process-safe cleanup.\",\n        \"helperExits\": [\n          \"Actual task sweep: 0; does not establish preservation or safety of the discovered unregistered evidence.\",\n          \"Final parent process verification: pending.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"Verify an external archive of session.txt and the associated repro, then inspect their exact resource roots using unchanged helper ownership matching. No parent deletion before the subsequent final parent/run/temp check succeeds.\",\n      \"humanHandback\": \"Merged and accepted. Unique interrupted-child diagnosis and its only repro remain preserved in place; archiving and final process verification are pending.\"\n    },\n    {\n      \"caseId\": \"I\",\n      \"deliveryState\": \"Merge and acceptance complete; cleanup waits for the scheduled final parent check.\",\n      \"removeNow\": [],\n      \"preserveNow\": [\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"reason\": \"Final parent process verification has only been scheduled.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"reason\": \"Run root remains pending final verification.\"\n        },\n        {\n          \"path\": \"/tmp/atlas-run-tmp\",\n          \"reason\": \"Final temporary-root inspection has not executed.\"\n        }\n      ],\n      \"processOutcomes\": {\n        \"stopped\": [],\n        \"survived\": [],\n        \"unknown\": [\n          \"Final parent/run/temp verification pending execution.\"\n        ],\n        \"kept\": [],\n        \"uncheckedRoots\": [\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas\",\n          \"/tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas\",\n          \"/tmp/atlas-run-tmp\"\n        ]\n      },\n      \"orderedActions\": [\n        \"Use /tmp/atlas-guidance as cwd and preserve the parent and common temporary root now.\",\n        \"Persist final-verification-pending facts in run.md and report.md Remaining and archive them outside the outer worktree; preserve the authoritative status.\",\n        \"Execute the scheduled real final helper check for the exact parent, run and common-temp roots; retain actual invocation, output and exit.\",\n        \"Only a confirmed successful inspection with no survived, unknown or kept outcomes, together with the reconciled clear inventory, enables ordinary temporary-root and worktree deletion.\",\n        \"Record phase: done and clear the marker independently of cleanup completion. Do not repeat the merge choice.\"\n      ],\n      \"durableFacts\": {\n        \"codeBuckets.worktreesKept\": \"/tmp/atlas-guidance/.worktrees/super-auto-atlas — final parent verification pending; /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas — pending run-root verification; /tmp/atlas-run-tmp — pending final inspection\",\n        \"codeBuckets.processSweep\": \"stopped 0 · survived 0 · unknown 3 · kept 0 — unknown: outer, run and common-temp final checks scheduled but not executed\",\n        \"report Remaining\": \"Parent and common temp retained until actual final helper execution and captured verified-clear result. Successful leaf checks do not discharge this pending step.\",\n        \"helperExits\": [\n          \"Actual leaf sweep: 0.\",\n          \"Actual leaf process verification: 0.\",\n          \"Final parent/run/temp helper: not executed; no exit exists.\"\n        ],\n        \"reportStatus\": \"Preserve the authoritative status line.\"\n      },\n      \"nextSafeCheck\": \"From /tmp/atlas-guidance execute bash <skills-root>/super-code/scripts/stop-run-processes /tmp/atlas-guidance/.worktrees/super-auto-atlas /tmp/atlas-guidance/.worktrees/super-auto-atlas/docs/superpowers/runs/2026-10-16-atlas /tmp/atlas-run-tmp. Capture actual execution and exit; confirmed exit 0 with clear inspection may enable removal, but no such outcome is asserted now.\",\n      \"humanHandback\": \"Merged and accepted. Cleanup waits only for the final parent/run/temp process check; the resources remain intact until its actual result is verified.\"\n    }\n  ]\n}",
+        "started_at": 1792249691,
+        "completed_at": 1792249868,
+        "duration_ms": 176961,
+        "time_to_first_token_ms": 2587
+      }
+    }
+  ],
+  "finishReason": null,
+  "finishReasonUnknown": "Provider finish reason not separately exposed; native final message observed.",
+  "toolCallCount": 15,
+  "classification": "complete-intake-awaiting-semantic-score",
+  "nativeLaunchRequest": {
+    "timestamp": "2026-10-17T15:08:10.988Z",
+    "callId": "call_0d7b8bdc97c34f798189c5fa137e94a2",
+    "nativeItemId": "fc_0faa03d8c55c2c93016ad38f52fce8819aaa6a8f1fc9c9ad3f",
+    "toolNamespace": "collaboration",
+    "toolName": "spawn_agent",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "forkTurns": "none",
+    "messageArgumentEncryptedAtRest": true,
+    "rawNativeRequestRecord": {
+      "timestamp": "2026-10-17T15:08:10.988Z",
+      "ordinal": 712,
+      "type": "response_item",
+      "payload": {
+        "type": "function_call",
+        "status": "completed",
+        "id": "fc_0faa03d8c55c2c93016ad38f52fce8819aaa6a8f1fc9c9ad3f",
+        "name": "spawn_agent",
+        "namespace": "collaboration",
+        "arguments": "{\"task_name\":\"candidate_019\",\"message\":\"gAAAAABq049bN2pmg3ewRLnPmGI1UbG2lAZqJacEyMHhemDIPPTQWedgkdnrLkQrZgHeleU_-9LhztVEGDwHP82ke9UzL7fP72csbeS1N8tVeZ8TvvD_opUv-ESQ_wHxQEE-uCxCQB9JihLcyhik2KBtfu33TMbCKseR8JMExfrTToUaMZKvhx1s4ul3ji75YjTSIxHpcUwvYjHW0FQsIaiMN4XW7alKJ6hqQ2Nmce-QXfbXCacB31Enu4a2nx-lihE7lmypL9touhbM19TxQ1PWkDwRnqHZlqFybyD8ZtFsFIm188QnMGCREjID0K_jOrzoFZmxh2QQ2OW2CNZjePl2pMFp-6flmZZt4DJakN0CKvyiQtNFYDwaitE6tiZJYt1nIbw8X_HBnL9u704n89_-Du-uOvDpJ2JvKSL8EpvxwZixBUfk3aYHuG7aDdeNDXRIh88ZNao30cYSVxbWO8AkSMenkIfvHYZbQgE4tezKLurY8NCd3xHFcWgN0DwIT0X8mEMx8fxxUcXLEa0Y-ITpOS65Spp9YdCBf0xE89vd431B4x4RKKhNiNiix7DUm4jrmEDwE1Q6jcFqWFHmEHzGBRPZdRnJiO5SUNAUuMzd7XeeG1w-L6-sqNZ2DGMGW3SlpNcmxwovdBmdThjlu-BNJdBoMNppm9ZEQ_Zw1iaulTgcNdmMrMqcU5OUhNE-sSMHwBQJpoaTzB2yAMcdcAXVR_f9eRp1veLLRQScLZynZXT4r4E_P59gHve6UjuLEBCEEnLHFY-oSjzyQisf7U0LIj9DfFUCaozVqC6jwhQTpWcWucKEiQ9EYyYOJo0bnhUY9cfKnJpx2Y_c4FXUzhDUq0OBgomgtRJV4vqupUNaac7PQybpFmMgz8jXH7cEPeMxBCejIrl8_NuxCNzPpAFE0twosEywZ_xBPJ13Rjg1Ii7BPt6CljYNJDro0jszg2uD0QPZaKHy6HjEH-tVV7PIoWLF5c7Z2RTryJKiiBwJayPynBu1m-mp526s6OQ_gn9xrRCuBxZdJjPB1HS8pU65K7A9NzOno4lATPaLVhVmCCjsFPVW4yI50pTIRpQ-NVHr3UkhLTNPvxOT1FkxAMBzs4rcMZEb-nXOwj0ZNeU9AVP24z6Ye0KXdi-3LWI140XHyVlz7hhxg8A9SDw1VVHEJlTQ9wvOjvDSCFcMAcN5xEeU4sy5UydP-bXN67DNod4xbpV3xaH_yxN-p4p-DRi6GuGmCz4slS1JNg2q9ukSzv_IXvQotlypwZ2ft3bGM9y_5cJECu73eV8WjdM2KpivdcxCM5n3q1PRZQv8m3bVFtbVQM6EsujFQJlXqQ9MnR3WzmhkOa2XbFV4LtwL4P4BrYqaqHis3R5Nu0IG-Zp9X9iyuPW4AYibUZsx7zQBCCC_C1rQhZaw-m_FJcoXJxsgQMmQitUXT4p7-_vJeaawxij_9gDqBBOHFl6oPzBL746SYLeqEyza2NW0qSvlQak6UsJlTUJdkHdL_7lWPXVK3oWtbE_0_yvcuiIQ9x_pD5KLuuXskLiiTbRjJ8Eypp5NJsIgkJVmzsBckx_DtWAbvUDfCZsw-ogyL3lFnrkgyrbAdaI1FupaZiJS59ITp6B1qCU6KBKtzx7biC6uCEqclvwwnuCXCrHD_NSU9JeFhe3pTKL_gV7N5HvtNbtES6dax2VZ06B1T4Xr28dmeqCtPaiTRt6IBAdIAmJNXAW15C01C6BD7m-7Uy1-gcQiuewkQPExeqjofo0DkVzlj8v-z_C071YzChZrhKHEIzIrDhN3zYZ_4HqPclw6d3lNvRX3xUg9BvwcMg51Mg0mJ7mAbFAC0Noa5AvND0ErT1KG5Nwq3CF_THSBaREURcwWziY0B3jE-5JXSI5k18K17iezGQOecUpQsCpIUWOP5SLbtkKKG5wO2vwgjqwJCyWbvlcoZ4WuyKe1GG_6GyWYA44seHOdMrY7HY0lk_Qp4FDQbTeYaUHUoRH1GXmgaq09Vh9lyz2DSo2D1ysPTR9QpRKtk1vqksqwaTnpEyCpsQtJryD1ZFOwI9__NdCOp9kC70qOSj7wTbGET4AD08QAsuqPwilEikz-xblL7GfwGpa_b6DzAxMimoEyH3ZBxbvo9QfzKk5MeJnljpIgqiDPVQQKY7Iyt2YE6MyswyONPdE84n4VgOdpybhLO-ME3W9IrlBKuA5G1cWNmDdDsCR-32py-TQLHKN6oVk8Asa0DmlgJ3uRur_YdBUpMNcINAysnmbTldp40Vr8ZhDLGQw1lzr6Iffiaqa0ztIDt_QZiZ-RnMV9Yb_n5UM7vBH188Dc-1ezhNJ_TCCS-5oX2ZOJEW4pcoTCrR3VBsux_50XYEudKk1P87Np1UnX7M51KY9hC9adaEDPbuIjpYQG7SHVGAXfeeDipPd_CTUcU_PE0fvrYooacyOO21gsljtUPXMMH2m9DmaQQokuA4coOLdpVz8C1tA_I6BZDfEJB_ugzVZgG_76Q21m6xxktl-9_Yl32p6c8WbBMyBOEiXBT4PgBu7SszZNmG8u3RQvzyYZdGoaM1Td7WacdCLZcKW51Zndaqa4GxsmD8BzWOy7D0jfq-ap4Sueq4YoKNdO4A41fstJ5EPT32m7SC4jk3Mg8IKXIxgWKOsaKQGqmBp3SCdgDOWgC0xYqZaw3I_xfRpTVVYFzUbh_re7srIyU6Nzwu14DJmVL7cu967XEAlf-99Jj0ug2Zzhr3Z382ym79qUKFz5zTrSuU-MDc5EE28PWjEUiuZ9k7dGQBlMpFa9MN6tfTW8nzIeM1NSg6grMsfVQVqDA_fIKueZ-NZCSis7Nokp_UCx4Emz9X7JfMJs8oRwU02YjR1BOsKEfTLHBxfjUwgsrLtwhWWV56PVDNHqkp-wjK8KhPeln3_dVT79ldfU9E0FgG5H3wLrLa6iFdYr2mXrcQWPIMXzaGT8pSa_ThM-01TcanWIhko7-ubrIpNY9u-Kx1r7UcM4zDBz4bGodcBFD5mhke4Ds_vgMUbPgRFTuU7SkBiWpbcqExatDMTzL-YIW56GY7AR-YCajVudaXGbSnpWtGzccMJxj0W7TzfYt4f6I0HZo3FzGSL_AtWPymybAFd-FmizWZPtN0KNr8DaN4dIbRvooYJLzAW8b-jHNwjmwSU-14VoZJT9-tMoD_abNMx-CTTLr--NYOVbU-7fbFw1h71JkiSfqgidP6TESv9Kzt_RTtOs2b7kzCqqzQxx5bs_AMcVmT_Smg6bsaGDa7dJJ0S80vr2buCbjpEVCNMmidhuL3kvx-6fG3xseCV-9gf__qPt03cAju5MA8wmw8cNwHqgTyxJUs2zo1lobmUTB30GqjY8uKqubTNAx_hQB0H1I5X8I5f5SQPWg-OWH6yn8-UupFmbksNHAxZkAWnxS55CV0PKsqtex4wZdVnzjSPfq2tg7oxx16AUcbOiJHBo1qo7kNK4T-UZ__zi6CxU0ZZyPRexXJW2Q405GKxUz9HpQTS0Ktlq5pX1r5-pzVECv2Z5-JPsRzRB11Eu0ujVOIjQllqtOFz5MQS8iG1dAz4IpMT8sAm1zDpCTEquO5TYkx46noRxIoFBoW4anUTSEL_snwpvhgj5GY-zK3V6ai4ZM4yTHtXMwz2CeBoQNsk6mSfVgeShwcR-c9KV_Hvyrile_g1CLvwBiZ6IeKqiK3yMxPu3uW4WOMO5ymhxVtnEMDjZjpn8I1yIzR8RX5iRlUr3Ev5DErF6kXCrhWXzswQfFKcTQ3QBgLLAkp40_lDHmIQLY0u0611Wfo4ON0Dhw1EzulxaCL58hroqsrgRGskhFjPp98kMdvRveplCMWl1rGPnWf8lPKxKZLTxice0E_ySVVSlAd7A6jCjUZwyzh9jY2AbWQZOU-Q8X8imD0QXOZMGYit5PZKBDJT1-Qe1CudLUvbc3H8JbElBEC1b2QoTqMdvGtYnI1FrOIiCNZHqvcWAZp31HKVsYuJqbNuKGaylVA6IuzFI6zFo9B2O9pZR-Zjmhx34xFvSRqtgC0e_h_OdNdySZ9SELkn4sBYCDUtNGd3BbQjTpDr0aTsaNsg8jxatGpheJSrlodGWuNNy9NlC0GCQj0JR-w2NFfQQwK81maJdG0-mh_1An2O98eqj7xYU-JfZmIAZr4K_C0soPaz9cZtkphLHT7xsEawpwn53q2aIuWsZaNu6IKdt5j_gLe0B58xYtkSap_LuZ2tYGzGlurzTiGo3B6-7JEXSK0YZBWxgBbkA9NaNfFekZy2MaIYstzAOAq8i2RxrMuMHzDiwhUba-Hkm-egZMbm0HbCGfeH7tLWv6BVcqlV1rHlH9Q2zqhXhB4Ndra_TvJWpIyi5yajrayX6Xd9jQIzgiQI3ViNXve3EWzYNdaTyMuMONFgK6Dk=\",\"fork_turns\":\"none\",\"model\":\"gpt-6.1-sol\",\"reasoning_effort\":\"high\"}",
+        "call_id": "call_0d7b8bdc97c34f798189c5fa137e94a2",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a14a57-a3a9-7f62-ad8b-1b8a2090304b",
+          "create_time": 1792249682.990344
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "user_input_order": 72
+      }
+    }
+  },
+  "providerResponseIds": [
+    "resp_010d4d2f3bcbdee1016ad38f5c623c819ba6a42bbeee49d3f3",
+    "resp_010d4d2f3bcbdee1016ad38f601504819bb74cdd0c7a0d7c74",
+    "resp_010d4d2f3bcbdee1016ad38f63fd6c819b8c6078fdab0a9012",
+    "resp_010d4d2f3bcbdee1016ad38f68922c819ba7f16faf80949f8f",
+    "resp_010d4d2f3bcbdee1016ad38f6c1934819b83513d019ab95a3f",
+    "resp_010d4d2f3bcbdee1016ad38f6f31d8819bad3ac8eef6e6f9b1",
+    "resp_010d4d2f3bcbdee1016ad38f72a344819ba7f091cb09e11e2f",
+    "resp_010d4d2f3bcbdee1016ad38f75e3a4819bbf08c68751779a7e",
+    "resp_010d4d2f3bcbdee1016ad38f7968a8819b9029c9246f8f55c6",
+    "resp_010d4d2f3bcbdee1016ad38f7d28a8819bada17ca426a4c83e",
+    "resp_010d4d2f3bcbdee1016ad38f807ce4819b989fedc5146bed84",
+    "resp_010d4d2f3bcbdee1016ad38f84c4e8819bb2c201f6814d5a3c",
+    "resp_010d4d2f3bcbdee1016ad38f89b040819b944bc39debbef49b",
+    "resp_010d4d2f3bcbdee1016ad38f8f099c819b9517ee877028c545",
+    "resp_010d4d2f3bcbdee1016ad38f92b224819b857fe769a9e0bbeb",
+    "resp_010d4d2f3bcbdee1016ad38f964ae0819b81e6c8bc361b81ca"
+  ],
+  "providerRequestIdReason": "Separate provider request ID not exposed; actual native call ID and provider response IDs preserved."
+}

@@ -1,0 +1,237 @@
+{
+  "cases": [
+    {
+      "caseId": "A",
+      "decision": "Preserve the bound partial bundle. A same-source rewrite of its existing directory is not authorized.",
+      "orderedActions": [
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read",
+        "Retain the stored inv-atlas-017 binding to base 1111111111111111111111111111111111111111 and head 2222222222222222222222222222222222222222.",
+        "Apply the shared source/output guard before any assembler directory cleanup or package write. The stated existing output requires refusal even with the same source.",
+        "Permit no review-bundle write or destructive action. Record the unavailable review and preserved finding references in the ledger; drain the ledger writer before handoff."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-017",
+        "base": "1111111111111111111111111111111111111111",
+        "head": "2222222222222222222222222222222222222222",
+        "why": "The valid persisted binding controls this unsettled resume."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/digest.md",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/slices/src__quota.ts.diff"
+      ],
+      "proposedWrites": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md",
+          "content": "Final review: unavailable — inv-atlas-017 has an existing partial assembled bundle; preserve its digest and slices, including unresolved F-17. No canonical final review was written."
+        }
+      ],
+      "handoff": {
+        "review": "FINAL REVIEW UNAVAILABLE — existing partial review bundle cannot be rewritten",
+        "reviewPath": null,
+        "evidenceGaps": [
+          "The assembler size result is unavailable.",
+          "No canonical final review exists.",
+          "All task commits landed, but caller acceptance and the caller-owned final suite remain outstanding.",
+          "The live tip 3333333333333333333333333333333333333333 has no observed successful review or test pass."
+        ],
+        "remainingFinding": "F-17 remains unresolved: src/quota.ts:88 may allow a tenant to consume another tenant's quota."
+      },
+      "nextSafeCheck": "Read the persisted binding through bind-review-source --read and obtain the shared guard result without changing the existing bundle. Any later current-tip review requires a separately authorized fresh invocation."
+    },
+    {
+      "caseId": "B",
+      "decision": "Reject the proposed same-identity source change. Keep the original binding and partial findings intact; do not create a new invocation implicitly.",
+      "orderedActions": [
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read",
+        "Withdraw the proposal to bind inv-atlas-017 to head 3333333333333333333333333333333333333333. The shared guard must reject a same-ID source mismatch before output writes.",
+        "Retain the stored old pair. Its existing partial directory also prevents a same-source rewrite.",
+        "Permit no review-bundle write or deletion. Persist the mismatch and unavailable review in the ledger and drain the writer."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-017",
+        "base": "1111111111111111111111111111111111111111",
+        "head": "2222222222222222222222222222222222222222",
+        "why": "A newer Finish inspection cannot replace this unsettled invocation's persisted source."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md"
+      ],
+      "proposedWrites": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md",
+          "content": "Final review: unavailable — rejected inv-atlas-017 source-change proposal from head 2222222222222222222222222222222222222222 to 3333333333333333333333333333333333333333; original binding and partial finding-bearing bundle retained."
+        }
+      ],
+      "handoff": {
+        "review": "FINAL REVIEW UNAVAILABLE — proposed source conflicts with persisted invocation binding",
+        "reviewPath": null,
+        "evidenceGaps": [
+          "The original partial bundle has no completed canonical review.",
+          "A review of 3333333333333333333333333333333333333333 requires a fresh invocation identity and confirmed Launch; that transition has not been authorized here.",
+          "Task landings do not establish caller acceptance or the caller-owned final suite."
+        ],
+        "remainingFinding": "F-17 remains unresolved in the original assembled directory and must remain available to later reporting."
+      },
+      "nextSafeCheck": "Re-read the original binding and report the exact mismatch. Preserve this resume's identity; do not launch a current-tip review under inv-atlas-017."
+    },
+    {
+      "caseId": "C",
+      "decision": "Preserve the unbound legacy partial and report an unavailable review. Authenticate neither guessed old source nor current source from these bytes.",
+      "orderedActions": [
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read",
+        "Retain the observed absence of a binding. Existing unbound bundle output prevents first-time binding for this identity.",
+        "Do not bind the legacy bytes, clear the directory, rebuild it, or bypass the guard with a direct review.",
+        "Permit no review-bundle output or destructive action. Persist the missing-source-provenance gap with the legacy artifact path and F-17 reference; drain the ledger writer."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-017",
+        "base": null,
+        "head": null,
+        "why": "No persisted reviewSource or independently authenticated captured source exists for these legacy artifacts."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/digest.md",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final/slices/src__quota.ts.diff"
+      ],
+      "proposedWrites": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md",
+          "content": "Final review: unavailable — inv-atlas-017 has existing unbound legacy assembled output with unauthenticated base/head. Preserve digest.md and slices, including unresolved F-17; no source binding or canonical review established."
+        }
+      ],
+      "handoff": {
+        "review": "FINAL REVIEW UNAVAILABLE — existing unbound bundle lacks authenticated review source",
+        "reviewPath": null,
+        "evidenceGaps": [
+          "The legacy artifact source identity is unknown.",
+          "No canonical final review exists.",
+          "Current task delivery is landed; caller acceptance and the caller-owned final suite remain outstanding.",
+          "The current integration tip has no observed successful review or test pass."
+        ],
+        "remainingFinding": "F-17 remains unresolved source evidence despite the legacy bundle's provenance gap."
+      },
+      "nextSafeCheck": "Check for an independently retained authenticated source record for the legacy bundle. Until such evidence exists, retain the gap; a separate fresh review must use a fresh invocation and preserve these artifacts."
+    },
+    {
+      "caseId": "D",
+      "decision": "Dispatch no direct reviewer, replacement assembler, seam reviewer, or stub. Honor the observed source-guard refusal and return reviewPath null.",
+      "orderedActions": [
+        "Retain the observed assembler exit 2 and its complete review source guard cause.",
+        "Apply the guard-refusal exception rather than the generic assembler-failure fallback.",
+        "Permit no review-bundle output or destructive action.",
+        "Append the exact unavailable cause and preserved finding references to the ledger; drain its writer and return the caller's delivery facts."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-017",
+        "base": "1111111111111111111111111111111111111111",
+        "head": "2222222222222222222222222222222222222222",
+        "why": "The original valid binding remains authoritative after the output-exists refusal."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final"
+      ],
+      "proposedWrites": [
+        {
+          "path": "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md",
+          "content": "Final review: unavailable — assembler exit 2; review source guard: output already exists: /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final. Partial bundle and unresolved F-17 preserved; no direct-input fallback."
+        }
+      ],
+      "handoff": {
+        "review": "FINAL REVIEW UNAVAILABLE — review source guard: output already exists: /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-017-final",
+        "reviewPath": null,
+        "evidenceGaps": [
+          "The observed guard refusal prevents final review output for this attempt.",
+          "All task commits landed; caller acceptance and the caller-owned final suite remain outstanding.",
+          "No successful review or test pass at 3333333333333333333333333333333333333333 has been observed."
+        ],
+        "remainingFinding": "F-17 remains unresolved in the preserved partial bundle; the unavailable summary does not resolve or replace it."
+      },
+      "nextSafeCheck": "Confirm the refusal and original binding are durably retained. Any later review under a separately authorized fresh identity must carry the unresolved finding evidence forward."
+    },
+    {
+      "caseId": "E",
+      "decision": "Proceed with the clean fresh invocation, binding and reviewing the captured pair even though the live branch subsequently advanced.",
+      "orderedActions": [
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read",
+        "Before any review artifact or package write, run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222",
+        "Require confirmed persistence of the compact reviewSource Recovery fact for inv-atlas-018. This is the first permitted source-binding write.",
+        "Retain caller-owned sweep deferral and append supported Metrics before the reviewer dispatch.",
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md assemble --consumer final-review --instance final --threshold 103200 --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222",
+        "Dispatch a fresh assembler with the generated dispatch file. Its guard must succeed before the first bundle write; permit creation of the new inv-atlas-018 assembly directory and its digest, diffstat and slices.",
+        "Using the stipulated exit 0, fits yes result, generate and dispatch final-review --mode single with the returned directory and the same explicit base/head. Source reads use git show 2222222222222222222222222222222222222222:<path>; filesystem inspection uses a unique review-owned detached worktree with separate output/temp storage.",
+        "After the stipulated successful canonical write, read: bash <skills-root>/super-code/scripts/report-verdict /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md. Return its observed verdict without inventing one. Never restore or edit the running checkout."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-018",
+        "base": "1111111111111111111111111111111111111111",
+        "head": "2222222222222222222222222222222222222222",
+        "why": "The verified Finish capture can be persisted before first output for this fresh, authorized invocation."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md"
+      ],
+      "proposedWrites": [
+        "Compact reviewSource Recovery fact in progress.md for inv-atlas-018 and the captured pair.",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/assembled/final-review-inv-atlas-018-final/",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md",
+        "Supported Metrics and Final review routing lines in progress.md."
+      ],
+      "handoff": {
+        "review": "Return the canonical file's observed verdict after report-verdict; successful writing alone does not establish a ready verdict.",
+        "reviewPath": "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-018.md",
+        "evidenceGaps": [
+          "This non-null path is justified by the stipulated successful canonical review write.",
+          "Coverage is limited to base 1111111111111111111111111111111111111111 through head 2222222222222222222222222222222222222222.",
+          "The later head 3333333333333333333333333333333333333333 is outside this review.",
+          "Caller acceptance and the caller-owned final suite remain independent and outstanding."
+        ],
+        "remainingFinding": "No finding-bearing partial is supplied for this clean case. Do not infer a finding resolution or a ready verdict from successful review-file creation."
+      },
+      "nextSafeCheck": "Read the written canonical verdict through report-verdict and retain its captured source identity in the caller handoff; separately measure and review any later candidate under its own appropriate identity."
+    },
+    {
+      "caseId": "F",
+      "decision": "Use the ordinary uncapped single-review fallback on direct inputs, retaining inv-atlas-019 and its stored pair.",
+      "orderedActions": [
+        "Retain assembler exit 2 with cause size tool unavailable as an ordinary assembly failure.",
+        "Run: bash <skills-root>/super-code/scripts/dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md bind-review-source --read",
+        "Append supported Metrics, caller-owned sweep deferral and Final review: single (assembler unavailable) to the ledger before reviewer dispatch.",
+        "Generate final-review --mode single on direct inputs, uncapped, explicitly passing --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222 through dispatch-text --ledger /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md.",
+        "Dispatch one fresh final reviewer with the generated dispatch file. Require the source/output guard before any direct package or final-review write. With the stated absence of existing outputs and identity refusal, permit creation of the invocation's direct .diff package and canonical review.",
+        "Use immutable git show reads or a unique review-owned detached worktree at the captured head. Do not edit or restore the live checkout.",
+        "Only after an observed successful canonical write, read its verdict through report-verdict and return the written path."
+      ],
+      "source": {
+        "invocationId": "inv-atlas-019",
+        "base": "1111111111111111111111111111111111111111",
+        "head": "2222222222222222222222222222222222222222",
+        "why": "The ordinary size-tool failure does not invalidate or replace the valid stored binding."
+      },
+      "preservedPaths": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/progress.md"
+      ],
+      "proposedWrites": [
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-019.diff",
+        "/tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-019.md",
+        "Supported Metrics and Final review: single (assembler unavailable) in progress.md."
+      ],
+      "handoff": {
+        "review": "FINAL REVIEW UNAVAILABLE — direct-input fallback has not yet returned a review",
+        "reviewPath": null,
+        "evidenceGaps": [
+          "The size tool could not launch; assembly sizing is unavailable.",
+          "No completed reviewer result or canonical write has been observed.",
+          "The fallback can cover only the stored base/head pair, not live head 3333333333333333333333333333333333333333.",
+          "Task landings do not settle caller acceptance or the caller-owned final suite."
+        ],
+        "remainingFinding": "No existing finding-bearing output is supplied for this independent fresh case; no resolution is inferred."
+      },
+      "nextSafeCheck": "Await the fresh direct-input review. Confirm its canonical file was written, then run report-verdict on /tmp/atlas-guidance/.worktrees/epic-atlas-integration/.superpowers/sdd/atlas-plan/final-review-inv-atlas-019.md before returning a verdict and non-null path."
+    }
+  ]
+}

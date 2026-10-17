@@ -1,0 +1,138 @@
+# Review package: 7c3fec35b9e8039576677ff8a5b91ee5135c76e8..e9c3a9a4825fea50a571aabbeeeb5dd8882f4ad0
+
+## Commits
+e9c3a9a4 fix(super-auto): contain collected inputs within workspace
+
+## Files changed
+ skills/super-auto/scripts/report-status    | 22 +++++++++---
+ tests/super-auto/collection-symlinks-r1.sh | 58 ++++++++++++++++++++++++++++++
+ 2 files changed, 75 insertions(+), 5 deletions(-)
+
+## Diff
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index a1fd59cb..fcca3313 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -203,41 +203,53 @@ const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.inv
+  (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
+ let malformed=false;
+ for(const line of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';if(!line.startsWith('- review-collection'))continue;try{if(!approvals||!line.startsWith('- review-collection · '))throw Error();const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{malformed=true}}
+ if(args.length){if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};const old=latest.get(r.invocationId);if(old&&(old.workspace!==r.workspace||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null))||JSON.stringify(old.required)!==JSON.stringify(r.required))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});console.error('COLLECTION_GAP: invocation identity or required bundle changed; retain both sources');process.exit(3)}if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}}
+ const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+ const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
+ let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
+ for(const previous of latest.values()){
+  const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
+  const gap=m=>{if(!problems.includes(m))problems.push(m)};
++ // lstat on a leaf alone follows earlier directory symlinks. Validate the full
++ // source path before enumeration, manifest reads, hashing or extraction.
++ function source(relative){
++  const unsafe=()=>{gap('unsafe bundle path: '+relative);throw Error('unsafe bundle path')};
++  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))unsafe();
++  let full=r.workspace;
++  if(fs.lstatSync(full).isSymbolicLink())unsafe();
++  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())unsafe()}
++  const resolved=path.relative(fs.realpathSync(r.workspace),fs.realpathSync(full));
++  if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))unsafe();
++  return full;
++ }
+  if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
+  else if(r.reviewPath===null&&!hasBundle(r,id)){if(r.review!=='no work landed')gap('required review is null; owner: orchestrator; recover whole-epic review')}
+  else{
+   const expected=path.join(r.workspace,prefix+'.md');
+   if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
+   else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
+   const files=new Set(r.required);
+-  function walk(relative){const full=path.join(r.workspace,relative);try{const st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
++  function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
+   files.add(prefix+'.md');
+-  try{for(const name of fs.readdirSync(r.workspace).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
++  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
+   const assembled=path.join('assembled',prefix+'-final');
+-  if(fs.existsSync(path.join(r.workspace,assembled)))walk(assembled);
++  try{source(assembled);walk(assembled)}catch{}
+   const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
+-  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(path.join(r.workspace,assembled,'clusters.json'),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
++  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
+   // A completed archive remains usable after the source worktree is intentionally removed.
+   if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
+   const manifests=[];
+   for(const rel of [...files].sort()){
+    if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
+    const src=path.join(r.workspace,rel),dst=path.join(archive,rel),saved=previous.files?.find(f=>f.path===rel);
+-   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(src).isFile()||fs.lstatSync(src).isSymbolicLink())throw Error();srcHash=hash(src)}catch{}
++   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
+    try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
+    if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
+     const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
+     const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',id+'/'+logical,src],{encoding:'utf8'});
+     try{if(result.status!==0)throw Error();const source=JSON.parse(result.stdout);source.artifact=path.relative(dir,dst);append('finding-source',source)}catch{gap('complete extraction unavailable: '+rel)}
+    }
+    if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
+    if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
+    if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(dst)}catch{gap('archive copy failed: '+rel)}}
+    if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
+diff --git a/tests/super-auto/collection-symlinks-r1.sh b/tests/super-auto/collection-symlinks-r1.sh
+new file mode 100644
+index 00000000..65a2a1d9
+--- /dev/null
++++ b/tests/super-auto/collection-symlinks-r1.sh
+@@ -0,0 +1,58 @@
++#!/usr/bin/env bash
++# Regression: source collection must reject symlinked components before reading bytes.
++set -euo pipefail
++REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
++T=$(mktemp -d)
++trap 'rm -rf "$T"' EXIT
++node - "$REPO_ROOT/skills/super-auto/scripts/report-status" "$T" <<'NODE'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
++const [script,tmp]=process.argv.slice(2),sentinel='OUTSIDE WORKSPACE SENTINEL must never be archived\n';
++let failures=0,checks=0;
++function check(name,fn){checks++;try{fn();console.log('[PASS] '+name)}catch(e){failures++;console.error('[FAIL] '+name+': '+e.message)}}
++function fixture(name){
++ const root=path.join(tmp,name),workspace=path.join(root,'workspace'),outside=path.join(root,'outside'),run=path.join(root,'run.md'),prefix='final-review-probe';
++ fs.mkdirSync(workspace,{recursive:true});fs.mkdirSync(outside);fs.writeFileSync(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');fs.writeFileSync(path.join(workspace,prefix+'.md'),'## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n');
++ return {root,workspace,outside,run,prefix};
++}
++function collect(f,required=[]){return cp.spawnSync('bash',[script,'--collect',f.run,'--invocation','probe','--workspace',f.workspace,'--review',path.join(f.workspace,f.prefix+'.md'),'--verdict','ready',...required.flatMap(p=>['--required',p])],{encoding:'utf8'})}
++function latest(f){return fs.readFileSync(f.run,'utf8').split('\n').filter(l=>l.startsWith('- review-collection · ')).map(l=>JSON.parse(l.slice('- review-collection · '.length))).at(-1)}
++function archivedBytes(root){if(!fs.existsSync(root))return '';return fs.readdirSync(root).map(n=>{const p=path.join(root,n);return fs.statSync(p).isDirectory()?archivedBytes(p):fs.readFileSync(p,'utf8')}).join('')}
++function rejected(name,setup){
++ const f=fixture(name),required=setup(f)||[],result=collect(f,required),record=latest(f);
++ check(name+' exits with collection gap',()=>assert.equal(result.status,3,result.stdout+result.stderr));
++ check(name+' stays incomplete with an explicit unsafe path gap',()=>{assert.equal(record.complete,false);assert.ok(record.gaps.some(g=>g.startsWith('unsafe bundle path: ')),JSON.stringify(record.gaps));assert.match(result.stderr,/COLLECTION_GAP:/)});
++ check(name+' never archives sentinel bytes',()=>assert.ok(!archivedBytes(path.join(f.root,'reviews')).includes(sentinel)));
++}
++rejected('assembled-intermediate',f=>{
++ fs.mkdirSync(path.join(f.outside,f.prefix+'-final'));fs.writeFileSync(path.join(f.outside,f.prefix+'-final','sentinel.txt'),sentinel);
++ fs.symlinkSync(f.outside,path.join(f.workspace,'assembled'));
++});
++rejected('discovered-direct-file',f=>{
++ fs.writeFileSync(path.join(f.outside,'sentinel.txt'),sentinel);fs.symlinkSync(path.join(f.outside,'sentinel.txt'),path.join(f.workspace,f.prefix+'.md.diff'));
++});
++rejected('required-deep-intermediate',f=>{
++ fs.mkdirSync(path.join(f.workspace,'inputs'));fs.mkdirSync(path.join(f.outside,'nested'));fs.writeFileSync(path.join(f.outside,'nested','sentinel.txt'),sentinel);
++ fs.symlinkSync(f.outside,path.join(f.workspace,'inputs','linked'));return ['inputs/linked/nested/sentinel.txt'];
++});
++rejected('required-direct-file',f=>{
++ fs.writeFileSync(path.join(f.outside,'sentinel.txt'),sentinel);fs.symlinkSync(path.join(f.outside,'sentinel.txt'),path.join(f.workspace,'required.txt'));return ['required.txt'];
++});
++rejected('discovered-nested-directory',f=>{
++ const assembled=path.join(f.workspace,'assembled',f.prefix+'-final');fs.mkdirSync(assembled,{recursive:true});fs.writeFileSync(path.join(f.outside,'sentinel.txt'),sentinel);fs.symlinkSync(f.outside,path.join(assembled,'linked'));
++});
++rejected('in-workspace-symlink',f=>{
++ fs.writeFileSync(path.join(f.workspace,'real.txt'),sentinel);fs.symlinkSync('real.txt',path.join(f.workspace,'required.txt'));return ['required.txt'];
++});
++rejected('split-manifest-intermediate',f=>{
++ fs.mkdirSync(path.join(f.outside,f.prefix+'-final'));fs.writeFileSync(path.join(f.outside,f.prefix+'-final','clusters.json'),JSON.stringify({clusters:[{slices:['sentinel.txt']}]}));fs.writeFileSync(path.join(f.outside,f.prefix+'-final','sentinel.txt'),sentinel);
++ fs.symlinkSync(f.outside,path.join(f.workspace,'assembled'));fs.writeFileSync(path.join(f.workspace,f.prefix+'.cluster-1.md'),'## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n');
++});
++const normal=fixture('normal'),relative='assembled/'+normal.prefix+'-final/nested/input.txt';
++fs.mkdirSync(path.dirname(path.join(normal.workspace,relative)),{recursive:true});fs.writeFileSync(path.join(normal.workspace,relative),'normal nested bytes\n');
++fs.mkdirSync(path.join(normal.workspace,'inputs'));fs.writeFileSync(path.join(normal.workspace,'inputs','required.txt'),'normal required bytes\n');
++const result=collect(normal,['inputs/required.txt']);
++check('normal nested and required files collect',()=>{assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(latest(normal).complete,true);assert.deepEqual(latest(normal).gaps,[]);assert.equal(fs.readFileSync(path.join(normal.root,'reviews','probe',relative),'utf8'),'normal nested bytes\n');assert.equal(fs.readFileSync(path.join(normal.root,'reviews','probe','inputs','required.txt'),'utf8'),'normal required bytes\n')});
++fs.rmSync(normal.workspace,{recursive:true});const replay=cp.spawnSync('bash',[script,'--collect',normal.run],{encoding:'utf8'});
++check('completed archive survives intentional source cleanup',()=>{assert.equal(replay.status,0,replay.stdout+replay.stderr);assert.equal(latest(normal).complete,true)});
++console.log(`${checks-failures} passed, ${failures} failed`);process.exit(failures?1:0);
++NODE

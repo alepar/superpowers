@@ -1,0 +1,37 @@
+# Review package: c3fac4369c7c737e2e7f9f7250fd253b21442d12..357c00590d5d0a5284b4fa0e2694cb6f6c3bb10e
+
+## Commits
+357c0059 test: normalize dispatch fixture temporary paths
+
+## Files changed
+ tests/super-code/test-dispatch-text.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+## Diff
+diff --git a/tests/super-code/test-dispatch-text.sh b/tests/super-code/test-dispatch-text.sh
+index a26f97ab..725f8e30 100644
+--- a/tests/super-code/test-dispatch-text.sh
++++ b/tests/super-code/test-dispatch-text.sh
+@@ -1,20 +1,22 @@
+ #!/usr/bin/env bash
+ # Tests for skills/super-code/scripts/dispatch-text: the ordinary-subagent coordinator's dispatch
+ # text comes from coordinator.js's own prompt builders, with run facts read from the ledger's
+ # Launch: line.
+ set -euo pipefail
+ 
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+ D="$REPO_ROOT/skills/super-code/scripts/dispatch-text"
+ T=$(mktemp -d "${TMPDIR:-/tmp}/dispatch-text.XXXXXX")
++# Match the dispatcher's path.resolve spelling before deriving artifact expectations.
++T=$(node -p 'require("node:path").resolve(process.argv[1])' "$T")
+ trap 'rm -rf "$T"' EXIT
+ FAILURES=0
+ 
+ pass() { echo "  [PASS] $1"; }
+ fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
+ assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
+ assert_has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fail "$3"; echo "    missing: $2"; fi; }
+ assert_lacks() { if printf '%s\n' "$1" | grep -qF -- "$2"; then fail "$3"; echo "    unexpected: $2"; else pass "$3"; fi; }
+ run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
+ 

@@ -1,0 +1,53 @@
+test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer) ... FAIL
+test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe) ... FAIL
+test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure) ... FAIL
+test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer) ... FAIL
+test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe) ... FAIL
+test_valid_empty_acceptance_consumer (__main__.ProjectionOutput.test_valid_empty_acceptance_consumer) ... ok
+test_valid_empty_projection_pipe (__main__.ProjectionOutput.test_valid_empty_projection_pipe) ... ok
+
+======================================================================
+FAIL: test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 121, in test_gap_projection_acceptance_consumer
+  File "<stdin>", line 99, in check_acceptance
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': [], 'gaps': ['finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+======================================================================
+FAIL: test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 118, in test_gap_projection_pipe
+  File "<stdin>", line 78, in check_projection
+AssertionError: b'{\n[66617 chars]etain' != b'{\n[66617 chars]etained verification evidence. Detailed retain[141263 chars]n}\n' : pipe must preserve every serialized byte, including the final JSON delimiter
+
+======================================================================
+FAIL: test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 136, in test_incomplete_pipe_write_is_failure
+AssertionError: 0 == 0 : a closed output pipe must not report success
+
+======================================================================
+FAIL: test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 115, in test_large_projection_acceptance_consumer
+  File "<stdin>", line 99, in check_acceptance
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': [], 'gaps': ['finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+======================================================================
+FAIL: test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 112, in test_large_projection_pipe
+  File "<stdin>", line 78, in check_projection
+AssertionError: b'{\n[66617 chars]etain' != b'{\n[66617 chars]etained verification evidence. Detailed retain[141097 chars]n}\n' : pipe must preserve every serialized byte, including the final JSON delimiter
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.411s
+
+FAILED (failures=5)
+acceptance empty=True gap=False: 0 retained refs, exit 0
+projection empty=True gap=False: 381 bytes, exit 0

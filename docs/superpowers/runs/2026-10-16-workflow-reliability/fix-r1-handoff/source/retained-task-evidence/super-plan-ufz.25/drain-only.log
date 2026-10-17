@@ -1,0 +1,25 @@
+test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer) ... ok
+test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe) ... ok
+test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure) ... FAIL
+test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer) ... ok
+test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe) ... ok
+test_valid_empty_acceptance_consumer (__main__.ProjectionOutput.test_valid_empty_acceptance_consumer) ... ok
+test_valid_empty_projection_pipe (__main__.ProjectionOutput.test_valid_empty_projection_pipe) ... ok
+
+======================================================================
+FAIL: test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 136, in test_incomplete_pipe_write_is_failure
+AssertionError: 0 == 0 : a closed output pipe must not report success
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.441s
+
+FAILED (failures=1)
+acceptance empty=False gap=True: 126 retained refs, exit 3
+projection empty=False gap=True: 204542 bytes, exit 3
+acceptance empty=False gap=False: 126 retained refs, exit 0
+projection empty=False gap=False: 204381 bytes, exit 0
+acceptance empty=True gap=False: 0 retained refs, exit 0
+projection empty=True gap=False: 381 bytes, exit 0

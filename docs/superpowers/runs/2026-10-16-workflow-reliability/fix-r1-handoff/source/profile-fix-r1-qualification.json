@@ -1,0 +1,16 @@
+{
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "capturedImplementationHead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "commandExit": 0,
+  "stdoutSha256": "11d19f3aa2692fd397b203650e9b4c3c64abb52b62dfd1b2071092984698bfbf",
+  "stdoutBytes": 4840,
+  "generatedOnce": true,
+  "rawArtifacts": [
+    "profile-fix-r1.md",
+    "profile-fix-r1.json",
+    "profile-fix-r1.stdout",
+    "profile-fix-r1.stderr"
+  ],
+  "scope": "recorded native session plus cumulative ledger, not isolated invocation causal experiment",
+  "qualification": "Historical topology/readiness unknowns and operator/usage pauses retained; modeled bottlenecks/what-ifs are not proven causes/lower bounds. Do not reuse unqualified causal text for final report."
+}

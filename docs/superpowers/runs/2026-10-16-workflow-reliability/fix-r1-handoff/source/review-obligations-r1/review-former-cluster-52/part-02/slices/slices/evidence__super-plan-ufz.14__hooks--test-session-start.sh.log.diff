@@ -1,0 +1,14 @@
+diff --git a/evidence/super-plan-ufz.14/hooks--test-session-start.sh.log b/evidence/super-plan-ufz.14/hooks--test-session-start.sh.log
+new file mode 100644
+index 00000000..328ba749
+--- /dev/null
++++ b/evidence/super-plan-ufz.14/hooks--test-session-start.sh.log
+@@ -0,0 +1,8 @@
++SessionStart hook output tests
++  [PASS] hooks.json registers SessionStart with shell:bash dispatch
++  [PASS] Claude Code emits nested SessionStart additionalContext
++  [PASS] run-hook.cmd wrapper dispatches to the named session-start script
++  [PASS] Cursor emits top-level additional_context only
++  [PASS] Copilot CLI emits top-level additionalContext only
++  [PASS] SessionStart omits obsolete legacy custom-skill warning
++STATUS: PASSED

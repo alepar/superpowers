@@ -1,0 +1,27 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/cleanup.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/cleanup.json
+new file mode 100644
+index 00000000..36e1ac75
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/cleanup.json
+@@ -0,0 +1,21 @@
++{
++  "time": 1792225071.773076,
++  "owned_worktrees": [
++    {
++      "path": "/private/tmp/ufz-live-isolation/seat-a/review-worktree",
++      "exit": 0,
++      "stdout": "",
++      "stderr": "",
++      "removed": true
++    },
++    {
++      "path": "/private/tmp/ufz-live-isolation/seat-b/review-worktree",
++      "exit": 0,
++      "stdout": "",
++      "stderr": "",
++      "removed": true
++    }
++  ],
++  "remaining_worktrees": "worktree /private/tmp/ufz-live-isolation/caller\nHEAD 9323074ae09c0501a41d428382f7eac0f2d506b2\nbranch refs/heads/integration\n\n",
++  "processes": "All recorder children synchronously communicate() reaped; controller unified session returned exit 0. No process kill performed. Global process enumeration unavailable (ps EPERM)."
++}

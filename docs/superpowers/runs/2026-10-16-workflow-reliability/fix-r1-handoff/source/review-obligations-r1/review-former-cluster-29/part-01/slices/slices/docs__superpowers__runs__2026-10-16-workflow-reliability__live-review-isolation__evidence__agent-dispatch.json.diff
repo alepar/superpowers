@@ -1,0 +1,22 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/agent-dispatch.json b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/agent-dispatch.json
+new file mode 100644
+index 00000000..ede5fd68
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/agent-dispatch.json
+@@ -0,0 +1,16 @@
++{
++  "agents": {
++    "seat-a": "/root/live_review_isolation/seat_a",
++    "seat-b": "/root/live_review_isolation/seat_b"
++  },
++  "spawn_settings": {
++    "fork_turns": "none",
++    "model": "gpt-6.1-sol",
++    "reasoning_effort": "medium"
++  },
++  "launched_at": 1792224989.443447,
++  "raw_spawn_messages": {
++    "seat-a": "Execute a live independent review exercise. Read /private/tmp/ufz-live-isolation/prompts/seat-a-task.md and follow it. Your operative instructions and immutable captured pair are in that prompt. You may create only your review-owned fixture resources and declared reports. Do not spawn agents. Do not write Herdr. Retain full commands/outputs using supplied recorder. Return final response text with report path.",
++    "seat-b": "Execute a live independent review exercise. Read /private/tmp/ufz-live-isolation/prompts/seat-b-task.md and follow it. Your operative instructions and immutable captured pair are in that prompt. You may create only your review-owned fixture resources and declared reports. Do not spawn agents. Do not write Herdr. Retain full commands/outputs using supplied recorder. Return final response text with report path."
++  }
++}

@@ -1,0 +1,54 @@
+[FAIL] assembled-intermediate exits with collection gap: collection: complete
+
+
+0 !== 3
+
+[FAIL] assembled-intermediate stays incomplete with an explicit unsafe path gap: Expected values to be strictly equal:
+
+true !== false
+
+[FAIL] assembled-intermediate never archives sentinel bytes: The expression evaluated to a falsy value:
+
+  assert.ok(!archivedBytes(path.join(f.root,'reviews')).includes(sentinel))
+
+[PASS] discovered-direct-file exits with collection gap
+[FAIL] discovered-direct-file stays incomplete with an explicit unsafe path gap: ["bundle unavailable: final-review-probe.md.diff"]
+[PASS] discovered-direct-file never archives sentinel bytes
+[FAIL] required-deep-intermediate exits with collection gap: collection: complete
+
+
+0 !== 3
+
+[FAIL] required-deep-intermediate stays incomplete with an explicit unsafe path gap: Expected values to be strictly equal:
+
+true !== false
+
+[FAIL] required-deep-intermediate never archives sentinel bytes: The expression evaluated to a falsy value:
+
+  assert.ok(!archivedBytes(path.join(f.root,'reviews')).includes(sentinel))
+
+[PASS] required-direct-file exits with collection gap
+[FAIL] required-direct-file stays incomplete with an explicit unsafe path gap: ["bundle unavailable: required.txt"]
+[PASS] required-direct-file never archives sentinel bytes
+[PASS] discovered-nested-directory exits with collection gap
+[FAIL] discovered-nested-directory stays incomplete with an explicit unsafe path gap: ["bundle unavailable: assembled/final-review-probe-final/linked"]
+[PASS] discovered-nested-directory never archives sentinel bytes
+[PASS] in-workspace-symlink exits with collection gap
+[FAIL] in-workspace-symlink stays incomplete with an explicit unsafe path gap: ["bundle unavailable: required.txt"]
+[PASS] in-workspace-symlink never archives sentinel bytes
+[FAIL] split-manifest-intermediate exits with collection gap: collection: complete
+
+
+0 !== 3
+
+[FAIL] split-manifest-intermediate stays incomplete with an explicit unsafe path gap: Expected values to be strictly equal:
+
+true !== false
+
+[FAIL] split-manifest-intermediate never archives sentinel bytes: The expression evaluated to a falsy value:
+
+  assert.ok(!archivedBytes(path.join(f.root,'reviews')).includes(sentinel))
+
+[PASS] normal nested and required files collect
+[PASS] completed archive survives intentional source cleanup
+10 passed, 13 failed

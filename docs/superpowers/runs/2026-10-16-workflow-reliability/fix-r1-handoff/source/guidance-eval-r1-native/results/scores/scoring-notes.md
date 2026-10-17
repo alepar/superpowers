@@ -1,0 +1,7 @@
+All 19 complete raw response packets (141 textual cases), the incomplete 011 response, both prompts, rubric and adapter were manually read. All 67 flags and all novel normalized wrappers were read. Complete wrappers were intake-only; no prohibited actual operational action observed. The actual 011 typo/error was checked in its transcript.
+
+Primary semantic failures: candidate_004/D and candidate_007/A,D, criterion O6: their chosen ordered actions permit leaf removal before required retention/run/report persistence. Secondary-only failure: candidate_020/D, same criterion and order. This treats “before teardown” as applying to leaf deletion too; a narrower outer-only interpretation would alter those labels and is disclosed in the JSON. No semantic ambiguous cases remain under this reading.
+
+Primary unmeasurable: candidate_011 (7/15 chunks, mistyped /codex/c3/ payload path, FileNotFoundError, no semantic cases), candidate_017–020 (visible inherited AGENTS.md drift; no waiver). Secondary semantics for 017–019 pass all cases; 020 fails D only. Every primary-eligible positive control and specificity contrast passes. No arm mapping or aggregation read/performed.
+
+Exact raw field-value JSON spans and pointers support each criterion. Hashes match rubric adapter/scoring-input references and remain unchanged across artifact construction. The first clock was captured after manual reading; exact initial start time is explicitly unavailable rather than invented.

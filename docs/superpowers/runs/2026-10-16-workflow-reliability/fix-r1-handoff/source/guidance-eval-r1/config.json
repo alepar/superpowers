@@ -1,0 +1,21 @@
+{
+  "mode": "guidance-only frozen textual decision samples",
+  "samplesPerArmPerFamily": 5,
+  "familyCount": 2,
+  "armCountPerFamily": 2,
+  "expectedSampleCount": 20,
+  "candidateRunsStarted": 0,
+  "toolsEnabled": false,
+  "carryParentHistory": false,
+  "oneFreshContextPerSample": true,
+  "contextTruncationAllowed": false,
+  "maxOutputTokens": 12000,
+  "modelSelection": "Use one identical inherited/approved candidate model and provider configuration for every sample; do not switch model between arms. Preparation does not select a new model.",
+  "launchRequirement": "Before the first sample, runner must make an append-only launch record identifying exact provider/model revision, harness/version, effective reasoning/sampling settings, input window, output limit and any additional harness instructions. Run all arms with the same record. If required payload will not fit, mark blocked rather than truncate or summarize. Unknown exact execution settings are unmeasurable, not silently defaulted.",
+  "sampling": "Five independent fresh contexts per family/arm; identical message payload bytes across repeats. No seed guarantees independence. Record provider request IDs and actual configuration.",
+  "retryPolicy": "No hidden retries/replacements. Transport failures count in 20 scheduled records as unmeasurable; separately disclose any authorized supplemental run.",
+  "contextDelivery": "Exact messages JSON is the canonical input: full consumed docs are inlined in system content; matching shared user text is identical in both arms. No live repository reads.",
+  "candidateIsolation": "No parent task, rubric, after/baseline labels, historical results, source diffs or scoring instructions are given to candidate beyond canonical messages. Use raw single-shot calls or fresh isolated agents with no inherited conversation and no tools; never expose the preparer context.",
+  "scoring": "Manual semantic rubric, blinded when possible; preserve evidence and ambiguity.",
+  "implementationBoundary": "Read-only git show and hashing build inputs. No source changes, test/fixture executions, candidate calls, actual process/worktree operations, tracker actions, Herdr mutations or source-package deployment."
+}

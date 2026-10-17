@@ -1,0 +1,13 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-worktree.diff b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-worktree.diff
+new file mode 100644
+index 00000000..da29e2f6
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/evidence/seat-b-worktree.diff
+@@ -0,0 +1,7 @@
++diff --git a/lib/generated.mjs b/lib/generated.mjs
++index 392803b..627efc7 100644
++--- a/lib/generated.mjs
+++++ b/lib/generated.mjs
++@@ -1 +1 @@
++-export const generated = false;
+++export const generated = true;
