@@ -107,7 +107,11 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
     : new Promise(res => waiters.push({ label, res }))
 
   async function agent(prompt, opts = {}) {
-    const label = opts.label ?? '<unlabelled>'
+    // Existing scenarios address logical operations; preserve the actual producer label
+    // in opts and records for journal/profile contract tests.
+    const label = (opts.label ?? '<unlabelled>')
+      .replace(/^(close-only:[^:]+):(verification|landed)$/, '$1')
+      .replace(/^(ledger:[^:]+):verification-settlement(?=:|$)/, '$1')
     const kind = label.split(':')[0]
     trace.push({ label, phase: opts.phase, prompt, opts })
     counts[label] = (counts[label] ?? 0) + 1
@@ -175,11 +179,19 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
   const budget = { total: null, spent: () => 0, remaining: () => Infinity }
   const workflow = () => { throw new Error('workflow() not available in replay') }
 
+  const records = []
+  let tick = 0
+  const observedAgent = async (prompt, opts) => {
+    const record = { label: opts.label, phase: opts.phase, start: ++tick, prompt }
+    records.push(record)
+    try { return record.result = await agent(prompt, opts) }
+    finally { record.end = ++tick }
+  }
   let result = null
   let timer = null
   try {
     result = await Promise.race([
-      scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow, readinessTimers.setTimeout, readinessTimers.clearTimeout),
+      scriptFn(args, observedAgent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow, readinessTimers.setTimeout, readinessTimers.clearTimeout),
       new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`HARNESS TIMEOUT after ${timeoutMs}ms — an unsatisfied waitFor usually means a dispatch/merge barrier was reintroduced`)), timeoutMs) }),
     ])
   } catch (e) {
@@ -188,7 +200,7 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
     if (timer) clearTimeout(timer)
     for (const w of waiters) w.res()  // release stranded waiters so node can exit
   }
-  return { result, trace, logs, counts, maxOpen, error }
+  return { result, trace, records, logs, counts, maxOpen, error }
 }
 
 // ---------- assertion plumbing ----------
@@ -5107,4 +5119,5 @@ esac
   process.exit(failures ? 1 : 0)
 }
 
-main().catch(e => { console.error(e); process.exit(1) })
+export { run, liveArgs, oneTaskCanned, extractLedgerLines }
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch(e => { console.error(e); process.exit(1) })

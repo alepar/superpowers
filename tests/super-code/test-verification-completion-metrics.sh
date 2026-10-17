@@ -69,7 +69,10 @@ class WorkflowMetrics(unittest.TestCase):
                            dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
             agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
                        dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
-                       dict(label='close-only:verify.1',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
+                       dict(label='close-only:verify.1:verification',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
+            if kind!='pending':
+                agents += [dict(label='close-check:verify.1',start=43,end=44,result=dict(closed=['verify.1'])),
+                           dict(label='ledger:verify.1:verification-settlement',start=45,end=46,result=dict(appended=True))]
             sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
             scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
             subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)

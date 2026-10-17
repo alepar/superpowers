@@ -299,13 +299,13 @@ function noteLedger(id, line, elided) {
   if (!ledgerBuf.has(id)) ledgerBuf.set(id, [])
   ledgerBuf.get(id).push({ line, elided })
 }
-function flushLedger(id, phase, confirm = false) {
+function flushLedger(id, phase, confirm = false, suffix = '') {
   const entries = ledgerBuf.get(id)
   ledgerBuf.delete(id)
   if (!entries || !entries.length) return
   const lines = entries.flatMap(e => flatLines(e.line))
   const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
-  return queueLedger(lines, `ledger:${id}`, phase, elided, confirm)
+  return queueLedger(lines, `ledger:${id}` + suffix, phase, elided, confirm)
 }
 function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
@@ -908,8 +908,9 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
   if (lines.length) {
     // Append completion and its clears together; only confirmed writes update in-memory
     // obligations. An unavailable append retains recovery for the next restart.
-    const written = await queueLedger(lines, 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines).catch(() => null)
-    if (!written || written.appended === false) {
+    const settlement = !!verification && allClosed
+    const written = await queueLedger(lines, settlement ? 'ledger:' + id + ':verification-settlement' : 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines, settlement).catch(() => null)
+    if (!written || (settlement ? written.appended !== true : written.appended === false)) {
       resumeHolds.set(id, 'recovery reconciliation append unavailable')
       log(id + ': recovery held — reconciliation append unavailable; original obligation retained')
       continue
@@ -1419,7 +1420,7 @@ while (true) {
     const required = [r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean)
     const repair = async () => {
       const closed = await dispatch(() => verificationCompletions.has(r.id) ? verificationClosePrompt(r.id, verificationCompletions.get(r.id)) : closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
-        { label: `close-only:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
+        { label: `close-only:${r.id}` + (verificationCompletions.has(r.id) ? ':verification' : ':landed'), phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
       if (verificationCompletions.has(r.id) && closed) {
         const basis = verificationCompletions.get(r.id)
         basis.cleanup = closed.finding || 'cleanup outcome unavailable'
@@ -1464,7 +1465,7 @@ while (true) {
       evidence: [artifacts(r.id).report, ...[r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean).map(id => 'bead:' + id)], data: {} })
     noteLedger(r.id, clear, clear)
     noteLedger(r.id, ledgerLine(r.n, r.id, 'complete (verification-only, reviewed acceptance evidence; no Git landing)'))
-    const written = await flushLedger(r.id, 'Integrate', true).catch(() => null)
+    const written = await flushLedger(r.id, 'Integrate', true, ':verification-settlement').catch(() => null)
     if (written?.appended !== true) {
       resumeHolds.set(r.id, 'verification closure append unavailable')
       log(r.id + ': recovery held — verification closure append unavailable; reviewed basis retained')
@@ -2174,6 +2175,24 @@ if (unsettledIds.length) {
   else for (const id of (rec.closed ?? [])) {
     if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
     if (verificationCandidates.has(id) && !verificationCompletions.has(id)) { log('tracker closure for ' + id + ' does not replace its missing verification acceptance'); continue }
+    if (verificationCompletions.has(id)) {
+      // The typed receipt is emitted only after tracker confirmation; its acknowledged
+      // append is the settlement evidence for resumed and freshly reviewed verification.
+      const pending = recoveryObligations.get('pending-closure:' + id)
+      const clear = 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed at Finish reconciliation',
+        evidence: ['bead:' + id, ...[reviewBeadOf.get(id), blockerBeadOf.get(id)].filter(Boolean).map(bead => 'bead:' + bead)], data: {} })
+      const lines = [clear, ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, 'complete (verification-only, reviewed acceptance evidence; tracker reports closed)')]
+      const written = await queueLedger(lines, 'ledger:' + id + ':verification-settlement', 'Finish', lines, true).catch(() => null)
+      if (written?.appended !== true) {
+        resumeHolds.set(id, 'verification closure append unavailable')
+        log(id + ': recovery held — verification closure append unavailable; reviewed basis retained')
+        continue
+      }
+      readRecovery(clear)
+      settle(id, completed)
+      blockerBeadOf.delete(id)
+      continue
+    }
     log(`reconciled ${id}: tracker reports closed — moved from ${landedOpen.includes(id) ? 'unconfirmed closure' : escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
     settle(id, completed)
     if (!landedOpen.includes(id)) continue

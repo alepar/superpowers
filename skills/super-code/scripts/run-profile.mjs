@@ -1166,14 +1166,17 @@ for (const b of beads.values()) {
     const implHead = at.agents.find(a => a.kind === 'impl')
     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
-    // Workflow verification uses the existing close-only label. Its CLOSED result
-    // settles tracker bookkeeping, not a previously merged branch.
-    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'
-      || at.agents.some(a => a.result?.completionKind === 'verification-only')
-    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly
-      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')
-      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))
-    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
+    // Coordinator-owned labels retain verification identity on closure-only resume.
+    // CLOSED is repair output; only the acknowledged, post-check settlement append
+    // confirms completion. Legacy untyped closure cannot establish a Git landing.
+    at.verificationOnly = at.agents.some(a => a.result?.completionKind === 'verification-only'
+      || (a.kind === 'close-only' && a.suffix === 'verification')
+      || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix)))
+    at.verificationCompleted = at.status === 'VERIFIED' || at.agents.some(a => a.kind === 'ledger'
+      && /^verification-settlement(?::retry)?$/.test(a.suffix) && a.result?.appended === true)
+    if (at.verificationOnly) at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
+    at.unknownClosure = !at.verificationOnly && at.status !== 'ALREADY_MERGED'
+      && at.agents.some(a => a.kind === 'close-only' && !a.suffix)
     at.split = by('split')[0] ?? null
     at.blocker = by('blocker')
     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
@@ -1189,7 +1192,7 @@ for (const b of beads.values()) {
     const merges = at.agents.filter(a => a.kind === 'merge')
     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
-      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.suffix === 'landed' || at.status === 'ALREADY_MERGED') && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
   }
   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
   // lost) is bookkeeping, counted apart as a re-entry close.
@@ -1760,6 +1763,8 @@ lines.push(`Profile: concurrency scope — all-agent concurrency peak ${runtime.
 for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if estimate — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}; ${modelWindow}, planning retained`)
 if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if estimate — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}; ${modelWindow}, planning retained`)
 const unmeasured = []
+const unknownClosures = [...beads.values()].filter(b => !b.landed && b.attempts.some(at => at.unknownClosure))
+if (unknownClosures.length) unmeasured.push(`closure kind unknown for ${unknownClosures.length} bead(s): untyped close-only output proves neither a Git landing nor verification settlement`)
 const unknownReady = [...beads.values()].filter(b => b.readyAt === null)
 if (unknownReady.length) unmeasured.push(`availability/readiness timing unknown for ${unknownReady.length} bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary`)
 if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
