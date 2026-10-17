@@ -294,7 +294,8 @@ is the only source; every other copy is regenerated from the committed sections,
 what is there, never appended to. Run the sync whenever any section is applied or changed:
 §Key Abstractions' apply, a human's interactive edit, a design-roast fix or step-back redesign
 that touches a section (§Adversarial Review Loop), a redesign `super-auto`'s phase-5 code fix
-loop applies to a section (before it files that round's fix beads), and re-entry (§Re-entry).
+loop applies to a section (before it files that round's fix beads), an amend (§Amend Mode) that
+touches a `## Key abstractions` section, and re-entry (§Re-entry).
 It rewrites:
 
 - **The digest.** Collect the `Digest:` lines of every committed spec in tree order (root
@@ -581,7 +582,8 @@ round 3 when round 2 widens** (divergence observation below). The cap stays at t
 design roast that follows (§Adversarial Review Loop (root only)) reviews the settled tree, round
 2's fixes included, so it covers that ground. **Round 2
 dispatches only once every round-1 fix is fully applied** — a new-subepic `GAP`'s nested subtree
-included, which means waiting for that subtree to finish designing.
+included, which means waiting for that subtree to finish designing. An amend's
+`coverage-amend-<loop>-<K>` round (§Amend Mode) runs outside this two-round cap.
 
 **The changed-since input.** Round 1's fixes are applied with no human in the path, and round 2
 is the only thing that will ever see them. Assemble round 2's `## Changes since the previous
@@ -763,6 +765,87 @@ Runs): no exit pauses — record the summary into the run-state file (or the fin
 there is none) and proceed to the design-ready point (§Gates by Mode); Capped Blocking follows
 its own rule above.
 
+## Amend Mode
+
+The single redesign entry point both roast fix loops call: super-auto's phase-5 code loop and
+§Adversarial Review Loop's design loop. It is a Facade over spec amendment, the Key Abstractions
+sync (§Decomposition), bead filing (§Decomposition) and §Coverage. It owns the sequence below,
+restoring the specs to HEAD on every reject and abort, and being the single filer of the
+amendment's beads. It never counts or checks the redesign budget, never writes `redesignCycles-*`
+or any `redesign-*` field but `state`, never runs a roast, super-code or the next round, never
+routes on raw reports (the ledger is its input; read finding text by key through the ledger's
+`text` pointers), and never has the orchestrator edit specs: only the amend designer does. The
+calling loop's orchestrator runs Amend Mode inline; only the amend designer is dispatched. Per-loop
+differences live only in the loop table below. After each step the orchestrator rewrites the
+`redesign-<loop>-<K>` record's `state` with the state that step names; nothing else writes it.
+
+**Inputs:** the root epic id; the root and nested spec paths; the ledger and overrides paths; the
+calling loop's findings-ledger invocation (its Step 1 input set, dropped inputs excluded); the
+step-back record; the task-tree dump (`bd list --label sp:<root-epic-id> --all --json --limit 0`);
+the roast report paths; the run-state file; the mode flags; the loop (`code|design`); K; and the
+caller's bead context.
+
+**Steps**
+
+1. **Dispatch the amend designer.** Precondition: the `--specs` paths are clean at HEAD (the caller
+   committed them before writing `started`), so every restore below discards only the designer's
+   edits. Dispatch `./amend-prompt.md` (fresh context, model opus), filling `[LOOP]`, `[K]`,
+   `[ROOT_SPEC_PATH]`, `[SPEC_PATHS]`, `[LEDGER_PATH]`, `[STEP_BACK_PATH]`, `[TASK_TREE_DUMP_PATH]`,
+   `[REPORT_PATHS]`, `[AMEND_RECORD_PATH]` and `[REJECTS]` (empty on the first dispatch). The record
+   goes beside the loop's ledger: code `<run-dir>/amend-code-<K>.md`, design
+   `<artifact-dir>/amend-design-<K>.md`. The designer writes only spec files and that record, and
+   never `## Goal`.
+2. **Validate.** `bash <base>/scripts/amend-check --loop <loop> --amend <record> --ledger <ledger>
+   --specs <root spec> <nested specs…>`: `ok` (exit 0), `reject:` lines (exit 3), or bad input
+   (exit 2: fix the invocation; a git failure is exit 2, never a reject). On `ok`, state
+   `amend-checked`. On each reject, restore the `--specs` files (`git checkout HEAD -- <paths>`) so
+   the retry starts clean, then re-dispatch once with the reject lines as `[REJECTS]`. A second
+   reject restores again and returns `aborted — amend rejected`.
+3. **Commit** the specs; state `specs-committed`. An abort is possible only before this commit
+   lands, and every abort restores the specs first. Then run the Key Abstractions sync
+   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed.
+4. **File the `work:` items** as beads per §Decomposition, with the caller's bead context appended
+   to each description, each labelled `sp:redesign-<loop>-<K>`. First list
+   `bd list --label sp:redesign-<loop>-<K> --all --json` and file only `work:` titles not already
+   present. The caller files none. State `beads-filed`.
+5. **Disputes.** Append each `disputed` owner to the overrides file as
+   `<key> · disputed@r<N> (<reason>)` (canonical key `[SEV] <location>`; N is the round whose
+   ledger the amend read), skipping a line already present. Then rebuild the ledger with the
+   calling loop's findings-ledger invocation (an input); exit 2 is handled as that loop's Step 1
+   item 2. A disputed Blocking finding stays unresolved and is listed in Remaining.
+6. **Coverage.** One extra round, recorded as `approvals · coverage-amend-<loop>-<K>` in the
+   `coverage-round-<N>` line format, outside the two-round cap (§Coverage). It reuses
+   `./coverage-reviewer-prompt.md` and `scripts/coverage-inputs` unchanged; its
+   `## Changes since the previous round` lists the amend's beads and the `amended:` sections. No new
+   coverage prompt.
+7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`.
+
+**After the commit nothing aborts.** A step from step 3's sync through step 6 that fails is retried
+once through its state's resume action; a second failure parks a `degraded-verdict`
+`redesign incomplete — <step>: <cause>` and Amend Mode returns `applied` with what it produced, so
+the next roast re-validates the open items.
+
+**Loop table** (closed, keyed by `code|design`)
+
+| | `code` | `design` |
+|---|---|---|
+| Bead wiring | post-hand-off beads, no sweep edges | wired under the existing `Integration sweep:` |
+| Supersede | none | `bd supersede` open beads the amendment obsoletes |
+| amend-check reverse rule | a `work:` line for every non-disputed open item | a `work:` line, or an amended owning section |
+| Bead context source | I3 flags + §Fix-bead template context lines | §Decomposition flag triple + `Integration sweep:` wiring |
+
+**Outcomes**
+
+- `applied`: with the record path, bead ids and `amended:`.
+- `aborted — amend rejected`: two rejects.
+- `aborted — <cause>`: any other failure before the commit.
+
+Both aborts happen before the spec commit and leave the specs at HEAD; the caller runs the round
+`local`. A step-back with `scope: outside` never reaches Amend Mode: the caller parks or presents
+it. Amend Mode runs no roast, so there is no nested redesign and no double roast: any design roast
+after an amendment belongs to the calling loop. `## Goal` is never edited (amend-check enforces
+it).
+
 ## Parallelism Pass (root only)
 
 Runs once, after the roast loop exits or is declined, and before the design-ready point (§Gates
@@ -937,12 +1020,20 @@ skill's work instead of re-running all of it.
 - Add a blocking edge (`bd dep add`, any site) without pairing it with a `blocked-by <blocker-id>:
   consumes <artifact>` line in the dependent's description — the precheck and the parallelism
   pass cannot audit an edge whose reason isn't written down.
+- Act on an amend record `scripts/amend-check` has not passed, including on resume.
+- Edit a spec as the orchestrator during Amend Mode — only the amend designer
+  (`./amend-prompt.md`) edits specs; the orchestrator restores and commits.
+- File an amend's beads from the calling loop — Amend Mode is the single filer, and the caller
+  only supplies bead context.
+- Run a roast inside Amend Mode — any design roast after an amendment belongs to the calling loop.
+- Re-dispatch the amend designer, or return `aborted`, without first restoring the `--specs` files
+  to HEAD (`git checkout HEAD -- <paths>`).
 
 ## Integration
 
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
-- Dispatches `./key-abstractions-prompt.md` (handing it `./design-distillate.md`), `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`.
-- Runs `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
+- Dispatches `./key-abstractions-prompt.md` (handing it `./design-distillate.md`), `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`, and, in Amend Mode, `./amend-prompt.md` (the only dispatch Amend Mode makes besides the coverage-amend round's `./coverage-reviewer-prompt.md`).
+- Runs `./scripts/amend-check` and `./scripts/findings-ledger` (the rebuild after disputes) in Amend Mode (§Amend Mode); `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
