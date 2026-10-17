@@ -171,7 +171,26 @@ if (keys) {
     if (!printed.has(o.key)) { console.log(o.key); printed.add(o.key); }
   }
   for (const g of gaps) console.error('FINDING_GAP: ' + g.origin + ': ' + g.message);
-} else console.log(JSON.stringify({version:1, findings, gaps}, null, 2));
+} else {
+  // Counts describe retained, explicitly linked groups only. A later clean verdict
+  // never erases a source occurrence, and a rejected/deferred group is no repair.
+  const actionable = findings.filter(f => f.occurrences.some(o => /^(confirmed findings|must[- ]fix|deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b)/i.test(o.section)));
+  const repaired = f => !f.outstanding && f.dispositions.some(d => d.supported && d.disposition === 'resolved');
+  const metrics = {
+    scope:gaps.length ? 'retained sources (partial)' : 'retained sources',
+    sources:fingerprints.size,
+    sourceKinds:[...new Set(entries.filter(e => e.type === 'finding-source' && fingerprints.has(e.data?.source)).map(e => e.data.kind))],
+    occurrences:occurrences.size, occurrenceGroups:findings.length, findings:actionable.length,
+    otherSectionGroups:findings.length - actionable.length,
+    sections:[...new Set(findings.flatMap(f => f.occurrences.map(o => o.section)))],
+    repaired:actionable.filter(repaired).length,
+    rejected:actionable.filter(f => !f.outstanding && !repaired(f) && f.dispositions.some(d => d.supported && d.disposition === 'rejected')).length,
+    outstanding:actionable.filter(f => f.outstanding).length,
+    deferred:actionable.filter(f => f.outstanding && f.deferred).length,
+    gaps:gaps.length,
+  };
+  console.log(JSON.stringify({version:1, findings, gaps, metrics}, null, 2));
+}
 process.exit(gaps.length ? 3 : 0);
 NODE
   exit $?
