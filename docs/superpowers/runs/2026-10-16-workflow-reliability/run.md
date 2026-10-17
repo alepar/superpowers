@@ -21,7 +21,7 @@ approvals:
 
 # Design checkpoint
 
-Promotion review: promotion-review.md; proposed split: proposed-split.md. User approved proposed Key abstractions and thirteen-child top split (.8 PROMOTE, others LEAF). Finding-continuity nested design is next. No implementation started.
+Promotion review: promotion-review.md; proposed split: proposed-split.md. Approved parent and nested designs were implemented in eighteen tasks. All tasks landed; whole-epic review, code roast, caller-owned final sweep and root acceptance remain pending.
 
 roastDesignRound: 1
 

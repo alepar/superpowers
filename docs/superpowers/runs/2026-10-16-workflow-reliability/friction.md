@@ -11,3 +11,5 @@ Design roast round 1 uses the supported manual fan-out rung because Workflow is 
 ## Run events
 
 - Planner workspace-helper retry was rejected by automatic approval review: parent brief barred Git mutations, helper writes ignored workspace .gitignore. Parent had already completed canonical setup. Resolution: use existing workspace and explicitly authorize only append-only planner outputs; no retry of refused helper or permission-setting change.
+
+- Shared coordinator/docs file cap held multiple ready tasks with a free chain after first landing; raised hot-file cap2→3, task concurrency remains3.
