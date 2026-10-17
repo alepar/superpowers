@@ -1,0 +1,17 @@
+# Review package: 96ba44f6f5ced6166997c74aee1ba374b6c3fe0f..7ddd110053fb302c4f6a0bd645ddbf28c512c563
+
+## Commits
+7ddd110 format cents without floating point
+
+## Files changed
+ lib/format.mjs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+## Diff
+diff --git a/lib/format.mjs b/lib/format.mjs
+index 5d1308b..9d96e25 100644
+--- a/lib/format.mjs
++++ b/lib/format.mjs
+@@ -1 +1 @@
+-export function formatAmount(cents) { return '$' + (cents / 100).toFixed(2); }
++export function formatAmount(cents) { return '$' + Math.trunc(cents / 100) + '.' + String(Math.abs(cents % 100)).padStart(2, '0'); }
