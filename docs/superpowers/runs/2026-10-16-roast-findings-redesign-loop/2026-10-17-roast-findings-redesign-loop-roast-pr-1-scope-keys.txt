@@ -1,0 +1,12 @@
+[Should-fix] skills/super-auto/SKILL.md:263
+[Should-fix] skills/super-design/scripts/step-back-check:109
+[Should-fix] skills/super-design/scripts/findings-ledger:263
+[Should-fix] skills/super-design/scripts/findings-ledger:245
+[Nit] tests/super-design/test-redesign-chain.sh:89
+[Nit] skills/super-design/scripts/amend-check:244
+[Nit] skills/super-design/scripts/step-back-check:100
+[Nit] skills/super-design/scripts/step-back-check:93; skills/super-design/scripts/step-back-check:99
+[Nit] skills/super-auto/resume.md:43
+[Nit] skills/super-auto/resume.md:29
+[Nit] skills/super-auto/SKILL.md:171
+[Nit] skills/super-design/scripts/findings-ledger:157
