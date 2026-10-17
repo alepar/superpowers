@@ -54,6 +54,10 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals` | `approvals:` then one `- <record>` line per decision below | 7 | super-design; super-auto (`design-review`) |
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
+| `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
+| `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
+| `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
+| `approvals · finding-disposition` | `- finding-disposition · <JSON ref and supported disposition/basis>` | 7 | super-auto, after judging verification or rejection support |
 | `approvals · coverage-round-<N>` | `- coverage-round-<N> · <each finding's disposition, marked auto \| human>`; round 1 also carries the canonical R-list and the `requirements: N · mapped: M · unmapped: K (…)` line | 7 | super-design |
 | `baseAbsorbed` | `baseAbsorbed: <base sha> → <merge sha>, <N> conflicted files`, one line per absorption | 7 | super-auto |
 | `stepBackCode-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-auto |
@@ -74,7 +78,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    A stall at phases 1–5 writes `report.md` (status line per report-prompt.md §The status block) but leaves `phase` where it was. A stall at phase 6 leaves `phase: report` with a `stalled` status line, which is why the phase-7 gate also checks the status line (SKILL.md §Invariants I2 (phase-7 gate)).
 
-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. Finding-source records retain complete extraction JSON under approvals so unavailable artifacts cannot erase known occurrences. The other exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` groups this run and its run marker; each super-code invocation separately persists `invocationId` in its Launch before producing its immutable final-review bundle; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
 
    Path-valued pointers are relative to the run directory (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`), never bare filenames or full repo-relative paths: one convention, so two writers produce compatible files.
 
@@ -196,6 +200,90 @@ The schema home for `run.md`: every field's name and line format. The numbered i
    they never saw, which is the failure mode this record exists to prevent, arrived
    at from the other direction.
 
+## Finding continuity records and projection
+
+Append the finding records below to the existing `approvals:` block. Preserve earlier records
+across code bucket replacement; the latest review verdict describes its own invocation, while
+this projection accounts for outstanding findings from every retained source. These additive
+facts are independent: ownership, fix-task reference and deferral can coexist with verification.
+They impose no state sequence and do not replace the externally owned roast ledger.
+
+**Source.** Use `bash skills/super-code/scripts/report-verdict --complete --source
+'<invocationId>/<logical-artifact>' FILE`. The invocation token comes from the persisted
+super-code Launch, separate from runTag; e.g. `inv-a/final` identifies
+`final-review-inv-a.md`. Split artifacts have their own logical suffix (e.g. `inv-a/cluster-1`).
+Retain the exact returned object as one JSON line after `- finding-source · `, including
+`version:1`, `source`, `artifact`, `kind`, `verdict`, and every occurrence's `section`, `position`,
+`key` and `text`. JSON escapes preserve multiline text and keys with commas or Unicode.
+Keep the original artifact alongside the extraction. Relative artifact paths resolve from the
+run.md directory; when archiving, update only `artifact` to the retained copy, preserving
+`source` and the complete occurrence array. Source identity is never derived from archive paths.
+An unavailable artifact reports a gap while its inline extraction still preserves known findings.
+Extraction failure is a gap, never a replacement empty source. An explicit clean recognized
+review may have `occurrences:[]`; a run with no retained sources has unknown coverage.
+
+**Reference and link.** An occurrence reference is exactly
+`{"source":"inv-a/final","section":"Deferred OK","position":1}`. Section and source strings
+match exactly, and position is the extractor's positive section-local integer. Source path,
+wording, severity and key alone do not link appearances. Append
+`- finding-link · {"refs":[<ref>,<other-ref>],"basis":"why these appearances are the same obligation"}`
+only after judging the explicit match. Links combine referenced occurrences transitively.
+Ambiguous matches remain separate. Archive copies with identical source/section/position and
+text deduplicate; conflicting extractions retain text variants, expose a gap and keep affected
+findings outstanding even if a disposition claims resolution.
+
+**Routing.** Append `- finding-route · {"ref":<ref>,"owner":"<bead>","fix":"<fix bead>",
+"deferred":"<reason>"}` as one JSON line, with any nonempty subset of owner/fix/deferred.
+Deferral is explicit routing, not inferred from a section name. A fix-task assignment, closed
+bead, success claim or a later silent/ready review leaves the finding outstanding.
+
+**Supported disposition.** Append
+`- finding-disposition · {"ref":<ref>,"disposition":"resolved","judgment":"supported",
+"basis":"why the fix addresses this finding","evidence":["verification.log @ <sha>"],
+"verification":"exact relevant check and observed repaired behavior"}` as one JSON line.
+A rejection uses `"disposition":"rejected"`, keeps its reasoning in `basis` and supporting
+references in the nonempty `evidence` array, and does not require `verification`. Helpers validate
+references and required fields. The owning agent first judges whether the evidence semantically
+supports this particular fix or rejection, then records `judgment:"supported"`; a nonempty
+file name or a successful task is insufficient. Verification of a fix supplied by another task
+uses the same contract. A passing sweep settles only the measurement obligation it establishes;
+it cannot stand in for verification of unrelated actionable findings. Unsupported disposition
+records remain visible with a gap and do not resolve findings. A supported disposition applies
+to the explicitly linked group; other appearances remain independent.
+
+**CLI and output.** Run `bash skills/super-auto/scripts/scope-dispositions --project RUN_MD`
+for JSON `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding holds its first retained
+`ref`, original `occurrences` (including source/artifact/section/position/key/text), all archive
+`artifacts`, conflicting `variants`, explicit `links`, `routes`, `dispositions` with mechanically
+validated `supported`, and booleans `outstanding`/`deferred`. Source order is deterministic.
+No source/disposition is removed from run.md by projection. Append-only history stays available
+even after a supported disposition makes a finding no longer outstanding.
+
+Add `--keys` for the legacy punch-list transport: one exact original key per line, from only
+outstanding deferred groups, deduplicated in first appearance order. Resolved/rejected findings
+and active nondeferred findings are excluded. This is derived from the same validated projection;
+an empty key stream alone cannot establish clean acceptance. Detailed JSON retains all distinct
+occurrences despite equal printed keys. Consumers must check exit status and gaps, and use the
+full projection for Remaining/resume/status rather than treating the latest ready verdict as
+clearance of earlier findings.
+
+Optional `--external FILE` consumes a supplementary JSON object
+`{"version":1,"records":[{"type":"finding-link",...},{"type":"finding-disposition",...}]}`.
+Each record has the same refs/basis/support fields as the local counterpart and can reference
+only retained local occurrences. This is a consumer seam, not a new roast-ledger API or policy.
+Unsupported/unknown types (including silence-based dissolution), absent files, malformed or
+incomplete records produce gaps without replacing local evidence; valid supplementary records
+are applied individually. Omitting this optional argument does not imply an external disposition.
+
+Exit 0 means projection validated; 3 means projection returned retained findings plus explicit
+gaps; 2 means bad CLI or unreadable run record and no projection; 4 means Node unavailable.
+In key mode gaps go to stderr as `FINDING_GAP:`; JSON mode includes them in `gaps`.
+No jq is required by projection (the legacy round mode still uses its existing jq/manual fallback).
+If Node is unavailable, `NODE_UNAVAILABLE:` is printed on stderr and no projection is established:
+retain all known occurrences, manually follow explicit links and supported dispositions, and
+list every unresolved deferred key plus any evidence gaps. Never interpret unavailable output
+as an empty punch list or a clean review.
+
 ## File format — worked example
 
 An illustrative `run.md` mid-run: the design phase went through two roast
@@ -224,6 +312,11 @@ roastCodeRound: 1
 
 approvals:
 - top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
+- finding-source · {"version":1,"source":"inv-a/final","artifact":"final-review-inv-a.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — inconsistent formatting","text":"[Nit] lib/format.ts:12 — inconsistent formatting"}]}
+- finding-source · {"version":1,"source":"inv-b/final","artifact":"final-review-inv-b.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — same formatting obligation","text":"[Nit] lib/format.ts:12 — same formatting obligation"}]}
+- finding-link · {"refs":[{"source":"inv-a/final","section":"Deferred OK","position":1},{"source":"inv-b/final","section":"Deferred OK","position":1}],"basis":"reviewed as the same source location and defect"}
+- finding-route · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"owner":"bd-421","fix":"bd-421","deferred":"formatting lies outside the goal"}
+- finding-disposition · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"disposition":"resolved","judgment":"supported","basis":"bd-422 supplied the formatting fix","evidence":["format-verification.log @ 1a2b3c4"],"verification":"formatter check passes on both affected ranges"}
 - coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
 
 parked:

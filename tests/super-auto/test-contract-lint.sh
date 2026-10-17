@@ -3,7 +3,9 @@
 # §Field table; (b) every §<Heading>, <file> §<Heading> and run-state.md item <N> (<label>)
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
-# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
+# (unchanged fixtures from 2bf1d53 plus explicit run-state-added-fields/formats additions);
+# example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps
+# name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -159,7 +161,7 @@ check_counts() { # SKILL_DIR
 check_baseline() { # SKILL_DIR
   local l
   field_names "$1/run-state.md" | LC_ALL=C sort -u > "$T/now-fields"
-  LC_ALL=C sort -u "$FIX/run-state-fields-2bf1d53.txt" > "$T/base-fields"
+  cat "$FIX/run-state-fields-2bf1d53.txt" "$FIX/run-state-added-fields.txt" | LC_ALL=C sort -u > "$T/base-fields"
   LC_ALL=C comm -23 "$T/base-fields" "$T/now-fields" | sed 's|^|super-auto/run-state.md: §Field table lost baseline field: |'
   LC_ALL=C comm -13 "$T/base-fields" "$T/now-fields" | sed 's|^|super-auto/run-state.md: §Field table adds a field not in the baseline: |'
   field_table_text "$1/run-state.md" > "$T/table.txt"
@@ -167,7 +169,7 @@ check_baseline() { # SKILL_DIR
     [ -n "$l" ] || continue
     l=$(printf '%s' "$l" | collapse)
     grep -qF -- "$l" "$T/table.txt" || echo "super-auto/run-state.md: §Field table lacks baseline line format: $l"
-  done < "$FIX/run-state-formats-2bf1d53.txt"
+  done < <(cat "$FIX/run-state-formats-2bf1d53.txt" "$FIX/run-state-added-formats.txt")
   awk '/^## / { s = ($0 == "## Phase sequence"); next } s && /^\| *[0-9]+ *\|/ { split($0, c, "|"); x = c[3]; if (match(x, /\(`[^)]*\)/)) { x = substr(x, RSTART + 1, RLENGTH - 2); gsub(/`/, "", x); print x } }' "$1/SKILL.md" > "$T/now-phases"
   diff "$FIX/phase-sequence-2bf1d53.txt" "$T/now-phases" > /dev/null \
     || echo "super-auto/SKILL.md: §Phase sequence tokens differ from the 2bf1d53 baseline: $(tr '\n' ' ' < "$T/now-phases")"
@@ -248,6 +250,17 @@ copy; sed '/^- I8 /s/report-verdict --keys/report-verdict/g' "$REPO_ROOT/skills/
 expect_caught "I8 without --keys fails" "I8 does not name report-verdict --keys"
 copy; grep -vF 'whole-epic review' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "report-prompt without the null reviewPath rule fails" "report-prompt.md: no null reviewPath rule"
+
+copy
+# Put an unapproved row inside the table, where field_names reads it.
+awk '{print} /^## Field table$/ {print "| `unapproved` | `unapproved: anything` | 7 | test |"}' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "unapproved added field still fails" "adds a field not in the baseline: unapproved"
+copy; sed 's/flags: planOneShot=/flags: changed=/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "changed legacy line format fails" "lacks baseline line format: flags: planOneShot="
+copy; sed '/^| `approvals · finding-source` |/d' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "dropping an approved added field fails" "lost baseline field: approvals · finding-source"
+copy; sed 's/<complete extraction JSON>/<unapproved replacement>/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "changed approved added format fails" "lacks baseline line format: - finding-source · <complete extraction JSON>"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then
