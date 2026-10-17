@@ -9,3 +9,5 @@ roastCodeExit: converged | thrash | capped | operator-skipped (<reason>)
 top-split · human | auto
 design-review · pending | approved
 scope-filter: <in-scope> in-scope · <punch> punch-listed
+redesign-<code|design>-<K>: round <N> · triggers <list> · amended <§s|none> · lastGood <sha|-> · designRoast <r<M>|r<M> fixed|skipped — design cap spent|none|-> · state <started|amend-checked|specs-committed|beads-filed|applied|aborted — <reason>|thrash — lastGood breach>
+its decision `local | redesign` (`patch` is accepted on read as `local`), including the `local — gate not computable: <reason>`, `redesign — forced: step-back record rejected: <reject lines>` and `local — redesign declined by human` forms

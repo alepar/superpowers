@@ -129,17 +129,27 @@ kind: step-back
 - summary: the failing check is a one-off typo in the fixture, not a design gap
 path: $FX/step-back.md" "patch: summary only"
 run bash "$R" "$FX/step-back-local.md"
+assert_eq "$code" 0 "local exits 0"
 assert_eq "$out" "verdict: decision: local
 kind: step-back
 - summary: the failing check is a one-off typo in the fixture, not a design gap
 path: $FX/step-back-local.md" "local: summary only"
 run bash "$R" "$FX/step-back-redesign.md"
+assert_eq "$code" 0 "redesign exits 0"
 assert_eq "$out" "verdict: decision: redesign
 kind: step-back
 - summary: three reviewers independently found the marker lifecycle underspecified
 - changes: replace the pid marker with a session-scoped marker owned by run-marker
 - scope: spec §A2, §A3 and the hook entry scripts
 path: $FX/step-back-redesign.md" "redesign: summary, changes, scope"
+run bash "$R" "$FX/step-back-near-miss.md"
+assert_eq "$code" 0 "near-miss exits 0"
+assert_lacks "$out" "verdict: decision: local" "a near-miss token (localized) is not read as local"
+assert_lacks "$out" "kind: step-back" "a near-miss token is not a step-back"
+assert_eq "$out" "verdict: unknown
+path: $FX/step-back-near-miss.md
+decision: localized
+summary: s" "a near-miss token falls through to the unknown recogniser"
 
 echo "report-verdict: assembled digest"
 run bash "$R" "$FX/assembled-digest.md"
@@ -220,7 +230,7 @@ assert_has "$out" "[Must-fix] untested: area 12" "area 12 present"
 assert_lacks "$out" "more" "no overflow line"
 
 echo "report-verdict --keys: other kinds refused"
-for k in task-report step-back step-back-local assembled-digest unknown; do
+for k in task-report step-back step-back-local step-back-near-miss assembled-digest unknown; do
   run bash "$R" --keys "$FX/$k.md"
   assert_eq "$code" 3 "$k exits 3"
   assert_eq "$out" "" "$k prints nothing on stdout"

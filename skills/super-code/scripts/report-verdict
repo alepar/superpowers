@@ -223,10 +223,10 @@ if tr -d '\r' < "$f" | grep -qE '^(#+[[:space:]]*)?\**Verdict\**[[:space:]]*:?';
   exit 0
 fi
 
-line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|local|redesign)' || true)
+line=$(tr -d '\r' < "$f" | grep -m1 -E '^decision:[[:space:]]*(patch|local|redesign)([^A-Za-z0-9_-]|$)' || true)
 if [ -n "$line" ]; then
   keys_refuse
-  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|local|redesign).*/\1/')
+  value=$(printf '%s\n' "$line" | sed -E 's/^decision:[[:space:]]*(patch|local|redesign)([^A-Za-z0-9_-]|$).*/\1/')
   r=0; [ "$value" = redesign ] && r=1
   items_step_back "$r" | emit "decision: $value" step-back
   exit 0

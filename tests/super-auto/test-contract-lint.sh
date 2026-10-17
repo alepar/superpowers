@@ -3,7 +3,7 @@
 # §Field table; (b) every §<Heading>, <file> §<Heading> and run-state.md item <N> (<label>)
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
-# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context, findingsLedger, findingsLedgerDesign, redesignCycles-code, redesignCycles-design, redesign-<loop>-<K>, approvals · coverage-amend-<loop>-<K>); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
+# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context, findingsLedger, findingsLedgerDesign, redesignCycles-code, redesignCycles-design, redesign-<loop>-<K>, stepBackCode-round-<N>, stepBackDesign-round-<N>, approvals · coverage-amend-<loop>-<K>; the appended format lines pin the redesign record, its state and designRoast vocabulary, and the step-back decision forms); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -203,6 +203,39 @@ check_keys_rule() { # SKILL_DIR
   done
 }
 
+check_disputed() { # SKILL_DIR
+  local para cap
+  para=$(awk '/^## / { s = ($0 == "## Disputed Blocking findings"); next } s' "$1/report-prompt.md")
+  [ -n "$para" ] || { echo "(disputed) report-prompt.md: no §Disputed Blocking findings paragraph"; return; }
+  printf '%s' "$para" | grep -qF 'roastCodeCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastCodeCapped:"
+  printf '%s' "$para" | grep -qF 'roastDesignCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastDesignCapped:"
+  cap=$(awk '/^#+ / { s = ($0 == "#### Cap disposition"); next } s' "$1/SKILL.md")
+  printf '%s' "$cap" | grep -qF 'roastCodeCapped:' || echo "(disputed) SKILL.md: §Cap disposition does not write roastCodeCapped:"
+}
+
+check_report_rows() { # SKILL_DIR
+  local rp="$1/report-prompt.md" row t
+  row=$(grep '^| Remaining |' "$rp" || true)
+  [ -n "$row" ] || { echo "(report rows) report-prompt.md: no Remaining row"; return; }
+  for t in '`disputed`' 'redesign budget spent' 'redesign gate not computable' 'redesign declined by human' 'redesign aborted' 'redesign incomplete' 'amend roast finding not fixed'; do
+    printf '%s' "$row" | grep -qF -- "$t" || echo "(report rows) report-prompt.md: Remaining row lacks $t"
+  done
+  row=$(grep '^| Gotchas & surprises |' "$rp" || true)
+  [ -n "$row" ] || { echo "(report rows) report-prompt.md: no Gotchas & surprises row"; return; }
+  for t in 'redesign-<code|design>-<K>' '`state`' '`designRoast`'; do
+    printf '%s' "$row" | grep -qF -- "$t" || echo "(report rows) report-prompt.md: Gotchas & surprises row lacks $t"
+  done
+}
+
+check_itercap() { # SKILLS_ROOT
+  local all ok
+  grep -qF 'config.iterationCap' "$1/super-roast/SKILL.md" || echo "(iterationCap) super-roast/SKILL.md does not name config.iterationCap"
+  all=$(grep -o 'config\.iterationCap' "$1/super-auto/SKILL.md" | wc -l)
+  ok=$(grep -oE 'config\.iterationCap` = `3 \+ redesignCycles-(code|design)`' "$1/super-auto/SKILL.md" | wc -l)
+  [ "$all" -gt 0 ] || echo "(iterationCap) super-auto/SKILL.md never names config.iterationCap"
+  [ "$all" = "$ok" ] || echo "(iterationCap) super-auto/SKILL.md: $((all - ok)) config.iterationCap mention(s) do not read 3 + redesignCycles-code|design"
+}
+
 lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_example "$1/super-auto"
   check_pointers "$1" "$2"
@@ -210,6 +243,9 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_baseline "$1/super-auto"
   check_status_examples "$1/super-auto"
   check_keys_rule "$1/super-auto"
+  check_disputed "$1/super-auto"
+  check_report_rows "$1/super-auto"
+  check_itercap "$1"
 }
 
 echo "contract lint: live tree"
@@ -248,6 +284,19 @@ copy; sed '/^- I8 /s/report-verdict --keys/report-verdict/g' "$REPO_ROOT/skills/
 expect_caught "I8 without --keys fails" "I8 does not name report-verdict --keys"
 copy; grep -vF 'whole-epic review' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "report-prompt without the null reviewPath rule fails" "report-prompt.md: no null reviewPath rule"
+
+copy; sed 's/^| `redesign-<loop>-<K>` |\(.*\)beads-filed\\|/| `redesign-<loop>-<K>` |\1/' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "a redesign record row missing the beads-filed state fails the baseline" "lacks baseline line format: redesign-<code|design>-<K>"
+copy; sed 's/`local \\| redesign`/`patch \\| redesign`/g' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "a step-back decision vocabulary without local fails the baseline" 'lacks baseline line format: its decision `local | redesign`'
+copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/`roastDesignCapped:` for the design loop/the design loop/; /^## Disputed Blocking findings/,/^## Smells/s/(the design loop)//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a disputed route that drops roastDesignCapped fails" "disputed route does not name roastDesignCapped:"
+copy; sed 's/`redesign incomplete`/`redesign unfinished`/' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a Remaining row that drops redesign incomplete fails" "Remaining row lacks redesign incomplete"
+copy; sed '/^| Gotchas/s/ and its `designRoast`//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a Gotchas row that drops designRoast fails" 'Gotchas & surprises row lacks `designRoast`'
+copy; sed 's/config.iterationCap` = `3 + redesignCycles-code`/config.iterationCap` = `3`/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto config.iterationCap that is a bare 3 fails" "config.iterationCap mention(s) do not read"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then
