@@ -143,6 +143,21 @@ Three things keep the run measurable and resumable:
   append-only across clean retries. Preserve these records verbatim on elided append retries,
   drain the existing writer before reporting settled results, and read `obligations`,
   `fixHistory`, and malformed/unknown-version `gaps` separately from latest Task status.
+  Before admitting resumed affected work, reconcile each active pending closure once against
+  `already-merged <integration branch> <exact persisted head>` and authoritative task/review/blocker
+  statuses. Valid landings reuse the original head/range and take closure-only routing: when all
+  associated beads are already closed, append the matching clear/completion; otherwise recheck
+  statuses and close only observed-open beads. Drain the writer before calling recovery settled.
+  Failed/denied lookups, incomplete statuses or Git disagreement retain the original evidence and
+  an explicit `hold` ID `resume:<task>` with `data.taskId`; successful fresh reconciliation alone
+  clears that reconciler-owned hold. Never spend another implementation retry on these facts.
+  Restore other holds before admission: `merge-lane` holds all work; a task hold names its ID or
+  `data.taskId`; scoped hold/deferred records can name `data.affectedIds`. Hold those tasks and
+  consumers while unrelated eligible work proceeds. Only the owner's explicit matching clear
+  releases other obligations. Silence, a deleted branch or a later clean Task line clears nothing.
+  Keep unscoped caller sweeps and `data.runFailure` diagnostics visible without generic repair
+  dispatch; retain unknown/additive fields and fix history. Return `recovery-held` for unresolved
+  admission obligations, with the exact discrepancy or unavailable observation in the report.
 - **Dispatch names.** Name every dispatch `<kind>:<bead id>[:<suffix>]` with the Workflow kinds:
   `impl`, `review`, `fix`, `fix:<id>:seam` or `fix:<id>:check`, `seam-review` (`seam-review:<id>:check`
   for a merge-check fix's review), `merge`, `triage`, and `plan`, `plan-rest`, `final-review`, `final-review:cluster:<n>`, `final-review:seam` or
