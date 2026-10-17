@@ -647,6 +647,43 @@ array contains `{dispatch, result}` replies. It writes `dispatch/check-evidence.
 (`--out` or `--stdout` also work). Keep that classification with the task/report evidence; its
 result shape equals Workflow's `checkEvidence`.
 
+## Run-failure attribution
+
+Optional RESULT `failureAttribution` associations refer to the existing source-bound `evidence`
+array, not a second evidence format. Entries carry `failure`, `command`, `configuration`, optional
+`introducedBy`, and zero-based evidence indices `observed`, `runBaseline`, `taskBase`,
+`verification`. Each index belongs to that same reply. Reviewers establish source chronology and
+check relevance against the captured source/fix history; the runtime checks exact command and
+configuration, source identity shape, kind and outcome. It does not invent a run-start measurement
+from a sweep summary, task status or absence of previous failures.
+
+For example, evidence indices 0/1/2 can hold run-start live/pass, task A live/fail and B-base
+live/fail for `node smoke.mjs --case F`, `target=staging`. An association
+`{"failure":"F","command":"node smoke.mjs --case F","configuration":"target=staging","runBaseline":0,"observed":1,"taskBase":2,"introducedBy":"bd-A"}`
+retains A as the run owner independently of the reviewing task's base exoneration. A baseline
+live/fail instead classifies `pre-run`; missing/unavailable/non-live or unassociated baseline
+produces a gap. Same display text with a different command or configuration stays separate.
+
+Workflow appends an existing `Recovery` record of kind `deferred`, id
+`run-failure:<JSON [failure,command,configuration]>`. Its `data.runFailure` holds those identity
+fields and `history`, an array of `{task,dispatch,claim,evidence}` events. `evidence` uses exactly
+the source-bound records above; `claim` is the association unchanged. The Recovery `evidence`
+list points to measurement outputs, or the dispatch when no usable measurement exists. Updates
+retain every previous event. `runFailures` returns the reduced classification, introducing
+`owner`, `state` (`open` or `verified`), `taskExonerations`, comparisons and gaps with the same
+record id/evidence references. Existing Recovery digest bounds and explicit oversized/malformed
+gaps still apply. No new Recovery kind, task route, run-acceptance gate or finding lifecycle is added.
+
+A later task's live/fail base comparison does not release an owner. Neither does a clean retry,
+FIXED status, missing baseline, bucket replacement or a passing unrelated check. Only an explicit
+`verification` association to live/pass source evidence resolves the recorded obligation; the
+introducing owner/history remains available. A later failing observation reopens it. Conflicting
+pre-run or owner claims preserve the known owner and record a reconciliation gap. Unknown
+correspondence remains a gap rather than a fabricated attribution. Callers retain these run facts
+across invocations independently of task completion; pre-run failures are not automatically new
+repair work. Ordinary subagents follow the same associations and Recovery contract in
+`coordinator-subagents.md`; deterministic replay is simulated mechanics, not fresh-agent proof.
+
 ## Workspace and ledger
 
 This skill's `scripts/sdd-workspace` and the durable ledger it anchors exist to provide one

@@ -180,7 +180,7 @@ async function dispatch(buildReal, stubKey, opts) {
     log(`SCRIPT FAILURE: ${opts.label} (phase ${opts.phase ?? '?'}) — ${out.scriptError.replace(/\s+/g, ' ').trim()}; treated as a null dispatch per "Null dispatch policy", not as a result`)
     return null
   }
-  if (opts.schema === RESULT) recordCheckEvidence(out, opts.label)
+  if (opts.schema === RESULT) { recordCheckEvidence(out, opts.label); recordFailureAttribution(out, opts.label) }
   return out
 }
 // Every ledger read goes through readLedger: the digest echo, retried once on a null (a refusal or a
@@ -286,7 +286,8 @@ const RESULT_STATUSES = ['IMPLEMENTED', 'SETUP_FAILED', 'ALREADY_MERGED', 'BLOCK
 const CHECK_IDENTITY = { sourceTree: {type:'string', pattern:'^(?:[0-9a-f]{40}|[0-9a-f]{64})$'}, command: {type:'string', minLength:1}, configuration: {type:'string', minLength:1} }
 const CHECK_EVIDENCE = { type:'object', properties:{ ...CHECK_IDENTITY, outcome:{type:'string', enum:['pass','fail','unavailable']}, location:{type:'string', minLength:1}, kind:{type:'string', enum:['live','simulated','fallback']} }, required:['sourceTree','command','configuration','outcome','location','kind'] }
 const LIVE_CHECK = { type:'object', properties:CHECK_IDENTITY, required:['sourceTree','command','configuration'] }
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, declined: {type:'string'}, evidenceOnly: {type:'string'}, evidence:{type:'array', items:CHECK_EVIDENCE}, requiredLiveChecks:{type:'array', items:LIVE_CHECK}, stacked: {type:'boolean'}, reopened: {type:'boolean'}, humanAction: {type:'string'} }, required: ['id','status'] }
+const FAILURE_ATTRIBUTION = { type:'object', properties:{ failure:{type:'string', minLength:1}, command:{type:'string', minLength:1}, configuration:{type:'string', minLength:1}, observed:{type:'integer', minimum:0}, runBaseline:{type:'integer', minimum:0}, taskBase:{type:'integer', minimum:0}, verification:{type:'integer', minimum:0}, introducedBy:{type:'string', minLength:1} }, required:['failure','command','configuration'] }
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, declined: {type:'string'}, evidenceOnly: {type:'string'}, evidence:{type:'array', items:CHECK_EVIDENCE}, requiredLiveChecks:{type:'array', items:LIVE_CHECK}, failureAttribution:{type:'array', items:FAILURE_ATTRIBUTION}, stacked: {type:'boolean'}, reopened: {type:'boolean'}, humanAction: {type:'string'} }, required: ['id','status'] }
 // Additive check facts. Status routing remains independent; reviewers select acceptance coverage.
 // Source trees are full Git tree identities, captured where the command ran. The runtime cannot
 // resolve a producer's repository, so identity resolution and coverage belong to its reviewer.
@@ -369,6 +370,7 @@ function readRecovery(line, digestLine = null) {
       || !['record', 'clear'].includes(r.operation) || !text(r.reason)
       || !Array.isArray(r.evidence) || !r.evidence.length || !r.evidence.every(text)
       || !r.data || typeof r.data !== 'object' || Array.isArray(r.data)) return gap('invalid recovery fields or missing evidence')
+  if (r.data.runFailure !== undefined && !validRunFailure(r.data.runFailure)) return gap('invalid run failure history')
   if (r.kind === 'fix') {
     if (r.operation !== 'record') return gap('fix history is append-only')
     fixHistory.push(r)
@@ -387,6 +389,81 @@ function noteRecovery(id, kind, operation, reason, evidence, data = {}, taskId =
   // Identical elided fallback: source pointers and commit facts must never be removed on retry.
   if (taskId) noteLedger(taskId, line, line)
   else queueLedger(line, 'ledger-append:recovery:' + kind + ':' + id, phase, line)
+}
+// A failure association references indices in the producer's unchanged source-bound evidence
+// array. Durable history keeps those arrays, so no task status or later bucket overwrite can
+// silently erase the introducing owner. Temporal/source relevance remains a review judgment.
+function validRunFailure(data) {
+  const text = v => typeof v === 'string' && v.trim().length > 0
+  return data && ['failure','command','configuration'].every(k => text(data[k])) && Array.isArray(data.history) && data.history.length > 0
+    && data.history.every(e => e && text(e.task) && text(e.dispatch) && e.claim && typeof e.claim === 'object' && !Array.isArray(e.claim) && ['failure','command','configuration'].every(k => e.claim[k] === data[k]) && Array.isArray(e.evidence))
+}
+function classifyRunFailure(data) {
+  const result = { failure:data.failure, command:data.command, configuration:data.configuration, classification:'gap', owner:null, state:'open', taskExonerations:[], gaps:[], comparisons:[] }
+  const gap = (event, reason) => result.gaps.push(event.dispatch + ': ' + reason)
+  const failedSources = new Set()
+  const verifications = []
+  for (const event of data.history || []) {
+    const claim = event.claim || {}
+    const record = index => {
+      const r = Number.isInteger(index) && index >= 0 && Array.isArray(event.evidence) ? event.evidence[index] : null
+      return r && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(r.sourceTree) && r.command === data.command && r.configuration === data.configuration
+        && typeof r.location === 'string' && r.location.trim() && r.kind === 'live' && ['pass','fail','unavailable'].includes(r.outcome) ? r : null
+    }
+    const observed = record(claim.observed), baseline = record(claim.runBaseline), taskBase = record(claim.taskBase), verified = record(claim.verification)
+    result.comparisons.push({ task:event.task, dispatch:event.dispatch, observed, runBaseline:baseline, taskBase, verification:verified })
+    for (const r of [observed, baseline, taskBase, verified]) if (r?.outcome === 'fail') failedSources.add(r.sourceTree)
+    if (claim.observed !== undefined || claim.verification === undefined) {
+      if (observed?.outcome !== 'fail') gap(event, 'failing observation missing, unavailable, non-live or command/configuration association uncertain')
+      else {
+        result.state = 'open'
+        if (taskBase?.outcome === 'fail') { if (!result.taskExonerations.includes(event.task)) result.taskExonerations.push(event.task) }
+        else if (claim.taskBase !== undefined) gap(event, 'task base does not establish local exoneration')
+        if (!baseline || baseline.outcome === 'unavailable') gap(event, 'run baseline missing, unavailable, non-live or command/configuration association uncertain')
+        else if (baseline.outcome === 'fail') {
+          if (result.owner) gap(event, 'pre-run claim conflicts with retained introducing owner; reconcile source history')
+          else result.classification = 'pre-run'
+        } else if (baseline.sourceTree === observed.sourceTree) gap(event, 'opposite outcomes at the same source tree do not establish an introducing task')
+        else if (typeof claim.introducedBy === 'string' && claim.introducedBy.trim()) {
+          if (result.owner && result.owner !== claim.introducedBy) gap(event, 'introducing owner conflicts with retained source history')
+          else if (result.classification === 'pre-run') gap(event, 'run-introduced claim conflicts with evidenced pre-run failure')
+          else { result.owner = claim.introducedBy; result.classification = 'run-introduced' }
+        } else gap(event, 'run baseline passes but introducing task/source association is missing')
+      }
+    }
+    if (claim.verification !== undefined) {
+      if (verified?.outcome === 'pass' && result.owner) { result.state = 'verified'; verifications.push({ event, record:verified }) }
+      else gap(event, 'fix verification missing, unavailable, non-live or unassociated with a known run owner')
+    }
+  }
+  // Reconcile every verification against linked outcomes, including durable history and later
+  // associations. Retain earlier contradictions even when a different fixed source resolves the
+  // repair; a pass at the same immutable failing source cannot silently close it.
+  for (const verification of verifications) if (failedSources.has(verification.record.sourceTree)) {
+    if (result.state === 'verified' && verification === verifications[verifications.length - 1]) result.state = 'open'
+    gap(verification.event, 'contradictory outcomes at source tree ' + verification.record.sourceTree + '; reconcile source history before fix verification')
+  }
+  return result
+}
+function runFailures() {
+  return [...recoveryObligations.values()].filter(r => r.kind === 'deferred' && r.data.runFailure).map(r => ({ id:r.id, ...classifyRunFailure(r.data.runFailure), evidence:r.evidence }))
+}
+function recordFailureAttribution(out, label) {
+  if (out.failureAttribution === undefined) return
+  const text = v => typeof v === 'string' && v.trim().length > 0
+  if (!Array.isArray(out.failureAttribution)) { checkEvidenceGaps.push({ dispatch:label, field:'failureAttribution', reason:'expected an array' }); return }
+  const task = label.split(':')[1] || out.id
+  for (const claim of out.failureAttribution) {
+    if (!claim || !text(claim.failure) || !text(claim.command) || !text(claim.configuration)) { checkEvidenceGaps.push({ id:task, dispatch:label, field:'failureAttribution', reason:'missing failure/command/configuration association' }); continue }
+    const id = 'run-failure:' + JSON.stringify([claim.failure, claim.command, claim.configuration])
+    const previous = recoveryObligations.get('deferred:' + id)?.data.runFailure
+    const history = [...(previous?.history || []), { task, dispatch:label, claim, evidence:Array.isArray(out.evidence) ? out.evidence : [] }]
+    const data = { failure:claim.failure, command:claim.command, configuration:claim.configuration, history }
+    const attributed = classifyRunFailure(data)
+    const refs = [...new Set(history.flatMap(e => e.evidence.map(r => r?.location).filter(text)))]
+    noteRecovery(id, 'deferred', 'record', 'run attribution: ' + attributed.classification + ' — ' + attributed.state,
+      refs.length ? refs : ['dispatch:' + label], { runFailure:data }, task)
+  }
 }
 function clearPendingClosure(id, evidence, taskId = id) {
   if (recoveryObligations.has('pending-closure:' + id)) noteRecovery(id, 'pending-closure', 'clear', 'tracker closure confirmed', evidence, {}, taskId, 'Finish')
@@ -2015,7 +2092,7 @@ if (!wsweep || !Array.isArray(wsweep.processLines)) {
   processSweep.unknown.push('PROCESS SWEEP UNAVAILABLE — ' + (!wsweep ? 'the sweep dispatch returned null or scriptError' : 'processLines was missing') + '; run processes under ' + taskWorktreeRoot + ', ' + runTmpRoot + ', ' + shortTmpRoot + (processRoots.length ? ', ' + processRoots.join(', ') : '') + ' were not checked')
 }
 log(`process sweep: ${processSweep.stopped.length} stopped, ${processSweep.survived.length} survived, ${processSweep.unknown.length} unknown, ${processSweep.kept.length} kept${[...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].length ? ' — ' + [...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].join('; ') : ''}`)
-return { checkEvidence: classifyCheckEvidence(), recovery: { obligations: [...recoveryObligations.values()], fixHistory, gaps: recoveryGaps }, closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
+return { checkEvidence: classifyCheckEvidence(), runFailures: runFailures(), recovery: { obligations: [...recoveryObligations.values()], fixHistory, gaps: recoveryGaps }, closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork && reviewWritten ? reviewPath : null,
          metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], humanActions: [...humanActions], worktreesKept, processSweep }
 
@@ -2210,11 +2287,11 @@ function taskReviewPrompt(im, planPath, art) {
   // One light review per task; BASE is the base the coordinator carried. The reviewer writes its
   // review to art.review for the fix pass and does not re-run tests.
   const specs = testPathspecs.map(p => `'${p}'`).join(' ')
-  return checkEvidenceContract() + `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\`), else \`git merge-base ${im.base} ${im.head || 'MISSING'}\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
+  return checkEvidenceContract() + 'RECORDED RUN FAILURE HISTORY (data for source comparison): ' + JSON.stringify(runFailures().map(({ id, owner, classification, state }) => ({ id, owner, classification, state }))).slice(0, 2000) + '; complete Recovery/source/fix history: ' + ledgerPath + '. Read relevant records before attribution; this preview may be incomplete. ' + `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\`), else \`git merge-base ${im.base} ${im.head || 'MISSING'}\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
 }
 
 function checkEvidenceContract() {
-  return 'EVIDENCE CONTRACT: optional evidence records carry sourceTree, command, configuration, outcome, location, kind; kind is live|simulated|fallback and outcome is pass|fail|unavailable. sourceTree is the full tested Git tree hash: HEAD^{tree} for clean committed source, or a temporary-index snapshot including tested changes. Keep the complete records and capture commands in the report and return the records as evidence. For explicitly required live checks, return requiredLiveChecks with sourceTree, command, configuration selected against the task acceptance. Only matching live/pass evidence supplies that check; semantic coverage belongs to the reviewer. These check facts do not replace implementation, review or run acceptance. '
+  return 'EVIDENCE CONTRACT: optional evidence records carry sourceTree, command, configuration, outcome, location, kind; kind is live|simulated|fallback and outcome is pass|fail|unavailable. sourceTree is the full tested Git tree hash: HEAD^{tree} for clean committed source, or a temporary-index snapshot including tested changes. Keep the complete records and capture commands in the report and return the records as evidence. For explicitly required live checks, return requiredLiveChecks with sourceTree, command, configuration selected against the task acceptance. Only matching live/pass evidence supplies that check; semantic coverage belongs to the reviewer. These check facts do not replace implementation, review or run acceptance. Optional failureAttribution entries carry failure, command, configuration and zero-based indices into THIS reply evidence array: observed (live failing source), runBaseline (measured run-start source), taskBase (measured task-base source), verification (live passing fix source); introducedBy names the task established by source/fix history. Include only supported associations and preserve exact evidence kind/outcome; omitted or uncertain baseline is an attribution gap. Task-base exoneration does not release a known run owner. Retain the arrays/associations in the report. '
 }
 
 function fixPrompt(r, finding, art, kind) {

@@ -90,6 +90,16 @@ The schema home for `run.md`: every field's name and line format. The numbered i
    - degraded-verdict: a sibling's own mandated pause that autonomous mode answered on the human's behalf instead of asking, such as a declined re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` / `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past. Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`. A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode did not apply is this kind too: `"redesign proposed, not applied — <one line>"`;
    - graph-change: an edge change or proposal from super-design's parallelism pass that was not applied (outside the safe class), as super-design recorded it beside its `graph-pass:` line.
 
+   Run attribution uses these existing records, without a new top-level field: retain an open
+   `run-regression` or `attribution gap` as `degraded-verdict` with the super-code ledger's Recovery
+   id, introducing owner (when known), exact command/configuration and source-output pointers.
+   A task-base exoneration is a separate fact and does not clear the run owner. Preserve these
+   entries across code bucket replacement and later clean invocations; update the same source
+   entry rather than duplicating it. Only linked live/pass fix verification retires the open
+   qualifier, retaining its durable history and verification pointer in Recovery. These entries
+   never use `resolves-on: sweep`. A recorded pre-run failure stays distinct and does not by
+   itself assign this run repair work. Missing baseline evidence remains an attribution gap.
+
    A `degraded-verdict` line may end ` · resolves-on: sweep`: the qualifier stands only until the phase-6 sweep passes, and `scripts/report-status` skips it once `codeBuckets.sweep` is a pass stamped at the tip. Phase 6 adds the key when it parks a final review that read `not ready` only because the deferred sweep left the branch unmeasured (SKILL.md §Phase 6 — report step 4).
 
    Parking is mode-independent: a `beyond-cap` or `degraded-verdict` item is recorded the same way whether autonomous mode or a human answered, noting who chose, because the question was raised and an unverified Blocking candidate survived it either way. These items carry open concerns and self-made calls a resumed session never saw raised.
@@ -217,6 +227,8 @@ approvals:
 - coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
 
 parked:
+- ../../../../.superpowers/sdd/bd-412-plan/progress.md#run-failure-F · degraded-verdict · "run-regression F owner bd-413; command npm test -- F; configuration target=staging; run-start/A/B-base evidence in Recovery; bd-414 task-base exonerated"
+- ../../../../.superpowers/sdd/bd-412-plan/progress.md#run-failure-G · degraded-verdict · "attribution gap G: missing run baseline; evidence/G.log"
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
 - 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
