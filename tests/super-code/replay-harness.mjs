@@ -32,6 +32,35 @@ const doc = readFileSync(docPath, 'utf8')
 const implementerTemplate = readFileSync(path.join(skillDir, 'implementer-prompt.md'), 'utf8')
 const reviewerTemplate = readFileSync(path.join(skillDir, 'task-reviewer-prompt.md'), 'utf8')
 
+// Fixture teardown must not depend on the inspection/cleanup helper being tested.
+async function withFixtureProcesses(run) {
+  const owned = []
+  const own = child => {
+    if (!Number.isSafeInteger(child.pid) || child.pid <= 1) throw new Error('fixture did not supply an owned PID')
+    owned.push(child); child.unref?.(); return child
+  }
+  try { return await run(own) }
+  finally {
+    const exits = owned.filter(c => c.once && c.exitCode === null && c.signalCode === null)
+      .map(c => new Promise(resolve => { c.ref(); c.once('exit', resolve) }))
+    for (const child of owned) {
+      if (child.once && (child.exitCode !== null || child.signalCode !== null)) continue
+      try { process.kill(child.pid, 'SIGKILL') }
+      catch (e) { if (e.code !== 'ESRCH') throw e }
+    }
+    await Promise.all(exits)
+  }
+}
+
+function fixtureProcessAlive(pid) {
+  const r = spawnSync('ps', ['-o', 'stat=', '-p', String(pid)], { encoding: 'utf8' })
+  if (r.error || typeof r.stdout !== 'string' || ![0, 1].includes(r.status) || (r.status === 0 && !r.stdout.trim())) {
+    throw new Error(`process inspection unavailable for fixture PID ${pid}`)
+  }
+  const st = r.stdout.trim()
+  return st !== '' && !st.startsWith('Z')
+}
+
 // ---------- extraction ----------
 
 function extractScript() {
@@ -4633,6 +4662,16 @@ esac
             if (mode === 'vanished') check(/^stopped: 990001 /m.test(out), 'successful authoritative enumeration verifies disappearance after ps -p exits 1', out)
             const signals = existsSync(env.FIXTURE_SIGNALS) ? readFileSync(env.FIXTURE_SIGNALS, 'utf8') : ''
             check(!/990002/.test(out + signals), `${mode}: an unrelated process is never targeted`, out + signals)
+            if (mode === 'discovery-denied') {
+              const facts = out.trim().split('\n')
+              const finished = await run({ args: liveArgs({ rootAcceptance: 'caller', deferSweep: true }), canned: oneTaskCanned({
+                'worktree-sweep': { lines: facts, processLines: facts.filter(line => line.startsWith('unknown: ')) },
+              }) })
+              assertNoThrow(finished)
+              check(finished.result?.completed.includes('bd-101') && finished.result?.processSweep.unknown.includes(facts.find(line => line.startsWith('unknown: ')).slice('unknown: '.length)), 'actual denied helper fact reaches its Finish outcome without undoing code delivery', JSON.stringify(finished.result))
+              check([wt, tmp].every(resource => finished.result?.worktreesKept.some(line => line.startsWith(resource + ' —'))), 'both actual retained resource paths reach Remaining sources', JSON.stringify(finished.result?.worktreesKept))
+              check(finished.result?.recovery.obligations.some(r => r.kind === 'deferred' && r.data.owner === 'caller') && finished.result?.sweep === 'SWEEP DEFERRED (caller-owned)', 'denied cleanup preserves the independent caller measurement obligation')
+            }
             // Each fixture owns all of its fake worktrees; remove retained state before the next sweep.
             if (existsSync(wt)) g('worktree', 'remove', '--force', wt)
             if (g('branch', '--list', mode).trim()) g('branch', '-D', mode)
@@ -4643,6 +4682,8 @@ esac
       scenario('scripts: remove-task-worktree — removes clean merged worktrees, stops their processes, keeps dirty or unmerged ones, never forces')
       {
         const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'rtw-'))], { encoding: 'utf8' }).trim()
+        const tmpRoot = `/tmp/sp-${process.pid.toString(16)}ff`
+        try { await withFixtureProcesses(async own => {
         const genv = { ...process.env, GIT_AUTHOR_NAME: 'x', GIT_AUTHOR_EMAIL: 'x@x', GIT_COMMITTER_NAME: 'x', GIT_COMMITTER_EMAIL: 'x@x' }
         const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', env: genv, stdio: ['ignore', 'pipe', 'pipe'] })
         g(d, 'init', '-q', '-b', 'main'); g(d, 'commit', '-q', '--allow-empty', '-m', 'base')
@@ -4656,15 +4697,14 @@ esac
         for (const t of ['t1', 't3', 't4']) g(integ, 'merge', '-q', '--no-ff', '-m', `m-${t}`, t)
         writeFileSync(path.join(integ, '.worktrees/t3/stray.txt'), 'uncommitted')
         const wt = t => path.join(integ, '.worktrees', t)
-        const sleeper = spawn('sleep', ['300'], { cwd: wt('t1'), detached: true, stdio: 'ignore' }); sleeper.unref()
+        const sleeper = own(spawn('sleep', ['300'], { cwd: wt('t1'), detached: true, stdio: 'ignore' }))
         execFileSync('sleep', ['0.3'])
         const rtw = (...a) => { const r = spawnSync(bashPath, [path.join(scriptsDir, 'remove-task-worktree'), ...a], { cwd: integ, encoding: 'utf8', env: genv }); return { code: r.status, out: r.stdout ?? '', err: r.stderr ?? '' } }
         let r = rtw(wt('t1'), 't1', 'integ')
-        const alive = (() => { const st = spawnSync('ps', ['-o', 'stat=', '-p', String(sleeper.pid)], { encoding: 'utf8' }).stdout.trim(); return st !== '' && !st.startsWith('Z') })()  // a killed child of this process stays a zombie until reaped
+        const alive = fixtureProcessAlive(sleeper.pid)  // a killed child stays a zombie until reaped
         check(r.code === 0 && /^stopped: \d+ sleep/m.test(r.out) && /^removed: .*\/t1$/m.test(r.out) && /^deleted: t1$/m.test(r.out) && !alive && !existsSync(wt('t1')), 'a clean merged worktree: its process is stopped, then worktree and branch are removed', JSON.stringify(r))
         r = rtw(wt('t2'), 't2', 'integ')
         check(r.code === 3 && /^kept: .*t2 — t2 is not merged into integ$/m.test(r.out) && existsSync(wt('t2')), 'an unmerged branch is kept, nothing changed', JSON.stringify(r))
-        const tmpRoot = `/tmp/sp-${process.pid.toString(16)}ff`
         const tmpOf = t => { const p = `${tmpRoot}/${t}`; mkdirSync(p, { recursive: true }); writeFileSync(`${p}/sock`, ''); return p }
         r = rtw('--tmp', tmpOf('t3'), wt('t3'), 't3', 'integ')
         check(r.code === 3 && /uncommitted or untracked changes/.test(r.out) && existsSync(path.join(wt('t3'), 'stray.txt')), 'a worktree with uncommitted files is kept, its files untouched', JSON.stringify(r))
@@ -4686,12 +4726,13 @@ esac
         r = rtw('--discard', wt('t2'), 't2')
         check(r.code === 0 && !existsSync(wt('t2')) && g(d, 'branch', '--list', 't2').trim() === '', '--discard removes an abandoned worktree and branch', JSON.stringify(r))
         check(rtw(wt('t3'), 't3').code === 2, 'missing argument exits 2')
-        rmSync(d, { recursive: true, force: true })
+        }) } finally { rmSync(tmpRoot, { recursive: true, force: true }); rmSync(d, { recursive: true, force: true }) }
       }
 
       scenario('scripts: stop-run-processes — matches cwd, executable, HOME/TMPDIR, and arguments only for orphans; no kinship expansion; refuses roots holding a parent worktree or a caller cwd; --check lists without killing')
       {
         const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'srp-'))], { encoding: 'utf8' }).trim()
+        try { await withFixtureProcesses(async own => {
         const wt = path.join(d, 'wt'), other = path.join(d, 'other'), rundir = path.join(d, 'run')
         for (const x of [wt, path.join(wt, '.tmp'), path.join(wt, '.bin'), other, rundir]) mkdirSync(x, { recursive: true })
         writeFileSync(path.join(rundir, 'progress.md'), 'x\n')
@@ -4700,20 +4741,20 @@ esac
         if (process.platform === 'darwin') execFileSync('codesign', ['-f', '-s', '-', exeCopy], { stdio: 'ignore' })  // a copied binary is killed on macOS until re-signed
         const keep = 'setTimeout(()=>{},300000)'
         // An orphan (reparented to PID 1 once its launching shell exits), as a leaked daemon is.
-        const orphan = cmd => Number(execFileSync('sh', ['-c', `${cmd} >/dev/null 2>&1 & echo $!`], { cwd: other, encoding: 'utf8' }).trim())
+        const orphan = cmd => own({ pid: Number(execFileSync('sh', ['-c', `${cmd} >/dev/null 2>&1 & echo $!`], { cwd: other, encoding: 'utf8' }).trim()) }).pid
         const argsOrphanPid = orphan(`'${process.execPath}' -e '${keep}' '${path.join(wt, 'x')}'`)
         const tailOrphanPid = orphan(`tail -f '${path.join(rundir, 'progress.md')}'`)
         const procs = {
           argsOnly: { pid: argsOrphanPid, unref() {} },
-          argsChild: spawn(process.execPath, ['-e', keep, path.join(wt, 'y')], { cwd: other, detached: true, stdio: 'ignore' }),
-          homeEnv: spawn(process.execPath, ['-e', keep], { cwd: '/', env: { ...process.env, HOME: path.join(wt, '.tmp', 'home') }, detached: true, stdio: 'ignore' }),
-          exe: spawn(exeCopy, ['301'], { cwd: '/', detached: true, stdio: 'ignore' }),
+          argsChild: own(spawn(process.execPath, ['-e', keep, path.join(wt, 'y')], { cwd: other, detached: true, stdio: 'ignore' })),
+          homeEnv: own(spawn(process.execPath, ['-e', keep], { cwd: '/', env: { ...process.env, HOME: path.join(wt, '.tmp', 'home') }, detached: true, stdio: 'ignore' })),
+          exe: own(spawn(exeCopy, ['301'], { cwd: '/', detached: true, stdio: 'ignore' })),
           tailf: { pid: tailOrphanPid, unref() {} },
-          unrelated: spawn(process.execPath, ['-e', keep], { cwd: other, detached: true, stdio: 'ignore' }),
+          unrelated: own(spawn(process.execPath, ['-e', keep], { cwd: other, detached: true, stdio: 'ignore' })),
         }
         for (const c of Object.values(procs)) c.unref()
         execFileSync('sleep', ['0.8'])
-        const isAlive = pid => { const st = spawnSync('ps', ['-o', 'stat=', '-p', String(pid)], { encoding: 'utf8' }).stdout.trim(); return st !== '' && !st.startsWith('Z') }
+        const isAlive = fixtureProcessAlive
         const srp = (...a) => { const r = spawnSync(bashPath, [path.join(scriptsDir, 'stop-run-processes'), ...a], { encoding: 'utf8' }); return { code: r.status, out: r.stdout ?? '', err: r.stderr ?? '' } }
         let r = srp('--check', wt, rundir)
         const listed = pid => new RegExp(`^match: ${pid} `, 'm').test(r.out)
@@ -4724,9 +4765,7 @@ esac
         const stopped = pid => new RegExp(`^stopped: ${pid} `, 'm').test(r.out)
         check(r.code === 0 && ['argsOnly', 'homeEnv', 'exe', 'tailf'].every(k => stopped(procs[k].pid) && !isAlive(procs[k].pid)), 'stop mode stops every match (orphan with an argument under the root; HOME under .tmp; executable under the root; orphan tail -f on a run-dir file)', JSON.stringify(r))
         check(!/child of/.test(r.out) && isAlive(procs.argsChild.pid), 'no kinship expansion: nothing is matched for being a child or parent of a match, and a non-orphan argument-only process survives', JSON.stringify(r))
-        try { process.kill(procs.argsChild.pid) } catch {}
         check(isAlive(procs.unrelated.pid), 'a process that references no root survives, whatever it is named', JSON.stringify(r))
-        try { process.kill(procs.unrelated.pid) } catch {}
         check(srp('relative/path').code === 2 && srp('/').code === 2 && srp().code === 2, 'a relative root, the root directory, or no root exits 2')
         { const rc = spawnSync(bashPath, [path.join(scriptsDir, 'stop-run-processes'), '--check', wt], { cwd: wt, encoding: 'utf8' })
           check(rc.status === 2 && /working directory/.test(rc.stderr ?? ''), 'a root containing the caller\'s working directory is refused (a coordinating session stands there)', JSON.stringify({ code: rc.status, err: rc.stderr })) }
@@ -4745,7 +4784,7 @@ esac
         g(repo, 'worktree', 'add', '-q', '.worktrees/t2', '-b', 't2')
         { const rp = srp('--check', repo); const rd = srp('--check', path.join(repo, '.worktrees'))
           check(rp.code === 2 && /nested/.test(rp.err) && rd.code !== 2, 'a root holding a worktree with worktrees nested under it (the main or an epic/integration checkout) is refused; the task-worktree directory is accepted', JSON.stringify({ rp, rd })) }
-        rmSync(d, { recursive: true, force: true })
+        }) } finally { rmSync(d, { recursive: true, force: true }) }
       }
 
       scenario('scripts: tree-deps — in-tree leaf blockers per open leaf; opaque when anything else gates it')

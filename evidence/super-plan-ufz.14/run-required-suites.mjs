@@ -1,0 +1,37 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { spawn } from 'node:child_process'
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..')
+const output=path.join(root,'evidence/super-plan-ufz.14')
+const temp='/tmp/sp-bce79baa/super-plan-ufz.14'
+const env={...process.env,TMPDIR:temp,HOME:temp+'/home',XDG_CONFIG_HOME:temp+'/config',XDG_DATA_HOME:temp+'/data',XDG_CACHE_HOME:temp+'/cache',XDG_STATE_HOME:temp+'/state'}
+const checker='/Users/alepar/.codex/plugins/cache/superpowers-alepar/superpowers/6.4.2-alepar6.0/skills/super-code/scripts/stop-run-processes'
+const commands=[
+ ['node','tests/super-code/replay-harness.mjs'],
+ ...['super-code/test-run-profile','super-code/test-dispatch-text','super-design/test-scripts','super-roast/test-assemble-args','super-auto/test-scripts','super-auto/test-contract-lint','skill-scripts/test-bash-invocation','codex/test-marketplace-manifest','super-code/test-run-marker','super-code/test-run-profile-in-flight','super-code/test-report-verdict','super-code/test-run-digest','super-code/test-task-surface','super-code/test-split-oversized','super-code/test-context-preflight','super-code/test-assembled-size','hooks/test-session-start','hooks/test-run-block','hooks/test-reinject-smoke','codex/test-package-codex-plugin','codex-plugin-sync/test-sync-to-codex-plugin','skill-scripts/test-prompt-text-fresh-rounds'].map(s=>['bash',`tests/${s}.sh`])
+]
+const selected=process.argv.slice(2)
+if(selected.some(file=>!commands.some(c=>c[1]===file)))throw Error('unknown requested suite')
+const measured=selected.length?commands.filter(c=>selected.includes(c[1])):commands
+const prefix=process.env.SP_EVIDENCE_PREFIX??(selected.length?'final-':'')
+if(!/^[a-z0-9-]*$/.test(prefix))throw Error('invalid evidence prefix')
+function execute(command,args,cwd,file){return new Promise((resolve,reject)=>{
+ const fd=fs.openSync(file,'w'),start=Date.now(),child=spawn(command,args,{cwd,env,stdio:['ignore',fd,fd]});fs.closeSync(fd)
+ child.once('error',reject);child.once('exit',(code,signal)=>resolve({code,signal,seconds:(Date.now()-start)/1000}))
+})}
+// The hygiene checker runs outside all inspected roots.
+process.chdir('/tmp')
+const results=[]
+for(const [command,...args] of measured){
+ const name=prefix+args[0].replace(/^tests\//,'').replaceAll('/','--'),file=path.join(output,name+'.log')
+ const result=await execute(command,args,root,file)
+ const hygieneFile=path.join(output,name+'.hygiene.log')
+ const hygiene=await execute('bash',[checker,'--check',root,temp],'/tmp',hygieneFile)
+ const entry={command:[command,...args].join(' '),...result,log:path.relative(root,file),hygiene:{...hygiene,log:path.relative(root,hygieneFile)}}
+ if(hygiene.code===3)entry.cleanup=await execute('bash',[checker,root,temp],'/tmp',path.join(output,name+'.cleanup.log'))
+ results.push(entry);fs.writeFileSync(path.join(output,prefix+'required-results.json'),JSON.stringify(results,null,2)+'\n')
+ console.log(JSON.stringify(entry))
+}
+console.log(`required suites: ${results.filter(r=>r.code===0).length}/${results.length} passed; hygiene: ${results.filter(r=>r.hygiene.code===0).length}/${results.length} verified empty`)
+process.exitCode=results.some(r=>r.code!==0||r.hygiene.code!==0)?1:0
