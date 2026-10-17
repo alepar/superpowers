@@ -165,6 +165,12 @@ for (const group of groups.values()) {
   group.outstanding = conflict || !group.dispositions.some(d => d.supported);
 }
 const findings = [...groups.values()];
+// Let stdout drain before exit, and make failed writes observable even through console.
+process.exitCode = gaps.length ? 3 : 0;
+process.stdout.on('error', error => {
+  console.error('projection output failed: ' + error.message);
+  process.exitCode = 1;
+});
 if (keys) {
   const printed = new Set();
   for (const f of findings.filter(f => f.outstanding && f.deferred)) for (const o of f.occurrences) {
@@ -191,7 +197,6 @@ if (keys) {
   };
   console.log(JSON.stringify({version:1, findings, gaps, metrics}, null, 2));
 }
-process.exit(gaps.length ? 3 : 0);
 NODE
   exit $?
 fi
