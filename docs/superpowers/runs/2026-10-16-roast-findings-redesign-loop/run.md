@@ -11,7 +11,7 @@ branch: super-auto/roast-findings-redesign-loop
 base: main
 spec: 2026-10-16-roast-findings-redesign-loop-design.md
 epic: super-plan-59b
-roast-design: 2026-10-16-roast-findings-redesign-loop-roast-design-1.md
+roast-design: 2026-10-16-roast-findings-redesign-loop-roast-design-1.md, 2026-10-16-roast-findings-redesign-loop-roast-design-2.md
 roastDesignRound: 2
 
 approvals:
@@ -19,3 +19,4 @@ approvals:
 - coverage-round-1 · canonical R-list: docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-1-requirements.md (R1–R14) · requirements: 14 · mapped: 12 · unmapped: 3 (R12, R13, R14) · auto: L2 rejected; L3–L6, L8–L13 applied (bead amendments to .1 .2 .4 .6 .7 .8 .10); L7 deferred to integration sweep
 - coverage-round-2 · requirements: 14 · mapped: 13 · unmapped: 1 (R13) · findings: 12 → 14 novel: 11/14 (79%) widening: yes  · auto: L14–L25 applied (sweep super-plan-59b.11 created; bead amendments .1 .2 .4 .5 .6 .7 .8 .10); L26 kept; L27 rejected
 stepBackDesign-round-1: patch — round 1 has no recurrence history; 25 findings are completeness gaps around sound decisions, swept as 7 rule-level clusters
+design-roast exit: converged at round 2 (Should-fix (13 confirmed) [converged]; 0 Blocking; 22 resolved, 4 regressed sub-Blocking); punch list of 13 applied as spec+bead fixes in cbf82090, no re-roast; escalations none; no qualifier
