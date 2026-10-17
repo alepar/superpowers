@@ -401,6 +401,8 @@ function validRunFailure(data) {
 function classifyRunFailure(data) {
   const result = { failure:data.failure, command:data.command, configuration:data.configuration, classification:'gap', owner:null, state:'open', taskExonerations:[], gaps:[], comparisons:[] }
   const gap = (event, reason) => result.gaps.push(event.dispatch + ': ' + reason)
+  const failedSources = new Set()
+  const verifications = []
   for (const event of data.history || []) {
     const claim = event.claim || {}
     const record = index => {
@@ -410,6 +412,7 @@ function classifyRunFailure(data) {
     }
     const observed = record(claim.observed), baseline = record(claim.runBaseline), taskBase = record(claim.taskBase), verified = record(claim.verification)
     result.comparisons.push({ task:event.task, dispatch:event.dispatch, observed, runBaseline:baseline, taskBase, verification:verified })
+    for (const r of [observed, baseline, taskBase, verified]) if (r?.outcome === 'fail') failedSources.add(r.sourceTree)
     if (claim.observed !== undefined || claim.verification === undefined) {
       if (observed?.outcome !== 'fail') gap(event, 'failing observation missing, unavailable, non-live or command/configuration association uncertain')
       else {
@@ -429,9 +432,16 @@ function classifyRunFailure(data) {
       }
     }
     if (claim.verification !== undefined) {
-      if (verified?.outcome === 'pass' && result.owner && (!observed || verified.sourceTree !== observed.sourceTree)) result.state = 'verified'
+      if (verified?.outcome === 'pass' && result.owner) { result.state = 'verified'; verifications.push({ event, record:verified }) }
       else gap(event, 'fix verification missing, unavailable, non-live or unassociated with a known run owner')
     }
+  }
+  // Reconcile every verification against linked outcomes, including durable history and later
+  // associations. Retain earlier contradictions even when a different fixed source resolves the
+  // repair; a pass at the same immutable failing source cannot silently close it.
+  for (const verification of verifications) if (failedSources.has(verification.record.sourceTree)) {
+    if (result.state === 'verified' && verification === verifications[verifications.length - 1]) result.state = 'open'
+    gap(verification.event, 'contradictory outcomes at source tree ' + verification.record.sourceTree + '; reconcile source history before fix verification')
   }
   return result
 }

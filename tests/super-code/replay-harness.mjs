@@ -453,6 +453,25 @@ async function main() {
     check(wrong.result?.runFailures?.[0]?.owner === 'bd-A' && wrong.result?.runFailures?.[0]?.gaps?.length, 'unassociated command cannot overwrite existing ownership')
     const fixed = await runClaim([checkRecord('e', 'pass', 'evidence/fixed.log')], [{ ...claim, observed: undefined, runBaseline: undefined, verification: 0, introducedBy: undefined }], durable.join('\n'))
     check(fixed.result?.runFailures?.[0]?.state === 'verified' && fixed.result?.runFailures?.[0]?.owner === 'bd-A', 'linked live fix verification resolves obligation while retaining introducing owner history')
+    const verificationOnly = { failure: 'F', command: baseline.command, configuration: baseline.configuration, verification: 0 }
+    const contradictory = await runClaim([checkRecord('b', 'pass', 'evidence/same-source-pass.log')], [verificationOnly], durable.join('\n'))
+    assertNoThrow(contradictory)
+    const contradictoryFailure = contradictory.result?.runFailures?.[0]
+    check(contradictoryFailure?.owner === 'bd-A' && contradictoryFailure?.state === 'open', 'verification-only pass at retained failing source preserves open owner', JSON.stringify(contradictoryFailure))
+    check(contradictoryFailure?.gaps?.some(g => g.includes('contradictory') && g.includes(SHA('b'))), 'verification-only same-source contradiction exposes source-bound reconciliation gap')
+    const contradictoryDurable = taskLedgerLines(contradictory.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    const contradictoryResume = await run({ args: liveArgs(), canned: oneTaskCanned({ 'read-ledger': { text: contradictoryDurable.join('\n') } }) })
+    assertNoThrow(contradictoryResume)
+    check(contradictoryResume.result?.runFailures?.[0]?.owner === 'bd-A' && contradictoryResume.result?.runFailures?.[0]?.state === 'open' && contradictoryResume.result?.runFailures?.[0]?.gaps?.some(g => g.includes('contradictory')), 'durable clean re-entry retains same-source contradiction and open owner')
+    for (const role of ['runBaseline', 'taskBase']) {
+      const associated = await runClaim([checkRecord('e', 'pass', 'evidence/associated-pass.log'), checkRecord('e', 'fail', 'evidence/associated-fail.log')], [{ ...verificationOnly, [role]: 1 }], durable.join('\n'))
+      check(associated.result?.runFailures?.[0]?.owner === 'bd-A' && associated.result?.runFailures?.[0]?.state === 'open' && associated.result?.runFailures?.[0]?.gaps?.some(g => g.includes('contradictory')), `verification cannot bypass contradictory associated ${role} outcome`)
+    }
+    const repairedAfterContradiction = await runClaim([checkRecord('e', 'pass', 'evidence/later-fix.log')], [verificationOnly], contradictoryDurable.join('\n'))
+    check(repairedAfterContradiction.result?.runFailures?.[0]?.owner === 'bd-A' && repairedAfterContradiction.result?.runFailures?.[0]?.state === 'verified' && repairedAfterContradiction.result?.runFailures?.[0]?.gaps?.some(g => g.includes('contradictory') && g.includes(SHA('b'))), 'supported different-source repair retains earlier verification contradiction in history')
+    const fixedHistory = taskLedgerLines(fixed.trace, 'bd-101', { recovery: true }).filter(l => l.startsWith('Recovery: '))
+    const lateConflict = await runClaim([checkRecord('e', 'fail', 'evidence/later-base-fail.log')], [{ failure: 'F', command: baseline.command, configuration: baseline.configuration, taskBase: 0 }], fixedHistory.join('\n'))
+    check(lateConflict.result?.runFailures?.[0]?.owner === 'bd-A' && lateConflict.result?.runFailures?.[0]?.state === 'open' && lateConflict.result?.runFailures?.[0]?.gaps?.some(g => g.includes('contradictory') && g.includes(SHA('e'))), 'later associated failure reopens contradictory earlier verification')
     const simulated = await runClaim([checkRecord('e', 'pass', 'evidence/sim.log', { kind: 'simulated' })], [{ ...claim, observed: undefined, runBaseline: undefined, verification: 0 }], durable.join('\n'))
     check(simulated.result?.runFailures?.[0]?.state === 'open', 'simulated fix verification cannot resolve live run regression')
     const sameTree = await runClaim([baseline, { ...broken, sourceTree: baseline.sourceTree }], [claim])
