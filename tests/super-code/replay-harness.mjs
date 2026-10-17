@@ -1600,11 +1600,37 @@ async function main() {
       }) })
       assertNoThrow(resumed)
       check(resumed.result?.reviewPath === `${FR_WS}/final-review-inv-first.md`, 'explicitly resumed invocation reuses its recorded identity', resumed.result?.reviewPath)
+      check(!promptOf(resumed.trace, 'read-ledger')?.includes('uuidgen'), 'explicit resume never requests minting')
       const freshArgs = liveArgs({ runTag: 'shared-run', invocationId: undefined })
-      const fresh = await run({ args: freshArgs, canned: oneTaskCanned({ 'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}' } }) })
-      const freshLaunch = extractLedgerLine(promptOf(fresh.trace, 'ledger-append:launch'))
-      const minted = freshLaunch?.startsWith('Launch: args ') ? JSON.parse(freshLaunch.slice(13)).invocationId : null
-      check(typeof minted === 'string' && minted !== 'inv-first' && minted !== 'shared-run', 'fresh invocation mints its own token instead of copying the last launch', freshLaunch)
+      const freshBundles = []
+      for (const [invocationId, split] of [['inv-fresh-a', false], ['inv-fresh-b', true]]) {
+        const reviewPath = `${FR_WS}/final-review-${invocationId}.md`
+        const dir = `${FR_WS}/assembled/final-review-${invocationId}-final`
+        const fresh = await run({ args: freshArgs, canned: oneTaskCanned({
+          'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}', invocationId },
+          'assemble:final': { dir, exit: 0, fits: split ? 'fits: no (300000 of 80000)' : 'fits: yes (12000 of 80000)',
+            clusterFits: split ? ['cluster-fits: alpha yes (60000 of 80000)'] : [], clusters: split ? 1 : 0 },
+          'final-review': { verdict: 'ready', path: reviewPath },
+          'final-review:cluster:1': { verdict: 'ready', path: `${FR_WS}/final-review-${invocationId}.cluster-1.md` },
+          'final-review:seam': { verdict: 'ready', path: reviewPath },
+        }) })
+        assertNoThrow(fresh)
+        const freshLaunch = extractLedgerLine(promptOf(fresh.trace, 'ledger-append:launch'))
+        const minted = freshLaunch?.startsWith('Launch: args ') ? JSON.parse(freshLaunch.slice(13)).invocationId : null
+        check(typeof minted === 'string' && minted !== 'inv-first' && minted !== 'shared-run', 'fresh invocation mints its own token instead of copying the last launch', freshLaunch)
+        check(minted === invocationId, 'Launch persists exactly the fresh mechanical boundary token', minted)
+        check(JSON.stringify(fresh.trace.slice(0, 2).map(t => t.label)) === '["read-ledger","ledger-append:launch"]', 'Resume acquisition precedes the existing acknowledged Launch append with no extra dispatch')
+        const resume = fresh.trace[0]
+        check(resume.prompt.includes('uuidgen') && !!resume.opts.schema.properties.invocationId, 'omitted-ID Resume requests external minting and its structured identity field')
+        check(fresh.trace[1].opts.schema.required.includes('appended'), 'fresh Launch requests persistence acknowledgment')
+        const assembly = promptOf(fresh.trace, 'assemble:final')?.match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
+        check(assembly === dir && fresh.result?.reviewPath === reviewPath, 'fresh assembly and review destinations use the supplied token', JSON.stringify([assembly, fresh.result?.reviewPath]))
+        const reviewLabel = split ? 'final-review:seam' : 'final-review'
+        check(promptOf(fresh.trace, reviewLabel)?.includes(reviewPath), 'review writer uses this fresh invocation destination')
+        if (split) check(promptOf(fresh.trace, 'final-review:cluster:1')?.includes(`${FR_WS}/final-review-${invocationId}.cluster-1.md`), 'fresh split cluster uses its invocation identity')
+        freshBundles.push({ assembly, reviewPath: fresh.result?.reviewPath })
+      }
+      check(freshBundles[0].assembly !== freshBundles[1].assembly && freshBundles[0].reviewPath !== freshBundles[1].reviewPath, 'two fresh launches sharing args and prior ledger have distinct assembly and review destinations')
     } finally { rmSync(temp, { recursive: true, force: true }) }
   }
 

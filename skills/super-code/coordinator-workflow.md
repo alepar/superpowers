@@ -69,8 +69,14 @@ non-review assembly directories; absent, it is the epic id.
 
 `invocationId` owns this invocation’s review bundle. Before launch, the caller mints a fresh
 filesystem-safe token (1–128 ASCII letters, digits, `_` or `-`, starting with a letter or digit;
-for example `inv-$(uuidgen)`) and passes it in args. The script mints one when omitted. The existing
-`Launch: args` append persists it and is awaited; only `appended: true` authorizes review assembly
+for example `inv-$(uuidgen)`) and passes it in args. When omitted, the existing `read-ledger`
+Resume mechanical dispatch runs `uuidgen` outside the Workflow VM and returns `inv-<uuid>` in
+structured `invocationId`. The script validates that token before constructing Launch; it never
+calls clock/random globals to allocate an identity or copies one from the prior ledger. A missing
+or unsafe acquired identity stops before Launch or review output. A ledger-transport retry retains
+an already selected valid token, requesting minting only when no valid token was acquired; Workflow
+replay reuses the recorded dispatch result. Explicit args never request minting. The existing
+`Launch: args` append persists the selected token and is awaited; only `appended: true` authorizes review assembly
 and review writers. A persistence gap leaves an explicit unavailable review and `reviewPath: null`.
 For an explicit resume of an unsettled invocation, copy its recorded `invocationId` into args
 alongside `resumeFromRunId`; replay retains the same paths. After an invocation has returned a
