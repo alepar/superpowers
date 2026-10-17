@@ -1516,9 +1516,21 @@ detector only saw review minors.
 **Captured review source.** The existing `read-ledger:finish` dispatch also captures `reviewHead`
 with `git rev-parse --verify <integration branch>^{commit}` and `reviewBase` as its verified
 merge-base with the default branch commit. The pair is returned alongside the ledger text;
-`reviewError` records a capture failure independently. Assembly and all final reviewers receive
-the same pair, including direct-input fallbacks when assembly fails. Failed or missing capture
-leaves final review unavailable. This adds no dispatch. Task review carries the implementer's
+`reviewError` records a capture failure independently. An unsettled invocation first reuses its
+compact Recovery `data.reviewSource` fact (`invocationId`, `base`, `head`) from the existing ledger
+reads; Finish's newer integration tip cannot replace it. Assembly and all final reviewers receive
+the bound pair, including direct-input fallbacks when assembly fails. Missing capture without a
+persisted binding, or invalid/conflicting source facts, leaves final review unavailable.
+
+Every existing final assembly/single/cluster/seam/stub dispatch starts with the shared
+`dispatch-text.mjs bind-review-source` guard. Run it before any artifact or package write: it
+persists the compact Recovery fact before the first output, rereads it on retry, and refuses a
+same-ID source mismatch or an existing unbound bundle. An existing output or direct `.diff`
+package is preserved even for the same source; a fresh source needs a fresh invocation identity.
+On guard failure, stop the writer with unavailable output and the command/error; an assembler
+returns exit 2 with cause prefixed `review source guard:`. That refusal preserves the partial
+bundle and leaves `reviewPath` null, without a direct-input fallback that could omit its findings.
+An ordinary assembler failure retains the existing fallback. This adds no dispatch. Task review carries the implementer's
 captured head; seam/check-fix reviews carry the merge/fixer head. Source reads use `git show
 <head>:<path>`; filesystem views use unique review-owned detached worktrees, with separate mutable
 output/temp directories. Observed caller commit/status differences carry evidence without

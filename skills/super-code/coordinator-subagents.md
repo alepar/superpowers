@@ -219,11 +219,22 @@ Append Metrics before final review. Normal execution selection contributes zero 
 
 Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
 `FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
-During the existing Finish Git inspection, capture `reviewHead` with
+First run `dispatch-text --ledger <ledger> bind-review-source --read` to retrieve this invocation's
+persisted pair without recapturing a newer tip. If no binding exists and no partial bundle exists,
+capture `reviewHead` during the existing Finish Git inspection with
 `git rev-parse --verify <integration branch>^{commit}` and `reviewBase` as its verified merge-base
-with the repository's default branch commit. Pass the same `--base <reviewBase> --head <reviewHead>`
-to assembly and every final review mode below, including direct-input fallbacks. A failed capture
-leaves final review unavailable with the command/error evidence. Task `review` takes the
+with the repository's default branch commit; persist them using
+`dispatch-text --ledger <ledger> bind-review-source --base <reviewBase> --head <reviewHead>`.
+The compact Recovery `data.reviewSource` fact retains invocationId/base/head through digest reads.
+A mismatched source, invalid fact, existing unbound bundle or failed persistence is an evidence
+gap: preserve all partial files and report final review unavailable. A fresh source requires a
+fresh invocation identity. Pass the persisted `--base <reviewBase> --head <reviewHead>` to assembly
+and every final review mode below, including direct-input fallbacks. Their generated guard runs
+before any artifact/package writes and refuses existing outputs even on same-source retry.
+An assembler guard refusal returns exit 2 with cause prefixed `review source guard:`: preserve
+the partial bundle and return `reviewPath: null` instead of bypassing it with a direct review.
+Other assembler failures keep their existing fallback. A failed capture without a persisted
+binding leaves final review unavailable with the command/error evidence. Task `review` takes the
 implementer's captured `--head` alongside `--base`; `check-fix-review` takes the fixer's `--head`.
 Review filesystem views use unique detached worktrees; mutable reproductions own their outputs.
 Run `dispatch-text assemble --consumer final-review --instance final --threshold <40% of the window>`,
