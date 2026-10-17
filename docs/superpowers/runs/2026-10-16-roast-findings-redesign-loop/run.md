@@ -13,7 +13,7 @@ spec: 2026-10-16-roast-findings-redesign-loop-design.md
 epic: super-plan-59b
 roast-design: 2026-10-16-roast-findings-redesign-loop-roast-design-1.md, 2026-10-16-roast-findings-redesign-loop-roast-design-2.md
 roastDesignRound: 2
-roast-code: 2026-10-17-roast-findings-redesign-loop-roast-pr-1.md
+roast-code: 2026-10-17-roast-findings-redesign-loop-roast-pr-1.md, 2026-10-17-roast-findings-redesign-loop-roast-pr-2.md
 roastCodeRound: 2
 
 approvals:
@@ -52,3 +52,7 @@ cluster dropped: c7-contract-pinning — Every new record format, token or confi
 cluster dropped: c8-amend-check-content-guards — amend-check validates normalised content, not raw positions. It compares the Goal body text, found fence-aware, between base and working tree; normalises spec paths (`./` and bare); rejects duplicate `owners:` keys; and handles untracked new specs. Each input shape gets a test case.
 scope-filter: 7 in-scope · 5 punch-listed
 fixLoop-round-1: filed super-plan-59b.19–.27 (8 cluster beads c1–c8 incl. final-review Must-fix members, + 1 scriptable-subset bead); final-review item '[Must-fix] untested: Spec §7's manual acceptance …' routed to phase 6 (needs agent dispatches, not an implementer leaf)
+roastCodeExit: converged
+regressionPass-round-2: 3 filed · [Should-fix] skills/super-auto/resume.md:46; skills/super-auto/resume.md:31, [Should-fix] skills/super-design/scripts/findings-ledger:237, [Should-fix] skills/super-design/SKILL.md:929; skills/super-design/SKILL.md:930 · no re-roast
+finalReviewException: 4 filed (super-plan-59b.34–.37) from final-review-fixloop-r1.md Must-fix seams (goal-path correctness); combined with the regression pass (super-plan-59b.31–.33) into one super-code re-entry before phase 6; post-cap audit to cover what lands
+punchList-exit: [Should-fix] skills/super-design/SKILL.md:918; skills/super-design/SKILL.md:897 (id_of title escaping, roast r2, not fix-regression); final-review-fixloop-r1 cluster-2 unreviewed item and Untested scope list; automated security review on skills/super-design/scripts/amend-check (fail-open git lookup; non-CommonMark fence parsing) — not roast-confirmed
