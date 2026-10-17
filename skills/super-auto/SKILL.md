@@ -282,7 +282,7 @@ in-scope, and pulls each cluster with an in-scope member in as a unit (except a 
 `clusterOverride`). Record its output in `run.md` as `scopeFilter-round-<N>` (run-state.md item 7 (Design decisions)), its `cluster dropped: <cluster id> — <rule>` lines (a cluster whose members were all punch-listed) and aggregate line included. Punch-list findings
 go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never filed.
 
-Then write the punch-list file beside the round's report as `…-roast-pr-<N>-punch-list.txt`: every key punch-listed so far, this round's plus the previous round's file, one `[SEV] <location>` per line. The next roast round (and any `post-cap audit`) gets it as its punch-listed input (§Phase sequence, phase 4), so a punch-listed finding the roast meets again is reported as open, not as new.
+Then write the punch-list file beside the round's report as `…-roast-pr-<N>-punch-list.txt`: every key punch-listed so far, this round's punch-listed keys plus every key in the latest existing punch-list file (`…-roast-pr-<M>-punch-list.txt` with the highest M below this round; a redesign round writes none, so after one this is the file from before it; none yet: this round's keys only), deduplicated, one `[SEV] <location>` per line. The next roast round (and any `post-cap audit`) gets it as its punch-listed input (§Phase sequence, phase 4), so a punch-listed finding the roast meets again is reported as open, not as new.
 
 #### Step 3 — file fix beads
 
