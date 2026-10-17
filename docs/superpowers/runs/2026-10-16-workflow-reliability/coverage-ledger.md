@@ -1,0 +1,2 @@
+# Coverage ledger — workflow reliability
+

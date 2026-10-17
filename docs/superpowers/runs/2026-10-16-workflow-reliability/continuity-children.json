@@ -1,0 +1,27 @@
+[
+  {
+    "id": "super-plan-ufz.8.1",
+    "title": "Preserve distinct invocation review artifacts",
+    "description": "Persist per-invocation identity separately from runTag; use it for single/cluster/seam/stub review artifacts and preserve reviewPath/null semantics in both execution paths.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/SKILL.md, skills/super-code/coordinator.js, skills/super-code/coordinator-workflow.md, skills/super-code/coordinator-subagents.md, skills/super-code/scripts/dispatch-text.mjs, tests/super-code/test-dispatch-text.sh, tests/super-code/replay-harness.mjs\nowns: Invocation identity and immutable review artifact bundle.\nconsumes: Existing runTag and launch records.\nAcceptance:\n- [ ] Two invocations sharing runTag retain distinct artifact bundles including split reviews.\n- [ ] Invocation identity is persisted before review creation and replayed on resume.\n- [ ] reviewPath and null retain existing meanings; both execution paths pass focused fixtures.",
+    "owns": "Invocation identity and immutable review artifact bundle.",
+    "deps": []
+  },
+  {
+    "id": "super-plan-ufz.8.2",
+    "title": "Project outstanding findings from evidence and dispositions",
+    "description": "Extend complete extraction and existing run records to retain source occurrences, explicit reference links, deferral and supported dispositions. Project outstanding/deferred findings mechanically; retain unknown inputs. No competing roast ledger or six-state chain.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-code/scripts/report-verdict, skills/super-auto/run-state.md, skills/super-auto/scripts/scope-dispositions, tests/super-code/test-report-verdict.sh, tests/super-auto/test-scripts.sh\nowns: Complete occurrence extraction and validated outstanding-finding projection.\nconsumes: Stable invocation/artifact identity from predecessor.\nAcceptance:\n- [ ] Complete additive extraction includes deferred sections without changing existing --keys behavior.\n- [ ] Explicit references link occurrences; ambiguous matches stay separate.\n- [ ] Resolution/rejection needs explicit supported disposition; assignment/success/silence do not resolve.\n- [ ] Unsupported or incomplete external projections leave evidence open.\n- [ ] Key-only punch-list output reflects outstanding deferred findings, including verified fixes elsewhere.\nblocked-by super-plan-ufz.8.1: consumes Invocation identity and immutable review artifact bundle.",
+    "owns": "Complete occurrence extraction and validated outstanding-finding projection.",
+    "deps": [
+      "super-plan-ufz.8.1"
+    ]
+  },
+  {
+    "id": "super-plan-ufz.8.3",
+    "title": "Carry findings through collection resume and reports",
+    "description": "Collect settled immutable review bundles into the committed run directory and recover interrupted collection. Route final-review items and punch lists through the validated outstanding projection. Latest review remains distinct from historical obligations.\nSpec: docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md\nFiles: skills/super-auto/SKILL.md, skills/super-auto/resume.md, skills/super-auto/report-prompt.md, skills/super-auto/scripts/report-status, skills/super-auto/run-state.md, tests/super-auto/test-scripts.sh\nowns: Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.\nconsumes: Validated outstanding projection from predecessor.\nAcceptance:\n- [ ] Blocked review followed by ready/silent retry preserves prior actionable findings.\n- [ ] Collection resumes idempotently before later invocation or cleanup; missing bundle is an evidence gap.\n- [ ] Resume, Remaining and status use the same outstanding projection.\n- [ ] Latest ready review cannot conceal earlier unresolved findings.\n- [ ] Coordinator runs representative fresh-agent behavior evaluation; producer/consumer fixtures pass.\nblocked-by super-plan-ufz.8.2: consumes Complete occurrence extraction and validated outstanding-finding projection.",
+    "owns": "Artifact collection/recovery and consistent outstanding findings in resume, Remaining and status.",
+    "deps": [
+      "super-plan-ufz.8.2"
+    ]
+  }
+]
