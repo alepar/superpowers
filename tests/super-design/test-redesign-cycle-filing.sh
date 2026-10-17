@@ -84,7 +84,14 @@ get() { sed -n "s/^$2=//p" "$BD_STATE/bead-$1" 2>/dev/null; }
 put() { grep -v "^$2=" "$BD_STATE/bead-$1" > "$BD_STATE/tmp" 2>/dev/null || true; echo "$2=$3" >> "$BD_STATE/tmp"; mv "$BD_STATE/tmp" "$BD_STATE/bead-$1"; }
 cmd=$1; shift
 case "$cmd" in
-  update) id=$1; [ "$2" = --status ] || exit 1; put "$id" status "$3" ;;
+  update)
+    id=$1
+    case "$2" in
+      --status) put "$id" status "$3" ;;
+      --description) printf '%s' "$3" > "$BD_STATE/desc-$id" ;;
+      *) exit 1 ;;
+    esac ;;
+  dep) [ "$1" = add ] || exit 1; echo "$2 $3" >> "$BD_STATE/deps.log" ;;
   list)
     label=''; while [ $# -gt 0 ]; do [ "$1" = --label ] && label=$2; shift; done
     echo "["; first=1
@@ -105,7 +112,8 @@ case "$cmd" in
     echo "$id" ;;
   show)
     # Like bd 1.3.0: the bead's own fields at 4 spaces, each dependency's id/status at 8 spaces.
-    printf '[\n  {\n    "id": "%s",\n    "status": "%s",\n    "dependencies": [' "$1" "$(get "$1" status)"
+    desc=$(cat "$BD_STATE/desc-$1" 2>/dev/null | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' | awk 'NR > 1 { printf "\\n" } { printf "%s", $0 }')
+    printf '[\n  {\n    "id": "%s",\n    "status": "%s",\n    "description": "%s",\n    "dependencies": [' "$1" "$(get "$1" status)" "$desc"
     sep=''
     for dep in $(get "$1" deps | tr ',' ' '); do
       printf '%s\n      {\n        "id": "%s",\n        "status": "%s"\n      }' "$sep" "$dep" "$(get "$dep" status)"; sep=','
@@ -136,6 +144,11 @@ seed() { # seed: root epic closed, bd-7 open under it with closed dependency bd-
   printf 'status=closed\nparent=\nlabels=sp:ep-1\ntitle=root\nepic=1\n' > "$ST/bead-ep-1"
   printf 'status=open\nparent=ep-1\nlabels=sp:ep-1\ntitle=old retry\ndeps=bd-9\n' > "$ST/bead-bd-7"
   printf 'status=closed\nparent=ep-1\nlabels=sp:ep-1\ntitle=old b\n' > "$ST/bead-bd-9"
+}
+seed_sweep() { # add the Integration sweep bead sw-1 (two-line description) on top of seed
+  printf 'status=open\nparent=ep-1\nlabels=sp:ep-1\ntitle=Integration sweep: root goal\n' > "$ST/bead-sw-1"
+  printf 'Sweep the root goal.\nblocked-by bd-7: consumes all leaves (integration sweep)' > "$ST/desc-sw-1"
+  : > "$ST/deps.log"
 }
 file_beads() { # file_beads LOOP LABEL RECORD: sets $out and $code
   set +e
@@ -170,6 +183,32 @@ creates_before=$(calls | grep -c '^create ' || true)
 file_beads design sp:redesign-design-1 amend-design-ok.md
 assert_eq "$code" 0 "resume replay: block exits 0"
 assert_eq "$(calls | grep -c '^create ' || true)" "$creates_before" "resume replay files no duplicate (title dedupe)"
+
+seed; seed_sweep
+file_beads design sp:redesign-design-1 amend-design-ok.md
+assert_eq "$code" 0 "design loop with sweep: block exits 0"
+new_ids=$(ls "$ST" | sed -n 's/^bead-\(new-.*\)$/\1/p')
+assert_eq "$(printf '%s\n' "$new_ids" | grep -c .)" 2 "design loop with sweep: two beads filed"
+for id in $new_ids; do
+  assert_has "$(cat "$ST/deps.log")" "sw-1 $id" "sweep depends on $id"
+  assert_has "$(cat "$ST/desc-sw-1")" "blocked-by $id: consumes all leaves (integration sweep)" "sweep description names $id"
+done
+assert_has "$(cat "$ST/desc-sw-1")" "Sweep the root goal." "sweep description keeps its first line"
+assert_has "$(cat "$ST/desc-sw-1")" "blocked-by bd-7: consumes all leaves (integration sweep)" "sweep description keeps its old blocked-by line"
+assert_eq "$(wc -l < "$ST/desc-sw-1" | tr -d ' ')" 3 "sweep description gained exactly one line per bead (newline count)"
+deps_before=$(wc -l < "$ST/deps.log" | tr -d ' ')
+desc_before=$(cat "$ST/desc-sw-1")
+file_beads design sp:redesign-design-1 amend-design-ok.md
+assert_eq "$code" 0 "sweep replay: block exits 0"
+assert_eq "$(wc -l < "$ST/deps.log" | tr -d ' ')" "$deps_before" "sweep replay adds no dep add"
+assert_eq "$(cat "$ST/desc-sw-1")" "$desc_before" "sweep replay leaves the description unchanged"
+
+seed; seed_sweep
+file_beads code sp:redesign-code-1 amend-code-ok.md
+assert_eq "$code" 0 "code loop with sweep: block exits 0"
+assert_eq "$(wc -c < "$ST/deps.log" | tr -d ' ')" 0 "code loop with sweep: no dep add"
+assert_eq "$(cat "$ST/desc-sw-1")" "Sweep the root goal.
+blocked-by bd-7: consumes all leaves (integration sweep)" "code loop with sweep: sweep description unchanged"
 
 seed
 file_beads code sp:redesign-code-1 amend-code-ok.md

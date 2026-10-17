@@ -913,7 +913,11 @@ caller's bead context.
    record's `supersedes:` lines; a bead already closed is skipped). Every bead filing in a
    redesign round, the calling loop's amend-roast tasks included, uses this sequence. The
    orchestrator fills `$ROOT` (root epic id), `$PARENT`, `$LABEL`, `$LOOP` (`code|design`),
-   `$AMEND` (the record path) and `$CONTEXT`. State `beads-filed`.
+   `$AMEND` (the record path) and `$CONTEXT`. In the design loop, when an `Integration sweep:` bead
+   exists for the root, each filed bead gets `bd dep add <sweep> <id>` and the matching
+   `blocked-by <id>: consumes all leaves (integration sweep)` line in the sweep's description (a
+   wholesale `bd update --description` that keeps the old text), as §Decomposition's sweep wiring
+   and the loop table require; the code loop adds no sweep edges. State `beads-filed`.
 
    ```bash
    set -euo pipefail
@@ -923,7 +927,7 @@ caller's bead context.
      f == want && /^[ \t]*- / { sub(/^[ \t]*- /, ""); sub(/[ \t\r]+$/, ""); print }' "$AMEND"; }
    id_of() { bd list --label "$LABEL" --all --json | awk -v t="$1" '
      /^    "id":/ { id = $2; gsub(/[",]/, "", id) }
-     $0 == "    \"title\": \"" t "\"," || $0 == "    \"title\": \"" t "\"" { print id; exit }'; }
+     !done && ($0 == "    \"title\": \"" t "\"," || $0 == "    \"title\": \"" t "\"") { print id; done = 1 }'; }
    field work | while IFS= read -r item; do
      title=${item%% | *}
      [ -z "$(id_of "$title")" ] || continue
@@ -936,6 +940,26 @@ caller's bead context.
        [ "$(bd show "$old" --json | awk '/^    "status":/ { s = $2; gsub(/[",]/, "", s); print s; exit }')" = closed ] && continue
        bd supersede "$old" --with "$(id_of "$title")"
      done
+     tree=$(bd list --label "sp:$ROOT" --all --json --limit 0)
+     sweep=$(printf '%s\n' "$tree" | awk '
+       /^    "id":/ { id = $2; gsub(/[",]/, "", id) }
+       !done && index($0, "    \"title\": \"Integration sweep:") == 1 { print id; done = 1 }')
+     if [ -z "$sweep" ]; then :
+     elif ! command -v jq >/dev/null 2>&1; then
+       echo "JQ_UNAVAILABLE: add bd dep add <sweep> <id> and the blocked-by <id>: consumes all leaves (integration sweep) line to the sweep's description by hand for each sp:redesign-design-<K> bead" >&2
+     else
+       text=$(bd show "$sweep" --json | jq -r '.[0].description // ""'); added=0
+       while IFS= read -r item; do
+         id=$(id_of "${item%% | *}"); line="blocked-by $id: consumes all leaves (integration sweep)"
+         case "$text" in *"$line"*) continue ;; esac
+         bd dep add "$sweep" "$id"
+         text="${text:+$text
+   }$line"; added=1
+       done <<EOF2
+   $(field work)
+   EOF2
+       [ "$added" = 0 ] || bd update "$sweep" --description "$text"
+     fi
    fi
    ```
 
