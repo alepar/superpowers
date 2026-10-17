@@ -64,6 +64,14 @@ Keep the window full. The Workflow coordinator does these, and so do you:
   Serialize refreshes, stop them at quiescence and leave consumers needing a fresh observation held
   on budget exhaustion.
 
+For recurring process observations, use the exact process-tag table in
+`coordinator-workflow.md` §Finish: `cleanup-inspection` and its two inspection-denial aliases,
+`missing-evidence` and its two absent-evidence aliases, and existing `suite-not-run`. Preserve each
+raw finding, task ID and source reference. Read compact `[recurrence-id: …]` / `[source-line: N]`
+metadata as identity/provenance transport, not as a class or Task status. Other tags retain exact
+finding-text distinctions, including assertion values and paths. A recurrence count supports
+reassessment; finding identity, disposition, severity and fix scope require separate judgments.
+
 **One fresh agent per round.**
 
 - Every fix pass, seam fix, check fix, re-review and re-assessment is a fresh agent; its only memory

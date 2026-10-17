@@ -137,3 +137,8 @@ Then return:
   reviewer would also use (`[doc-drift]`, `[naming]`, `[missing-edge-case-test]`), never this task's
   specifics. The tag is how the run notices one smell recurring across tasks. An empty list means
   you found none.
+  Process tags use the small exact vocabulary in `coordinator-workflow.md`: `[cleanup-inspection]`
+  (aliases `[cleanup-inspection-denied]`, `[process-inspection-refused]`) for denied liveness
+  inspection; `[missing-evidence]` (aliases `[evidence-missing]`, `[test-evidence-missing]`) for
+  absent evidence; existing `[suite-not-run]` for a deferred suite. Keep the finding text and source
+  references intact; grouping is separate from finding identity, severity, disposition and scope.
