@@ -84,4 +84,11 @@ No new abstractions; extends the existing super-code coordinator, review artifac
 
 ## Post-Implementation Notes
 
+### Changes vs. original design — 2026-10-17
+
+The implementation and repair passes landed 29 tasks on `super-auto/workflow-reliability`. The normal fix loop stopped at thrash with one Blocking finding still open. The scoped post-cap audit retained that finding and added a Should-fix amendment-resume gap; two policy escalations remain unresolved. Implementation status does not establish root acceptance or merge readiness.
+
+The combined source at `f726f0e97f57b398832891d3f7d95759ed367eb4` passed 37 serial check groups. Historical report extraction, review coverage, Recovery reconciliation and representative agent-behavior evidence remain qualified; no hosted Workflow execution or general improvement claim is established. The late acceptance checkpoint remains pending, including the existing human finish choice. See the [handoff report](../runs/2026-10-16-workflow-reliability/report.md), [post-cap audit](../runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md), and [acceptance assessment](../runs/2026-10-16-workflow-reliability/final-acceptance-accounting/assessment.md) for exact evidence and limitations.
+
+
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
