@@ -126,6 +126,7 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
    - `bash tests/super-design/test-findings-ledger.sh`
    - `bash tests/super-design/test-step-back-check.sh`
    - `bash tests/super-design/test-amend-check.sh`
+   - `bash tests/super-design/test-redesign-chain.sh`
    - `bash tests/super-roast/test-assemble-args.sh`
    - `bash tests/super-auto/test-scripts.sh`
    - `bash tests/super-auto/test-contract-lint.sh`
