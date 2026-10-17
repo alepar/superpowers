@@ -930,7 +930,7 @@ caller's bead context.
    if [ "$LOOP" = design ]; then
      field supersedes | sed 's/ -> / → /' | while IFS= read -r item; do
        old=${item%% → *}; title=${item#* → }
-       bd show "$old" --json | grep -q '"status": *"closed"' && continue
+       [ "$(bd show "$old" --json | awk '/^    "status":/ { s = $2; gsub(/[",]/, "", s); print s; exit }')" = closed ] && continue
        bd supersede "$old" --with "$(id_of "$title")"
      done
    fi
