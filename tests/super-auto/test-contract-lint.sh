@@ -3,7 +3,7 @@
 # §Field table; (b) every §<Heading>, <file> §<Heading> and run-state.md item <N> (<label>)
 # pointer resolves; (c) no numeric count in runtime prose points at a list; (R7) the field
 # table's names and line formats and SKILL.md's phase sequence match the pre-epic baseline
-# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
+# (fixtures from 2bf1d53, plus fields added deliberately since — codeBuckets.worktreesKept, codeBuckets.processSweep, friction, roastCodeExit, codeMechanism, runTag, context, findingsLedger, findingsLedgerDesign, redesignCycles-code, redesignCycles-design, redesign-<loop>-<K>, approvals · coverage-amend-<loop>-<K>); example status lines have a shape report-status prints; (keys) I8 and the Phase 5 key steps name report-verdict --keys and SKILL.md and report-prompt.md carry the null reviewPath rule. Then it
 # mutates a copy of the skill and checks each mutation is caught. Pure bash and awk.
 set -euo pipefail
 
@@ -47,7 +47,7 @@ check_example() { # SKILL_DIR
         else top[l] = 1
       }
     }
-    function norm(s) { gsub(/-round-[0-9]+/, "-round-<N>", s); return s }
+    function norm(s) { gsub(/-round-[0-9]+/, "-round-<N>", s); sub(/-(code|design)-[0-9]+$/, "-<loop>-<K>", s); return s }
     /^#/ || /^[ \t]*$/ { next }
     /^[A-Za-z][A-Za-z0-9-]*:/ {
       k = norm(substr($0, 1, index($0, ":") - 1)); block = k
