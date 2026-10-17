@@ -306,6 +306,46 @@ check_step1() { # SKILLS_ROOT
     | sed 's|^|(step1) super-auto/run-state.md: effective cap is not spelled 3 + redesignCycles-<loop>: |' || true
 }
 
+# (abort) Every abort route removes the round's dissolved override lines before the state reads
+# `aborted`, so a crash resumes into a state whose replay repeats the removal.
+bullet_text() { # FILE START_REGEX -> the bullet from its first line to the next bullet or blank line
+  awk -v a="$2" 's == 0 && $0 ~ a { s = 1; print; next } s && (/^- / || /^$/) { exit } s { print }' "$1" | collapse
+}
+abort_has() { # LABEL TEXT KEY...
+  local label=$1 txt=$2 k; shift 2
+  [ -n "$txt" ] || { echo "(abort) $label: bullet is missing"; return; }
+  for k in "$@"; do
+    case "$txt" in *"$k"*) ;; *) echo "(abort) $label: lacks '$k'" ;; esac
+  done
+}
+abort_before() { # LABEL TEXT FIRST SECOND
+  local a=${2%%"$3"*} b=${2%%"$4"*}
+  case "$2" in *"$3"*"$4"*) ;; *) echo "(abort) $1: '$3' does not come before '$4'"; return ;; esac
+  [ "${#a}" -lt "${#b}" ] || echo "(abort) $1: '$3' does not come before '$4'"
+}
+check_abort() { # SKILLS_ROOT
+  local sa="$1/super-auto/SKILL.md" sd="$1/super-design/SKILL.md" rs="$1/super-auto/resume.md" f txt
+  f="$T/ab-auto"; section "$sa" '^#### Redesign cycle$' '^#### ' > "$f"
+  txt=$(item_text "$f" 2)
+  abort_has "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' 'rebuild'
+  abort_before "super-auto Redesign cycle item 2" "$txt" 'dissolved@r<N>' '`aborted — <reason>`'
+  txt=$(bullet_text "$sd" '^- `aborted — <reason>`')
+  abort_has "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild'
+  abort_before "super-design Redesign cycle aborted bullet" "$txt" 'dissolved@r<N>' 'rewrite the state'
+  f="$T/ab-resume"; section "$rs" '^## Redesign cycle replay$' '^## ' > "$f"
+  txt=$(bullet_text "$f" '^- `amend-checked`')
+  abort_has "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>'
+  abort_before "resume.md amend-checked bullet" "$txt" 'dissolved@r<N>' 'aborted — amend rejected on resume'
+  txt=$(bullet_text "$f" '^- `aborted — <reason>`')
+  abort_has "resume.md aborted bullet" "$txt" 'dissolved@r<N>' 'rebuild'
+  f="$T/ab-reentry"; section "$sd" '^\*\*Resuming a redesign cycle\*\*' '^\*\*A partially-written' > "$f"
+  abort_has "super-design Re-entry amend-checked bullet" "$(bullet_text "$f" '^- `amend-checked`')" 'dissolved@r<N>'
+  abort_has "super-design Re-entry aborted bullet" "$(bullet_text "$f" '^- `aborted — …`')" 'dissolved@r<N>'
+  f="$T/ab-phase"; section "$rs" '^## Resuming at a phase$' '^## ' > "$f"
+  txt=$(grep -F 'dissolved' "$f" | collapse)
+  case "$txt" in *aborted*) ;; *) echo "(abort) resume.md: the dissolved-skip rule does not name a non-aborted record" ;; esac
+}
+
 lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_example "$1/super-auto"
   check_pointers "$1" "$2"
@@ -317,6 +357,7 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_report_rows "$1/super-auto"
   check_itercap "$1"
   check_step1 "$1"
+  check_abort "$1"
 }
 
 echo "contract lint: live tree"
@@ -388,6 +429,14 @@ expect_caught "an Amend Mode step 4 that no longer reopens first fails" "Amend M
 copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
 sed '/^7\. \*\*Branch/,/^\*\*Redesign cycle/s/`redesignCycles-design` < 2/`redesignCycles-design` < 4/' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
 expect_caught "a super-design budget compare other than < 2 fails" "super-design/SKILL.md: redesign budget compare is not < 2"
+
+copy; awk '/^2\. On `aborted`/ { gsub(/remove from `<run-dir>\/findings-overrides.md` the `dissolved@r<N>` lines Step 1 wrote for this round.s record and rebuild the ledger \(Step 1 item 2.s invocation\), /, ""); gsub(/dissolved@r<N>/, "dropped") } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a super-auto Redesign cycle item 2 without the removal fails" "super-auto Redesign cycle item 2: lacks 'dissolved@r<N>'"
+copy; sed '/^- `amend-checked`/s/dissolved@r<N>/dropped/g' "$REPO_ROOT/skills/super-auto/resume.md" > "$SA/resume.md"
+expect_caught "a resume amend-checked bullet without the removal fails" "resume.md amend-checked bullet: lacks 'dissolved@r<N>'"
+copy; rm "$T/skills/super-design"; cp -R "$REPO_ROOT/skills/super-design" "$T/skills/super-design"
+awk '/^- `aborted — <reason>`/ { on = 1 } on && /^$/ { on = 0 } on { gsub(/dissolved@r<N>/, "dropped") } { print }' "$REPO_ROOT/skills/super-design/SKILL.md" > "$T/skills/super-design/SKILL.md"
+expect_caught "a super-design aborted bullet without the removal fails" "super-design Redesign cycle aborted bullet: lacks 'dissolved@r<N>'"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then
