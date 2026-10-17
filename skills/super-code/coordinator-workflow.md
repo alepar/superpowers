@@ -638,8 +638,9 @@ exists, otherwise `fail` if matching live/fail exists, otherwise `unavailable`. 
 record remains visible, including conflicting outcomes; this classification establishes evidence
 availability, while semantic coverage and acceptance remain the reviewer's/caller's decisions.
 Malformed arrays/records produce `gaps` with producer and field references. Omitted optional
-arrays produce no invented facts. Check records do not change task routing, add compulsory
-phases, or replace implementation, review or run acceptance.
+arrays produce no invented facts. For implementation tasks, check records do not change routing
+or replace delivered changes. Verification-only completion below consumes the same records
+after independent acceptance review; neither path replaces run acceptance.
 
 The ordinary coordinator uses the same validator/classifier through
 `dispatch-text --ledger <ledger> check-evidence --results-file <replies.json>`, where the JSON
@@ -1131,7 +1132,7 @@ blocker filing, commit last). Two conventions the coordinator owns:
   A setup that re-enters an existing stacked branch finds that base again from the newest
   first-parent `stack: ` commit.
 - **Commit is the implementer's last step:** the implementer reports `head` (`git rev-parse HEAD`
-  after its commit, with `git status --short` empty); a `head` equal to the `base` it reports means
+  after its commit, with `git status --short` empty); for default implementation completion, a `head` equal to the `base` it reports means
   nothing was committed, and the coordinator sends one bounded commit nudge before treating the
   task as BLOCKED with a finding that names the cause.
 - **An unstacked implementer rebases before reporting:** after committing, it runs
@@ -1149,6 +1150,43 @@ blocker filing, commit last). Two conventions the coordinator owns:
 An implementer that cannot proceed within its own dispatch (a missing dependency, a plan
 contradiction) files the blocker bead itself and reports BLOCKED with its id; the coordinator's
 missing-bead fallback files one if it didn't.
+
+## Verification-only task completion
+
+`IMPLEMENTED` may declare `completionKind: "verification-only"` only when the current task
+acceptance permits no-change verification. It carries equal full `base`/`head` commit hashes,
+`files: []`, `sourceTree`, and the existing `evidence`/`requiredLiveChecks` records. The default
+completion kind is `implementation`; its commit nudge, nonempty review package and delivered
+change requirements remain in force.
+
+Select the evidence-review branch before calling `review-package`. The reviewer resolves the
+captured commits and tree, confirms a clean source and verification-only acceptance against
+the bead/comments/brief, and reads retained measurements without rerunning tests. CLEAN carries
+`completionKind: "verification-only"`, the same `base`, `head`, `sourceTree`, and original
+reviewed evidence records. Coverage, including required live kind, is an independent review
+judgment. Missing/stale/failed/unavailable checks or an absent/rejected/INVALID review cannot
+complete the task. A verification rejection never takes an unreviewed fix-to-merge shortcut.
+
+The coordinator validates matching captured identity and passing records, including every
+required live check from both producers. On acceptance, it records the basis in the existing
+`Recovery: … pending-closure` data as `verification` (source, unchanged range, check records,
+report/review paths and `reviewStatus: "CLEAN"`). This is separate from Git landings. The coordinator awaits `appended: true` before tracker
+closure; an unavailable durable write withholds closure. It uses
+existing close-only/status confirmation and cleanup machinery with a verification closure
+prompt: tracker status first, then the captured commit/tree check; no merge or artificial commit.
+Preserve cleanup output and unavailable status as facts. Closure remains unconfirmed until the
+tracker confirms every required bead closed. Resume reconstructs the verification basis from
+Recovery before Task completion lines; an unconfirmed task retries closure only. A confirmed
+completion writes `Task <N> (<id>): complete (verification-only, reviewed acceptance evidence;
+no Git landing)`. Digest reduction keeps `complete, verification-only`; the Recovery basis
+preserves its identity and evidence when other Task text is reduced. The existing 4096-byte
+Recovery bound and gap source pointers remain unchanged. A typed completion without its valid
+basis remains an evidence gap, and a ready reentry obtains independent review before closure.
+
+`verificationCompletions` returns those durable bases, including ones awaiting tracker closure;
+`completed` contains only confirmed closures. Count verification completions separately in the
+completion metrics and exclude them from task-landings accounting. They do not supply root or
+run acceptance, which remains the caller's independent obligation.
 
 ## Review and fix pass
 

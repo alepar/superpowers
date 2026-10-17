@@ -230,8 +230,8 @@ async function appendLedger(line, stubKey, opts, elidedLine) {
 // ends. A throw inside a queued append surfaces at the next drain: fatal under dryRun, logged live.
 let ledgerChain = Promise.resolve()
 let ledgerFailure = null
-function queueLedger(lines, key, phase, elided) {
-  const schema = key === 'ledger-append:launch' ? { type: 'object', properties: { appended: { type: 'boolean' } }, required: ['appended'] } : null
+function queueLedger(lines, key, phase, elided, confirm = false) {
+  const schema = confirm || key === 'ledger-append:launch' || key.startsWith('ledger-append:recovery:pending-closure:') ? { type: 'object', properties: { appended: { type: 'boolean' } }, required: ['appended'] } : null
   const run = ledgerChain.then(() => appendLedger(lines, key, { label: key, phase, ...tier('mechanical'), ...(schema ? { schema } : {}) }, elided))
   ledgerChain = run.then(() => {}, e => { ledgerFailure = ledgerFailure ?? e })
   return run
@@ -249,13 +249,13 @@ function noteLedger(id, line, elided) {
   if (!ledgerBuf.has(id)) ledgerBuf.set(id, [])
   ledgerBuf.get(id).push({ line, elided })
 }
-function flushLedger(id, phase) {
+function flushLedger(id, phase, confirm = false) {
   const entries = ledgerBuf.get(id)
   ledgerBuf.delete(id)
   if (!entries || !entries.length) return
   const lines = entries.flatMap(e => flatLines(e.line))
   const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
-  return queueLedger(lines, `ledger:${id}`, phase, elided)
+  return queueLedger(lines, `ledger:${id}`, phase, elided, confirm)
 }
 function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
 
@@ -287,8 +287,9 @@ const CHECK_IDENTITY = { sourceTree: {type:'string', pattern:'^(?:[0-9a-f]{40}|[
 const CHECK_EVIDENCE = { type:'object', properties:{ ...CHECK_IDENTITY, outcome:{type:'string', enum:['pass','fail','unavailable']}, location:{type:'string', minLength:1}, kind:{type:'string', enum:['live','simulated','fallback']} }, required:['sourceTree','command','configuration','outcome','location','kind'] }
 const LIVE_CHECK = { type:'object', properties:CHECK_IDENTITY, required:['sourceTree','command','configuration'] }
 const FAILURE_ATTRIBUTION = { type:'object', properties:{ failure:{type:'string', minLength:1}, command:{type:'string', minLength:1}, configuration:{type:'string', minLength:1}, observed:{type:'integer', minimum:0}, runBaseline:{type:'integer', minimum:0}, taskBase:{type:'integer', minimum:0}, verification:{type:'integer', minimum:0}, introducedBy:{type:'string', minLength:1} }, required:['failure','command','configuration'] }
-const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, declined: {type:'string'}, evidenceOnly: {type:'string'}, evidence:{type:'array', items:CHECK_EVIDENCE}, requiredLiveChecks:{type:'array', items:LIVE_CHECK}, failureAttribution:{type:'array', items:FAILURE_ATTRIBUTION}, stacked: {type:'boolean'}, reopened: {type:'boolean'}, humanAction: {type:'string'} }, required: ['id','status'] }
-// Additive check facts. Status routing remains independent; reviewers select acceptance coverage.
+const RESULT  = { type: 'object', properties: { id: {type:'string'}, n: {type:'integer'}, status: {type:'string', enum: RESULT_STATUSES}, files: { type: 'array', items: {type:'string'} }, branch: {type:'string'}, base: {type:'string'}, blockerBead: {type:'string'}, finding: {type:'string'}, minors: { type: 'array', items: {type:'string'} }, head: {type:'string'}, alreadyMerged: {type:'boolean'}, completionKind:{type:'string', enum:['implementation','verification-only']}, sourceTree:{...CHECK_IDENTITY.sourceTree}, declined: {type:'string'}, evidenceOnly: {type:'string'}, evidence:{type:'array', items:CHECK_EVIDENCE}, requiredLiveChecks:{type:'array', items:LIVE_CHECK}, failureAttribution:{type:'array', items:FAILURE_ATTRIBUTION}, stacked: {type:'boolean'}, reopened: {type:'boolean'}, humanAction: {type:'string'} }, required: ['id','status'] }
+// Additive check facts. Implementation delivery routing is unchanged; the explicit no-change
+// route validates these records after the reviewer selects acceptance coverage.
 // Source trees are full Git tree identities, captured where the command ran. The runtime cannot
 // resolve a producer's repository, so identity resolution and coverage belong to its reviewer.
 const checkEvidenceRecords = [], checkEvidenceGaps = [], requiredLiveChecks = []
@@ -340,7 +341,7 @@ const CLOSE   = { type: 'object', properties: { rootClosed: {type:'boolean'}, cl
 // only): `<branch> <tip> <merge>` lines from scripts/already-merged --landed.
 const LEDGER_TEXT = { type: 'object', properties: { text: { type: 'string' }, landed: { type: 'array', items: { type: 'string' } }, reviewBase: {type:'string'}, reviewHead: {type:'string'}, reviewError: {type:'string'} }, required: ['text'] }
 const SWEEP_SUMMARY = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
-const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
+const RESUME_CHECK = { type: 'object', properties: { landed: { type: 'boolean' }, sourceVerified: { type: 'boolean' }, closed: { type: 'array', items: { type: 'string' } }, open: { type: 'array', items: { type: 'string' } }, error: { type: 'string' } }, required: ['landed', 'closed', 'open'] }
 // Early-unblock bookkeeping (scripts/review-bead): the split's review bead and whether the task bead
 // closed; a reopen's list; a cancelled task's worktree removal.
 const REVIEW_BEAD = { type: 'object', properties: { reviewBead: {type:'string'}, implClosed: {type:'boolean'}, created: {type:'boolean'}, scriptError: {type:'string'} }, required: ['reviewBead','implClosed'] }
@@ -359,6 +360,8 @@ const LEDGER_LINE_RE = /^Task\s+(\S+)\s+\(([^)]+)\):\s*(.*)$/
 // Additive durable facts, independent of settle()'s latest terminal status. The ledger remains
 // the source: obligations are keyed by kind/id, while every fix attempt stays in history.
 const recoveryObligations = new Map()
+const verificationCompletions = new Map() // independently reviewed no-change basis, not a Git landing
+const verificationCandidates = new Set() // a tracker close cannot supply missing acceptance review
 const fixHistory = []
 const recoveryGaps = []
 function readRecovery(line, digestLine = null) {
@@ -372,6 +375,13 @@ function readRecovery(line, digestLine = null) {
       || !Array.isArray(r.evidence) || !r.evidence.length || !r.evidence.every(text)
       || !r.data || typeof r.data !== 'object' || Array.isArray(r.data)) return gap('invalid recovery fields or missing evidence')
   if (r.data.runFailure !== undefined && !validRunFailure(r.data.runFailure)) return gap('invalid run failure history')
+  if (r.kind === 'pending-closure' && r.data.verification) {
+    const v = r.data.verification
+    if (v.reviewStatus !== 'CLEAN' || !text(v.reportPath) || !text(v.reviewPath) || verificationProblem(v, v)) return gap('invalid verification completion basis')
+    verificationCompletions.set(r.id, v)
+    if (text(v.reviewBead)) reviewBeadOf.set(r.id, v.reviewBead)
+    if (text(v.blockerBead)) blockerBeadOf.set(r.id, v.blockerBead)
+  }
   if (r.kind === 'fix') {
     if (r.operation !== 'record') return gap('fix history is append-only')
     fixHistory.push(r)
@@ -389,7 +399,7 @@ function noteRecovery(id, kind, operation, reason, evidence, data = {}, taskId =
   if (!readRecovery(line)) throw new Error('invalid recovery record produced: ' + line)
   // Identical elided fallback: source pointers and commit facts must never be removed on retry.
   if (taskId) noteLedger(taskId, line, line)
-  else queueLedger(line, 'ledger-append:recovery:' + kind + ':' + id, phase, line)
+  else return queueLedger(line, 'ledger-append:recovery:' + kind + ':' + id, phase, line)
 }
 // A failure association references indices in the producer's unchanged source-bound evidence
 // array. Durable history keeps those arrays, so no task status or later bucket overwrite can
@@ -718,8 +728,13 @@ for (const [digestIndex, raw] of (ledger?.text || '').split('\n').entries()) {
   const cause = /^(?:BLOCKED|pending retry)\S* \[cause: ([^\]]+)\]/.exec(rest)
   if (cause) seedRecurrence('blocker', id, cause[1], /\[source-line: ([0-9]+)\]$/.exec(rest)?.[1])
   if (rest.startsWith('complete')) {
+    if (rest.includes('verification-only') && !verificationCompletions.has(id)) {
+      verificationCandidates.add(id)
+      recoveryGap(line, 'verification completion basis unavailable', digestIndex + 1)
+      continue
+    }
     resumed.set(id, rest.includes('parked') ? 'parked' : 'complete')
-    landed.set(id, /commits [a-f0-9]+\.\.([a-f0-9]+)/.exec(rest)?.[1] ?? landed.get(id) ?? null)
+    if (!verificationCompletions.has(id)) landed.set(id, /commits [a-f0-9]+\.\.([a-f0-9]+)/.exec(rest)?.[1] ?? landed.get(id) ?? null)
     if (rest.includes('parked')) landedParked.add(id)
   }
   else if (rest.startsWith('landed')) {
@@ -765,15 +780,17 @@ const resumeHolds = new Map()
 const resumedObligationKeys = new Set(recoveryObligations.keys())
 for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'pending-closure')) {
   const id = record.id, data = record.data
-  const required = [...new Set([id, data.reviewBead, data.blockerBead].filter(Boolean))]
-  const observed = typeof data.head === 'string' && /^[a-f0-9]{40}$/.test(data.head)
+  const verification = verificationCompletions.get(id)
+  const source = verification || data
+  const required = [...new Set([id, source.reviewBead, source.blockerBead].filter(Boolean))]
+  const observed = typeof source.head === 'string' && /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(source.head)
     ? await dispatch(() => resumeCheckPrompt(record, required), 'resume-check:' + id,
       { label: 'resume-check:' + id, phase: 'Resume', ...tier('mechanical'), schema: RESUME_CHECK })
     : null
   const known = observed && !observed.error && Array.isArray(observed.closed) && Array.isArray(observed.open)
     && required.every(bead => observed.closed.includes(bead) !== observed.open.includes(bead))
-  const reason = !observed ? 'Git/tracker observation unavailable or exact landing head missing'
-    : observed.error || (observed.landed !== true ? 'persisted landing disagrees with Git' : !known ? 'tracker status unavailable or contradictory' : null)
+  const reason = !observed ? 'Git/tracker observation unavailable or exact source head missing'
+    : observed.error || ((verification ? observed.sourceVerified !== true : observed.landed !== true) ? 'persisted source disagrees with Git' : !known ? 'tracker status unavailable or contradictory' : null)
   if (reason) {
     completed.delete(id); parked.delete(id)
     resumeHolds.set(id, reason)
@@ -784,7 +801,7 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
   }
   // Only this reconciler's own hold can clear on a successful observation. Caller holds and
   // deferred evidence obligations require their owner's explicit matching clear record.
-  landed.set(id, data.head)
+  if (!verification) landed.set(id, data.head)
   if (data.range) landedRanges.set(id, 'commits ' + data.range)
   if (data.reviewBead) reviewBeadOf.set(id, data.reviewBead)
   if (data.blockerBead) blockerBeadOf.set(id, data.blockerBead)
@@ -793,8 +810,8 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
   const ownHold = recoveryObligations.get('hold:resume:' + id)
   const clears = [...(ownHold ? [ownHold] : []), ...(allClosed ? [record] : [])].map(r =>
     'Recovery: ' + JSON.stringify({ ...r, operation: 'clear', reason: allClosed ? 'tracker closure confirmed' : 'exact landing and tracker observations available',
-      evidence: ['git:' + data.head, ...required.map(bead => 'bead:' + bead)], data: {} }))
-  const lines = [...clears, ...(allClosed ? [ledgerLine('?', id, 'complete (' + (data.range ? 'commits ' + data.range + ', ' : '') + 'already merged into ' + integrationBranch + ' — tracker closure reconciled on resume)')] : [])]
+      evidence: ['git:' + source.head, ...required.map(bead => 'bead:' + bead)], data: {} }))
+  const lines = [...clears, ...(allClosed ? [ledgerLine('?', id, verification ? 'complete (verification-only, reviewed acceptance evidence; tracker closure reconciled on resume)' : 'complete (' + (data.range ? 'commits ' + data.range + ', ' : '') + 'already merged into ' + integrationBranch + ' — tracker closure reconciled on resume)')] : [])]
   if (lines.length) {
     // Append completion and its clears together; only confirmed writes update in-memory
     // obligations. An unavailable append retains recovery for the next restart.
@@ -853,7 +870,7 @@ while (true) {
   // Null close-epics: closed nothing and never rootClosed — defaulting to true would declare an
   // unfinished epic done.
   const closed = (await closePromise) ?? { rootClosed: false, closedThisRun: [] }
-  const pendingClosures = [...landed.keys()].filter(id => !completed.has(id) && !escalated.has(id) && !resumeHolds.has(id))
+  const pendingClosures = [...new Set([...landed.keys(), ...verificationCompletions.keys()])].filter(id => !completed.has(id) && !escalated.has(id) && !resumeHolds.has(id))
   if (closed.rootClosed && !pendingClosures.length) {
     stopReason = 'root-closed'
     await readyPromise.catch(() => {})  // settle the concurrent query before exiting; its result is moot
@@ -1309,13 +1326,20 @@ while (true) {
   const confirmClosure = async (r, closeFirst = false, deferClear = false) => {
     const required = [r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean)
     const repair = async () => {
-      const closed = await dispatch(() => closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
+      const closed = await dispatch(() => verificationCompletions.has(r.id) ? verificationClosePrompt(r.id, verificationCompletions.get(r.id)) : closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
         { label: `close-only:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
+      if (verificationCompletions.has(r.id) && closed) {
+        const basis = verificationCompletions.get(r.id)
+        basis.cleanup = closed.finding || 'cleanup outcome unavailable'
+        const existing = recoveryObligations.get('pending-closure:' + r.id)
+        noteRecovery(r.id, 'pending-closure', 'record', 'verification-only closure observation',
+          [...new Set([...(existing?.evidence ?? []), basis.reportPath, basis.reviewPath])], { ...existing?.data, verification: basis }, r.id, 'Integrate', existing)
+      }
       if (closed?.status === 'BLOCKED_AUTH') await handleAuthRefusal({ ...closed, id: r.id, n: r.n }, closed.finding)
       if (!closed || closed.status !== 'CLOSED') { log('close-only for ' + r.id + ': re-check did not confirm closure: ' + (closed?.finding ?? closed?.status ?? 'null dispatch') + ' — closure unconfirmed'); return false }
       return true
     }
-    if (closeFirst) { if (!await repair()) return false; confirmedLandings.add(r.id) }
+    if (closeFirst) { if (!await repair()) return false; if (!verificationCompletions.has(r.id)) confirmedLandings.add(r.id) }
     // Two observations, with at most one close-only repair. A null read is unknown, not open.
     for (let observation = 0; observation < 2; observation++) {
       const check = await dispatch(() => reconcileBucketsPrompt(required, []), `close-check:${r.id}`,
@@ -1339,6 +1363,30 @@ while (true) {
       [...new Set([...(existing?.evidence ?? []), artifacts(r.id).report, 'bead:' + r.id, ...(head ? ['git:' + head] : []),
         ...[reviewBead, blockerBead].filter(Boolean).map(id => 'bead:' + id)])],
       { ...existing?.data, ...(head ? { head } : {}), ...(range ? { range } : {}), ...(reviewBead ? { reviewBead } : {}), ...(blockerBead ? { blockerBead } : {}) }, r.id, 'Integrate', existing)
+  }
+  const completeVerification = async r => {
+    completed.delete(r.id)
+    if (!await confirmClosure(r, true, true)) return // durable basis already recorded; resume retries closure only
+    const pending = recoveryObligations.get('pending-closure:' + r.id)
+    const clear = 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed',
+      evidence: [artifacts(r.id).report, ...[r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean).map(id => 'bead:' + id)], data: {} })
+    noteLedger(r.id, clear, clear)
+    noteLedger(r.id, ledgerLine(r.n, r.id, 'complete (verification-only, reviewed acceptance evidence; no Git landing)'))
+    const written = await flushLedger(r.id, 'Integrate', true).catch(() => null)
+    if (written?.appended !== true) {
+      resumeHolds.set(r.id, 'verification closure append unavailable')
+      log(r.id + ': recovery held — verification closure append unavailable; reviewed basis retained')
+      return
+    }
+    readRecovery(clear)
+    settle(r.id, completed)
+    blockerBeadOf.delete(r.id)
+    if (r.att && !r.att.ended) {
+      r.att.ended = true
+      satisfiedThisRound.add(r.id)
+      r.att.resolveMerged(true)
+    }
+    topUpHook()
   }
   const closeAlreadyMerged = async r => {
     if (!landed.has(r.id)) landed.set(r.id, null)
@@ -1601,6 +1649,7 @@ while (true) {
         admissionHolds.delete(id)
         att = startAttempt(id, reentry)
         if (att.cancelledBy) return await abandon(att, true)
+        if (verificationCompletions.has(id)) { await completeVerification({ id, n: ordinalFor(id), att }); return }
         if (landed.has(id)) { await closeAlreadyMerged({ id, n: ordinalFor(id), att }); return }
         // One dispatch sets the workspace up and implements: it cuts or reuses the worktree, merges any
         // stack parents, finds the base, writes the brief, checks the toolchain, and only then
@@ -1610,6 +1659,7 @@ while (true) {
         if (!im) return null  // null implement ("Null dispatch policy"): no progress this round; the next ready query re-surfaces the id
         // Identity is the coordinator's: whatever id the agent echoes is discarded.
         im = { ...im, id }
+        if (im.completionKind === 'verification-only') verificationCandidates.add(id)
         att.cut = im.status !== 'STACK_CONFLICT'
         if (att.cut) discardFailed.delete(id)
         if (att.cancelledBy) return await abandon(att, true)
@@ -1648,7 +1698,7 @@ while (true) {
           if (reentry && im.reopened !== true) {
             // Review re-entry: the implementation is on the task branch already.
             log(`${id}: review re-entry (review bead ${reviewBeadOf.get(id)}) — its implementation is on ${taskBranch(id)}; reviewing it, nothing re-implemented`)
-            done = { id, status: 'IMPLEMENTED', n: ordinalFor(id), branch: taskWorktree(id), base: im.base, head: im.head, files: rowOf(id)?.files ?? [] }
+            done = { ...im, id, status: 'IMPLEMENTED', n: ordinalFor(id), branch: taskWorktree(id), base: im.base, head: im.head, files: rowOf(id)?.files ?? [] }
           } else {
             if (reentry) {
               // The branch was gone: setup reopened the task bead and cut fresh, so this was an ordinary
@@ -1659,7 +1709,7 @@ while (true) {
             }
             // IMPLEMENTED with head == base means nothing was committed: one nudge to commit, then a BLOCKED
             // whose finding names the cause.
-            if (im.status === 'IMPLEMENTED' && im.head && im.base && im.head === im.base) {
+            if (im.status === 'IMPLEMENTED' && im.completionKind !== 'verification-only' && im.head && im.base && im.head === im.base) {
               log(`${id}: implementer reported IMPLEMENTED but head == base (${short(im.base)}) — nothing committed on the task branch; one commit nudge`)
               const base = im.base
               const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
@@ -1671,7 +1721,7 @@ while (true) {
             }
             done = { ...im, n: ordinalFor(id), branch: taskWorktree(id) }
             // Implementation done: its dependents may start now (early unblock).
-            if (done.status === 'IMPLEMENTED') markImplemented(att)
+            if (done.status === 'IMPLEMENTED' && done.completionKind !== 'verification-only') markImplemented(att)
           }
           r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id), () => !!att.cancelledBy)
           if (att.cancelledBy || r?.status === 'CANCELLED') return await abandon(att, true)
@@ -1684,6 +1734,24 @@ while (true) {
         if (r?.status === 'BLOCKED') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleBlocker(r, planned.planPath, onResolve) }
         else if (r?.status === 'BLOCKED_AUTH') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleAuthRefusal(r, r.finding) }
         else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)
+        else if (r?.status === 'CLEAN' && r.completionKind === 'verification-only') {
+          if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, true)
+          const basis = { completionKind: 'verification-only', status: 'CLEAN', files: [], base: r.base, head: r.head, sourceTree: r.sourceTree, evidence: r.evidence, requiredLiveChecks: r.requiredLiveChecks, reportPath: artifacts(id).report, reviewPath: artifacts(id).review, reviewStatus: 'CLEAN', ...(reviewBeadOf.has(id) ? { reviewBead: reviewBeadOf.get(id) } : {}), ...(blockerBeadOf.has(id) ? { blockerBead: blockerBeadOf.get(id) } : {}) }
+          for (const mn of r.minors || []) {
+            noteLedger(id, ledgerLine(r.n, id, 'minor (deferred): ' + mn), ledgerLine(r.n, id, 'minor (deferred): ' + (rawClassTag(mn) ? '[' + rawClassTag(mn) + '] ' : '') + 'text elided — see ' + basis.reviewPath + ' [recurrence-id: ' + recurrenceId(mn) + ']'))
+            noteRecurrence('minor', id, mn, 'Integrate')
+            deferredMinors.push({ id, text: String(mn).replace(/\s+/g, ' ').trim() })
+          }
+          verificationCompletions.set(id, basis)
+          const persisted = await noteRecovery(id, 'pending-closure', 'record', 'reviewed verification-only task awaits tracker closure', [basis.reportPath, basis.reviewPath], { verification: basis }, null, 'Implement')
+          if (persisted?.appended !== true) {
+            verificationCompletions.delete(id)
+            recoveryObligations.delete('pending-closure:' + id)
+            log('verification basis persistence unavailable for ' + id + ' — tracker closure withheld')
+            return null
+          }
+          await completeVerification(r)
+        }
         else if (r) integrate = true
       } finally {
         if (slotHeld) sched.release(id)  // free the slot before integration: merges ride their own queue
@@ -1997,6 +2065,7 @@ if (!metricsLedger) {
   // a failed merge's id, so a both-paths count would mismatch ledger-check on every failed merge.
   const MERGE_METRICS_RE = /^Merge:\s+\S+\s+—\s+rebase\s+(clean|conflict:\s*\d+\s*files?)\s+·\s+seam-review\s+(none|cleared|fixed)\s+·\s+check\s+(pass|fail→fixed|fail|none)(\s+→\s+(?:blocker|auth-refused|held:.*))?$/
   let mMerges = 0, mMergeFailed = 0, mConflicts = 0, mSeamReviews = 0, mSeamFixed = 0, mCheckFails = 0, mCheckFixed = 0
+  let cVerification = 0
   let cClean = 0, cFixPass = 0, cParked = 0, cReentry = 0, cStacked = 0, cCancelled = 0
   let fEntered = 0, fFixed = 0, fBlocked = 0
   const landedIds = new Set()   // ids the ledger shows landed: a success-path Merge: line or a re-entry close
@@ -2015,7 +2084,8 @@ if (!metricsLedger) {
     if (!lm) continue
     const rest = lm[3]
     if (rest.startsWith('complete')) {
-      if (rest.includes('already merged')) { cReentry++; landedIds.add(lm[2]) }
+      if (verificationCompletions.has(lm[2]) || rest.includes('verification-only')) cVerification++
+      else if (rest.includes('already merged')) { cReentry++; landedIds.add(lm[2]) }
       else if (rest.includes('review clean')) cClean++
       else if (rest.includes('fix pass')) { cFixPass++; if (rest.includes('parked')) cParked++ }
     } else if (rest.startsWith('stacked on')) cStacked++
@@ -2028,14 +2098,14 @@ if (!metricsLedger) {
   }
   // ledger-check: ids the ledger shows landed (success-path merges and re-entry closes, which write no
   // Merge: line) against the in-memory `completed`. A mismatch names its likeliest cause.
-  const L = landedIds.size, C = completed.size
+  const L = landedIds.size, C = [...completed].filter(id => !verificationCompletions.has(id)).length
   const mLedgerCheck = L === C ? 'ok'
     : L === 0 ? `METRICS INVALID — landed≠completed: 0 vs ${C}; the ledger read carried no Merge: or completion lines, so the reader failed and every count here is wrong`
     : L < C ? `landed≠completed: ${L} vs ${C} — ${ledgerAppendFailed.length ? `${ledgerAppendFailed.length} ledger append(s) failed` : 'no append failed, so a completion was settled without its ledger line (look for a close without a Merge: line)'}`
     : `landed≠completed: ${L} vs ${C} — the ledger shows landings this run did not count (an incomplete Resume read seeds too few completions)`
   metrics = [
     `Metrics: merges ${mMerges} · merge-failed ${mMergeFailed} · rebase-conflicts ${mConflicts} · seam-reviews ${mSeamReviews} (fixed ${mSeamFixed}) · check-fails ${mCheckFails} (fixed ${mCheckFixed})`,
-    `Metrics: completions — review clean ${cClean} · after fix pass ${cFixPass} · parked ${cParked} · re-entry closes ${cReentry} · dispatched early ${cStacked} · cancelled ${cCancelled}`,
+    `Metrics: completions — review clean ${cClean} · after fix pass ${cFixPass} · parked ${cParked} · re-entry closes ${cReentry} · dispatched early ${cStacked} · cancelled ${cCancelled}` + (cVerification ? ' · verification-only ' + cVerification : ''),
     `Metrics: fix-pass — entered ${fEntered} · FIXED ${fFixed} · BLOCKED ${fBlocked}`,
     `Metrics: ledger-check ${mLedgerCheck} · append-failed ${ledgerAppendFailed.length} · append-retried ${ledgerAppendRetried}`,
   ]
@@ -2129,7 +2199,7 @@ else if (frMode !== 'split') {
 // whose RESOLVEd blocker bead must be closed too. Landed ids whose closure this run could not confirm
 // are asked as well: bd is the authority on closure, whatever git re-checks said. Null returns the
 // buckets as-is.
-const landedOpen = [...landed.keys()].filter(id => !completed.has(id) && !resumeHolds.has(id))
+const landedOpen = [...new Set([...landed.keys(), ...verificationCompletions.keys()])].filter(id => !completed.has(id) && !resumeHolds.has(id))
 const unsettledIds = [...new Set([...[...escalated, ...pendingRetry].filter(id => !confirmedLandings.has(id) && !recoveryAdmissionReason(id)), ...landedOpen])]
 if (unsettledIds.length) {
   const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)]),
@@ -2138,6 +2208,7 @@ if (unsettledIds.length) {
   if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry/landed id(s) were NOT checked against the tracker`)
   else for (const id of (rec.closed ?? [])) {
     if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
+    if (verificationCandidates.has(id) && !verificationCompletions.has(id)) { log('tracker closure for ' + id + ' does not replace its missing verification acceptance'); continue }
     log(`reconciled ${id}: tracker reports closed — moved from ${landedOpen.includes(id) ? 'unconfirmed closure' : escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
     settle(id, completed)
     if (!landedOpen.includes(id)) continue
@@ -2145,12 +2216,12 @@ if (unsettledIds.length) {
     if (landedParked.has(id)) parked.add(id)
     blockerBeadOf.delete(id)
     // The completion line a resume reads, so the next launch does not re-check this closure.
-    queueLedger(ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, `complete (already merged into ${integrationBranch} — tracker reports closed at Finish reconciliation${landedParked.has(id) ? ', 1 parked' : ''})`),
+    queueLedger(ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, verificationCompletions.has(id) ? 'complete (verification-only, reviewed acceptance evidence; tracker reports closed)' : `complete (already merged into ${integrationBranch} — tracker reports closed at Finish reconciliation${landedParked.has(id) ? ', 1 parked' : ''})`),
       `ledger-append:reconciled:${id}`, 'Finish')
   }
   await drainLedger()
 }
-const closureUnconfirmed = [...landed.keys()].filter(id => !completed.has(id))
+const closureUnconfirmed = [...new Set([...landed.keys(), ...verificationCompletions.keys()])].filter(id => !completed.has(id))
 if (closureUnconfirmed.length) {
   stopReason = 'closure-unconfirmed'
   log('Reported landing with unconfirmed tracker closure: ' + closureUnconfirmed.join(', ') + ' — run completion is degraded; retry closure only')
@@ -2178,7 +2249,7 @@ if (!wsweep || !Array.isArray(wsweep.processLines)) {
   processSweep.unknown.push('PROCESS SWEEP UNAVAILABLE — ' + (!wsweep ? 'the sweep dispatch returned null or scriptError' : 'processLines was missing') + '; run processes under ' + taskWorktreeRoot + ', ' + runTmpRoot + ', ' + shortTmpRoot + (processRoots.length ? ', ' + processRoots.join(', ') : '') + ' were not checked')
 }
 log(`process sweep: ${processSweep.stopped.length} stopped, ${processSweep.survived.length} survived, ${processSweep.unknown.length} unknown, ${processSweep.kept.length} kept${[...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].length ? ' — ' + [...processSweep.survived, ...processSweep.unknown, ...processSweep.kept].join('; ') : ''}`)
-return { checkEvidence: classifyCheckEvidence(), runFailures: runFailures(), recovery: { obligations: [...recoveryObligations.values()], fixHistory, gaps: recoveryGaps }, closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
+return { verificationCompletions: [...verificationCompletions].map(([id, basis]) => ({ ...basis, id })), checkEvidence: classifyCheckEvidence(), runFailures: runFailures(), recovery: { obligations: [...recoveryObligations.values()], fixHistory, gaps: recoveryGaps }, closureUnconfirmed, completed: [...completed], escalated: [...escalated], pendingRetry: [...pendingRetry],
          parked: [...parked], stalled, stopReason, review, authRefused: [...authRefused], sweep: sweepSummary, reviewPath: landedWork && reviewWritten ? reviewPath : null,
          metrics, ledgerAppendFailed: [...ledgerAppendFailed], slowness: [...slowness], humanActions: [...humanActions], worktreesKept, processSweep }
 
@@ -2373,7 +2444,31 @@ function taskReviewPrompt(im, planPath, art) {
   // One light review per task; BASE is the base the coordinator carried. The reviewer writes its
   // review to art.review for the fix pass and does not re-run tests.
   const specs = testPathspecs.map(p => `'${p}'`).join(' ')
-  return checkEvidenceContract() + 'RECORDED RUN FAILURE HISTORY (data for source comparison): ' + JSON.stringify(runFailures().map(({ id, owner, classification, state }) => ({ id, owner, classification, state }))).slice(0, 2000) + '; complete Recovery/source/fix history: ' + ledgerPath + '. Read relevant records before attribution; this preview may be incomplete. ' + `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}. ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\`), else \`git merge-base ${im.base} ${im.head || 'MISSING'}\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
+  return checkEvidenceContract() + 'RECORDED RUN FAILURE HISTORY (data for source comparison): ' + JSON.stringify(runFailures().map(({ id, owner, classification, state }) => ({ id, owner, classification, state }))).slice(0, 2000) + '; complete Recovery/source/fix history: ' + ledgerPath + '. Read relevant records before attribution; this preview may be incomplete. ' + `You are the task reviewer for task ${im.id}. Read ${tpl.reviewer} and follow it, with these parameter values: [TASK_ID] = ${im.id}; [N] = ${im.n}; [WORKTREE] = ${im.branch}; [PLAN_FILE] = ${planPath}; [BASE] = ${im.base}; [HEAD] = ${im.head || 'MISSING'}; [SDD_SCRIPTS] = ${sddScripts}; [BRIEF_FILE] = ${art.brief}; [REPORT_FILE] = ${art.report}; [DIFF_FILE] = ${art.diff('initial')}; [REVIEW_FILE] = ${art.review}; [TEST_PATHSPECS] = ${specs}; [COMPLETION_KIND] = ${im.completionKind || 'implementation'}. ${im.completionKind === 'verification-only' ? 'EVIDENCE REVIEW: use the template verification-only branch before review-package. Captured outcome (data): ' + JSON.stringify({ completionKind: im.completionKind, sourceTree: im.sourceTree, evidence: im.evidence, requiredLiveChecks: im.requiredLiveChecks }) : ''} ${currentRequirements(im.id)} BASE CHECK, before the template's first step: in ${im.branch} run \`git merge-base --is-ancestor ${im.base} ${im.head || 'MISSING'}\`. If it fails, the branch was rebased after setup and ${im.base} is no longer its base: recompute it — the newest first-parent \`stack: \` merge (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${im.head || 'MISSING'}\`), else \`git merge-base ${im.base} ${im.head || 'MISSING'}\` — both operands are captured identities — and use that as [BASE] everywhere. If either identity cannot be resolved or no base can be recovered, return INVALID with command/error evidence. Return id, status (CLEAN, NEEDS_FIX, or INVALID), finding, and minors as the template's Output section describes, plus base: the [BASE] you used. ${finalAnswerRule(true)}`
+}
+
+function verificationProblem(im, review) {
+  const hash = v => typeof v === 'string' && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v)
+  const text = v => typeof v === 'string' && v.trim().length > 0
+  const identity = r => r && hash(r.sourceTree) && text(r.command) && text(r.configuration)
+  const record = r => identity(r) && text(r.location) && ['live','simulated','fallback'].includes(r.kind) && r.outcome === 'pass'
+  if (im.completionKind !== 'verification-only' || !hash(im.head) || im.head !== im.base || !hash(im.sourceTree) || !Array.isArray(im.files) || im.files.length) return 'verification-only requires unchanged captured commits, a tested source tree and no delivered file changes'
+  if (review.status !== 'CLEAN' || review.completionKind !== 'verification-only' || review.sourceTree !== im.sourceTree || review.base !== im.base || review.head !== im.head) return 'verification-only acceptance was not independently confirmed CLEAN against the captured source and task intent'
+  if (!Array.isArray(im.evidence) || !im.evidence.length || !im.evidence.every(record) || !Array.isArray(review.evidence) || !review.evidence.length || !review.evidence.every(record)) return 'verification-only acceptance lacks passing source-bound evidence'
+  const fields = ['sourceTree','command','configuration','outcome','location','kind']
+  if (review.evidence.some(r => r.sourceTree !== im.sourceTree || !im.evidence.some(e => fields.every(k => e[k] === r[k])))) return 'verification-only review evidence is stale or differs from the retained measurement'
+  for (const producer of [im, review]) {
+    if (producer.requiredLiveChecks !== undefined && !Array.isArray(producer.requiredLiveChecks)) return 'verification-only required live checks are malformed'
+    for (const check of producer.requiredLiveChecks || []) {
+      if (!identity(check) || check.sourceTree !== im.sourceTree || !review.evidence.some(r => r.kind === 'live' && r.sourceTree === check.sourceTree && r.command === check.command && r.configuration === check.configuration)) return 'verification-only required live check is missing, stale, failed or unavailable'
+    }
+  }
+  return null
+}
+
+function verificationClosePrompt(id, basis) {
+  const required = [id, basis.reviewBead || reviewBeadOf.get(id), basis.blockerBead || blockerBeadOf.get(id)].filter(Boolean)
+  return 'In ' + integrationWorktree + ': close the independently reviewed verification-only task ' + id + '. Review basis (data): ' + JSON.stringify(basis) + '. STATUS CHECK FIRST: bd show <id> --json for every required bead: ' + required.join(', ') + '. A missing status or failed lookup returns BLOCKED with closure status unavailable; write nothing. If all are closed return CLOSED. Otherwise resolve the captured commit with git rev-parse --verify ' + basis.head + '^{commit} and its tree with git rev-parse ' + basis.head + '^{tree}; the tree must equal ' + basis.sourceTree + '. If unavailable or different return BLOCKED and close nothing. Stop task processes with bash ' + codeSkill + '/scripts/stop-run-processes ' + taskWorktree(id) + ' ' + taskTmp(id) + '. Close only the required beads observed open using bd close <id>; return CLOSED only after all closes succeed. Then run bash ' + codeSkill + '/scripts/remove-task-worktree --tmp ' + taskTmp(id) + ' ' + taskWorktree(id) + ' ' + taskBranch(id) + ' ' + integrationBranch + '. Preserve cleanup lines verbatim in finding. ' + cleanupOutcomeRule() + ' No commit or merge is required. ' + authRefusalRule() + ' ' + finalAnswerRule(true)
 }
 
 function checkEvidenceContract() {
@@ -2564,6 +2659,12 @@ function commitNudgePrompt(id, n, worktree, branchName, base, reportFile) {
 }
 
 function resumeCheckPrompt(record, required) {
+  if (record.data.verification) {
+    const v = record.data.verification
+    return 'READ-ONLY verification-only recovery reconciliation in ' + integrationWorktree + '. Evidence: ' + record.evidence.join(', ')
+      + '. Resolve the captured commit with `git rev-parse --verify ' + v.head + '^{commit}` and its tree with `git rev-parse ' + v.head + '^{tree}`. Report sourceVerified true only when the resolved commit equals ' + v.head + ' and its tree equals ' + v.sourceTree + '; report landed false: this task has no Git landing.'
+      + ' Run `bd show <id> --json` once for every required bead: ' + required.join(', ') + '. Report each observed closed ID in closed and each observed non-closed ID in open. A failed/denied Git or tracker query, missing status, or unrecognized output must return an explicit error; unknown is never open or closed. Do not implement, review, merge, close beads, clean up, retry commands, or edit any file. ' + finalAnswerRule(true)
+  }
   return 'READ-ONLY recovery reconciliation in ' + integrationWorktree + '. Evidence: ' + record.evidence.join(', ')
     + '. Run `bash ' + codeSkill + '/scripts/already-merged ' + integrationBranch + ' ' + record.data.head
     + '` once to verify the exact persisted landing SHA, even when its task branch was deleted. Report landed true only on successful exit and literal true; literal false means a Git/ledger mismatch. Run `bd show <id> --json` once for every required bead: '
@@ -2773,7 +2874,7 @@ function makeScheduler(cap, hotFileCap, filesFor, onRaise = () => {}) {
 async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   // Identity and git facts are the coordinator's: re-stamp id/n/files/branch/base from `im` on
   // every agent result instead of trusting an echo.
-  const stamp = res => ({ ...res, id: im.id, n: im.n, files: im.files, branch: im.branch, base: im.base })
+  const stamp = res => ({ ...res, id: im.id, n: im.n, files: im.files, branch: im.branch, base: im.base, completionKind: im.completionKind || 'implementation' })
   // INVALID means the review never happened: one fresh re-dispatch, then BLOCKED with that cause.
   const validReview = async (build, key) => {
     let res = await dispatch(build, key, { label: key, phase: 'Implement', ...tier('reviewer'), schema: RESULT })
@@ -2791,6 +2892,11 @@ async function reviewAndFix(im, planPath, art, isCancelled = () => false) {
   // this round"; the next ready query re-surfaces the id and the idempotent workspace setup re-enters.
   const reviewRes = await validReview(() => taskReviewPrompt(im, planPath, art), `review:${im.id}`)
   if (!reviewRes) return null
+  if (im.completionKind === 'verification-only') {
+    const problem = verificationProblem(im, reviewRes)
+    if (problem) return { ...stamp(reviewRes), status: 'BLOCKED', finding: problem }
+    return { ...stamp(reviewRes), head: im.head, completionKind: 'verification-only', sourceTree: reviewRes.sourceTree, evidence: reviewRes.evidence, requiredLiveChecks: [...(im.requiredLiveChecks || []), ...(reviewRes.requiredLiveChecks || [])].filter((r, i, all) => all.findIndex(c => c.sourceTree === r.sourceTree && c.command === r.command && c.configuration === r.configuration) === i), status: 'CLEAN', minors: reviewRes.minors || [] }
+  }
   // A branch rebased after setup has a new base; the reviewer recomputed it, and the fix pass and the
   // merge (stacked --onto, seam check) use it from here.
   if (typeof reviewRes.base === 'string' && /^[0-9a-f]{7,40}$/.test(reviewRes.base) && im.base && !reviewRes.base.startsWith(im.base) && !im.base.startsWith(reviewRes.base)) {
