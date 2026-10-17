@@ -1166,6 +1166,14 @@ for (const b of beads.values()) {
     const implHead = at.agents.find(a => a.kind === 'impl')
     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
+    // Workflow verification uses the existing close-only label. Its CLOSED result
+    // settles tracker bookkeeping, not a previously merged branch.
+    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'
+      || at.agents.some(a => a.result?.completionKind === 'verification-only')
+    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly
+      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')
+      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))
+    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
     at.split = by('split')[0] ?? null
     at.blocker = by('blocker')
     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
@@ -1181,7 +1189,7 @@ for (const b of beads.values()) {
     const merges = at.agents.filter(a => a.kind === 'merge')
     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
-      ?? at.agents.filter(a => a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
   }
   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
   // lost) is bookkeeping, counted apart as a re-entry close.
@@ -1190,7 +1198,7 @@ for (const b of beads.values()) {
   // A prior ledger landing remains a fact even when this invocation only verifies it.
   // Without a timed merge, do not place that old landing at the verification chain end.
   b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)
-  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id)
+  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id) || b.attempts.some(at => at.verificationCompleted)
 }
 const landingOf = id => beads.get(id)?.final?.landing ?? null
 const landedBy = (d, t) => beads.get(d)?.attempts.map(at => at.landing).filter(x => x && x.end <= t + EPS).at(-1) ?? null
@@ -1290,6 +1298,7 @@ for (const b of beads.values()) {
   const first = at.lane[0]?.result
   b.firstTryMerged = first && typeof first.merged === 'boolean' ? first.merged : null
 }
+const verificationCompleted = new Set([...(ledger?.verified ?? []), ...[...beads.values()].filter(b => b.verificationOnlyCompleted).map(b => b.id)])
 const knownLandings = [...beads.values()].filter(b => b.landed)
 const landed = knownLandings.filter(b => b.final.landing) // Only timed landings enter the model.
 const lastLanding = latest(landed.map(b => b.final.landing))
@@ -1641,7 +1650,7 @@ const afterMs = Math.max(0, runEnd - graphEnd)
 const diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,
   dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }
 const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${ledger?.verified.size ? ` · verification-only ${ledger.verified.size}` : ''}`)
+lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${verificationCompleted.size ? ` · verification-only ${verificationCompleted.size}` : ''}`)
 const fan = shape.fanOut[0]
 lines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')
 lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)

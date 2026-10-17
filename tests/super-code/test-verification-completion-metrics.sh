@@ -57,5 +57,36 @@ class Metrics(unittest.TestCase):
     def test_earlier_real_merge_survives_verification(self): self.check_case('earlier-merge')
     def test_earlier_complete_survives_verification(self): self.check_case('earlier-complete')
 
+class WorkflowMetrics(unittest.TestCase):
+    def check_case(self, kind):
+        with tempfile.TemporaryDirectory() as tmp:
+            d=pathlib.Path(tmp)
+            agents=[dict(label='ledger-append:launch',start=0,end=1),
+                    dict(label='plan',start=1,end=2,result=dict(mapping=[dict(id='verify.1',n=1,deps=[])]))]
+            prior=kind=='prior-merge'
+            if prior:
+                agents += [dict(label='impl:verify.1',start=3,end=8,result=dict(status='IMPLEMENTED')),
+                           dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
+            agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
+                       dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
+                       dict(label='close-only:verify.1',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
+            sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
+            scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
+            subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
+            p=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True,text=True)
+            data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
+            self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
+            self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
+            self.assertEqual(data['lane']['merges'],int(prior))
+            self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
+            if kind!='pending': self.assertIn('verification-only 1',p.stdout)
+            else: self.assertNotIn('verification-only 1',p.stdout)
+            if not prior: self.assertIsNone(data['simulation'])
+            print('Workflow '+kind+': landing='+str(bead['landed'])+', verified='+str(bead['verificationOnlyCompleted']))
+
+    def test_workflow_verified_close(self): self.check_case('verified')
+    def test_workflow_pending_close_is_not_completed(self): self.check_case('pending')
+    def test_workflow_prior_merge_survives_verification(self): self.check_case('prior-merge')
+
 unittest.main(verbosity=2)
 TEST
