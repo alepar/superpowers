@@ -67,12 +67,20 @@ Keep the window full. The Workflow coordinator does these, and so do you:
 Three things keep the run measurable and resumable:
 
 - **Launch line.** Before the Launch line, run the same identity steps as `coordinator-workflow.md`
-  §Pre-flight (step 2's run-identity bullets): the `Context:` line, the runTag, and the marker guard —
-  register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register
+  §Pre-flight (step 2's run-identity bullets): the `Context:` line, the runTag, and the marker guard.
+  Mint `invocationId` as `inv-$(uuidgen)` for each new invocation; retain it across an explicit
+  unsettled resume only. A settled return (including blocked) followed by another invocation
+  gets a fresh token even with the same runTag. Use 1–128 ASCII letters, digits, `_` or `-`,
+  starting with a letter or digit. Do not copy the latest Launch identity just because runTag matches.
+  Register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register
   nor clear. Before the first task dispatch, append `Launch: mechanism ordinary-subagents ·
-  epic <id> · runTag <tag> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
+  epic <id> · runTag <tag> · invocationId <token> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
   earlyUnblock <on or off> · sweep <command or deferred> · mergeCheck <build-only command or none>`
-  to the ledger. Append another one when you resume.
+  to the ledger and confirm it was written before any review bundle output. Append another one
+  with the same identity on explicit unsettled resume. A failed write is an evidence gap: no review
+  assembly/writer dispatch; report review unavailable and `reviewPath: null`. `dispatch-text` reads
+  this persisted field for final assembly and single/cluster/seam/stub review modes; it refuses
+  a missing/unsafe identity or a `--invocation-id` differing from that launch.
 - **Ledger outcomes.** Write each task's `Task …` and `Merge: …` lines in `coordinator-workflow.md`'s
   formats as the task settles, and the `Detector:`, `Sweep:`, four `Metrics:` and `Final review:` lines at Finish.
   Resume reads them back, through `scripts/ledger-digest`, together with beads and git
@@ -93,6 +101,12 @@ Three things keep the run measurable and resumable:
   `<kind>_<bead id>[_<suffix>]` with every other character as `_` (`seam_review_ht_3bi_3_4`), and
   append `__2`, `__3`, … when a name repeats.
 
+Keep each settled bundle immutable: `<workspace>/final-review-<invocationId>.md`, its direct-input
+`.diff`, `final-review-<invocationId>.cluster-<n>.md`, and
+`assembled/final-review-<invocationId>-final/`. Review dispatch files also include the token.
+`runTag` still groups the enclosing run and processes. `reviewPath` points only to this invocation’s
+written final review (single, seam or stub); no landed work or an unavailable writer leaves null.
+
 Final review: window = `config.contextWindows.finalReview` (from `context-preflight --json`), else
 `FINAL_REVIEW_FALLBACK_WINDOW` in coordinator.js (258K on Codex, 200K on Claude Code); threshold 40%.
 During the existing Finish Git inspection, capture `reviewHead` with
@@ -109,7 +123,7 @@ per fitting cluster (concurrently) then `--mode seam --reviewed <ordinals with a
 <file>`; on a null seam review, `--mode stub --reviewed … --unreviewed <file listing every unreviewed
 entry plus seam>`. Route exactly as `coordinator-workflow.md` §Finish says, and write
 the same `Final review:` ledger line. Read the result through `report-verdict
-<workspace>/final-review-<runTag>.md`.
+<workspace>/final-review-<invocationId>.md`.
 
 At Finish, run the worktree/process sweep from `coordinator-workflow.md` §Finish and return
 `worktreesKept` (resource paths and reasons, including temp roots) and `processSweep` arrays

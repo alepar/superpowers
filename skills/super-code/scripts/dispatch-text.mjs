@@ -47,7 +47,8 @@ kinds and options:
 common options:
   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
   --test-paths P1,P2   config.testPaths, when the run set one
-  --run-tag T          names the assembled-input directories (default: the Launch: line's runTag, else the epic)
+  --run-tag T          groups the enclosing run (default: the Launch: line's runTag, else the epic)
+  --invocation-id I     must match the persisted Launch invocationId for review output
   --epic, --branch, --worktree, --merge-check   override the Launch: line`
 
 const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help'])
@@ -75,7 +76,7 @@ function launchFrom(ledgerText) {
   if (line.startsWith('args ')) {
     try {
       const a = JSON.parse(line.slice(5))
-      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths, reviewBase: a.reviewBase, reviewHead: a.reviewHead }
+      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, invocationId: a.invocationId, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths, reviewBase: a.reviewBase, reviewHead: a.reviewHead }
     } catch { return {} }
   }
   const f = {}
@@ -83,7 +84,7 @@ function launchFrom(ledgerText) {
     const m = part.match(/^(\S+)\s+(.*)$/)
     if (m) f[m[1]] = m[2].trim()
   }
-  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, mergeCheck: f.mergeCheck, sweep: f.sweep, reviewBase: f.reviewBase, reviewHead: f.reviewHead }
+  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, invocationId: f.invocationId, mergeCheck: f.mergeCheck, sweep: f.sweep, reviewBase: f.reviewBase, reviewHead: f.reviewHead }
 }
 
 // The ledger's last `Sweep: ` line (text after the prefix) and the last four `Metrics: ` lines (the
@@ -117,10 +118,14 @@ const mergeCheck = o['merge-check'] ?? L.mergeCheck
 const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
 const ws = dirname(resolve(o.ledger))
 const runTag = o['run-tag'] || L.runTag || epic
+const invocationId = L.invocationId
+const reviewOutput = kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
+if (reviewOutput && (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId))) fail('review output needs a persisted filesystem-safe Launch invocationId')
+if (o['invocation-id'] !== undefined && o['invocation-id'] !== invocationId) fail('--invocation-id must match the persisted Launch invocationId')
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 
 const B = await loadBuilders({
-  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, dryRun: false,
+  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, ...(reviewOutput ? { invocationId } : {}), dryRun: false,
   config: { mergeCheck: mergeCheck && !/^none\b/.test(mergeCheck) ? mergeCheck : 'none', ...(testPaths ? { testPaths } : {}) },
 })
 
@@ -201,7 +206,7 @@ switch (kind) {
     if (['final-review', 'roast-code'].includes(o.consumer) && (!opts.base || !opts.head)) fail('assemble needs captured --base and --head (or Launch reviewBase/reviewHead)')
     if (['final-review', 'roast-code'].includes(o.consumer)) { commitId(opts.base); commitId(opts.head) }
     text = B.assemblePrompt(o.consumer, o.instance, opts)
-    label = `assemble-${o.consumer}-${o.instance}`
+    label = `assemble-${o.consumer}-${o.consumer === 'final-review' ? invocationId + '-' : ''}${o.instance}`
     break
   }
   case 'final-review': {
@@ -209,8 +214,8 @@ switch (kind) {
     if (!['single', 'cluster', 'seam', 'stub'].includes(o.mode)) fail('--mode is single, cluster, seam or stub')
     const source = { base: o.base || L.reviewBase, head: o.head || L.reviewHead }
     if (o.mode !== 'stub' && source.base && source.head) { commitId(source.base); commitId(source.head) }
-    const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}.md`
-    const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${runTag}-cluster-${n}.md`
+    const reviewPath = `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${invocationId}.md`
+    const clusterPath = n => `${worktree}/.superpowers/sdd/${epic}-plan/final-review-${invocationId}.cluster-${n}.md`
     const posInt = k => { if (!/^[1-9]\d*$/.test(String(o[k]))) fail(`--${k} is a positive integer`); return Number(o[k]) }
     // --reviewed N1,N2|none: the cluster ordinals whose review returned a verdict, in the order given.
     const reviewedPaths = () => {
@@ -226,23 +231,23 @@ switch (kind) {
         : lastSweep(ledgerText) ?? (L.sweep === 'deferred' ? B.SWEEP_DEFERRED : null)
       const metrics = o.metrics ? readLines('metrics') : lastMetrics(ledgerText)
       text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, reviewPath, base: source.base, head: source.head })
-      label = 'final-review-single'
+      label = `final-review-${invocationId}-single`
     } else if (o.mode === 'cluster') {
       need('dir', 'cluster', 'name')
       if (!source.base || !source.head) fail('final-review needs captured --base and --head (or Launch reviewBase/reviewHead)')
       const n = posInt('cluster')
       text = B.finalClusterReviewPrompt(n, o.name, o.dir, clusterPath(n), epic, branch, worktree, source)
-      label = `final-review-cluster-${n}`
+      label = `final-review-${invocationId}-cluster-${n}`
     } else if (o.mode === 'seam') {
       need('dir')
       const paths = reviewedPaths()
       if (!source.base || !source.head) fail('final-review needs captured --base and --head (or Launch reviewBase/reviewHead)')
       text = B.finalSeamReviewPrompt(o.dir, paths, reviewPath, epic, branch, worktree, o.unreviewed ? readLines('unreviewed') : [], source)
-      label = 'final-review-seam'
+      label = `final-review-${invocationId}-seam`
     } else {
       need('unreviewed')
       text = B.finalReviewStubPrompt(reviewedPaths(), readLines('unreviewed'), reviewPath)
-      label = 'final-review-stub'
+      label = `final-review-${invocationId}-stub`
     }
     break
   }

@@ -274,6 +274,7 @@ const SKILLS = '/abs/superpowers/skills'
 function liveArgs(overrides = {}) {
   return {
     epicId: EPIC,
+    invocationId: EPIC,
     integrationBranch: BRANCH,
     skillsRoot: SKILLS,
     dryRun: false,
@@ -1156,9 +1157,9 @@ async function main() {
       check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review:cluster:1', 'final-review:cluster:2', 'final-review:seam']), 'clusters then seam; no single review', JSON.stringify(frLabels(out)))
       check(out.trace.length === 24, `24 agent dispatches (got ${out.trace.length})`)
       check(frLedger(out) === 'Final review: split (inputs 300K > 40% of 200K) · clusters 2', 'split ledger line', frLedger(out))
-      check(promptOf(out.trace, 'final-review:cluster:2')?.includes(`final-review-${EPIC}-cluster-2.md`) && promptOf(out.trace, 'final-review:cluster:2')?.includes('beta'), 'cluster 2 writes its own file and names beta')
+      check(promptOf(out.trace, 'final-review:cluster:2')?.includes(`final-review-${EPIC}.cluster-2.md`) && promptOf(out.trace, 'final-review:cluster:2')?.includes('beta'), 'cluster 2 writes its own file and names beta')
       const seam = promptOf(out.trace, 'final-review:seam') ?? ''
-      check(seam.includes(`final-review-${EPIC}-cluster-1.md`) && seam.includes(`final-review-${EPIC}-cluster-2.md`) && seam.includes(REVIEW_PATH), 'the seam reviewer gets both cluster files and writes the handoff file')
+      check(seam.includes(`final-review-${EPIC}.cluster-1.md`) && seam.includes(`final-review-${EPIC}.cluster-2.md`) && seam.includes(REVIEW_PATH), 'the seam reviewer gets both cluster files and writes the handoff file')
       check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'review is the seam verdict; reviewPath is the handoff file', JSON.stringify([out.result?.review, out.result?.reviewPath]))
     }
 
@@ -1259,6 +1260,17 @@ async function main() {
       check(out.result?.review === 'not ready (unreviewed: seam)' && out.result?.reviewPath === null, 'review is not ready; no file was written, so reviewPath is null', JSON.stringify([out.result?.review, out.result?.reviewPath]))
     }
 
+    scenario('final review: a failed stub writer leaves reviewPath null')
+    {
+      const out = await run({ args: liveArgs({ invocationId: 'inv-failed-writer' }), canned: oneTaskCanned({
+        'assemble:final': asmOf(SPLIT),
+        'final-review:cluster:1': { verdict: 'ready', path: 'c1' }, 'final-review:cluster:2': { verdict: 'ready', path: 'c2' },
+        'final-review:seam': null, 'final-review:stub': { written: false },
+      }) })
+      assertNoThrow(out)
+      check(out.result?.reviewPath === null && out.result?.review.includes('unreviewed: seam'), 'a writer reporting written false cannot authorize a final-review path', out.result?.reviewPath)
+    }
+
     scenario('final review: an oversized cluster is not dispatched and is unreviewed')
     {
       const out = await run({ args: liveArgs(), canned: oneTaskCanned({
@@ -1277,6 +1289,71 @@ async function main() {
       assertNoThrow(out)
       check(!out.counts['assemble:final'] && !out.counts['final-review'] && out.result?.review === 'no work landed' && out.result?.reviewPath === null, 'nothing dispatched; reviewPath null', JSON.stringify([out.result?.review, out.result?.reviewPath]))
       check(frLedger(out) === null, 'no Final review: line')
+    }
+  }
+
+  scenario('invocation review bundles: shared runTag, split/stub retention and explicit resume')
+  {
+    const temp = mkdtempSync(path.join(os.tmpdir(), 'invocation-bundles-'))
+    try {
+      const ws = `${temp}/.superpowers/sdd/${EPIC}-plan`
+      const bundles = []
+      for (const [invocationId, split] of [['inv-first', false], ['inv-second', true]]) {
+        const out = await run({ args: liveArgs({ integrationWorktree: temp, runTag: 'shared-run', invocationId }), canned: oneTaskCanned({
+          'plan': { planPath: `${ws}/${EPIC}-plan.md`, mapping: [{ n: 1, id: 'bd-101', files: ['src/a.js'] }] },
+          'assemble:final': { dir: `${ws}/assembled/final-review-${invocationId}-final`, exit: 0,
+            fits: split ? 'fits: no (300000 of 80000)' : 'fits: yes (12000 of 80000)',
+            clusterFits: split ? ['cluster-fits: alpha yes (60000 of 80000)'] : [], clusters: split ? 1 : 0 },
+          'final-review:cluster:1': { verdict: 'ready', path: 'cluster' },
+          'final-review:seam': null,
+          'final-review:stub': { written: true, path: `${ws}/final-review-${invocationId}.md` },
+        }) })
+        assertNoThrow(out)
+        const launchCall = out.trace.find(t => t.label === 'ledger-append:launch')
+        check(launchCall?.opts.schema?.required?.includes('appended'), 'launch acknowledgment is requested as structured output from the runtime', JSON.stringify(launchCall?.opts.schema))
+        check(launchCall?.prompt.endsWith('FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it.'), 'launch append asks its writer for the structured acknowledgment it consumes')
+        const launch = extractLedgerLine(promptOf(out.trace, 'ledger-append:launch'))
+        check(launch?.includes(`"invocationId":"${invocationId}"`), 'launch persists the invocation identity before any bundle output', launch)
+        check(out.result?.reviewPath === `${ws}/final-review-${invocationId}.md`, `${invocationId}: final path belongs to this invocation`, out.result?.reviewPath)
+        const assembly = promptOf(out.trace, 'assemble:final')?.match(/\[OUT_DIR\] = ([^;]+);/)?.[1]
+        check(assembly === `${ws}/assembled/final-review-${invocationId}-final`, `${invocationId}: assembly directory belongs to this invocation`, assembly)
+        const cluster = split ? promptOf(out.trace, 'final-review:cluster:1')?.match(/declared review artifact is (\S+?\.md)/)?.[1] : null
+        if (split) {
+          check(cluster === `${ws}/final-review-inv-second.cluster-1.md`, 'split cluster has invocation identity', cluster)
+          for (const label of ['final-review:seam', 'final-review:stub']) check(promptOf(out.trace, label)?.includes(`${ws}/final-review-inv-second.md`), `${label}: uses this invocation final path`)
+        }
+        // Materialize the paths actually emitted by the coordinator: a shared path overwrites the
+        // first bundle and fails the contents check, even if the returned verdict looks correct.
+        const files = [out.result?.reviewPath, assembly && `${assembly}/digest.md`, cluster].filter(Boolean)
+        for (const file of files) { mkdirSync(path.dirname(file), { recursive: true }); writeFileSync(file, invocationId) }
+        bundles.push(files)
+      }
+      check(bundles[0].every(file => readFileSync(file, 'utf8') === 'inv-first'), 'second invocation leaves the earlier synthetic bundle unchanged')
+      check(!bundles[1].some(file => bundles[0].includes(file)), 'single and split bundles have disjoint paths')
+      const resumed = await run({ args: liveArgs({ runTag: 'shared-run', invocationId: 'inv-first' }), canned: oneTaskCanned({
+        'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}' },
+      }) })
+      assertNoThrow(resumed)
+      check(resumed.result?.reviewPath === `${FR_WS}/final-review-inv-first.md`, 'explicitly resumed invocation reuses its recorded identity', resumed.result?.reviewPath)
+      const freshArgs = liveArgs({ runTag: 'shared-run', invocationId: undefined })
+      const fresh = await run({ args: freshArgs, canned: oneTaskCanned({ 'read-ledger': { text: 'Launch: args {"runTag":"shared-run","invocationId":"inv-first"}' } }) })
+      const freshLaunch = extractLedgerLine(promptOf(fresh.trace, 'ledger-append:launch'))
+      const minted = freshLaunch?.startsWith('Launch: args ') ? JSON.parse(freshLaunch.slice(13)).invocationId : null
+      check(typeof minted === 'string' && minted !== 'inv-first' && minted !== 'shared-run', 'fresh invocation mints its own token instead of copying the last launch', freshLaunch)
+    } finally { rmSync(temp, { recursive: true, force: true }) }
+  }
+
+  scenario('invocation identity persistence gaps and unsafe tokens never create review artifacts')
+  {
+    for (const reply of [null, { appended: false }]) {
+      const out = await run({ args: liveArgs({ invocationId: 'inv-gap' }), canned: oneTaskCanned({ 'ledger-append:launch': reply, 'ledger-append:launch:retry': reply }) })
+      assertNoThrow(out)
+      check(!out.counts['assemble:final'] && !out.counts['final-review'] && out.result?.reviewPath === null, 'unconfirmed identity persistence suppresses assembly and final review', JSON.stringify(out.result))
+      check(out.result?.review?.includes('invocation identity'), 'persistence gap is explicit in the unavailable review', out.result?.review)
+    }
+    for (const invocationId of ['../escape', 'a/b', '', 'a b']) {
+      const out = await run({ args: liveArgs({ invocationId }), canned: oneTaskCanned() })
+      check(!!out.error && out.trace.length === 0, `unsafe invocation token ${JSON.stringify(invocationId)} fails before dispatch`, out.error?.message)
     }
   }
 

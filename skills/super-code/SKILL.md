@@ -39,7 +39,9 @@ stop (`ready-unavailable`, `plan-unavailable`, `dispatch-unavailable`), relaunch
 '<copy>/coordinator.js', args})` — the scratchpad copy you launched, since the Workflow tool refuses
 the plugin-cache path (`./coordinator-workflow.md` Pre-flight step 4) — with `resumeFromRunId` and the ledger's `Launch:`
 args) without asking. The ledger and `bd ready` carry the recovery; `resumeFromRunId` only replays
-calls made before the first concurrent fan-out. Other copies of this rule are pointers here.
+calls made before the first concurrent fan-out. Reuse `invocationId` only for this unsettled
+resume. A new invocation after a settled return, including a blocked return, gets a fresh token
+even within the same `runTag`. Other copies of this rule are pointers here.
 Outage stops in a row, with nothing landed between them, back off: relaunch the first at once, wait
 5 minutes before the second relaunch and 15 before the third; the fourth is a hard stop.
 
@@ -131,6 +133,7 @@ A caller supplies these — none are inferable from the repo:
 | who owns the finish | **state it explicitly if the caller owns it.** There is no config flag. Left unsaid, this skill runs its own Finish: it merges the integration branch and deletes the worktree — taking the ledger and the per-task reports with it, which is where a caller's report gets its sources |
 | `config.models`, `config.efforts`, `config.concurrency`, `config.runtimeSlots`, `config.hotFileCap`, `config.topUpQueryCap`, `config.edgeAuditCap`, `config.earlyUnblock`, `config.edgeCuts` | optional; see Model tiering and Parallelism below for what they default to and why an explicit map is preferred. Pre-flight resolves `config.runtimeSlots` (the runtime's `min(16, cores-2)` agent slots) |
 | `runTag` | optional: the run's tag. `super-auto` passes its own; a standalone pre-flight mints it (`./coordinator-workflow.md`'s "Coordinator contract") |
+| `invocationId` | filesystem-safe token owning one review bundle, persisted in `Launch:` before any review output. Mint `inv-$(uuidgen)` at each new invocation; copy the recorded token only for explicit resume of an unsettled invocation. The Workflow script mints when omitted; ordinary dispatch requires the persisted launch field. Keep `runTag` for the enclosing run. |
 | `config.contextWindows` | optional: from `context-preflight --json` at pre-flight; the final review reads `finalReview` |
 | `config.sweep` | optional: the exact full-suite command Finish runs once against the integration tip, envelope included (`nice`, thread caps — whatever `AGENTS.md` requires of every command). Undeclared, pre-flight resolves the project's full test command into it, so the `Launch:` line records it. The sweep always runs when work landed (`./coordinator-workflow.md`'s "Finish"). There is no per-merge gate; a `config.gate` is ignored with a log line |
 | `config.mergeCheck` | optional: the exact BUILD-ONLY command (compile/typecheck, envelope included — `cargo check --all-targets`, `tsc --noEmit`, `go build ./...`) the merge agent runs on the merged tree at every serial merge. **Never a test command.** Undeclared, pre-flight resolves the project's build/typecheck step into it, or `'none'` when the project has none (then no check runs); the `Launch:` line records which. It covers every build configuration the CI matrix compiles (Cargo: at least default features and `--all-features`), since one configuration alone misses breaks in the others. A failing check gets one merge-check fix (the task's one seam fix) and a scoped review of it, then re-runs; still failing → the blocker path |
@@ -164,7 +167,7 @@ tasks quarantined because the harness permission layer refused their commands (a
 sweep's one-line result, starting with the tip SHA it measured, whenever work landed
 (`MEASUREMENT INVALID: …`, `SWEEP UNAVAILABLE …` or `SWEEP DEFERRED (caller-owned)` mean the branch
 is unmeasured here, not green) —
-**`reviewPath`** — the absolute path of the full final-review file `<workspace>/final-review-<runTag>.md`,
+**`reviewPath`** — the absolute path of the full final-review file `<workspace>/final-review-<invocationId>.md`,
 non-null only when that file was written (null when no work landed or the final review returned null);
 `review` is that review's one verdict line (`ready`, `not ready (…)`, `no work landed`, or
 `FINAL REVIEW UNAVAILABLE …`), never its body — read the file through `scripts/report-verdict` —
@@ -180,6 +183,10 @@ recurring blocker); and **`metrics`**, an array of exactly four `Metrics:` ledge
 check-failure counts; completion kinds, with early dispatches and cancellations; fix-pass outcomes; and a ledger-check cross-checking the merge count
 against `completed.size`), written unconditionally at Finish, before the final review
 (`./coordinator-workflow.md`'s "Finish").
+
+Review bundle output requires confirmed launch persistence (`appended: true`); a failed identity
+write leaves an explicit review gap and `reviewPath: null`. Retain settled final, cluster, `.diff`
+and assembled artifacts under their original invocation identity.
 
 ## Worktree topology
 
