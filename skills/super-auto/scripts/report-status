@@ -210,6 +210,18 @@ let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed col
 for(const previous of latest.values()){
  const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
  const gap=m=>{if(!problems.includes(m))problems.push(m)};
+ // lstat on a leaf alone follows earlier directory symlinks. Validate the full
+ // source path before enumeration, manifest reads, hashing or extraction.
+ function source(relative){
+  const unsafe=()=>{gap('unsafe bundle path: '+relative);throw Error('unsafe bundle path')};
+  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))unsafe();
+  let full=r.workspace;
+  if(fs.lstatSync(full).isSymbolicLink())unsafe();
+  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())unsafe()}
+  const resolved=path.relative(fs.realpathSync(r.workspace),fs.realpathSync(full));
+  if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))unsafe();
+  return full;
+ }
  if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
  else if(r.reviewPath===null&&!hasBundle(r,id)){if(r.review!=='no work landed')gap('required review is null; owner: orchestrator; recover whole-epic review')}
  else{
@@ -217,20 +229,20 @@ for(const previous of latest.values()){
   if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
   else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
   const files=new Set(r.required);
-  function walk(relative){const full=path.join(r.workspace,relative);try{const st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
+  function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
   files.add(prefix+'.md');
-  try{for(const name of fs.readdirSync(r.workspace).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
+  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
   const assembled=path.join('assembled',prefix+'-final');
-  if(fs.existsSync(path.join(r.workspace,assembled)))walk(assembled);
+  try{source(assembled);walk(assembled)}catch{}
   const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
-  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(path.join(r.workspace,assembled,'clusters.json'),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
+  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
   // A completed archive remains usable after the source worktree is intentionally removed.
   if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
   const manifests=[];
   for(const rel of [...files].sort()){
    if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
    const src=path.join(r.workspace,rel),dst=path.join(archive,rel),saved=previous.files?.find(f=>f.path===rel);
-   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(src).isFile()||fs.lstatSync(src).isSymbolicLink())throw Error();srcHash=hash(src)}catch{}
+   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
    try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
    if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
     const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
