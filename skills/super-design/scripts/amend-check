@@ -9,10 +9,11 @@
 # the working tree, so the check runs before anything is committed.
 #
 # Owns: the record grammar and the rules a record must pass. A field header is a line at column 0
-# (`owners:`, `amended:`, `work:`, `unchanged:`); its items are the `- ` lines that follow.
+# (`owners:`, `amended:`, `work:`, `supersedes:`, `unchanged:`); its items are the `- ` lines that follow.
 #   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason>   (arrow ` → ` or ` -> `)
 #   amended:   - <spec> §<section>        (`amended: none` inline lists no section)
 #   work:      - <title> | <description> | <files> | covers: <key>, <key>
+#   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none` or absent lists nothing)
 #   unchanged: - <bullet>
 # Keys are canonical `[SEV] <location>` (a leading `rN ` is stripped everywhere; `; ` multi-location
 # keys are kept whole). Open ledger rows are those with status `open` or `open (returned rN)`, roast
@@ -24,6 +25,8 @@
 #   reverse   every non-disputed open key is in some work: covers:; under --loop design a key that
 #             is `owner:` a section listed in amended: also passes (a `local` key still needs a work:
 #             line); under --loop code it does not, since only a bead changes code
+#   supersedes under --loop code any item rejects; under --loop design each item is `<id> -> <title>`
+#             (id a single `[A-Za-z0-9._-]+` token) and its title equals a work: line title
 #   amended   every `<spec> §<section>` in amended: has a changed line inside that section in
 #             `git diff REV -- SPECS`
 #   goal      the `## Goal` body text (fence-aware) is identical between REV and the working tree,
@@ -151,9 +154,17 @@ awk -v dir="$tmp" '
     addkey(title, c)
     if (nk == 0) print title "\t" >> (dir "/work.txt")
   }
+  function supersede(item,   p1, p2, p, l, id, title) {
+    p1 = index(item, " → "); p2 = index(item, " -> ")
+    if (p1 == 0 && p2 == 0) { reject("supersedes: malformed line: " item); return }
+    if (p2 == 0 || (p1 > 0 && p1 < p2)) { p = p1; l = length(" → ") } else { p = p2; l = 4 }
+    id = trim(substr(item, 1, p - 1)); title = trim(substr(item, p + l))
+    if (id !~ /^[A-Za-z0-9._-]+$/ || title == "") { reject("supersedes: malformed line: " item); return }
+    print id "\t" title >> (dir "/supersedes.txt")
+  }
   function addkey(title, k) { k = stripr(k); if (k == "" || tolower(k) == "none") return; nk++; print title "\t" k >> (dir "/work.txt") }
   { sub(/\r$/, "") }
-  /^(owners|amended|work|unchanged):/ {
+  /^(owners|amended|work|unchanged|supersedes):/ {
     field = $0; sub(/:.*/, "", field)
     rest = $0; sub(/^[a-z]+:[ \t]*/, "", rest); rest = trim(rest)
     if (field == "amended" && rest != "" && tolower(rest) != "none" && secsplit(rest, "amended")) print spec "\t" sec >> (dir "/amended.txt")
@@ -164,10 +175,11 @@ awk -v dir="$tmp" '
     item = $0; sub(/^[ \t]*- /, "", item); item = trim(item)
     if (field == "owners") owner(item)
     else if (field == "work") work(item)
+    else if (field == "supersedes") supersede(item)
     else if (field == "amended") { if (secsplit(item, "amended")) print spec "\t" sec >> (dir "/amended.txt") }
   }
 ' "$amend"
-for f in owners.txt amended.txt work.txt rejects.parse; do [ -f "$tmp/$f" ] || : > "$tmp/$f"; done
+for f in owners.txt amended.txt work.txt supersedes.txt rejects.parse; do [ -f "$tmp/$f" ] || : > "$tmp/$f"; done
 
 # --- checks 1-3: owners both ways, work covers, reverse rule ---
 awk -F'\t' -v loop="$loop" -v dir="$tmp" '
@@ -188,6 +200,15 @@ awk -F'\t' -v loop="$loop" -v dir="$tmp" '
     }
   }
 ' "$tmp/open.txt" "$tmp/owners.txt" "$tmp/amended.txt" "$tmp/work.txt"
+
+# --- check 3b: supersedes: lines (code loop supersedes nothing; design titles match a work: line) ---
+awk -F'\t' -v loop="$loop" -v dir="$tmp" '
+  FILENAME == ARGV[1] { wt[$1] = 1; next }
+  {
+    if (loop == "code") print "reject: supersedes: code loop supersedes nothing: " $1 >> (dir "/rejects")
+    else if (!($2 in wt)) print "reject: supersedes: no work: line titled: " $2 >> (dir "/rejects")
+  }
+' "$tmp/work.txt" "$tmp/supersedes.txt"
 
 # --- section helpers ---
 # ranges FILE TEXT [LEVEL]: "start-end" per heading whose text equals TEXT; a section runs to the next

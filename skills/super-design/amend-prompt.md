@@ -68,6 +68,10 @@ Task tool (general-purpose), model: opus:
     a short description naming the boundaries it owns and consumes, a files hint, and the keys
     it covers.
 
+    `[LOOP]` = `design` only: list each open bead in the task-tree dump whose decision your
+    amendment replaces, with the `work:` title that replaces it, in `supersedes:`. `[LOOP]` =
+    `code`: write `supersedes: none`.
+
     ## Coverage rule (amend-check enforces it)
     - Every open key appears in `owners:`, and every `owners:` key is an open ledger key.
     - Every non-disputed open key appears in some `work:` line's `covers:`:
@@ -77,6 +81,8 @@ Task tool (general-purpose), model: opus:
         `local` key still needs a `work:` line.
     - Every `work:` line covers at least one key. `covers:` is the last `|` field of the line,
       keys separated by `, `.
+    - `[LOOP]` = `code`: `supersedes:` lists nothing. `[LOOP]` = `design`: each `supersedes:` item
+      is `<old bead id> → <title>` (the id one token), and its title equals a `work:` line's title.
     - Every section listed in `amended:` has at least one changed line in the spec diff.
     - No change inside any `## Goal` section; `## Unchanged behavior` exists.
 
@@ -90,11 +96,13 @@ Task tool (general-purpose), model: opus:
     - <spec path> §<section heading text>
     work:
     - <title> | <short description naming the owned and consumed boundaries> | <files hint> | covers: <key>, <key>
+    supersedes:
+    - <old bead id> → <work: title that replaces it>
     unchanged:
     - <bullet>
 
     Use `amended: none` when no section changed. Keys are copied verbatim from the ledger rows,
-    without any `rN ` prefix.
+    without any `rN ` prefix. `supersedes: none` (or no `supersedes:` field) lists nothing.
 
     FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it. Return the amend record path.
 ```
