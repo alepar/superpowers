@@ -1,0 +1,12 @@
+test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer) ... ok
+test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe) ... ok
+test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure) ... ok
+test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer) ... ok
+test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe) ... ok
+test_valid_empty_acceptance_consumer (__main__.ProjectionOutput.test_valid_empty_acceptance_consumer) ... ok
+test_valid_empty_projection_pipe (__main__.ProjectionOutput.test_valid_empty_projection_pipe) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.253s
+
+OK

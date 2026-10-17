@@ -1,0 +1,200 @@
+{
+  "producer": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "ledger": "# findings ledger \u2014 code \u2014 through r2\ntriggers: no-progress(r1 Blocking keys all re-confirmed in r2: 1)\nblocking: r1=2 r2=1 carriedB=2 regressedB=0 degraded=none not-computable=none\nignored-overrides: 0\n- [Blocking] src/a.sh:10 \u00b7 raised r1@3f9c2e1 \u00b7 disputed@r1 (premise wrong) \u00b7 source roast \u00b7 text /tmp/ufz-postcap-controller/probe-panel0-reproduce/r2.md\n- [Blocking] src/b.sh:5 \u00b7 raised r1@3f9c2e1 \u00b7 open \u00b7 source roast \u00b7 text /tmp/ufz-postcap-controller/probe-panel0-reproduce/r2.md\n",
+  "emptyExtraction": {
+    "exit": 0,
+    "stdout": "{\"version\":1,\"source\":\"inv-a/final\",\"artifact\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/final.md\",\"kind\":\"final-review\",\"verdict\":\"ready\",\"occurrences\":[]}\n",
+    "stderr": ""
+  },
+  "roastExtraction": {
+    "exit": 0,
+    "stdout": "{\"version\":1,\"source\":\"roast-code/round-1\",\"artifact\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/r1.md\",\"kind\":\"roast\",\"verdict\":\"Blocking (2 confirmed)\",\"occurrences\":[{\"section\":\"Confirmed findings\",\"position\":1,\"key\":\"[Blocking] src/a.sh:10\",\"text\":\"[Blocking] src/a.sh:10 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"},{\"section\":\"Confirmed findings\",\"position\":2,\"key\":\"[Blocking] src/b.sh:5\",\"text\":\"[Blocking] src/b.sh:5 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"}]}\n",
+    "stderr": ""
+  },
+  "results": {
+    "no-ledger": {
+      "head": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "base": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "code-ledger": {
+      "head": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "base": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "design-ledger": {
+      "head": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "base": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 0,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "retained-roast": {
+      "head": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: outstanding findings: 2, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]; finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":2}]]\nqualifier: outstanding findings: 2\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]; finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":2}]\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 3,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding acceptance relevance unproven: [{\\\"source\\\":\\\"roast-code/round-1\\\",\\\"section\\\":\\\"Confirmed findings\\\",\\\"position\\\":1}]\",\"finding acceptance relevance unproven: [{\\\"source\\\":\\\"roast-code/round-1\\\",\\\"section\\\":\\\"Confirmed findings\\\",\\\"position\\\":2}]\"],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [\n    {\n      \"ref\": {\n        \"source\": \"roast-code/round-1\",\n        \"section\": \"Confirmed findings\",\n        \"position\": 1\n      },\n      \"occurrences\": [\n        {\n          \"source\": \"roast-code/round-1\",\n          \"artifact\": \"r1.md\",\n          \"section\": \"Confirmed findings\",\n          \"position\": 1,\n          \"key\": \"[Blocking] src/a.sh:10\",\n          \"text\": \"[Blocking] src/a.sh:10 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"\n        }\n      ],\n      \"artifacts\": [\n        \"r1.md\"\n      ],\n      \"variants\": [],\n      \"links\": [],\n      \"routes\": [],\n      \"dispositions\": [],\n      \"outstanding\": true,\n      \"deferred\": false\n    },\n    {\n      \"ref\": {\n        \"source\": \"roast-code/round-1\",\n        \"section\": \"Confirmed findings\",\n        \"position\": 2\n      },\n      \"occurrences\": [\n        {\n          \"source\": \"roast-code/round-1\",\n          \"artifact\": \"r1.md\",\n          \"section\": \"Confirmed findings\",\n          \"position\": 2,\n          \"key\": \"[Blocking] src/b.sh:5\",\n          \"text\": \"[Blocking] src/b.sh:5 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"\n        }\n      ],\n      \"artifacts\": [\n        \"r1.md\"\n      ],\n      \"variants\": [],\n      \"links\": [],\n      \"routes\": [],\n      \"dispositions\": [],\n      \"outstanding\": true,\n      \"deferred\": false\n    }\n  ],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 2,\n    \"sourceKinds\": [\n      \"final-review\",\n      \"roast\"\n    ],\n    \"occurrences\": 2,\n    \"occurrenceGroups\": 2,\n    \"findings\": 2,\n    \"otherSectionGroups\": 0,\n    \"sections\": [\n      \"Confirmed findings\"\n    ],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 2,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "base": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean [degraded: outstanding findings: 2, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]; finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":2}]]\nqualifier: outstanding findings: 2\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]; finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":2}]\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 3,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding acceptance relevance unproven: [{\\\"source\\\":\\\"roast-code/round-1\\\",\\\"section\\\":\\\"Confirmed findings\\\",\\\"position\\\":1}]\",\"finding acceptance relevance unproven: [{\\\"source\\\":\\\"roast-code/round-1\\\",\\\"section\\\":\\\"Confirmed findings\\\",\\\"position\\\":2}]\"],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [\n    {\n      \"ref\": {\n        \"source\": \"roast-code/round-1\",\n        \"section\": \"Confirmed findings\",\n        \"position\": 1\n      },\n      \"occurrences\": [\n        {\n          \"source\": \"roast-code/round-1\",\n          \"artifact\": \"r1.md\",\n          \"section\": \"Confirmed findings\",\n          \"position\": 1,\n          \"key\": \"[Blocking] src/a.sh:10\",\n          \"text\": \"[Blocking] src/a.sh:10 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"\n        }\n      ],\n      \"artifacts\": [\n        \"r1.md\"\n      ],\n      \"variants\": [],\n      \"links\": [],\n      \"routes\": [],\n      \"dispositions\": [],\n      \"outstanding\": true,\n      \"deferred\": false\n    },\n    {\n      \"ref\": {\n        \"source\": \"roast-code/round-1\",\n        \"section\": \"Confirmed findings\",\n        \"position\": 2\n      },\n      \"occurrences\": [\n        {\n          \"source\": \"roast-code/round-1\",\n          \"artifact\": \"r1.md\",\n          \"section\": \"Confirmed findings\",\n          \"position\": 2,\n          \"key\": \"[Blocking] src/b.sh:5\",\n          \"text\": \"[Blocking] src/b.sh:5 \u2014 finding text for this entry\\n  verdict: confirmed (reproduce \u2713 / refute \u2713 / ground \u2713)\"\n        }\n      ],\n      \"artifacts\": [\n        \"r1.md\"\n      ],\n      \"variants\": [],\n      \"links\": [],\n      \"routes\": [],\n      \"dispositions\": [],\n      \"outstanding\": true,\n      \"deferred\": false\n    }\n  ],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 2,\n    \"sourceKinds\": [\n      \"final-review\",\n      \"roast\"\n    ],\n    \"occurrences\": 2,\n    \"occurrenceGroups\": 2,\n    \"findings\": 2,\n    \"otherSectionGroups\": 0,\n    \"sections\": [\n      \"Confirmed findings\"\n    ],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 2,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "no-sources": {
+      "head": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: root acceptance pending: finding evidence: {\"origin\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}]\nqualifier: root acceptance pending: finding evidence: {\"origin\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 3,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\"],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 3,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [\n    {\n      \"origin\": \"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\n      \"message\": \"no retained source extraction; finding coverage is unknown\"\n    }\n  ],\n  \"metrics\": {\n    \"scope\": \"retained sources (partial)\",\n    \"sources\": 0,\n    \"sourceKinds\": [],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 1\n  }\n}\n",
+          "stderr": ""
+        }
+      },
+      "base": {
+        "status": {
+          "exit": 0,
+          "stdout": "status: clean [degraded: root acceptance pending: finding evidence: {\"origin\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}]\nqualifier: root acceptance pending: finding evidence: {\"origin\":\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}\n",
+          "stderr": ""
+        },
+        "acceptance": {
+          "exit": 3,
+          "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\"],\"nonblockingFindings\":[]}\n",
+          "stderr": ""
+        },
+        "projection": {
+          "exit": 3,
+          "stdout": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [\n    {\n      \"origin\": \"/tmp/ufz-postcap-controller/probe-panel0-reproduce/no-sources.md\",\n      \"message\": \"no retained source extraction; finding coverage is unknown\"\n    }\n  ],\n  \"metrics\": {\n    \"scope\": \"retained sources (partial)\",\n    \"sources\": 0,\n    \"sourceKinds\": [],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 1\n  }\n}\n",
+          "stderr": ""
+        }
+      }
+    }
+  }
+}

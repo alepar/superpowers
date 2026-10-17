@@ -1,0 +1,41 @@
+[
+  {
+    "case": "no-ledger-control",
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: clean\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  {
+    "case": "code-ledger-dispute",
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  {
+    "case": "design-ledger-dispute",
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  }
+]

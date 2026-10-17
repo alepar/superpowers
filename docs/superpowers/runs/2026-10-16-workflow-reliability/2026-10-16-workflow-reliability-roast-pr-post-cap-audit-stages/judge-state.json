@@ -1,0 +1,152 @@
+{
+  "raw": [
+    {
+      "claim": "The new ledger integration lets root acceptance succeed without assessing a disputed finding known to ordinary status when that finding has no retained-source occurrence.",
+      "location": "skills/super-auto/scripts/report-status:468",
+      "category": "simplicity-design",
+      "external": false,
+      "evidence": "The diff adds a second finding view: lines 395–414 read disputed ledger rows into the ordinary-status unresolved set, and lines 468–470 consume both ledger pointers. The acceptance path still assesses only scope-dispositions --project findings (lines 156–172); its ordinary-status bridge at lines 175–177 imports only four qualifier prefixes and discards the unresolved count. A frozen-head probe exported the actual helpers from f726f0e9, generated a ledger with the real findings-ledger CLI from the existing disputed-reconfirmed fixtures and override, and supplied a separate valid empty final-review extraction plus otherwise satisfied synthetic review, measurement and human requirements. Adding only findingsLedger: ledger.md changed ordinary status from clean to one unresolved finding, while --acceptance still returned exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]; no findingAcceptance judgment existed. The no-ledger control passed. The same pointer-consumer behavior was observed for findingsLedgerDesign. This exposes the new ledger obligations outside the shared acceptance projection rather than requiring explicit acceptance relevance or a missing-extraction gap. The synthetic fixture isolates the gate and does not assert eligibility of the actual run. Reproduction and complete raw results: /tmp/ufz-postcap-controller/probe-simplicity-design/probe.py and receipt.json; actual producer output: ledger.md and producer.json.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "The newly supported findings-ledger path can retain an unresolved dispute while root acceptance succeeds without any acceptance-relevance judgment for that issue.",
+      "location": "skills/super-auto/scripts/report-status:469",
+      "category": "regression",
+      "external": false,
+      "evidence": "The absorption adds readledger() and reads findingsLedger/findingsLedgerDesign in ordinary status, but --acceptance still visits only scope-dispositions --project findings and its reuse of ordinary status at lines 183-185 imports only collection/projection qualifiers. No reconciliation checks that unresolved ledger entries have retained source refs. At captured head f726f0e97f57b398832891d3f7d95759ed367eb4, /tmp/ufz-postcap-controller/probe-regression/acceptance-probe.cjs starts with the incoming disputed-uncapped fixture, adds an otherwise satisfied synthetic caller-acceptance record and a valid empty final-review extraction, and retains the fixture ledger dispute. Ordinary status reports one unresolved issue, but --acceptance returns exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]. Adding only the original issue as a finding-source occurrence changes the same gate to exit 3 with finding acceptance relevance unproven. Removing all extraction records also rejects, so the demonstrated trigger specifically requires another valid retained extraction plus a disputed issue present only in the loop ledger. This is the new loop-ledger/projection integration seam: acceptance neither assesses that known issue nor reports its missing extraction. The control does not establish acceptance of a live run. Full commands and outputs are retained at /tmp/ufz-postcap-controller/probe-regression/receipt.json.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "The new disputed-ledger tests never exercise --acceptance, leaving the root-close gate untested when unresolved disputes exist only in either findings ledger.",
+      "location": "tests/super-auto/test-scripts.sh:180",
+      "category": "testing",
+      "external": false,
+      "evidence": "All new ledger assertions at lines 180–186 invoke ordinary report-status, including the explicit uncapped case where the current roast no longer confirms the dispute. The separate acceptance fixture at lines 91–107 supplies an empty finding-source and never adds findingsLedger or findingsLedgerDesign; the remaining acceptance invocations likewise test retained finding-source records instead. This is a consequential cross-mode seam: report-status:175–177 obtains ordinary status but forwards only four selected qualifier prefixes into the gate, while the new ledger reader communicates disputes through its status count and missing ledgers through a different qualifier. Deleting all ledger handling from the acceptance path, or leaving that path unaware of disputes, cannot fail these new assertions. Add acceptance cases with otherwise satisfied requirements, an empty current retained-source projection, and each ledger pointer separately, including the missing-ledger branch.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync.",
+      "location": "skills/super-auto/resume.md:68",
+      "category": "hygiene-docs",
+      "external": false,
+      "evidence": "The new Amend Mode step 3 in skills/super-design/SKILL.md:905-907 orders \"Commit the specs; state specs-committed\" before \"Then run the Key Abstractions sync\". A session interruption between those operations is therefore persisted as specs-committed. The code-loop replay at resume.md:68 only files missing work items; synchronization appears only in the amend-checked branch at line 67. The code loop runs Amend Mode inline (super-auto/SKILL.md, Redesign cycle step 1), so it does not re-enter the complete super-design process whose general re-entry runs the sync. Consequently this supported interruption can launch the amendment beads with the old root Global Constraints digest and old owner descriptions: super-design/SKILL.md:305-335 defines the sync as the operation that replaces those derived copies from committed amended sections. The base has no Amend Mode or specs-committed replay, so this interruption gap is introduced by the captured delta.",
+      "kind": "ISSUE"
+    }
+  ],
+  "deduped": [
+    {
+      "claim": "The new ledger integration lets root acceptance succeed without assessing a disputed finding known to ordinary status when that finding has no retained-source occurrence.",
+      "location": "skills/super-auto/scripts/report-status:468",
+      "category": "simplicity-design",
+      "lanes": [
+        "simplicity-design"
+      ],
+      "external": false,
+      "evidence": "The diff adds a second finding view: lines 395–414 read disputed ledger rows into the ordinary-status unresolved set, and lines 468–470 consume both ledger pointers. The acceptance path still assesses only scope-dispositions --project findings (lines 156–172); its ordinary-status bridge at lines 175–177 imports only four qualifier prefixes and discards the unresolved count. A frozen-head probe exported the actual helpers from f726f0e9, generated a ledger with the real findings-ledger CLI from the existing disputed-reconfirmed fixtures and override, and supplied a separate valid empty final-review extraction plus otherwise satisfied synthetic review, measurement and human requirements. Adding only findingsLedger: ledger.md changed ordinary status from clean to one unresolved finding, while --acceptance still returned exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]; no findingAcceptance judgment existed. The no-ledger control passed. The same pointer-consumer behavior was observed for findingsLedgerDesign. This exposes the new ledger obligations outside the shared acceptance projection rather than requiring explicit acceptance relevance or a missing-extraction gap. The synthetic fixture isolates the gate and does not assert eligibility of the actual run. Reproduction and complete raw results: /tmp/ufz-postcap-controller/probe-simplicity-design/probe.py and receipt.json; actual producer output: ledger.md and producer.json.",
+      "kind": "ISSUE",
+      "suggestedSeverity": "Blocking"
+    },
+    {
+      "claim": "The newly supported findings-ledger path can retain an unresolved dispute while root acceptance succeeds without any acceptance-relevance judgment for that issue.",
+      "location": "skills/super-auto/scripts/report-status:469",
+      "category": "regression",
+      "lanes": [
+        "regression"
+      ],
+      "external": false,
+      "evidence": "The absorption adds readledger() and reads findingsLedger/findingsLedgerDesign in ordinary status, but --acceptance still visits only scope-dispositions --project findings and its reuse of ordinary status at lines 183-185 imports only collection/projection qualifiers. No reconciliation checks that unresolved ledger entries have retained source refs. At captured head f726f0e97f57b398832891d3f7d95759ed367eb4, /tmp/ufz-postcap-controller/probe-regression/acceptance-probe.cjs starts with the incoming disputed-uncapped fixture, adds an otherwise satisfied synthetic caller-acceptance record and a valid empty final-review extraction, and retains the fixture ledger dispute. Ordinary status reports one unresolved issue, but --acceptance returns exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]. Adding only the original issue as a finding-source occurrence changes the same gate to exit 3 with finding acceptance relevance unproven. Removing all extraction records also rejects, so the demonstrated trigger specifically requires another valid retained extraction plus a disputed issue present only in the loop ledger. This is the new loop-ledger/projection integration seam: acceptance neither assesses that known issue nor reports its missing extraction. The control does not establish acceptance of a live run. Full commands and outputs are retained at /tmp/ufz-postcap-controller/probe-regression/receipt.json.",
+      "kind": "ISSUE",
+      "suggestedSeverity": "Blocking"
+    },
+    {
+      "claim": "The new disputed-ledger tests never exercise --acceptance, leaving the root-close gate untested when unresolved disputes exist only in either findings ledger.",
+      "location": "tests/super-auto/test-scripts.sh:180",
+      "category": "testing",
+      "lanes": [
+        "testing"
+      ],
+      "external": false,
+      "evidence": "All new ledger assertions at lines 180–186 invoke ordinary report-status, including the explicit uncapped case where the current roast no longer confirms the dispute. The separate acceptance fixture at lines 91–107 supplies an empty finding-source and never adds findingsLedger or findingsLedgerDesign; the remaining acceptance invocations likewise test retained finding-source records instead. This is a consequential cross-mode seam: report-status:175–177 obtains ordinary status but forwards only four selected qualifier prefixes into the gate, while the new ledger reader communicates disputes through its status count and missing ledgers through a different qualifier. Deleting all ledger handling from the acceptance path, or leaving that path unaware of disputes, cannot fail these new assertions. Add acceptance cases with otherwise satisfied requirements, an empty current retained-source projection, and each ledger pointer separately, including the missing-ledger branch.",
+      "kind": "ISSUE",
+      "suggestedSeverity": "Should-fix"
+    },
+    {
+      "claim": "The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync.",
+      "location": "skills/super-auto/resume.md:68",
+      "category": "hygiene-docs",
+      "lanes": [
+        "hygiene-docs"
+      ],
+      "external": false,
+      "evidence": "The new Amend Mode step 3 in skills/super-design/SKILL.md:905-907 orders \"Commit the specs; state specs-committed\" before \"Then run the Key Abstractions sync\". A session interruption between those operations is therefore persisted as specs-committed. The code-loop replay at resume.md:68 only files missing work items; synchronization appears only in the amend-checked branch at line 67. The code loop runs Amend Mode inline (super-auto/SKILL.md, Redesign cycle step 1), so it does not re-enter the complete super-design process whose general re-entry runs the sync. Consequently this supported interruption can launch the amendment beads with the old root Global Constraints digest and old owner descriptions: super-design/SKILL.md:305-335 defines the sync as the operation that replaces those derived copies from committed amended sections. The base has no Amend Mode or specs-committed replay, so this interruption gap is introduced by the captured delta.",
+      "kind": "ISSUE",
+      "suggestedSeverity": "Should-fix"
+    }
+  ],
+  "toJudge": [
+    {
+      "f": {
+        "claim": "The new ledger integration lets root acceptance succeed without assessing a disputed finding known to ordinary status when that finding has no retained-source occurrence.",
+        "location": "skills/super-auto/scripts/report-status:468",
+        "category": "simplicity-design",
+        "lanes": [
+          "simplicity-design"
+        ],
+        "external": false,
+        "evidence": "The diff adds a second finding view: lines 395–414 read disputed ledger rows into the ordinary-status unresolved set, and lines 468–470 consume both ledger pointers. The acceptance path still assesses only scope-dispositions --project findings (lines 156–172); its ordinary-status bridge at lines 175–177 imports only four qualifier prefixes and discards the unresolved count. A frozen-head probe exported the actual helpers from f726f0e9, generated a ledger with the real findings-ledger CLI from the existing disputed-reconfirmed fixtures and override, and supplied a separate valid empty final-review extraction plus otherwise satisfied synthetic review, measurement and human requirements. Adding only findingsLedger: ledger.md changed ordinary status from clean to one unresolved finding, while --acceptance still returned exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]; no findingAcceptance judgment existed. The no-ledger control passed. The same pointer-consumer behavior was observed for findingsLedgerDesign. This exposes the new ledger obligations outside the shared acceptance projection rather than requiring explicit acceptance relevance or a missing-extraction gap. The synthetic fixture isolates the gate and does not assert eligibility of the actual run. Reproduction and complete raw results: /tmp/ufz-postcap-controller/probe-simplicity-design/probe.py and receipt.json; actual producer output: ledger.md and producer.json.",
+        "kind": "ISSUE",
+        "suggestedSeverity": "Blocking"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "The newly supported findings-ledger path can retain an unresolved dispute while root acceptance succeeds without any acceptance-relevance judgment for that issue.",
+        "location": "skills/super-auto/scripts/report-status:469",
+        "category": "regression",
+        "lanes": [
+          "regression"
+        ],
+        "external": false,
+        "evidence": "The absorption adds readledger() and reads findingsLedger/findingsLedgerDesign in ordinary status, but --acceptance still visits only scope-dispositions --project findings and its reuse of ordinary status at lines 183-185 imports only collection/projection qualifiers. No reconciliation checks that unresolved ledger entries have retained source refs. At captured head f726f0e97f57b398832891d3f7d95759ed367eb4, /tmp/ufz-postcap-controller/probe-regression/acceptance-probe.cjs starts with the incoming disputed-uncapped fixture, adds an otherwise satisfied synthetic caller-acceptance record and a valid empty final-review extraction, and retains the fixture ledger dispute. Ordinary status reports one unresolved issue, but --acceptance returns exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]. Adding only the original issue as a finding-source occurrence changes the same gate to exit 3 with finding acceptance relevance unproven. Removing all extraction records also rejects, so the demonstrated trigger specifically requires another valid retained extraction plus a disputed issue present only in the loop ledger. This is the new loop-ledger/projection integration seam: acceptance neither assesses that known issue nor reports its missing extraction. The control does not establish acceptance of a live run. Full commands and outputs are retained at /tmp/ufz-postcap-controller/probe-regression/receipt.json.",
+        "kind": "ISSUE",
+        "suggestedSeverity": "Blocking"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "The new disputed-ledger tests never exercise --acceptance, leaving the root-close gate untested when unresolved disputes exist only in either findings ledger.",
+        "location": "tests/super-auto/test-scripts.sh:180",
+        "category": "testing",
+        "lanes": [
+          "testing"
+        ],
+        "external": false,
+        "evidence": "All new ledger assertions at lines 180–186 invoke ordinary report-status, including the explicit uncapped case where the current roast no longer confirms the dispute. The separate acceptance fixture at lines 91–107 supplies an empty finding-source and never adds findingsLedger or findingsLedgerDesign; the remaining acceptance invocations likewise test retained finding-source records instead. This is a consequential cross-mode seam: report-status:175–177 obtains ordinary status but forwards only four selected qualifier prefixes into the gate, while the new ledger reader communicates disputes through its status count and missing ledgers through a different qualifier. Deleting all ledger handling from the acceptance path, or leaving that path unaware of disputes, cannot fail these new assertions. Add acceptance cases with otherwise satisfied requirements, an empty current retained-source projection, and each ledger pointer separately, including the missing-ledger branch.",
+        "kind": "ISSUE",
+        "suggestedSeverity": "Should-fix"
+      },
+      "kind": "panel"
+    },
+    {
+      "f": {
+        "claim": "The code-loop replay path skips Key Abstractions synchronization when a redesign resumes after persisting specs-committed but before completing the sync.",
+        "location": "skills/super-auto/resume.md:68",
+        "category": "hygiene-docs",
+        "lanes": [
+          "hygiene-docs"
+        ],
+        "external": false,
+        "evidence": "The new Amend Mode step 3 in skills/super-design/SKILL.md:905-907 orders \"Commit the specs; state specs-committed\" before \"Then run the Key Abstractions sync\". A session interruption between those operations is therefore persisted as specs-committed. The code-loop replay at resume.md:68 only files missing work items; synchronization appears only in the amend-checked branch at line 67. The code loop runs Amend Mode inline (super-auto/SKILL.md, Redesign cycle step 1), so it does not re-enter the complete super-design process whose general re-entry runs the sync. Consequently this supported interruption can launch the amendment beads with the old root Global Constraints digest and old owner descriptions: super-design/SKILL.md:305-335 defines the sync as the operation that replaces those derived copies from committed amended sections. The base has no Amend Mode or specs-committed replay, so this interruption gap is introduced by the captured delta.",
+        "kind": "ISSUE",
+        "suggestedSeverity": "Should-fix"
+      },
+      "kind": "panel"
+    }
+  ],
+  "dedupeOrphans": 0,
+  "beyondCap": 0,
+  "beyondPanelCap": [],
+  "dedupeDead": false
+}

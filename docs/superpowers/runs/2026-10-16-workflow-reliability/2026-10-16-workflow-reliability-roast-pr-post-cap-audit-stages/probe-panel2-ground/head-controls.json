@@ -1,0 +1,37 @@
+[
+  {
+    "field": "none",
+    "ledger": "ledger.md",
+    "status": "status: clean\n",
+    "gateCode": 0,
+    "gate": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n"
+  },
+  {
+    "field": "findingsLedger",
+    "ledger": "ledger.md",
+    "status": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+    "gateCode": 0,
+    "gate": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n"
+  },
+  {
+    "field": "findingsLedger",
+    "ledger": "missing.md",
+    "status": "status: clean [degraded: findings ledger not found: missing.md]\nqualifier: findings ledger not found: missing.md\n",
+    "gateCode": 0,
+    "gate": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n"
+  },
+  {
+    "field": "findingsLedgerDesign",
+    "ledger": "ledger.md",
+    "status": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+    "gateCode": 0,
+    "gate": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n"
+  },
+  {
+    "field": "findingsLedgerDesign",
+    "ledger": "missing.md",
+    "status": "status: clean [degraded: findings ledger not found: missing.md]\nqualifier: findings ledger not found: missing.md\n",
+    "gateCode": 0,
+    "gate": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n"
+  }
+]

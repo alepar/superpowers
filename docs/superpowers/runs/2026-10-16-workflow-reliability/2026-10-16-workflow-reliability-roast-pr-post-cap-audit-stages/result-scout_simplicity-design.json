@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The new ledger integration lets root acceptance succeed without assessing a disputed finding known to ordinary status when that finding has no retained-source occurrence.",
+      "location": "skills/super-auto/scripts/report-status:468",
+      "category": "simplicity-design",
+      "external": false,
+      "evidence": "The diff adds a second finding view: lines 395\u2013414 read disputed ledger rows into the ordinary-status unresolved set, and lines 468\u2013470 consume both ledger pointers. The acceptance path still assesses only scope-dispositions --project findings (lines 156\u2013172); its ordinary-status bridge at lines 175\u2013177 imports only four qualifier prefixes and discards the unresolved count. A frozen-head probe exported the actual helpers from f726f0e9, generated a ledger with the real findings-ledger CLI from the existing disputed-reconfirmed fixtures and override, and supplied a separate valid empty final-review extraction plus otherwise satisfied synthetic review, measurement and human requirements. Adding only findingsLedger: ledger.md changed ordinary status from clean to one unresolved finding, while --acceptance still returned exit 0, eligible:true, pending:[], gaps:[], nonblockingFindings:[]; no findingAcceptance judgment existed. The no-ledger control passed. The same pointer-consumer behavior was observed for findingsLedgerDesign. This exposes the new ledger obligations outside the shared acceptance projection rather than requiring explicit acceptance relevance or a missing-extraction gap. The synthetic fixture isolates the gate and does not assert eligibility of the actual run. Reproduction and complete raw results: /tmp/ufz-postcap-controller/probe-simplicity-design/probe.py and receipt.json; actual producer output: ledger.md and producer.json.",
+      "kind": "ISSUE"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+const fs=require('node:fs'),cp=require('node:child_process'),path=require('node:path');
+const repo='/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers',dir=__dirname,tree='a'.repeat(40),rs=dir+'/head/skills/super-auto/scripts/report-status';
+const fixture=dir+'/';
+
+let run=fs.readFileSync(fixture+'disputed-uncapped.md','utf8');
+const acceptance={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'final-review',kind:'review',owner:'super-auto'},{id:'sweep',kind:'measurement',owner:'super-auto',command:'suite',configuration:'quiet',requiredLive:true},{id:'finish',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'quiet',kind:'live',outcome:'pass',location:'sweep.log'}],reviews:[{id:'final-review',sourceTree:tree,outcome:'pass',location:'final.md'}],decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['user-choice']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
+fs.writeFileSync(dir+'/final.md','ready\n');
+run+='\napprovals:\n- root-acceptance · '+JSON.stringify(acceptance)+'\n- finding-source · '+JSON.stringify({version:1,source:'inv-final/final',artifact:'final.md',kind:'final-review',verdict:'ready',occurrences:[]})+'\n';
+const file=dir+'/run.md';
+function cli(args){let p=cp.spawnSync('bash',[rs,...args],{encoding:'utf8'});return {exit:p.status,stdout:p.stdout,stderr:p.stderr}}
+fs.writeFileSync(file,run);
+const ledgerOnly={ordinary:cli([file]),acceptance:cli(['--acceptance',file,'--tree',tree])};
+fs.writeFileSync(dir+'/source.md','report retained as original source\n');
+const source={version:1,source:'r2/roast',artifact:'source.md',kind:'roast',verdict:'confirmed',occurrences:[{section:'Confirmed findings',position:1,key:'[Blocking] src/seat.ts:41',text:'[Blocking] src/seat.ts:41 — original unresolved issue'}]};
+fs.writeFileSync(file,run+'- finding-source · '+JSON.stringify(source)+'\n');
+const retained={ordinary:cli([file]),acceptance:cli(['--acceptance',file,'--tree',tree])};
+fs.writeFileSync(file,run.replace('findingsLedger: disputed-uncapped-ledger.md\n',''));
+const withoutLedger={ordinary:cli([file]),acceptance:cli(['--acceptance',file,'--tree',tree])};
+fs.writeFileSync(file,run);
+fs.writeFileSync(file,run.replace(/^- finding-source.*\n/gm,''));
+const withoutSources={acceptance:cli(['--acceptance',file,'--tree',tree])};
+fs.writeFileSync(file,run);
+const receipt={withoutSources,head:cp.execFileSync('git',['-C',repo,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),ledgerOnly,retained,withoutLedger};
+fs.writeFileSync(dir+'/receipt.json',JSON.stringify(receipt,null,2));
+console.log(JSON.stringify(receipt,null,2));

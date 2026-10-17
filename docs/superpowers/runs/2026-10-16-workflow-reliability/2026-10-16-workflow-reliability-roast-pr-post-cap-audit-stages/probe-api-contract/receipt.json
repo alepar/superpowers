@@ -1,0 +1,38 @@
+{
+  "clean": {
+    "status": {
+      "code": 0,
+      "stdout": "status: clean\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "code": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "disputed": {
+    "status": {
+      "code": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "code": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "missing": {
+    "status": {
+      "code": 0,
+      "stdout": "status: clean [degraded: findings ledger not found: absent-ledger.md]\nqualifier: findings ledger not found: absent-ledger.md\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "code": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  }
+}

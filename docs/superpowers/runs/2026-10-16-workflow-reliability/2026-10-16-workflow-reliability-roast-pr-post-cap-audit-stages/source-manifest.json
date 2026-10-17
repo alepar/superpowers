@@ -1,0 +1,2472 @@
+[
+  {
+    "snapshot": "base",
+    "path": ".claude-plugin/marketplace.json",
+    "sha256": "25ea138fe145d96b40d74308ad726e9795a599f2de2c4434cba22fce1ce2eb58",
+    "bytes": 609
+  },
+  {
+    "snapshot": "base",
+    "path": ".claude-plugin/plugin.json",
+    "sha256": "a470cf93c9c452cbaca5488bd71da116661d7986f395e02421593f824acad672",
+    "bytes": 511
+  },
+  {
+    "snapshot": "base",
+    "path": ".codex-plugin/plugin.json",
+    "sha256": "554438554ca2804e459a721a0f117416ff19fa2cbb5188c2f2bce9e4150273b5",
+    "bytes": 1770
+  },
+  {
+    "snapshot": "base",
+    "path": ".cursor-plugin/plugin.json",
+    "sha256": "6ea10de8983d6ce19b1e8c4f418ce221adb8ffea3a1376ccf48d10740bb9ca25",
+    "bytes": 592
+  },
+  {
+    "snapshot": "base",
+    "path": ".devin-plugin/plugin.json",
+    "sha256": "5926fbe74ebbe1f0a84c4538db87e4fbb35d449383e13d1f2e0df9c74b2973e4",
+    "bytes": 585
+  },
+  {
+    "snapshot": "base",
+    "path": ".hermes-plugin/plugin.yaml",
+    "sha256": "6a253392910a2456eee49ec6d49bc036fd9b384cbe024da916f8d367831d3e83",
+    "bytes": 161
+  },
+  {
+    "snapshot": "base",
+    "path": ".kimi-plugin/plugin.json",
+    "sha256": "f1ac131b7bedcac0fbc47aa2f9e59b4f0225b4268f6df14c7c21c3d9412c622c",
+    "bytes": 3100
+  },
+  {
+    "snapshot": "base",
+    "path": "AGENTS.md",
+    "sha256": "715a3ea11385241f72639cf0ee9ab424a09ca2114105d9b8bca5f15f88d42d9b",
+    "bytes": 12009
+  },
+  {
+    "snapshot": "base",
+    "path": "docs/superpowers/specs/2026-10-16-vision-roast-findings-redesign-loop.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "docs/superpowers/specs/INDEX.md",
+    "sha256": "a809c833159584999d2b39a5827255f8e9888036365f78753ec7be6d46d8baf2",
+    "bytes": 17079
+  },
+  {
+    "snapshot": "base",
+    "path": "gemini-extension.json",
+    "sha256": "54903452bd3407b250c16d85918b133d555296fcf6ad5eee18d058b7be6d870f",
+    "bytes": 197
+  },
+  {
+    "snapshot": "base",
+    "path": "package.json",
+    "sha256": "6581aa24c6268dab0344d861ae49857912fcb3f5285ba3776efb7e10c936732b",
+    "bytes": 443
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/MAINTENANCE.md",
+    "sha256": "21a4fd4c24a891d5dd354bc07d9cd13a0f03da08731bc0f0cdd32715cf5f852a",
+    "bytes": 12129
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/SKILL.md",
+    "sha256": "0b7d0058c9dc44cd6acef874acab923ff80af4189ee77105d72af8b7a7df3945",
+    "bytes": 74012
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/report-prompt.md",
+    "sha256": "981d30d2548ec1fadbf80025e535b5a7cf3341fa089374b17fad2f96a85a0555",
+    "bytes": 13320
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/resume.md",
+    "sha256": "5a61499e12b831c76c121a856b4e503ca08bd032cd59e6d601fc9e4c37b0dd66",
+    "bytes": 10578
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/run-state.md",
+    "sha256": "d12e634de0e8eacab70f4b60f550a04c9ddbd1f7da42e56f93eb08c5e970484d",
+    "bytes": 49046
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-auto/scripts/report-status",
+    "sha256": "fd29d9fcafa34e75cb33273b442009221f26c922d427cd0a9f67c14cf3c35be8",
+    "bytes": 35098
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-code/scripts/report-verdict",
+    "sha256": "ce1cea248377acc299f39429457bf31a26ee45bb6e0192822d54474ca1cc27f7",
+    "bytes": 15377
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/MAINTENANCE.md",
+    "sha256": "74a34d4d49ff1d8a56153d6d6c94b3b2182e78a142901d96babc229415e56c05",
+    "bytes": 2493
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/SKILL.md",
+    "sha256": "0529dbc5ca392f0fbe4d8a22f9aa8ca3c8008978e2a22507443a6bd340b4d61b",
+    "bytes": 80623
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/amend-prompt.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/scripts/amend-check",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/scripts/findings-ledger",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/scripts/step-back-check",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-design/step-back-prompt.md",
+    "sha256": "d551781b7cd8f703ee57a96f4ba9d6de569af1dfb0c5980f0f54a2789e989d5a",
+    "bytes": 6416
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-roast/SKILL.md",
+    "sha256": "2ccbcbfb760eaebc64fa2519a02e71a057a78ac6b024ff18c7c2a9b22d30dd60",
+    "bytes": 23688
+  },
+  {
+    "snapshot": "base",
+    "path": "skills/super-roast/super-roast-workflow.md",
+    "sha256": "1fef682008fd3dd57b47a5b5e116d056140962b12bf2006f0370e0e0e7fa99fb",
+    "bytes": 77457
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt",
+    "sha256": "e922986dd59f0fd0d6fcf4f84133ff45542d254c6245e8eb79a8331ea8ca912b",
+    "bytes": 693
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt",
+    "sha256": "5433a7d0623f2738df5eb52227c546221f55e3d235d6e2f7fbb144f68fc7a0c4",
+    "bytes": 661
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/degraded-redesign-parks.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-capped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-code-ledger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-capped-proceeded.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-capped-stopped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-ledger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-uncapped-ledger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/fixtures/report-status/disputed-uncapped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/test-contract-lint.sh",
+    "sha256": "0a88c724af9d69af7dc5ba51dd7f4ff809d3acfdf9602304db9cea58ed00ec75",
+    "bytes": 14582
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-auto/test-scripts.sh",
+    "sha256": "6bb02435094524afb3337b77afc5c9d386e08fd64cc1aa5cf877cced92b181df",
+    "bytes": 50609
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-code/fixtures/report-verdict/step-back-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-code/fixtures/report-verdict/step-back-near-miss.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-code/test-report-verdict.sh",
+    "sha256": "34bc2afd4d3f02eb71121926466f1ce6ea4ea6375e8751eb14157837b3a851a4",
+    "bytes": 22587
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/amend-nested-new.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/amended-untouched.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/comma-pipe-keys.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/design-local-no-work.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/ledger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/missing-final-review.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/missing-open.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/missing-returned.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/ok-code.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/ok-dot-slash.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/owner-section-dot-slash.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/owner-section-only.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/owners-duplicate.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/owners-not-open.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/reverse-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/reverse-rule.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-base-fenced-goal.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-base.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-fenced-goal.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-goal.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-goal-heading-inserted.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-base.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-goal-edit.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-new.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/spec-no-unchanged.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/amend-check/work-no-covers.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/both-triggers/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/both-triggers/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/fr-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/fr-3.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/fr-1.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/fr-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/fr-1.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/fr-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-1.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-bad.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-none-keys.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-override/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r3-dropped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/implausible/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/implausible/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-better.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-stuck.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-worse.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/missing-prev/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/missing-prev/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/no-delta/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/no-delta/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/no-progress/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/no-progress/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/punch-list-1.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/punch-list.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/r1-only/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/regressed/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/regressed/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/keys-3.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/step-back-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/keys-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/step-back-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/dropped-override/overrides.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/dropped-override/r3-dropped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/amend-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/amend-post-dissolve.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/fr-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/keys-2.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/keys-3.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r1.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r2.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/spec-amended.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/spec-base.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-local-r3.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-redesign.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-fr-uncovered.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-local-uncovered.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-owner-only.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-code-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-bad-title.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-escaped.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-no-work.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/ledger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/spec-base.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/spec-edit-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-canonical.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-comma-key.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-prefixed.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/keys-comma.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/keys.txt",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-both.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-no-progress.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-none.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-recurrence.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/local-dissolves-none.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/local-no-triggers.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/local-under-trigger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/local-with-dissolves.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/local-with-remains.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/missing-decision.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/patch-as-local.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/patch-with-dissolves.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-cites-recurrence.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-drops-trigger.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-evidence-commas.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-mech-ok.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-misspelled-semantic.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-no-scope.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-semantic.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-triggers-none.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-unknown-remains.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/unknown-key.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/valid-patch.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/fixtures/step-back-check/valid-redesign.md",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/test-amend-check.sh",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/test-findings-ledger.sh",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/test-redesign-chain.sh",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/test-redesign-cycle-filing.sh",
+    "absent": true
+  },
+  {
+    "snapshot": "base",
+    "path": "tests/super-design/test-step-back-check.sh",
+    "absent": true
+  },
+  {
+    "snapshot": "head",
+    "path": ".claude-plugin/marketplace.json",
+    "sha256": "f52e601410999ab5d59512f7b02d71b40c7b8607be01597882a57851d7d5da65",
+    "bytes": 609
+  },
+  {
+    "snapshot": "head",
+    "path": ".claude-plugin/plugin.json",
+    "sha256": "df095f515d2b38decae3d53ca455c7a1569733f6ea32203d7a3fea7aa7f45a05",
+    "bytes": 511
+  },
+  {
+    "snapshot": "head",
+    "path": ".codex-plugin/plugin.json",
+    "sha256": "b8e2d0b401224ac6afbc9f60d709cbfa19357a8c9e2a22f2cd848256f30a0c62",
+    "bytes": 1770
+  },
+  {
+    "snapshot": "head",
+    "path": ".cursor-plugin/plugin.json",
+    "sha256": "f26d421e63bcdbb1f711faa1ba0d50ed9a5fb2e5e516188f5b12c480adcce560",
+    "bytes": 592
+  },
+  {
+    "snapshot": "head",
+    "path": ".devin-plugin/plugin.json",
+    "sha256": "87005c2bfb9b2c2da90d48c2e371b7753db0e034a8a2dc150b518e1f7a4bc85d",
+    "bytes": 585
+  },
+  {
+    "snapshot": "head",
+    "path": ".hermes-plugin/plugin.yaml",
+    "sha256": "97e751c8e8a0cab003d5c0f0b08e90956f94bc75ed82336dcece0be62d9d57a9",
+    "bytes": 161
+  },
+  {
+    "snapshot": "head",
+    "path": ".kimi-plugin/plugin.json",
+    "sha256": "f3cc51f2b8d9b35b530cc7a6c0fca699d0e5eed764d72e5c9774d7642adbbe15",
+    "bytes": 3100
+  },
+  {
+    "snapshot": "head",
+    "path": "AGENTS.md",
+    "sha256": "738a6a947ad56c42561b3eb33cb43f0ef0a06d829879d67910294094a9a9d4a4",
+    "bytes": 13613
+  },
+  {
+    "snapshot": "head",
+    "path": "docs/superpowers/specs/2026-10-16-vision-roast-findings-redesign-loop.md",
+    "sha256": "c0decf506a8c424784bd3390b92f439bcb69c2fff18d4d36f5b33bd7c78d854f",
+    "bytes": 12107
+  },
+  {
+    "snapshot": "head",
+    "path": "docs/superpowers/specs/INDEX.md",
+    "sha256": "2aef72e725fff6ff0c30ccfdd4eec3e3e8000a8983c01855b237da3b7a966572",
+    "bytes": 18744
+  },
+  {
+    "snapshot": "head",
+    "path": "gemini-extension.json",
+    "sha256": "3e5144d1e26ba9a4145ad6d6dec236964342ef857d3bd69b3df0f40de801ea9f",
+    "bytes": 197
+  },
+  {
+    "snapshot": "head",
+    "path": "package.json",
+    "sha256": "0948e18af6759d2d1da9d49b26714a8b3ff6297d13c5af43aacd1788b75f4780",
+    "bytes": 443
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/MAINTENANCE.md",
+    "sha256": "e8b7342cdd5450d23ef8e47636ea2d1ba88cafd63edd6602d071647fa1b825ca",
+    "bytes": 12168
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/SKILL.md",
+    "sha256": "7e2e225cbc6d3453847fa5a92645e1fe9aaf01b40645866db81682c9def9c399",
+    "bytes": 85533
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/report-prompt.md",
+    "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb",
+    "bytes": 14645
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/resume.md",
+    "sha256": "a971b806e93a8d446bec181359b81ab0adfe90b89156eace5a2030287f395363",
+    "bytes": 16571
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/run-state.md",
+    "sha256": "8a11b991286021021fdad30e5fed0145ed56023383e5db0a8badfcb5a0ac3d11",
+    "bytes": 55053
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-auto/scripts/report-status",
+    "sha256": "e032db80a8cf1e7dad57b0ed456592675578d146234f05f50e186fb44bd5d7fa",
+    "bytes": 37230
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-code/scripts/report-verdict",
+    "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661",
+    "bytes": 15431
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/MAINTENANCE.md",
+    "sha256": "d3bafb34af5d8ae49c5c9676a029c84c1119913ab60b75888f181a78eab0fa1d",
+    "bytes": 4136
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/SKILL.md",
+    "sha256": "e697e045705c5259e666fbb753d5478b1d1c4e30b8713eccc06426fdad8a4797",
+    "bytes": 104561
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/amend-prompt.md",
+    "sha256": "6ef8f4b70d80de0ad861461e4b3e4da0ca0647eb2b3cb00e60153d224c5830fb",
+    "bytes": 6402
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/scripts/amend-check",
+    "sha256": "f39951317aa02870fe2262e1f00dd443a1d534bbac96c2e494c52743c10f5938",
+    "bytes": 16684
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/scripts/findings-ledger",
+    "sha256": "18582172872deac0b6c676a0c659ed8393fa5c9ca17bc9da8aeb0114b4537276",
+    "bytes": 19941
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/scripts/step-back-check",
+    "sha256": "f59b32bf17adfdd97556649f0bc8e334ac6486889cd5379f64f03013cd3a605e",
+    "bytes": 7801
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-design/step-back-prompt.md",
+    "sha256": "e4f759327238670d07126b54e63ec90eaee93347da4486433777662caee16f43",
+    "bytes": 8202
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-roast/SKILL.md",
+    "sha256": "ab427479e2549ccd2445bd23f9db12121a3effd07c1eb90b5e72636cff4a5df0",
+    "bytes": 23957
+  },
+  {
+    "snapshot": "head",
+    "path": "skills/super-roast/super-roast-workflow.md",
+    "sha256": "c5c9bfaa4a12ba336d728ae4da27dc6d817e1c04df7f6c73bdf7d15cbe0ef956",
+    "bytes": 77490
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt",
+    "sha256": "8109ba216145824e9cb5705708545a87ac8c0ed223941e560a1cd327123b2513",
+    "bytes": 830
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt",
+    "sha256": "286e9759ff57b8ac9045da21c78cf0fdcf79f9b150fcb47776f5757f44d6241c",
+    "bytes": 1191
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/degraded-redesign-parks.md",
+    "sha256": "1744828d0bcb47a948442ed224f163bfa8b663d9dad546efd55dae083246da1e",
+    "bytes": 908
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-capped.md",
+    "sha256": "737706d5c08b274e8af6001015df3e2a59129602350fe9775fa55007701d0d56",
+    "bytes": 549
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-code-ledger.md",
+    "sha256": "13ae6ee22ba30ac20259ccbe23f579f2d1deac2eba68c85d4b2d3e8435745c41",
+    "bytes": 313
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-capped-proceeded.md",
+    "sha256": "d9f382c858edc6c33c439cf4bc5616feceac3de9e75996d8708cae5f0ff3ce30",
+    "bytes": 520
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-capped-stopped.md",
+    "sha256": "aebd7cd9580c73f2fb8aaa186bfddddb6c82fe580e9b405b23a057c74d44999b",
+    "bytes": 518
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-design-ledger.md",
+    "sha256": "1203e68860779329dec2264a55e9a2e7af94f889ea32eda5a775810736772333",
+    "bytes": 315
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-uncapped-ledger.md",
+    "sha256": "2c8ee5ec0ea5db043a743cc7235509daaf6d0b2dedae5079cf0f6363126022b4",
+    "bytes": 725
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/fixtures/report-status/disputed-uncapped.md",
+    "sha256": "6c173e153b63d67094d468660e30805ad5d2c5e2040588a37eef65c4e1b32ead",
+    "bytes": 411
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/test-contract-lint.sh",
+    "sha256": "d0bc031e5be20049f3f6dd45bf32d4c44762e6f2fb3d95f96100ac52f0304e95",
+    "bytes": 31891
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-auto/test-scripts.sh",
+    "sha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+    "bytes": 51041
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-code/fixtures/report-verdict/step-back-local.md",
+    "sha256": "74a01fd546e353e87bb896519a6a2a531fd8abdfb7b037cacb5699c52f1c7db3",
+    "bytes": 138
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-code/fixtures/report-verdict/step-back-near-miss.md",
+    "sha256": "93d2ff35ad704e02b065d886ec158c7c2a79cda701d992b35a8c5f3b8d262941",
+    "bytes": 31
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-code/test-report-verdict.sh",
+    "sha256": "d5a8118819f7097d08be1736af18793ad83ba70d54f9f37d3aefb43500e4797c",
+    "bytes": 23348
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/amend-nested-new.md",
+    "sha256": "1ce672ae498866f2affe19e1b4c3407fcc9281ade2885c79bcb19e4b1601e142",
+    "bytes": 635
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/amended-untouched.md",
+    "sha256": "da44344183498de1475629f48a94eee2e3c3cb7e450a3a7dae0c95cdbc73257b",
+    "bytes": 610
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/comma-pipe-keys.md",
+    "sha256": "5385eb8b1ed67a4283127c0ed6c5f8bcb418a6f6fd6cd0d0d016cce724b03ee5",
+    "bytes": 574
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/design-local-no-work.md",
+    "sha256": "5496ab51eaf6ced5a3ed0bf73e74e6962696b66f988f5c037d9e3db13fb69e34",
+    "bytes": 540
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/ledger.md",
+    "sha256": "46f02cda3e7b5065d4451dfb401e34ed29ccb711d5308e6dcad8e083e63b78ee",
+    "bytes": 846
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/missing-final-review.md",
+    "sha256": "94390ea284af633bff50b0632abc6dc2db5dd3f757e6e9fd47b5f5581ed3cf33",
+    "bytes": 473
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/missing-open.md",
+    "sha256": "94a2a0ef915f465a0af9b59ef1af5281451d2f9e1f6a61fc3dd687deb1e48e60",
+    "bytes": 559
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/missing-returned.md",
+    "sha256": "386ff36baf543f018a35a9ba3e2e35ba04caf20f5ed0d85519b44689bd89bf6a",
+    "bytes": 504
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/ok-code.md",
+    "sha256": "d292f321ee380bc423bce1cea4e72ec480409b191920393439f8df1ebe3c82f7",
+    "bytes": 604
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/ok-dot-slash.md",
+    "sha256": "4dd0967f7771c8677906ca2be4077bcea58b8469e1c5fc8ff40cf558a7a96068",
+    "bytes": 606
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/owner-section-dot-slash.md",
+    "sha256": "137258b5c6665a78cb32799aaf6a03708ca1ddb95adae9f6b56f8607a99aa20c",
+    "bytes": 474
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/owner-section-only.md",
+    "sha256": "b7415d0a36513a930b73cb2ab5002b33e5dedf66699694885199c3067633f61e",
+    "bytes": 472
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/owners-duplicate.md",
+    "sha256": "8055bbfdeefe21a309321236e0b5e721cdb4bb0777a43a7ffdf6e79b9baa56c7",
+    "bytes": 669
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/owners-not-open.md",
+    "sha256": "9c933d01973804417dd5f1f9d6ea024679e50e7f0074fea87c877a58276f5c3d",
+    "bytes": 638
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/reverse-local.md",
+    "sha256": "5496ab51eaf6ced5a3ed0bf73e74e6962696b66f988f5c037d9e3db13fb69e34",
+    "bytes": 540
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/reverse-rule.md",
+    "sha256": "f97cc301615d0837378e10dbdab6430b6d3f7dac9861fc0c73d47156477e6bee",
+    "bytes": 555
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-base-fenced-goal.md",
+    "sha256": "5fb768f3f4d922951a40162d4563bf788ccb2b72b19b0cbe02100b2fa53fccdf",
+    "bytes": 149
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-base.md",
+    "sha256": "d6e5089c0b10d0d91301d864885e58e4ba8111ac584de103a285c03aba8975c9",
+    "bytes": 120
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-fenced-goal.md",
+    "sha256": "7e399d8927fc526b6f0c5df223e425970a5cd47f3223bb8097c01a0333ee0e65",
+    "bytes": 148
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-goal.md",
+    "sha256": "6b48e7e126765ba10f2276242410cb68bbd4f02b6629f59874d1706221a4cdb6",
+    "bytes": 123
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-edit-ok.md",
+    "sha256": "321a6f4f4ced074cc2d2e3beff7cad347555e2cdac6bf78603bd6aa3dc302edc",
+    "bytes": 119
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-goal-heading-inserted.md",
+    "sha256": "8f2a50df0291673d46afde2b12cfcef68d16ff2ef31b082231e2dc06e714ec7f",
+    "bytes": 129
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-base.md",
+    "sha256": "3539c10c3ff3bbacf846f2d5f1cc310d8d3236c05cbef3f9f702b5c5481706a7",
+    "bytes": 61
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-goal-edit.md",
+    "sha256": "f0202c42e93bc11d18869610679cd7f3f6a1552548ee026c181b0442b63760ed",
+    "bytes": 69
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-nested-new.md",
+    "sha256": "610ad4f7a9ce9910cba64402b3e7cae8cf497b58c1a930e5f5be3c261b17944d",
+    "bytes": 35
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/spec-no-unchanged.md",
+    "sha256": "ba12ae4530a2a15920979511cb1c83316bf8044ef6aef9933043a24213291940",
+    "bytes": 70
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/amend-check/work-no-covers.md",
+    "sha256": "c0ca101c7ec064996abe3cc4e1cc2b54972a97af5d4eede203cbb1905a38f13f",
+    "bytes": 645
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/both-triggers/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/both-triggers/r2.md",
+    "sha256": "5a8c2acae2e3fe95d61db1190c358c2d44d424396f14bc5b097c2a0414ec609e",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r1.md",
+    "sha256": "460c0b13df9899bdd54dbd5623be2e092c8d6190c7361076b15a7c85138e4138",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r2.md",
+    "sha256": "e64f3624cdff7d4a3fff77c046cd4ef0cb2a7426b58787e40fbe96b229c7fb2e",
+    "bytes": 464
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded-first/r3.md",
+    "sha256": "42392a43da963b30b2bedd4d03656369a0c4c2b7549feea81357a89b505e24ef",
+    "bytes": 449
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r2.md",
+    "sha256": "01d11c05c1e0616ba232ea171caa31746fe16ef05c56715bf8d22a01021b4c94",
+    "bytes": 476
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/degraded/r3.md",
+    "sha256": "b65cfd0f94499b878eb557842501a3a0500276786edd01f44eef38c249242141",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/overrides.md",
+    "sha256": "c74362ccdb089f6f98bc9f11cdc1d6b547ab639c05348fb8d4668f0e5a17b2d8",
+    "bytes": 54
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r2.md",
+    "sha256": "be7676a06d8795ea1af410c2424d7a89e80ee888a1bf2c555b7ac9c194320546",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/fr-2.txt",
+    "sha256": "13639bf4844404a6ee7aeec0773d7498718357213fff9b0dcb64bf67aea07418",
+    "bytes": 68
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/fr-3.txt",
+    "sha256": "94d551f5dd45438a2c471761a7721de1e479781d890d99a7026934c5fe039472",
+    "bytes": 32
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/r1.md",
+    "sha256": "38cfdb61712623685e9ef5c876c053bd143f19066e5545c4d6d198a1370e428c",
+    "bytes": 324
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/final-review/r2.md",
+    "sha256": "c5b324a98653b26791119174070a06ef89ba420c595f2e6edefc790e2c8f3da7",
+    "bytes": 461
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/fr-1.txt",
+    "sha256": "9a2addc32f138e8e42559daceabeaba97b2dba3376a4b22c384975f0d60755a9",
+    "bytes": 38
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/fr-2.txt",
+    "sha256": "d46d8eb743eedb16f22b2d15b6de993061307efc55b4a6de6adc2968f028385e",
+    "bytes": 14
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/r1.md",
+    "sha256": "460c0b13df9899bdd54dbd5623be2e092c8d6190c7361076b15a7c85138e4138",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-clean/r2.md",
+    "sha256": "76d42b2178e018538a4fdb87ef4d582e2720776425a6b6ccacc6c874b951abef",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/fr-1.txt",
+    "sha256": "1b179b3becbe684abd621192552f617c1af3ac4729cce235679d8adc354679d7",
+    "bytes": 20
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/fr-2.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/r1.md",
+    "sha256": "460c0b13df9899bdd54dbd5623be2e092c8d6190c7361076b15a7c85138e4138",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-empty/r2.md",
+    "sha256": "76d42b2178e018538a4fdb87ef4d582e2720776425a6b6ccacc6c874b951abef",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-1.txt",
+    "sha256": "9a2addc32f138e8e42559daceabeaba97b2dba3376a4b22c384975f0d60755a9",
+    "bytes": 38
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-bad.txt",
+    "sha256": "fadfc9a0fdcf497d2c9c842cc7aafe7e4e31c3e3e448100c7b45f3f8a538d205",
+    "bytes": 14
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-none-keys.txt",
+    "sha256": "2bdf4b84bb7c48a2f3bb5ee14221033900548e724b74b47b513defa61f6339ff",
+    "bytes": 26
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/fr-2.txt",
+    "sha256": "801b8a4751afdfbd74b5709795fb5cf67d9ede2aedaa8948911a6ab083e38f8e",
+    "bytes": 13
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/r1.md",
+    "sha256": "460c0b13df9899bdd54dbd5623be2e092c8d6190c7361076b15a7c85138e4138",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-none/r2.md",
+    "sha256": "76d42b2178e018538a4fdb87ef4d582e2720776425a6b6ccacc6c874b951abef",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/fr-override/overrides.md",
+    "sha256": "d71b3c751ea2b9ddb7b319364a30165aec38a1a248307a92f87ad0f9fb8ccf82",
+    "bytes": 63
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/overrides.md",
+    "sha256": "809c94f130c6dc11838090db9106c4834aa96f5acc31f38425b14d2398cb12f8",
+    "bytes": 161
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r2.md",
+    "sha256": "a23423ab954a6df3e9754625304fed2d0608507b815b1c53933eba2d0c98f9bf",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/ignored-overrides/r3-dropped.md",
+    "sha256": "855f60d48a2c63f3c64db1096dcaa09aa18574bf9254b77786b543c35ff07f56",
+    "bytes": 708
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/implausible/r1.md",
+    "sha256": "38cfdb61712623685e9ef5c876c053bd143f19066e5545c4d6d198a1370e428c",
+    "bytes": 324
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/implausible/r2.md",
+    "sha256": "a72a8d14b0e0c9fcfab5d90b45c49f75286e1a7b84258596206284eed60bb7b8",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/overrides.md",
+    "sha256": "a7daca2799acb0b01a92ecafe107b0e0fe885553af22315b2bbb6faa0b68952f",
+    "bytes": 76
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r1.md",
+    "sha256": "61ac89121a18fdeb9d0059c185d839464793a1e6188152496fa3663d549b5251",
+    "bytes": 683
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r2.md",
+    "sha256": "f6b77ffd7eecfad2d784f621ecaba8d9a38205f67d4abe6153fc1a0005ae62d0",
+    "bytes": 821
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r3.md",
+    "sha256": "3e09b4bb7a263d639235e592ad3dc2b161ac68f3e16edad686d43b2cbdf7804f",
+    "bytes": 701
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/overrides.md",
+    "sha256": "a7daca2799acb0b01a92ecafe107b0e0fe885553af22315b2bbb6faa0b68952f",
+    "bytes": 76
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r1.md",
+    "sha256": "8afc1b2ac1c0e561effcb0be6b9dcc9142a63774541f705db2d00ce199219382",
+    "bytes": 682
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r2.md",
+    "sha256": "54a0b10f1a5cc589e73c06b2ce5441883dc63a7cac9b5e1189419491b1c98590",
+    "bytes": 682
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-better.md",
+    "sha256": "e1edcca8314e4eab274f0c8091f957ba8a903aea85b5bf0afe4f499777f6f931",
+    "bytes": 442
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-stuck.md",
+    "sha256": "21df95fc78751a56acae51d1ffe3309a4ff093760d4e0e65d0a61788aa03c3a3",
+    "bytes": 682
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/lastgood/r3-worse.md",
+    "sha256": "2c562a44d3a1e9fe8939df75a92438ba5d8cd12881032057a663364215c04389",
+    "bytes": 802
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/missing-prev/r1.md",
+    "sha256": "fa9ec3fbb2c5bf95eb1a7ed792301cba6749bc6d83cd19d8697076854caddc2c",
+    "bytes": 323
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/missing-prev/r3.md",
+    "sha256": "6194ee84c6b593c4021fefaf819c25bc20af240d2d5168d542dc49a2fee828e7",
+    "bytes": 323
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/overrides.md",
+    "sha256": "b6a6c88bf86e4ce2483b0143b2f40eeb1407884134bf8537a56d4d40682d8d1d",
+    "bytes": 81
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/r1.md",
+    "sha256": "5d97b812bbd12bdaf85f4420ed0f12687aa9433a729a9ea5c9e2cc113c5ee9e5",
+    "bytes": 457
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/multi-location/r2.md",
+    "sha256": "3145eaf4bac202d3e36cc081effb0ae831e11bc035ca11a1cc933a55200beb17",
+    "bytes": 595
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/no-delta/r1.md",
+    "sha256": "38cfdb61712623685e9ef5c876c053bd143f19066e5545c4d6d198a1370e428c",
+    "bytes": 324
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/no-delta/r2.md",
+    "sha256": "4cd16bb837344b5e2be5422ebb8fe1d497dc69a51870fcd02e004b6d458cf107",
+    "bytes": 324
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/no-progress/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/no-progress/r2.md",
+    "sha256": "be7676a06d8795ea1af410c2424d7a89e80ee888a1bf2c555b7ac9c194320546",
+    "bytes": 582
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/overrides.md",
+    "sha256": "6eb6bf3af99288c604152a903449eb3bc1820d855349dcb7c6491d93e94dffc3",
+    "bytes": 281
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/r1.md",
+    "sha256": "56e89ef09ae677a9814065be9fc6285c1d87612707c3780c9a0daaeac2349c9d",
+    "bytes": 684
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/overrides-precedence/r2.md",
+    "sha256": "c7106416890b79ffbdecb4a226f70e8902c7a6ce8e443d296d2af57621cff640",
+    "bytes": 702
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r1.md",
+    "sha256": "096c3c9ce0f229f0acf06f32f5e2ea2f90d64cacdc0611d2b8533080c9739d84",
+    "bytes": 449
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r2.md",
+    "sha256": "8d49324f6a2bdaddf0efe9df93484714caa195ef4dbb4ed2b5bdeda078b6e441",
+    "bytes": 356
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/panel-capped/r3.md",
+    "sha256": "0c4507572b3096b0ef40cdf50b718ba0afbdb6c66a37f7593289d4c36526967e",
+    "bytes": 449
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/punch-list-1.txt",
+    "sha256": "6066d01d01c53dbe940d9d891b57b601874fc218b8e7f9420b8fb6dcedb0f6b1",
+    "bytes": 24
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r1.md",
+    "sha256": "460c0b13df9899bdd54dbd5623be2e092c8d6190c7361076b15a7c85138e4138",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r2.md",
+    "sha256": "c4eb3288541f91f2835dc89dafc9d715e45580e1fda288ba458cde22aaa6944e",
+    "bytes": 198
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r3.md",
+    "sha256": "c4907462c7b88958ab70d7c3440edbabcb101b7c2560a437766683ee744997e0",
+    "bytes": 198
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/punch-list.txt",
+    "sha256": "2ec09aa6e85ee5ca9d27ce725a54cc70550e0e1f3e20a203c345b1ba63d11eb1",
+    "bytes": 27
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/r1.md",
+    "sha256": "6aa3b6c06a6ce2b39e26ae751f8e8169bb1bd1c6a19d61653f9764d6ef3538d3",
+    "bytes": 446
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/punch-list/r2.md",
+    "sha256": "23dd040b71ef02b892b0c6fb1863e5d21a747cdc3254aeed21ebf2a7e9cf9abc",
+    "bytes": 462
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/r1-only/r1.md",
+    "sha256": "3f6cee20276c5639c9bd0fde51fd14f1f0fea7538a98c1b3b9342a5642065c6e",
+    "bytes": 566
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/regressed/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/regressed/r2.md",
+    "sha256": "c7fdc67211caf0199491029b2d9318d4e1ae98817417904c237121e8a6820695",
+    "bytes": 462
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r1.md",
+    "sha256": "b912727207b92a9c02469b436540837b49c40216426a0553a7311b4f4b095395",
+    "bytes": 313
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r2.md",
+    "sha256": "c4eb3288541f91f2835dc89dafc9d715e45580e1fda288ba458cde22aaa6944e",
+    "bytes": 198
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned-nit/r3.md",
+    "sha256": "75b09f798c67422671968f8848fe43347a283d3813b1e3fcfbb5e47fdebbf949",
+    "bytes": 313
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r1.md",
+    "sha256": "6aa3b6c06a6ce2b39e26ae751f8e8169bb1bd1c6a19d61653f9764d6ef3538d3",
+    "bytes": 446
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r2.md",
+    "sha256": "d295cb23cd35b83c1353cd13b83a9ca174daf5bc483671f5f861c125a435ae64",
+    "bytes": 465
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/returned/r3.md",
+    "sha256": "ca240f750ab29198bd461d7f21a62caa7d881ce9b936e60d2a2f046bf81f9672",
+    "bytes": 584
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r1.md",
+    "sha256": "0adeed8d6ce4452fe54644051e2ecf3941e780c53287d98bb0b5a37c179f2763",
+    "bytes": 444
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r2.md",
+    "sha256": "3008487f6948d809d057e512aec3d3fbf81807c06e0f8f4d399f9f0d45225a6a",
+    "bytes": 581
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/keys-3.txt",
+    "sha256": "2f1e7533a56d9050100c3bc47864c1a6873331be66d2dd510ea983635c465232",
+    "bytes": 88
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r1.md",
+    "sha256": "8998e769841009c98ec52bdf01011cd3d340801cef59f1a4c9bcdc075a1b0dc8",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r2.md",
+    "sha256": "567afd14ddcdf505c84e33a1291a7654f5180fcb8dff40c2e5e7d53eb71791fa",
+    "bytes": 464
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/r3.md",
+    "sha256": "6e55ea32b32054b30fac58d300208a178529b11d0cff07a11e0d55d621485bf8",
+    "bytes": 464
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/cap-round/step-back-local.md",
+    "sha256": "82f671125a10095693ac8da0bf6d51be2ca128939a3f579531cb7450d2ad2320",
+    "bytes": 112
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r1.md",
+    "sha256": "ad0e021d300da42600f024610b985d65627c5057c8bbf3c0b50cdd1c84322774",
+    "bytes": 470
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r2.md",
+    "sha256": "354960b4086f51f10e9b58ba294a769fd42fe56fcc03553ea882d414bab88258",
+    "bytes": 480
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/degraded/r3.md",
+    "sha256": "576bd2b07750ab99a0e90ceae278e6db9bdd39847cea43789023d7779cbf0eb5",
+    "bytes": 608
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/keys-2.txt",
+    "sha256": "4a223066ce8a3997ed15fdb63b80d727f757ce02b303cd550ac1a183f307a421",
+    "bytes": 60
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/overrides.md",
+    "sha256": "fc23d39d54e069a7540ca74964d2bafe00334568ea24825b17ce7deb78aa0109",
+    "bytes": 58
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/r1.md",
+    "sha256": "8998e769841009c98ec52bdf01011cd3d340801cef59f1a4c9bcdc075a1b0dc8",
+    "bytes": 327
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/r2.md",
+    "sha256": "0c37565e82e19db821a83b29facf209b2b6cd81b3d547a9ca3b8eb6767bc238b",
+    "bytes": 465
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/disputed/step-back-local.md",
+    "sha256": "82f671125a10095693ac8da0bf6d51be2ca128939a3f579531cb7450d2ad2320",
+    "bytes": 112
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/dropped-override/overrides.md",
+    "sha256": "97938e21cb9fc106842f47f9ba81ce12f97b1d5706db517c8e60588a162f67dc",
+    "bytes": 90
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/dropped-override/r3-dropped.md",
+    "sha256": "1a6dbc54996db09b9190c0fe1a9bdb2a3bce154c0005bc8371aff1819a2df288",
+    "bytes": 464
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/amend-ok.md",
+    "sha256": "6d7010c2ce8f920103c4ec397c51bb7e68d8ff83c7de2158b6668180ad5b14c3",
+    "bytes": 476
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/amend-post-dissolve.md",
+    "sha256": "f3aa3e7102bfcebc174ad5f775e08312df7ed2447eb97c861f33d54c8511dd8d",
+    "bytes": 334
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/fr-2.txt",
+    "sha256": "a98eef2a849ccfbcca10ac5d91a7d5f4b7500dd05bbb4772621c7e87bb9089ad",
+    "bytes": 25
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/keys-2.txt",
+    "sha256": "7549deef3dc1c7ae91f159861016b23614301078fb043a89a684346cef81c70c",
+    "bytes": 194
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/keys-3.txt",
+    "sha256": "c1df3ae76f161cd4e169be691b41168d9b0cfa947aab66b584637d50eb53b476",
+    "bytes": 271
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r1.md",
+    "sha256": "c30ffeb1cf02567fe647bae23d8126ef45f787f535034c0c1dd322d0c7a27e1e",
+    "bytes": 594
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r2.md",
+    "sha256": "27f9f00299d026e1947843c80e614cc8ed86865cc1244fd92ffc72bdabe9fbab",
+    "bytes": 589
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/r3.md",
+    "sha256": "2a80d0f96cb7d65b62a484ccee6367dbb74f968abc227bdb729970fefcd644b0",
+    "bytes": 607
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/spec-amended.md",
+    "sha256": "bb17475a309376e2482eb10480ca3dd6cc1660daae3073cc7cef4ccc18f17250",
+    "bytes": 132
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/spec-base.md",
+    "sha256": "d6e5089c0b10d0d91301d864885e58e4ba8111ac584de103a285c03aba8975c9",
+    "bytes": 120
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-local-r3.md",
+    "sha256": "c29e42f1291edd876608b40b6ce0dcb80858327455cbb291e2f6927668a683af",
+    "bytes": 111
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-local.md",
+    "sha256": "82f671125a10095693ac8da0bf6d51be2ca128939a3f579531cb7450d2ad2320",
+    "bytes": 112
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/main/step-back-redesign.md",
+    "sha256": "d21af916cdc8d0fac5d504345e4a6df39f49a4c6b0993e5a84628c2e02fe74a0",
+    "bytes": 575
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-fr-uncovered.md",
+    "sha256": "e65ba77a842c378b87ca031861ff5c5fea0ef981289d4aeade693242c60bf972",
+    "bytes": 292
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-local-uncovered.md",
+    "sha256": "8f723138606eebd37fd8583744db2104931978f95c2de86047b5367f002d0325",
+    "bytes": 269
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-owner-only.md",
+    "sha256": "37231d234c7a620da2666aedb4240f864748ee28fe3cd7eb80059ea127e3b943",
+    "bytes": 298
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-code-ok.md",
+    "sha256": "5c07c04894e0f38e25a18a0940a7f4f886378715ce5f0ef70d2f350f6ee55812",
+    "bytes": 438
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-bad-title.md",
+    "sha256": "9ed4268b82a4b19f6553e49c383c472a071878fc3e589e9cb6df70a4063c1314",
+    "bytes": 504
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-escaped.md",
+    "sha256": "7a201013a7ac9bd9ff225e7ccf6a4d6524e1c254b23820895d9b661985cad12e",
+    "bytes": 521
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-no-work.md",
+    "sha256": "3165d3f45c20ed2a10f7f308731308bf5816fede244b97139f4d15f0253ac32f",
+    "bytes": 217
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/amend-design-ok.md",
+    "sha256": "b3c2ae43b7e01a1296a5a3454fc9a113efabf83281540700784056020a324cdd",
+    "bytes": 512
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/ledger.md",
+    "sha256": "cb04f170d1ef01d61b340a5a439bd5f9272cce93fc0c27f3ba6dcd1232eb220f",
+    "bytes": 339
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/spec-base.md",
+    "sha256": "d6e5089c0b10d0d91301d864885e58e4ba8111ac584de103a285c03aba8975c9",
+    "bytes": 120
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/redesign-cycle-filing/spec-edit-ok.md",
+    "sha256": "321a6f4f4ced074cc2d2e3beff7cad347555e2cdac6bf78603bd6aa3dc302edc",
+    "bytes": 119
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-canonical.md",
+    "sha256": "6ddcd1224f23db74020f2357ca54a21515b60cda3502c66d57d36d2eef4aa392",
+    "bytes": 196
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-comma-key.md",
+    "sha256": "0095c6677a9314d11c47f99977f176627b707a817a7b6af7ed78ad1b9f719f0d",
+    "bytes": 178
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/dissolves-prefixed.md",
+    "sha256": "26728900c3d75f22a0ea1d7ca1110aa99c0c65d040a8bb2397c00b5ed53fff80",
+    "bytes": 205
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/keys-comma.txt",
+    "sha256": "6fa58c818d443428c0992f61bc3f1c695a362a00a80d1ea2d9dac83ac3cc9789",
+    "bytes": 81
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/keys.txt",
+    "sha256": "e7df667bfe379be56b6326e269624a68de033a9b4d72e3f7079e4f6a7d930e29",
+    "bytes": 224
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-both.md",
+    "sha256": "ed3a604d28abefcef51e968c0aff6d80afb89d5d21688de14a4097c31f1911a2",
+    "bytes": 104
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-no-progress.md",
+    "sha256": "f17756bd0e22c0599586579fc6ea0294018a10b609ad4a5a47755e37b3c49ebd",
+    "bytes": 66
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-none.md",
+    "sha256": "d8f877d242c1eda4500b4f7cc472c6054f734754adadcddfcb498a2dacad2770",
+    "bytes": 15
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/ledger-recurrence.md",
+    "sha256": "21a2db8b249001fdde6af1960bc5134e3621ba14224e8a0cd91f9b9024618611",
+    "bytes": 68
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/local-dissolves-none.md",
+    "sha256": "4b7fe997b30ea2943463c414e6adc7751d0d8ce210a08c4c36379847e3068f3d",
+    "bytes": 101
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/local-no-triggers.md",
+    "sha256": "f24778bdf300d1bbff4291034dfd94c4bc6e9a2073a57b644d7061eeb6428699",
+    "bytes": 71
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/local-under-trigger.md",
+    "sha256": "e6ab32b2d8f2dd95b7435708733e1e7afccc4299c5bf1b4e76b6cd32164926fa",
+    "bytes": 78
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/local-with-dissolves.md",
+    "sha256": "6bc3a191035f0c87e826fb0c20d15c2d7027776c6815963fe9a07a5e4643debe",
+    "bytes": 121
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/local-with-remains.md",
+    "sha256": "e57989d320320214676ab8969c3ab5dbb96ed5d6fe87abc1b7d76ea4133164aa",
+    "bytes": 109
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/missing-decision.md",
+    "sha256": "947d1bcc48ba269eadb108d2c1e42538794848b96ce3f230a2e19d8602b2e036",
+    "bytes": 63
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/patch-as-local.md",
+    "sha256": "aba026df5457ac7acba58750d7a8496286d47faa427e5d0b36bff97c42c8189e",
+    "bytes": 71
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/patch-with-dissolves.md",
+    "sha256": "79f0f530f61eaf1149b6eeb20db8665c14c78ed70470c78afae64785ca18416b",
+    "bytes": 121
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-cites-recurrence.md",
+    "sha256": "845e72c1546f366b374524068d28108d4dc8186bfbf53fee01f7c5364b98dc9e",
+    "bytes": 83
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-drops-trigger.md",
+    "sha256": "c442fedf865b7e453096150951dadfa255c705e08bc6b682a5856ada9b4ba4b9",
+    "bytes": 85
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-evidence-commas.md",
+    "sha256": "07eafdaa2d01803bce026def02cbaec1d590f4975cd52c273a35fd950a9f95cf",
+    "bytes": 180
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-mech-ok.md",
+    "sha256": "4eb6e285877ca37a8805ddb1eeba91e0b385e7df4ce808295de77c9a8d030526",
+    "bytes": 98
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-misspelled-semantic.md",
+    "sha256": "9f0d559892bf0094793f065476d26e14dfeeb4b7f0f61829f08eceb48d08f694",
+    "bytes": 99
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-no-scope.md",
+    "sha256": "3aabcc49be404bec8c2525a257e1c87e7c354af8cf7fc4587a0ee40556ce52bf",
+    "bytes": 236
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-semantic.md",
+    "sha256": "c442fedf865b7e453096150951dadfa255c705e08bc6b682a5856ada9b4ba4b9",
+    "bytes": 85
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-triggers-none.md",
+    "sha256": "4ef48c47c0aff82feed15d7814ea1967dc0369264b6849be0a27f76e7a2d93a1",
+    "bytes": 77
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/redesign-unknown-remains.md",
+    "sha256": "1e925dac5f1a36fcfa0f5e2a3c77d181fe58cd39b4f33655181d44a0795f3c35",
+    "bytes": 137
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/unknown-key.md",
+    "sha256": "3b8c291d77c6919937c3179536dbc4b88d849e8e4b432760a2be5becf704a9ec",
+    "bytes": 305
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/valid-patch.md",
+    "sha256": "cefa47234f6324164d735e3a69d8d43548c048f800d8eca5da137d7c7038c3c3",
+    "bytes": 112
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/fixtures/step-back-check/valid-redesign.md",
+    "sha256": "b2af1f49d9e386e010dc2f5d754fdd8460314f922e80ac6153a34092ccddcc5e",
+    "bytes": 801
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/test-amend-check.sh",
+    "sha256": "38229bed4bd4aa1b0a100447a509329d4e9ded756bb0c085be53f7d0a8d6761a",
+    "bytes": 8482
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/test-findings-ledger.sh",
+    "sha256": "adc438054c325a5d12addcda054083751cab475b93a87b3219622c27446bbc37",
+    "bytes": 22700
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/test-redesign-chain.sh",
+    "sha256": "de98d95a580341f32d83c1347285b3bd39d92d860404858867fbba2f53f43401",
+    "bytes": 11885
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/test-redesign-cycle-filing.sh",
+    "sha256": "7c8fe4ca1415d1ca110285a826031192286a8eb165a7b2d2f2bb23787196b891",
+    "bytes": 13612
+  },
+  {
+    "snapshot": "head",
+    "path": "tests/super-design/test-step-back-check.sh",
+    "sha256": "42c7b1cc1f00bbb0c6c87ac13f2a41d18d082f0ff32d5e880690ca01d60efdc0",
+    "bytes": 8398
+  }
+]

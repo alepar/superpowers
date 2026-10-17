@@ -1,0 +1,62 @@
+report fixtures are well-formed
+  [PASS] every fixture report yields keys through report-verdict --keys
+main flow
+  [PASS] round-2 ledger builds
+  [PASS] round-2 ledger fires no-progress (A and B confirmed again)
+  [PASS] step-back local is rejected under no-progress (exit)
+  [PASS] the reject names no-progress
+  [PASS] step-back redesign citing no-progress is accepted
+  [PASS] ledger rebuilds after the dissolved line
+  [PASS] A's row reads dissolved@r2
+  [PASS] amend record passes amend-check against the rebuilt (post-dissolve) ledger
+  [PASS] a stale record still owning the dissolved key is rejected
+  [PASS] the reject names the dissolved key
+  [PASS] round-3 ledger builds
+  [PASS] A stays dissolved@r2 in round 3 (not re-confirmed)
+  [PASS] C returns in round 3
+  [PASS] round-3 ledger fires recurrence
+  [PASS] step-back local is rejected under recurrence
+cap round
+  [PASS] cap-round r2: same count, different key, no trigger
+  [PASS] cap-round r3: no-progress first fires
+  [PASS] cap-round step-back local is rejected
+disputed key
+  [PASS] re-confirmed disputed key does not fire no-progress
+  [PASS] A's row stays disputed
+  [PASS] step-back local is accepted when the only repeat is disputed
+degraded round
+  [PASS] ledger over a degraded round builds
+  [PASS] C is open, not returned, across the degraded round
+  [PASS] no recurrence across a degraded round
+  [PASS] not-computable names returned
+reverse rule
+  [PASS] final-review row covered by no work line is rejected
+  [PASS] the reject is the reverse rule (final-review)
+  [PASS] local key covered by no work line is rejected
+  [PASS] the reject is the reverse rule (local key)
+  [PASS] code loop: open key covered only by an amended owner section is rejected
+  [PASS] the reject is the reverse rule (owner-only)
+  [PASS] design loop: the same record passes
+override for a dropped report's key
+  [PASS] ledger applies the overrides file without exit 2
+  [PASS] the dropped round's key is ignored and counted
+  [PASS] the rN-prefixed line matches B canonically
+report-verdict
+  [PASS] report-verdict recognises a step-back record
+  [PASS] report-verdict reads decision: local
+trigger-token cross-check
+  [PASS] findings-ledger emits only mechanical trigger names
+  [PASS] findings-ledger emitted both mechanical names in this test
+  [PASS] step-back-prompt.md lists the four canonical names
+  [PASS] step-back-check's header lists the mechanical names
+  [PASS] step-back-check's SEMANTIC list is the semantic names
+  [PASS] step-back-check's header documents the same semantic names
+  [PASS] the prompt's semantic names equal step-back-check's
+  [PASS] redesign citing semantic shared-cause with a triggers: none ledger is accepted
+  [PASS] redesign citing semantic defect-type with a triggers: none ledger is accepted
+  [PASS] redesign citing no-progress against the round-2 ledger is accepted
+no stale path
+  [PASS] no reference to the old super-auto step-back-check path
+  [PASS] no super-auto relative step-back-check path
+
+all redesign-chain checks passed

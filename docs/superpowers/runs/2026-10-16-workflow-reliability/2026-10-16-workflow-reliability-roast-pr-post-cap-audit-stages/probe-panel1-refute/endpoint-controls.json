@@ -1,0 +1,30 @@
+[
+  {
+    "endpoint": "base",
+    "control": "ledger-only",
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "endpoint": "base",
+    "control": "no-sources",
+    "exit": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/tmp/ufz-postcap-controller/probe-panel1-refute/base-no-sources.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "endpoint": "head",
+    "control": "ledger-only",
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "endpoint": "head",
+    "control": "no-sources",
+    "exit": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/tmp/ufz-postcap-controller/probe-panel1-refute/head-no-sources.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "rung": "manual fan-out",
+  "fork": "none",
+  "maxActiveChildren": 3,
+  "models": {
+    "triage": "gpt-6.1-sol low",
+    "scout": "gpt-6.1-sol high",
+    "dedupe": "gpt-6-luna low",
+    "judge": "gpt-6.1-sol medium",
+    "reporter": "gpt-6-luna high"
+  },
+  "scouts": 14,
+  "panels": 4,
+  "judgeSeats": 12,
+  "moderationRejections": 0,
+  "inlineJudgment": false,
+  "normalFixLoopRestarted": false,
+  "knownPriorFindingsNotReverified": true,
+  "assemblerFallback": "captured Git per pinned6.0; input selection gaps retained",
+  "sourceBase": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "sourceHead": "f726f0e97f57b398832891d3f7d95759ed367eb4"
+}

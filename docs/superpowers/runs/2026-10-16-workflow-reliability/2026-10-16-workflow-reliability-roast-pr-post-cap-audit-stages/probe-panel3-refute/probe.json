@@ -1,0 +1,22 @@
+{
+  "kind": "static contract probe; no real workflow or tracker execution",
+  "checks": {
+    "live_state_precedes_sync": true,
+    "earlier_state_recovery_syncs": true,
+    "persisted_state_recovery_omits_sync": true,
+    "replay_routes_only_from_state": true,
+    "code_loop_enters_amend_inline": true,
+    "general_reentry_control_syncs": true,
+    "base_has_no_redesign_state": true
+  },
+  "trigger_trace": [
+    "A code redesign changes an abstraction digest and owner entry from v1 to v2.",
+    "Commit v2 spec, persist state specs-committed per Amend Mode step 3, interrupt before sync. Tracker-derived digest and owner entry remain v1.",
+    "Resume code fix-loop from specs-committed: file missing work items; proceed through beads-filed coverage and calling-loop remaining steps. No sync is prescribed on this route.",
+    "Choose allowed designRoast skipped \u2014 design cap spent, so no intervening design fix can incidentally sync. Re-enter super-code with old derived copies."
+  ],
+  "recovery_controls": [
+    "Same committed spec but state still amend-checked: landed-commit branch explicitly runs sync before continuing, so v2 is propagated.",
+    "Full super-design re-entry adopts existing Key abstractions and syncs, but phase-5 code-loop replay invokes Amend Mode inline rather than the full process."
+  ]
+}

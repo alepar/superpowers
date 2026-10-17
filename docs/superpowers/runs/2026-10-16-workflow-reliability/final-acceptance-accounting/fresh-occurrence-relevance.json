@@ -1,0 +1,331 @@
+[
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Confirmed operative producer/consumer violation directly affects the named approved reliability requirement. Thrash deferral is ownership routing, not satisfaction; passing unrelated suites and carried audit silence do not resolve it.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R9"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 2
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Confirmed operative producer/consumer violation directly affects the named approved reliability requirement. Thrash deferral is ownership routing, not satisfaction; passing unrelated suites and carried audit silence do not resolve it.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R6"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 3
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Confirmed operative producer/consumer violation directly affects the named approved reliability requirement. Thrash deferral is ownership routing, not satisfaction; passing unrelated suites and carried audit silence do not resolve it.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R8"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 4
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Confirmed operative producer/consumer violation directly affects the named approved reliability requirement. Thrash deferral is ownership routing, not satisfaction; passing unrelated suites and carried audit silence do not resolve it.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R7"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 5
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Confirmed operative producer/consumer violation directly affects the named approved reliability requirement. Thrash deferral is ownership routing, not satisfaction; passing unrelated suites and carried audit silence do not resolve it.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R9"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Rejected (with reason)        ← so re-roasts don’t re-litigate",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This exact report item retains a rejected historical claim and its concrete rejection basis; it does not establish a current defect or new reserved check. Original source occurrence stays outstanding in projection until separately supported disposition; new claims/escalations remain distinct.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Rejected (with reason)        ← so re-roasts don’t re-litigate",
+      "position": 2
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This exact report item retains a rejected historical claim and its concrete rejection basis; it does not establish a current defect or new reserved check. Original source occurrence stays outstanding in projection until separately supported disposition; new claims/escalations remain distinct.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-round-2",
+      "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Materially unsettled nested archival selector/fallback authority affects stable available-source review and remains an explicit required acceptance gap. This accounting supplies no policy ruling.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R1"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R6"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 2
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R9"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 3
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R8"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 4
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R7"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 5
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Explicitly carried same iteration-2 confirmed obligation and prior evidence; not reverified, resolved or waived by scoped audit. Supported link proposal joins exact occurrences only.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R9"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 6
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "Panel confirms a synthetic ledger-only acceptance mismatch, but exact mechanism exists on base and is FYI under required attribution rule. That fixture does not establish a conforming newly supported producer path or this run eligibility; no additional repair requirement follows solely from it. The distinct supported design-producer contract escalation remains required and unresolved under R7; retained-source population gaps remain explicit.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Confirmed findings            ← consumed by super-design, one task per finding",
+      "position": 7
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Source-backed interruption trace shows committed-spec resume skips required abstraction synchronization, impairing durable recovery and subsequent review/task inputs. This violates R4 independent of broad test success; static trace is not live execution.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R4"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This is a report routing note that explicitly points to the separately retained new producer-contract escalation, not a disposition of that escalation. It creates no independent defect/measurement/human gate.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "position": 2
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This item retains an explicitly rejected bounded candidate or prior rejected claim, with the report stated lack-of-proof/basis. It does not establish a current defect or certify acceptance coverage. All distinct source refs and the new producer-contract escalation are preserved.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "position": 3
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This item retains an explicitly rejected bounded candidate or prior rejected claim, with the report stated lack-of-proof/basis. It does not establish a current defect or certify acceptance coverage. All distinct source refs and the new producer-contract escalation are preserved.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Rejected (with reason)        ← so re-roasts don't re-litigate",
+      "position": 4
+    },
+    "judgment": "supported",
+    "effect": "nonblocking",
+    "basis": "This item retains an explicitly rejected bounded candidate or prior rejected claim, with the report stated lack-of-proof/basis. It does not establish a current defect or certify acceptance coverage. All distinct source refs and the new producer-contract escalation are preserved.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ]
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "position": 1
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Retain materially unsettled nested selector/fallback authority as an existing required acceptance gap. No ruling, verified fix, equivalence to FYI, or rejection is inferred.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R1"
+  },
+  {
+    "ref": {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/roast-code-post-cap-audit",
+      "section": "Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent",
+      "position": 2
+    },
+    "judgment": "supported",
+    "effect": "required",
+    "basis": "Retain materially unsettled supported design-ledger producer versus retained-source acceptance population contract as an existing required acceptance gap. No ruling, verified fix, equivalence to FYI, or rejection is inferred.",
+    "evidence": [
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-post-cap-audit.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+      "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/coverage-round-1-requirements.md"
+    ],
+    "requirement": "R7"
+  }
+]

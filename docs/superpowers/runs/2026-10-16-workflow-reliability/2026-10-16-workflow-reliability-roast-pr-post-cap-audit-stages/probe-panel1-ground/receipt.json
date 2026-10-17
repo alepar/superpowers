@@ -1,0 +1,56 @@
+{
+  "head": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "ledgerOnly": {
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "retained": {
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"r2/roast\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"r2/roast\",\"section\":\"Confirmed findings\",\"position\":1}]\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 3,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding acceptance relevance unproven: [{\\\"source\\\":\\\"r2/roast\\\",\\\"section\\\":\\\"Confirmed findings\\\",\\\"position\\\":1}]\"],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "withoutLedger": {
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: clean\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 0,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "noSources": {
+    "ordinary": {
+      "exit": 0,
+      "stdout": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: root acceptance pending: finding evidence: {\"origin\":\"/private/tmp/ufz-postcap-controller/probe-panel1-ground/run.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}]\nqualifier: root acceptance pending: finding evidence: {\"origin\":\"/private/tmp/ufz-postcap-controller/probe-panel1-ground/run.md\",\"message\":\"no retained source extraction; finding coverage is unknown\"}\n",
+      "stderr": ""
+    },
+    "acceptance": {
+      "exit": 3,
+      "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"finding evidence: {\\\"origin\\\":\\\"/private/tmp/ufz-postcap-controller/probe-panel1-ground/run.md\\\",\\\"message\\\":\\\"no retained source extraction; finding coverage is unknown\\\"}\"],\"nonblockingFindings\":[]}\n",
+      "stderr": ""
+    }
+  },
+  "baseResult": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  }
+}

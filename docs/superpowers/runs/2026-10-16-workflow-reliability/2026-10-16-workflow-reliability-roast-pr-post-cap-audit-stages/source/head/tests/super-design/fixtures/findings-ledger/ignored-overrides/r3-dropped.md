@@ -1,0 +1,17 @@
+super-roast verdict: Blocking (3 confirmed)
+mode: pr        iteration: 3 of 3
+inputs: super-auto/x@5b6c7d8 vs main@a1b2c3d — stated intent: docs/spec.md
+delta vs prior: 0 new confirmed (0 Blocking) · 0 carried (0 Blocking) · 0 resolved · 0 regressed (0 Blocking) · 0 punch-listed (open)
+coverage: 9 of 9 scouts
+
+## Confirmed findings
+
+- [Blocking] src/a.sh:10 — finding text for this entry
+  verdict: confirmed (reproduce ✓ / refute ✓ / ground ✓)
+
+- [Blocking] src/b.sh:5 — finding text for this entry
+  verdict: confirmed (reproduce ✓ / refute ✓ / ground ✓)
+
+- [Blocking] src/only-r3.sh:1 — finding text for this entry
+  verdict: confirmed (reproduce ✓ / refute ✓ / ground ✓)
+

@@ -45,3 +45,5 @@ Design roast round 1 uses the supported manual fan-out rung because Workflow is 
 - code-roast round2 · Provider content-filter interrupted controller after all13scouts, dedupe and first3-seat panel completed. Savedresults retained; fresh controller resumes remaining static correctness verification under pinned safe-retry wording. No branch/source change or incomplete-seat clearance.
 
 - PR roast round2 reporter formatting: first verdict counted one Blocking while the report contained five confirmed entries. The same reporter corrected only the count; its first output was preserved and all other content was verified unchanged.
+
+- post-cap audit · Required assembler returned exit2/unavailable on the captured base nested historical run.md archive claim. Pinned6.0 direct captured-Git fallback applies; policy escalation and all source gaps remain open.

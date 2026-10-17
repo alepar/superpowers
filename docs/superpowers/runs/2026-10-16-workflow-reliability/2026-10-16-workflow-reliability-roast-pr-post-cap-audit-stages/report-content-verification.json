@@ -1,0 +1,15 @@
+{
+  "sha256": "0b1152a15448933747511f509825deea4e802f30cdff209b190fdef097a98b48",
+  "bytes": 22053,
+  "verdict": "Blocking (7 confirmed)",
+  "escalations": [
+    "skills/super-code/scripts/dispatch-text.mjs:154 \u2014 Still-open material dissent from iteration 2: confirming seats found nested historical run.md snapshots suppress review of available product edits and cited direct-input review when assembly is unavailable; the refute seat cited assembler-prompt.md:22-29 and super-auto/SKILL.md:463, which keep invalid provenance unavailable through fallback. The seats did not resolve whether that explicit refusal policy governs this nested snapshot case. Selector assembly failed before this audit; captured-Git fallback preserved the coverage gaps and does not resolve this policy question.",
+    "skills/super-auto/scripts/report-status:469 \u2014 Cross-packet material dissent leaves the producer contract unresolved. The two refute seats for this packet cite super-auto/SKILL.md:491, requiring complete extraction for each settled roast source, and base acceptance behavior. The ground seat for the adjacent confirmed packet at :468 says the supported design-loop producer writes findingsLedgerDesign without creating finding-source records and identifies this as a producer-consumer seam. That concrete design-loop evidence, recorded in probe-panel0-ground/receipt.json, is not answered by the roast-source requirement; the packets do not establish whether the requirement applies to that producer. The new-regression claim needs human judgment on this scope question."
+  ],
+  "enforcement": [
+    "lanes: 2 confirmed entries tagged",
+    "header: lane-yield inserted",
+    "confirmedCount 7 vs 2 confirmed default routes (overrules account for the gap)"
+  ],
+  "requiredSuiteRerun": false
+}

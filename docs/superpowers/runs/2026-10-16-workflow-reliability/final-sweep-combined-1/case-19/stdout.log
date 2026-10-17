@@ -1,0 +1,11 @@
+task-surface: sizes
+  [PASS] exits 0
+  [PASS] sums the sizes at the base commit, not the working tree (400+100)/4
+  [PASS] a file missing at the base counts 0
+  [PASS] the missing file is named on stderr
+  [PASS] a single file
+task-surface: bad input
+  [PASS] unknown sha exits 2
+  [PASS] no paths exits 2
+  [PASS] no arguments exits 2
+task-surface: all tests passed

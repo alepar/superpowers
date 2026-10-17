@@ -1,0 +1,342 @@
+[
+  {
+    "endpoint": "base",
+    "pointer": "",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedger",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedger",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedger",
+    "missing": true,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedger",
+    "missing": true,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedgerDesign",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedgerDesign",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedgerDesign",
+    "missing": true,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "base",
+    "pointer": "findingsLedgerDesign",
+    "missing": true,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedger",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: completed with 1 unresolved Blocking, 0 escalations\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedger",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedger",
+    "missing": true,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: findings ledger not found: absent.md]\nqualifier: findings ledger not found: absent.md\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedger",
+    "missing": true,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: findings ledger not found: absent.md, outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: findings ledger not found: absent.md\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedgerDesign",
+    "missing": false,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: completed with 1 unresolved Blocking, 0 escalations\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedgerDesign",
+    "missing": false,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: completed with 1 unresolved Blocking, 0 escalations [degraded: outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedgerDesign",
+    "missing": true,
+    "retainedRoast": false,
+    "exit": 0,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: findings ledger not found: absent.md]\nqualifier: findings ledger not found: absent.md\n"
+  },
+  {
+    "endpoint": "head",
+    "pointer": "findingsLedgerDesign",
+    "missing": true,
+    "retainedRoast": true,
+    "exit": 3,
+    "gate": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]"
+      ],
+      "nonblockingFindings": []
+    },
+    "ordinary": "status: clean [degraded: findings ledger not found: absent.md, outstanding findings: 1, root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]]\nqualifier: findings ledger not found: absent.md\nqualifier: outstanding findings: 1\nqualifier: root acceptance pending: finding acceptance relevance unproven: [{\"source\":\"roast-code/round-1\",\"section\":\"Confirmed findings\",\"position\":1}]\n"
+  }
+]

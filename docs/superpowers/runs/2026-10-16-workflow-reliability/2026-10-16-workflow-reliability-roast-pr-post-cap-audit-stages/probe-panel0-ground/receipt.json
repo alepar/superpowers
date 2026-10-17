@@ -1,0 +1,117 @@
+{
+  "producer": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "extraction": {
+    "exit": 0,
+    "out": "{\"version\":1,\"source\":\"clean/final\",\"artifact\":\"/tmp/ufz-postcap-controller/probe-panel0-ground/clean.md\",\"kind\":\"final-review\",\"verdict\":\"ready\",\"occurrences\":[]}\n",
+    "err": ""
+  },
+  "ledger": "# findings ledger \u2014 code \u2014 through r2\ntriggers: no-progress(r1 Blocking keys all re-confirmed in r2: 1)\nblocking: r1=2 r2=1 carriedB=2 regressedB=0 degraded=none not-computable=none\nignored-overrides: 0\n- [Blocking] src/a.sh:10 \u00b7 raised r1@3f9c2e1 \u00b7 disputed@r1 (premise wrong) \u00b7 source roast \u00b7 text /tmp/ufz-postcap-controller/probe-panel0-ground/r2.md\n- [Blocking] src/b.sh:5 \u00b7 raised r1@3f9c2e1 \u00b7 open \u00b7 source roast \u00b7 text /tmp/ufz-postcap-controller/probe-panel0-ground/r2.md\n",
+  "cases": {
+    "base-control": {
+      "status": {
+        "exit": 0,
+        "out": "status: clean\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    },
+    "head-control": {
+      "status": {
+        "exit": 0,
+        "out": "status: clean\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    },
+    "base-findingsLedger": {
+      "status": {
+        "exit": 0,
+        "out": "status: clean\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    },
+    "head-findingsLedger": {
+      "status": {
+        "exit": 0,
+        "out": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    },
+    "base-findingsLedgerDesign": {
+      "status": {
+        "exit": 0,
+        "out": "status: clean\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    },
+    "head-findingsLedgerDesign": {
+      "status": {
+        "exit": 0,
+        "out": "status: completed with 1 unresolved Blocking, 0 escalations\n",
+        "err": ""
+      },
+      "acceptance": {
+        "exit": 0,
+        "out": "{\"owner\":\"super-auto\",\"sourceTree\":\"1111111111111111111111111111111111111111\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+        "err": ""
+      },
+      "projection": {
+        "exit": 0,
+        "out": "{\n  \"version\": 1,\n  \"findings\": [],\n  \"gaps\": [],\n  \"metrics\": {\n    \"scope\": \"retained sources\",\n    \"sources\": 1,\n    \"sourceKinds\": [\n      \"final-review\"\n    ],\n    \"occurrences\": 0,\n    \"occurrenceGroups\": 0,\n    \"findings\": 0,\n    \"otherSectionGroups\": 0,\n    \"sections\": [],\n    \"repaired\": 0,\n    \"rejected\": 0,\n    \"outstanding\": 0,\n    \"deferred\": 0,\n    \"gaps\": 0\n  }\n}\n",
+        "err": ""
+      }
+    }
+  }
+}

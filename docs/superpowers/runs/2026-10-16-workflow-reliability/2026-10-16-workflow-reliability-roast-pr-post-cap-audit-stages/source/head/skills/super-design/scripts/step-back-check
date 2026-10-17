@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+# Validates one step-back record before the orchestrator acts on it. Both roast fix loops (super-auto
+# phase 5 and super-design's Adversarial Review Loop) use it.
+#
+#   step-back-check --step-back STEP_BACK_FILE --keys KEYS_FILE [--ledger LEDGER_FILE]
+#
+# STEP_BACK_FILE: the step-back output, in step-back-prompt.md's fields. KEYS_FILE: the
+# pre-dissolution key set, every round's confirmed finding keys so far, one `[SEV] <location>` per
+# line (a leading `rN ` is stripped). LEDGER_FILE: the findings ledger; only its `triggers:` line is
+# read: `triggers: none` or `triggers: <name>(<evidence>)[, <name>(<evidence>)]`.
+#
+# Checks:
+#   decision:  present and `local` or `redesign`; `patch` is read as `local` (the one place that
+#              mapping lives).
+#   triggers:  `none` or a `, `-separated list of trigger names. Canonical names. Mechanical:
+#              `no-progress`, `recurrence` (computed only by findings-ledger). Semantic: `shared-cause`,
+#              `defect-type` (defined only in step-back-prompt.md; add a new semantic trigger to
+#              SEMANTIC below). Every other name is mechanical.
+#              With --ledger: `local` is rejected while the ledger's triggers: line names a mechanical
+#              trigger; `redesign` is rejected with `triggers: none`; a cited mechanical trigger the
+#              ledger does not list is rejected; a missing triggers: field is rejected. Without
+#              --ledger the triggers: field is not required (callers mid-upgrade) and the
+#              ledger-dependent checks do not run. Both triggers: lines are parsed by the same
+#              paren-aware scanner (evidence may hold commas; the record may cite bare names), and
+#              for `redesign` the two mechanical sets must be equal: a ledger trigger the record
+#              drops is rejected, as is a cited trigger the ledger lacks.
+#   scope:     for `redesign`, present and starting with `inside` or `outside`.
+#   keys:      every `dissolves:` and `remains:` key, in canonical form `[SEV] <location>`, matches a
+#              KEYS_FILE line after both lose any leading `rN `. A list is split only on `, [` (or
+#              `, rN [`), so keys may contain `, ` or `; `; `none` or an empty value lists no keys.
+#              Both fields are redesign-only: a record with any other decision (`patch` counts as
+#              `local`) that lists keys in either is rejected.
+#
+# Prints `ok`, or one `reject: <reason>` line per problem. Pure bash and awk: needs no jq, so it
+# never prints JQ_UNAVAILABLE.
+# Exit 0 ok, 3 rejected, 2 bad input (including an unreadable ledger or one without a triggers: line).
+set -euo pipefail
+
+usage() { echo "usage: step-back-check --step-back STEP_BACK_FILE --keys KEYS_FILE [--ledger LEDGER_FILE]" >&2; exit 2; }
+stepback='' keys='' ledger=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --step-back) [ $# -ge 2 ] || usage; stepback=$2; shift 2 ;;
+    --keys) [ $# -ge 2 ] || usage; keys=$2; shift 2 ;;
+    --ledger) [ $# -ge 2 ] || usage; ledger=$2; shift 2 ;;
+    *) usage ;;
+  esac
+done
+[ -n "$stepback" ] && [ -n "$keys" ] || usage
+[ -f "$stepback" ] || { echo "step-back file not found: $stepback" >&2; exit 2; }
+[ -f "$keys" ] || { echo "keys file not found: $keys" >&2; exit 2; }
+ledgertriggers=''
+if [ -n "$ledger" ]; then
+  [ -f "$ledger" ] || { echo "ledger file not found: $ledger" >&2; exit 2; }
+  ledgertriggers=$(awk '/^triggers:/ { sub(/^triggers:[ \t]*/, ""); sub(/[ \t\r]+$/, ""); print; found = 1; exit } END { if (!found) exit 1 }' "$ledger") ||
+    { echo "ledger has no triggers: line: $ledger" >&2; exit 2; }
+fi
+
+awk -v haveledger="$([ -n "$ledger" ] && echo 1 || echo 0)" -v ledgertriggers="$ledgertriggers" '
+  BEGIN { SEMANTIC = " shared-cause defect-type " }
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function value(s) { sub(/^[ \t]*[a-z]+:/, "", s); return trim(s) }
+  function reject(r) { rejects[++nr] = "reject: " r }
+  function canon(k) { k = trim(k); sub(/^r[0-9]+ /, "", k); return k }
+  # The one trigger-line scanner (record and ledger). Fills set[name] and ord[1..n] with the trigger
+  # names in `s` and returns n. A name is `[a-z][a-z-]*`, optionally followed by `(evidence)` whose
+  # parentheses nest and whose text may hold commas; names are separated by `,`. `none` is empty.
+  function names(s, set, ord,   n, c, d, i) {
+    split("", set); split("", ord); n = 0
+    s = trim(s)
+    if (tolower(s) == "none") return 0
+    while (s != "") {
+      if (match(s, /^[a-z][a-z-]*/)) {
+        c = substr(s, 1, RLENGTH); s = substr(s, RLENGTH + 1)
+        if (!(c in set)) { set[c] = 1; ord[++n] = c }
+        if (substr(s, 1, 1) == "(") {
+          d = 0
+          for (i = 1; i <= length(s); i++) {
+            ch = substr(s, i, 1)
+            if (ch == "(") d++
+            else if (ch == ")" && --d == 0) break
+          }
+          s = substr(s, i + 1)
+        }
+      }
+      sub(/^[^a-z]*/, "", s)
+    }
+    return n
+  }
+  function nokeys(v) { v = trim(v); return (v == "" || tolower(v) == "none") }
+  function checkkey(field, k,   c) { c = canon(k); if (c != "" && !(c in known)) reject(field ": unknown key \047" trim(k) "\047") }
+  function checkkeys(field, v,   s) {
+    v = trim(v)
+    if (v == "" || tolower(v) == "none") return
+    s = v
+    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) { checkkey(field, substr(s, 1, RSTART - 1)); s = substr(s, RSTART + 1) }
+    checkkey(field, s)
+  }
+  FILENAME == ARGV[1] { k = canon($0); if (k != "") known[k] = 1; next }
+  { sub(/\r$/, "") }
+  !hasdecision && /^[ \t]*decision:/ { hasdecision = 1; decision = value($0); next }
+  !hastriggers && /^[ \t]*triggers:/ { hastriggers = 1; triggers = value($0); next }
+  !hasscope && /^[ \t]*scope:/ { hasscope = 1; scope = value($0); next }
+  /^[ \t]*dissolves:/ { dissolves = value($0); next }
+  /^[ \t]*remains:/ { remains = value($0); next }
+  END {
+    if (decision == "patch") decision = "local"
+    if (decision == "") reject("decision: missing")
+    else if (decision != "local" && decision != "redesign") reject("decision: \047" decision "\047 is not local or redesign")
+    if (decision == "redesign") {
+      if (scope == "") reject("scope: missing (required for redesign)")
+      else if (scope !~ /^(inside|outside)([^a-z]|$)/) reject("scope: \047" scope "\047 does not start with inside or outside")
+    }
+    if (haveledger == 1) {
+      nl = names(ledgertriggers, lnames, lorder)
+      for (i = 1; i <= nl; i++) mech = mech (mech == "" ? "" : ", ") lorder[i]
+      if (!hastriggers) reject("triggers: missing")
+      else {
+        none = (tolower(triggers) == "none")
+        if (decision == "local" && mech != "") reject("decision: local while ledger names mechanical trigger(s): " mech)
+        if (decision == "redesign" && none) reject("triggers: none with decision redesign")
+        nc = names(triggers, cnames, corder)
+        for (i = 1; i <= nc; i++) {
+          c = corder[i]
+          if (index(SEMANTIC, " " c " ") > 0) continue
+          if (!(c in lnames)) reject("triggers: \047" c "\047 is mechanical and the ledger does not list it")
+        }
+        if (decision == "redesign")
+          for (i = 1; i <= nl; i++) if (!(lorder[i] in cnames)) reject("triggers: ledger lists \047" lorder[i] "\047 and the record drops it")
+      }
+    }
+    if (decision == "redesign") { checkkeys("dissolves", dissolves); checkkeys("remains", remains) }
+    else {
+      if (!nokeys(dissolves)) reject("dissolves: only a redesign record may list keys (decision " decision ")")
+      if (!nokeys(remains)) reject("remains: only a redesign record may list keys (decision " decision ")")
+    }
+    if (nr == 0) { print "ok"; exit 0 }
+    for (i = 1; i <= nr; i++) print rejects[i]
+    exit 3
+  }
+' "$keys" "$stepback"

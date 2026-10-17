@@ -1,0 +1,11 @@
+{
+  "verified": true,
+  "regularFilesBeforeFinalMap": 621,
+  "symlinks": 0,
+  "liveGitEntries": 0,
+  "sourceRecords": 619,
+  "selfReferenceExclusions": [
+    "artifact-source-hash-map.json"
+  ],
+  "hashMapWrittenLast": true
+}

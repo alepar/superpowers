@@ -1,0 +1,492 @@
+{
+  "version": 1,
+  "merged": true,
+  "branch": "super-auto/workflow-reliability",
+  "preHead": "06677f7b05d3be12a52ff80ec2a7a0c1f9ee93f8",
+  "baseSha": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "mergeCommit": "f726f0e97f57b398832891d3f7d95759ed367eb4",
+  "mergeParents": [
+    "06677f7b05d3be12a52ff80ec2a7a0c1f9ee93f8",
+    "832b051c870ae5c69adfa7f14d770292ab6c1a81"
+  ],
+  "rootBase": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "mergeCommand": "git merge --no-ff 832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "controllerPolicy": {
+    "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/pinned-policy-6.0/skills",
+    "version": "6.4.2-alepar6.0",
+    "switched": false,
+    "gate": "After phase-5 exit and before parent-owned phase-6 sweep; one conflict pass; never rebase"
+  },
+  "conflictedFiles": [
+    "docs/superpowers/specs/INDEX.md",
+    "skills/super-auto/SKILL.md",
+    "skills/super-auto/report-prompt.md",
+    "skills/super-auto/resume.md",
+    "skills/super-auto/run-state.md",
+    "tests/super-auto/test-contract-lint.sh"
+  ],
+  "conflictCount": 6,
+  "conflictBlocks": 11,
+  "cleanAutoMergeTouchedFiles": [
+    "skills/super-auto/scripts/report-status",
+    "skills/super-code/scripts/report-verdict",
+    "skills/super-roast/SKILL.md",
+    "tests/super-auto/test-scripts.sh",
+    "tests/super-code/test-report-verdict.sh"
+  ],
+  "cleanAutoMergeReview": [
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "intent": "Incoming disputed ledger/capped-key deduplication coexists with branch collection integrity, projection qualifiers and caller acceptance implementation. No hand edits to auto-merged script."
+    },
+    {
+      "path": "skills/super-code/scripts/report-verdict",
+      "intent": "Incoming local decision and exact-token boundary coexist with branch complete extraction and immutable source/section/occurrence identities. No hand edits to auto-merged script."
+    },
+    {
+      "path": "skills/super-roast/SKILL.md",
+      "intent": "Incoming caller iteration cap/header coexist with branch captured revision and isolated review workspace instructions. No hand edits."
+    },
+    {
+      "path": "tests/super-auto/test-scripts.sh",
+      "intent": "Incoming disputed status fixtures remain, moved step-back tests now owned by super-design; branch collection/projection/acceptance cases remain. No hand edits."
+    },
+    {
+      "path": "tests/super-code/test-report-verdict.sh",
+      "intent": "Incoming local/near-miss/keys-refusal cases coexist with branch complete extraction coverage. No hand edits."
+    }
+  ],
+  "incomingCleanAppliedPaths": [
+    ".claude-plugin/marketplace.json",
+    ".claude-plugin/plugin.json",
+    ".codex-plugin/plugin.json",
+    ".cursor-plugin/plugin.json",
+    ".devin-plugin/plugin.json",
+    ".hermes-plugin/plugin.yaml",
+    ".kimi-plugin/plugin.json",
+    "AGENTS.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-16-roast-findings-redesign-loop-design.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-16-roast-findings-redesign-loop-roast-design-1-step-back.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-16-roast-findings-redesign-loop-roast-design-1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-16-roast-findings-redesign-loop-roast-design-2.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1-punch-list.txt",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1-scope-filter.json",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1-scope-keys.txt",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1-step-back-keys.txt",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1-step-back.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-2-punch-list.txt",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-2.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-17-roast-findings-redesign-loop-roast-pr-post-cap-audit.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-findings-round-1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-findings-round-2.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-ledger.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-1-requirements.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-1-review-1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-1-review-2.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-2-requirements.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-2-review-1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-2-review-2.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/final-review-fixloop-r1.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/final-review-last.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/final-review-mustfix-verify.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/final-review-phase3.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/friction.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/manual-acceptance.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_2f7123fb-ebe.json",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_2f7123fb-ebe.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_a94abf64-d7b.json",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_a94abf64-d7b.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_da377340-41e.json",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/profile-wf_da377340-41e.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/report.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/run.md",
+    "docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/upstream-feedback-draft.md",
+    "docs/superpowers/specs/2026-10-16-vision-roast-findings-redesign-loop.md",
+    "gemini-extension.json",
+    "package.json",
+    "skills/super-auto/MAINTENANCE.md",
+    "skills/super-auto/scripts/step-back-check",
+    "skills/super-design/MAINTENANCE.md",
+    "skills/super-design/SKILL.md",
+    "skills/super-design/amend-prompt.md",
+    "skills/super-design/scripts/amend-check",
+    "skills/super-design/scripts/findings-ledger",
+    "skills/super-design/scripts/step-back-check",
+    "skills/super-design/step-back-prompt.md",
+    "skills/super-roast/super-roast-workflow.md",
+    "tests/super-auto/fixtures/contract-lint/run-state-fields-2bf1d53.txt",
+    "tests/super-auto/fixtures/contract-lint/run-state-formats-2bf1d53.txt",
+    "tests/super-auto/fixtures/report-status/degraded-redesign-parks.md",
+    "tests/super-auto/fixtures/report-status/disputed-capped.md",
+    "tests/super-auto/fixtures/report-status/disputed-code-ledger.md",
+    "tests/super-auto/fixtures/report-status/disputed-design-capped-proceeded.md",
+    "tests/super-auto/fixtures/report-status/disputed-design-capped-stopped.md",
+    "tests/super-auto/fixtures/report-status/disputed-design-ledger.md",
+    "tests/super-auto/fixtures/report-status/disputed-uncapped-ledger.md",
+    "tests/super-auto/fixtures/report-status/disputed-uncapped.md",
+    "tests/super-code/fixtures/report-verdict/step-back-local.md",
+    "tests/super-code/fixtures/report-verdict/step-back-near-miss.md",
+    "tests/super-design/fixtures/amend-check/amend-nested-new.md",
+    "tests/super-design/fixtures/amend-check/amended-untouched.md",
+    "tests/super-design/fixtures/amend-check/comma-pipe-keys.md",
+    "tests/super-design/fixtures/amend-check/design-local-no-work.md",
+    "tests/super-design/fixtures/amend-check/ledger.md",
+    "tests/super-design/fixtures/amend-check/missing-final-review.md",
+    "tests/super-design/fixtures/amend-check/missing-open.md",
+    "tests/super-design/fixtures/amend-check/missing-returned.md",
+    "tests/super-design/fixtures/amend-check/ok-code.md",
+    "tests/super-design/fixtures/amend-check/ok-dot-slash.md",
+    "tests/super-design/fixtures/amend-check/owner-section-dot-slash.md",
+    "tests/super-design/fixtures/amend-check/owner-section-only.md",
+    "tests/super-design/fixtures/amend-check/owners-duplicate.md",
+    "tests/super-design/fixtures/amend-check/owners-not-open.md",
+    "tests/super-design/fixtures/amend-check/reverse-local.md",
+    "tests/super-design/fixtures/amend-check/reverse-rule.md",
+    "tests/super-design/fixtures/amend-check/spec-base-fenced-goal.md",
+    "tests/super-design/fixtures/amend-check/spec-base.md",
+    "tests/super-design/fixtures/amend-check/spec-edit-fenced-goal.md",
+    "tests/super-design/fixtures/amend-check/spec-edit-goal.md",
+    "tests/super-design/fixtures/amend-check/spec-edit-ok.md",
+    "tests/super-design/fixtures/amend-check/spec-goal-heading-inserted.md",
+    "tests/super-design/fixtures/amend-check/spec-nested-base.md",
+    "tests/super-design/fixtures/amend-check/spec-nested-goal-edit.md",
+    "tests/super-design/fixtures/amend-check/spec-nested-new.md",
+    "tests/super-design/fixtures/amend-check/spec-no-unchanged.md",
+    "tests/super-design/fixtures/amend-check/work-no-covers.md",
+    "tests/super-design/fixtures/findings-ledger/both-triggers/r1.md",
+    "tests/super-design/fixtures/findings-ledger/both-triggers/r2.md",
+    "tests/super-design/fixtures/findings-ledger/degraded-first/r1.md",
+    "tests/super-design/fixtures/findings-ledger/degraded-first/r2.md",
+    "tests/super-design/fixtures/findings-ledger/degraded-first/r3.md",
+    "tests/super-design/fixtures/findings-ledger/degraded/r1.md",
+    "tests/super-design/fixtures/findings-ledger/degraded/r2.md",
+    "tests/super-design/fixtures/findings-ledger/degraded/r3.md",
+    "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r1.md",
+    "tests/super-design/fixtures/findings-ledger/disputed-reconfirmed/r2.md",
+    "tests/super-design/fixtures/findings-ledger/final-review/fr-2.txt",
+    "tests/super-design/fixtures/findings-ledger/final-review/fr-3.txt",
+    "tests/super-design/fixtures/findings-ledger/final-review/r1.md",
+    "tests/super-design/fixtures/findings-ledger/final-review/r2.md",
+    "tests/super-design/fixtures/findings-ledger/fr-clean/fr-1.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-clean/fr-2.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-clean/r1.md",
+    "tests/super-design/fixtures/findings-ledger/fr-clean/r2.md",
+    "tests/super-design/fixtures/findings-ledger/fr-empty/fr-1.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-empty/fr-2.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-empty/r1.md",
+    "tests/super-design/fixtures/findings-ledger/fr-empty/r2.md",
+    "tests/super-design/fixtures/findings-ledger/fr-none/fr-1.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-bad.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-none/fr-2-none-keys.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-none/fr-2.txt",
+    "tests/super-design/fixtures/findings-ledger/fr-none/r1.md",
+    "tests/super-design/fixtures/findings-ledger/fr-none/r2.md",
+    "tests/super-design/fixtures/findings-ledger/fr-override/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/ignored-overrides/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/ignored-overrides/r1.md",
+    "tests/super-design/fixtures/findings-ledger/ignored-overrides/r2.md",
+    "tests/super-design/fixtures/findings-ledger/ignored-overrides/r3-dropped.md",
+    "tests/super-design/fixtures/findings-ledger/implausible/r1.md",
+    "tests/super-design/fixtures/findings-ledger/implausible/r2.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood-baseline/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r1.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r2.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood-baseline/r3.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/r1.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/r2.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/r3-better.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/r3-stuck.md",
+    "tests/super-design/fixtures/findings-ledger/lastgood/r3-worse.md",
+    "tests/super-design/fixtures/findings-ledger/missing-prev/r1.md",
+    "tests/super-design/fixtures/findings-ledger/missing-prev/r3.md",
+    "tests/super-design/fixtures/findings-ledger/multi-location/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/multi-location/r1.md",
+    "tests/super-design/fixtures/findings-ledger/multi-location/r2.md",
+    "tests/super-design/fixtures/findings-ledger/no-delta/r1.md",
+    "tests/super-design/fixtures/findings-ledger/no-delta/r2.md",
+    "tests/super-design/fixtures/findings-ledger/no-progress/r1.md",
+    "tests/super-design/fixtures/findings-ledger/no-progress/r2.md",
+    "tests/super-design/fixtures/findings-ledger/overrides-precedence/overrides.md",
+    "tests/super-design/fixtures/findings-ledger/overrides-precedence/r1.md",
+    "tests/super-design/fixtures/findings-ledger/overrides-precedence/r2.md",
+    "tests/super-design/fixtures/findings-ledger/panel-capped/r1.md",
+    "tests/super-design/fixtures/findings-ledger/panel-capped/r2.md",
+    "tests/super-design/fixtures/findings-ledger/panel-capped/r3.md",
+    "tests/super-design/fixtures/findings-ledger/punch-after-redesign/punch-list-1.txt",
+    "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r1.md",
+    "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r2.md",
+    "tests/super-design/fixtures/findings-ledger/punch-after-redesign/r3.md",
+    "tests/super-design/fixtures/findings-ledger/punch-list/punch-list.txt",
+    "tests/super-design/fixtures/findings-ledger/punch-list/r1.md",
+    "tests/super-design/fixtures/findings-ledger/punch-list/r2.md",
+    "tests/super-design/fixtures/findings-ledger/r1-only/r1.md",
+    "tests/super-design/fixtures/findings-ledger/regressed/r1.md",
+    "tests/super-design/fixtures/findings-ledger/regressed/r2.md",
+    "tests/super-design/fixtures/findings-ledger/returned-nit/r1.md",
+    "tests/super-design/fixtures/findings-ledger/returned-nit/r2.md",
+    "tests/super-design/fixtures/findings-ledger/returned-nit/r3.md",
+    "tests/super-design/fixtures/findings-ledger/returned/r1.md",
+    "tests/super-design/fixtures/findings-ledger/returned/r2.md",
+    "tests/super-design/fixtures/findings-ledger/returned/r3.md",
+    "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r1.md",
+    "tests/super-design/fixtures/findings-ledger/same-count-new-keys/r2.md",
+    "tests/super-design/fixtures/redesign-chain/cap-round/keys-3.txt",
+    "tests/super-design/fixtures/redesign-chain/cap-round/r1.md",
+    "tests/super-design/fixtures/redesign-chain/cap-round/r2.md",
+    "tests/super-design/fixtures/redesign-chain/cap-round/r3.md",
+    "tests/super-design/fixtures/redesign-chain/cap-round/step-back-local.md",
+    "tests/super-design/fixtures/redesign-chain/degraded/r1.md",
+    "tests/super-design/fixtures/redesign-chain/degraded/r2.md",
+    "tests/super-design/fixtures/redesign-chain/degraded/r3.md",
+    "tests/super-design/fixtures/redesign-chain/disputed/keys-2.txt",
+    "tests/super-design/fixtures/redesign-chain/disputed/overrides.md",
+    "tests/super-design/fixtures/redesign-chain/disputed/r1.md",
+    "tests/super-design/fixtures/redesign-chain/disputed/r2.md",
+    "tests/super-design/fixtures/redesign-chain/disputed/step-back-local.md",
+    "tests/super-design/fixtures/redesign-chain/dropped-override/overrides.md",
+    "tests/super-design/fixtures/redesign-chain/dropped-override/r3-dropped.md",
+    "tests/super-design/fixtures/redesign-chain/main/amend-ok.md",
+    "tests/super-design/fixtures/redesign-chain/main/amend-post-dissolve.md",
+    "tests/super-design/fixtures/redesign-chain/main/fr-2.txt",
+    "tests/super-design/fixtures/redesign-chain/main/keys-2.txt",
+    "tests/super-design/fixtures/redesign-chain/main/keys-3.txt",
+    "tests/super-design/fixtures/redesign-chain/main/r1.md",
+    "tests/super-design/fixtures/redesign-chain/main/r2.md",
+    "tests/super-design/fixtures/redesign-chain/main/r3.md",
+    "tests/super-design/fixtures/redesign-chain/main/spec-amended.md",
+    "tests/super-design/fixtures/redesign-chain/main/spec-base.md",
+    "tests/super-design/fixtures/redesign-chain/main/step-back-local-r3.md",
+    "tests/super-design/fixtures/redesign-chain/main/step-back-local.md",
+    "tests/super-design/fixtures/redesign-chain/main/step-back-redesign.md",
+    "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-fr-uncovered.md",
+    "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-local-uncovered.md",
+    "tests/super-design/fixtures/redesign-chain/reverse-rule/amend-owner-only.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/amend-code-ok.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/amend-design-bad-title.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/amend-design-escaped.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/amend-design-no-work.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/amend-design-ok.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/ledger.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/spec-base.md",
+    "tests/super-design/fixtures/redesign-cycle-filing/spec-edit-ok.md",
+    "tests/super-design/fixtures/step-back-check/dissolves-canonical.md",
+    "tests/super-design/fixtures/step-back-check/dissolves-comma-key.md",
+    "tests/super-design/fixtures/step-back-check/dissolves-prefixed.md",
+    "tests/super-design/fixtures/step-back-check/keys-comma.txt",
+    "tests/super-design/fixtures/step-back-check/keys.txt",
+    "tests/super-design/fixtures/step-back-check/ledger-both.md",
+    "tests/super-design/fixtures/step-back-check/ledger-no-progress.md",
+    "tests/super-design/fixtures/step-back-check/ledger-none.md",
+    "tests/super-design/fixtures/step-back-check/ledger-recurrence.md",
+    "tests/super-design/fixtures/step-back-check/local-dissolves-none.md",
+    "tests/super-design/fixtures/step-back-check/local-no-triggers.md",
+    "tests/super-design/fixtures/step-back-check/local-under-trigger.md",
+    "tests/super-design/fixtures/step-back-check/local-with-dissolves.md",
+    "tests/super-design/fixtures/step-back-check/local-with-remains.md",
+    "tests/super-design/fixtures/step-back-check/missing-decision.md",
+    "tests/super-design/fixtures/step-back-check/patch-as-local.md",
+    "tests/super-design/fixtures/step-back-check/patch-with-dissolves.md",
+    "tests/super-design/fixtures/step-back-check/redesign-cites-recurrence.md",
+    "tests/super-design/fixtures/step-back-check/redesign-drops-trigger.md",
+    "tests/super-design/fixtures/step-back-check/redesign-evidence-commas.md",
+    "tests/super-design/fixtures/step-back-check/redesign-mech-ok.md",
+    "tests/super-design/fixtures/step-back-check/redesign-misspelled-semantic.md",
+    "tests/super-design/fixtures/step-back-check/redesign-no-scope.md",
+    "tests/super-design/fixtures/step-back-check/redesign-semantic.md",
+    "tests/super-design/fixtures/step-back-check/redesign-triggers-none.md",
+    "tests/super-design/fixtures/step-back-check/redesign-unknown-remains.md",
+    "tests/super-design/fixtures/step-back-check/unknown-key.md",
+    "tests/super-design/fixtures/step-back-check/valid-patch.md",
+    "tests/super-design/fixtures/step-back-check/valid-redesign.md",
+    "tests/super-design/test-amend-check.sh",
+    "tests/super-design/test-findings-ledger.sh",
+    "tests/super-design/test-redesign-chain.sh",
+    "tests/super-design/test-redesign-cycle-filing.sh",
+    "tests/super-design/test-step-back-check.sh"
+  ],
+  "incomingChangedPathCount": 260,
+  "components": [
+    {
+      "component": "super-auto",
+      "reviewed": "Shared guidance conflicts; report-status clean union; main resume/report/design-roast writer and punch-list absence seams; fixture field/format union"
+    },
+    {
+      "component": "super-design",
+      "reviewed": "Incoming findings-ledger key/status/trigger contract, moved step-back-check flags and patch/local alias, amend-check open-row/work/spec rules and Amend Mode/replay states; retained as incoming source"
+    },
+    {
+      "component": "super-code report transport",
+      "reviewed": "Complete source extraction remains separate from compact --keys/default parsing; local step-back token boundary added by main"
+    },
+    {
+      "component": "super-roast",
+      "reviewed": "Iteration-cap header and caller stateless enforcement from main retained alongside immutable source/isolation guidance; engine change retained verbatim from main"
+    },
+    {
+      "component": "main release/spec/history",
+      "reviewed": "Incoming manifests, coordination instruction, specs and historical run artifacts preserved exactly on main-only paths; no release/plugin update performed"
+    },
+    {
+      "component": "reliability safety/scheduling/evidence/metrics implementations",
+      "reviewed": "Branch-only paths including coordinator, dispatch, cleanup, recovery and metrics helpers preserved exactly; no pending finding repair performed"
+    }
+  ],
+  "resolutionIntent": [
+    {
+      "path": "docs/superpowers/specs/INDEX.md",
+      "intent": "Keep both approved reliability/finding-continuity catalog entries and both incoming redesign-loop entries with their original statuses."
+    },
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "intent": "Retain reliability captured head/repo/base binding, provenance-failure handling, immutable collection, caller-owned root acceptance and cleanup/metrics instructions; integrate main iterationCap, latest-existing punch-list selection, ledger/step-back/local/redesign routes and amendment cycle. Accumulated projection owns retained obligations; inferred loop-ledger resolved/dissolved status supplies no supported occurrence disposition. Final-review transport retains outstanding keys on reviewed rounds; review:none remains keyless and retains earlier reviewed files and projection refs."
+    },
+    {
+      "path": "skills/super-auto/report-prompt.md",
+      "intent": "Combine incoming ledgers/amend records, disputed Blocking counting, redesign Remaining/Gotchas fields with source-ref-based outstanding projection, collection gaps, verified cleanup and planning-aware metrics."
+    },
+    {
+      "path": "skills/super-auto/resume.md",
+      "intent": "Preserve root acceptance and collection recovery; adopt incoming record-state-only redesign replay, legacy in-place replay guard, abortion ordering and amend-roast recovery. Ledger dissolution governs local routing only; original findings remain pending until supported disposition."
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "intent": "Keep source/collection/acceptance approvals and immutable invocation identities; add incoming ledger pointers, design-roast writer ownership, redesign counters/records, vocabulary and example. No run.md data migration or controller switch performed."
+    },
+    {
+      "path": "tests/super-auto/test-contract-lint.sh",
+      "intent": "Retain existing finding/projection and added-field/format checks and mutation cases; retain incoming redesign field/order/budget/abort/report-row checks and mutation cases, including incoming I8 --keys guard alongside projection guard. No new scenario/test feature authored."
+    }
+  ],
+  "fileProofs": {
+    "docs/superpowers/specs/INDEX.md": {
+      "gitBlob": "c4f1f7629d0b2ca612059df4c870f0239dfd933f",
+      "sha256": "2aef72e725fff6ff0c30ccfdd4eec3e3e8000a8983c01855b237da3b7a966572"
+    },
+    "skills/super-auto/SKILL.md": {
+      "gitBlob": "ca2090a06c61ac75fa4d82959f4222ec025cb72d",
+      "sha256": "7e2e225cbc6d3453847fa5a92645e1fe9aaf01b40645866db81682c9def9c399"
+    },
+    "skills/super-auto/report-prompt.md": {
+      "gitBlob": "f6f917ea2bd08c94762cfb51172502131b15467f",
+      "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb"
+    },
+    "skills/super-auto/resume.md": {
+      "gitBlob": "7a1a0e49b28f92b00c999336372b549410e991b4",
+      "sha256": "a971b806e93a8d446bec181359b81ab0adfe90b89156eace5a2030287f395363"
+    },
+    "skills/super-auto/run-state.md": {
+      "gitBlob": "dfbc73f7bfdb92516878bfd49ff0c233f4eb44a9",
+      "sha256": "8a11b991286021021fdad30e5fed0145ed56023383e5db0a8badfcb5a0ac3d11"
+    },
+    "tests/super-auto/test-contract-lint.sh": {
+      "gitBlob": "9cf1b17d945f8d731a8603df1aa9912101246436",
+      "sha256": "d0bc031e5be20049f3f6dd45bf32d4c44762e6f2fb3d95f96100ac52f0304e95"
+    },
+    "skills/super-auto/scripts/report-status": {
+      "gitBlob": "4ee6f75759352138944071e6ab04d5b63cf4f969",
+      "sha256": "e032db80a8cf1e7dad57b0ed456592675578d146234f05f50e186fb44bd5d7fa"
+    },
+    "skills/super-code/scripts/report-verdict": {
+      "gitBlob": "65d56cd94b7b5d5a3cbbd1e5d909b738e5be1d01",
+      "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661"
+    },
+    "skills/super-roast/SKILL.md": {
+      "gitBlob": "ce3656f90fcde822fd1c40eeee41d9e74aac2621",
+      "sha256": "ab427479e2549ccd2445bd23f9db12121a3effd07c1eb90b5e72636cff4a5df0"
+    },
+    "tests/super-auto/test-scripts.sh": {
+      "gitBlob": "c2a51fe5cdac974182161362ce36d6e015ca97e3",
+      "sha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e"
+    },
+    "tests/super-code/test-report-verdict.sh": {
+      "gitBlob": "dc1e43eaeb551c8bf1b1c08468e81502307d4abd",
+      "sha256": "d5a8118819f7097d08be1736af18793ad83ba70d54f9f37d3aefb43500e4797c"
+    }
+  },
+  "preservationProofs": {
+    "branchOnlyPathCount": 7669,
+    "branchOnlyUnchanged": true,
+    "mainOnlyPathCount": 249,
+    "mainOnlyMatchesBaseSha": true,
+    "existingReliabilityRunArtifactsUnchanged": true,
+    "sharedCleanAutoMergeBytesNotHandEdited": true
+  },
+  "lightweightChecks": [
+    {
+      "command": "git diff --check -- <six resolved paths>",
+      "result": "exit 0; no whitespace/conflict errors"
+    },
+    {
+      "command": "bash -n tests/super-auto/test-contract-lint.sh",
+      "result": "exit 0; syntax only"
+    },
+    {
+      "command": "Python scan of six resolved files for conflict-marker line prefixes",
+      "result": "exit 0; none remain"
+    },
+    {
+      "command": "git diff --cached --check -- <six resolved paths> (before commit)",
+      "result": "exit 0"
+    },
+    {
+      "command": "git diff --quiet (after staging, before commit)",
+      "result": "exit 0; no unstaged edits"
+    },
+    {
+      "command": "Compare complete diff-name inventories by set intersection (branch-only vs preHead, main-only vs baseSha)",
+      "result": "exit 0; 7669 branch-only and 249 main-only paths preserved exactly"
+    },
+    {
+      "command": "git diff --name-only 06677f7b05d3be12a52ff80ec2a7a0c1f9ee93f8 HEAD -- docs/superpowers/runs/2026-10-16-workflow-reliability",
+      "result": "exit 0; empty; prior run artifacts and pending dispositions unchanged"
+    },
+    {
+      "command": "Assert current branch, HEAD parents, main ref, clean status and empty unmerged index",
+      "result": "exit 0 after merge commit"
+    }
+  ],
+  "checkAttemptNote": "An initial inventory comparison attempted to pass all branch-only paths as argv and hit local E2BIG before execution; repeated successfully using complete diff inventories and set intersections. No denied operation was retried or bypassed.",
+  "mergeCheck": "none declared; no full suite/new tests/features in this pass",
+  "knownPendingFindingPreservation": {
+    "source": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2.md",
+    "sourceAndPriorRunRecordsUnchanged": true,
+    "status": "one Blocking, four Should-fix and one selector-policy escalation remain open; no rejudgment/resolution/loop re-entry",
+    "confirmedKeys": [
+      "[Should-fix] skills/super-auto/scripts/report-status:254",
+      "[Blocking] skills/super-code/coordinator.js:1830",
+      "[Should-fix] skills/super-auto/scripts/report-status:131",
+      "[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319",
+      "[Should-fix] skills/super-auto/scripts/report-status:206"
+    ],
+    "escalation": "skills/super-code/scripts/dispatch-text.mjs:154 \u2014 nested historical run.md selector refusal / invalid-provenance fallback policy dissent"
+  },
+  "gaps": [
+    {
+      "id": "combined-suite-and-engine-topology",
+      "owner": "parent phase-6 sweep",
+      "detail": "No full suite or Workflow dryRun executed by this merge pass; parent owns quiet combined-tree suite and documented coordinator/roast topology checks."
+    },
+    {
+      "id": "combined-behavior-review",
+      "owner": "parent post-cap audit",
+      "detail": "Main adds behavior after loop exit; one scoped post-cap audit remains required. Merge syntax/diff checks establish no behavioral acceptance."
+    },
+    {
+      "id": "source-scoped-behavior-evidence",
+      "owner": "parent acceptance",
+      "detail": "No fresh pressure/behavior evaluations were run for reconciled guidance or composed interfaces. Frozen prior evaluations, balanced comparison incompleteness, B4 failures/ambiguity, excluded native 017-020 samples under changed AGENTS envelope, live isolation limits and native-Linux gap remain source-scoped and unchanged. Matching old excerpts alone do not validate merged whole-file behavior."
+    },
+    {
+      "id": "ledger-disputes-vs-root-acceptance",
+      "owner": "parent scoped audit and acceptance",
+      "detail": "Source inspection: ordinary report-status counts disputed Blocking ledger rows, while --acceptance directly gates retained source projection and filters reused ordinary-status output for collection/projection qualifiers only. A disputed ledger row absent from retained source projection is not directly gated by that reuse. This composed seam was not behavior-tested or changed; it needs explicit parent accounting and audit. This is not a re-adjudication of existing findings."
+    }
+  ],
+  "humanAction": "No new permission requested by this merge pass. Existing selector-policy escalation and reserved final human choice remain parent-owned and unresolved.",
+  "mainRefAfter": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "cleanStatusAfterCommit": true,
+  "createdAt": "2026-10-17T17:09:25.615464+00:00"
+}

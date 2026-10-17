@@ -1,0 +1,4 @@
+[Should-fix] skills/super-auto/scripts/report-status:254
+[Should-fix] skills/super-auto/scripts/report-status:131
+[Should-fix] skills/super-code/scripts/dispatch-text.mjs:319
+[Should-fix] skills/super-auto/scripts/report-status:206

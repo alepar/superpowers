@@ -1,0 +1,1387 @@
+[
+  {
+    "label": "triage",
+    "phase": "Triage",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "lanes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data-migrations",
+              "deploy-safety",
+              "api-contract",
+              "observability",
+              "testing",
+              "dependency",
+              "hygiene-docs"
+            ]
+          }
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "lanes",
+        "domains"
+      ]
+    },
+    "effort": "low",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-triage.md"
+  },
+  {
+    "label": "scout:correctness",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_correctness.md"
+  },
+  {
+    "label": "scout:security",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_security.md"
+  },
+  {
+    "label": "scout:premortem",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_premortem.md"
+  },
+  {
+    "label": "scout:simplicity-design",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_simplicity-design.md"
+  },
+  {
+    "label": "scout:hot-path-perf",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_hot-path-perf.md"
+  },
+  {
+    "label": "scout:concurrency-async",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_concurrency-async.md"
+  },
+  {
+    "label": "scout:regression",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_regression.md"
+  },
+  {
+    "label": "scout:data-migrations",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_data-migrations.md"
+  },
+  {
+    "label": "scout:deploy-safety",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_deploy-safety.md"
+  },
+  {
+    "label": "scout:api-contract",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_api-contract.md"
+  },
+  {
+    "label": "scout:observability",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_observability.md"
+  },
+  {
+    "label": "scout:testing",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_testing.md"
+  },
+  {
+    "label": "scout:dependency",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_dependency.md"
+  },
+  {
+    "label": "scout:hygiene-docs",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-scout_hygiene-docs.md"
+  },
+  {
+    "label": "dedupe",
+    "phase": "Dedupe",
+    "model": "gpt-6-luna",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "suggestedSeverity": {
+                "enum": [
+                  "Blocking",
+                  "Should-fix",
+                  "Nit",
+                  "FYI"
+                ]
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "mergedClaim": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ids",
+              "suggestedSeverity",
+              "rank"
+            ]
+          }
+        }
+      },
+      "required": [
+        "groups"
+      ]
+    },
+    "effort": "low",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-dedupe.md"
+  },
+  {
+    "label": "judge:reproduce#0",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_reproduce-0.md"
+  },
+  {
+    "label": "judge:refute#0",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_refute-0.md"
+  },
+  {
+    "label": "judge:ground#0",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_ground-0.md"
+  },
+  {
+    "label": "judge:reproduce#1",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_reproduce-1.md"
+  },
+  {
+    "label": "judge:refute#1",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_refute-1.md"
+  },
+  {
+    "label": "judge:ground#1",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_ground-1.md"
+  },
+  {
+    "label": "judge:reproduce#2",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_reproduce-2.md"
+  },
+  {
+    "label": "judge:refute#2",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_refute-2.md"
+  },
+  {
+    "label": "judge:ground#2",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_ground-2.md"
+  },
+  {
+    "label": "judge:reproduce#3",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_reproduce-3.md"
+  },
+  {
+    "label": "judge:refute#3",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_refute-3.md"
+  },
+  {
+    "label": "judge:ground#3",
+    "phase": "Judge",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "CONFIRM",
+            "REJECT",
+            "UNVERIFIED"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "Blocking",
+            "Should-fix",
+            "Nit",
+            "FYI"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "preExisting": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verdict",
+        "severity",
+        "evidence"
+      ]
+    },
+    "effort": "medium",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-judge_ground-3.md"
+  },
+  {
+    "label": "reporter",
+    "phase": "Report",
+    "model": "gpt-6-luna",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "type": "string"
+        },
+        "reportMarkdown": {
+          "type": "string"
+        },
+        "confirmedCount": {
+          "type": "integer"
+        },
+        "escalations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "verdict",
+        "reportMarkdown",
+        "confirmedCount",
+        "escalations"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-postcap-controller/dispatch-reporter.md"
+  }
+]

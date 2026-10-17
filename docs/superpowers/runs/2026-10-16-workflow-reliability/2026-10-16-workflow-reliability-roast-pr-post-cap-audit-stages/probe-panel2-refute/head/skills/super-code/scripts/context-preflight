@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+# Report each role's context window and compaction point for the running harness (Claude Code or
+# Codex), and warn when a role is on a 200K model, a compaction limit or window override is below
+# 50% of the window, or Codex has multi-agent off. Warn-only: never edits configuration.
+#
+# Usage: bash context-preflight [--harness claude|codex] [--json]
+#   default: one line `Context: <harness> · <role>=<window>/<compact point> … [· warn: <issue> → <fix>]`
+#            or `Context: unknown — <reason>`.
+#   --json:  {"<role>": <window tokens>, …} for planner, implementer, reviewer, finalReview,
+#            assembler (the config.contextWindows shape); roles with an unknown window are omitted.
+# Sources: ${CODEX_HOME:-$HOME/.codex} and ${CLAUDE_CONFIG_DIR:-$HOME/.claude}, plus the
+# environment. An unreadable source is reported as `unknown`, never as a default.
+# Exit codes: always 0. Writes nothing but stdout.
+set -euo pipefail
+
+HARNESS=""; JSON=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --harness) HARNESS="${2:-}"; shift 2 || shift ;;
+    --json) JSON=1; shift ;;
+    *) shift ;;
+  esac
+done
+
+ROLES="planner implementer reviewer finalReview assembler"
+WARNS=()
+# per-role results: W_<role> (tokens or empty = unknown), C_<role> (tokens, "auto", or empty)
+
+fmt() { # tokens -> 1M / 1.5M / 475K
+  awk -v n="$1" 'BEGIN{ if (n >= 1000000) { s = sprintf("%.1f", n/1000000); sub(/\.0$/, "", s); print s "M" } else printf "%dK\n", (n+500)/1000 }'
+}
+
+finish() {
+  if [ "$JSON" = 1 ]; then
+    local out="" r w
+    for r in $ROLES; do
+      eval "w=\${W_$r:-}"
+      [ -n "$w" ] || continue
+      out="${out:+$out,}\"$r\":$w"
+    done
+    printf '{%s}\n' "$out"
+    return
+  fi
+  local line="Context: $1" r w c
+  for r in $ROLES; do
+    eval "w=\${W_$r:-}"; eval "c=\${C_$r:-}"
+    if [ -z "$w" ]; then line="$line · $r=unknown"
+    else
+      if [ -z "$c" ]; then c=unknown; elif [ "$c" != auto ]; then c=$(fmt "$c"); fi
+      line="$line · $r=$(fmt "$w")/$c"
+    fi
+  done
+  local x
+  if [ ${#WARNS[@]} -gt 0 ]; then for x in "${WARNS[@]}"; do line="$line · warn: $x"; done; fi
+  printf '%s\n' "$line"
+}
+
+unknown() { # reason
+  if [ "$JSON" = 1 ]; then printf '{}\n'; else printf 'Context: unknown — %s\n' "$1"; fi
+}
+
+# ---- detection (once) ----
+if [ -z "$HARNESS" ]; then
+  if [ -n "${CODEX_THREAD_ID:-}" ]; then HARNESS=codex
+  elif [ -n "${CLAUDE_CODE_SESSION_ID:-}" ] || [ "${CLAUDECODE:-}" = 1 ]; then HARNESS=claude
+  fi
+fi
+
+# ---- Codex reader ----
+read_codex() {
+  local H="${CODEX_HOME:-${HOME:-}/.codex}" cfg model mcw lim ma ver pct cw win comp
+  cfg="$H/config.toml"
+  if [ ! -r "$cfg" ] || [ -d "$cfg" ]; then unknown "cannot read $cfg"; return; fi
+  top() { # key -> value of a top-level key (before the first [table])
+    awk -v k="$1" '/^[[:space:]]*\[/{exit} { l=$0; sub(/[[:space:]]*#.*$/,"",l); if (match(l, "^[[:space:]]*" k "[[:space:]]*=")) { v=substr(l, RLENGTH+1); gsub(/^[[:space:]]+|[[:space:]]+$/,"",v); gsub(/^"|"$/,"",v); print v; exit } }' "$cfg" 2>/dev/null || true
+  }
+  feat() { # key -> value under [features]
+    awk -v k="$1" '/^[[:space:]]*\[/{ inf = ($0 ~ /^[[:space:]]*\[features\]/); next } inf { l=$0; sub(/[[:space:]]*#.*$/,"",l); if (match(l, "^[[:space:]]*" k "[[:space:]]*=")) { v=substr(l, RLENGTH+1); gsub(/^[[:space:]]+|[[:space:]]+$/,"",v); print v; exit } }' "$cfg" 2>/dev/null || true
+  }
+  model=$(top model); mcw=$(top model_context_window); lim=$(top model_auto_compact_token_limit)
+  ma=$(feat multi_agent); [ -n "$ma" ] || ma=$(feat collab)
+  cw=""; pct=""; ver=""
+  local cache="$H/models_cache.json"
+  if [ -n "$model" ] && [ -r "$cache" ] && command -v jq >/dev/null 2>&1; then
+    cw=$(jq -r --arg m "$model" '[.models[]? | select(.slug == $m)][0].context_window // empty' "$cache" 2>/dev/null || true)
+    pct=$(jq -r --arg m "$model" '[.models[]? | select(.slug == $m)][0].effective_context_window_percent // empty' "$cache" 2>/dev/null || true)
+    ver=$(jq -r --arg m "$model" '[.models[]? | select(.slug == $m)][0].multi_agent_version // empty' "$cache" 2>/dev/null || true)
+    if [ -n "$cw" ] && [ -z "$pct" ]; then pct=100; fi
+  fi
+  case "$mcw" in *[!0-9]*) mcw="" ;; esac
+  case "$lim" in *[!0-9]*) lim="" ;; esac
+  case "$cw" in *[!0-9]*) cw="" ;; esac
+  win=""
+  if [ -n "$mcw" ]; then win="$mcw"
+  elif [ -n "$cw" ] && [ -n "$pct" ]; then win=$(awk -v w="$cw" -v p="$pct" 'BEGIN{printf "%d", w*p/100}')
+  fi
+  comp="auto"; [ -z "$lim" ] || comp="$lim"
+  local r
+  for r in $ROLES; do eval "W_$r=\$win"; eval "C_$r=\$comp"; done
+  if [ -n "$lim" ] && [ -n "$win" ] && [ $((lim * 2)) -lt "$win" ]; then
+    WARNS+=("model_auto_compact_token_limit $lim below 50% of $(fmt "$win") → raise it or remove it from config.toml")
+  fi
+  if [ -n "$mcw" ] && [ -n "$cw" ] && [ $((mcw * 2)) -lt "$cw" ]; then
+    WARNS+=("model_context_window $mcw below 50% of $(fmt "$cw") → remove it from config.toml")
+  fi
+  local enabled=0
+  case "$ma" in
+    true) enabled=1 ;;
+    false) enabled=0 ;;
+    *) [ -z "$ver" ] || [ "$ver" = null ] || enabled=1 ;;
+  esac
+  [ "$enabled" = 1 ] || WARNS+=("Codex multi-agent disabled → set multi_agent = true under [features] in config.toml")
+  finish codex
+}
+
+# ---- Claude reader ----
+read_claude() {
+  local C="${CLAUDE_CONFIG_DIR:-${HOME:-}/.claude}" session="" have_src=0 f
+  if [ -n "${ANTHROPIC_MODEL:-}" ]; then session="$ANTHROPIC_MODEL"; have_src=1
+  else
+    for f in ./.claude/settings.local.json ./.claude/settings.json "$C/settings.json"; do
+      if [ -r "$f" ] && [ ! -d "$f" ]; then
+        have_src=1
+        session=$(sed -n 's/.*"model"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$f" 2>/dev/null | head -1 || true)
+        [ -z "$session" ] || break   # a file without a model key defers to the next layer
+      fi
+    done
+  fi
+  local sfam=""
+  case "$session" in opus*|*opus*) sfam=opus ;; sonnet*|*sonnet*) sfam=sonnet ;; esac
+  local acw="${CLAUDE_CODE_AUTO_COMPACT_WINDOW:-}"
+  case "$acw" in ''|*[!0-9]*) acw="" ;; esac
+  local r fam alias model win comp
+  local W200="" W1M=""
+  for r in $ROLES; do
+    case "$r" in planner|finalReview) fam=opus ;; *) fam=sonnet ;; esac
+    alias="$fam"
+    if [ -n "${CLAUDE_CODE_SUBAGENT_MODEL:-}" ]; then model="$CLAUDE_CODE_SUBAGENT_MODEL"
+    elif [ "$fam" = opus ] && [ -n "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" ]; then model="$ANTHROPIC_DEFAULT_OPUS_MODEL"
+    elif [ "$fam" = sonnet ] && [ -n "${ANTHROPIC_DEFAULT_SONNET_MODEL:-}" ]; then model="$ANTHROPIC_DEFAULT_SONNET_MODEL"
+    else model="$alias"; fi
+    win=""
+    case "$model" in
+      *"[1m]") win=1000000 ;;
+      opus|sonnet)
+        if [ "$have_src" = 0 ]; then win=""   # inheritance unknowable
+        elif [ "$sfam" = "$model" ]; then
+          case "$session" in *"[1m]") win=1000000 ;; *) win=200000 ;; esac
+        else win=200000; fi ;;
+      *) win=200000 ;;
+    esac
+    eval "W_$r=\$win"
+    if [ -z "$win" ]; then comp=""
+    elif [ -n "$acw" ]; then comp="$acw"
+    elif [ "$win" = 1000000 ]; then comp=967000
+    else comp=167000; fi
+    eval "C_$r=\$comp"
+  done
+  # 200K warnings, grouped by family fix
+  local fm names fix
+  for fm in opus sonnet; do
+    names=""
+    for r in $ROLES; do
+      case "$r:$fm" in planner:opus|finalReview:opus|implementer:sonnet|reviewer:sonnet|assembler:sonnet)
+        local w; eval "w=\${W_$r:-}"
+        [ "$w" != 200000 ] || names="${names:+$names, }$r" ;;
+      esac
+    done
+    if [ -n "$names" ]; then
+      local up; up=$(printf '%s' "$fm" | tr '[:lower:]' '[:upper:]')
+      WARNS+=("$names on a 200K model → set ANTHROPIC_DEFAULT_${up}_MODEL=<model>[1m] or config.models.<role> to a 1M model")
+    fi
+  done
+  if [ -n "$acw" ]; then
+    local seen="" w
+    for r in $ROLES; do
+      eval "w=\${W_$r:-}"
+      [ -n "$w" ] || continue
+      if [ $((acw * 2)) -lt "$w" ]; then
+        case " $seen " in *" $w "*) ;; *)
+          seen="$seen $w"
+          WARNS+=("CLAUDE_CODE_AUTO_COMPACT_WINDOW $acw below 50% of $(fmt "$w") → unset it or raise it") ;;
+        esac
+      fi
+    done
+  fi
+  finish claude
+}
+
+case "$HARNESS" in
+  codex) read_codex ;;
+  claude) read_claude ;;
+  "") unknown "harness not detected" ;;
+  *) unknown "harness not detected" ;;
+esac
+exit 0

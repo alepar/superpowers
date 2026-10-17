@@ -1,0 +1,26 @@
+{
+  "method": "Source-backed state-transition walkthrough; source predicates asserted against pinned head snapshots. No full agent runtime reproduction.",
+  "trigger": {
+    "precondition": "Existing root Global Constraints and owner bead describe Cache: writes are synchronous",
+    "committed_amendment": "Cache: writes are queued",
+    "interrupt": "Immediately after Amend Mode step 3 writes specs-committed, before its following sync",
+    "resume_state": "specs-committed",
+    "selected_action": "file only the `work:` items whose titles are missing from the beads labelled `sp:redesign-<loop>-<K>`; that label is the dedupe key, so a resume never files a bead twice.",
+    "result": {
+      "committed_spec": "Cache: writes are queued",
+      "root_digest": "Cache: writes are synchronous",
+      "owner_entry": "Cache: writes are synchronous",
+      "missing_operation": "Key Abstractions sync before filing amendment work"
+    }
+  },
+  "control": {
+    "interrupt": "Commit landed while record still amend-checked",
+    "selected_action": "first check whether Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood`, the pre-amendment HEAD both loops record. Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); finish step 3 from after its commit (the Key Abstractions sync when a `## Key abstractions` section changed), rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything. exit 0 goes on to the commit; exit 3 restores the specs and rewrites the state to `aborted \u2014 amend rejected on resume`, then finishes the abort as the `aborted \u2014 <reason>` bullet does: remove from the loop's overrides file the `dissolved@r<N>` lines Step 1 wrote for this round's record, rebuild the ledger with the loop's `findings-ledger` invocation, and park the `degraded-verdict` (`redesign aborted \u2014 amend rejected on resume`) (the round then runs `local`); exit 2: fix and re-run, no restore.",
+    "result": {
+      "committed_spec": "Cache: writes are queued",
+      "root_digest": "Cache: writes are queued",
+      "owner_entry": "Cache: writes are queued",
+      "operation": "Explicitly finish step 3 sync, then write specs-committed"
+    }
+  }
+}

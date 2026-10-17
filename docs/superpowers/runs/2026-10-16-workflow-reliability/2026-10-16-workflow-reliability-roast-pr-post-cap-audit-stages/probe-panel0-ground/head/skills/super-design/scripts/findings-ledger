@@ -1,0 +1,381 @@
+#!/usr/bin/env bash
+# Builds the findings ledger: the one cross-round view of roast and final-review findings that both
+# roast fix loops (super-auto phase 5 code loop, super-design's design loop) route on.
+#
+#   findings-ledger --loop code|design --out LEDGER --report ROUND=PATH [--report ROUND=PATH ...]
+#                   [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--overrides FILE]
+#
+# Role. The ledger owns per-key identity across rounds, each key's status and the one
+# status-resolution table, the report pointers (`source`, `text`), the degraded-round rule, the
+# `blocking:` line and the `triggers:` line. A new mechanical trigger, status or precedence rule is
+# computed here and nowhere else; callers read the ledger and never recompute Blocking deltas or
+# route on raw reports.
+# It does NOT decide `local` vs `redesign` (the step-back agent does, gated by step-back-check),
+# judge the semantic triggers `shared-cause` / `defect-type`, edit the overrides file (loops write
+# `dissolved` lines, Amend Mode writes `disputed` lines) or keep state between calls. Every call
+# rebuilds the whole file from its inputs, so it is idempotent and resume-safe. Loops call it at the
+# start of each round's Step 1 and after every overrides write, always with the same input set (the
+# Step 1 inputs minus any input a previous exit 2 named). Pure bash and awk: no jq.
+#
+# Per-loop paths (the callers choose them; the run dir is the artifact dir under super-auto):
+#   code loop:   <run-dir>/findings-ledger.md          and <run-dir>/findings-overrides.md
+#   design loop: <artifact-dir>/findings-ledger-design.md and <artifact-dir>/findings-overrides-design.md
+#
+# Inputs.
+#   --report ROUND=PATH     a super-roast report. Keys come only from `report-verdict --keys`; the
+#                           degraded flag from report-verdict's default `verdict:` line; headers only
+#                           from the report's `inputs:` and `delta vs prior:` lines. Finding bodies
+#                           are never read. Reports may be given in any order (sorted by ROUND).
+#   --final-review ROUND=F  (code loop only) the round's final-review keys file: an optional first
+#                           line `review: ready|not ready|none`, then `[Must-fix] <item>` lines, a
+#                           leading `rN ` allowed. Rows get `source final-review`; they are
+#                           open while in the highest-round reviewed file passed and
+#                           `resolved@r<that round>` otherwise; with no reviewed file every such row
+#                           stays open. The header is never a key row. They never feed the mechanical triggers. A round given twice
+#                           is bad input (exit 2), as for --report.
+#   --punch-list FILE       keys the reporter punch-listed, one per line (leading `rN ` allowed).
+#   --overrides FILE        see "Overrides file".
+#
+# Absent, empty, degraded. Each per-round input says what those mean, and a round with no real review
+# never resolves a key:
+#   --report N        absent: round N is missing, so no-progress, `returned` and regressed are not
+#                     computed when N or N-1 is missing. Empty is not possible (a report with no
+#                     confirmed finding still has a verdict line, so its keys are empty and the round
+#                     is present). Degraded: `[low coverage]` or `[panel-capped: ...]` on the verdict
+#                     line.
+#   --final-review N  header `review: ready` or `review: not ready`: a reviewed round, even with zero
+#                     keys, so a clean review resolves every final-review row it does not list.
+#                     Header `review: none` (the review read `no work landed`, or was unavailable):
+#                     no review that round; it must carry no keys (else exit 2), is never the
+#                     highest-round reviewed file, and resolves nothing. Any other header value is
+#                     bad input (exit 2). No header (older files): non-empty means reviewed, absent
+#                     or empty means no review. A no-review round is treated like a degraded one.
+#   --punch-list      absent or empty: no key is `punch-listed`. The caller passes the latest existing
+#                     punch list, because a redesign round writes none.
+#
+# Canonical key form: `[SEV] <location>`, the text `report-verdict --keys` prints (`[SEV]` is
+# Blocking, Should-fix, Nit or Must-fix; `<location>` is the text before the finding's first ` — `).
+# A leading `rN ` is stripped from every input line (overrides, punch list, final-review files)
+# before matching; otherwise keys are carried verbatim, including `; ` multi-location keys. This is
+# the form ledger rows, overrides lines, step-back `dissolves:` / `remains:`, amend `owners:` /
+# `covers:` and both check scripts match on. A field holding several keys (`dissolves:`, `remains:`,
+# `covers:`) separates them with `, ` and is split only on `, [`, because every key starts with
+# `[SEV]` and a key may itself contain `, ` or `; `. "Open" everywhere means status `open` or
+# `open (returned rN)`.
+#
+# Overrides file grammar (the seam the loops and Amend Mode write to; this script never writes it).
+# One entry per line, `#` lines and blank lines skipped, a leading `rN ` stripped:
+#     <key> · dissolved@r<N>
+#     <key> · disputed@r<N> (<reason>)
+# N is the round whose ledger the deciding record read; the override reduces the `blocking:` counts
+# of later rounds only (round N keeps the count the deciding ledger printed). The loops append
+# `dissolved` lines from a validated step-back `dissolves:`; Amend Mode appends `disputed` lines from validated amend
+# `owners:` disputes. A line that does not parse is treated like an unknown key (ignored, counted).
+#
+# Statuses: `open` (confirmed in the latest round); `open (returned r<N>)` (confirmed in latest round
+# N, confirmed earlier, absent from the nearest preceding non-degraded round, and first raised before that round); `resolved@r<K>`
+# (confirmed earlier, absent from non-degraded round K, the first such round after its last
+# confirmation, not punch-listed); `punch-listed`; `dissolved@r<N>`; `disputed@r<N> (<reason>)`.
+#
+# Status resolution, in order (the one table):
+#   1. an overrides line whose key no input report or final-review file contains (mis-keyed, or held
+#      only by a dropped report) is ignored and counted in `ignored-overrides:`; never exit 2, so the
+#      file's other lines keep applying;
+#   2. among override lines for one key, the last line wins;
+#   3. `disputed@rN` stands until a later override line for that key (sticky);
+#   4. `dissolved@rN` stands unless the key is confirmed in a round later than N, where the computed
+#      `open` / `open (returned rN)` wins;
+#   5. otherwise the computed status (`open`, `open (returned rN)`, `resolved@rK`, `punch-listed`).
+# Degraded round: a verdict line carrying `[low coverage]` or `[panel-capped: ...]`. Absence from a
+# degraded round changes no status (the key keeps its previous status) and the key-absence signals
+# (no-progress, the `returned` half of recurrence) are not computed across one.
+#
+# Output (written beside --out, then moved into place):
+#   # findings ledger — <loop> — through r<N>
+#   triggers: none | <trigger>[, <trigger>]      trigger = no-progress(<evidence>) | recurrence(<evidence>)
+#   blocking: r<N-1>=<n|-> r<N>=<n> carriedB=<n|-> regressedB=<n|-> degraded=<rK,...|none> not-computable=<no-progress,returned,regressed|none>
+#   ignored-overrides: <n>
+#   - <key> · raised r<M>@<sha|-> · <status> · source <roast|final-review> · text <path>
+# N is the highest --report round. r<N-1> and r<N> are the effective open Blocking counts: Blocking
+# keys confirmed in that round, minus keys whose final status is disputed or dissolved by an
+# override stamped before that round. `raised r<M>` is the first round that confirmed the key; <sha> is the first `@<hex>` token on that report's
+# `inputs:` line, `-` when none (design reports, final-review rows). `text` is the report or keys
+# file that last confirmed the key. Rows are ordered by raised round, then first appearance.
+# A mechanical trigger's name is the text before its `(`; evidence parentheses stay balanced and
+# never contain `, <lowercase-name>(`.
+#
+# Triggers (mechanical only; semantic ones are the step-back agent's):
+#   no-progress  prev = round N-1's effective open Blocking keys (disputed/dissolved excluded). Fires
+#                when prev is non-empty and every key in it is confirmed again in round N, by key
+#                identity. Not computed when N or N-1 is degraded or missing.
+#   recurrence   (a) regressedB >= 1 from round N's `delta vs prior:` line, only when
+#                carriedB + regressedB <= round N-1's confirmed Blocking count; a failed check, a
+#                missing or malformed delta line, a missing round N-1 or N = 1 shows `-` for both
+#                counts and not-computable=regressed. (b) a Blocking or Should-fix key whose final
+#                status is `open (returned rN)`; not computed when N-1 is degraded or missing.
+#
+# Exit 0 on success; 2 on bad input (a missing or unreadable report, keys file, punch list or
+# overrides file; a report kind with no keys, i.e. report-verdict --keys exit 3; a bad argument),
+# with `findings-ledger: bad input: <path>: <why>` on stderr naming the input so the loop can drop it.
+set -euo pipefail
+
+die() { echo "findings-ledger: $*" >&2; exit 2; }
+usage() { die "usage: findings-ledger --loop code|design --out LEDGER --report ROUND=PATH ... [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--overrides FILE]"; }
+
+RV="$(cd "$(dirname "$0")/../.." && pwd)/super-code/scripts/report-verdict"
+
+loop='' out='' punch='' overrides=''
+reports=() finals=()
+while [ $# -gt 0 ]; do
+  [ $# -ge 2 ] || usage
+  case "$1" in
+    --loop) loop=$2 ;;
+    --out) out=$2 ;;
+    --report) reports+=("$2") ;;
+    --final-review) finals+=("$2") ;;
+    --punch-list) punch=$2 ;;
+    --overrides) overrides=$2 ;;
+    *) usage ;;
+  esac
+  shift 2
+done
+case "$loop" in code|design) ;; *) usage ;; esac
+[ -n "$out" ] || usage
+[ "${#reports[@]}" -gt 0 ] || usage
+if [ "$loop" = design ] && [ "${#finals[@]}" -gt 0 ]; then die "--final-review is code-loop only"; fi
+
+readable() { [ -f "$1" ] && [ -r "$1" ] || die "bad input: $1: not a readable file"; }
+[ -z "$punch" ] || readable "$punch"
+[ -z "$overrides" ] || readable "$overrides"
+[ -d "$(dirname "$out")" ] || die "bad input: $out: output directory does not exist"
+
+split_arg() { # ROUND=PATH -> sets round, path
+  case "$1" in *=*) ;; *) die "bad input: $1: expected ROUND=PATH" ;; esac
+  round=${1%%=*}; path=${1#*=}
+  case "$round" in ''|*[!0-9]*) die "bad input: $1: round must be a positive integer" ;; esac
+  round=$((10#$round))
+  [ "$round" -ge 1 ] || die "bad input: $1: round must be a positive integer"
+}
+
+T=$(mktemp -d "${TMPDIR:-/tmp}/findings-ledger.XXXXXX")
+trap 'rm -rf "$T"' EXIT
+stream="$T/stream"
+: > "$stream"
+
+# Reports, sorted by round.
+sorted=$(for a in "${reports[@]}"; do split_arg "$a"; printf '%s\t%s\n' "$round" "$path"; done | sort -n -k1,1 -s)
+prev_round=0
+while IFS=$'\t' read -r round path; do
+  [ "$round" != "$prev_round" ] || die "bad input: $path: round $round given twice"
+  prev_round=$round
+  readable "$path"
+  set +e; keys=$(bash "$RV" --keys "$path" 2>/dev/null); rc=$?; set -e
+  [ "$rc" -eq 0 ] || die "bad input: $path: not a roast report (report-verdict --keys exit $rc)"
+  summary=$(bash "$RV" "$path" 2>/dev/null || true)
+  printf '%s\n' "$summary" | grep -q '^kind: roast$' || die "bad input: $path: not a roast report"
+  vline=$(printf '%s\n' "$summary" | grep -m1 '^verdict:' || true)
+  deg=0
+  case "$vline" in *'[low coverage]'*|*'[panel-capped:'*) deg=1 ;; esac
+  sha=$(grep -m1 '^inputs:' "$path" | grep -oE '@[0-9a-f]{7,}' | head -1 || true)
+  sha=${sha#@}; [ -n "$sha" ] || sha='-'
+  delta=$(grep -m1 '^delta vs prior:' "$path" || true)
+  cb='-' rb='-'
+  c=$(printf '%s\n' "$delta" | sed -nE 's/.*[^0-9]([0-9]+) carried \(([0-9]+) Blocking\).*/\2/p' | head -1)
+  r=$(printf '%s\n' "$delta" | sed -nE 's/.*[^0-9]([0-9]+) regressed \(([0-9]+) Blocking\).*/\2/p' | head -1)
+  if [ -n "$c" ] && [ -n "$r" ]; then cb=$c rb=$r; fi
+  printf 'M\t%s\t%s\t%s\t%s\t%s\t%s\n' "$round" "$deg" "$sha" "$path" "$cb" "$rb" >> "$stream"
+  printf '%s\n' "$keys" | while IFS= read -r k; do
+    [ -z "$k" ] || printf 'R\t%s\t%s\t%s\n' "$round" "$path" "$k"
+  done >> "$stream"
+done <<EOF
+$sorted
+EOF
+
+# Final-review keys files, sorted by round.
+if [ "${#finals[@]}" -gt 0 ]; then
+  fsorted=$(for a in "${finals[@]}"; do split_arg "$a"; printf '%s\t%s\n' "$round" "$path"; done | sort -n -k1,1 -s)
+  prev_fround=0
+  while IFS=$'\t' read -r round path; do
+    [ "$round" != "$prev_fround" ] || die "bad input: $path: round $round given twice"
+    prev_fround=$round
+    readable "$path"
+    nkeys=0 hdr='' first=1
+    while IFS= read -r k || [ -n "$k" ]; do
+      k=${k%$'\r'}
+      if [ "$first" = 1 ]; then
+        first=0
+        case "$k" in
+          review:*)
+            hdr=$(printf '%s' "${k#review:}" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')
+            case "$hdr" in
+              ready|"not ready"|none) ;;
+              *) die "bad input: $path: review header must be ready, not ready or none" ;;
+            esac
+            continue ;;
+        esac
+      fi
+      [ -z "$k" ] || { printf 'F\t%s\t%s\t%s\n' "$round" "$path" "$k"; nkeys=$((nkeys + 1)); }
+    done < "$path" >> "$stream"
+    # `die` inside the redirected loop exits the loop's subshell only when piped; here it is a plain
+    # redirect, so the exit is the script's own.
+    if [ "$hdr" = none ] && [ "$nkeys" -gt 0 ]; then die "bad input: $path: review: none must carry no keys"; fi
+    case "$hdr" in
+      ready|"not ready") reviewed=1 ;;
+      none) reviewed=0 ;;
+      *) if [ "$nkeys" -gt 0 ]; then reviewed=1; else reviewed=0; fi ;;
+    esac
+    printf 'G\t%s\t%s\n' "$round" "$reviewed" >> "$stream"
+  done <<EOF
+$fsorted
+EOF
+fi
+
+if [ -n "$punch" ]; then
+  while IFS= read -r k || [ -n "$k" ]; do [ -z "$k" ] || printf 'P\t%s\n' "$k"; done < "$punch" >> "$stream"
+fi
+if [ -n "$overrides" ]; then
+  while IFS= read -r k || [ -n "$k" ]; do [ -z "$k" ] || printf 'O\t%s\n' "$k"; done < "$overrides" >> "$stream"
+fi
+
+awk -v loop="$loop" '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function canon(s) { s = trim(s); sub(/^r[0-9]+[ \t]+/, "", s); return s }
+  function isout(k) { return (st[k] ~ /^(dissolved|disputed)@/) }
+  function addkey(k, src_,   i) {
+    if (!(k in known)) { known[k] = 1; src[k] = src_; ord[++nk] = k }
+  }
+  BEGIN { FS = "\t" }
+  $1 == "M" {
+    rounds[++nr] = $2 + 0; r = $2 + 0; deg[r] = $3 + 0; sha[r] = $4; rpath[r] = $5; dc[r] = $6; dr[r] = $7
+    isround[r] = 1; N = r
+    next
+  }
+  $1 == "R" {
+    r = $2 + 0; k = canon($4)
+    if (k == "" || ((r SUBSEP k) in conf)) next
+    addkey(k, "roast")
+    conf[r, k] = 1
+    if (!(k in first)) first[k] = r
+    last[k] = r; lastpath[k] = $3
+    if (k ~ /^\[Blocking\]/) nblk[r]++
+    next
+  }
+  $1 == "G" { if ($3 + 0 > 0) frmax = $2 + 0; next }
+  $1 == "F" {
+    r = $2 + 0; k = canon($4)
+    if (k == "" || ((r SUBSEP k) in conf)) next
+    addkey(k, "final-review")
+    conf[r, k] = 1
+    if (!(k in first)) first[k] = r
+    last[k] = r; lastpath[k] = $3
+    next
+  }
+  $1 == "P" { k = canon($2); if (k != "") punched[k] = 1; next }
+  $1 == "O" { olines[++no] = $2; next }
+  END {
+    # Overrides (status-resolution rules 1 and 2).
+    ign = 0
+    for (i = 1; i <= no; i++) {
+      s = canon(olines[i])
+      if (s == "" || s ~ /^#/) continue
+      if (match(s, / · (dissolved|disputed)@r[0-9]+/) == 0) { ign++; continue }
+      k = trim(substr(s, 1, RSTART - 1)); rest = substr(s, RSTART); sub(/^ · /, "", rest); rest = trim(rest)
+      if (!(k in known)) { ign++; continue }
+      ov[k] = rest
+      t = rest; sub(/^[a-z]+@r/, "", t); sub(/[^0-9].*$/, "", t); ovn[k] = t + 0
+    }
+    # Computed status, then overrides (rules 3 to 5).
+    for (i = 1; i <= nk; i++) {
+      k = ord[i]
+      if (src[k] == "final-review") {
+        s0 = (frmax == 0 || conf[frmax, k]) ? "open" : "resolved@r" frmax
+      } else if (conf[N, k]) {
+        p = 0
+        for (j = nr; j >= 1; j--) if (rounds[j] < N && !deg[rounds[j]]) { p = rounds[j]; break }
+        if (first[k] < N && p && first[k] < p && !conf[p, k]) s0 = "open (returned r" N ")"; else s0 = "open"
+      } else {
+        s0 = ""
+        for (j = 1; j <= nr; j++) if (rounds[j] > last[k] && !deg[rounds[j]]) { s0 = "resolved@r" rounds[j]; break }
+        if (s0 == "") s0 = "open"
+        else if (k in punched) s0 = "punch-listed"
+      }
+      st[k] = s0
+      if (k in ov) {
+        if (ov[k] ~ /^disputed/) st[k] = ov[k]
+        else if (!(last[k] > ovn[k])) st[k] = ov[k]
+      }
+    }
+    # Effective open Blocking counts per report round.
+    for (i = 1; i <= nk; i++) {
+      k = ord[i]
+      if (src[k] != "roast" || k !~ /^\[Blocking\]/) continue
+      for (j = 1; j <= nr; j++) if (conf[rounds[j], k] && !(isout(k) && rounds[j] > ovn[k])) ecount[rounds[j]]++
+    }
+    # Triggers.
+    trig = ""; nc = ""
+    degl = ""
+    for (j = 1; j <= nr; j++) if (deg[rounds[j]]) degl = degl (degl == "" ? "" : ",") "r" rounds[j]
+    if (degl == "") degl = "none"
+    haveprev = ((N - 1) in isround)
+    # no-progress
+    if (!haveprev || deg[N] || deg[N - 1]) nc = nc (nc == "" ? "" : ",") "no-progress"
+    else {
+      np = 0; all = 1
+      for (i = 1; i <= nk; i++) {
+        k = ord[i]
+        if (src[k] != "roast" || k !~ /^\[Blocking\]/ || isout(k) || !conf[N - 1, k]) continue
+        np++
+        if (!conf[N, k]) all = 0
+      }
+      if (np > 0 && all) trig = trig (trig == "" ? "" : ", ") "no-progress(r" (N - 1) " Blocking keys all re-confirmed in r" N ": " np ")"
+    }
+    # recurrence: returned half
+    retn = 0
+    if (!haveprev || deg[N - 1]) nc = nc (nc == "" ? "" : ",") "returned"
+    else {
+      for (i = 1; i <= nk; i++) {
+        k = ord[i]
+        if (src[k] == "roast" && k ~ /^\[(Blocking|Should-fix)\]/ && st[k] == "open (returned r" N ")") retn++
+      }
+    }
+    # recurrence: regressed half
+    cbv = "-"; rbv = "-"; regfire = 0
+    ok = 1
+    if (N == 1 || !haveprev || dc[N] == "-" || dr[N] == "-") ok = 0
+    else if (dc[N] + dr[N] > nblk[N - 1] + 0) ok = 0
+    if (ok) { cbv = dc[N]; rbv = dr[N]; if (rbv + 0 >= 1) regfire = 1 }
+    else nc = nc (nc == "" ? "" : ",") "regressed"
+    ev = ""
+    if (regfire) ev = "regressedB=" rbv
+    if (retn > 0) ev = ev (ev == "" ? "" : ", ") "returned=" retn
+    if (ev != "") trig = trig (trig == "" ? "" : ", ") "recurrence(" ev ")"
+    # not-computable in the fixed order
+    ncs = ""
+    if (nc ~ /no-progress/) ncs = "no-progress"
+    if (nc ~ /returned/) ncs = ncs (ncs == "" ? "" : ",") "returned"
+    if (nc ~ /regressed/) ncs = ncs (ncs == "" ? "" : ",") "regressed"
+    if (ncs == "") ncs = "none"
+    if (trig == "") trig = "none"
+    prevc = haveprev ? (ecount[N - 1] + 0) : "-"
+    print "# findings ledger — " loop " — through r" N
+    print "triggers: " trig
+    print "blocking: r" (N - 1) "=" prevc " r" N "=" (ecount[N] + 0) " carriedB=" cbv " regressedB=" rbv " degraded=" degl " not-computable=" ncs
+    print "ignored-overrides: " ign
+    # Rows sorted by raised round, then first appearance.
+    for (i = 1; i <= nk; i++) idx[i] = i
+    for (i = 2; i <= nk; i++) {
+      v = idx[i]; j = i - 1
+      while (j >= 1 && first[ord[idx[j]]] > first[ord[v]]) { idx[j + 1] = idx[j]; j-- }
+      idx[j + 1] = v
+    }
+    for (i = 1; i <= nk; i++) {
+      k = ord[idx[i]]
+      shav = (src[k] == "roast") ? sha[first[k]] : "-"
+      print "- " k " · raised r" first[k] "@" shav " · " st[k] " · source " src[k] " · text " lastpath[k]
+    }
+  }
+' "$stream" > "$T/ledger.out"
+
+tmp="$out.tmp.$$"
+cp "$T/ledger.out" "$tmp"
+mv "$tmp" "$out"

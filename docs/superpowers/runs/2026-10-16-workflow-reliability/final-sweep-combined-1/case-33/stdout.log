@@ -1,0 +1,6 @@
+acceptance empty=False gap=True: 126 retained refs, exit 3
+projection empty=False gap=True: 204914 bytes, exit 3
+acceptance empty=False gap=False: 126 retained refs, exit 0
+projection empty=False gap=False: 204629 bytes, exit 0
+acceptance empty=True gap=False: 0 retained refs, exit 0
+projection empty=True gap=False: 381 bytes, exit 0

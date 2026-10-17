@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "The new disputed-ledger tests never exercise --acceptance, leaving the root-close gate untested when unresolved disputes exist only in either findings ledger.",
+      "location": "tests/super-auto/test-scripts.sh:180",
+      "category": "testing",
+      "external": false,
+      "evidence": "All new ledger assertions at lines 180\u2013186 invoke ordinary report-status, including the explicit uncapped case where the current roast no longer confirms the dispute. The separate acceptance fixture at lines 91\u2013107 supplies an empty finding-source and never adds findingsLedger or findingsLedgerDesign; the remaining acceptance invocations likewise test retained finding-source records instead. This is a consequential cross-mode seam: report-status:175\u2013177 obtains ordinary status but forwards only four selected qualifier prefixes into the gate, while the new ledger reader communicates disputes through its status count and missing ledgers through a different qualifier. Deleting all ledger handling from the acceptance path, or leaving that path unaware of disputes, cannot fail these new assertions. Add acceptance cases with otherwise satisfied requirements, an empty current retained-source projection, and each ledger pointer separately, including the missing-ledger branch.",
+      "kind": "ISSUE"
+    }
+  ]
+}

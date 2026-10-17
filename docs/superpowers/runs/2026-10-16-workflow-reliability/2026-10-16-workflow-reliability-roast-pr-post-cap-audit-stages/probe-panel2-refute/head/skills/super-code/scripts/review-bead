@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Split a task bead at implementation-done, or undo that split.
+#
+#   split TASK_ID      Reuse the task's open review bead, or create one: title "review: TASK_ID",
+#                      the task's parent, the task's sp: labels plus sp:review (no inherited labels),
+#                      blocked by the task. Then close the task bead, so `bd ready` frees its
+#                      dependents while the review bead stays open until the merge closes it. The
+#                      review bead exists before the task closes, so the epic is never all-closed in
+#                      between. A close bd refuses (the task is itself blocked by an open bead) is not
+#                      forced: implClosed is false and the task closes at its merge instead.
+#                      Prints {"reviewBead":"<id>","implClosed":true|false,"created":true|false}.
+#   reopen TASK_ID...  Reopen each given task bead that is closed (a task it was stacked on did not
+#                      merge), so its dependents are blocked again. Its review bead, blocked by it,
+#                      stays open for the next attempt. Prints {"reopened":[...]}.
+#
+# Exit 0 ok, 2 bad input or unknown TASK_ID, 3 bd refused the review-bead create, 4 jq unavailable
+# (prints a JQ_UNAVAILABLE: line on stdout).
+set -euo pipefail
+
+usage() { echo "usage: review-bead split TASK_ID | review-bead reopen TASK_ID..." >&2; exit 2; }
+[ $# -ge 2 ] || usage
+cmd=$1
+shift
+case "$cmd" in split) [ $# -eq 1 ] || usage ;; reopen) ;; *) usage ;; esac
+
+command -v jq >/dev/null 2>&1 || {
+  if [ "$cmd" = split ]; then
+    t=$1
+    echo "JQ_UNAVAILABLE: jq is not installed, so split task ${t} by hand. 1. Run \`bd list --label sp:review --json --limit 0\` and look for a bead whose \`title\` is exactly \"review: ${t}\"; if one exists, it is the review bead (created false). 2. Otherwise run \`bd show ${t} --json\`: its parent is the \`parent\` field (or the \`depends_on_id\` of its \`parent-child\` dependency), and keep every label that starts with \"sp:\". Create the review bead: \`bd create \"review: ${t}\" --parent <parent> --no-inherit-labels -l <those sp: labels, comma-separated>,sp:review --deps blocked-by:${t} --silent\` (drop --parent and --no-inherit-labels if the task has no parent); the printed id is the review bead (created true). If bd refuses the create, stop and report the failure. 3. Run \`bd close ${t} --reason \"implemented; review and merge tracked by <review bead id>\"\`. If bd refuses because ${t} is blocked by an open bead, do not force it: implClosed is false; otherwise true. Output one JSON object {\"reviewBead\":\"<id>\",\"implClosed\":true|false,\"created\":true|false}."
+  else
+    echo "JQ_UNAVAILABLE: jq is not installed, so reopen by hand. For each of these task ids: $*. Run \`bd show <id> --json\` and read its \`status\`; if it is \"closed\", run \`bd reopen <id> --reason \"a task it was stacked on did not merge\"\`. Output one JSON object {\"reopened\":[<every id you reopened, in order>]}."
+  fi
+  exit 4
+}
+
+status_of() { bd show "$1" --json | jq -r 'if type == "array" then .[0].status else .status end'; }
+
+if [ "$cmd" = reopen ]; then
+  reopened=()
+  for t in "$@"; do
+    s=$(status_of "$t") || { echo "unknown task: $t" >&2; exit 2; }
+    if [ "$s" = closed ]; then
+      bd reopen "$t" --reason "a task it was stacked on did not merge" >/dev/null && reopened+=("$t")
+    fi
+  done
+  jq -nc '{reopened: $ARGS.positional}' --args ${reopened[@]+"${reopened[@]}"}
+  exit 0
+fi
+
+t=$1
+task_json=$(bd show "$t" --json | jq -c 'if type == "array" then .[0] else . end') ||
+  { echo "unknown task: $t" >&2; exit 2; }
+
+created=false
+rid=$(bd list --label sp:review --json --limit 0 |
+  jq -r --arg title "review: $t" '[.[] | select(.title == $title and .status != "closed") | .id][0] // empty')
+if [ -z "$rid" ]; then
+  parent=$(printf '%s' "$task_json" | jq -r '.parent // ([(.dependencies // [])[] | select((.type // .dependency_type) == "parent-child") | (.depends_on_id // .id)][0]) // empty')
+  labels=$(printf '%s' "$task_json" | jq -r '[(.labels // [])[] | select(startswith("sp:") and . != "sp:review")] + ["sp:review"] | join(",")')
+  args=("review: $t" -l "$labels" --deps "blocked-by:$t" --silent
+        -d "Review, fix and merge of $t, tracked separately so $t's dependents can start once it is implemented. The merge that lands $t closes this bead.")
+  if [ -n "$parent" ]; then args+=(--parent "$parent" --no-inherit-labels); fi
+  rid=$(bd create "${args[@]}") || { echo "bd create refused the review bead for $t" >&2; exit 3; }
+  created=true
+fi
+
+implClosed=false
+if bd close "$t" --reason "implemented; review and merge tracked by $rid" >/dev/null 2>"${TMPDIR:-/tmp}/review-bead.$$"; then
+  implClosed=true
+else
+  echo "bd close $t refused (left open; it closes at its merge): $(cat "${TMPDIR:-/tmp}/review-bead.$$")" >&2
+fi
+rm -f "${TMPDIR:-/tmp}/review-bead.$$"
+
+jq -nc --arg r "$rid" --argjson c "$implClosed" --argjson n "$created" '{reviewBead: $r, implClosed: $c, created: $n}'

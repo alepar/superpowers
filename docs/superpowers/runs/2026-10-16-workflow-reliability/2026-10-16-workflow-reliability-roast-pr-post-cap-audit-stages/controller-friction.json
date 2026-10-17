@@ -1,0 +1,5 @@
+[
+  {
+    "event": "Dedupe dispatch path initially absent; engine dedupe-prompt stage returns prompt in state without agent call. Exact prompt materialized from state; same owed task resumed, no judgments inferred."
+  }
+]
