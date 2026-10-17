@@ -140,4 +140,6 @@ Decided with the human on 2026-10-16:
 
 ## Post-Implementation Notes
 
+**Changes vs. original design (2026-10-17).** Implemented by the linked redesign-loop design: shared ledger and amendment gates, bounded caller-owned cycles, durable resume state and unresolved disputed Blocking reporting. Post-hand-back fixes repaired amendment filing and recovery; no vision decision changed. Live model-driven end-to-end redesign behavior remains unmeasured, as recorded in the run report.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*

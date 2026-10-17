@@ -1,9 +1,9 @@
-status: clean [degraded: sweep: a2da6b6f — 27 passed, 1 failed, 0 errors, 0 skipped; failing: tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files)]
+status: clean
 metrics: parked draft docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/upstream-feedback-draft.md (3 defects, 1 design question; not filed)
 
 # super-auto report — roast findings redesign loop (epic super-plan-59b)
 
-Lead: every bead landed and the sweep passes except one environmental test, but the final seam review says **not ready**: 10 must-fix items remain open (Remaining, tagged `final review`), and the post-cap audit left 1 Should-fix, 1 FYI and 1 Nit unfixed. Do not merge until those are triaged. Branch `super-auto/roast-findings-redesign-loop` vs `main`; final review: `final-review-last.md`; post-cap audit: `2026-10-17-roast-findings-redesign-loop-roast-pr-post-cap-audit.md`.
+Lead: the redesign loop is integrated into main after a post-hand-back repair pass resolved all 10 final-review Must-fix items and the three post-cap audit findings. `final-review-mustfix-verify.md` records the fresh ready verdict; its two new nits were corrected in a2da6b6f. Earlier review and audit files retain their historical verdicts. Remaining below preserves untested behavior and the deferred hardening work.
 
 ## Implemented
 
@@ -44,7 +44,7 @@ Regression pass round 2 and final-review exception (one re-entry before phase 6)
 
 Resolved after hand-back (2026-10-17, at the main tab's challenge; the user chose to fix before release): all 10 Must-fix items of `final-review-last.md` and the post-cap audit's Should-fix (empty `work:` sweep wiring), FYI (`id_of` raw-title lookup, also the punch-listed SKILL.md:918 item) and Nit (abort ordering) were fixed in four parallel branches (merges b8ac2ce0, a8f04427, 41e6fcd6, 47c27c48) plus a2da6b6f. Disputed Blocking rows now count as unresolved in `report-status`, per vision §4 (no vision deviation). A fresh verification review (`final-review-mustfix-verify.md`) found all 13 resolved, verdict ready; its two new nits (`lastGood` `-` wording, a garbled comment) are fixed in a2da6b6f; its hardening note (a repo-relative ledger pointer reads as missing) is open, unreachable under the run-state convention.
 
-Final review (`final-review-last.md`, verdict `not ready`; `report-verdict --keys` exits 3 on this seam-review format, so items are read from its `## Must fix before landing` and `## Untested scope` sections):
+Untested scope retained from the earlier final review (`final-review-last.md`; its Must-fix items were subsequently resolved as recorded above):
 - [final review][untested] no end-to-end redesign cycle test in either loop; every script stage is tested alone or in the chain test, which runs no orchestrator, bd or super-code (final-review-last.md)
 - [final review][untested] both loops' resume state dispatch and crash windows are prose only; contract-lint pins wording, not behaviour (final-review-last.md)
 - [final review][untested] cap and budget arithmetic is pinned only as spelling (final-review-last.md)
@@ -80,7 +80,9 @@ Manual acceptance caveats (spec §7 replay, verdict partly; `manual-acceptance.m
 - the replayer had read round 2, so some detail is hindsight (manual-acceptance.md)
 - the amend design roast was not exercised (manual-acceptance.md)
 
-Sweep:
+Release verification (2026-10-17): clean merged main 6188dab6 passed all 28 declared release checks, including Codex packaging; replay 1770 passed, 0 failed. Logs: `/private/tmp/superpowers-release-6.1-20261017-logs/results.json`. Both executable Workflow engines are byte-identical to 6.0. Only report/spec-note edits followed this runtime verification.
+
+Historical worktree sweep:
 - sweep: 3311a446 — 27 passed, 1 failed; failing tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files) — degraded qualifier (report-status; codeBuckets.sweep; friction.md)
 
 Empty buckets: escalated none, pendingRetry none, parked none, roastDesignCapped/roastCodeCapped none, parked graph changes none (graph-pass applied 0 parked 0), worktreesKept none, processSweep survivors none, resumeChange none, roastCodeExit converged (not operator-skipped) (run.md)
