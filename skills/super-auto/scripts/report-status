@@ -341,7 +341,13 @@ const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encod
 if(status.status!==0)gap('run status unavailable');
 else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
 const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
-console.log(JSON.stringify(result));process.exit(result.eligible?0:3);
+// Keep the event loop alive until stdout drains; failed output is not acceptance.
+process.exitCode=result.eligible?0:3;
+process.stdout.on('error',error=>{
+ console.error('acceptance output failed: '+error.message);
+ process.exitCode=1;
+});
+console.log(JSON.stringify(result));
 ACCEPTANCE
   exit $?
 fi

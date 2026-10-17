@@ -28,9 +28,13 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
 ### Merge-back
 <!-- the `Metrics: merges` line (including check-fails and how many were fixed) and the
      `ledger-check` line; count of `Merge:` lines with conflict / seam-review fired /
-     check fail→fixed / check fail / → blocker; `ledger incomplete: <N> merge commits vs <M>
-     Merge: lines` when the branch's first-parent merge commits outnumber the success-path
-     `Merge:` lines -->
+     check fail→fixed / check fail / → blocker. Reconcile distinct task IDs from
+     `already-merged --landed <branch>`, success-path `Merge:`/re-entry records, and
+     reconciled completed IDs. List ledger-only, Git-only and completed-only IDs before
+     proposing a cause. `baseAbsorbed` merges contribute zero task landings; duplicate
+     appearances of one task add no landing. Report verification-only completions separately
+     from task landings. Name unavailable sources separately in `Not established`; a raw
+     first-parent merge count does not establish a ledger gap. -->
 ### Coverage
 <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
 ### Timing

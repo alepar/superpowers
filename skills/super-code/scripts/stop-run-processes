@@ -45,8 +45,32 @@ contains() {  # $1 root, $2 path: true when path is the root or inside it
 # Refuse a root holding a parent worktree (one with other worktrees nested under it).
 for r in "${roots[@]}"; do
   [ -d "$r" ] || continue
-  wts=$(git -C "$r" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p' || true)
-  [ -n "$wts" ] || continue
+  if inventory=$(git -C "$r" worktree list --porcelain 2>/dev/null); then
+    wts=$(sed -n 's/^worktree //p' <<<"$inventory")
+  else
+    # Git's normal nonrepository diagnostic is the only failed lookup that permits a
+    # temp root. Corrupt metadata can produce that same diagnostic, so exclude it.
+    discovery=0
+    detail=$(LC_ALL=C git -C "$r" rev-parse --git-dir 2>&1) || discovery=$?
+    metadata=0
+    parent=$(cd "$r" && pwd -P)
+    while :; do
+      if [ ! -r "$parent" ] || [ ! -x "$parent" ] || [ -e "$parent/.git" ] || [ -L "$parent/.git" ] || { [ -d "$parent/objects" ] && { [ -e "$parent/HEAD" ] || [ -d "$parent/refs" ]; }; }; then metadata=1; break; fi
+      [ "$parent" != / ] || break
+      parent=$(dirname "$parent")
+    done
+    nonrepository=0
+    case "$detail" in
+      'fatal: not a git repository (or any of the parent directories): .git') nonrepository=1 ;;
+      'fatal: not a git repository (or any parent up to mount point '*)
+        first=${detail%%$'\n'*}
+        if [ "$detail" = "$first"$'\n''Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).' ]; then nonrepository=1; fi ;;
+    esac
+    if [ "$discovery" = 128 ] && [ "$metadata" = 0 ] && [ "$nonrepository" = 1 ]; then continue; fi
+    echo "unknown: $r — git worktree inventory failed"
+    exit 4
+  fi
+  [ -n "$wts" ] || { echo "unknown: $r — git worktree inventory empty"; exit 4; }
   while IFS= read -r w; do
     [ -n "$w" ] || continue
     contains "$r" "$w" || continue

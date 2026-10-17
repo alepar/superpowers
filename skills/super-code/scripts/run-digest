@@ -103,15 +103,19 @@ build_state() {
     ledger_counts="ledger: none yet"
   elif [ "$ok_ledger" = 1 ]; then
     ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
+      /^Merge: [^ ]+ — / && $0 !~ / → / { merged[$2] = 1 }
       match($0, /^Task [^ ]+ \([^)]+\): /) {
         id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
         st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
-        if (st ~ /^(complete|landed)/) s = "L"; else if (st ~ /^BLOCKED/) s = "B"
+        if (st ~ /^complete/ && st ~ /verification-only/) s = "V"
+        else if (st ~ /^(complete|landed)/) { s = "L"; merged[id] = 1 }
+        else if (st ~ /^BLOCKED/) s = "B"
         else if (st ~ /^pending retry/) s = "P"; else if (st ~ /^cancelled/) s = "C"; else next
         state[id] = s
       }
-      END { for (i in state) c[state[i]]++
-        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
+      END { for (i in state) { c[state[i]]++; if (state[i] == "V" && merged[i]) c["L"]++ }
+        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"]
+        if (c["V"]) printf " · verification-only %d", c["V"] }')
     while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
     ntail=${#tail_lines[@]}
   elif [ -n "$ledger_unavailable" ]; then

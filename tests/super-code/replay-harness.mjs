@@ -4963,9 +4963,8 @@ esac
         r = rtw('--sweep', '--tmp', tmpRoot, path.join(integ, '.worktrees'), 'integ')
         check(r.code === 0 && !existsSync(tmpRoot) && /^removed: \/tmp\/sp-\S+$/m.test(r.out), '--sweep --tmp removes the run temp root once nothing was kept', JSON.stringify(r))
         g(d, 'worktree', 'add', '-q', '.worktrees/integ/.worktrees/t2', 't2')
-        const src = readFileSync(path.join(scriptsDir, 'remove-task-worktree'), 'utf8')
-        const forced = src.split('\n').filter(l => /--force|branch -D/.test(l) && !/^\s*#/.test(l))
-        check(forced.length > 0 && forced.every(l => /discard/.test(l) || /git worktree remove --force "\$wt" && echo|git branch -D "\$br"/.test(l)), 'force flags appear only on the --discard path', forced.join(' | '))
+        // Default/discard force boundaries are exercised against real Git in
+        // test-setup-cleanup.sh, including rejected force commands and failed removals.
         r = rtw('--discard', wt('t2'), 't2')
         check(r.code === 0 && !existsSync(wt('t2')) && g(d, 'branch', '--list', 't2').trim() === '', '--discard removes an abandoned worktree and branch', JSON.stringify(r))
         check(rtw(wt('t3'), 't3').code === 2, 'missing argument exits 2')

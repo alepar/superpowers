@@ -712,7 +712,7 @@ function discoverOrdinary(projects, epic) {
 function readLedger(file) {
   let text
   try { text = readFileSync(file, 'utf8') } catch { return null }
-  const landed = new Set(), blocked = new Set(), ids = new Set()
+  const landed = new Set(), verified = new Set(), blocked = new Set(), ids = new Set(), latestStatus = new Map()
   let epic = null, concurrency = null, earlyUnblock = false
   for (const line of text.split('\n')) {
     let m
@@ -723,10 +723,15 @@ function readLedger(file) {
     }
     else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
     else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
-    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
+    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) {
+      ids.add(m[1])
+      const status = m[2] === 'BLOCKED' ? 'BLOCKED' : /\bverification-only\b/.test(line) ? 'VERIFIED' : 'IMPLEMENTED'
+      ;(status === 'BLOCKED' ? blocked : status === 'VERIFIED' ? verified : landed).add(m[1])
+      latestStatus.set(m[1], status)
+    }
     else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
   }
-  return { file, epic, concurrency, earlyUnblock, landed, blocked, ids }
+  return { file, epic, concurrency, earlyUnblock, landed, verified, blocked, ids, latestStatus }
 }
 function bdDump(cwd) {
   if (!cwd || !isDir(cwd)) return null
@@ -992,8 +997,8 @@ if (ordinary.length) {
       const as = all.filter(a => a.bead === id), merges = as.filter(a => a.kind === 'merge'), impls = as.filter(a => a.kind === 'impl')
       const ok = ledger.landed.has(id)
       merges.forEach((a, i) => { a.result = { merged: ok && i === merges.length - 1 } })
-      if (impls.length) impls.at(-1).result = { status: ok ? 'IMPLEMENTED' : ledger.blocked.has(id) ? 'BLOCKED' : null }
-      if (ok && !merges.length) {
+      if (impls.length) impls.at(-1).result = { status: ledger.latestStatus.get(id) ?? (ok ? 'IMPLEMENTED' : null) }
+      if (ok && !merges.length && ledger.latestStatus.get(id) !== 'VERIFIED') {
         // Landed, but no merge in the coordinator's log: a zero-length landing where its chain ended.
         const last = latest(as), r = ordinary.find(x => x.runId === last.run)
         const m = { id: `${r.runId}:merge:${id}:end`, run: r.runId, label: `merge:${id}`, synthetic: true, mapped: true, start: last.end, end: last.end, dur: 0, toolMs: 0, byCat: {}, calls: [], result: { merged: true } }
@@ -1182,7 +1187,10 @@ for (const b of beads.values()) {
   // lost) is bookkeeping, counted apart as a re-entry close.
   b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
   b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')
-  b.landed = !!b.final.landing
+  // A prior ledger landing remains a fact even when this invocation only verifies it.
+  // Without a timed merge, do not place that old landing at the verification chain end.
+  b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)
+  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id)
 }
 const landingOf = id => beads.get(id)?.final?.landing ?? null
 const landedBy = (d, t) => beads.get(d)?.attempts.map(at => at.landing).filter(x => x && x.end <= t + EPS).at(-1) ?? null
@@ -1282,7 +1290,8 @@ for (const b of beads.values()) {
   const first = at.lane[0]?.result
   b.firstTryMerged = first && typeof first.merged === 'boolean' ? first.merged : null
 }
-const landed = [...beads.values()].filter(b => b.landed)
+const knownLandings = [...beads.values()].filter(b => b.landed)
+const landed = knownLandings.filter(b => b.final.landing) // Only timed landings enter the model.
 const lastLanding = latest(landed.map(b => b.final.landing))
 const runEnd = Math.max(...timed.map(a => a.end))
 // With nothing landed, the task graph ends at its last task step.
@@ -1632,7 +1641,7 @@ const afterMs = Math.max(0, runEnd - graphEnd)
 const diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,
   dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }
 const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
+lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${ledger?.verified.size ? ` · verification-only ${ledger.verified.size}` : ''}`)
 const fan = shape.fanOut[0]
 lines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')
 lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
@@ -1704,7 +1713,7 @@ if (bottleneck) {
 {
   // Time in attempts that did not land: earlier attempts of landed beads, and beads that never landed.
   const lost = [...beads.values()].map(b => {
-    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x))
+    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x) && x.status !== 'VERIFIED')
     return { id: b.id, ms: sum(atts.map(x => sum(x.agents.filter(a => a.stage !== 'ledger').map(a => a.dur)))), how: atts.map(x => x.status ?? '?').join(', '), landed: b.landed }
   }).filter(x => x.ms >= 1000).sort((x, y) => y.ms - x.ms)
   const closes = [...beads.values()].filter(b => b.reentryCloses.length)
@@ -1748,6 +1757,7 @@ if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transc
 const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
 if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
 if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
+if (knownLandings.length > landed.length) unmeasured.push(`${knownLandings.length - landed.length} ledger-recorded landing(s) without timing; retained as facts, excluded from the schedule model`)
 if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
 if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
 if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
@@ -1771,7 +1781,7 @@ if (opt.out) {
     window: { start: T(windowStart), lastLanding: T(lastLanding?.end), end: T(runEnd), graphMs: actualGraphMs, wallMs: runEnd - windowStart },
     graphScope: 'observed invocation/residual graph', diagnosis,
     shape, cuts: cuts.map(c => ({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: T(c.at) })),
-    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed,
+    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed, verificationOnlyCompleted: b.verificationOnlyCompleted,
       createdAt: T(b.createdAt), mappingReadyAt: T(b.mappingReadyAt), dependencyReadyAt: T(b.dependencyReadyAt),
       readyAt: T(b.readyAt), dispatchedAt: T(b.dispatchedAt), landedAt: T(b.landedAt), waitMs: b.waitMs, waitCause: b.waitCause, carriedMs: b.carriedMs,
       implMs: b.implMs, implByTool: b.implByCat, implToolMs: b.implToolMs, reviewMs: b.reviewMs, fixMs: b.fixMs, stackWaitMs: b.stackWaitMs,
@@ -1788,7 +1798,7 @@ if (opt.out) {
   md.push('| bead | deps | dependents | attempts | wait (cause) | implement | of it: tools | review | fix | stack | queue | lane (seam) | landed | critical |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|')
   for (const b of beadRows) {
     const tools = catText(b.implByCat, TOOL_ORDER)
-    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? off(b.landedAt) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
+    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? (b.landedAt === null ? 'recorded; timing unknown' : off(b.landedAt)) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
   }
   md.push('', '## Critical path, step by step', '', '| at | step | kind | via | duration |', '|---|---|---|---|---|')
   for (const s of segments) md.push(`| ${off(s.start)} | ${s.label} | ${s.kind} | ${s.why ?? ''} | ${fmtDur(s.ms)} |`)

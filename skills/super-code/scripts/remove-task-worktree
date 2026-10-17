@@ -47,6 +47,19 @@ integ_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges
   git worktree list --porcelain | awk -v b="branch refs/heads/$1" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'
 }
 
+discard_branch() {
+  local branch=$1 listed
+  if ! listed=$(git branch --list "$branch" 2>/dev/null); then
+    echo "unknown: $branch — git branch inspection failed"
+    echo "kept: $branch — branch cleanup unverified"
+    return 4
+  fi
+  [ -n "$listed" ] || return 0  # Successful inspection proved it already absent.
+  if git branch -D "$branch" >/dev/null 2>&1; then echo "deleted: $branch"; return 0; fi
+  echo "kept: $branch — git branch -D refused"
+  return 3
+}
+
 remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration
   local mode=$1 wt=$2 br=$3 integ=${4:-}
   if [ ! -d "$wt" ]; then
@@ -55,9 +68,13 @@ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4
       if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
       else stop_processes "$wt" || status=$?; fi
       [ "$status" = 0 ] || return "$status"
-      git worktree prune
-      git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
-      return 0
+      if ! git worktree prune; then
+        echo "unknown: $wt — git worktree prune failed"
+        echo "kept: $br — worktree cleanup unverified"
+        return 4
+      fi
+      discard_branch "$br"
+      return $?
     fi
     echo "kept: $wt — not a directory (already removed?)"; return 3
   fi
@@ -79,9 +96,14 @@ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4
     [ "$status" = 0 ] || return "$status"
   fi
   if [ "$mode" = discard ]; then
-    git worktree remove --force "$wt" && echo "removed: $wt"
-    git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
-    return 0
+    if ! git worktree remove --force "$wt"; then
+      echo "kept: $wt — git worktree remove refused"
+      echo "kept: $br — worktree removal incomplete"
+      return 3
+    fi
+    echo "removed: $wt"
+    discard_branch "$br"
+    return $?
   fi
   if ! git worktree remove "$wt" 2>/dev/null; then
     echo "kept: $wt — git worktree remove refused"; return 3

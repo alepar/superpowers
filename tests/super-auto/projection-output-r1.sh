@@ -113,6 +113,55 @@ class ProjectionOutput(unittest.TestCase):
             self.assertEqual(acceptance['gaps'], [])
         print(f'acceptance empty={empty} gap={gap}: {len(acceptance["nonblockingFindings"])} retained refs, exit {result.returncode}')
 
+    def large_acceptance(self):
+        # Long source identities exercise the acceptance sink, not only projection output.
+        source = 'independent/' + ('source-identity-' * 45)
+        self.source['source'] = source
+        for ref in self.refs:
+            ref['source'] = source
+
+    def check_acceptance_transport(self, empty=False, gap=False):
+        self.large_acceptance()
+        self.write_run(empty=empty, gap=gap)
+        command = ['bash', str(SCRIPTS / 'report-status'), '--acceptance', str(self.run)]
+        with (self.directory / 'acceptance.json').open('wb') as output:
+            direct = subprocess.run(command, stdout=output, stderr=subprocess.PIPE)
+        piped = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        expected = 3 if gap else 0
+        self.assertEqual(direct.returncode, expected, direct.stderr)
+        self.assertEqual(piped.returncode, expected, piped.stderr)
+        self.assertEqual(piped.stderr, b'')
+        regular = (self.directory / 'acceptance.json').read_bytes()
+        if not empty:
+            self.assertGreater(len(regular), 65536)
+        self.assertEqual(piped.stdout, regular, 'acceptance must flush every output byte')
+        result = json.loads(piped.stdout)
+        self.assertEqual(result['eligible'], not gap)
+        self.assertEqual(result['nonblockingFindings'], [] if empty else self.refs[2:])
+        print(f'acceptance transport empty={empty} gap={gap}: {len(regular)} bytes, exit {piped.returncode}')
+
+    def test_large_acceptance_transport(self):
+        self.check_acceptance_transport()
+
+    def test_large_gap_acceptance_transport(self):
+        self.check_acceptance_transport(gap=True)
+
+    def test_small_acceptance_transport(self):
+        self.check_acceptance_transport(empty=True)
+
+    def test_acceptance_closed_pipe(self):
+        self.large_acceptance()
+        self.write_run()
+        before = self.run.read_bytes()
+        command = ['bash', str(SCRIPTS / 'report-status'), '--acceptance', str(self.run)]
+        with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as producer:
+            producer.stdout.close()
+            error = producer.stderr.read()
+            code = producer.wait()
+        self.assertNotEqual(code, 0, 'acceptance output failure cannot report success')
+        self.assertTrue(error, 'acceptance output failure must be observable')
+        self.assertEqual(self.run.read_bytes(), before)
+
     def test_large_projection_pipe(self):
         self.check_projection()
 
