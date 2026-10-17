@@ -154,6 +154,39 @@ assert_eq "$(row '[Should-fix] src/a.sh:1')" "- [Should-fix] src/a.sh:1 · raise
 ledger --report 1="$F/punch-after-redesign/r1.md" --report 2="$F/punch-after-redesign/r2.md" --report 3="$F/punch-after-redesign/r3.md"
 assert_eq "$(row '[Should-fix] src/a.sh:1')" "- [Should-fix] src/a.sh:1 · raised r1@3f9c2e1 · resolved@r2 · source roast" "without a punch list the same key is resolved"
 
+echo "lastGood breach inputs"
+# The comparison super-auto Step 1 item 3 and super-design Step 1 item 3 state: breach iff r<N-1> and
+# r<N> are both numbers on the blocking: line and r<N> > r<N-1>. No script owns it; the test applies it.
+breach() {
+  awk '/^blocking:/ {
+    for (i = 1; i <= NF; i++) if ($i ~ /^r[0-9]+=/) { split($i, kv, "="); v[++n] = kv[2] }
+    if (n >= 2 && v[n-1] ~ /^[0-9]+$/ && v[n] ~ /^[0-9]+$/ && v[n] + 0 > v[n-1] + 0) print "breach"; else print "no breach"
+  }' "$1"
+}
+LG="$F/lastgood"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md" --report 3="$LG/r3-better.md" --overrides "$LG/overrides.md"
+assert_eq "$(line blocking: | sed 's/ carriedB.*//')" "blocking: r2=4 r3=2" "better r3 with the @r2 overrides: r2 baseline unreduced, r3=2"
+assert_eq "$(breach "$L")" "no breach" "r3 fewer than r2: no breach"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md" --report 3="$LG/r3-worse.md" --overrides "$LG/overrides.md"
+assert_eq "$(line blocking: | sed 's/ carriedB.*//')" "blocking: r2=4 r3=5" "worse r3 with the @r2 overrides: r3=5 against the unreduced r2=4"
+assert_eq "$(breach "$L")" "breach" "r3 above r2: breach"
+ledger --report 1="$LG/r1.md" --report 3="$LG/r3-worse.md"
+assert_eq "$(line blocking: | sed 's/ carriedB.*//')" "blocking: r2=- r3=5" "missing r2: r2=-"
+assert_eq "$(breach "$L")" "no breach" "r2 not computable: the item 3 test does not fire"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md" --report 3="$LG/r3-worse.md"
+assert_eq "$(breach "$L")" "breach" "overrides do not decide the comparison: the same counts breach without them"
+
+echo "routing inputs"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md" --report 3="$LG/r3-stuck.md"
+assert_eq "$(line triggers:)" "triggers: no-progress(r2 Blocking keys all re-confirmed in r3: 4)" "cap round: no-progress first fires on round 3, comparing r3 with r2"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md"
+assert_eq "$(line triggers:)" "triggers: no-progress(r1 Blocking keys all re-confirmed in r2: 4)" "the same stuck pair one round earlier fires on round 2"
+ledger --report 1="$F/both-triggers/r1.md" --report 2="$F/both-triggers/r2.md"
+assert_eq "$(line triggers:)" "triggers: no-progress(r1 Blocking keys all re-confirmed in r2: 2), recurrence(regressedB=1)" "both triggers fire: no-progress then recurrence, as emitted"
+ledger --report 1="$LG/r1.md" --report 2="$LG/r2.md" --report 3="$LG/r3-better.md"
+assert_eq "$(line triggers:)" "triggers: none" "progress between r2 and r3: no trigger"
+assert_eq "$(line blocking: | sed 's/.*degraded=/degraded=/')" "degraded=none not-computable=regressed" "none fired and regressed skipped (r3 carries no delta line): not-computable names it"
+
 echo "text pointers"
 ledger --report 1="$F/no-progress/r1.md" --report 2="$F/no-progress/r2.md"
 assert_eq "$(text '[Blocking] src/a.sh:10')" "$F/no-progress/r2.md" "a re-confirmed key points to the latest confirming report"
