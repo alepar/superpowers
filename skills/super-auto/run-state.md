@@ -25,6 +25,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `base` | `base: <the branch this run merges back into>` | 3 | super-auto, at creation |
 | `roast-design` | `roast-design: <report path>, <report path>, …` | 3 | super-design |
 | `roast-code` | `roast-code: <report path>, <report path>, …` | 3 | super-auto |
+| `findingsLedger` | `findingsLedger: <path>`, the code loop's findings ledger | 3 | super-auto, when the loop first builds its ledger |
+| `findingsLedgerDesign` | `findingsLedgerDesign: <path>`, the design loop's findings ledger | 3 | super-design, when the loop first builds its ledger |
 | `skillSource` | `skillSource: <abs skills path> @ <sha>[+dirty:<hash>] (<version>)`, only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache | 3 | super-auto |
 | `codeMechanism` | `codeMechanism: Workflow \| ordinary-subagents`, chosen from the calling session's loaded tools, updated before a code re-entry when capability changes | 3 | super-auto |
 | `runTag` | `runTag: <slug>-<UTC yyyymmddThhmmss>`, minted once; passed to every super-code invocation as `args.runTag` | 3 | super-auto, at pre-flight |
@@ -37,6 +39,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `roastDesignRound` | `roastDesignRound: <N>` | 5 | super-design, every round |
 | `roastCodeRound` | `roastCodeRound: <N>` | 5 | super-auto, every round |
 | `roastDesignCapped` | `roastDesignCapped: <unresolved finding ids> · <extension report path> · stopped \| proceeded` | 5 | super-design |
+| `redesignCycles-code` | `redesignCycles-code: <K>`, single-valued | 5 | super-auto, when Step 1 starts a cycle |
+| `redesignCycles-design` | `redesignCycles-design: <K>`, single-valued | 5 | super-design, when Step 1 starts a cycle |
 | `roastCodeCapped` | `roastCodeCapped: <unresolved finding ids> · <final round's report path> · <authority the next step needs>`, with any `post-cap audit` report path appended | 5 | super-auto (SKILL.md §Cap disposition) |
 | `roastCodeExit` | `roastCodeExit: converged \| thrash \| capped \| operator-skipped (<reason>)` | 5 | super-auto (SKILL.md §Loop exits) |
 | `codeBuckets` | `codeBuckets:` then one indented line per bucket below | 6 | super-auto |
@@ -55,9 +59,11 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
 | `approvals · coverage-round-<N>` | `- coverage-round-<N> · <each finding's disposition, marked auto \| human>`; round 1 also carries the canonical R-list and the `requirements: N · mapped: M · unmapped: K (…)` line | 7 | super-design |
+| `approvals · coverage-amend-<loop>-<K>` | `- coverage-amend-<loop>-<K> · <each finding's disposition, marked auto \| human>`, the `coverage-round-<N>` line format | 7 | super-design (Amend Mode's coverage step) |
+| `redesign-<loop>-<K>` | `redesign-<code\|design>-<K>: round <N> · triggers <list> · amended <§s\|none> · lastGood <sha\|-> · designRoast <r<M>\|r<M> fixed\|skipped — design cap spent\|none\|-> · state <started\|amend-checked\|specs-committed\|beads-filed\|applied\|aborted — <reason>\|thrash — lastGood breach>`, one line per K, rewritten in place | 7 | the calling loop's orchestrator (super-auto code loop; super-design design loop), at each transition |
 | `baseAbsorbed` | `baseAbsorbed: <base sha> → <merge sha>, <N> conflicted files`, one line per absorption | 7 | super-auto |
-| `stepBackCode-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-auto |
-| `stepBackDesign-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-design |
+| `stepBackCode-round-<N>` | the line format `super-design/step-back-prompt.md` defines, its decision `local \| redesign` (`patch` is accepted on read as `local`), including the `local — gate not computable: <reason>`, `redesign — forced: step-back record rejected: <reject lines>` and `local — redesign declined by human` forms | 7 | super-auto |
+| `stepBackDesign-round-<N>` | the line format `super-design/step-back-prompt.md` defines, its decision `local \| redesign` (`patch` is accepted on read as `local`), including the forms listed for `stepBackCode-round-<N>` | 7 | super-design |
 | `scopeFilter-round-<N>` | `scopeFilter-round-<N>: [SEV] <location> in-scope \| punch-list — <reason>`, one line per finding, then any `cluster dropped: <cluster id> — <rule>` lines verbatim from `scripts/scope-dispositions` | 7 | super-auto |
 | `scope-filter` | `scope-filter: <in-scope> in-scope · <punch> punch-listed`, ending each round's block | 7 | super-auto |
 | `regressionPass-round-<N>` | `regressionPass-round-<N>: <K> filed · <keys> · no re-roast` | 7 | super-auto |
@@ -74,7 +80,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
    A stall at phases 1–5 writes `report.md` (status line per report-prompt.md §The status block) but leaves `phase` where it was. A stall at phase 6 leaves `phase: report` with a `stalled` status line, which is why the phase-7 gate also checks the status line (SKILL.md §Invariants I2 (phase-7 gate)).
 
-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
+3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. `findingsLedger` and `findingsLedgerDesign` point to the loops' findings ledgers (built by `super-design/scripts/findings-ledger`), each written when its loop first builds one. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
 
    Path-valued pointers are relative to the run directory (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`), never bare filenames or full repo-relative paths: one convention, so two writers produce compatible files.
 
@@ -87,14 +93,16 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 4. **Parked items** — each with its source report:
    - escalations: a roast finding that reached no verdict at all;
    - beyond-cap: a severe finding the panel cap left unjudged, or one under the report's `## Not verified (dedupe failed or judge lost)` heading;
-   - degraded-verdict: a sibling's own mandated pause that autonomous mode answered on the human's behalf instead of asking, such as a declined re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` / `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past. Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`. A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode did not apply is this kind too: `"redesign proposed, not applied — <one line>"`;
+   - degraded-verdict: a sibling's own mandated pause that autonomous mode answered on the human's behalf instead of asking, such as a declined re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` / `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past. Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`. A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode did not apply is this kind too: `"redesign proposed, not applied — <one line>"`. The redesign cycle adds the park texts below, each recorded as a `degraded-verdict`: `"redesign budget spent"`, `"redesign gate not computable — <reason>"`, `"redesign declined by human — <triggers>"`, `"redesign aborted — <reason>"`, `"redesign incomplete — <step>: <cause>"` and `"amend roast finding not fixed — <key>"`;
    - graph-change: an edge change or proposal from super-design's parallelism pass that was not applied (outside the safe class), as super-design recorded it beside its `graph-pass:` line.
 
    A `degraded-verdict` line may end ` · resolves-on: sweep`: the qualifier stands only until the phase-6 sweep passes, and `scripts/report-status` skips it once `codeBuckets.sweep` is a pass stamped at the tip. Phase 6 adds the key when it parks a final review that read `not ready` only because the deferred sweep left the branch unmeasured (SKILL.md §Phase 6 — report step 4).
 
    Parking is mode-independent: a `beyond-cap` or `degraded-verdict` item is recorded the same way whether autonomous mode or a human answered, noting who chose, because the question was raised and an unverified Blocking candidate survived it either way. These items carry open concerns and self-made calls a resumed session never saw raised.
 
-5. **Roast iteration counts** — `roastDesignRound` and `roastCodeRound`, each written every round by the skill running that round (`roastDesignRound` by `super-design`, whose loop runs inside its own invocation; `roastCodeRound` by `super-auto`), so a restart never resets a cap. The code roast fix loop is capped at 3 rounds. The design roast is capped at 3 rounds plus exactly one extension round when round 3 still ends Blocking.
+5. **Roast iteration counts** — `roastDesignRound` and `roastCodeRound`, each written every round by the skill running that round (`roastDesignRound` by `super-design`, whose loop runs inside its own invocation; `roastCodeRound` by `super-auto`), so a restart never resets a cap. Each loop owns its cap and thrash rules in its exits: SKILL.md §Loop exits for the code loop, and for the design loop `super-design` §Adversarial Review Loop (root only). This file does not restate them.
+
+   `redesignCycles-code` and `redesignCycles-design` count the redesign cycles each loop has started. Each is single-valued, written by the loop that owns it the moment its Step 1 starts a cycle, and never reset: a restart, a resume and a later cycle only raise it. They are what the loops' caps are computed from, so a lost or reset counter would hand a run back budget it already spent.
 
    `roastDesignCapped` is written by `super-design` when the extension round still ends Blocking; `stopped` is a run without `autonomous` (phase `capped-blocking`), `proceeded` an autonomous run that parked each finding and went on to phase 3.
 
@@ -148,8 +156,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
      before this split has `stepBack-round-<N>` for both: a resume reads the code round's decision
      from its `…-roast-pr-<N>-step-back.md` file instead.
 
-     A resume replays it: a recorded step-back is not re-dispatched, and an `applied`
-     redesign's spec amendment is applied from the record if it is not yet committed.
+     A resume replays it: a recorded step-back is not re-dispatched. A redesign it chose runs as a redesign cycle, replayed from its `redesign-<loop>-<K>` record, not from this line.
    - `scopeFilter-round-<N>` — one line per confirmed roast finding from that fix-loop
      round that the step-back did not dissolve, keyed on the finding's `[SEV] <location>`
      prefix carried verbatim (the roast report defines no finding id; this prefix is its
@@ -181,6 +188,17 @@ The schema home for `run.md`: every field's name and line format. The numbered i
      Written when the beads are filed. A resume that finds it does not file again; the beads'
      own state says whether the `super-code` re-entry finished.
 
+   - `coverage-amend-<loop>-<K>` — the disposition applied to each finding in the one coverage round Amend Mode runs after redesign cycle K, in the `coverage-round-<N>` line format. Present means the round is spent: a resume never re-runs it.
+   - `redesign-<loop>-<K>` — the redesign cycle's record, a top-level line (not an approval) beside the counters, one per cycle K of the loop (`code` or `design`):
+
+     ```
+     redesign-code-1: round 3 · triggers no-progress · amended 2026-07-31-per-tenant-rate-limiter-design.md §Retry policy · lastGood 3f9c2e1 · designRoast r3 fixed · state applied
+     ```
+
+     `round` is the roast round whose Step 1 started the cycle, `triggers` the ledger's list, `amended` the spec sections the amendment changed (`none` until known), and `lastGood` the integration tip SHA recorded when the cycle started (`-` before code exists). `designRoast` is `-` until the code loop reaches its amend roast, then `r<M>` (written with the `roastDesignRound` increment, before the roast runs), then `r<M> fixed` once its fixes are committed; `skipped — design cap spent` when that cap leaves no round, `none` when the amendment amended nothing. `state` is `started`, `amend-checked`, `specs-committed`, `beads-filed`, `applied`, `aborted — <reason>` or `thrash — lastGood breach`.
+
+     The record is the cycle's single state field: one line per K, rewritten in place by the calling loop's orchestrator at each transition (it runs Amend Mode inline, so it also writes the states inside it), never appended. Resume dispatches an interrupted cycle only from `state` (resume.md §Redesign cycle replay).
+
    Anything not recorded was never approved. Never widen a replay into a blanket
    "the human approved this run", because that turns one approval into consent for work
    they never saw, which is the failure mode this record exists to prevent, arrived
@@ -208,18 +226,26 @@ branch: super-auto/per-tenant-rate-limiter
 base: main
 roast-design: 2026-07-31-per-tenant-rate-limiter-roast-design-1.md, 2026-07-31-per-tenant-rate-limiter-roast-design-2.md
 roast-code: 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md
+findingsLedger: 2026-08-01-per-tenant-rate-limiter-findings-ledger-code.md
+findingsLedgerDesign: 2026-07-31-per-tenant-rate-limiter-findings-ledger-design.md
 
-roastDesignRound: 2
-roastCodeRound: 1
+roastDesignRound: 3
+roastCodeRound: 3
+redesignCycles-code: 1
+redesignCycles-design: 0
+redesign-code-1: round 3 · triggers no-progress · amended 2026-07-31-per-tenant-rate-limiter-design.md §Retry policy · lastGood 3f9c2e1 · designRoast r3 fixed · state applied
+stepBackCode-round-3: redesign — applied: per-handler quota checks → one quota middleware (dissolves 2)
 
 approvals:
 - top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
 - coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
+- coverage-amend-code-1 · auto GAP "quota middleware has no owner" → leaf bd-421
 
 parked:
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
 - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
 - 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
+- 2026-08-01-per-tenant-rate-limiter-roast-pr-3.md · degraded-verdict · "amend roast finding not fixed — [Should-fix] docs/per-tenant-rate-limiter-design.md §Retry policy"
 
 codeBuckets:
   completed: bd-413, bd-414

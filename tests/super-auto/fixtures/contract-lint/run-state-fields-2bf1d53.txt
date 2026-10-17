@@ -44,3 +44,9 @@ regressionPass-round-<N>
 baseAbsorbed
 runTag
 context
+findingsLedger
+findingsLedgerDesign
+redesignCycles-code
+redesignCycles-design
+redesign-<loop>-<K>
+approvals · coverage-amend-<loop>-<K>

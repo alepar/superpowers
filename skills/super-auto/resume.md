@@ -26,7 +26,7 @@ A resume message that changes something is recorded, not dropped. If it sets a f
 
 ## Resuming at a phase
 
-A resume at `phase: fix-loop` re-queries the open fix beads under the epic and re-enters `super-code` with them; findings recorded in the latest `roast-code` report but missing as beads are re-filed first, because the report is durable and the filing may not have finished. Existing `stepBackCode-round-<N>` and `scopeFilter-round-<N>` records for the round are replayed, never re-dispatched (a `run.md` from before the key split has `stepBack-round-<N>` lines that may be the design roast's: read the code round's decision from its `…-roast-pr-<N>-step-back.md` file instead). A recorded redesign whose spec amendment is not yet committed is applied from its record. For the scope filter (SKILL.md §Step 2 — scope filter), match each report finding on its `[SEV] <location>` key exactly against the recorded entries and route by the recorded disposition. Findings the recorded step-back (SKILL.md §Step 1 — step back) dissolved are skipped; only findings with no matching record go through the scope-filter pass. When the round has a `regressionPass-round-<N>` record, only the findings it lists count as fix work (the rest of that report is punch list), and once their beads close the run goes to phase 6, not back to phase 4 (SKILL.md §Regression-only pass).
+A resume at `phase: fix-loop` re-queries the open fix beads under the epic and re-enters `super-code` with them; findings recorded in the latest `roast-code` report but missing as beads are re-filed first, because the report is durable and the filing may not have finished. Existing `stepBackCode-round-<N>` and `scopeFilter-round-<N>` records for the round are replayed, never re-dispatched (a `run.md` from before the key split has `stepBack-round-<N>` lines that may be the design roast's: read the code round's decision from its `…-roast-pr-<N>-step-back.md` file instead). A recorded redesign runs as a redesign cycle, replayed per §Redesign cycle replay. For the scope filter (SKILL.md §Step 2 — scope filter), match each report finding on its `[SEV] <location>` key exactly against the recorded entries and route by the recorded disposition. Findings the recorded step-back (SKILL.md §Step 1 — step back) dissolved are skipped; only findings with no matching record go through the scope-filter pass. When the round has a `regressionPass-round-<N>` record, only the findings it lists count as fix work (the rest of that report is punch list), and once their beads close the run goes to phase 6, not back to phase 4 (SKILL.md §Regression-only pass).
 
 A `roastCodeExit:` line, whatever its value (`converged`, `thrash`, `capped`, `operator-skipped (<reason>)`), means the loop has ended: at `phase: roast-code` or `fix-loop`, start no further roast round and file no further round's beads. Finish any re-entry a recorded `regressionPass-round-<N>` started, then go on to what follows the loop (the final-SHA gate, base drift, phase 6).
 
@@ -35,6 +35,24 @@ A resume at `phase: code` whose epic is already closed has nothing to dispatch: 
 A resume that finds `design-review · pending` skips `super-design` and takes the resume message as the answer: go-ahead, unless it asks for changes.
 
 A resume at `phase: design` re-enters `super-design` at step 1: the recorded state is durable, but re-entry is not idempotent, and knowing that `spec:` and `epic:` already exist is not the same as `super-design` skipping the work that produced them, since that guard lives in `super-design`, not here. The recorded pointers plus the tracker (the epic, its children, their `sp:needs-design` labels) say where the tree actually is, and `super-design`'s cursor is a query over that rather than session memory.
+
+## Redesign cycle replay
+
+A `redesign-<loop>-<K>` record (run-state.md item 7 (Design decisions)) whose `state` is not final means a redesign cycle was interrupted. Dispatch it only from `state`: a durable output (an amend file, a spec diff, a bead, a report) is checked within a state to decide how to carry it out, and is never used to infer which state the cycle is in. Counters (`redesignCycles-code`, `redesignCycles-design`) are never reset, and a replay never starts a cycle of its own: the cycle that was started is the one that finishes.
+
+- `started`: with an `amend-<loop>-<K>.md` file and a spec diff, run `amend-check` on them (`bash <skills-root>/super-design/scripts/amend-check --loop <loop> --amend <record> --ledger <ledger> --specs <paths>`); `ok` continues at the commit, anything else restores the `--specs` files to HEAD (`git checkout HEAD -- <paths>`) and re-runs super-design's Amend Mode section from its dispatch. With no amend file, restore and re-run the same way.
+- `amend-checked`: re-run `amend-check` before committing anything. `ok` goes on to the commit; `reject:` restores the specs and rewrites the state to `aborted — amend rejected on resume`.
+- `specs-committed`: file only the `work:` items whose titles are missing from the beads labelled `sp:redesign-<loop>-<K>`; that label is the dedupe key, so a resume never files a bead twice.
+- `beads-filed`: write any dispute line missing from the overrides file, run the coverage-amend round unless the `coverage-amend-<loop>-<K>` approvals line exists, then the calling loop's remaining steps. In the code loop they depend on `designRoast`:
+  - `-`: run the amend-roast step, with its design-cap gate;
+  - `r<M>` and no round-M design roast report: run roast round M without incrementing `roastDesignRound` again;
+  - `r<M>` and its report: finish the fix step (spec fixes, tasks deduped by title under `sp:redesign-code-<K>-roast`, commit) and write `r<M> fixed`;
+  - `r<M> fixed`, `skipped — design cap spent` or `none`: go on.
+
+  Then write state `applied`, re-enter `super-code`, and run the next numbered round. The design loop's `redesign-design-<K>` has no `designRoast` step: after the coverage round it writes `applied`, and its next round is the post-amendment design roast.
+- `applied`, `aborted — <reason>`, `thrash — lastGood breach`: nothing to replay; the loop continues from its other records.
+
+The same rules apply to `redesign-design-<K>`, replayed through `super-design`'s re-entry. A recorded step-back's `redesign` is not re-dispatched: `<skills-root>/super-design/scripts/step-back-check --step-back … --keys … --ledger …` is re-run only when a round's step-back has no record yet.
 
 ## Switching definitions mid-run
 
