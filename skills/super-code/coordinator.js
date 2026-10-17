@@ -734,6 +734,10 @@ function addEdge(dependent, blocker, reason, source) {
   return true
 }
 
+// The mapping is cumulative, so it is retained across rounds and a round whose ready ids are all
+// mapped skips the planner. In memory only: a restarted run plans on its first round.
+let lastPlanned = null
+
 // Resume from the ledger, read once before the round loop: after that, this process's own buckets
 // reflect every append. Runs in the integration worktree, which owns the ledger.
 phase('Resume')
@@ -909,9 +913,6 @@ let stopReason = null
 // reports it holds the merge lane for the rest of the run (no blocker bead, no triage), and the run
 // stops at the round boundary with 'integration-blocked' for the caller to clear and relaunch.
 let integrationBlocked = null
-// The mapping is cumulative, so it is retained across rounds and a round whose ready ids are all
-// mapped skips the planner. In memory only: a restarted run plans on its first round.
-let lastPlanned = null
 while (true) {
   nullsThisRound = 0
   workThisRound = 0
@@ -2472,7 +2473,7 @@ function blockerBeadRule() {
 // text is wrapped in tags and marked as data.
 
 // The brief assembler (spec §B2): final-review directories use invocationId; other consumers use runTag.
-// One profile table (declared inside the builder, because dispatch-text loads only the code before the round loop); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
+// One profile table (declared inside the builder, because dispatch-text returns before operational Resume); a new consumer is one entry. The template (assembler-prompt.md) is generic: each
 // [SECTIONS] line below is `name: definition`, so a profile carries only its own sections' wording.
 function assemblePrompt(consumer, instance, { threshold = 80000, base = null, head = integrationBranch, specPaths = [] } = {}) {
   const ASSEMBLER_SECTIONS = {
