@@ -166,13 +166,13 @@ The redesign budget is implemented as an **effective cap**: `3 + redesignCycles`
 
 ### 6. Moves and references
 
-`skills/super-auto/scripts/step-back-check` moves to `skills/super-design/scripts/step-back-check`. Update every reference: super-auto SKILL.md, resume.md, MAINTENANCE.md mentions, and `tests/super-auto/test-scripts.sh` cases, which move to `tests/super-design/test-scripts.sh`, created if absent.
+`skills/super-auto/scripts/step-back-check` moves to `skills/super-design/scripts/step-back-check`. Update every reference: super-auto SKILL.md, resume.md, MAINTENANCE.md mentions, and `tests/super-auto/test-scripts.sh` cases, which move to `tests/super-design/test-scripts.sh`.
 
 **Considered:** leaving it in super-auto, rejected because super-design would then depend on super-auto's scripts.
 
 ### 7. Testing
 
-- **`tests/super-design/test-scripts.sh`** (new, same harness style as `tests/super-auto/test-scripts.sh`), with fixtures under `tests/super-design/fixtures/`:
+- **`tests/super-design/test-scripts.sh`** (existing, already on CLAUDE.md's release list), extended with fixtures under `tests/super-design/fixtures/`:
   - **`findings-ledger`:**
     - round 1 only;
     - round 2 with every prior Blocking carried → `no-progress`;
@@ -188,7 +188,7 @@ The redesign budget is implemented as an **effective cap**: `3 + redesignCycles`
     - a cited mechanical trigger the ledger lacks rejected;
     - `patch` accepted as `local`.
   - **`amend-check`:** a missing open key, a `## Goal` diff, a missing `## Unchanged behavior`, a `work:` line without covers.
-- **Also must pass:** `tests/super-auto/test-contract-lint.sh` and `test-scripts.sh` (with the moved cases removed), and the full CLAUDE.md release test list. Register the new test file in CLAUDE.md's release list.
+- **Also must pass:** `tests/super-auto/test-contract-lint.sh` and `test-scripts.sh` (with the moved cases removed), and the full CLAUDE.md release test list.
 - **Manual acceptance (report phase, not a bead):** replay the 2026-10-15 coordinator-subagent-compaction run's round-1 code roast report through `findings-ledger` and the amend designer. Record whether amend names a decision for the clustered findings.
 
 ## Post-Implementation Notes

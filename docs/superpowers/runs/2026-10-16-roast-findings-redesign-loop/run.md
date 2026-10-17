@@ -9,4 +9,4 @@ context: Context: claude · planner=200K/167K · implementer=200K/167K · review
 idea: Implement the vision in docs/superpowers/specs/2026-10-16-vision-roast-findings-redesign-loop.md (committed on main at 3f4fdba3; research basis ~/Documents/Roast_Replan_Loop_Research_20261016/final_report.md). Flags, all pre-decided by the human: autonomous=true, planOneShot=true, skipPlanRoast=false (design roast ON), skipCodeRoast=false (code roast ON).
 branch: super-auto/roast-findings-redesign-loop
 base: main
-spec: docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/2026-10-16-roast-findings-redesign-loop-design.md
+spec: 2026-10-16-roast-findings-redesign-loop-design.md
