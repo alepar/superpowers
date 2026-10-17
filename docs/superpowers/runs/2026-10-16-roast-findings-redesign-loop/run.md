@@ -30,7 +30,7 @@ codeBuckets:
   parked:
   stalled: false
   review: not ready (cluster must-fixes in 6, 7, 8, 9, 13 and 15 remain open; the amend-checked resume abort and the unparked resumed abort affect both loops; the code loop's amend roast has no field owner or pointer)
-  sweep: SWEEP DEFERRED (caller-owned)
+  sweep: 3311a446 — 27 passed, 1 failed, 0 errors, 0 skipped; failing: tests/codex/test-package-codex-plugin.sh (environmental: scripts/package refuses a worktree checkout; passes on the primary main checkout; branch touches no packaging files); command: CLAUDE.md release test list (28 commands) @ 3311a446
   slowness: round 1: graph-bound — depth 3, achievable width 3 vs cap 8 (edge audit: no changes); round 1: merge queue peaked at 4; exit re-entry: skills/super-design/SKILL.md held back two tasks (hot-file cap raised to 4); merge queue peaked at 4
   worktreesKept:
   processSweep: stopped 0 · survived 0
