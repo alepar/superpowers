@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-3",
+  "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.md",
+  "kind": "final-review",
+  "verdict": "ready \u2014 for the exact part-03 historical evidence package only. No must-fix defect was established in these eight assigned source members and eight archived slices. This report neither accepts former cluster 29 as a whole nor accepts the current branch, enclosing run, or product implementation.",
+  "occurrences": [
+    {
+      "section": "Must-fix",
+      "position": 1,
+      "key": "None established in the assigned part. The sign-loss bug is the deliberately reviewed fixture's demonstrated issue; this evidence does not establish a sign-loss defect in Superpowers itself. No unresolved historical finding was resolved through later silence, task closure, or this bounded ready verdict.",
+      "text": "None established in the assigned part. The sign-loss bug is the deliberately reviewed fixture's demonstrated issue; this evidence does not establish a sign-loss defect in Superpowers itself. No unresolved historical finding was resolved through later silence, task closure, or this bounded ready verdict."
+    },
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "This review ran no tests/reproductions and made no product, tracker, branch, main, or Herdr changes. It performed only read-only source retrieval, parsing, hashing, reconstruction, archive inspection, and the sole report write. Recorded execution outcomes belong to the historical exercise.",
+      "text": "This review ran no tests/reproductions and made no product, tracker, branch, main, or Herdr changes. It performed only read-only source retrieval, parsing, hashing, reconstruction, archive inspection, and the sole report write. Recorded execution outcomes belong to the historical exercise."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "Parts 01, 02, 04 and 05 are outside this review. This part alone does not independently establish Seat B behavior, its separate output sentinel, the 244 sampled observations, both controller advances and their causation, cleanup/removal success, the full verifier's claimed 24/24 checks, global process absence, dispatch freshness/model settings, or the real coordinator fallback transition. The live report's statements about those remain claim context here.",
+      "text": "Parts 01, 02, 04 and 05 are outside this review. This part alone does not independently establish Seat B behavior, its separate output sentinel, the 244 sampled observations, both controller advances and their causation, cleanup/removal success, the full verifier's claimed 24/24 checks, global process absence, dispatch freshness/model settings, or the real coordinator fallback transition. The live report's statements about those remain claim context here."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "The nine recorded shell-command groups prove their logged outputs and final shell exits. They are not independent per-subcommand exit records, an audit of unrecorded agent actions, or proof that no transient untraced write occurred. Initial-to-final caller observations show a changed caller head; this part alone does not authenticate each intermediate integration commit.",
+      "text": "The nine recorded shell-command groups prove their logged outputs and final shell exits. They are not independent per-subcommand exit records, an audit of unrecorded agent actions, or proof that no transient untraced write occurred. Initial-to-final caller observations show a changed caller head; this part alone does not authenticate each intermediate integration commit."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "`pr-args.json` contains default Claude-family independence wording and configured Claude model names. Those are generator/config fields, not an actual exercised seat roster; this review makes no model-family or full-panel independence claim from them. Only the logged correctness prompt and Seat A behavior are corroborated here.",
+      "text": "`pr-args.json` contains default Claude-family independence wording and configured Claude model names. Those are generator/config fields, not an actual exercised seat roster; this review makes no model-family or full-panel independence claim from them. Only the logged correctness prompt and Seat A behavior are corroborated here."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "Finding-continuity extraction, supported dispositions, interrupted/resumed collection, root acceptance gates, scheduling, denied-process cleanup, metrics, hosted Workflow, task-review no-test compliance, assembler-failure orchestration, and repeated behavioral reliability are not exercised by this package. Its old over-window obligation cannot be cleared for the entire former cluster by this part's verdict.",
+      "text": "Finding-continuity extraction, supported dispositions, interrupted/resumed collection, root acceptance gates, scheduling, denied-process cleanup, metrics, hosted Workflow, task-review no-test compliance, assembler-failure orchestration, and repeated behavioral reliability are not exercised by this package. Its old over-window obligation cannot be cleared for the entire former cluster by this part's verdict."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "Keep the representative historical Seat A evidence with the qualifications above. It supports captured-revision source review and owned mutable reproduction under the root workspace-safety invariant without extending that observation to unreviewed requirements or later source revisions.",
+      "text": "Keep the representative historical Seat A evidence with the qualifications above. It supports captured-revision source review and owned mutable reproduction under the root workspace-safety invariant without extending that observation to unreviewed requirements or later source revisions."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "Keep the live report's disclosed coverage limits. They are measurement boundaries rather than new defects demonstrated by this part. Any enclosing acceptance decision requiring those checks still needs separately reviewed execution evidence and an explicit owner/disposition; this report neither supplies nor waives it.",
+      "text": "Keep the live report's disclosed coverage limits. They are measurement boundaries rather than new defects demonstrated by this part. Any enclosing acceptance decision requiring those checks still needs separately reviewed execution evidence and an explicit owner/disposition; this report neither supplies nor waives it."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 3,
+      "key": "Preserve the original not-ready cluster record and original finding identities unchanged. This separate invocation report can be linked as coverage for orders 9\u201316 only; the parent must account explicitly for the remaining packages and outstanding obligations.",
+      "text": "Preserve the original not-ready cluster record and original finding identities unchanged. This separate invocation report can be linked as coverage for orders 9\u201316 only; the parent must account explicitly for the remaining packages and outstanding obligations."
+    }
+  ]
+}

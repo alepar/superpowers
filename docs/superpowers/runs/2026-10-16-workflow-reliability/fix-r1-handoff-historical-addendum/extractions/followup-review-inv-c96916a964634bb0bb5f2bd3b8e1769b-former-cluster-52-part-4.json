@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-4",
+  "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.md",
+  "kind": "final-review",
+  "verdict": "ready \u2014 part-04 historical evidence review complete; recorded failures and untested scope retained; this is not current whole-epic readiness.",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "Resolution of the retained historical failures is unverified in this partition. `super-code--test-report-verdict.sh.log:46\u201353` reports five producer/parser-contract failures: the single-mode dispatch builder returned 2 where 0 was expected, and the four prompt-format assertions then failed; line 182 confirms five failures. `super-code--test-run-profile.sh.log:158\u2013161` reports unclassified coordinator label `resume-check`; line 334 confirms one failure. These remain failed observations. This report neither marks them repaired nor infers their current persistence; later/corrected result artifacts belong to other partitions.",
+      "text": "Resolution of the retained historical failures is unverified in this partition. `super-code--test-report-verdict.sh.log:46\u201353` reports five producer/parser-contract failures: the single-mode dispatch builder returned 2 where 0 was expected, and the four prompt-format assertions then failed; line 182 confirms five failures. `super-code--test-run-profile.sh.log:158\u2013161` reports unclassified coordinator label `resume-check`; line 334 confirms one failure. These remain failed observations. This report neither marks them repaired nor infers their current persistence; later/corrected result artifacts belong to other partitions."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "The three modified test-file contents in the pre-rebase manifest are represented here by their captured hashes and explicit dirty-file list. Their historical execution workspace bytes and any corrected/rebased test association were not reconstructed or reviewed through other partitions. The 331-entry consistency check validates the declared clean/dirty split, not every measurement's source association.",
+      "text": "The three modified test-file contents in the pre-rebase manifest are represented here by their captured hashes and explicit dirty-file list. Their historical execution workspace bytes and any corrected/rebased test association were not reconstructed or reviewed through other partitions. The 331-entry consistency check validates the declared clean/dirty split, not every measurement's source association."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "No live tests, Workflow engine scenarios, ordinary-subagent sessions, process inspections, cleanup, package generation, or behavior evaluations were rerun. Synthetic, dryRun and live-sim evidence in these logs does not establish real resumed-session behavior, permission behavior, live cleanup success, or cross-harness equivalence.",
+      "text": "No live tests, Workflow engine scenarios, ordinary-subagent sessions, process inspections, cleanup, package generation, or behavior evaluations were rerun. Synthetic, dryRun and live-sim evidence in these logs does not establish real resumed-session behavior, permission behavior, live cleanup success, or cross-harness equivalence."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "Other parts 1\u20133 and 5 of former cluster 52, duplicate-name cluster 9, former cluster 29, surrounding implementation, source-stability/result summaries elsewhere, current branch state, whole-epic acceptance and caller/root closure are outside coverage. The empty `super-roast--test-assemble-args.sh.hygiene.log` at order 89 does not supply its test outcome; that nonempty test log is in part 5 and was not read.",
+      "text": "Other parts 1\u20133 and 5 of former cluster 52, duplicate-name cluster 9, former cluster 29, surrounding implementation, source-stability/result summaries elsewhere, current branch state, whole-epic acceptance and caller/root closure are outside coverage. The empty `super-roast--test-assemble-args.sh.hygiene.log` at order 89 does not supply its test outcome; that nonempty test log is in part 5 and was not read."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "Retain the original failed logs unchanged as historical evidence, alongside independently reviewed later results where available. Their presence does not itself make the evidence archive defective; it does prevent presenting these files as an all-green sweep or silently resolving the underlying failures.",
+      "text": "Retain the original failed logs unchanged as historical evidence, alongside independently reviewed later results where available. Their presence does not itself make the evidence archive defective; it does prevent presenting these files as an all-green sweep or silently resolving the underlying failures."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "Preserve the separate source identities and all evidence-kind/availability qualifications. The standalone package pass is supported only as the retained observation at its recorded source and context; the pre-rebase dirty-test manifest, empty hygiene logs and passing simulations supply their stated, narrower evidence.",
+      "text": "Preserve the separate source identities and all evidence-kind/availability qualifications. The standalone package pass is supported only as the retained observation at its recorded source and context; the pre-rebase dirty-test manifest, empty hygiene logs and passing simulations supply their stated, narrower evidence."
+    }
+  ]
+}

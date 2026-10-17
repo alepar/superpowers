@@ -1,0 +1,62 @@
+{
+  "base": "c233b4a46552acd2ec690dbaf467b710088e39bb",
+  "head": "c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+  "status": "unavailable",
+  "changed": [
+    "product.js"
+  ],
+  "slices": [],
+  "archives": [
+    {
+      "revision": "c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+      "run": "docs/run/reviews/new/snapshots/run.md",
+      "recordLine": 4,
+      "invocationId": "old",
+      "archive": "docs/run/reviews/new/snapshots/reviews/old",
+      "report": "docs/run/reviews/new/snapshots/reviews/old/final-review-old.md",
+      "files": [
+        {
+          "path": "final-review-old.md",
+          "sha256": "92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"
+        }
+      ]
+    },
+    {
+      "revision": "c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+      "run": "docs/run/run.md",
+      "recordLine": 4,
+      "invocationId": "old",
+      "archive": "docs/run/reviews/old",
+      "report": "docs/run/reviews/old/final-review-old.md",
+      "files": [
+        {
+          "path": "final-review-old.md",
+          "sha256": "92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"
+        }
+      ]
+    },
+    {
+      "revision": "c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+      "run": "docs/run/run.md",
+      "recordLine": 7,
+      "invocationId": "new",
+      "archive": "docs/run/reviews/new",
+      "report": "docs/run/reviews/new/final-review-new.md",
+      "files": [
+        {
+          "path": "final-review-new.md",
+          "sha256": "92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"
+        },
+        {
+          "path": "snapshots/run.md",
+          "sha256": "020c874fc28f03615c5c94ebc5c7a71080bfefba9cee294a6535c65127d5207f"
+        }
+      ]
+    }
+  ],
+  "omitted": [],
+  "gaps": [
+    "c233b4a46552acd2ec690dbaf467b710088e39bb:docs/run/reviews/new/snapshots/run.md:4 old: missing or non-regular captured file: docs/run/reviews/new/snapshots/reviews/old/final-review-old.md",
+    "c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0:docs/run/reviews/new/snapshots/run.md:4 old: missing or non-regular captured file: docs/run/reviews/new/snapshots/reviews/old/final-review-old.md"
+  ]
+}

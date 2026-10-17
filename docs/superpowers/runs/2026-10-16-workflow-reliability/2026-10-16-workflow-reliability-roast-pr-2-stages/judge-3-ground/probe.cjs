@@ -1,0 +1,17 @@
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const root='/tmp/ufz-pr2-controller/source',own=__dirname,sha=c=>c.repeat(40),ledger=path.join(own,'progress.md'),id='ground-probe';
+const launch='Launch: args '+JSON.stringify({epicId:'R',integrationBranch:'integ',integrationWorktree:own,runTag:'ground',invocationId:id,config:{}});
+fs.writeFileSync(ledger,launch+'\n');
+const producer=cp.spawnSync(process.execPath,[path.join(root,'skills/super-code/scripts/dispatch-text.mjs'),'--ledger',ledger,'bind-review-source','--base',sha('a'),'--head',sha('b')],{encoding:'utf8'});assert.equal(producer.status,0,producer.stderr);
+const digest=cp.spawnSync('bash',[path.join(root,'skills/super-code/scripts/ledger-digest'),ledger],{encoding:'utf8'});assert.equal(digest.status,0);
+const recoveryLine=digest.stdout.split('\n').find(l=>l.startsWith('Recovery:'));
+const code=fs.readFileSync(path.join(root,'skills/super-code/coordinator.js'),'utf8');
+const slice=code.slice(code.indexOf('function recoveryProblem(r)'),code.indexOf('function recoveryGap(raw'));
+const recover=new Function('line','const recoveryObligations=new Map(),fixHistory=[],verificationCompletions=new Map();'+slice+';readRecovery(line);return [...recoveryObligations.values()]');
+const recovered=recover(recoveryLine);assert.equal(recovered.length,1);
+const tree=sha('a'),check={sourceTree:tree,command:'suite',configuration:'quiet',kind:'live',outcome:'pass',location:'sweep.log'};
+const base={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'final-review',kind:'review',owner:'super-auto'},{id:'sweep',kind:'measurement',owner:'super-auto',command:'suite',configuration:'quiet',requiredLive:true},{id:'finish',kind:'human',owner:'human'}],evidence:[check],reviews:[{id:'final-review',sourceTree:tree,outcome:'pass',location:'final.md'}],decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['user-choice']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
+fs.writeFileSync(path.join(own,'final.md'),'ready\n');
+function gate(obligations){const r=structuredClone(base);r.recovery.obligations=obligations;const file=path.join(own,obligations.length?'with-binding.md':'control.md');fs.writeFileSync(file,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\ncodeBuckets:\n  completed: leaf-A, leaf-B\n  escalated: none\n  pendingRetry: none\n  parked: none\n  stalled: false\n  review: ready\n  sweep: 1 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: suite @ aaaaaaa\napprovals:\n- root-acceptance · '+JSON.stringify(r)+'\n- finding-source · '+JSON.stringify({version:1,source:'inv-a/final',artifact:'final.md',kind:'final-review',verdict:'ready',occurrences:[]})+'\n');const p=cp.spawnSync('bash',[path.join(root,'skills/super-auto/scripts/report-status'),'--acceptance',file,'--tree',tree],{encoding:'utf8'});return {status:p.status,stdout:p.stdout,stderr:p.stderr,result:JSON.parse(p.stdout)}}
+const receipt={producer:{status:producer.status,stdout:producer.stdout,stderr:producer.stderr},digest:digest.stdout,recovered,control:gate([]),withBinding:gate(recovered)};
+fs.writeFileSync(path.join(own,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');assert.equal(receipt.control.status,0);assert.equal(receipt.withBinding.status,3);assert.deepEqual(receipt.withBinding.result.gaps,['review-source:ground-probe: measurement identity unavailable']);console.log(JSON.stringify(receipt,null,2));

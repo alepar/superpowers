@@ -1,0 +1,283 @@
+{
+  "version": 1,
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "purpose": "Additive final two historical reviews plus eleven-part aggregate; original archive/pending-at-seal history unchanged",
+  "sourceBase": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "sourceHead": "612ea0a7e4d64480bdd01e0ac842b539115342ee",
+  "rawPartReports": 11,
+  "aggregateReports": 1,
+  "authoritativeSources": 12,
+  "files": [
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "bytes": 7229,
+      "sha256": "37be65798bda8efb4bd1ba5e6f856099be0a3a8da8c7ff6a64e8e85d3442c4d3"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "bytes": 7268,
+      "sha256": "bf12912db81e5ab29acc95916a9025d5bbeeaca4b4559e5b425139a8b9b67e0f"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.json",
+      "bytes": 9285,
+      "sha256": "ee2cc55f6af682d31385e74e5c2f9509c6e93b4fe1bcf98a08c8d4565e49ffbe"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "bytes": 10560,
+      "sha256": "94fa46bc1099ebaa9b9c8dc1b9d88875a8d4062acc3c6ceba78b0fdb424007a8"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "bytes": 10599,
+      "sha256": "a59807dbb565fab26242c2e6fabb74be82e5df5e11ce8e4106b0d5a2f94406ed"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.json",
+      "bytes": 7187,
+      "sha256": "43a859444fd3edbb0630b70c9fe75bf1a23f7cc480ab2b4a8cde61fd0542736c"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.md",
+      "bytes": 13419,
+      "sha256": "a45e8189b68041b0aea799137951ce967305d1718a7b047c807be6b8438500a3"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.json",
+      "bytes": 7587,
+      "sha256": "fd97c6c6c690f2c99419bec1fe67db73f298a24f9d5ff973883dad0561d2df3d"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+      "bytes": 12793,
+      "sha256": "53d49990ba9c46e58ce782503dc960b1db9592bb217f03051c035ec4b8ec00bf"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.json",
+      "bytes": 13597,
+      "sha256": "f23995a10bfedc732d355006858e5aaaa4b3b3989ab574625335e064cbc25b8f"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "bytes": 10803,
+      "sha256": "f1e236f0f26fe4ea12a633cc680a66a81d124b080df5e1db6a817dd6f8428de9"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "bytes": 10842,
+      "sha256": "b4c6a6ca28c8cf676dd6dd71df2d36281335fe6c4934ae72d46b08cd4e717f35"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.json",
+      "bytes": 6313,
+      "sha256": "00ee530b2f9083483b50c2f46834b8d36c4ac410644967f237acf7189a4b6c39"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.md",
+      "bytes": 14718,
+      "sha256": "1319a40890ffb06ff47d02074ffe110c12e063b1bb704b79af25d0fc15c382e5"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.json",
+      "bytes": 6940,
+      "sha256": "f1e854a8b89f36040752e88d327d7ff4618c6a3c36cf9aef8c810e73c0d8fe25"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+      "bytes": 16714,
+      "sha256": "b01fc6edd8b44c0f428ede71b7eb516a3746199c92208fab3595c84041c97182"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.json",
+      "bytes": 27133,
+      "sha256": "c13b62f978c7eb1b50e3144adec0d5ba0956ff73e9108278ade79e77b1e13b75"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.md",
+      "bytes": 13500,
+      "sha256": "3955caed2d99116a2bb46eaceb6e2db7f9609e1d0c0b0d55896657a69e037e6c"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.json",
+      "bytes": 6303,
+      "sha256": "294c6c862e074a8c67345041910eaea147d4acb1a54cdd408daf1188da1ae6b3"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.md",
+      "bytes": 18274,
+      "sha256": "bdaa1af9ddb40828db916074f14d4c955acec19752e3db767d943800a679c59c"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.json",
+      "bytes": 5891,
+      "sha256": "2d5af3120d474db9348cdfc23ea52749c94b6df6d6f22b0294335677b261607a"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "bytes": 4440,
+      "sha256": "60d495ae06411bb3b4f4f3f3f64491e68e8b9b32c60f8aedabc4020e0454423a"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "bytes": 4490,
+      "sha256": "9bb427723e16385a414c4283afabba4d5fd1cf0a60d91c317c43874325c818b9"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.json",
+      "bytes": 5499,
+      "sha256": "3d0c3232f87914a77205d3f775d5c6c298162605c989d271423347eb6e447277"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.md",
+      "bytes": 4030,
+      "sha256": "000df9307623650b50565ef13af10b5e00685466b0b8726b795826b6de85e94e"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.json",
+      "bytes": 4049,
+      "sha256": "f1e1638203823b4a25f5f3b7b55e724260192d775e8414d11ce148af78f6f872"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-review-aggregate-r1.md",
+      "archive": "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+      "bytes": 37357,
+      "sha256": "64e64fc458ec3728cad893da18032346d1b76a99f51c1d3d3e1659686d1ec341"
+    },
+    {
+      "source": "complete extraction from retained raw or declared adapter",
+      "archive": "fix-r1-handoff-historical-addendum/extractions/historical-review-aggregate-r1.json",
+      "bytes": 13734,
+      "sha256": "61cb70f98553e0311d77d1a38d8d1f7fa2e7e76d309ac6a0adf9ba09e5c443db"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "bytes": 7268,
+      "sha256": "bf12912db81e5ab29acc95916a9025d5bbeeaca4b4559e5b425139a8b9b67e0f"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.complete.json",
+      "bytes": 9322,
+      "sha256": "016869bde73152a74bd751478aeee50a951263fd0c5e3b701dc5852b8a63338f"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.scratch-612ea0a7.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.scratch-612ea0a7.complete.json",
+      "bytes": 9283,
+      "sha256": "59ae665fba3d3767783777846d6b8d238aab1e025ec4657eacd2f4ddaf3a0010"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "bytes": 10599,
+      "sha256": "a59807dbb565fab26242c2e6fabb74be82e5df5e11ce8e4106b0d5a2f94406ed"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.complete.json",
+      "bytes": 7275,
+      "sha256": "8238f3ea7a8e0ae6bf9757faac5b7b5e7d6d22e439a3469c807226f6aac709b3"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.scratch-612ea0a7.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.scratch-612ea0a7.complete.json",
+      "bytes": 7236,
+      "sha256": "c3aac2b8dba98edb855688f36780f18f4475ae74eef4c6977013576ad1d37185"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "bytes": 10842,
+      "sha256": "b4c6a6ca28c8cf676dd6dd71df2d36281335fe6c4934ae72d46b08cd4e717f35"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.complete.json",
+      "bytes": 6404,
+      "sha256": "15b350b98b9aac52a0f6ff971a5e345e407453787ed7bbe982efae686f4a2468"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.scratch-612ea0a7.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.scratch-612ea0a7.complete.json",
+      "bytes": 6365,
+      "sha256": "c45071c66a80d5a96a98a47d31288f68fe2a47d7f06960bf2dc4fb17c8da8ad9"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "bytes": 4490,
+      "sha256": "9bb427723e16385a414c4283afabba4d5fd1cf0a60d91c317c43874325c818b9"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md.complete.json",
+      "bytes": 5587,
+      "sha256": "d83652d52c2aff7839012dcc547f23123be8893697bbc844758e752d925d7b18"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/manifest.json",
+      "archive": "fix-r1-handoff-historical-addendum/adapter-provenance/manifest.json",
+      "bytes": 20018,
+      "sha256": "1210a07164ea9cae4bcb0a1c147cd2ebe9c4b4d0e0e70e4a564c4c6baf1adc75"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/review-gap-queue-r1.json",
+      "archive": "fix-r1-handoff-historical-addendum/metadata/review-gap-queue-r1.json",
+      "bytes": 3088,
+      "sha256": "7edfe68ef991bab5139d655ad6a547df859935d1e7a566b56426edeccb9b5e2c"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/caller-handoff-fix-r1.json",
+      "archive": "fix-r1-handoff-historical-addendum/metadata/caller-handoff-fix-r1.json",
+      "bytes": 174131,
+      "sha256": "6cd3dd7bfc6a03028b6aaeaada91b87981d0cd25cdcba33c86bf1d3ca8c35e20"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-addendum-extraction-status.json",
+      "archive": "fix-r1-handoff-historical-addendum/metadata/historical-addendum-extraction-status.json",
+      "bytes": 3998,
+      "sha256": "2f3182eb2a7e1f2efc1a290484ef12aeff2e065c31d4f2d0a8a51660e8147c30"
+    },
+    {
+      "source": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-review-aggregate-r1.complete.json",
+      "archive": "fix-r1-handoff-historical-addendum/metadata/historical-review-aggregate-r1.complete.json",
+      "bytes": 13712,
+      "sha256": "15418d24bdfcc79f283867525463296afc26b54143dd97bda645e961b01e81ce"
+    }
+  ],
+  "bytes": 610172,
+  "formatAdapters": "Four explicit absence prose blocks normalized mechanically in copies only; rawbytes retained, exact reconstruction/occurrence-order proof in adapter-provenance/manifest.json",
+  "limits": [
+    "Historical coverage only; no currentlive behavior, rootacceptance or landing readiness established",
+    "Original review occurrences and notready verdicts remain immutable",
+    "690 input-selection gaps and two current product findings remain unresolved"
+  ]
+}

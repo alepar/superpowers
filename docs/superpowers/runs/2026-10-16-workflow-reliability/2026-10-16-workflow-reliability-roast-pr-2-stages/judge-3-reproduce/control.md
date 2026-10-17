@@ -1,0 +1,5 @@
+phase: done
+flags: skipPlanRoast=false skipCodeRoast=false
+approvals:
+- finding-source · {"version":1,"source":"fixture/final","artifact":"review.md","kind":"final-review","verdict":"ready","occurrences":[]}
+- root-acceptance · {"version":1,"owner":"super-auto","sourceTree":"cccccccccccccccccccccccccccccccccccccccc","requirements":[{"id":"review","kind":"review","owner":"super-auto"},{"id":"sweep","kind":"measurement","owner":"super-auto","command":"test suite","configuration":"host","requiredLive":true},{"id":"human","kind":"human","owner":"human"}],"evidence":[{"sourceTree":"cccccccccccccccccccccccccccccccccccccccc","command":"test suite","configuration":"host","kind":"live","outcome":"pass","location":"sweep.log"}],"reviews":[{"id":"review","sourceTree":"cccccccccccccccccccccccccccccccccccccccc","outcome":"pass","location":"review.md"}],"decisions":[{"id":"human","authority":"human","decision":"accept","evidence":["synthetic fixture human decision"]}],"recovery":{"obligations":[],"gaps":[]},"checkEvidence":{"records":[],"gaps":[],"requiredLiveChecks":[]},"runFailures":[]}

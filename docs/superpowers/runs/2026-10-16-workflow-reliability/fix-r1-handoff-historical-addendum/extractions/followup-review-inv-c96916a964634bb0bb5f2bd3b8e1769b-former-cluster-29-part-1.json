@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-1",
+  "artifact": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+  "kind": "final-review",
+  "verdict": "ready \u2014 bounded historical evidence review of former cluster 29, part 01 only. No must-fix defect established in these assigned bytes. This completes inspection of inventory entries 1\u20137, not the remaining 23 source entries or the whole cluster, and does not certify current product behavior or root acceptance.",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "`agent-dispatch.json:2\u201315` records two seat identifiers, requested `fork_turns=none`, model/effort settings and task messages. It does not independently prove fresh-context execution, exact operative prompt consumption, absence of private answers, or the number of agents actually run. Its `launched_at` value, `1792224989.443447`, is about 2.14 seconds after the first integration commit's recorded finish (`1792224987.303018` in `controller-commands.jsonl:6`). Without evidence defining that timestamp or actual seat/checkpoint records, it cannot establish agents' presence across the first advance. This is an unresolved chronology qualification, not proof that the seats were absent; ready checkpoints and seat execution are outside part 01.",
+      "text": "`agent-dispatch.json:2\u201315` records two seat identifiers, requested `fork_turns=none`, model/effort settings and task messages. It does not independently prove fresh-context execution, exact operative prompt consumption, absence of private answers, or the number of agents actually run. Its `launched_at` value, `1792224989.443447`, is about 2.14 seconds after the first integration commit's recorded finish (`1792224987.303018` in `controller-commands.jsonl:6`). Without evidence defining that timestamp or actual seat/checkpoint records, it cannot establish agents' presence across the first advance. This is an unresolved chronology qualification, not proof that the seats were absent; ready checkpoints and seat execution are outside part 01."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "`controller-commands.jsonl:1\u201327` and the full 193-line controller Git trace establish recorded controller commands and exits in the fixture caller. They do not establish the reviewers' own immutable source reads, isolated reproductions, absence of caller mutation, barrier satisfaction, or preservation of all 244 sampled sentinel observations. Seat logs/traces and observations are other parts; no whole-cluster clearance follows here.",
+      "text": "`controller-commands.jsonl:1\u201327` and the full 193-line controller Git trace establish recorded controller commands and exits in the fixture caller. They do not establish the reviewers' own immutable source reads, isolated reproductions, absence of caller mutation, barrier satisfaction, or preservation of all 244 sampled sentinel observations. Seat logs/traces and observations are other parts; no whole-cluster clearance follows here."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "`cleanup.json:1\u201321` records successful removal outcomes for exactly the two fixture review-worktree paths and a remaining-worktree listing containing only the caller. It does not itself contain the removal argv, pre-removal inventories/archives, independent filesystem absence check, or process liveness inspection. Its synchronous-reaping statement applies to recorded direct children; `controller-result.json:1` records status `done`, times and matching PID 41210 but no independent session exit record. Neither establishes absence of arbitrary descendants. Controller trace lines 60\u201379 and 146\u2013165 also contain Git maintenance children with `--detach`; their recorded exits cannot be promoted into a global process absence claim.",
+      "text": "`cleanup.json:1\u201321` records successful removal outcomes for exactly the two fixture review-worktree paths and a remaining-worktree listing containing only the caller. It does not itself contain the removal argv, pre-removal inventories/archives, independent filesystem absence check, or process liveness inspection. Its synchronous-reaping statement applies to recorded direct children; `controller-result.json:1` records status `done`, times and matching PID 41210 but no independent session exit record. Neither establishes absence of arbitrary descendants. Controller trace lines 60\u201379 and 146\u2013165 also contain Git maintenance children with `--detach`; their recorded exits cannot be promoted into a global process absence claim."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "`harness-limitations.txt:1\u20132` retains the denied `ps` attempt and claimed verifier correction. The initial failure, corrected verifier's 24/24 result, reset attribution, output-file correction, source hashes and full cleanup provenance require the other evidence; their presence in this text is not fresh verification. I executed no product tests, reproductions, fixture scripts, process inspections or cleanup.",
+      "text": "`harness-limitations.txt:1\u20132` retains the denied `ps` attempt and claimed verifier correction. The initial failure, corrected verifier's 24/24 result, reset attribution, output-file correction, source hashes and full cleanup provenance require the other evidence; their presence in this text is not fresh verification. I executed no product tests, reproductions, fixture scripts, process inspections or cleanup."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "This part supplies no runtime evidence for finding-continuity extraction/projection, resume/acceptance gates, hosted Workflow, task-review no-test compliance, real assembler-failure routing, other models, repeated-run reliability, or current source revisions. The historical report already qualifies several of these; retain those limits.",
+      "text": "This part supplies no runtime evidence for finding-continuity extraction/projection, resume/acceptance gates, hosted Workflow, task-review no-test compliance, real assembler-failure routing, other models, repeated-run reliability, or current source revisions. The historical report already qualifies several of these; retain those limits."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "`controller-commands.jsonl:6\u20139,15\u201318,21\u201327` records the two intended integration commits (`25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa`, `9323074ae09c0501a41d428382f7eac0f2d506b2`), successful subsequent HEAD reads, retained caller history, and two detached review worktrees at `7ddd110053fb302c4f6a0bd645ddbf28c512c563`. The corresponding controller trace binds these operations to `/private/tmp/ufz-live-isolation/caller`, with matching commands and successful exits. This supports legitimate recorded caller advancement and a pinned-worktree listing; it does not attribute every possible write or establish seat behavior.",
+      "text": "`controller-commands.jsonl:6\u20139,15\u201318,21\u201327` records the two intended integration commits (`25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa`, `9323074ae09c0501a41d428382f7eac0f2d506b2`), successful subsequent HEAD reads, retained caller history, and two detached review worktrees at `7ddd110053fb302c4f6a0bd645ddbf28c512c563`. The corresponding controller trace binds these operations to `/private/tmp/ufz-live-isolation/caller`, with matching commands and successful exits. This supports legitimate recorded caller advancement and a pinned-worktree listing; it does not attribute every possible write or establish seat behavior."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "The PID and controller-result records agree on 41210, and the controller's final recorded Git command finishes before its recorded done time. This is internally consistent historical controller metadata, with the independent-exit limit above.",
+      "text": "The PID and controller-result records agree on 41210, and the controller's final recorded Git command finishes before its recorded done time. This is internally consistent historical controller metadata, with the independent-exit limit above."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 3,
+      "key": "The historical report's process-scan denial, sampling limits, controlled fallback boundary and verifier-correction disclosure are appropriate qualifications. No demand to bypass the denied inspection, rerun historical fixtures or add tests arises from this bounded archival review. Broader claims must remain attributed to their own reviewed evidence.",
+      "text": "The historical report's process-scan denial, sampling limits, controlled fallback boundary and verifier-correction disclosure are appropriate qualifications. No demand to bypass the denied inspection, rerun historical fixtures or add tests arises from this bounded archival review. Broader claims must remain attributed to their own reviewed evidence."
+    }
+  ]
+}

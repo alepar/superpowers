@@ -1,0 +1,4 @@
+approvals:
+- review-collection · {"invocationId":"old","workspace":"/private/tmp/ufz-pr2-controller/judge-4-reproduce/work","reviewPath":"/private/tmp/ufz-pr2-controller/judge-4-reproduce/work/final-review-old.md","review":"ready","required":[],"settled":true}
+- finding-source · {"version":1,"source":"old/final","artifact":"reviews/old/final-review-old.md","kind":"final-review","verdict":"ready","occurrences":[]}
+- review-collection · {"invocationId":"old","workspace":"/private/tmp/ufz-pr2-controller/judge-4-reproduce/work","reviewPath":"/private/tmp/ufz-pr2-controller/judge-4-reproduce/work/final-review-old.md","review":"ready","required":[],"settled":true,"files":[{"path":"final-review-old.md","sha256":"92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141"}],"complete":true,"gaps":[]}

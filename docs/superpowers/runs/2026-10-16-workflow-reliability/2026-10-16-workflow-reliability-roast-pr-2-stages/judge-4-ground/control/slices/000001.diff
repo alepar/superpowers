@@ -1,0 +1,7 @@
+diff --git a/product.js b/product.js
+index 5223dc2..1ea1fce 100644
+--- a/product.js
++++ b/product.js
+@@ -1 +1 @@
+-module.exports=1
++module.exports=2

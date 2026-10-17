@@ -1,0 +1,93 @@
+[
+  {
+    "label": "settled null",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/run.md",
+      "--invocation",
+      "probe",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work",
+      "--review",
+      "none",
+      "--verdict",
+      "UNAVAILABLE"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: probe: required review is null; owner: orchestrator; recover whole-epic review; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "reconcile valid recovered review",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/run.md",
+      "--invocation",
+      "probe",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work",
+      "--review",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work/final-review-probe.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 3,
+    "stdout": "",
+    "stderr": "COLLECTION_GAP: invocation identity or required bundle changed; retain both sources\n"
+  },
+  {
+    "label": "replay recovery",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/run.md"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: probe: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "status after preserved recovery",
+    "args": [
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/run.md"
+    ],
+    "exit": 0,
+    "stdout": "status: clean [degraded: review collections pending: 1, review collection gaps: 1]\nqualifier: review collections pending: 1\nqualifier: review collection gaps: 1\n",
+    "stderr": ""
+  },
+  {
+    "label": "same report positive control",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/control.md",
+      "--invocation",
+      "probe",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work",
+      "--review",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work/final-review-probe.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  {
+    "label": "fresh invocation cannot clear original pending",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/run.md",
+      "--invocation",
+      "later",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work",
+      "--review",
+      "/tmp/ufz-pr2-controller/judge-5-reproduce/work/final-review-later.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: probe: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+  }
+]

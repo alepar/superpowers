@@ -34,3 +34,14 @@ Design roast round 1 uses the supported manual fan-out rung because Workflow is 
 - [policy-pin] New product final-review builder added a selection-gap guard that contradicted the recorded6.0 Finish fallback. First attempt correctly returned unavailable without writes. A fresh manual review follows the frozen workflow on immutable Git inputs; original guard/cause and all690gaps remain review subjects, not certified away.
 - [finding-routing] Fresh final review used exact requested Must-fix heading; complete extractor retained2codefindings, but legacy --keys/summary skipped that heading. Routed all10actionablekeys from complete occurrence JSON and preserved the original report; no silent disappearance.
 <!-- /caller-handoff-fix-r1 friction sha256:4630722811643104fbc1e62e1505089b8c4fe47e265c1de897b76df755379a1b -->
+
+- code-roast round2 · assembler unavailable (exit2): nested historical captured provenance claims missing split bundle/payload files; pinned6.0 Phase4 direct captured-Git fallback retained all gaps. Existing final-review identity/sourcebinding unchanged.
+
+- 2026-10-17 PR roast round2: rung manual fan-out; Workflow unavailable. Pinned6.0 engine bytes verified against prior adapter. assemble-args rejected cumulative [Must-fix] source keys: original retained byte-for-byte, valid sub-Blocking subset supplied, source obligations retained separately. assemble-args git capture hit ENOBUFS on archive-heavy range; --diff-stat supplied complete Git-captured stat instead. Pre-round review assembly exit2 unavailable; pinned Phase4 direct-input fallback used, gaps remain evidence obligations.
+
+- historical review collection · Four otherwise completed reports used explicit absence prose unsupported by strict complete extraction. Preserved raw reports and created separately hash-mapped mechanical format adapters with reconstruction/occurrence-order proof; no judgments changed. Added required approvals container after initial projection flagged15out-of-container formatting gaps; revalidation passed with all original records retained.
+- PR roast round2 scheduler incident: a brief provenance follow-up reactivated a fourth child while three scouts were active; interrupted immediately before output, no additional reviewer judgment consumed. Fresh substantive scouts/panels continue at max3. Testing scout retained replay ps sandbox denial as a validation limitation.
+
+- code-roast round2 · Provider content-filter interrupted controller after all13scouts, dedupe and first3-seat panel completed. Savedresults retained; fresh controller resumes remaining static correctness verification under pinned safe-retry wording. No branch/source change or incomplete-seat clearance.
+
+- PR roast round2 reporter formatting: first verdict counted one Blocking while the report contained five confirmed entries. The same reporter corrected only the count; its first output was preserved and all other content was verified unchanged.

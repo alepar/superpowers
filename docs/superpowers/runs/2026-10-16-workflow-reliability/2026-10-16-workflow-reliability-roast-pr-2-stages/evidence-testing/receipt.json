@@ -1,0 +1,70 @@
+{
+  "sourceHead": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "execution": "Copied frozen source into own scratch checkout; no source-repository edits, nested agents or Herdr writes.",
+  "checks": [
+    {
+      "command": "bash tests/super-auto/test-scripts.sh",
+      "exit": 0,
+      "log": "auto.log"
+    },
+    {
+      "command": "bash tests/super-code/test-dispatch-text.sh",
+      "exit": 0,
+      "log": "dispatch.log"
+    },
+    {
+      "command": "node tests/super-code/replay-harness.mjs",
+      "exit": 1,
+      "log": "replay.log",
+      "limitation": "Sandbox denies ps (direct ps probe: operation not permitted); replay aborts at real process fixture inspection. This is unavailable environment evidence, not a demonstrated product regression."
+    },
+    {
+      "command": "node tests/super-code/invocation-start-r1.mjs",
+      "exit": 0,
+      "observation": "16 startup cases; Workflow-like VM and simulated mechanical agent, not hosted Workflow."
+    },
+    {
+      "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+      "exit": 0,
+      "observation": "126 loader/CLI seam checks."
+    },
+    {
+      "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+      "exit": 0,
+      "observation": "11 source-binding scenarios; canned agent runtime."
+    },
+    {
+      "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+      "exit": 0,
+      "log": "focused-code.log",
+      "observation": "16 recovery scenarios including compact/oversized holds."
+    },
+    {
+      "command": "bash tests/super-auto/archive-integrity-r1.sh",
+      "exit": 0,
+      "observation": "15 archive integrity scenarios."
+    },
+    {
+      "command": "bash tests/super-auto/collection-symlinks-r1.sh",
+      "exit": 0,
+      "observation": "23 symlink/normal collection assertions."
+    },
+    {
+      "command": "bash tests/super-auto/projection-output-r1.sh",
+      "exit": 0,
+      "observation": "7 pipe/consumer tests."
+    },
+    {
+      "command": "bash tests/super-auto/generated-review-inputs-r1.sh",
+      "exit": 0,
+      "log": "focused-auto.log",
+      "observation": "Repeated collection/re-entry; provenance and unusual pathname controls."
+    }
+  ],
+  "coverageLimits": [
+    "No fresh hosted Workflow, live ordinary scheduling/recovery, verification-only agent completion, native Linux /proc or final outer-cleanup behavior evaluation was performed.",
+    "No claim that historical full-diff review gaps or caller-owned suite/human acceptance obligations are cleared.",
+    "Standalone r1 tests are not invoked by the standard script runners, but they have real assertions and separately documented invocation evidence; manual registration alone was not treated as a defect."
+  ],
+  "conclusion": "No new material testing-lane finding established beyond the already retained source findings and explicit testing limitations."
+}

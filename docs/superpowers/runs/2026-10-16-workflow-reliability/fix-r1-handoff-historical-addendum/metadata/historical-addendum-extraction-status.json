@@ -1,0 +1,78 @@
+[
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+    "exit": 2,
+    "error": "report-verdict: --complete: finding text without a list marker in Must-fix\n"
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+    "exit": 2,
+    "error": "report-verdict: --complete: finding text without a list marker in Must-fix\n"
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-3.md",
+    "exit": 0,
+    "occurrences": 9,
+    "source": "612ea0a7/cluster-29-part-3",
+    "verdict": "ready \u2014 for the exact part-03 historical evidence package only. No must-fix defect was established in these eight assigned source members and eight archived slices. This report neither accepts former cluster 29 as a whole nor accepts the current branch, enclosing run, or product implementation."
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+    "exit": 0,
+    "occurrences": 13,
+    "source": "612ea0a7/cluster-29-part-4",
+    "verdict": "ready"
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+    "exit": 2,
+    "error": "report-verdict: --complete: finding text without a list marker in Must-fix\n"
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-1.md",
+    "exit": 0,
+    "occurrences": 8,
+    "source": "612ea0a7/cluster-52-part-1",
+    "verdict": "ready \u2014 bounded historical evidence review of former cluster 52, part 01 only. No new must-fix was established within the assigned bytes. This judgment completes review coverage for this part; it does not accept former cluster 52 as a whole, former cluster 9, the latest tip, the enclosing run, or any required live measurement."
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-2.md",
+    "exit": 0,
+    "occurrences": 21,
+    "source": "612ea0a7/cluster-52-part-2",
+    "verdict": "ready \u2014 bounded historical-evidence review of former cluster 52, part 02 only. All 25 assigned source members and all 25 assigned archived slices were covered. No new must-fix defect was found in these evidence records when read with the qualifications below. This is neither acceptance of the implementation nor a ready verdict for the whole cluster, whole run, or current tip."
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-3.md",
+    "exit": 0,
+    "occurrences": 7,
+    "source": "612ea0a7/cluster-52-part-3",
+    "verdict": "Ready for this bounded historical evidence review only; no new must-fix is established by the assigned evidence, and landing readiness is not assessed."
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-4.md",
+    "exit": 0,
+    "occurrences": 6,
+    "source": "612ea0a7/cluster-52-part-4",
+    "verdict": "ready \u2014 part-04 historical evidence review complete; recorded failures and untested scope retained; this is not current whole-epic readiness."
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+    "exit": 2,
+    "error": "report-verdict: --complete: finding text without a list marker in Must-fix\n"
+  },
+  {
+    "file": "followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.md",
+    "exit": 0,
+    "occurrences": 6,
+    "source": "612ea0a7/cluster-9",
+    "verdict": "ready"
+  },
+  {
+    "file": "historical-review-aggregate-r1.md",
+    "exit": 0,
+    "occurrences": 10,
+    "source": "612ea0a7/historical-coverage-addendum-r1",
+    "verdict": "ready \u2014 all three formerly unreviewed historical coverage obligations are satisfied by 11 completed bounded reviews and this seam assessment; whole-epic, root acceptance, landing readiness, and current live behavior are not assessed."
+  }
+]

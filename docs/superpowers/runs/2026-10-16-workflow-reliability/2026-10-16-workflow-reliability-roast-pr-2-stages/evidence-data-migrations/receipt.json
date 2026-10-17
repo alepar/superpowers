@@ -1,0 +1,52 @@
+{
+  "bindingCommand": "{\"invocationId\":\"bd-100\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}\n",
+  "digest": "# ledger-digest: 1 of 3 lines\nRecovery: {\"version\":1,\"id\":\"review-source:bd-100\",\"kind\":\"deferred\",\"operation\":\"record\",\"reason\":\"immutable invocation review source\",\"evidence\":[\"/tmp/ufz-pr2-controller/evidence-data-migrations/work/.superpowers/sdd/bd-100-plan/progress.md\"],\"data\":{\"reviewSource\":{\"invocationId\":\"bd-100\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}}}\n",
+  "recovery": {
+    "obligations": [
+      {
+        "version": 1,
+        "id": "review-source:bd-100",
+        "kind": "deferred",
+        "operation": "record",
+        "reason": "immutable invocation review source",
+        "evidence": [
+          "/tmp/ufz-pr2-controller/evidence-data-migrations/work/.superpowers/sdd/bd-100-plan/progress.md"
+        ],
+        "data": {
+          "reviewSource": {
+            "invocationId": "bd-100",
+            "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      {
+        "version": 1,
+        "id": "bd-100:sweep:bd-100",
+        "kind": "deferred",
+        "operation": "record",
+        "reason": "full-suite measurement deferred to caller",
+        "evidence": [
+          ".superpowers/sdd/bd-100-plan/progress.md#Launch:bd-100"
+        ],
+        "data": {
+          "owner": "caller",
+          "runTag": "bd-100",
+          "integrationBranch": "epic-bd-100-integration"
+        }
+      }
+    ],
+    "fixHistory": [],
+    "gaps": []
+  },
+  "control": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "withBinding": {
+    "exit": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"review-source:bd-100: measurement identity unavailable\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  }
+}

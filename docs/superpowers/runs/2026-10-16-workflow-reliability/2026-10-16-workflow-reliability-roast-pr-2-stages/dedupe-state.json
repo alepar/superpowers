@@ -1,0 +1,208 @@
+{
+  "raw": [
+    {
+      "claim": "Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled.",
+      "location": "skills/super-auto/scripts/report-status:131",
+      "category": "correctness",
+      "external": false,
+      "evidence": "The new acceptance loop executes `if(f.classification==='pre-run')continue` before propagating `f.gaps`, and the matching Recovery obligation then exits via `if(r.data.runFailure)...continue` at line 137. The actual coordinator `classifyRunFailure` can retain classification `pre-run` while adding `run-introduced claim conflicts with evidenced pre-run failure`: in the reproduced history, the same immutable run-baseline tree a...a first has live/fail evidence and subsequently live/pass evidence, followed by a failing observation with an introducing task. This is an attribution contradiction, not merely an old failure for which repair is optional; run-state.md:274-277 explicitly requires same-tree pass/fail reconciliation. `/tmp/ufz-pr2-controller/evidence-correctness/probe.mjs` executes that actual frozen classifier and the unmodified acceptance command with an otherwise satisfied review/suite/human control and valid empty finding source. Receipt `/tmp/ufz-pr2-controller/evidence-correctness/receipt.json` records the producer's nonempty gaps and classification pre-run, yet acceptance exits 0 with eligible:true, pending:[], gaps:[]. Reclassifying only that same record as gap exits 3 and exposes the retained contradiction. The targeted failure is distinct from the independently passing required suite, so generic measurement matching does not catch it. No actual run acceptance, human decision, or live Workflow execution is supplied by this isolated fixture.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete.",
+      "location": "skills/super-auto/scripts/report-status:254",
+      "category": "security",
+      "external": false,
+      "evidence": "The added collector validates source components with source(relative), but forms dst as path.join(archive,rel) and calls mkdirSync/copyFileSync without validating destination components. Frozen-head probe /tmp/ufz-pr2-controller/evidence-security/destination-probe.py used an ordinary valid report and required payload/new-file.txt, with only reviews/probe/payload symlinked to a separate outside directory. It created outside/new-file.txt with the review input sentinel, exited 0 with collection: complete, recorded complete:true/gaps:[], and ordinary status returned status: clean. Receipt: /tmp/ufz-pr2-controller/evidence-security/destination-receipt.json. COPYFILE_EXCL prevents replacing an existing leaf; this evidence establishes creation of new files outside the intended archive. The input is a local developer run and the exploit requires control of an existing archive directory entry; no remote service input is claimed. This destination-write escape is distinct from the prior source-read symlink finding, whose source-component fix is present. Source provenance confirms this collector is added relative to the captured base and the executed snapshot equals captured HEAD (source-provenance.json).",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "Immutable review-source provenance is stored as deferred work, so recovery exports it as a measurement obligation and causes an otherwise satisfied root acceptance check to fail for missing measurement identity.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+      "category": "simplicity-design",
+      "external": false,
+      "evidence": "The binding producer writes kind:'deferred' with data:{reviewSource:{invocationId,base,head}}. coordinator.js:432-448 treats this as an actionable recoveryObligations entry; report-status:135-143 treats every non-runFailure deferred entry as a measurement, although this provenance record supplies none of sourceTree/command/configuration. This crosses the immutable-source metadata versus outstanding-work boundary. Independent frozen-source probe /tmp/ufz-pr2-controller/evidence-simplicity-design/probe.mjs executes the actual bind-review-source CLI, actual recovery reader and actual acceptance CLI. Receipt /tmp/ufz-pr2-controller/evidence-simplicity-design/receipt.json shows the synthetic satisfied control returns exit 0 / eligible:true; adding only the produced, recovered binding returns exit 3 / eligible:false with sole gap 'review-source:probe: measurement identity unavailable'. Other acceptance facts are synthetic controls; this is not a claim of actual run acceptance. This corroborates the additional final-review recovery/acceptance seam finding, absent from the embedded round-1 report. The binding must remain durable while being distinguished from measurement work.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails.",
+      "location": "skills/super-code/coordinator.js:1830",
+      "category": "concurrency-async",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "The new verification-only branch awaits parentsMerged(att) at line 1830 inside the scheduler-slot try; its slot is released only by finally at 1849. A failed parent merge returns a follow-up thunk, and enqueueIntegration at 1208-1210 first awaits withSlot before failAttempt can resolve that parent's merged promise false. With supported concurrency=1, the child therefore waits for a parent promise whose resolution requires the child's occupied slot. Frozen-head full-coordinator probe /tmp/ufz-pr2-controller/evidence-concurrency-async/probe.mjs reaches parent merge and both reviews, then times out with no reopen, cancellation or triage dispatch. Exact controls finish: changing only the child to ordinary implementation allows parent cancellation/triage; changing only the parent merge to success completes both; increasing capacity to 2 allows cancellation/triage. Complete results: /tmp/ufz-pr2-controller/evidence-concurrency-async/receipt.json. The probe uses simulated mechanical agent results, not a hosted Workflow. The branch is newly introduced by this diff; preserved base-coordinator.js has no verification-only route, and ordinary chains release the slot before parentsMerged (head 1849-1855). This is distinct from all prior report claims and rejections."
+    },
+    {
+      "claim": "The new immutable review-source binding is recovered as a deferred live measurement obligation, causing root acceptance to reject an otherwise satisfied resumed run.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+      "category": "regression",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "Introduced by post-round-1 commit 7db21aae: bind-review-source emits kind:\"deferred\" with data.reviewSource only. coordinator.js:432-448 accepts and retains that actual record in recoveryObligations; report-status:135-143 treats non-runFailure deferred records as measurements, requiring sourceTree/command/configuration the producer never supplies. Independent frozen-head probe /tmp/ufz-pr2-controller/evidence-regression/probe.cjs invokes the real binding CLI on a scratch ledger, passes its emitted line through the actual readRecovery function, then executes the actual acceptance code with independently satisfied synthetic review/live-check/human prerequisites and mocked empty projection/clean status. Control: exit 0, eligible:true. Adding only the produced-and-recovered binding: exit 3, eligible:false, gap \"review-source:regression-probe: measurement identity unavailable\". Receipt: /tmp/ufz-pr2-controller/evidence-regression/binding-receipt.json. This isolates producer/consumer classification; it does not claim the current actual run has met its other acceptance prerequisites. Required final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md, its complete evidence package and final-review-fix-r1.complete.json independently retain the same source obligation; fix-r1-handoff/source/task-26-report.md identifies the binding fix and its narrower deterministic coverage."
+    },
+    {
+      "claim": "The new selector promotes nested historical run.md snapshots into current selection authority and suppresses direct review of available product edits when those snapshots lack relocated archive payloads.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:154",
+      "category": "regression",
+      "external": false,
+      "kind": "ISSUE",
+      "previouslyRejected": true,
+      "evidence": "Commit e4c809c9, the fix for recursive archive collection, adds basename(run)==='run.md' discovery across the entire captured tree, resolves each snapshot's archive relative to that snapshot, and suppresses all slices on any gap (dispatch-text.mjs:154-155,187-214,235-248). Independent frozen-head fixture /tmp/ufz-pr2-controller/evidence-regression/probe.cjs creates a valid ordinary archived snapshot at docs/run/reviews/historical-probe/snapshots/run.md plus a separately reviewable one-line product.js edit. Actual review-inputs returns exit 3, zero omissions and zero slices, retaining product.js in changed, solely because it searches snapshots/reviews/archived-inv/final-review-archived-inv.md. Product-only positive control returns exit 0 and one slice. Receipt /tmp/ufz-pr2-controller/evidence-regression/nested-receipt.json retains outputs and execution of the exact new Finish refusal condition. assembler-prompt.md:26-29 converts this result to exit 2 with cause 'review input selection:'; coordinator.js:2326,2361 skips the direct review dispatch, and its actual generated single-review prompt (evidence-regression/direct-review-prompt.md) independently says to return unavailable without a verdict or direct package. The prior rejection depended specifically on working captured-Git fallback for a filename-length assembly failure. Changed evidence is e4c809c9's added selection-prefix refusal and unconditional selection-gap return, not another filename-limit claim. This also occurred in the actual required final review: final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md.diff retains 690 gaps, zero slices/omissions, and the lost first review; fix-r1-handoff/verification.json explicitly preserves reviewCoverageComplete:false and selectionProvenanceGapsUnresolved:690. Retaining the archival gap is correct; that gap need not prevent an explicitly incomplete report on independently available source."
+    },
+    {
+      "claim": "Persisted immutable review-source bindings are reconstructed as deferred measurement obligations, making caller root acceptance fail after a coordinator resume even when every actual acceptance requirement is satisfied.",
+      "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+      "category": "data-migrations",
+      "external": false,
+      "evidence": "bind-review-source writes kind:\"deferred\", operation:\"record\", data:{reviewSource:{invocationId,base,head}}. On resume coordinator.js:447-448 inserts this record into recoveryObligations and :2424 returns it unchanged; super-auto/run-state.md:227 requires preserving those returned obligations. report-status:132-139 interprets every deferred obligation without runFailure as a measurement and calls measure(r.data), whose sourceTree/command/configuration identity is absent for this provenance-only record. Frozen-source probe /tmp/ufz-pr2-controller/evidence-data-migrations/probe.mjs executes the real binding command, ledger-digest and coordinator replay, then supplies the actual reconstructed binding to an otherwise eligible acceptance fixture. receipt.json records control exit 0 eligible:true, and withBinding exit 3 eligible:false with the sole gap \"review-source:bd-100: measurement identity unavailable\". No matching measurement identity exists in the produced binding, and no consumer exemption or provenance-specific clearing is implemented.",
+      "kind": "ISSUE"
+    },
+    {
+      "claim": "The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending.",
+      "location": "skills/super-auto/scripts/report-status:206",
+      "category": "api-contract",
+      "external": false,
+      "kind": "ISSUE",
+      "evidence": "This is a new internal CLI contract. SKILL.md:390 assigns recovery of null/unavailable whole-epic reviews to the orchestrator, while SKILL.md:465 and run-state.md:214 require collection success before later invocation or cleanup. report-status:226 requests \"recover whole-epic review\" for a settled null/unavailable result, but line 206 rejects any null-to-file reviewPath update when old.settled is true; no-argument replay retains null and line 229 emits \"null review has recoverable bundle artifacts; reconcile returned result\" even after extracting/archiving the recovered report. Independent frozen-source probe /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery.py first settles contract-probe with --review none --verdict UNAVAILABLE (exit 3), creates a valid final-review-contract-probe.md, then retries --collect with that actual path (exit 3 identity-change rejection); replay still exits 3 with the null reconciliation gap. Collecting identical valid report bytes directly on a fresh run is the positive control (exit 0). Receipts: /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery-receipt.json. A subsequent fresh invocation with a valid ready report also leaves the original collection pending (fresh-recovery.py and fresh-recovery-receipt.json). Thus neither documented CLI reconciliation/replay nor a later report settles the earlier gap; a supported explicit recovery/association path is missing, without any need to erase the original unavailable-result history."
+    }
+  ],
+  "scoutNames": [
+    "correctness",
+    "security",
+    "premortem",
+    "simplicity-design",
+    "hot-path-perf",
+    "concurrency-async",
+    "regression",
+    "data-migrations",
+    "deploy-safety",
+    "api-contract",
+    "observability",
+    "testing",
+    "hygiene-docs"
+  ],
+  "scoutResults": [
+    {
+      "findings": [
+        {
+          "claim": "Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled.",
+          "location": "skills/super-auto/scripts/report-status:131",
+          "category": "correctness",
+          "external": false,
+          "evidence": "The new acceptance loop executes `if(f.classification==='pre-run')continue` before propagating `f.gaps`, and the matching Recovery obligation then exits via `if(r.data.runFailure)...continue` at line 137. The actual coordinator `classifyRunFailure` can retain classification `pre-run` while adding `run-introduced claim conflicts with evidenced pre-run failure`: in the reproduced history, the same immutable run-baseline tree a...a first has live/fail evidence and subsequently live/pass evidence, followed by a failing observation with an introducing task. This is an attribution contradiction, not merely an old failure for which repair is optional; run-state.md:274-277 explicitly requires same-tree pass/fail reconciliation. `/tmp/ufz-pr2-controller/evidence-correctness/probe.mjs` executes that actual frozen classifier and the unmodified acceptance command with an otherwise satisfied review/suite/human control and valid empty finding source. Receipt `/tmp/ufz-pr2-controller/evidence-correctness/receipt.json` records the producer's nonempty gaps and classification pre-run, yet acceptance exits 0 with eligible:true, pending:[], gaps:[]. Reclassifying only that same record as gap exits 3 and exposes the retained contradiction. The targeted failure is distinct from the independently passing required suite, so generic measurement matching does not catch it. No actual run acceptance, human decision, or live Workflow execution is supplied by this isolated fixture.",
+          "kind": "ISSUE"
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "claim": "Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete.",
+          "location": "skills/super-auto/scripts/report-status:254",
+          "category": "security",
+          "external": false,
+          "evidence": "The added collector validates source components with source(relative), but forms dst as path.join(archive,rel) and calls mkdirSync/copyFileSync without validating destination components. Frozen-head probe /tmp/ufz-pr2-controller/evidence-security/destination-probe.py used an ordinary valid report and required payload/new-file.txt, with only reviews/probe/payload symlinked to a separate outside directory. It created outside/new-file.txt with the review input sentinel, exited 0 with collection: complete, recorded complete:true/gaps:[], and ordinary status returned status: clean. Receipt: /tmp/ufz-pr2-controller/evidence-security/destination-receipt.json. COPYFILE_EXCL prevents replacing an existing leaf; this evidence establishes creation of new files outside the intended archive. The input is a local developer run and the exploit requires control of an existing archive directory entry; no remote service input is claimed. This destination-write escape is distinct from the prior source-read symlink finding, whose source-component fix is present. Source provenance confirms this collector is added relative to the captured base and the executed snapshot equals captured HEAD (source-provenance.json).",
+          "kind": "ISSUE"
+        }
+      ]
+    },
+    {
+      "findings": []
+    },
+    {
+      "findings": [
+        {
+          "claim": "Immutable review-source provenance is stored as deferred work, so recovery exports it as a measurement obligation and causes an otherwise satisfied root acceptance check to fail for missing measurement identity.",
+          "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+          "category": "simplicity-design",
+          "external": false,
+          "evidence": "The binding producer writes kind:'deferred' with data:{reviewSource:{invocationId,base,head}}. coordinator.js:432-448 treats this as an actionable recoveryObligations entry; report-status:135-143 treats every non-runFailure deferred entry as a measurement, although this provenance record supplies none of sourceTree/command/configuration. This crosses the immutable-source metadata versus outstanding-work boundary. Independent frozen-source probe /tmp/ufz-pr2-controller/evidence-simplicity-design/probe.mjs executes the actual bind-review-source CLI, actual recovery reader and actual acceptance CLI. Receipt /tmp/ufz-pr2-controller/evidence-simplicity-design/receipt.json shows the synthetic satisfied control returns exit 0 / eligible:true; adding only the produced, recovered binding returns exit 3 / eligible:false with sole gap 'review-source:probe: measurement identity unavailable'. Other acceptance facts are synthetic controls; this is not a claim of actual run acceptance. This corroborates the additional final-review recovery/acceptance seam finding, absent from the embedded round-1 report. The binding must remain durable while being distinguished from measurement work.",
+          "kind": "ISSUE"
+        }
+      ]
+    },
+    {
+      "findings": []
+    },
+    {
+      "findings": [
+        {
+          "claim": "A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails.",
+          "location": "skills/super-code/coordinator.js:1830",
+          "category": "concurrency-async",
+          "external": false,
+          "kind": "ISSUE",
+          "evidence": "The new verification-only branch awaits parentsMerged(att) at line 1830 inside the scheduler-slot try; its slot is released only by finally at 1849. A failed parent merge returns a follow-up thunk, and enqueueIntegration at 1208-1210 first awaits withSlot before failAttempt can resolve that parent's merged promise false. With supported concurrency=1, the child therefore waits for a parent promise whose resolution requires the child's occupied slot. Frozen-head full-coordinator probe /tmp/ufz-pr2-controller/evidence-concurrency-async/probe.mjs reaches parent merge and both reviews, then times out with no reopen, cancellation or triage dispatch. Exact controls finish: changing only the child to ordinary implementation allows parent cancellation/triage; changing only the parent merge to success completes both; increasing capacity to 2 allows cancellation/triage. Complete results: /tmp/ufz-pr2-controller/evidence-concurrency-async/receipt.json. The probe uses simulated mechanical agent results, not a hosted Workflow. The branch is newly introduced by this diff; preserved base-coordinator.js has no verification-only route, and ordinary chains release the slot before parentsMerged (head 1849-1855). This is distinct from all prior report claims and rejections."
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "claim": "The new immutable review-source binding is recovered as a deferred live measurement obligation, causing root acceptance to reject an otherwise satisfied resumed run.",
+          "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+          "category": "regression",
+          "external": false,
+          "kind": "ISSUE",
+          "evidence": "Introduced by post-round-1 commit 7db21aae: bind-review-source emits kind:\"deferred\" with data.reviewSource only. coordinator.js:432-448 accepts and retains that actual record in recoveryObligations; report-status:135-143 treats non-runFailure deferred records as measurements, requiring sourceTree/command/configuration the producer never supplies. Independent frozen-head probe /tmp/ufz-pr2-controller/evidence-regression/probe.cjs invokes the real binding CLI on a scratch ledger, passes its emitted line through the actual readRecovery function, then executes the actual acceptance code with independently satisfied synthetic review/live-check/human prerequisites and mocked empty projection/clean status. Control: exit 0, eligible:true. Adding only the produced-and-recovered binding: exit 3, eligible:false, gap \"review-source:regression-probe: measurement identity unavailable\". Receipt: /tmp/ufz-pr2-controller/evidence-regression/binding-receipt.json. This isolates producer/consumer classification; it does not claim the current actual run has met its other acceptance prerequisites. Required final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md, its complete evidence package and final-review-fix-r1.complete.json independently retain the same source obligation; fix-r1-handoff/source/task-26-report.md identifies the binding fix and its narrower deterministic coverage."
+        },
+        {
+          "claim": "The new selector promotes nested historical run.md snapshots into current selection authority and suppresses direct review of available product edits when those snapshots lack relocated archive payloads.",
+          "location": "skills/super-code/scripts/dispatch-text.mjs:154",
+          "category": "regression",
+          "external": false,
+          "kind": "ISSUE",
+          "previouslyRejected": true,
+          "evidence": "Commit e4c809c9, the fix for recursive archive collection, adds basename(run)==='run.md' discovery across the entire captured tree, resolves each snapshot's archive relative to that snapshot, and suppresses all slices on any gap (dispatch-text.mjs:154-155,187-214,235-248). Independent frozen-head fixture /tmp/ufz-pr2-controller/evidence-regression/probe.cjs creates a valid ordinary archived snapshot at docs/run/reviews/historical-probe/snapshots/run.md plus a separately reviewable one-line product.js edit. Actual review-inputs returns exit 3, zero omissions and zero slices, retaining product.js in changed, solely because it searches snapshots/reviews/archived-inv/final-review-archived-inv.md. Product-only positive control returns exit 0 and one slice. Receipt /tmp/ufz-pr2-controller/evidence-regression/nested-receipt.json retains outputs and execution of the exact new Finish refusal condition. assembler-prompt.md:26-29 converts this result to exit 2 with cause 'review input selection:'; coordinator.js:2326,2361 skips the direct review dispatch, and its actual generated single-review prompt (evidence-regression/direct-review-prompt.md) independently says to return unavailable without a verdict or direct package. The prior rejection depended specifically on working captured-Git fallback for a filename-length assembly failure. Changed evidence is e4c809c9's added selection-prefix refusal and unconditional selection-gap return, not another filename-limit claim. This also occurred in the actual required final review: final-review-inv-c96916a964634bb0bb5f2bd3b8e1769b.md.diff retains 690 gaps, zero slices/omissions, and the lost first review; fix-r1-handoff/verification.json explicitly preserves reviewCoverageComplete:false and selectionProvenanceGapsUnresolved:690. Retaining the archival gap is correct; that gap need not prevent an explicitly incomplete report on independently available source."
+        }
+      ]
+    },
+    {
+      "findings": [
+        {
+          "claim": "Persisted immutable review-source bindings are reconstructed as deferred measurement obligations, making caller root acceptance fail after a coordinator resume even when every actual acceptance requirement is satisfied.",
+          "location": "skills/super-code/scripts/dispatch-text.mjs:319",
+          "category": "data-migrations",
+          "external": false,
+          "evidence": "bind-review-source writes kind:\"deferred\", operation:\"record\", data:{reviewSource:{invocationId,base,head}}. On resume coordinator.js:447-448 inserts this record into recoveryObligations and :2424 returns it unchanged; super-auto/run-state.md:227 requires preserving those returned obligations. report-status:132-139 interprets every deferred obligation without runFailure as a measurement and calls measure(r.data), whose sourceTree/command/configuration identity is absent for this provenance-only record. Frozen-source probe /tmp/ufz-pr2-controller/evidence-data-migrations/probe.mjs executes the real binding command, ledger-digest and coordinator replay, then supplies the actual reconstructed binding to an otherwise eligible acceptance fixture. receipt.json records control exit 0 eligible:true, and withBinding exit 3 eligible:false with the sole gap \"review-source:bd-100: measurement identity unavailable\". No matching measurement identity exists in the produced binding, and no consumer exemption or provenance-specific clearing is implemented.",
+          "kind": "ISSUE"
+        }
+      ]
+    },
+    {
+      "findings": []
+    },
+    {
+      "findings": [
+        {
+          "claim": "The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending.",
+          "location": "skills/super-auto/scripts/report-status:206",
+          "category": "api-contract",
+          "external": false,
+          "kind": "ISSUE",
+          "evidence": "This is a new internal CLI contract. SKILL.md:390 assigns recovery of null/unavailable whole-epic reviews to the orchestrator, while SKILL.md:465 and run-state.md:214 require collection success before later invocation or cleanup. report-status:226 requests \"recover whole-epic review\" for a settled null/unavailable result, but line 206 rejects any null-to-file reviewPath update when old.settled is true; no-argument replay retains null and line 229 emits \"null review has recoverable bundle artifacts; reconcile returned result\" even after extracting/archiving the recovered report. Independent frozen-source probe /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery.py first settles contract-probe with --review none --verdict UNAVAILABLE (exit 3), creates a valid final-review-contract-probe.md, then retries --collect with that actual path (exit 3 identity-change rejection); replay still exits 3 with the null reconciliation gap. Collecting identical valid report bytes directly on a fresh run is the positive control (exit 0). Receipts: /tmp/ufz-pr2-controller/evidence-api-contract/null-recovery-receipt.json. A subsequent fresh invocation with a valid ready report also leaves the original collection pending (fresh-recovery.py and fresh-recovery-receipt.json). Thus neither documented CLI reconciliation/replay nor a later report settles the earlier gap; a supported explicit recovery/association path is missing, without any need to erase the original unavailable-result history."
+        }
+      ]
+    },
+    {
+      "findings": []
+    },
+    {
+      "findings": []
+    },
+    {
+      "findings": []
+    }
+  ],
+  "triage": {
+    "lanes": [
+      "data-migrations",
+      "deploy-safety",
+      "api-contract",
+      "observability",
+      "testing",
+      "hygiene-docs"
+    ],
+    "domains": []
+  }
+}

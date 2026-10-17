@@ -1,0 +1,64 @@
+super-roast verdict: Blocking (5 confirmed)
+mode: pr        iteration: 2 of 3
+profile (assumed): This is internal developer workflow tooling that preserves review evidence and finding continuity. It acts on real repositories and run history, so failures can suppress findings or misrepresent completion; no external service or privilege boundary is assumed.
+inputs: super-auto/workflow-reliability@5b772aac vs d84541ae (full captured range; main@832b051c unabsorbed)
+delta vs prior: 5 new confirmed (1 Blocking) · 0 carried (0 Blocking) · 7 resolved · 0 regressed (0 Blocking) · 0 punch-listed (open)
+coverage: scouts 13/13 (correctness, security, premortem, simplicity-design, hot-path-perf, concurrency-async, regression, data-migrations, deploy-safety, api-contract, observability, testing, hygiene-docs) · raw 8 → deduped 6 → panel 6 · spot 0 · promoted 0 · judge completion 100% · remainder-capped: 0
+independence: same-family (OpenAI GPT-6) — seat-differentiated panel · rung: manual fan-out
+seat-agreement: panels 6 · rr 0.83 · rg 1.00 · fg 0.83 · unanimous 0.83 · ground-loo 1.00 (n=5) · reproduce 6/0/0 · refute 5/1/0 · ground 6/0/0
+lane-yield (found/confirmed/unique/refuted): correctness 1/1/1/0 · security 1/1/1/0 · premortem 0/0/0/0 · simplicity-design 1/1/0/0 · hot-path-perf 0/0/0/0 · concurrency-async 1/1/1/0 · regression 2/2/1/0 · data-migrations 1/1/0/0 · deploy-safety 0/0/0/0 · api-contract 1/1/1/0 · observability 0/0/0/0 · testing 0/0/0/0 · hygiene-docs 0/0/0/0
+
+## Confirmed findings            ← consumed by super-design, one task per finding
+- [Should-fix] skills/super-auto/scripts/report-status:254 — Review collection follows symlinked archive destination directories, writes new review files outside the run archive, and reports collection complete. [lanes: security]
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: Three frozen-head probes created outside/new-file.txt through reviews/probe/payload, returned exit 0 with collection complete and complete:true/gaps:[], and ordinary status returned clean. The collector validates source components but not destination ancestors before mkdirSync/copyFileSync. The prior source-read symlink finding is fixed; this destination-write escape is introduced by the current collector. Evidence: /tmp/ufz-pr2-controller/judge-0-reproduce/receipt.json, /tmp/ufz-pr2-controller/judge-0-refute/receipt.json, /tmp/ufz-pr2-controller/judge-0-ground/destination-receipt.json; skills/super-auto/SKILL.md:461; run-state.md:214.
+  fix-shape hint: Validate each destination path component before creating or copying archived review files.
+- [Blocking] skills/super-code/coordinator.js:1830 — A verification-only task stacked on an unmerged parent deadlocks the coordinator when it holds the last scheduler slot and that parent merge fails. [lanes: concurrency-async]
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: Independent full-coordinator simulations stall after both reviews when a verification-only child holds the sole slot awaiting parentsMerged, while parent failure handling needs that slot to resolve the promise. Controls with an ordinary child, a successful parent merge, or capacity 2 complete. The supported concurrency=1 path therefore prevents cancellation, reopen, triage, and round completion. Evidence: /tmp/ufz-pr2-controller/judge-1-reproduce/receipt.json, /tmp/ufz-pr2-controller/judge-1-refute/receipt.json, /tmp/ufz-pr2-controller/judge-1-ground/receipt.json; coordinator-workflow.md:564-570.
+  fix-shape hint: Release the child task slot before waiting for parent merge settlement, or otherwise let failure settlement run without that slot.
+- [Should-fix] skills/super-auto/scripts/report-status:131 — Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled. [lanes: correctness]
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: The actual classifier retains a pre-run classification while adding a run-introduced/pre-run conflict for pass and fail observations at the same baseline tree. The unmodified acceptance command then exits 0 with eligible:true, pending:[], gaps:[], while changing only classification to gap exposes the contradiction and exits 3. The required final suite is a different command and does not detect this targeted conflict. Evidence: /tmp/ufz-pr2-controller/judge-2-reproduce/receipt.json, /tmp/ufz-pr2-controller/judge-2-refute/receipt.json, /tmp/ufz-pr2-controller/judge-2-ground/reproduction-output.json; run-state.md:274-277; coordinator-workflow.md:700-704.
+  fix-shape hint: Preserve attribution gaps from pre-run failures when same-tree pass/fail history remains contradictory.
+- [Should-fix] skills/super-code/scripts/dispatch-text.mjs:319 — Persisted immutable review-source bindings are recovered as deferred measurement obligations, causing otherwise satisfied root acceptance to fail for missing measurement identity. [lanes: simplicity-design, regression, data-migrations] [fix-regression]
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: The real bind-review-source CLI writes a provenance-only deferred record; ledger-digest and recovery preserve it as an obligation without measurement identity. A satisfied synthetic acceptance control passes, but adding only the recovered binding makes the real acceptance CLI exit 3 with the sole gap “review-source: measurement identity unavailable.” The fixture does not assert actual run acceptance. Evidence: /tmp/ufz-pr2-controller/judge-3-reproduce/receipt.json, /tmp/ufz-pr2-controller/judge-3-refute/receipt.json, /tmp/ufz-pr2-controller/judge-3-ground/receipt.json; run-state.md:225-230.
+  fix-shape hint: Give review-source provenance a defined recovery disposition that does not require measurement fields it does not contain.
+- [Should-fix] skills/super-auto/scripts/report-status:206 — The collection CLI cannot reconcile a settled null review result to its recovered report, so valid report recovery leaves the required collection gate pending. [lanes: api-contract]
+  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)
+  evidence: After settling a required review as UNAVAILABLE, supplying the recovered review path is rejected as an identity change; replay archives the report but retains the null reconciliation gap. A fresh collection of identical bytes succeeds. This prevents the documented recovery path from clearing collection status before a subsequent invocation or cleanup. Evidence: /tmp/ufz-pr2-controller/judge-5-reproduce/receipt.json, /tmp/ufz-pr2-controller/judge-5-refute/receipts.json, /tmp/ufz-pr2-controller/judge-5-ground/receipt.json; skills/super-auto/SKILL.md:390, 465; run-state.md:210-214; resume.md:29-31.
+  fix-shape hint: Add a supported reconciliation transition that associates a recovered report with the settled null result while preserving its history.
+
+## Not verified (beyond panel cap)   ← severe candidates the panel cap left unverified — listed, never dropped
+- none
+
+## Not verified (dedupe failed or judge lost)   ← findings a pipeline failure left unjudged — listed, never dropped
+- none
+
+## Beyond remainder cap (count only)   ← low-severity candidates the dedupe remainder cap dropped; the count survives, the claims do not
+- none
+
+## Rejected (with reason)        ← so re-roasts don’t re-litigate
+- The claim that the new measurement aggregation rule is duplicated with conflicting semantics, so super-code reports a required live check as passed while super-auto reports the same retained check evidence as failed (skills/super-code/coordinator.js:354), remains rejected. The prior report found that coordinator pass means matching live/pass evidence is available, while semantic coverage and acceptance remain caller decisions; acceptance separately requires reconciliation. No current packet changes that evidence.
+- The old filename-length claim that the new tracked archive makes the required next roast assembly fail with ENAMETOOLONG (skills/super-auto/SKILL.md:400) remains rejected on its prior evidence: the documented direct-input fallback preserved review and revision binding. The current nested-snapshot finding is separately escalated because it supplies new post-r1 evidence of selector refusal that reaches the review dispatch path.
+
+## Unverified nits (spot-checked)
+- none
+
+## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent
+- skills/super-code/scripts/dispatch-text.mjs:154 — Material dissent remains between the confirmed claim that nested historical run.md snapshots suppress review of available product edits and the refute seat's concrete policy evidence: assembler-prompt.md:22-29 and super-auto/SKILL.md:463 say invalid provenance remains unavailable through fallback. The confirming seats cite the authoritative run.md location and direct-input review when assembly is unavailable, but do not settle whether that explicit invalid-provenance refusal policy applies to this nested snapshot case. New evidence: /tmp/ufz-pr2-controller/judge-4-reproduce/receipt.json and /tmp/ufz-pr2-controller/judge-4-ground/receipt.json. The prior filename-length rejection remains rejected; this is the materially new fallback-refusal evidence.
+
+## Prior findings resolved
+- [Should-fix] skills/super-code/coordinator.js:752 — Oversized persisted recovery holds lose task scope during digest compaction. (resolved; not re-surfaced in current packets)
+- [Blocking] skills/super-code/coordinator.js:25 — Omitting invocationId makes Workflow startup call forbidden Date.now() and Math.random() APIs. (resolved; not re-surfaced in current packets)
+- [Should-fix] skills/super-auto/scripts/report-status:168 — Root acceptance trusts persisted collection-complete metadata without checking saved hashes. (resolved; not re-surfaced in current packets)
+- [Should-fix] skills/super-auto/scripts/scope-dispositions:194 — Large finding projections are truncated on piped stdout while exiting successfully. (resolved; not re-surfaced in current packets)
+- [Should-fix] skills/super-auto/scripts/report-status:224 — Committed assembled review archives are re-collected into later full-range reviews until slice creation fails. (resolved; not re-surfaced in current packets)
+- [Should-fix] skills/super-auto/scripts/report-status:220 — Review collection follows intermediate source-directory symlinks and archives files outside the declared source workspace. (resolved; packet 1 confirms source-component validation is present)
+- [Should-fix] tests/super-code/test-dispatch-text.sh:10 — The required dispatch-text test suite fails when TMPDIR ends with a slash. (resolved; not re-surfaced in current packets)
+
+## Original source obligations (separate; no severity translation or resolution claim)
+[Must-fix] untested: This seam review executes the collector/assembly feedback fixture only; it does not rerun the full coordinator, hosted Workflow, ordinary live scheduling/recovery, live verification-only completion, or the full required suite. Existing source-bound helper, replay, text-decision and live-isolation evidence retains the separate meanings described above.
+[Must-fix] untested: Native Linux `/proc` inspection/termination remains untested in the supplied macOS evidence. Exit-zero/empty-stdout Finish process records do not independently resolve inspection availability or verify all resource safety; preserve the raw observations and caller-owned follow-up.
+[Must-fix] untested: Archived fixed temporary paths, source excerpts and replay drivers were reviewed as historical evidence; general-purpose rerun portability, concurrency and unrecorded agent side effects were not established. Original B4 failures/ambiguity and live-exercise limits remain unmodified.

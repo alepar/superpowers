@@ -1,0 +1,18 @@
+{
+  "command": [
+    "bash",
+    "tests/super-auto/generated-review-inputs-r1.sh"
+  ],
+  "exitCode": 0,
+  "configuration": {
+    "TMPDIR": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/tmpdir",
+    "HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/home",
+    "XDG_CONFIG_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/xdg_config_home",
+    "XDG_CACHE_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/xdg_cache_home",
+    "XDG_DATA_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/xdg_data_home",
+    "XDG_STATE_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs/xdg_state_home"
+  },
+  "kind": "fresh real collector/selector deterministic Git fixture, fixture-authored semantic digest/reviews",
+  "stdout": "{\"invocation\":\"inv-1\",\"files\":5,\"bytes\":1015,\"maxBasename\":11}\n{\"invocation\":\"inv-2\",\"files\":7,\"bytes\":4365,\"maxBasename\":11}\n{\"invocation\":\"inv-3\",\"files\":8,\"bytes\":7786,\"maxBasename\":11}\n{\"invocation\":\"inv-4\",\"files\":9,\"bytes\":11349,\"maxBasename\":11}\n{\"invocation\":\"inv-5\",\"files\":10,\"bytes\":15052,\"maxBasename\":11}\n{\"invocation\":\"inv-6\",\"files\":12,\"bytes\":19081,\"maxBasename\":11}\nPASS: four unchanged-product collection/re-entry cycles, new product, immutable archives, captured source, exact claims, unusual paths and explicit provenance gaps\n",
+  "stderr": ""
+}

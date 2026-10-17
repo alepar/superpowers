@@ -1,0 +1,41 @@
+{
+  "status": "verified safe inert archive",
+  "manifestPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/archive-packaging-manifest.json",
+  "manifestSHA256": "82aab0e5347656fbcb68d45253ca0a8c69c00aa289e309e4765fe90a397f4ab3",
+  "sourceHashMapPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/artifact-source-hash-map.json",
+  "sourceHashMapSHA256": "5adba8d0dcfec9321b8a76716fc1c24b42b8bd20804444096c0b137770633165",
+  "persistenceVerificationSHA256": "09c23601f43c018ff6e4a7a50a68ef003af5d01df129ced3f206ab11374a1b7c",
+  "liveSymlinks": 0,
+  "gitNamedEntries": 0,
+  "serializedSymlinks": 4,
+  "inertGitArchives": 4,
+  "gitRegularFilesPreserved": 157,
+  "unchangedPreexistingRegularFiles": 1161,
+  "safeFileEntriesHashed": 1180,
+  "reportSHA256Unchanged": "1e4b0c9881a7906a467ccd31d4dae5dfe050bb8077a21862aacefdd6d534a434",
+  "proofReceiptAndSourceBytesChanged": 0,
+  "originalScratchPreserved": true,
+  "previousManifestVersionsPreserved": 3,
+  "largeArtifactEncoding": {
+    "logicalArtifact": "authored.diff",
+    "logicalBytes": 136599903,
+    "logicalSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "storedFilename": "authored.diff.gz",
+    "storedBytes": 30203817,
+    "storedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "decodeMethod": "gzip -dc authored.diff.gz",
+    "decodedBytesVerified": 136599903,
+    "decodedSHA256Verified": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "exactMatch": true
+  },
+  "mappingAudit": {
+    "declaredEntries": 1180,
+    "verifiedAfterAllMetadataWrites": true,
+    "mismatches": 0,
+    "excludedSelfReferentialMetadata": [
+      "archive-packaging-verification.json",
+      "artifact-source-hash-map.json",
+      "persistence-verification.json"
+    ]
+  }
+}

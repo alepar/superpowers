@@ -1,0 +1,36 @@
+[
+  {
+    "id": "q",
+    "title": "Root",
+    "issue_type": "epic",
+    "description": "Root."
+  },
+  {
+    "id": "q.1",
+    "title": "First",
+    "issue_type": "epic",
+    "parent": "q",
+    "description": "Summary."
+  },
+  {
+    "id": "q.10",
+    "title": "Tenth",
+    "issue_type": "epic",
+    "parent": "q",
+    "description": "Summary."
+  },
+  {
+    "id": "q.1.2",
+    "title": "Nested",
+    "issue_type": "epic",
+    "parent": "q",
+    "description": "Summary."
+  },
+  {
+    "id": "q.2",
+    "title": "Declarations",
+    "issue_type": "task",
+    "parent": "q",
+    "description": "Build adapter. **owns:** `AdapterConfig`; **consumes:** `RunnerSpec`; **boundary contract:** `q.9`\n- **owns:** An interface description with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields with detailed fields END_OF_OWNERSHIP\n  - `consumes:` `SharedContext`\n- **boundary contract:** `q.8`"
+  }
+]

@@ -1,0 +1,2 @@
+{ "t0": "2026-10-12T00:00:00Z", "idPrefix": "gb",
+  "agents": [ { "label": "impl:cg.2", "start": 4150, "end": 4400, "context": [[4151, 20000]] } ] }

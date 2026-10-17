@@ -1,0 +1,46 @@
+{
+  "control": {
+    "exit": 0,
+    "stdout": {
+      "owner": "super-auto",
+      "sourceTree": "cccccccccccccccccccccccccccccccccccccccc",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    },
+    "stderr": ""
+  },
+  "binding": {
+    "exit": 3,
+    "stdout": {
+      "owner": "super-auto",
+      "sourceTree": "cccccccccccccccccccccccccccccccccccccccc",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "review-source:probe: measurement identity unavailable"
+      ],
+      "nonblockingFindings": []
+    },
+    "stderr": ""
+  },
+  "producedRecord": {
+    "version": 1,
+    "id": "review-source:probe",
+    "kind": "deferred",
+    "operation": "record",
+    "reason": "immutable invocation review source",
+    "evidence": [
+      "/tmp/ufz-pr2-controller/evidence-simplicity-design/work/.superpowers/sdd/R-plan/progress.md"
+    ],
+    "data": {
+      "reviewSource": {
+        "invocationId": "probe",
+        "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    }
+  },
+  "note": "Actual binding CLI, actual recovery reader and actual acceptance CLI; other acceptance facts are synthetic satisfied controls, not actual run acceptance."
+}

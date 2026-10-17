@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-aggregate-r1",
+  "artifact": "fix-r1-handoff-historical-addendum/raw/historical-review-aggregate-r1.md",
+  "kind": "final-review",
+  "verdict": "ready \u2014 all three formerly unreviewed historical coverage obligations are satisfied by 11 completed bounded reviews and this seam assessment; whole-epic, root acceptance, landing readiness, and current live behavior are not assessed.",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "**Historical failure resolution and attribution remain qualified** (R52.1\u201352.4). Initial profile/verdict/package failures, the failing pre-rebase replay, first verifier failures, and red fixture leaks remain recorded failed observations. Later passes establish their own named measurements; this report establishes neither a complete causal repair proof nor introduction/persistence at the run baseline or current source. No task closure, assignment, ready retry, or silence disposes of a finding.",
+      "text": "**Historical failure resolution and attribution remain qualified** (R52.1\u201352.4). Initial profile/verdict/package failures, the failing pre-rebase replay, first verifier failures, and red fixture leaks remain recorded failed observations. Later passes establish their own named measurements; this report establishes neither a complete causal repair proof nor introduction/persistence at the run baseline or current source. No task closure, assignment, ready retry, or silence disposes of a finding."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "**Live and changed-instruction behavior remains independently owned** (R9.1, all R29, all R52). No live tests, fresh-agent interrupted-invocation evaluation, changed-instruction evaluation, repeated-run reliability, other-model/cross-harness certification, hosted Workflow operation, actual resumed-session behavior, real denied-operation behavior, real cleanup signaling/termination, or installation was rerun here. DryRun, live-sim, synthetic, fake-signal, prompt/parser, smoke, and mock-engine cases retain their evidence kinds. Hooks smoke tests do not prove live interactive reinjection. Profile/digest fixture results are not measurements of this development run.",
+      "text": "**Live and changed-instruction behavior remains independently owned** (R9.1, all R29, all R52). No live tests, fresh-agent interrupted-invocation evaluation, changed-instruction evaluation, repeated-run reliability, other-model/cross-harness certification, hosted Workflow operation, actual resumed-session behavior, real denied-operation behavior, real cleanup signaling/termination, or installation was rerun here. DryRun, live-sim, synthetic, fake-signal, prompt/parser, smoke, and mock-engine cases retain their evidence kinds. Hooks smoke tests do not prove live interactive reinjection. Profile/digest fixture results are not measurements of this development run."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here.",
+      "text": "**Finding continuity and acceptance are not closed** (all reports; particularly R29.4 and R52.2). Passing deterministic extraction/projection/collection examples support their named fixture mechanics, including separate occurrences, explicit references, supported-disposition checks, preserved historical obligations and resumable collection. They do not establish all fresh-agent/nested acceptance examples in both execution paths. The cluster-29 fixture has no prior actionable/deferred/parked finding to exercise cross-invocation continuity. Real assembler-failure orchestration, task-review no-test compliance, finding ownership/disposition semantics, scheduling/admission, metrics reconciliation, caller sweep, human gates and root acceptance need their own attributed evidence. Other clusters and external findings are not reviewed or disposed of here."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "**Source/runtime association is bounded** (R9.1, R52.1\u201352.5). The helper is static-reviewed and unexecuted here, non-atomic, and covers tracked `skills`/`tests` bytes rather than all repository/environment inputs. Dirty measured trees differ from committed HEAD. Equal final hashes, preserved Git log bytes, snapshot trees, final summaries, source-recheck booleans and the reconciled refresh comparator do not independently prove every historical command ran on that exact source/configuration or remained stable throughout execution. Individual log filenames and fixture detached-head messages are insufficient provenance.",
+      "text": "**Source/runtime association is bounded** (R9.1, R52.1\u201352.5). The helper is static-reviewed and unexecuted here, non-atomic, and covers tracked `skills`/`tests` bytes rather than all repository/environment inputs. Dirty measured trees differ from committed HEAD. Equal final hashes, preserved Git log bytes, snapshot trees, final summaries, source-recheck booleans and the reconciled refresh comparator do not independently prove every historical command ran on that exact source/configuration or remained stable throughout execution. Individual log filenames and fixture detached-head messages are insufficient provenance."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "**Isolation and process observations remain bounded** (R29.1\u201329.5, R52.1\u201352.5). Six sampled file hashes/two refs/status snapshots, trace sessions, owned archives and targeted removals support only their named observations. No exhaustive unrecorded-action audit, continuous no-write proof, arbitrary-descendant absence, complete filesystem absence, independent global process scan, or cleanup safety for unknown survivors is established. Process denial remains unknown; empty hygiene/stop logs are empty output. Red/green fixture leak probes and zero retained fixture directories are probe outcomes, not a general no-leaks guarantee.",
+      "text": "**Isolation and process observations remain bounded** (R29.1\u201329.5, R52.1\u201352.5). Six sampled file hashes/two refs/status snapshots, trace sessions, owned archives and targeted removals support only their named observations. No exhaustive unrecorded-action audit, continuous no-write proof, arbitrary-descendant absence, complete filesystem absence, independent global process scan, or cleanup safety for unknown survivors is established. Process denial remains unknown; empty hygiene/stop logs are empty output. Red/green fixture leak probes and zero retained fixture directories are probe outcomes, not a general no-leaks guarantee."
+    },
+    {
+      "section": "Untested scope",
+      "position": 6,
+      "key": "**Dispatch and observer implementation limits remain explicit** (R29.1\u201329.5). Recorded seat activity corroborates timing across the caller advance; undefined dispatch timestamp semantics, harness freshness/private context and actual full model roster are not independently established. Generated prompts prove contents only, shell-group exits do not prove every subcommand exit, and trace sessions do not cover all possible agent actions. Corrected verifier implementation and other surrounding fixture implementations outside assigned membership were not fully reviewed. The historical formatter finding and its limited tested input range remain unchanged.",
+      "text": "**Dispatch and observer implementation limits remain explicit** (R29.1\u201329.5). Recorded seat activity corroborates timing across the caller advance; undefined dispatch timestamp semantics, harness freshness/private context and actual full model roster are not independently established. Generated prompts prove contents only, shell-group exits do not prove every subcommand exit, and trace sessions do not cover all possible agent actions. Corrected verifier implementation and other surrounding fixture implementations outside assigned membership were not fully reviewed. The historical formatter finding and its limited tested input range remain unchanged."
+    },
+    {
+      "section": "Untested scope",
+      "position": 7,
+      "key": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report.",
+      "text": "**Current and global scope is untouched** (all reports). Frozen historical artifact coverage is not whole-epic implementation review, an authoritative current-tip sweep, whole-run readiness, product correctness, or human acceptance. Subsequent revisions need their own source-bound review and appropriate measurements. Every original supported finding and every untested/deferred qualification in the linked reports remains visible under its original occurrence identity; uncertain matches are not merged. Nothing outside the three explicitly quoted coverage keys receives a resolution/rejection/waiver from this report."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "Retain all original mechanical not-ready/unreviewed artifacts, interrupted/absent-reviewer history, failed logs, first/corrected verifier outputs, red/green fixture probes and distinct phase results unchanged. The additive reports and this assessment satisfy only the missing historical coverage. Their bounded ready verdicts can coexist with independently outstanding root/run obligations.",
+      "text": "Retain all original mechanical not-ready/unreviewed artifacts, interrupted/absent-reviewer history, failed logs, first/corrected verifier outputs, red/green fixture probes and distinct phase results unchanged. The additive reports and this assessment satisfy only the missing historical coverage. Their bounded ready verdicts can coexist with independently outstanding root/run obligations."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "Retain supported narrow observations: pinned source reads and owned mutable reproductions while the recorded caller advances; attributed worktree-initialization resets; inventories/archives followed by two named removals; deterministic fixture pass results; explicit dirty-source identities; the standalone package pass at its recorded source; and the reconciled pre-rebase-to-final measured refresh delta. Preserve all polling, unavailable-process, source/configuration, mock/simulation and causal-attribution limits above. Retention is not a deferral or resolution of a product defect.",
+      "text": "Retain supported narrow observations: pinned source reads and owned mutable reproductions while the recorded caller advances; attributed worktree-initialization resets; inventories/archives followed by two named removals; deterministic fixture pass results; explicit dirty-source identities; the standalone package pass at its recorded source; and the reconciled pre-rebase-to-final measured refresh delta. Preserve all polling, unavailable-process, source/configuration, mock/simulation and causal-attribution limits above. Retention is not a deferral or resolution of a product defect."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 3,
+      "key": "Preserve the original source/report/section/occurrence keys and complete limitation text in the linked reports and available completion extracts. R52.2's deterministic extraction and focused-auto continuity/projection cases support those fixture outcomes only. Assignment, closed tasks, silent retries and source identity checks cannot retire findings or required live measurements. Any later supported disposition must name its occurrence and verification evidence, retaining an owner and reason for outstanding obligations under the enclosing contract.",
+      "text": "Preserve the original source/report/section/occurrence keys and complete limitation text in the linked reports and available completion extracts. R52.2's deterministic extraction and focused-auto continuity/projection cases support those fixture outcomes only. Assignment, closed tasks, silent retries and source identity checks cannot retire findings or required live measurements. Any later supported disposition must name its occurrence and verification evidence, retaining an owner and reason for outstanding obligations under the enclosing contract."
+    }
+  ]
+}

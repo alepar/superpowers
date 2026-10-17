@@ -1,0 +1,21 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import cp from 'node:child_process';
+const root='/tmp/ufz-pr2-controller/source';
+const scratch='/tmp/ufz-pr2-controller/evidence-data-migrations';
+const here=path.join(root,'tests/super-code');
+const harness=fs.readFileSync(path.join(here,'replay-harness.mjs'),'utf8');
+const driver=harness.slice(0,harness.indexOf('// ---------- template-literal span scan')).replace('const here = path.dirname(fileURLToPath(import.meta.url))','const here = '+JSON.stringify(here));
+const {run, liveArgs, oneTaskCanned}=await import('data:text/javascript;base64,'+Buffer.from(driver+'\nexport {run,liveArgs,oneTaskCanned}').toString('base64'));
+const work=path.join(scratch,'work'),ws=path.join(work,'.superpowers/sdd/bd-100-plan');fs.mkdirSync(ws,{recursive:true});
+const ledger=path.join(ws,'progress.md');const args=liveArgs({integrationWorktree:work,skillsRoot:path.join(root,'skills'),deferSweep:true,rootAcceptance:'caller'});
+fs.writeFileSync(ledger,'Launch: args '+JSON.stringify(args)+'\n');
+const call=cp.spawnSync('node',[path.join(root,'skills/super-code/scripts/dispatch-text.mjs'),'--ledger',ledger,'bind-review-source','--base','a'.repeat(40),'--head','b'.repeat(40)],{encoding:'utf8'});
+if(call.status!==0)throw Error(call.stderr);
+const digest=cp.execFileSync('bash',[path.join(root,'skills/super-code/scripts/ledger-digest'),ledger],{encoding:'utf8'});
+const replay=await run({args,canned:oneTaskCanned({'read-ledger':{text:digest},'bd-ready':{ids:[]}})});if(replay.error)throw replay.error;
+const binding=replay.result.recovery.obligations.filter(r=>r.data?.reviewSource);
+const tree='a'.repeat(40),runfile=path.join(scratch,'run.md'),report=path.join(scratch,'source.md');fs.writeFileSync(report,'clean source');
+const acceptance={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'super-auto'},{id:'sweep',kind:'measurement',owner:'super-auto',command:'suite',configuration:'quiet',requiredLive:true},{id:'finish',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'quiet',kind:'live',outcome:'pass',location:'sweep.log'}],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:report}],decisions:[{id:'finish',authority:'human',decision:'accept',evidence:['decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],gaps:[],requiredLiveChecks:[]},runFailures:[]};
+function gate(obligations){acceptance.recovery.obligations=obligations;fs.writeFileSync(runfile,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\ncodeBuckets:\n  escalated: none\n  pendingRetry: none\n  parked: none\n  stalled: false\n  review: ready\n  sweep: 1 — 1 passed, 0 failed, 0 errors; command: suite @ aaaaaaa\napprovals:\n- finding-source · '+JSON.stringify({version:1,source:'clean',artifact:'source.md',kind:'final-review',verdict:'ready',occurrences:[]})+'\n- root-acceptance · '+JSON.stringify(acceptance)+'\n');const out=cp.spawnSync('bash',[path.join(root,'skills/super-auto/scripts/report-status'),'--acceptance',runfile],{encoding:'utf8'});return {exit:out.status,stdout:out.stdout,stderr:out.stderr};}
+const receipt={bindingCommand:call.stdout,digest,recovery:replay.result.recovery,control:gate([]),withBinding:gate(binding)};fs.writeFileSync(path.join(scratch,'receipt.json'),JSON.stringify(receipt,null,2));console.log(JSON.stringify(receipt,null,2));

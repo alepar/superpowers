@@ -1,0 +1,46 @@
+{
+  "status": "verified",
+  "scope": "mechanical owned-archive packaging only",
+  "original": {
+    "logicalArtifact": "authored.diff",
+    "rawBytes": 136599903,
+    "rawSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "rawOwnedCopyRemovedAfterExactDecodeVerification": true
+  },
+  "encoded": {
+    "filename": "authored.diff.gz",
+    "bytes": 30203817,
+    "sha256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "format": "standard gzip",
+    "gzipMtime": 0,
+    "decodeMethod": "gzip -dc authored.diff.gz"
+  },
+  "decodedVerification": {
+    "bytes": 136599903,
+    "sha256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "exactMatch": true
+  },
+  "priorMapsPreservedByteForByte": {
+    "artifact-source-hash-map.json": "0ebed18302ffc3b2186656285dab628e601fc92723e09e714ecbef26bb79d302",
+    "durable-path-map.json": "c2c80f832191317f3d707c0b0171baa5d6b0174156d331647352c4f231db1760",
+    "persistence-verification.json": "4848c14963bc67d88079b0142b063d544829e63656afb00aa56018c84cd2ab56"
+  },
+  "currentMappingsUpdated": {
+    "artifactSourceHashMap": true,
+    "durablePathMap": true,
+    "persistenceVerification": true,
+    "archivePackagingManifest": true,
+    "archivePackagingVerification": true
+  },
+  "unchangedPayloadProof": {
+    "regularFilesCompared": 1177,
+    "unchanged": true,
+    "scope": "all regular files except raw/encoded authored diff and five affected metadata receipts/maps",
+    "reportMarkdownSHA256": "1e4b0c9881a7906a467ccd31d4dae5dfe050bb8077a21862aacefdd6d534a434",
+    "reportMarkdownMatchedArchiveReceipt": true
+  },
+  "liveSymlinks": 0,
+  "gitNamedEntries": 0,
+  "originalScratchUntouched": true,
+  "gaps": []
+}

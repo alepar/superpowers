@@ -1,0 +1,5 @@
+{
+  "status": 0,
+  "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"ffffffffffffffffffffffffffffffffffffffff\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+  "stderr": ""
+}

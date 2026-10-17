@@ -1,0 +1,17 @@
+{
+  "temporaryPrefix": "/tmp/ufz-pr2-controller",
+  "durablePrefix": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages",
+  "mapping": "Literal /tmp source prefix maps to this durable archive, except original live symlinks and .git directories now resolve through the exact inert representations in archive-packaging-manifest.json. Raw source and old manifests remain preserved; no original target was followed. The logical authored.diff maps to authored.diff.gz; exact source bytes are recovered with standard gzip decoding.",
+  "previousVersions": "Differing pre-continuation durable bytes retained under controller-before-continuation/",
+  "representationManifest": "archive-packaging-manifest.json",
+  "previousManifest": "archive-packaging-prior/durable-path-map.json",
+  "largeArtifactEncoding": {
+    "logicalSourcePath": "/tmp/ufz-pr2-controller/authored.diff",
+    "durablePath": "authored.diff.gz",
+    "logicalBytes": 136599903,
+    "logicalSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "storedBytes": 30203817,
+    "storedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "decodeMethod": "gzip -dc authored.diff.gz"
+  }
+}

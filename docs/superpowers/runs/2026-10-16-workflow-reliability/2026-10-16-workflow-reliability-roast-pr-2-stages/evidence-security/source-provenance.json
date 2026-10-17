@@ -1,0 +1,8 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "path": "skills/super-auto/scripts/report-status",
+  "baseHasCollector": false,
+  "frozenEqualsCapturedHead": true,
+  "headSha256": "fd29d9fcafa34e75cb33273b442009221f26c922d427cd0a9f67c14cf3c35be8"
+}

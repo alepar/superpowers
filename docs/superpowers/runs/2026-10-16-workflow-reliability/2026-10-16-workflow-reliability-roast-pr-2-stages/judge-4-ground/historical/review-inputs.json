@@ -1,0 +1,30 @@
+{
+  "base": "0b85c5ca4c2a8de33c5c183abdf49745a97d211f",
+  "head": "1061585016dda33e05acaaaae3b15a36d6619f90",
+  "status": "unavailable",
+  "changed": [
+    "docs/run/reviews/old/snapshots/run.md",
+    "product.js"
+  ],
+  "slices": [],
+  "archives": [
+    {
+      "revision": "1061585016dda33e05acaaaae3b15a36d6619f90",
+      "run": "docs/run/reviews/old/snapshots/run.md",
+      "recordLine": 2,
+      "invocationId": "historical",
+      "archive": "docs/run/reviews/old/snapshots/reviews/historical",
+      "report": "docs/run/reviews/old/snapshots/reviews/historical/final-review-historical.md",
+      "files": [
+        {
+          "path": "final-review-historical.md",
+          "sha256": "331d26d6d8f862e46ba900811be8a7a1e4dbaa229b14c99becfd5e5151490d95"
+        }
+      ]
+    }
+  ],
+  "omitted": [],
+  "gaps": [
+    "1061585016dda33e05acaaaae3b15a36d6619f90:docs/run/reviews/old/snapshots/run.md:2 historical: missing or non-regular captured file: docs/run/reviews/old/snapshots/reviews/historical/final-review-historical.md"
+  ]
+}

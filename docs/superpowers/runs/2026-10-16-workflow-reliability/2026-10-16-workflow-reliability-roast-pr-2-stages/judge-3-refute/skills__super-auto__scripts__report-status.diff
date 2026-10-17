@@ -1,0 +1,310 @@
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index 56ab808f..fcca3313 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -54,9 +54,218 @@
+ # Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+ # Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+ # JQ_UNAVAILABLE.
+-# Exit 0 ok, 2 bad input.
++# Ordinary status: exit 0 ok, 2 bad input; legacy records require only Bash/awk.
++# Additive finding/collection records use Node for the shared projection; unavailability
++# is an explicit qualifier. --collect is the settled-bundle write mode (usage below):
++# exit 0 preserved, 3 evidence gaps, 2 bad input, 4 Node unavailable.
+ set -euo pipefail
+ 
++# This is a read-only root-close gate. Requirements and producer facts live in the
++# existing approvals block; neither completed leaves nor the latest verdict supplies them.
++if [ "${1:-}" = --acceptance ]; then
++  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: caller root acceptance unverified' >&2; exit 4; }
++  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++  node - "$script_dir" "$@" <<'ACCEPTANCE'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
++const [scripts,,run,...args]=process.argv.slice(2);
++if(!run || (args.length && (args.length!==2 || args[0]!=='--tree'))){console.error('usage: report-status --acceptance RUN_MD [--tree FULL_GIT_TREE]');process.exit(2)}
++const tree=args[1],pending=[],gaps=[],requirements=new Map(),snapshots=[],nonblockingFindings=[];
++const text=v=>typeof v==='string'&&v.trim()!=='',hash=v=>typeof v==='string'&&/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v);
++const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
++const gap=s=>gaps.push(s),wait=s=>pending.push(s);
++let input;try{input=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
++let approvals=false;
++for(const line of input.split(/\r?\n/)){
++ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
++ if(!line.startsWith('- root-acceptance'))continue;
++ try{
++  if(!approvals||!line.startsWith('- root-acceptance · '))throw Error('outside approvals or malformed record');
++  const r=JSON.parse(line.slice('- root-acceptance · '.length));
++  if(!object(r)||r.version!==1||r.owner!=='super-auto'||!hash(r.sourceTree))throw Error('invalid source/owner/version');
++  if(!Array.isArray(r.requirements)||!r.requirements.length)throw Error('missing acceptance requirements');
++  for(const q of r.requirements){
++   if(!object(q)||!text(q.id)||!text(q.owner)||!['review','measurement','human'].includes(q.kind))throw Error('invalid acceptance requirements');
++   if(q.kind==='measurement'&&(!text(q.command)||!text(q.configuration)||typeof q.requiredLive!=='boolean'))throw Error('invalid measurement requirements');
++   requirements.set(q.id,q);
++  }
++  for(const k of ['evidence','reviews','decisions','runFailures'])if(!Array.isArray(r[k]))throw Error('missing '+k);
++  if(r.findingAcceptance!==undefined&&!Array.isArray(r.findingAcceptance))throw Error('invalid finding acceptance judgments');
++  if(!object(r.recovery)||!Array.isArray(r.recovery.obligations)||!Array.isArray(r.recovery.gaps)||!object(r.checkEvidence)||!['records','gaps','requiredLiveChecks'].every(k=>Array.isArray(r.checkEvidence[k])))throw Error('missing producer obligations/check evidence');
++  snapshots.push(r);
++ }catch(e){gap('root acceptance record: '+e.message)}
++}
++const current=snapshots.at(-1);
++if(!current)gap('caller acceptance requirements unavailable');
++else{
++ if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}
++ if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');
++ const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);
++ const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);
++ const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);
++ for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');
++ function measure(q,label){
++  if(!identity(q)){gap(label+': measurement identity unavailable');return false}
++  const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));
++  // Contradictory outcomes at an immutable source do not silently turn into a pass.
++  if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;
++  const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');
++  wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;
++ }
++ for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');
++ for(const q of requirements.values()){
++  if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);
++  else if(q.kind==='review'){
++   const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);
++   if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);
++  }else{
++   const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);
++   if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);
++  }
++ }
++ for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));
++ for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));
++ const failures=new Map();
++ for(const f of current.runFailures){
++  if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
++  failures.set(f.id,f);
++  if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
++  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
++  if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
++ }
++ for(const r of current.recovery.obligations){
++  if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
++  if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
++  if(r.kind==='deferred'){
++   const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
++   // Deferred final-suite records predate any tested tree. The caller explicitly binds
++   // their exact IDs to the final measurement; a pass cannot clear another obligation.
++   if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);
++   else measure({...r.data,requiredLive:true},r.id);
++  }
++  else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
++ }
++}
++// Use the same validated projection as Remaining and resume. Valid empty is distinct
++// from a missing extraction or an empty --keys stream carrying gaps.
++const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
++try{
++ if(![0,3].includes(projection.status))throw Error('unavailable');
++ const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');
++ for(const g of p.gaps)gap('finding evidence: '+JSON.stringify(g));
++ const sameRef=(a,b)=>a&&b&&a.source===b.source&&a.section===b.section&&a.position===b.position;
++ for(const f of p.findings.filter(f=>f.outstanding)){
++  const refs=f.occurrences.map(o=>({source:o.source,section:o.section,position:o.position}));
++  // Explicit projection links establish one finding group. Assess it once through
++  // any exact member ref, retaining every original source occurrence in the result.
++  const judgment=(current?.findingAcceptance||[]).filter(j=>refs.some(ref=>sameRef(j?.ref,ref))).at(-1);
++  if(!judgment||judgment.judgment!=='supported'||!text(judgment.basis)||!Array.isArray(judgment.evidence)||!judgment.evidence.length||!judgment.evidence.every(text)||!['required','nonblocking'].includes(judgment.effect))gap('finding acceptance relevance unproven: '+JSON.stringify(refs));
++  else if(judgment.effect==='required'){
++   if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));
++   wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));
++  }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection
++ }
++}catch{gap('finding projection unavailable')}
++// Reuse ordinary status collection validation without recursively running this gate.
++const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
++if(status.status!==0)gap('run status unavailable');
++else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
++const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
++console.log(JSON.stringify(result));process.exit(result.eligible?0:3);
++ACCEPTANCE
++  exit $?
++fi
++
++# Collection writes only after the caller has confirmed this invocation settled. Launch
++# intent records (settled:false) remain visible until that confirmation; file presence alone
++# cannot establish settlement. Ordinary status mode below remains read-only.
++if [ "${1:-}" = --collect ]; then
++  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: retain source bundles; collection is unverified' >&2; exit 4; }
++  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++  node - "$script_dir" "$@" <<'COLLECT'
++const fs=require('node:fs'), path=require('node:path'), crypto=require('node:crypto'), cp=require('node:child_process');
++const [scriptDir,,run,...args]=process.argv.slice(2);
++const usage=()=>{console.error('usage: report-status --collect RUN_MD [--invocation ID --workspace DIR --review FILE|none --verdict TEXT [--required RELATIVE_FILE]...]');process.exit(2)};
++if(!run)usage();
++const o={},required=[];
++for(let i=0;i<args.length;i+=2){if(!args[i+1])usage();if(args[i]==='--required')required.push(args[i+1]);else if(['--invocation','--workspace','--review','--verdict'].includes(args[i])&&!o[args[i]])o[args[i]]=args[i+1];else usage();}
++let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
++const dir=path.dirname(path.resolve(run)), latest=new Map();let approvals=false;
++function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
++const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
++ typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
++ (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
++ typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
++ Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
++ (r.complete===undefined || typeof r.complete==='boolean') &&
++ (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
++ (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
++ (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
++ (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
++let malformed=false;
++for(const line of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';if(!line.startsWith('- review-collection'))continue;try{if(!approvals||!line.startsWith('- review-collection · '))throw Error();const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{malformed=true}}
++if(args.length){if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};const old=latest.get(r.invocationId);if(old&&(old.workspace!==r.workspace||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null))||JSON.stringify(old.required)!==JSON.stringify(r.required))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});console.error('COLLECTION_GAP: invocation identity or required bundle changed; retain both sources');process.exit(3)}if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}}
++const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
++const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
++let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
++for(const previous of latest.values()){
++ const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
++ const gap=m=>{if(!problems.includes(m))problems.push(m)};
++ // lstat on a leaf alone follows earlier directory symlinks. Validate the full
++ // source path before enumeration, manifest reads, hashing or extraction.
++ function source(relative){
++  const unsafe=()=>{gap('unsafe bundle path: '+relative);throw Error('unsafe bundle path')};
++  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))unsafe();
++  let full=r.workspace;
++  if(fs.lstatSync(full).isSymbolicLink())unsafe();
++  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())unsafe()}
++  const resolved=path.relative(fs.realpathSync(r.workspace),fs.realpathSync(full));
++  if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))unsafe();
++  return full;
++ }
++ if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
++ else if(r.reviewPath===null&&!hasBundle(r,id)){if(r.review!=='no work landed')gap('required review is null; owner: orchestrator; recover whole-epic review')}
++ else{
++  const expected=path.join(r.workspace,prefix+'.md');
++  if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
++  else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
++  const files=new Set(r.required);
++  function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
++  files.add(prefix+'.md');
++  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
++  const assembled=path.join('assembled',prefix+'-final');
++  try{source(assembled);walk(assembled)}catch{}
++  const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
++  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
++  // A completed archive remains usable after the source worktree is intentionally removed.
++  if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
++  const manifests=[];
++  for(const rel of [...files].sort()){
++   if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
++   const src=path.join(r.workspace,rel),dst=path.join(archive,rel),saved=previous.files?.find(f=>f.path===rel);
++   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
++   try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
++   if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
++    const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
++    const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',id+'/'+logical,src],{encoding:'utf8'});
++    try{if(result.status!==0)throw Error();const source=JSON.parse(result.stdout);source.artifact=path.relative(dir,dst);append('finding-source',source)}catch{gap('complete extraction unavailable: '+rel)}
++   }
++   if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
++   if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
++   if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(dst)}catch{gap('archive copy failed: '+rel)}}
++   if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
++   manifests.push({path:rel,sha256:dstHash});
++  }
++  r.files=manifests;
++ }
++ r.complete=problems.length===0;r.gaps=problems;
++ append('review-collection',r);
++ if(problems.length){gaps+=problems.length;for(const p of problems)console.error('COLLECTION_GAP: '+id+': '+p+'; keep source workspace and archive; owner: orchestrator')}
++}
++console.log(gaps?'collection: gaps — retain sources; block later invocation and cleanup':'collection: complete');process.exit(gaps?3:0);
++COLLECT
++  exit $?
++fi
++
+ usage() { echo "usage: report-status RUN_MD [--tip SHA] [--stalled PHASE]" >&2; exit 2; }
+ run='' stalled='' tip=''
+ while [ $# -gt 0 ]; do
+@@ -76,7 +285,75 @@ esac
+ [ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+ rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+ 
+-RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
++continuity=''
++if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }' "$run"; then
++  if command -v node >/dev/null 2>&1; then
++    script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++    continuity=$(node - "$script_dir" "$run" <<'STATUS'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
++const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
++const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
++ typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
++ (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
++ typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
++ Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
++ (r.complete===undefined || typeof r.complete==='boolean') &&
++ (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
++ (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
++ (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
++ (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
++for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
++// Collection metadata describes the last preservation attempt. Recheck retained bytes
++// on every read; status and acceptance must never repair or recollect an archive.
++let pending=0;const integrityGaps=[];
++for(const r of latest.values()){
++ let invalid=false;
++ for(const f of r.files||[]){
++  const file=path.join(path.dirname(path.resolve(run)),'reviews',r.invocationId,f.path);
++  let actual;
++  try{if(!fs.lstatSync(file).isFile())throw Error();actual=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}
++  catch{integrityGaps.push(r.invocationId+': archive unavailable: '+f.path);invalid=true;continue}
++  if(actual!==f.sha256){integrityGaps.push(r.invocationId+': archive integrity mismatch: '+f.path);invalid=true}
++ }
++ if(!r.complete||invalid)pending++;
++ errors+=(r.gaps||[]).length;
++}
++errors+=integrityGaps.length;
++for(const g of integrityGaps)console.log('review collection gap: '+g);
++if(pending)console.log('review collections pending: '+pending);
++if(errors)console.log('review collection gaps: '+errors);
++if(/^- finding-/m.test(text)){
++ const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
++ try{if(![0,3].includes(p.status))throw Error();const d=JSON.parse(p.stdout),n=d.findings.filter(f=>f.outstanding).length;if(n)console.log('outstanding findings: '+n);if(d.gaps.length)console.log('finding evidence gaps: '+d.gaps.length)}catch{console.log('finding projection unavailable — retain known findings')}
++}else if([...latest.values()].some(r=>r.reviewPath!==null))console.log('finding evidence gaps: source extraction unavailable');
++STATUS
++)
++  else
++    continuity='finding projection unavailable — retain known findings; review collection unverified'
++  fi
++fi
++
++if [ "${RS_SKIP_ACCEPTANCE:-}" != 1 ] && awk '/^- root-acceptance/ { found=1; exit } END { exit !found }' "$run"; then
++  if command -v node >/dev/null 2>&1; then
++    set +e
++    acceptance=$(bash "$0" --acceptance "$run")
++    acceptance_exit=$?
++    set -e
++    if [ "$acceptance_exit" = 3 ]; then
++      qualifier=$(node -e 'const d=JSON.parse(process.argv[1]); console.log([...d.pending,...d.gaps].join("; "))' "$acceptance")
++      continuity="${continuity}${continuity:+
++}root acceptance pending: $qualifier"
++    elif [ "$acceptance_exit" != 0 ]; then
++      continuity="${continuity}${continuity:+
++}root acceptance unverified"
++    fi
++  else
++    continuity="${continuity}${continuity:+
++}root acceptance unverified: Node unavailable"
++  fi
++fi
++
++RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+   function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+   function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
+   function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
+@@ -173,6 +450,8 @@ RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+       addq("final review: none recorded")
+       addq("sweep: none recorded")
+     }
++    nc = split(ENVIRON["RS_CONTINUITY"], cq, "\n")
++    for (i = 1; i <= nc; i++) addq(cq[i])
+     suffix = ""
+     for (i = 1; i <= nq; i++) suffix = suffix (i == 1 ? " [degraded: " : ", ") qs[i]
+     if (nq) suffix = suffix "]"

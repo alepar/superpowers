@@ -1,0 +1,2496 @@
+{
+  "purpose": "Packaging correction only; no review judgments, proof receipts, report, or captured source snapshot changed",
+  "originalScratchUntouched": "/tmp/ufz-pr2-controller",
+  "originalManifestsRetainedAt": "archive-packaging-prior",
+  "originalManifestSHA256": {
+    "artifact-source-hash-map.json": "0ebed18302ffc3b2186656285dab628e601fc92723e09e714ecbef26bb79d302",
+    "durable-path-map.json": "c2c80f832191317f3d707c0b0171baa5d6b0174156d331647352c4f231db1760",
+    "persistence-verification.json": "4848c14963bc67d88079b0142b063d544829e63656afb00aa56018c84cd2ab56"
+  },
+  "representations": [
+    {
+      "kind": "symlink",
+      "originalRelativePath": "evidence-security/destination-fixture/reviews/probe/payload",
+      "safeRelativePath": "evidence-security/destination-fixture/reviews/probe/payload.symlink-evidence.json",
+      "originalTargetBytesBase64": "L3RtcC91ZnotcHIyLWNvbnRyb2xsZXIvZXZpZGVuY2Utc2VjdXJpdHkvZGVzdGluYXRpb24tZml4dHVyZS9vdXRzaWRl",
+      "originalTargetBytesSHA256": "97acb94477a791c9a886ab1cc85b07f0a337d71546928c33de5cde61206c2568"
+    },
+    {
+      "kind": "symlink",
+      "originalRelativePath": "judge-0-ground/destination-fixture/reviews/probe/payload",
+      "safeRelativePath": "judge-0-ground/destination-fixture/reviews/probe/payload.symlink-evidence.json",
+      "originalTargetBytesBase64": "L3RtcC91ZnotcHIyLWNvbnRyb2xsZXIvanVkZ2UtMC1ncm91bmQvZGVzdGluYXRpb24tZml4dHVyZS9vdXRzaWRl",
+      "originalTargetBytesSHA256": "6c64ca08ae7eaab2234d3798b4207e797d61a557f706b8e7fc6c600ae8904266"
+    },
+    {
+      "kind": "symlink",
+      "originalRelativePath": "judge-0-refute/run/reviews/probe/payload",
+      "safeRelativePath": "judge-0-refute/run/reviews/probe/payload.symlink-evidence.json",
+      "originalTargetBytesBase64": "L3RtcC91ZnotcHIyLWNvbnRyb2xsZXIvanVkZ2UtMC1yZWZ1dGUvb3V0c2lkZQ==",
+      "originalTargetBytesSHA256": "63580f8ac6a260b316b83b44ff5fa9b1063039f8ebd734b3c2e94fd899922f75"
+    },
+    {
+      "kind": "symlink",
+      "originalRelativePath": "judge-0-reproduce/run/reviews/probe/payload",
+      "safeRelativePath": "judge-0-reproduce/run/reviews/probe/payload.symlink-evidence.json",
+      "originalTargetBytesBase64": "L3RtcC91ZnotcHIyLWNvbnRyb2xsZXIvanVkZ2UtMC1yZXByb2R1Y2Uvb3V0c2lkZQ==",
+      "originalTargetBytesSHA256": "75b7d33b713faffc2627b23adfde8ed27e42fe72430e19697e8727a7c1591669"
+    },
+    {
+      "kind": "git-directory",
+      "originalRelativePath": "evidence-regression/repo/.git",
+      "safeRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+      "descriptorRelativePath": "evidence-regression/repo/git-metadata.evidence.json",
+      "descriptorSHA256": "567f36ebe7ac3fa51a5f47e1c788fff6a5de9e079573098b3355d70777d4727c",
+      "memberRepresentations": [
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/COMMIT_EDITMSG",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/COMMIT_EDITMSG",
+          "mode": 420,
+          "mtimeNs": 1792254319658312142,
+          "type": "file",
+          "bytes": 31,
+          "sha256": "fe32e4eadcf411b87f5eba104a021e8c221df6b3caaca6bc44b478d56ce33fcc"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/HEAD",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792254319502773199,
+          "type": "file",
+          "bytes": 21,
+          "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/config",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/config",
+          "mode": 420,
+          "mtimeNs": 1792254319512937234,
+          "type": "file",
+          "bytes": 204,
+          "sha256": "56f35acd71606cc93128c42a087b50d85144202f4eaec20cfddfb6d6fa9f48ef"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/description",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/description",
+          "mode": 420,
+          "mtimeNs": 1792254319499384396,
+          "type": "file",
+          "bytes": 73,
+          "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks",
+          "mode": 493,
+          "mtimeNs": 1792254319500846252,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/applypatch-msg.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/applypatch-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500060573,
+          "type": "file",
+          "bytes": 478,
+          "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/commit-msg.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319499668567,
+          "type": "file",
+          "bytes": 1972,
+          "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/fsmonitor-watchman.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/fsmonitor-watchman.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500172492,
+          "type": "file",
+          "bytes": 4611,
+          "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/post-update.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/post-update.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500445496,
+          "type": "file",
+          "bytes": 189,
+          "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-applypatch.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-applypatch.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500613832,
+          "type": "file",
+          "bytes": 424,
+          "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-commit.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319499983405,
+          "type": "file",
+          "bytes": 1649,
+          "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-merge-commit.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-merge-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500530414,
+          "type": "file",
+          "bytes": 416,
+          "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-push.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-push.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500699000,
+          "type": "file",
+          "bytes": 1374,
+          "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-rebase.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-rebase.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319499805111,
+          "type": "file",
+          "bytes": 4898,
+          "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/pre-receive.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-receive.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500262576,
+          "type": "file",
+          "bytes": 544,
+          "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/prepare-commit-msg.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/prepare-commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500349286,
+          "type": "file",
+          "bytes": 1492,
+          "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/push-to-checkout.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/push-to-checkout.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500876003,
+          "type": "file",
+          "bytes": 2783,
+          "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/sendemail-validate.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/sendemail-validate.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319499895446,
+          "type": "file",
+          "bytes": 2308,
+          "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/hooks/update.sample",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/update.sample",
+          "mode": 493,
+          "mtimeNs": 1792254319500785668,
+          "type": "file",
+          "bytes": 3650,
+          "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/index",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/index",
+          "mode": 420,
+          "mtimeNs": 1792254319657690382,
+          "type": "file",
+          "bytes": 429,
+          "sha256": "2f5540650694ab2357be0fd4affb38a93d93c6a9a47e1703af8bd99555b7736c"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/info",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info",
+          "mode": 493,
+          "mtimeNs": 1792254319499208643,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/info/exclude",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info/exclude",
+          "mode": 420,
+          "mtimeNs": 1792254319499270727,
+          "type": "file",
+          "bytes": 240,
+          "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/logs",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs",
+          "mode": 493,
+          "mtimeNs": 1792254319526937537,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/logs/HEAD",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792254319659004194,
+          "type": "file",
+          "bytes": 510,
+          "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/logs/refs",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs",
+          "mode": 493,
+          "mtimeNs": 1792254319526984663,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/logs/refs/heads",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792254319527023705,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/logs/refs/heads/main",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792254319659033986,
+          "type": "file",
+          "bytes": 510,
+          "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects",
+          "mode": 493,
+          "mtimeNs": 1792254319666275933,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/18",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/18",
+          "mode": 493,
+          "mtimeNs": 1792254319657662048,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/18/77cf8b0b71ceb8fe502f24431556c6d7d8c350",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/18/77cf8b0b71ceb8fe502f24431556c6d7d8c350",
+          "mode": 292,
+          "mtimeNs": 1792254319657369377,
+          "type": "file",
+          "bytes": 86,
+          "sha256": "14db7494b8e322b8695f20393fdc005b95b1e678a02f722ffae9fe9119a7393d"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/1c",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1c",
+          "mode": 493,
+          "mtimeNs": 1792254319657265167,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/1c/bb7f0d8fbd1214810de0d075e290bad8e12d32",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1c/bb7f0d8fbd1214810de0d075e290bad8e12d32",
+          "mode": 292,
+          "mtimeNs": 1792254319656960120,
+          "type": "file",
+          "bytes": 45,
+          "sha256": "ed11e0bed1200c17597d6bfde45b10d72a29d1164b3e7e4a5973994284a0f2ac"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/4a",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4a",
+          "mode": 493,
+          "mtimeNs": 1792254319658747482,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/4a/4ab1ae20dbc461151ff53e252a70c7376afeff",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4a/4ab1ae20dbc461151ff53e252a70c7376afeff",
+          "mode": 292,
+          "mtimeNs": 1792254319658447894,
+          "type": "file",
+          "bytes": 182,
+          "sha256": "2faf1f2d19287d89d4e1dce77d87ae5d2bf79b3bc3244bc6ae5ec076930e2073"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+          "mode": 292,
+          "mtimeNs": 1792254319648895000,
+          "type": "file",
+          "bytes": 35,
+          "sha256": "44e4a3392bf1ca5774dc5f12c77f240135dbe5da43d3b00e757bfa80b96a6a6e"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/4c",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4c",
+          "mode": 493,
+          "mtimeNs": 1792254319551673134,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/4c/6c5b07156c79d382f4fb0e8cb6af7b0a92e031",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4c/6c5b07156c79d382f4fb0e8cb6af7b0a92e031",
+          "mode": 292,
+          "mtimeNs": 1792254319551366837,
+          "type": "file",
+          "bytes": 164,
+          "sha256": "a57f1f9366710e6777926301fd45851d1bfbf599556241c0e2269f199da084af"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/64",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/64",
+          "mode": 493,
+          "mtimeNs": 1792254319525486431,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+          "mode": 292,
+          "mtimeNs": 1792254319525163551,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "645cfeea1184ad06833bcd006145b7e2d7989dde0b7bc3019b0dbf54f5e98aab"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/6f",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/6f",
+          "mode": 493,
+          "mtimeNs": 1792254319656831910,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/6f/33d09483e4b22c47072bc90ba00c4ebe31a980",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/6f/33d09483e4b22c47072bc90ba00c4ebe31a980",
+          "mode": 292,
+          "mtimeNs": 1792254319656527739,
+          "type": "file",
+          "bytes": 49,
+          "sha256": "dd9bd049ca9b20e1ab79dc800bd0972c9aac94bffbc4e6453c9dd13d10ad8d0b"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/71",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/71",
+          "mode": 493,
+          "mtimeNs": 1792254319655537431,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/71/5afb97ca762c96dea22cd99fd55c93b37f94a0",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/71/5afb97ca762c96dea22cd99fd55c93b37f94a0",
+          "mode": 292,
+          "mtimeNs": 1792254319655212093,
+          "type": "file",
+          "bytes": 51,
+          "sha256": "6a3a07c805f30033970dce9a53af36c5622f5a972202354ad46b04d4cd1e6fcc"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/79",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/79",
+          "mode": 493,
+          "mtimeNs": 1792254319656419820,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/79/7d6dbab8cec3ef4ce4f28b7d951e38945d8771",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/79/7d6dbab8cec3ef4ce4f28b7d951e38945d8771",
+          "mode": 292,
+          "mtimeNs": 1792254319656104357,
+          "type": "file",
+          "bytes": 59,
+          "sha256": "b6e9dc9280afed46a2a2ceea0edffb4a701c6606bf310f52faeaffa4bddc57bd"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/9a",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/9a",
+          "mode": 493,
+          "mtimeNs": 1792254319550559449,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+          "mode": 292,
+          "mtimeNs": 1792254319550214153,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "e3e559b07e6f1ebea905421bddd9fb5f0c1a4d332a9eae5e32222063a25858fa"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/c3",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c3",
+          "mode": 493,
+          "mtimeNs": 1792254319649421044,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/c3/278194dfdcd5d3a14d299b6c8bf6b7505cf5ac",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c3/278194dfdcd5d3a14d299b6c8bf6b7505cf5ac",
+          "mode": 292,
+          "mtimeNs": 1792254319649081038,
+          "type": "file",
+          "bytes": 244,
+          "sha256": "d6ead08d32b867b4e5be54cd19ff34bcfd50c058bddd2c555c4ea8c0f3e96742"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/d8",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/d8",
+          "mode": 493,
+          "mtimeNs": 1792254319655975813,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/d8/ace5e43aff32cd687507adf15ee8f56990a7d5",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/d8/ace5e43aff32cd687507adf15ee8f56990a7d5",
+          "mode": 292,
+          "mtimeNs": 1792254319655662600,
+          "type": "file",
+          "bytes": 52,
+          "sha256": "5ff11c96546c9059895a78a0ef16ff4653371648815a8bf11a640dd48fb3121a"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/e8",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/e8",
+          "mode": 493,
+          "mtimeNs": 1792254319519616922,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+          "mode": 292,
+          "mtimeNs": 1792254319519268292,
+          "type": "file",
+          "bytes": 35,
+          "sha256": "3c85d4e06a87020ef915afe3b5a16937fc654c9ef032440fab574f328d4585f0"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/f3",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/f3",
+          "mode": 493,
+          "mtimeNs": 1792254319526490697,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/f3/338270c314871120c32c9516c2e6c15291e77f",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/f3/338270c314871120c32c9516c2e6c15291e77f",
+          "mode": 292,
+          "mtimeNs": 1792254319526178817,
+          "type": "file",
+          "bytes": 132,
+          "sha256": "1b7b549a43adc97949b292767c6c3f9d224003d5d68446dfb0d27b740d4ff3b4"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/info",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/info",
+          "mode": 493,
+          "mtimeNs": 1792254319502938118,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/objects/pack",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/pack",
+          "mode": 493,
+          "mtimeNs": 1792254319502903660,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/refs",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs",
+          "mode": 493,
+          "mtimeNs": 1792254319502682573,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/refs/heads",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792254319659094071,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/refs/heads/main",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792254319658974860,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "0526e55af7c344ef4c3610c114aeb2667cfcbac175dff8f34ba5ac2035e1ca0e"
+        },
+        {
+          "originalRelativePath": "evidence-regression/repo/.git/refs/tags",
+          "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/tags",
+          "mode": 493,
+          "mtimeNs": 1792254319502681281,
+          "type": "directory"
+        }
+      ]
+    },
+    {
+      "kind": "git-directory",
+      "originalRelativePath": "judge-4-ground/repo/.git",
+      "safeRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+      "descriptorRelativePath": "judge-4-ground/repo/git-metadata.evidence.json",
+      "descriptorSHA256": "dd63d66f6e11cb6c0a7489455e798b507a32a32cad0d9cc57b7ab02225914723",
+      "memberRepresentations": [
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/COMMIT_EDITMSG",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/COMMIT_EDITMSG",
+          "mode": 420,
+          "mtimeNs": 1792255826400295763,
+          "type": "file",
+          "bytes": 17,
+          "sha256": "435805cce362c0767851a711f9231c85601b58ed594593fd2a8807c7a23c8587"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/HEAD",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255826330906689,
+          "type": "file",
+          "bytes": 21,
+          "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/config",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/config",
+          "mode": 420,
+          "mtimeNs": 1792255826339981469,
+          "type": "file",
+          "bytes": 196,
+          "sha256": "1130f96d513167c536645f8a7282ced6bda4f15137522bb146673836c4efc83d"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/description",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/description",
+          "mode": 420,
+          "mtimeNs": 1792255826327642065,
+          "type": "file",
+          "bytes": 73,
+          "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks",
+          "mode": 493,
+          "mtimeNs": 1792256088776306499,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/applypatch-msg.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/applypatch-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328213322,
+          "type": "file",
+          "bytes": 478,
+          "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/commit-msg.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826327805567,
+          "type": "file",
+          "bytes": 1972,
+          "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/fsmonitor-watchman.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/fsmonitor-watchman.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328308282,
+          "type": "file",
+          "bytes": 4611,
+          "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/post-update.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/post-update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328562702,
+          "type": "file",
+          "bytes": 189,
+          "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-applypatch.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-applypatch.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328716620,
+          "type": "file",
+          "bytes": 424,
+          "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-commit.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328127363,
+          "type": "file",
+          "bytes": 1649,
+          "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-merge-commit.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-merge-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328640869,
+          "type": "file",
+          "bytes": 416,
+          "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-push.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-push.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328792579,
+          "type": "file",
+          "bytes": 1374,
+          "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-rebase.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-rebase.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826327949444,
+          "type": "file",
+          "bytes": 4898,
+          "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/pre-receive.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-receive.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328394866,
+          "type": "file",
+          "bytes": 544,
+          "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/prepare-commit-msg.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/prepare-commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328480534,
+          "type": "file",
+          "bytes": 1492,
+          "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/push-to-checkout.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/push-to-checkout.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328987290,
+          "type": "file",
+          "bytes": 2783,
+          "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/sendemail-validate.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/sendemail-validate.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328041404,
+          "type": "file",
+          "bytes": 2308,
+          "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/hooks/update.sample",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255826328883664,
+          "type": "file",
+          "bytes": 3650,
+          "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/index",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/index",
+          "mode": 420,
+          "mtimeNs": 1792255826399791757,
+          "type": "file",
+          "bytes": 400,
+          "sha256": "10d7693d58d54f9d36549ab7a43d21091ec991bc43f5fbe7aec45365cbcd08d1"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/info",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info",
+          "mode": 493,
+          "mtimeNs": 1792256088776713462,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/info/exclude",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info/exclude",
+          "mode": 420,
+          "mtimeNs": 1792255826327496522,
+          "type": "file",
+          "bytes": 240,
+          "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/logs",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs",
+          "mode": 493,
+          "mtimeNs": 1792256088777096842,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/logs/HEAD",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255826401032147,
+          "type": "file",
+          "bytes": 469,
+          "sha256": "0d092497b87e37aca3a06da313c1c9c417ae62fa29ced0f6762e2c63a0fd28ac"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/logs/refs",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088777153176,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/logs/refs/heads",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088777249135,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/logs/refs/heads/main",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255826401057731,
+          "type": "file",
+          "bytes": 469,
+          "sha256": "0d092497b87e37aca3a06da313c1c9c417ae62fa29ced0f6762e2c63a0fd28ac"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects",
+          "mode": 493,
+          "mtimeNs": 1792256088781166559,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/0b",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/0b",
+          "mode": 493,
+          "mtimeNs": 1792256088777562681,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/0b/85c5ca4c2a8de33c5c183abdf49745a97d211f",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/0b/85c5ca4c2a8de33c5c183abdf49745a97d211f",
+          "mode": 292,
+          "mtimeNs": 1792255826351812533,
+          "type": "file",
+          "bytes": 125,
+          "sha256": "12e1f6a74800cf3f2b13d3426772179f14c38d9b5bcb3db668995fc08f9ca309"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/10",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/10",
+          "mode": 493,
+          "mtimeNs": 1792256088777819934,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/10/61585016dda33e05acaaaae3b15a36d6619f90",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/10/61585016dda33e05acaaaae3b15a36d6619f90",
+          "mode": 292,
+          "mtimeNs": 1792255826400468682,
+          "type": "file",
+          "bytes": 165,
+          "sha256": "ebd33ec392ef39b72b06c579a28d59cb7cb3752fda557248b5ca96c73ed2a607"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/1b",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1b",
+          "mode": 493,
+          "mtimeNs": 1792256088778076604,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/1b/3bd0af789a9bed6476b424280b5a75f268242d",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1b/3bd0af789a9bed6476b424280b5a75f268242d",
+          "mode": 292,
+          "mtimeNs": 1792255826398168320,
+          "type": "file",
+          "bytes": 45,
+          "sha256": "2446a2652a0488950bb07dbd24f26784fc3f9e63383d230e01598f9fe70913d7"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/1e",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1e",
+          "mode": 493,
+          "mtimeNs": 1792256088778334857,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/1e/a1fcea8c53a3cb32c8458126f7973c392465fb",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/1e/a1fcea8c53a3cb32c8458126f7973c392465fb",
+          "mode": 292,
+          "mtimeNs": 1792255826391489000,
+          "type": "file",
+          "bytes": 33,
+          "sha256": "a99e37fdbb64635519bc046eff161fc408a82a6c13c5c400d7184a2d2dbe14a4"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/2c",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/2c",
+          "mode": 493,
+          "mtimeNs": 1792256088778591360,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/2c/fac25a533cf680821b52e14b739a4d574a926d",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/2c/fac25a533cf680821b52e14b739a4d574a926d",
+          "mode": 292,
+          "mtimeNs": 1792255826391689822,
+          "type": "file",
+          "bytes": 239,
+          "sha256": "86fa92637e688133b8b3635d8bbab91fdd2aca1716119da9df24e79e89bcf23e"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3c",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3c",
+          "mode": 493,
+          "mtimeNs": 1792256088778853447,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3c/84349ad1bb099b275d4047a7130be551a25257",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3c/84349ad1bb099b275d4047a7130be551a25257",
+          "mode": 292,
+          "mtimeNs": 1792255826399462044,
+          "type": "file",
+          "bytes": 85,
+          "sha256": "e511daef43f3d064f685805ab205c6ac5181366af586085f2efd4747f57f33be"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3d",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3d",
+          "mode": 493,
+          "mtimeNs": 1792256088779109992,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3d/46d7d54606b8118d6cdf788395c522fd10549a",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3d/46d7d54606b8118d6cdf788395c522fd10549a",
+          "mode": 292,
+          "mtimeNs": 1792255826399031831,
+          "type": "file",
+          "bytes": 45,
+          "sha256": "f8a0f454c422bda9332868bd14d317994674af320658ce076e741ed326eccce4"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3e",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3e",
+          "mode": 493,
+          "mtimeNs": 1792256088779363912,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/3e/e6018211827d4fbf3d908bd1a10d27e47a7ac1",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3e/e6018211827d4fbf3d908bd1a10d27e47a7ac1",
+          "mode": 292,
+          "mtimeNs": 1792255826398602659,
+          "type": "file",
+          "bytes": 49,
+          "sha256": "9e5417b2cd0400ed37b811e7a5da159dc6e1c0bf9c0e57bb432295792693e814"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/42",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/42",
+          "mode": 493,
+          "mtimeNs": 1792256088779621707,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/42/4879a69b33287b4d7d73163c3a0255199eccd3",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/42/4879a69b33287b4d7d73163c3a0255199eccd3",
+          "mode": 292,
+          "mtimeNs": 1792255826397332226,
+          "type": "file",
+          "bytes": 50,
+          "sha256": "a8784a5047d6636fb27125e9de880d72aaf31bf6ef855cc67e61926c29e60d10"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/52",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/52",
+          "mode": 493,
+          "mtimeNs": 1792256088779870251,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/52/23dc2008eba4848e4bee78f8fd5fa00d8434a9",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/52/23dc2008eba4848e4bee78f8fd5fa00d8434a9",
+          "mode": 292,
+          "mtimeNs": 1792255826345168034,
+          "type": "file",
+          "bytes": 33,
+          "sha256": "2e5f3d7e3d0ab4ec47cd5ed6d28e7f8f1535efaa2a80acb005ea3c8d445c30f6"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/6e",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/6e",
+          "mode": 493,
+          "mtimeNs": 1792256088780126380,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/6e/955e5a86358c19174676981713aebdd546a54e",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/6e/955e5a86358c19174676981713aebdd546a54e",
+          "mode": 292,
+          "mtimeNs": 1792255826350810146,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "471110c3f77594267e97586ed611a6cd65091be74b1902b63b83d3bc4293b40e"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/73",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/73",
+          "mode": 493,
+          "mtimeNs": 1792256088780385508,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/73/d7fcee08840b461a05b9b88fc8e26c0bf359e8",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/73/d7fcee08840b461a05b9b88fc8e26c0bf359e8",
+          "mode": 292,
+          "mtimeNs": 1792255826397765440,
+          "type": "file",
+          "bytes": 51,
+          "sha256": "397c86556e3a40ac35406e83cea8cad1c275869efe3a8dbc7ae6849338ff8df2"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/8f",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/8f",
+          "mode": 493,
+          "mtimeNs": 1792256088780654344,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/8f/ca4b10956bd77d2722581cbab92c1e19940323",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/8f/ca4b10956bd77d2722581cbab92c1e19940323",
+          "mode": 292,
+          "mtimeNs": 1792255826375122907,
+          "type": "file",
+          "bytes": 154,
+          "sha256": "81010a98000be54927e0080320d8d5054e386f6cb156561ce005de493e29764e"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/97",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/97",
+          "mode": 493,
+          "mtimeNs": 1792256088780934431,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/97/8ed38668b7e5b81111874de7b8a2fc5acd2611",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/97/8ed38668b7e5b81111874de7b8a2fc5acd2611",
+          "mode": 292,
+          "mtimeNs": 1792255826374086436,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "4aab8a5e04d5506d52cf5f60f59c2f574ad9db403202141d9c66f558be8d148f"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/info",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/info",
+          "mode": 493,
+          "mtimeNs": 1792256088781096808,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/objects/pack",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/pack",
+          "mode": 493,
+          "mtimeNs": 1792256088781164351,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/refs",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088781560231,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/refs/heads",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088781395020,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/refs/heads/main",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255826401003980,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "001a3a641cb1708234f9cf33a6b5744f13ee59bb0b599599c94f25847ca152fb"
+        },
+        {
+          "originalRelativePath": "judge-4-ground/repo/.git/refs/tags",
+          "archiveRelativePath": "judge-4-ground/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/tags",
+          "mode": 493,
+          "mtimeNs": 1792256088781558897,
+          "type": "directory"
+        }
+      ]
+    },
+    {
+      "kind": "git-directory",
+      "originalRelativePath": "judge-4-refute/fixture/.git",
+      "safeRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+      "descriptorRelativePath": "judge-4-refute/fixture/git-metadata.evidence.json",
+      "descriptorSHA256": "c0d37fc80021e7a1e96561dfad7937380dd5e62b2d47fa6fa3c6a99783193670",
+      "memberRepresentations": [
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/COMMIT_EDITMSG",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/COMMIT_EDITMSG",
+          "mode": 420,
+          "mtimeNs": 1792255843439344952,
+          "type": "file",
+          "bytes": 20,
+          "sha256": "f1bcfefb11a02db8c82c3179ae473ba70cc677c237f0746582da43a69d2f59ea"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/HEAD",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255843369769459,
+          "type": "file",
+          "bytes": 21,
+          "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/config",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/config",
+          "mode": 420,
+          "mtimeNs": 1792255843378799489,
+          "type": "file",
+          "bytes": 193,
+          "sha256": "c43f19d5ab25226b4f80896cb83f004f8d0d195a4ee3f7bfecf5c13c8ff0af3c"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/description",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/description",
+          "mode": 420,
+          "mtimeNs": 1792255843366427626,
+          "type": "file",
+          "bytes": 73,
+          "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks",
+          "mode": 493,
+          "mtimeNs": 1792256088788364149,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/applypatch-msg.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/applypatch-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843366932049,
+          "type": "file",
+          "bytes": 478,
+          "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/commit-msg.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843366579294,
+          "type": "file",
+          "bytes": 1972,
+          "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/fsmonitor-watchman.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/fsmonitor-watchman.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367237761,
+          "type": "file",
+          "bytes": 4611,
+          "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/post-update.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/post-update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367491598,
+          "type": "file",
+          "bytes": 189,
+          "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-applypatch.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-applypatch.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367645308,
+          "type": "file",
+          "bytes": 424,
+          "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-commit.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843366842506,
+          "type": "file",
+          "bytes": 1649,
+          "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-merge-commit.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-merge-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367569265,
+          "type": "file",
+          "bytes": 416,
+          "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-push.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-push.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367716225,
+          "type": "file",
+          "bytes": 1374,
+          "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-rebase.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-rebase.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843366692379,
+          "type": "file",
+          "bytes": 4898,
+          "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/pre-receive.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-receive.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367326012,
+          "type": "file",
+          "bytes": 544,
+          "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/prepare-commit-msg.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/prepare-commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367411055,
+          "type": "file",
+          "bytes": 1492,
+          "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/push-to-checkout.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/push-to-checkout.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367884436,
+          "type": "file",
+          "bytes": 2783,
+          "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/sendemail-validate.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/sendemail-validate.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843366768713,
+          "type": "file",
+          "bytes": 2308,
+          "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/hooks/update.sample",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255843367792434,
+          "type": "file",
+          "bytes": 3650,
+          "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/index",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/index",
+          "mode": 420,
+          "mtimeNs": 1792255843438855363,
+          "type": "file",
+          "bytes": 404,
+          "sha256": "3a3805d537810b696fc7b61c4bb8183f266b83ba2307845260d7d7359889c5c6"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/info",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/info",
+          "mode": 493,
+          "mtimeNs": 1792256088788784738,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/info/exclude",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/info/exclude",
+          "mode": 420,
+          "mtimeNs": 1792255843366286583,
+          "type": "file",
+          "bytes": 240,
+          "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/logs",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/logs",
+          "mode": 493,
+          "mtimeNs": 1792256088789167534,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/logs/HEAD",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255843440109628,
+          "type": "file",
+          "bytes": 463,
+          "sha256": "4613ae2362ccebbe3625fab58fdda6aec2df6c84a4141c86f1b7344919fac5ca"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/logs/refs",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088789223076,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/logs/refs/heads",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088789319619,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/logs/refs/heads/main",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255843440131128,
+          "type": "file",
+          "bytes": 463,
+          "sha256": "4613ae2362ccebbe3625fab58fdda6aec2df6c84a4141c86f1b7344919fac5ca"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects",
+          "mode": 493,
+          "mtimeNs": 1792256088793260960,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/25",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/25",
+          "mode": 493,
+          "mtimeNs": 1792256088789629290,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/25/a3ec06a34bf3a2b5d6b6563dcb63105b8225e5",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/25/a3ec06a34bf3a2b5d6b6563dcb63105b8225e5",
+          "mode": 292,
+          "mtimeNs": 1792255843438100395,
+          "type": "file",
+          "bytes": 45,
+          "sha256": "535b797e3052c24390531ab0ee4e72be0ebe45161791daa8d0681d89f53a9c00"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/31",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/31",
+          "mode": 493,
+          "mtimeNs": 1792256088789899668,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/31/7eb28948dceac1d698b9e1643a0f070669f536",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/31/7eb28948dceac1d698b9e1643a0f070669f536",
+          "mode": 292,
+          "mtimeNs": 1792255843390936973,
+          "type": "file",
+          "bytes": 124,
+          "sha256": "ed7e77c5da66ab6f1288cccf60667fa9c56f210b5ae26ae0c03670be1e4b7fa3"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/4a",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4a",
+          "mode": 493,
+          "mtimeNs": 1792256088790157505,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+          "mode": 292,
+          "mtimeNs": 1792255843430628000,
+          "type": "file",
+          "bytes": 35,
+          "sha256": "44e4a3392bf1ca5774dc5f12c77f240135dbe5da43d3b00e757bfa80b96a6a6e"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/64",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/64",
+          "mode": 493,
+          "mtimeNs": 1792256088790409841,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+          "mode": 292,
+          "mtimeNs": 1792255843389942253,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "645cfeea1184ad06833bcd006145b7e2d7989dde0b7bc3019b0dbf54f5e98aab"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/69",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/69",
+          "mode": 493,
+          "mtimeNs": 1792256088790670511,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/69/4ed86f6b58a4ad1d308517f711bb7fea5d1d66",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/69/4ed86f6b58a4ad1d308517f711bb7fea5d1d66",
+          "mode": 292,
+          "mtimeNs": 1792255843438524275,
+          "type": "file",
+          "bytes": 86,
+          "sha256": "6838cc95351cf66d397ae0e05a3d162720834733e266da9e1d44e921e040e354"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/7a",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/7a",
+          "mode": 493,
+          "mtimeNs": 1792256088790930389,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/7a/dc090aa9ad2e740255e6db0c3de8c3bc554248",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/7a/dc090aa9ad2e740255e6db0c3de8c3bc554248",
+          "mode": 292,
+          "mtimeNs": 1792255843430814221,
+          "type": "file",
+          "bytes": 237,
+          "sha256": "fd2fcd297e7a93e796a277576c3979d6ef88b9332c2389121998c0e416a76f31"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/95",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/95",
+          "mode": 493,
+          "mtimeNs": 1792256088791190142,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/95/f3d257595df8cf697cfcd7f1381b4e00c52da8",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/95/f3d257595df8cf697cfcd7f1381b4e00c52da8",
+          "mode": 292,
+          "mtimeNs": 1792255843436408332,
+          "type": "file",
+          "bytes": 51,
+          "sha256": "8b70a433c062ba58972d1f11a0c785bc0bd3b3c07451cdc6a9500456b4636820"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/9a",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/9a",
+          "mode": 493,
+          "mtimeNs": 1792256088791450562,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+          "mode": 292,
+          "mtimeNs": 1792255843412941706,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "e3e559b07e6f1ebea905421bddd9fb5f0c1a4d332a9eae5e32222063a25858fa"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/a9",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/a9",
+          "mode": 493,
+          "mtimeNs": 1792256088791710858,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/a9/de43926b5cbde0c36f3654fda76eebacc71d13",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/a9/de43926b5cbde0c36f3654fda76eebacc71d13",
+          "mode": 292,
+          "mtimeNs": 1792255843437274093,
+          "type": "file",
+          "bytes": 49,
+          "sha256": "a450b9b6eb7238cfea5f0b4c9e120f41b64b23cde27696dd1804b27ba1cdf690"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/be",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/be",
+          "mode": 493,
+          "mtimeNs": 1792256088791976902,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/be/c80f6db45b55507371c126b90f2076358b471c",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/be/c80f6db45b55507371c126b90f2076358b471c",
+          "mode": 292,
+          "mtimeNs": 1792255843437688098,
+          "type": "file",
+          "bytes": 50,
+          "sha256": "e45264fe3fbcef599a2aa682eaaea72d00c7a010e4a1bae7cbec9cd0df56cf42"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/c5",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c5",
+          "mode": 493,
+          "mtimeNs": 1792256088792239947,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/c5/7ffef885ed5164885681f2792b706510902c07",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c5/7ffef885ed5164885681f2792b706510902c07",
+          "mode": 292,
+          "mtimeNs": 1792255843413993344,
+          "type": "file",
+          "bytes": 153,
+          "sha256": "630f34b2961eec472816ea66beb29d1f908bf4227b675accaf018de494a39f43"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/e8",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/e8",
+          "mode": 493,
+          "mtimeNs": 1792256088792505992,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+          "mode": 292,
+          "mtimeNs": 1792255843384211514,
+          "type": "file",
+          "bytes": 35,
+          "sha256": "3c85d4e06a87020ef915afe3b5a16937fc654c9ef032440fab574f328d4585f0"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/f1",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/f1",
+          "mode": 493,
+          "mtimeNs": 1792256088792776787,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/f1/9d74ed3cb3ae81da81d7fdb3d8de206b70b58d",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/f1/9d74ed3cb3ae81da81d7fdb3d8de206b70b58d",
+          "mode": 292,
+          "mtimeNs": 1792255843439511829,
+          "type": "file",
+          "bytes": 164,
+          "sha256": "390277fcac97e579ccb53f32de2aa863a7bf4bc6f10203e2b5641b0b190d4b3e"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/fb",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/fb",
+          "mode": 493,
+          "mtimeNs": 1792256088793044707,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/fb/360852d0928b4e07185632d789fc9321ecd434",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/fb/360852d0928b4e07185632d789fc9321ecd434",
+          "mode": 292,
+          "mtimeNs": 1792255843436845337,
+          "type": "file",
+          "bytes": 51,
+          "sha256": "f1a6dd60ac4bbe1724645b00476fe29f78850fd3f71c8e0ca6105e01e7b61766"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/info",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/info",
+          "mode": 493,
+          "mtimeNs": 1792256088793193876,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/objects/pack",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/pack",
+          "mode": 493,
+          "mtimeNs": 1792256088793258918,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/refs",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088793602339,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/refs/heads",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088793457129,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/refs/heads/main",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255843440081545,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "b350a3d66a29f65b16e580f6bdfbfaca4e478bb99eb9dc519baf5f9bed59c882"
+        },
+        {
+          "originalRelativePath": "judge-4-refute/fixture/.git/refs/tags",
+          "archiveRelativePath": "judge-4-refute/fixture/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/tags",
+          "mode": 493,
+          "mtimeNs": 1792256088793600964,
+          "type": "directory"
+        }
+      ]
+    },
+    {
+      "kind": "git-directory",
+      "originalRelativePath": "judge-4-reproduce/repo/.git",
+      "safeRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+      "descriptorRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.json",
+      "descriptorSHA256": "04a5366ca3fd3a129fb68ac01cb04540d4f6fbeb867f240850fcb5ce8fcdadfc",
+      "memberRepresentations": [
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/COMMIT_EDITMSG",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/COMMIT_EDITMSG",
+          "mode": 420,
+          "mtimeNs": 1792255783246048681,
+          "type": "file",
+          "bytes": 17,
+          "sha256": "553ff188aa9eab2fc9bb876deecff096294eb571893b0fb51103dd014f596bbd"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/HEAD",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255783206011307,
+          "type": "file",
+          "bytes": 29,
+          "sha256": "bd68979408a2dcc657aa5fc04502f049129507bcaa4b4168e09369bf29693544"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/config",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/config",
+          "mode": 420,
+          "mtimeNs": 1792255782677276171,
+          "type": "file",
+          "bytes": 199,
+          "sha256": "a9b9eab5f2634e439d52648aeea922139788f2b0d809643f9edef65eb58f8065"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/description",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/description",
+          "mode": 420,
+          "mtimeNs": 1792255782664372510,
+          "type": "file",
+          "bytes": 73,
+          "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks",
+          "mode": 493,
+          "mtimeNs": 1792256088801867609,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/applypatch-msg.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/applypatch-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782664926683,
+          "type": "file",
+          "bytes": 478,
+          "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/commit-msg.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782664554387,
+          "type": "file",
+          "bytes": 1972,
+          "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/fsmonitor-watchman.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/fsmonitor-watchman.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665011393,
+          "type": "file",
+          "bytes": 4611,
+          "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/post-update.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/post-update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665266896,
+          "type": "file",
+          "bytes": 189,
+          "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-applypatch.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-applypatch.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665442982,
+          "type": "file",
+          "bytes": 424,
+          "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-commit.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782664847058,
+          "type": "file",
+          "bytes": 1649,
+          "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-merge-commit.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-merge-commit.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665352231,
+          "type": "file",
+          "bytes": 416,
+          "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-push.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-push.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665530066,
+          "type": "file",
+          "bytes": 1374,
+          "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-rebase.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-rebase.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782664671930,
+          "type": "file",
+          "bytes": 4898,
+          "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/pre-receive.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/pre-receive.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665096019,
+          "type": "file",
+          "bytes": 544,
+          "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/prepare-commit-msg.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/prepare-commit-msg.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665179312,
+          "type": "file",
+          "bytes": 1492,
+          "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/push-to-checkout.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/push-to-checkout.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665732110,
+          "type": "file",
+          "bytes": 2783,
+          "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/sendemail-validate.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/sendemail-validate.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782664762557,
+          "type": "file",
+          "bytes": 2308,
+          "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/hooks/update.sample",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/hooks/update.sample",
+          "mode": 493,
+          "mtimeNs": 1792255782665638817,
+          "type": "file",
+          "bytes": 3650,
+          "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/index",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/index",
+          "mode": 420,
+          "mtimeNs": 1792255783245536883,
+          "type": "file",
+          "bytes": 145,
+          "sha256": "0072f527cdc3c61d47738205c783a6b8e6b3fd29777be393c40598dca8c60dc3"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/info",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info",
+          "mode": 493,
+          "mtimeNs": 1792256088802301448,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/info/exclude",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/info/exclude",
+          "mode": 420,
+          "mtimeNs": 1792255782664202383,
+          "type": "file",
+          "bytes": 240,
+          "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs",
+          "mode": 493,
+          "mtimeNs": 1792256088802682244,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/HEAD",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/HEAD",
+          "mode": 420,
+          "mtimeNs": 1792255783246875483,
+          "type": "file",
+          "bytes": 876,
+          "sha256": "fe65794f1a0f489f6aa001fcd993c6e35d4ab92f65ea8d1a4290ad63f4fe970b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/refs",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088802738037,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/refs/heads",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088803227751,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/refs/heads/control",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/control",
+          "mode": 420,
+          "mtimeNs": 1792255783193593485,
+          "type": "file",
+          "bytes": 201,
+          "sha256": "92bb02e27a111dfc127ff94a53ea40f37bed9b0b6ef181e92308f57f5f746a31"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/refs/heads/main",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255783041125417,
+          "type": "file",
+          "bytes": 361,
+          "sha256": "ed7f309198750afeba46e6b1f7a36398dac4deb84690e6fb89465cc73ea888b7"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/logs/refs/heads/product-only",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/logs/refs/heads/product-only",
+          "mode": 420,
+          "mtimeNs": 1792255783246905109,
+          "type": "file",
+          "bytes": 338,
+          "sha256": "628b7a448756e86fb8207d2dd962eb7ff15900f6e8dd7ddb98b5aa150b2bcffd"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects",
+          "mode": 493,
+          "mtimeNs": 1792256088808365482,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/00",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/00",
+          "mode": 493,
+          "mtimeNs": 1792256088803536963,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/00/117d95b295fc1309f908225d27af08c951ba63",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/00/117d95b295fc1309f908225d27af08c951ba63",
+          "mode": 292,
+          "mtimeNs": 1792255783007698000,
+          "type": "file",
+          "bytes": 94,
+          "sha256": "62fd822eb5e98bfd91bafa96362da2fecf43891d7c1657ef194aaab919198a4b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/01",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/01",
+          "mode": 493,
+          "mtimeNs": 1792256088803808758,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/01/ce70bd7b440d67263ed190550fcc7338bbefaa",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/01/ce70bd7b440d67263ed190550fcc7338bbefaa",
+          "mode": 292,
+          "mtimeNs": 1792255783039458354,
+          "type": "file",
+          "bytes": 85,
+          "sha256": "5721ec89329aab1047a47a4582e59896aee2350385d519dc501c42d5647e3c5b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/12",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/12",
+          "mode": 493,
+          "mtimeNs": 1792256088804068678,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/12/3384c10cc6218d6989a73f57fd76a030362131",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/12/3384c10cc6218d6989a73f57fd76a030362131",
+          "mode": 292,
+          "mtimeNs": 1792255783224332952,
+          "type": "file",
+          "bytes": 138,
+          "sha256": "a19a571c81c0bc10e8490189afebb9aa64a51546af229f59e2d55bf45f59e410"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/2d",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/2d",
+          "mode": 493,
+          "mtimeNs": 1792256088804323473,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/2d/980f8a272e6da4152bfa6422c05d4339beb26e",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/2d/980f8a272e6da4152bfa6422c05d4339beb26e",
+          "mode": 292,
+          "mtimeNs": 1792255783013983746,
+          "type": "file",
+          "bytes": 51,
+          "sha256": "06b0acf933ee4db044cf5be6b44ee8d2ae0c33f0a67e7a2ba2abb6703a73364e"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/3c",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3c",
+          "mode": 493,
+          "mtimeNs": 1792256088804589768,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/3c/f2d2bb5721c2a92b56b378c822bf2a41416c2a",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/3c/f2d2bb5721c2a92b56b378c822bf2a41416c2a",
+          "mode": 292,
+          "mtimeNs": 1792255783007879795,
+          "type": "file",
+          "bytes": 458,
+          "sha256": "8578051b2e50958d4ce6d1bd498d891b8954819742063ac62cc13b964bdbbbbf"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/4b",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4b",
+          "mode": 493,
+          "mtimeNs": 1792256088804855605,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/4b/bffde1044258153b038e2ca9a53a2b36c6c133",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/4b/bffde1044258153b038e2ca9a53a2b36c6c133",
+          "mode": 292,
+          "mtimeNs": 1792255783239944000,
+          "type": "file",
+          "bytes": 36,
+          "sha256": "4b63c045b0b0d42eaf522e9b89026052d4fc7259c057c681966dcbb000cc857f"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/60",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/60",
+          "mode": 493,
+          "mtimeNs": 1792256088805109066,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/60/fe22196b210aec408226aaf19f1261e41f3250",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/60/fe22196b210aec408226aaf19f1261e41f3250",
+          "mode": 292,
+          "mtimeNs": 1792255783016284441,
+          "type": "file",
+          "bytes": 46,
+          "sha256": "c231cadce56128372c84411a41449a0c9015c000cc14946c2732fa70f9c281ea"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/62",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/62",
+          "mode": 493,
+          "mtimeNs": 1792256088805380153,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/62/2753958ad5b594f4c9e9685cafc968e014ac68",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/62/2753958ad5b594f4c9e9685cafc968e014ac68",
+          "mode": 292,
+          "mtimeNs": 1792255783223376857,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "816eab78cc6c3054f015646ab789a87bbbac4d76ec465e04646784b2d1fa2e26"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/65",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/65",
+          "mode": 493,
+          "mtimeNs": 1792256088805645156,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/65/dc0f1b07628b380cae94cce663b7a0a488d5b4",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/65/dc0f1b07628b380cae94cce663b7a0a488d5b4",
+          "mode": 292,
+          "mtimeNs": 1792255783015417889,
+          "type": "file",
+          "bytes": 72,
+          "sha256": "eda5da5f53f810b1b956ae4d47588a48dc872093f50209d99f41a07ede8abcf7"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/69",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/69",
+          "mode": 493,
+          "mtimeNs": 1792256088805905243,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/69/4f4b0c7c4815f2c6097b39dcbd28be2f1e0e2c",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/69/4f4b0c7c4815f2c6097b39dcbd28be2f1e0e2c",
+          "mode": 292,
+          "mtimeNs": 1792255783014963175,
+          "type": "file",
+          "bytes": 64,
+          "sha256": "e0fb53a781d87e3b8dc576d0af48aada5b869f1a77f00fd87fb897c4c86ecb33"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/96",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/96",
+          "mode": 493,
+          "mtimeNs": 1792256088806174204,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/96/19d13e016c7f825ac161fdd672fe8320f80279",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/96/19d13e016c7f825ac161fdd672fe8320f80279",
+          "mode": 292,
+          "mtimeNs": 1792255783014458377,
+          "type": "file",
+          "bytes": 99,
+          "sha256": "78758f9ab47305de70aad0e3e228eb4622ee072c61b130c0e84b12e3dfe95fd5"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/aa",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/aa",
+          "mode": 493,
+          "mtimeNs": 1792256088806440833,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/aa/485e7f7a96239c437276b86aba457303cf6ea6",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/aa/485e7f7a96239c437276b86aba457303cf6ea6",
+          "mode": 292,
+          "mtimeNs": 1792255783246254392,
+          "type": "file",
+          "bytes": 169,
+          "sha256": "e1259586019c269405b02aafe08b9968de9d36425a4e439e059bbb37e109713e"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/bd",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/bd",
+          "mode": 493,
+          "mtimeNs": 1792256088806905172,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/bd/469aa963cacda5960c5351d64612f7c5f2df47",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/bd/469aa963cacda5960c5351d64612f7c5f2df47",
+          "mode": 292,
+          "mtimeNs": 1792255783245164295,
+          "type": "file",
+          "bytes": 55,
+          "sha256": "57f0295c42257c294b2d4c3f502aafa8d7698abe5399487b7718763aadb91d7d"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/bd/816eaba4ca3be8e4d68cfc0ae9f64b5aa712cc",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/bd/816eaba4ca3be8e4d68cfc0ae9f64b5aa712cc",
+          "mode": 292,
+          "mtimeNs": 1792255783218246000,
+          "type": "file",
+          "bytes": 36,
+          "sha256": "421542a4b94b5cbb3b807f7a671dea064615921bdeac3bd674f6d61b7e40aabd"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/c2",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c2",
+          "mode": 493,
+          "mtimeNs": 1792256088807380386,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/c2/33b4a46552acd2ec690dbaf467b710088e39bb",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c2/33b4a46552acd2ec690dbaf467b710088e39bb",
+          "mode": 292,
+          "mtimeNs": 1792255783017812752,
+          "type": "file",
+          "bytes": 152,
+          "sha256": "e6d99d1556297d2ce05d669e237a17b141c8f2119cb16379fea3a880afc84b91"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/c2/7be407d640e2c193b23ba3f4cb1fbdbe60a2a8",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c2/7be407d640e2c193b23ba3f4cb1fbdbe60a2a8",
+          "mode": 292,
+          "mtimeNs": 1792255783015853811,
+          "type": "file",
+          "bytes": 84,
+          "sha256": "67b1b7ba056c0f6b5dc50dc5cb4daa50ed44b969fa750b4a23df4d25b1700d40"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/c9",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c9",
+          "mode": 493,
+          "mtimeNs": 1792256088807642806,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/c9/7ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/c9/7ea05ce68fd3e22b5d2000bd5a59e0321a66a0",
+          "mode": 292,
+          "mtimeNs": 1792255783040504659,
+          "type": "file",
+          "bytes": 169,
+          "sha256": "750ed40f712620c5ba910802ec639f1f3dd84d1bfd70e1a234f6d022907703aa"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/ce",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/ce",
+          "mode": 493,
+          "mtimeNs": 1792256088807895309,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/ce/e448c60c406d4316b3c6292facd8762d240909",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/ce/e448c60c406d4316b3c6292facd8762d240909",
+          "mode": 292,
+          "mtimeNs": 1792255783016705780,
+          "type": "file",
+          "bytes": 85,
+          "sha256": "df3b711fac35b977561a3b02bca401aa5012460358a1d690817e65f4bd9a6d53"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/d6",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/d6",
+          "mode": 493,
+          "mtimeNs": 1792256088808158771,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/d6/69dab68fb3fc0c3aaf085853e8deacd5ef9b49",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/d6/69dab68fb3fc0c3aaf085853e8deacd5ef9b49",
+          "mode": 292,
+          "mtimeNs": 1792255783007354330,
+          "type": "file",
+          "bytes": 341,
+          "sha256": "88d0afba7716f86b6c0d3da3adbe667588b0ade3a9264141b51ca40007f39496"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/info",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/info",
+          "mode": 493,
+          "mtimeNs": 1792256088808301773,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/objects/pack",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/objects/pack",
+          "mode": 493,
+          "mtimeNs": 1792256088808359440,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs",
+          "mode": 493,
+          "mtimeNs": 1792256088809088741,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs/heads",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads",
+          "mode": 493,
+          "mtimeNs": 1792256088808937781,
+          "type": "directory"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs/heads/control",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/control",
+          "mode": 420,
+          "mtimeNs": 1792255783193247939,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "5e1553417910cb12d7cd7ac15daec731bb0cfa96dd89552a3d8452af35c8e82b"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs/heads/main",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/main",
+          "mode": 420,
+          "mtimeNs": 1792255783041070333,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "cebbc18a054f9f6f29d0d8f50b5518db33afdc4a7e44802ec06be1859748e674"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs/heads/product-only",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/heads/product-only",
+          "mode": 420,
+          "mtimeNs": 1792255783246841441,
+          "type": "file",
+          "bytes": 41,
+          "sha256": "8f918534adc932cbabdeed9bbe5bf0c40db63ef31a2e7b74cca4ada221b8e076"
+        },
+        {
+          "originalRelativePath": "judge-4-reproduce/repo/.git/refs/tags",
+          "archiveRelativePath": "judge-4-reproduce/repo/git-metadata.evidence.tar",
+          "tarMember": ".git/refs/tags",
+          "mode": 493,
+          "mtimeNs": 1792256088809085991,
+          "type": "directory"
+        }
+      ]
+    },
+    {
+      "kind": "gzip-encoded-regular-file",
+      "originalRelativePath": "authored.diff",
+      "safeRelativePath": "authored.diff.gz",
+      "logicalArtifact": "authored.diff",
+      "originalBytes": 136599903,
+      "originalSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+      "encodedBytes": 30203817,
+      "encodedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+      "compression": "standard gzip, deterministic mtime=0; decode with gzip -dc authored.diff.gz",
+      "exactDecodedVerification": {
+        "bytes": 136599903,
+        "sha256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+        "matchedOriginal": true
+      }
+    }
+  ],
+  "unchangedPreexistingRegularFiles": 1161,
+  "reportSHA256Unchanged": "1e4b0c9881a7906a467ccd31d4dae5dfe050bb8077a21862aacefdd6d534a434",
+  "tarByteVerification": "all original Git metadata regular-file contents matched individual SHA-256 values in the tar member inventories",
+  "packagingScriptSHA256": "44c35f7003c343fc6ba06ade361c329a2971ae257daefbddfcb0e79c3af26647",
+  "largeDiffPackaging": {
+    "logicalArtifact": "authored.diff",
+    "rawSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "rawBytes": 136599903,
+    "encodedFilename": "authored.diff.gz",
+    "encodedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "encodedBytes": 30203817,
+    "decodeMethod": "gzip -dc authored.diff.gz",
+    "decodedBytesVerified": 136599903,
+    "decodedSHA256Verified": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "rawOwnedCopyRemovedAfterVerification": true,
+    "originalScratchUntouched": true,
+    "unchangedRegularFilesDuringGzipPackaging": 1177
+  }
+}

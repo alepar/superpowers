@@ -1,0 +1,23 @@
+{
+  "lane": "observability",
+  "reviewed": [
+    "skills/super-auto/scripts/report-status",
+    "skills/super-auto/scripts/scope-dispositions",
+    "skills/super-auto/report-prompt.md",
+    "skills/super-auto/run-state.md",
+    "skills/super-code/scripts/report-verdict",
+    "skills/super-code/scripts/run-digest",
+    "skills/super-code/scripts/ledger-digest",
+    "skills/super-code/scripts/run-profile.mjs",
+    "skills/super-code/scripts/stop-run-processes",
+    "skills/super-code/coordinator.js"
+  ],
+  "checks": [
+    "Reviewed complete extraction, outstanding/metrics projection, unavailable-tool handling, collection integrity/status and acceptance diagnostic propagation.",
+    "Read modified profile readiness/concurrency/estimate diagnostics and surrounding timeline/model construction.",
+    "Read failure-attribution production and root acceptance consumer; pre-run contradiction suppression is covered by correctness scout and omitted here to avoid duplication.",
+    "Read required source final review and bounded companion probe context; confirmed complete extraction retains two repair obligations and eight scope qualifications. No general current-head acceptance inference made."
+  ],
+  "result": "No additional material new finding established in this lane.",
+  "probes": "Read-only source investigation; no live runtime behavior or broad coverage claim."
+}

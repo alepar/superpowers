@@ -1,0 +1,27 @@
+{
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "metadataHead": "5b772aac1624ccdad01335be8779cdc49c2b27e0",
+  "phase7CleanupSectionIdenticalToMeasured": true,
+  "taskCommits": {
+    "7db21aaec321ce133ad792f9ffc0e05879e4cf40": {
+      "tree": "90e37bbfed5bfa419d9708d83c73c048aaf3924b",
+      "ancestorOfCodehead": true
+    },
+    "cd01f8e6e94c76db1104ba8911d6c4f085f444ad": {
+      "tree": "ef75afd4f2d39e8a3f33e6b16998ffbed68cf68d",
+      "ancestorOfCodehead": true
+    },
+    "22634c4c57e190dea56db60710b6de4f9327bfad": {
+      "tree": "a487f101832c60590555f835faa3ba9a27e0d691",
+      "ancestorOfCodehead": true
+    },
+    "4639ee8426129adf94103df2368c6db4f41b4410": {
+      "tree": "3397ea3c23392a9b6b0cf004b7c8a54bf9830067",
+      "ancestorOfCodehead": false
+    }
+  },
+  "recursiveMergedCommit": "e4c809c9eb83719cef6c5714b1d49d6e0cd900b9",
+  "recursiveReviewedCommitVsMergedSkillsTestsDiff": " tests/super-code/test-dispatch-text.sh | 2 ++\n 1 file changed, 2 insertions(+)\n",
+  "recursiveMergedAncestorOfCodehead": true
+}

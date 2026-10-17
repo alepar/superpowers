@@ -1,0 +1,5 @@
+Lane: hygiene-docs. Frozen product docs inspected alongside relevant captured product diff and required prior review/source context.
+Reviewed: super-auto/SKILL.md, resume.md, report-prompt.md, run-state.md; super-code/SKILL.md, coordinator-subagents.md, assembler-prompt.md, implementer-prompt.md, task-reviewer-prompt.md; changed final-review/scout/judge and finishing/upstream-feedback guidance.
+Focus: caller acceptance ownership, immutable invocation/source/review identity, required collection/projection continuity, review-input-selection refusal/fallback, cleanup retention sequencing, and metrics source qualification.
+No new material docs/instruction finding established. In particular, legacy broad cleanup wording is governed by the explicit new phase-7 removal preconditions; final-review routing now uses full retained projection rather than legacy report-verdict --keys. Prior rejected aggregation semantics and filename-only fallback materiality were not re-raised. Existing mandatory source review findings are evidence context, not independent lane discoveries.
+No source edits, nested agents, Herdr writes, or runtime acceptance/cleanup claims.

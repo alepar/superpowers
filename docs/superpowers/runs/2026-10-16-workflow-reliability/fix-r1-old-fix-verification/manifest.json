@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "scope": "Four exact original fixes only; sourcebinding/repeated-entry current regressions remain open",
+  "sourceRange": {
+    "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+    "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+    "tree": "f062b7c7ec1b967aa64952fad937ff6982cdb084"
+  },
+  "sourceTreeMeaning": "Fresh deterministic checks captured ee275436; retained outer cleanup original realGit/helper controls, read-onlyinstruction-contract review; no fresh agent/globalabsence claim",
+  "files": [
+    {
+      "source": ".superpowers/sdd/super-plan-ufz-plan/old-fix-semantic-review-r1.json",
+      "archive": "fix-r1-old-fix-verification/old-fix-semantic-review-r1.json",
+      "bytes": 47750,
+      "sha256": "7246e6c3a792eaf9a69dadfc1c5f7ad9f406b697eda4f6f1dced8e8bd3fb9c6c"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/archive-integrity.json",
+      "bytes": 2100,
+      "sha256": "fdb40a9278d9d9c57c2370241bdb9daed4906ef876b98b74166b842dc39353bb"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity.log",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/archive-integrity.log",
+      "bytes": 1314,
+      "sha256": "020935e1322f814e6ed79cf630f8d2910baa809d2ce782b230bde6f978ec781c"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/build-report.py",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/build-report.py",
+      "bytes": 21860,
+      "sha256": "b282379843d514f11e3639b125490704bee8f93b455b67f05df69957d242aa0f"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/draft-report.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/draft-report.json",
+      "bytes": 47750,
+      "sha256": "7246e6c3a792eaf9a69dadfc1c5f7ad9f406b697eda4f6f1dced8e8bd3fb9c6c"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/generated-inputs.json",
+      "bytes": 1445,
+      "sha256": "b9c90530e014a44315424a34aec8a7d5d742975ab9639556b0f7facd3b117dec"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/generated-inputs.log",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/generated-inputs.log",
+      "bytes": 547,
+      "sha256": "af621a68749c5139f177e958ebd1951f6c3d5ec6685febd7bf33a0fe7ac4396c"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/read-only-bindings.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/read-only-bindings.json",
+      "bytes": 1094,
+      "sha256": "8d3e0fe2219ce950876ca402ab7ebd333da8557945063387b50f038a1ae0fe82"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/source-binding.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/source-binding.json",
+      "bytes": 836,
+      "sha256": "b2169ad495dd46e1b6b0226efcc4eefcbc5750dac09216ee44a61c9909f71674"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/source-binding.log",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/source-binding.log",
+      "bytes": 46,
+      "sha256": "7dab2fe90f0ce2e100f9471f63c343b53f25e60d2c992d9b8dc7bd282b97d16e"
+    },
+    {
+      "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/source-config.json",
+      "archive": "fix-r1-old-fix-verification/fresh-checks/source-config.json",
+      "bytes": 1631,
+      "sha256": "9f04cf9b97bec1087e94f559a75b0a459838e4f27255bf47d0570acb29f419f4"
+    }
+  ],
+  "payloadBytes": 126373,
+  "reconstructibleSource": "Captured Git commit and full tree in fresh-checks/source-config.json; extracted source corpus is not duplicated",
+  "requiredRemainingVerification": [
+    "Current final two findings and additional unjudged round-2 candidates remain separately pending; this assessment neither judges nor rewrites their dispositions.",
+    "Native guidance evaluation remains INCOMPLETE, including 011 intake failure, 017-020 context drift, all original O6 failure labels and unequal measured counts. No balanced primary comparison, guidance improvement or general compliance is established.",
+    "Caller-owned final integrated suite/source binding, complete required review coverage, supported finding accounting and separately reserved human/root acceptance remain open; three focused passes do not satisfy them.",
+    "Current selection/guard changed-instruction behavior lies outside frozen guidance evidence; successful deterministic valid-provenance cycles do not validate actual whole-run selection or agent fallback.",
+    "Any actual cleanup requires fresh named-root inspection, retained-descendant inventory and verified helper outcomes; Linux native behavior/global absence remain unverified. This report makes no resource-removal authorization.",
+    "Any later main absorption/combined-tree changes need applicable verification against that combined source; all judgments here are bound to ee275436, with metadata head distinguished."
+  ]
+}

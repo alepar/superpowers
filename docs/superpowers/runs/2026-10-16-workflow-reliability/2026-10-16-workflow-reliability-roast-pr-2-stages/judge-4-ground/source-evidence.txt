@@ -1,0 +1,310 @@
+skills/super-code/scripts/dispatch-text.mjs
+150:       if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
+151:       return git('cat-file', 'blob', entry.oid)
+152:     }
+153:     const archives = [], claims = new Map()
+154:     for (const run of tree.keys()) {
+155:       if (posix.basename(run) !== 'run.md') continue
+156:       let text
+157:       try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
+158:       const latest = new Map(), identities = new Map(), savedHashes = new Map()
+159:       let approvals = false
+160:       for (const [lineNumber, line] of text.split('\n').entries()) {
+161:         if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
+162:         if (!line.startsWith('- review-collection')) continue
+163:         try {
+164:           if (!approvals || !line.startsWith('- review-collection · ')) throw Error('record outside approvals or invalid prefix')
+165:           const r = JSON.parse(line.slice('- review-collection · '.length))
+166:           if (!r || !idOK(r.invocationId) || typeof r.workspace !== 'string' || !posix.isAbsolute(r.workspace) ||
+167:               !(r.reviewPath === null || (typeof r.reviewPath === 'string' && posix.isAbsolute(r.reviewPath))) ||
+168:               typeof r.review !== 'string' || !r.review.trim() || typeof r.settled !== 'boolean' ||
+169:               !Array.isArray(r.required) || !r.required.every(safe) ||
+170:               !(r.complete === undefined || typeof r.complete === 'boolean') ||
+171:               !(r.gaps === undefined || (Array.isArray(r.gaps) && r.gaps.every(g => typeof g === 'string' && g))) ||
+172:               !(r.files === undefined || (Array.isArray(r.files) && r.files.every(f => f && safe(f.path) && /^[a-f0-9]{64}$/.test(f.sha256))))) throw Error('invalid collection fields')
+173:           const identity = JSON.stringify([r.workspace, r.required])
+174:           const old = identities.get(r.invocationId)
+175:           if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
+176:           identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
+177:           for (const f of r.files || []) {
+178:             const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
+179:             if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
+180:             savedHashes.set(key, f.sha256)
+181:           }
+182:           latest.set(r.invocationId, { ...r, line: lineNumber + 1 })
+183:         } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
+184:       }
+185:       for (const r of latest.values()) {
+186:         const prefix = 'final-review-' + r.invocationId, assembled = 'assembled/' + prefix + '-final/'
+187:         const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
+188:         const files = new Map((r.files || []).map(f => [f.path, f.sha256]))
+189:         const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
+190:         if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
+191:         if (r.reviewPath === null) {
+192:           if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
+193:         } else {
+194:           if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) gap(context + ': incomplete claimed final report')
+195:           for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
+196:         }
+197:         if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
+198:         const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
+199:         if (inputs.length) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
+200:         const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
+201:         if (clusters.length || files.has(assembled + 'clusters.json')) {
+202:           try {
+203:             const m = JSON.parse(blob(posix.join(archive, assembled + 'clusters.json')).toString())
+204:             if (!files.has(assembled + 'clusters.json') || !Array.isArray(m.clusters) || (clusters.length && !m.clusters.length)) throw Error('missing manifest')
+205:             for (const [n, c] of m.clusters.entries()) {
+206:               if ((clusters.length && !files.has(prefix + '.cluster-' + (n + 1) + '.md')) || !Array.isArray(c.slices)) throw Error('missing cluster report or slices')
+207:               for (const slice of c.slices) if (!safe(slice) || !files.has(assembled + slice)) throw Error('missing claimed cluster slice')
+208:             }
+209:           } catch (e) { gap(context + ': incomplete split bundle: ' + e.message) }
+210:         }
+211:         for (const [relative, sha256] of files) {
+212:           const p = posix.join(archive, relative)
+213:           try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
+214:           catch (e) { gap(context + ': ' + e.message) }
+215:           if (relative.startsWith(assembled) || relative === prefix + '.md.diff') {
+216:             const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
+217:             if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
+218:             claims.set(p, claim)
+219:           }
+220:         }
+221:         archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
+222:       }
+223:     }
+224:     return { tree, blob, archives, claims }
+225:   }
+226:   let selected = changed, omitted = [], archives = [], slices = []
+227:   try {
+228:     const before = snapshot(base), after = snapshot(head)
+229:     archives = after.archives
+230:     // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
+231:     for (const [p, claim] of before.claims) {
+232:       try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
+233:       catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }
+234:     }
+235:     if (!gaps.length) {
+236:       omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
+237:       selected = changed.filter(p => !after.claims.has(p))
+238:     }
+239:     writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected) : '')
+240:     if (!gaps.length) {
+241:       mkdirSync(join(out, 'slices'), { recursive: true })
+242:       for (const [n, p] of selected.entries()) {
+243:         // Ordinals avoid collisions and platform filename limits for arbitrary Git paths.
+244:         const slice = 'slices/' + String(n + 1).padStart(6, '0') + '.diff'
+245:         writeFileSync(join(out, slice), git('diff', '--no-renames', base + '..' + head, '--', p))
+246:         slices.push({ path: p, slice })
+247:       }
+248:     }
+249:   } catch (e) { gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
+250:   const result = { base, head, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+251:   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
+252:   writeFileSync(join(out, 'generated-input-provenance.md'), [
+253:     '## Generated-input provenance',
+254:     'Captured range: ' + base + '..' + head,
+255:     'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',
+256:     'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
+257:     ...omitted.map(o => '- ' + JSON.stringify(o)),
+258:     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
+259:     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
+260:   ].join('\n') + '\n')
+261:   console.log(JSON.stringify({ status: result.status, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
+262:   process.exit(gaps.length ? 3 : 0)
+263: }
+264: 
+265: const o = parse(process.argv.slice(2))
+266: if (o.help || !o._.length) { console.log(USAGE); process.exit(o.help ? 0 : 2) }
+
+skills/super-code/assembler-prompt.md
+17: 1. `cd [WORKTREE]`. Review consumers (`final-review`, `roast-code`) receive captured commit
+18:    identities as [BASE] and [HEAD]; verify both with `git rev-parse --verify <sha>^{commit}`.
+19:    Other consumers resolve command-valued inputs once before collecting their data.
+20:    Empty the instance directory first:
+21:    `rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices`.
+22: 2. For `final-review` and `roast-code`, run `[REVIEW_INPUTS]` exactly once. It reads collection
+23:    claims and payload hashes from captured Git, writes selected `diffstat.txt`, `slices/`,
+24:    `review-inputs.json` (changed paths and path-to-slice mapping) and
+25:    `generated-input-provenance.md`. These are the authoritative selected inputs for steps 3–5.
+26:    On any nonzero exit, preserve those outputs and relay `exit: 2`, `fits: unavailable`,
+27:    `clusterFits: []`, `clusters: 0`, `dir: [OUT_DIR]`, with `cause` prefixed
+28:    `review input selection:` and the command's explicit evidence gap. Stop here; an invalid
+29:    provenance refusal remains unavailable through any fallback, never a clean assembly.
+30:    For other consumers, run `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
+31: 3. Write `[OUT_DIR]/digest.md` with one `## <name>` heading per [SECTIONS] line, in that order, each
+32:    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has
+33:    nothing gets the line `none`.
+34: 4. Review consumers use only the helper's `review-inputs.json` changed list and slices mapping;
+35:    selection excludes only exact hash-verified manifest payloads, retaining collection metadata,
+36:    final/cluster reports, findings and unclaimed files. Do not reslice or re-enumerate the full range.
+37:    For other consumers, slices are one file per changed source file, `git diff [BASE]..[HEAD] -- <file>` written to
+38:    `[OUT_DIR]/slices/<path with each / replaced by __>.diff`.
+39:    Open source with `git show [HEAD]:<path>` so a concurrent caller advance cannot change it.
+40: 5. When [CLUSTERS] is yes, group the changed files by import and call edges between them (an edge
+
+skills/super-code/coordinator.js
+2315: if (reviewSourceGap) finalSource = null
+2316: const reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`
+2317: const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
+2318: const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
+2319: let frSourceRefusal = null
+2320: let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
+2321: if (landedWork && invocationPersisted && finalSource) {
+2322:   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
+2323:   const reviewThreshold = Math.floor(reviewWindow * 0.4)
+2324:   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
+2325:     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+2326:   if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
+2327:   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
+2328:   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
+2329:     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
+2330:   frDir = asm?.dir ?? null
+2331:   frAsmClusters = asm?.clusters ?? null
+2332:   // Exit 3 (bad clusters.json coverage) caps only when the inputs also do not fit; `fits: yes` means a
+2333:   // single review on direct inputs, uncapped.
+2334:   const exit3Fits = !!(asm && asm.exit === 3 && fm && fm[1] === 'yes')
+2335:   if (asm && asm.exit === 3 && !exit3Fits) frMode = 'capped'
+2336:   else if (asm && asm.exit === 0 && fm && frDir) frMode = fm[1] === 'yes' ? 'single' : (frClusters.length ? 'split' : 'capped')
+2337:   const totalK = fm ? Math.round(Number(fm[2]) / 1000) : 0, windowK = Math.round(reviewWindow / 1000)
+2338:   const k = asm?.clusters ?? frClusters.length
+2339:   frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
+2340:     : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'
+2341:     : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
+2342:     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
+2343:     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
+2344: }
+2345: await appendLedger(frLine ? [...metrics, frLine] : metrics,
+2346:   'ledger-append:metrics', { label: 'ledger-append:metrics', phase: 'Finish', ...tier('mechanical') })
+2347: // Null final-review ("Null dispatch policy"): an explicit UNAVAILABLE string — never silence, and
+2348: // never anything a reader could mistake for "reviewed, no findings".
+2349: const FINAL_REVIEW_UNAVAILABLE = `FINAL REVIEW UNAVAILABLE — the final-review dispatch returned null (terminal API error after retries). The integration branch has had NO whole-epic review; treat this as a missing review, never as "no findings".`
+2350: // A verdict that cannot be `ready`: keeps the reviewer's own summary and names what went unreviewed.
+2351: const notReadyWith = (verdict, unrev) => {
+2352:   const v = String(verdict ?? '').trim()
+2353:   if (v.startsWith('not ready (') && v.includes('unreviewed: ') && unrev.every(u => v.includes(u))) return v
+2354:   const inner = /^not ready \((.*)\)$/s.exec(v)?.[1]
+2355:   return `not ready (${inner ? inner + '; ' : ''}unreviewed: ${unrev.join(', ')})`
+2356: }
+2357: let review, reviewWritten = false
+2358: if (!landedWork) review = 'no work landed'
+2359: else if (!invocationPersisted) review = 'FINAL REVIEW UNAVAILABLE — invocation identity persistence unavailable; no review artifacts were authorized'
+2360: else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source commits unavailable: ' + (reviewSourceGap ? 'persisted invocation source binding is invalid or conflicting' : metricsLedger?.reviewError || 'Finish source capture returned no verified base/head')
+2361: else if (frSourceRefusal) review = 'FINAL REVIEW UNAVAILABLE — partial bundle preserved: ' + frSourceRefusal
+2362: else if (frMode !== 'split') {
+2363:   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
+2364:     { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
+2365:     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
+2366:   const v = String(single?.verdict ?? '').trim()
+2367:   reviewWritten = !!v
+2368:   review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
+2369: } else {
+2370:   const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
+
+skills/super-code/coordinator.js
+2940:   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+2941:   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+2942:   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
+2943:   const selectionGap = 'Before reviewing, inspect ' + workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json when present. If unreadable, malformed, unavailable or carrying selection/evidence gaps, preserve that explicit gap and return unavailable without writing a verdict or a direct package. An assembler cause prefixed "review input selection:" also remains unavailable through fallback. '
+2944:   const pkg = dir
+2945:     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+2946:     : planPath
+2947:     ? `Build the review package from ${integrationWorktree}: run \`bash ${sddScripts}/review-package ${planPath} ${base} ${head} ${reviewPath}.diff\` and read the file it writes.`
+2948:     : `Review \`git diff ${base}..${head}\` from ${integrationWorktree}.`
+2949:   const cappedNote = capped
+2950:     ? `The inputs exceed your window and no usable clusters exist: review what you can, and your verdict must be \`not ready (… unreviewed: inputs exceed the window and no usable clusters)\`. `
+
+skills/super-auto/run-state.md
+1: # run.md — the run-state contract
+2: 
+3: A `super-auto` run crosses multiple skill hand-offs, and spans hours, context
+4: compaction, session restarts, and machine restarts. `run.md` is the single committed
+5: file that lets a resumed run pick up exactly where it left off instead of guessing.
+6: The phase sequence is SKILL.md §Phase sequence; this file says what state persists and how re-entry uses it.
+7: 
+8: It lives at `docs/superpowers/runs/YYYY-MM-DD-<slug>/run.md` and is committed alongside the
+9: other artifacts of the run (spec, plan, roast reports). It is not scratch state —
+10: every field in it is read back on resume and trusted.
+
+skills/super-code/coordinator-workflow.md
+1548: `config.contextWindows.finalReview`, else `FINAL_REVIEW_FALLBACK_WINDOW.workflow` (200K, defined once
+1549: beside `MODEL_DEFAULTS` in `coordinator.js`; the ordinary-subagent coordinator uses its `ordinary`
+1550: entry, 258K); the threshold is 40% of it. The mode follows the assembler's reply:
+1551: 
+1552: | Assembler reply | Mode | Dispatches | Ledger line |
+1553: |---|---|---|---|
+1554: | null, no parsable `fits:` line, or `exit` not 0/3 | `single` on direct inputs, uncapped | `final-review` | `Final review: single (assembler unavailable)` |
+1555: | `exit` 3 with `fits: no` or no `fits:` line, or `fits: no` with no `cluster-fits:` lines | `single` on direct inputs, **capped** | `final-review` | `Final review: single (no usable clusters — capped)` |
+1556: | `exit` 3 with `fits: yes` | `single` on direct inputs, uncapped | `final-review` | `Final review: single (inputs fit; clusters.json rejected — direct inputs)` |
+1557: | `fits: yes` | `single` on the digest and slices | `final-review` | `Final review: single (inputs <N>K <= 40% of <W>K) · clusters <k>` |
+1558: | `fits: no` | `split` | `final-review:cluster:<n>` for each `cluster-fits: <name> yes` (concurrent, in batches of the concurrency cap), then `final-review:seam` | `Final review: split (inputs <N>K > 40% of <W>K) · clusters <k>` |
+1559: 
+1560: The `Final review:` line is appended in the same dispatch as the four `Metrics:` lines. Clusters come
+1561: from the assembler's `clusters.json` (import and call edges, else directory), never from a declared
+
+commit e4c809c9eb83719cef6c5714b1d49d6e0cd900b9
+Author: Alexey Parfenov <alepar@gmail.com>
+Date:   Sat Oct 17 08:11:02 2026 -0700
+
+    fix(super-auto): select captured review inputs by verified archive claims
+
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index 957d3151..92a654c8 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -2323,7 +2323,7 @@ if (landedWork && invocationPersisted && finalSource) {
+   const reviewThreshold = Math.floor(reviewWindow * 0.4)
+   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
+     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+-  if (asm?.exit === 2 && String(asm.cause || '').startsWith('review source guard:')) frSourceRefusal = asm.cause
++  if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
+   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
+   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
+     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
+@@ -2506,6 +2506,7 @@ function blockerBeadRule() {
+ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, head = integrationBranch, specPaths = [] } = {}) {
+   const ASSEMBLER_SECTIONS = {
+     diffstat: 'diffstat: the contents of diffstat.txt',
++    provenance: 'generated-input provenance: the complete contents of generated-input-provenance.md, verbatim; selected product/input diffstat excludes only the listed immutable historical payloads, whose captured report/archive references and saved hashes remain available',
+     report: 'report summaries: for every task-<n>-report.md in [WORKSPACE], its task id, Status line, the Assumptions and the Concerns bullets, copied verbatim and cut to 300 characters each',
+     seams: 'interfaces and seams: exported function and type signatures added or changed in the diff (one line each, with file), new public files, and the title and id of every bead in the epic tree whose title starts `Seam contract:`',
+     minors: 'deferred minors: every `minor (deferred)` and `parked` line of [LEDGER], verbatim',
+@@ -2519,8 +2520,8 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
+     stateCounts: 'ledger state counts: how many tasks of [LEDGER] are in each state (complete, parked, BLOCKED, pending retry, cancelled)',
+   }
+   const ASSEMBLER_PROFILES = {
+-    'final-review': { clusters: true, sections: ['diffstat', 'report', 'seams', 'minors', 'amendments'] },
+-    'roast-code': { clusters: false, sections: ['diffstat', 'slices', 'specs'] },
++    'final-review': { clusters: true, sections: ['diffstat', 'provenance', 'report', 'seams', 'minors', 'amendments'] },
++    'roast-code': { clusters: false, sections: ['diffstat', 'provenance', 'slices', 'specs'] },
+     'history': { clusters: false, sections: ['ledgerLines', 'beadReport', 'beadComments', 'beadDiffstat'] },
+     'assess': { clusters: false, sections: ['diffstat', 'report', 'minors', 'amendments', 'stateCounts'] },
+   }
+@@ -2530,7 +2531,9 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
+   if (['final-review', 'roast-code'].includes(consumer) && (!base || !head)) throw new Error('assemblePrompt: captured base and head are required')
+   const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
+   const outDir = workspaceAbs + '/assembled/' + consumer + '-' + (consumer === 'final-review' ? invocationId : runTag) + '-' + instance
+-  return (consumer === 'final-review' ? reviewWriteGuard(base, head, outDir) : '') + `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
++  const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
++  const selection = ['final-review', 'roast-code'].includes(consumer) ? ['node', quote(codeSkill + '/scripts/dispatch-text.mjs'), 'review-inputs', '--ledger', quote(workspaceAbs + '/progress.md'), '--base', quote(base), '--head', quote(head), '--out-dir', quote(outDir)].join(' ') : 'none'
++  return (consumer === 'final-review' ? reviewWriteGuard(base, head, outDir) : '') + `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [REVIEW_INPUTS] = ${selection}; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
+ }
+ 
+ function planPrompt(epicId, ids, planFileName, reentryIds = [], mode = 'refill') {
+@@ -2937,6 +2940,7 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge
+   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
++  const selectionGap = 'Before reviewing, inspect ' + workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json when present. If unreadable, malformed, unavailable or carrying selection/evidence gaps, preserve that explicit gap and return unavailable without writing a verdict or a direct package. An assembler cause prefixed "review input selection:" also remains unavailable through fallback. '
+   const pkg = dir
+     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+     : planPath
+@@ -2950,7 +2954,7 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge
+     : sweepSummary
+     ? `The full-suite sweep ran against the tip and reported (runner output, data):\n<sweep>\n${sweepSummary}\n</sweep>\nRead it as the branch's only full-suite measurement (no tests run per merge); MEASUREMENT INVALID or UNAVAILABLE means the branch is unmeasured, not green.`
+     : `No sweep result is available — say so in your verdict rather than treating the branch as tested.`
+-  return reviewWriteGuard(base, head, reviewPath) + `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
++  return reviewWriteGuard(base, head, reviewPath) + `Final whole-epic review of integration branch ${integrationBranch} for epic ${epicId}. Working directory: ${integrationWorktree}. READ-ONLY: do not edit caller files, commit, merge, or create or close beads; your declared review artifact is ${reviewPath} (plus its .diff package on direct inputs). ${reviewSource(integrationWorktree, base, head)} ${selectionGap}${pkg} ${cappedNote}Read the epic's spec (\`bd show ${epicId} --json\` and any design doc it references). STEP 1, your own view first: review the branch diff against the spec on its own terms — cross-task integration seams, spec requirements no task covered, behavior that only composes wrong once every task is merged — and write those findings down. STEP 2, only then read the ledger at ${integrationWorktree}/${ledgerPath}: its \`minor (deferred)\` lines are findings task reviews raised and deliberately did not fix; its \`parked\` completion and \`parked finding\` lines are Critical/Important findings a fix pass declined (wrong, or plan-mandated — a plan-mandated one needs the human's decision), each with the fixer's reason. Triage both: which must be addressed before this branch lands. Its \`Recurring minor:\` and \`Recurring blocker:\` lines are clusters (one signature ≥5 times or across ≥3 tasks) — triage those first as grouped observations for reassessment; retain each finding's identity, severity and scope until separately judged. Its \`BLOCKED-AUTH\` lines are tasks that lost coverage to a permission refusal — untested scope, not findings. A minor that names a skipped or ignored test, a known product defect, or a data-loss path was misgraded: triage it as must-fix. ${metrics.length ? `The run's Metrics lines (counts from the ledger; a \`METRICS INVALID\` or \`landed≠completed\` line means the ledger is incomplete, so do not read absence there as clean): ${metrics.join(' | ')}. ` : ''}${sweep} Write your whole review to ${reviewPath}. ${reviewFileFormat()} Return verdict (the Verdict line's value) and path. ${authRefusalRule()} ${finalAnswerRule(true)}`
+ }
+ 
+ function finalClusterReviewPrompt(n, name, dir, clusterPath, epicId, integrationBranch, integrationWorktree, source) {

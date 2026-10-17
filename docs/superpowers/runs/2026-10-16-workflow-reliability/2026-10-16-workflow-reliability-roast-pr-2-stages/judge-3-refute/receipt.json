@@ -1,0 +1,41 @@
+{
+  "producer": {
+    "exit": 0,
+    "stdout": "{\"invocationId\":\"refute3\",\"base\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"head\":\"cccccccccccccccccccccccccccccccccccccccc\"}\n"
+  },
+  "recovered": [
+    {
+      "version": 1,
+      "id": "review-source:refute3",
+      "kind": "deferred",
+      "operation": "record",
+      "reason": "immutable invocation review source",
+      "evidence": [
+        "/private/tmp/ufz-pr2-controller/judge-3-refute/progress.md"
+      ],
+      "data": {
+        "reviewSource": {
+          "invocationId": "refute3",
+          "base": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "head": "cccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    }
+  ],
+  "control": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "withBinding": {
+    "exit": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"review-source:refute3: measurement identity unavailable\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "manuallyBoundToSweep": {
+    "exit": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "limits": "Satisfied review/measurement/human are synthetic fixtures; projection and status are mocked clean. Actual immutable source producer, recovery reader and acceptance code are executed."
+}

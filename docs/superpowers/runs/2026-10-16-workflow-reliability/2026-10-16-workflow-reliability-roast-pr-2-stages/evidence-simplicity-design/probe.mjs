@@ -1,0 +1,27 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import cp from 'node:child_process';
+import assert from 'node:assert/strict';
+const root='/tmp/ufz-pr2-controller/source';
+const scratch='/tmp/ufz-pr2-controller/evidence-simplicity-design';
+const workspace=path.join(scratch,'work'), ws=path.join(workspace,'.superpowers/sdd/R-plan');
+fs.mkdirSync(ws,{recursive:true});
+const ledger=path.join(ws,'progress.md'), run=path.join(scratch,'run.md'), sha=c=>c.repeat(40);
+fs.writeFileSync(ledger,'Launch: args '+JSON.stringify({epicId:'R',integrationBranch:'integ',integrationWorktree:workspace,invocationId:'probe',config:{}})+'\n');
+const produce=cp.spawnSync(process.execPath,[path.join(root,'skills/super-code/scripts/dispatch-text.mjs'),'--ledger',ledger,'--stdout','bind-review-source','--base',sha('a'),'--head',sha('b')],{encoding:'utf8'});
+assert.equal(produce.status,0,produce.stderr);
+const line=fs.readFileSync(ledger,'utf8').split('\n').find(l=>l.startsWith('Recovery:'));
+const coordinator=fs.readFileSync(path.join(root,'skills/super-code/coordinator.js'),'utf8');
+const reader=coordinator.slice(coordinator.indexOf('const recoveryObligations = new Map()'),coordinator.indexOf('function recoveryGap('));
+const retained=Function('ledgerPath','recoveryGap','validRunFailure','verificationProblem','reviewBeadOf','blockerBeadOf',reader+'\nreadRecovery('+JSON.stringify(line)+'); return [...recoveryObligations.values()]')(ledger,()=>{throw Error('unexpected recovery gap')},()=>true,()=>null,new Map(),new Map());
+assert.equal(retained.length,1);
+const acceptance={version:1,owner:'super-auto',sourceTree:sha('c'),requirements:[{id:'review',kind:'review',owner:'caller'},{id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'fixture',requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[{sourceTree:sha('c'),command:'suite',configuration:'fixture',kind:'live',outcome:'pass',location:'fixture.log'}],reviews:[{id:'review',sourceTree:sha('c'),outcome:'pass',location:'review.md'}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['synthetic fixture decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
+fs.writeFileSync(path.join(scratch,'review.md'),'## Verdict\nready\n');
+const prefix='flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\ncodeBuckets:\n  escalated: none\n  pendingRetry: none\n  parked: none\n  stalled: false\n  review: ready\n  sweep: 1 — 1 passed, 0 failed, 0 errors; command: suite @ ccccccc\napprovals:\n- finding-source · '+JSON.stringify({version:1,source:'fixture/final',artifact:'review.md',kind:'final-review',verdict:'ready',occurrences:[]})+'\n';
+function gate(obligations){acceptance.recovery.obligations=obligations;fs.writeFileSync(run,prefix+'- root-acceptance · '+JSON.stringify(acceptance)+'\n');const p=cp.spawnSync('bash',[path.join(root,'skills/super-auto/scripts/report-status'),'--acceptance',run],{encoding:'utf8'});return {exit:p.status,stdout:JSON.parse(p.stdout),stderr:p.stderr};}
+const control=gate([]),binding=gate(retained);
+assert.equal(control.exit,0);assert.equal(control.stdout.eligible,true);
+assert.equal(binding.exit,3);assert.deepEqual(binding.stdout.gaps,['review-source:probe: measurement identity unavailable']);
+const receipt={control,binding,producedRecord:JSON.parse(line.slice(9)),note:'Actual binding CLI, actual recovery reader and actual acceptance CLI; other acceptance facts are synthetic satisfied controls, not actual run acceptance.'};
+fs.writeFileSync(path.join(scratch,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify(receipt,null,2));

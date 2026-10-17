@@ -1,0 +1,512 @@
+[
+  {
+    "ordinary": false,
+    "success": false,
+    "cap": 1,
+    "error": "HARNESS TIMEOUT after 2000ms — an unsatisfied waitFor usually means a dispatch/merge barrier was reintroduced",
+    "trace": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "review-bead:bd-101",
+      "impl:bd-102",
+      "merge:bd-101",
+      "review:bd-102"
+    ],
+    "logs": [
+      "coordinator: epic=bd-100 branch=epic-bd-100-integration skillsRoot=/abs/superpowers/skills dryRun=false",
+      "plan-rest: 0 more bead(s) mapped beside this round's implementers",
+      "graph: bd-102 is ready — every in-tree blocker is merged or implemented; dispatching it stacked on bd-101"
+    ],
+    "result": null
+  },
+  {
+    "ordinary": true,
+    "success": false,
+    "cap": 1,
+    "trace": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "review-bead:bd-101",
+      "impl:bd-102",
+      "merge:bd-101",
+      "review:bd-102",
+      "reopen:bd-101",
+      "triage:bd-101",
+      "notify:bd-101",
+      "discard:bd-102",
+      "ledger:bd-101",
+      "ledger:bd-102",
+      "close-epics",
+      "bd-ready",
+      "ledger-append:detector",
+      "reconcile-buckets",
+      "read-ledger:finish",
+      "ledger-append:metrics",
+      "worktree-sweep"
+    ],
+    "logs": [
+      "coordinator: epic=bd-100 branch=epic-bd-100-integration skillsRoot=/abs/superpowers/skills dryRun=false",
+      "plan-rest: 0 more bead(s) mapped beside this round's implementers",
+      "graph: bd-102 is ready — every in-tree blocker is merged or implemented; dispatching it stacked on bd-101",
+      "cancel: bd-102 was stacked on bd-101, which will not merge (blocked) — it stops at its next step and is re-dispatched once bd-101 is implemented again",
+      "ESCALATED bd-101: conflict",
+      "parallelism: 1 ready · topped-up 0 · cap 1 · peak in-flight 1 · top-up queries 0/40 · stacked 1 · cancelled 1 · merge queue peak 1 · waiting on deps 1 · runtime slots 4",
+      "Completed: 0. Escalated: 1. Pending retry: 0. Parked (merged with fix-pass-declined findings): 0. Auth-refused (coverage lost to permission refusals): 0. Recurring clusters (minor + blocker): 0. Ledger appends failed: 0 (retried and saved: 0). Stop reason: ready-drained.",
+      "worktree sweep: 0 removed, 0 kept",
+      "process sweep: 0 stopped, 0 survived, 1 unknown, 0 kept — PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+    ],
+    "result": {
+      "verificationCompletions": [],
+      "checkEvidence": {
+        "records": [],
+        "gaps": [],
+        "requiredLiveChecks": []
+      },
+      "runFailures": [],
+      "recovery": {
+        "obligations": [],
+        "fixHistory": [],
+        "gaps": []
+      },
+      "closureUnconfirmed": [],
+      "completed": [],
+      "escalated": [
+        "bd-101"
+      ],
+      "pendingRetry": [],
+      "parked": [],
+      "stalled": false,
+      "stopReason": "ready-drained",
+      "review": "no work landed",
+      "authRefused": [],
+      "sweep": null,
+      "reviewPath": null,
+      "metrics": [
+        "Metrics: merges 0 · merge-failed 0 · rebase-conflicts 0 · seam-reviews 0 (fixed 0) · check-fails 0 (fixed 0)",
+        "Metrics: completions — review clean 0 · after fix pass 0 · parked 0 · re-entry closes 0 · dispatched early 0 · cancelled 0",
+        "Metrics: fix-pass — entered 0 · FIXED 0 · BLOCKED 0 (legacy event lines); durable attempts 0 · historical FIXED 0; repaired findings unavailable (use scope-dispositions --project)",
+        "Metrics: ledger-check ok · append-failed 0 · append-retried 0 · scope: observed ledger; completed after available tracker reconciliation · gaps: Git task-landing lookup unavailable: not returned"
+      ],
+      "metricsEvidence": {
+        "ledger": {
+          "status": "valid",
+          "kept": 0,
+          "total": 1,
+          "landings": []
+        },
+        "completed": [],
+        "findings": {
+          "status": "unavailable",
+          "reason": "finding population requires scope-dispositions --project run.md"
+        },
+        "gaps": [
+          "Git task-landing lookup unavailable: not returned"
+        ],
+        "git": {
+          "status": "unavailable",
+          "ids": []
+        },
+        "fixHistory": {
+          "scope": "supported durable records in observed sources",
+          "attempts": 0,
+          "fixed": 0
+        },
+        "discrepancies": {
+          "ledgerOnly": [],
+          "completedOnly": []
+        }
+      },
+      "ledgerAppendFailed": [],
+      "slowness": [],
+      "humanActions": [],
+      "worktreesKept": [],
+      "processSweep": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+        ],
+        "kept": []
+      }
+    }
+  },
+  {
+    "ordinary": false,
+    "success": true,
+    "cap": 1,
+    "trace": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "review-bead:bd-101",
+      "impl:bd-102",
+      "merge:bd-101",
+      "review:bd-102",
+      "close-check:bd-101",
+      "ledger-append:recovery:pending-closure:bd-102",
+      "close-only:bd-102",
+      "ledger:bd-101",
+      "close-check:bd-102",
+      "ledger:bd-102",
+      "close-epics",
+      "bd-ready",
+      "ledger-append:detector",
+      "sweep",
+      "ledger-append:sweep",
+      "read-ledger:finish",
+      "assemble:final",
+      "ledger-append:metrics",
+      "final-review",
+      "worktree-sweep"
+    ],
+    "logs": [
+      "coordinator: epic=bd-100 branch=epic-bd-100-integration skillsRoot=/abs/superpowers/skills dryRun=false",
+      "plan-rest: 0 more bead(s) mapped beside this round's implementers",
+      "graph: bd-102 is ready — every in-tree blocker is merged or implemented; dispatching it stacked on bd-101",
+      "parallelism: 1 ready · topped-up 1 · cap 1 · peak in-flight 1 · top-up queries 0/40 · stacked 1 · merge queue peak 1 · runtime slots 4",
+      "Completed: 2. Escalated: 0. Pending retry: 0. Parked (merged with fix-pass-declined findings): 0. Auth-refused (coverage lost to permission refusals): 0. Recurring clusters (minor + blocker): 0. Ledger appends failed: 0 (retried and saved: 0). Stop reason: ready-drained.",
+      "worktree sweep: 0 removed, 0 kept",
+      "process sweep: 0 stopped, 0 survived, 1 unknown, 0 kept — PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+    ],
+    "result": {
+      "verificationCompletions": [
+        {
+          "completionKind": "verification-only",
+          "status": "CLEAN",
+          "files": [],
+          "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+          "evidence": [
+            {
+              "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+              "command": "node smoke.mjs",
+              "configuration": "local",
+              "kind": "live",
+              "outcome": "pass",
+              "location": "evidence/live.log"
+            }
+          ],
+          "requiredLiveChecks": [
+            {
+              "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+              "command": "node smoke.mjs",
+              "configuration": "local"
+            }
+          ],
+          "reportPath": "/repo/.worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/task-2-report.md",
+          "reviewPath": "/repo/.worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/task-2-review.md",
+          "reviewStatus": "CLEAN",
+          "cleanup": "cleanup outcome unavailable",
+          "id": "bd-102"
+        }
+      ],
+      "checkEvidence": {
+        "records": [
+          {
+            "id": "bd-102",
+            "dispatch": "impl:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "location": "evidence/live.log",
+            "kind": "live"
+          },
+          {
+            "id": "bd-102",
+            "dispatch": "review:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "location": "evidence/live.log",
+            "kind": "live"
+          }
+        ],
+        "gaps": [],
+        "requiredLiveChecks": [
+          {
+            "id": "bd-102",
+            "dispatch": "impl:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "matches": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "bd-102",
+            "dispatch": "review:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "matches": [
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      "runFailures": [],
+      "recovery": {
+        "obligations": [],
+        "fixHistory": [],
+        "gaps": []
+      },
+      "closureUnconfirmed": [],
+      "completed": [
+        "bd-101",
+        "bd-102"
+      ],
+      "escalated": [],
+      "pendingRetry": [],
+      "parked": [],
+      "stalled": false,
+      "stopReason": "ready-drained",
+      "review": "ready",
+      "authRefused": [],
+      "sweep": "abc1234 — 1 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: <project test command>",
+      "reviewPath": ".worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/final-review-bd-100.md",
+      "metrics": [
+        "Metrics: merges 0 · merge-failed 0 · rebase-conflicts 0 · seam-reviews 0 (fixed 0) · check-fails 0 (fixed 0)",
+        "Metrics: completions — review clean 0 · after fix pass 0 · parked 0 · re-entry closes 0 · dispatched early 0 · cancelled 0",
+        "Metrics: fix-pass — entered 0 · FIXED 0 · BLOCKED 0 (legacy event lines); durable attempts 0 · historical FIXED 0; repaired findings unavailable (use scope-dispositions --project)",
+        "Metrics: ledger-check METRICS INVALID — landed≠completed: 0 vs 1 — ledger-only [] · completed-only [bd-101] · append-failed 0 · append-retried 0 · scope: observed ledger; completed after available tracker reconciliation · gaps: Git task-landing lookup unavailable: not returned; ledger/completed identities differ"
+      ],
+      "metricsEvidence": {
+        "ledger": {
+          "status": "valid",
+          "kept": 0,
+          "total": 1,
+          "landings": []
+        },
+        "completed": [
+          "bd-101",
+          "bd-102"
+        ],
+        "findings": {
+          "status": "unavailable",
+          "reason": "finding population requires scope-dispositions --project run.md"
+        },
+        "gaps": [
+          "Git task-landing lookup unavailable: not returned",
+          "ledger/completed identities differ"
+        ],
+        "git": {
+          "status": "unavailable",
+          "ids": [
+            "bd-101"
+          ]
+        },
+        "fixHistory": {
+          "scope": "supported durable records in observed sources",
+          "attempts": 0,
+          "fixed": 0
+        },
+        "discrepancies": {
+          "ledgerOnly": [],
+          "completedOnly": [
+            "bd-101"
+          ]
+        }
+      },
+      "ledgerAppendFailed": [],
+      "slowness": [],
+      "humanActions": [],
+      "worktreesKept": [],
+      "processSweep": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+        ],
+        "kept": []
+      }
+    }
+  },
+  {
+    "ordinary": false,
+    "success": false,
+    "cap": 2,
+    "trace": [
+      "read-ledger",
+      "ledger-append:launch",
+      "close-epics",
+      "bd-ready",
+      "plan",
+      "plan-rest",
+      "impl:bd-101",
+      "review:bd-101",
+      "review-bead:bd-101",
+      "impl:bd-102",
+      "merge:bd-101",
+      "review:bd-102",
+      "reopen:bd-101",
+      "discard:bd-102",
+      "triage:bd-101",
+      "notify:bd-101",
+      "ledger:bd-102",
+      "ledger:bd-101",
+      "close-epics",
+      "bd-ready",
+      "ledger-append:detector",
+      "reconcile-buckets",
+      "read-ledger:finish",
+      "ledger-append:metrics",
+      "worktree-sweep"
+    ],
+    "logs": [
+      "coordinator: epic=bd-100 branch=epic-bd-100-integration skillsRoot=/abs/superpowers/skills dryRun=false",
+      "plan-rest: 0 more bead(s) mapped beside this round's implementers",
+      "graph: bd-102 is ready — every in-tree blocker is merged or implemented; dispatching it stacked on bd-101",
+      "cancel: bd-102 was stacked on bd-101, which will not merge (blocked) — it stops at its next step and is re-dispatched once bd-101 is implemented again",
+      "ESCALATED bd-101: conflict",
+      "parallelism: 1 ready · topped-up 0 · cap 2 · peak in-flight 2 · top-up queries 0/40 · stacked 1 · cancelled 1 · merge queue peak 1 · waiting on deps 1 · runtime slots 4 · dispatched frontier smaller than the cap — if more open beads are waiting on dependencies, check for edges encoding narrative order rather than genuine blocking (super-design §Decomposition)",
+      "Completed: 0. Escalated: 1. Pending retry: 0. Parked (merged with fix-pass-declined findings): 0. Auth-refused (coverage lost to permission refusals): 0. Recurring clusters (minor + blocker): 0. Ledger appends failed: 0 (retried and saved: 0). Stop reason: ready-drained.",
+      "worktree sweep: 0 removed, 0 kept",
+      "process sweep: 0 stopped, 0 survived, 1 unknown, 0 kept — PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+    ],
+    "result": {
+      "verificationCompletions": [],
+      "checkEvidence": {
+        "records": [
+          {
+            "id": "bd-102",
+            "dispatch": "impl:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "location": "evidence/live.log",
+            "kind": "live"
+          },
+          {
+            "id": "bd-102",
+            "dispatch": "review:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "location": "evidence/live.log",
+            "kind": "live"
+          }
+        ],
+        "gaps": [],
+        "requiredLiveChecks": [
+          {
+            "id": "bd-102",
+            "dispatch": "impl:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "matches": [
+              0,
+              1
+            ]
+          },
+          {
+            "id": "bd-102",
+            "dispatch": "review:bd-102",
+            "sourceTree": "dddddddddddddddddddddddddddddddddddddddd",
+            "command": "node smoke.mjs",
+            "configuration": "local",
+            "outcome": "pass",
+            "matches": [
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      "runFailures": [],
+      "recovery": {
+        "obligations": [],
+        "fixHistory": [],
+        "gaps": []
+      },
+      "closureUnconfirmed": [],
+      "completed": [],
+      "escalated": [
+        "bd-101"
+      ],
+      "pendingRetry": [],
+      "parked": [],
+      "stalled": false,
+      "stopReason": "ready-drained",
+      "review": "no work landed",
+      "authRefused": [],
+      "sweep": null,
+      "reviewPath": null,
+      "metrics": [
+        "Metrics: merges 0 · merge-failed 0 · rebase-conflicts 0 · seam-reviews 0 (fixed 0) · check-fails 0 (fixed 0)",
+        "Metrics: completions — review clean 0 · after fix pass 0 · parked 0 · re-entry closes 0 · dispatched early 0 · cancelled 0",
+        "Metrics: fix-pass — entered 0 · FIXED 0 · BLOCKED 0 (legacy event lines); durable attempts 0 · historical FIXED 0; repaired findings unavailable (use scope-dispositions --project)",
+        "Metrics: ledger-check ok · append-failed 0 · append-retried 0 · scope: observed ledger; completed after available tracker reconciliation · gaps: Git task-landing lookup unavailable: not returned"
+      ],
+      "metricsEvidence": {
+        "ledger": {
+          "status": "valid",
+          "kept": 0,
+          "total": 1,
+          "landings": []
+        },
+        "completed": [],
+        "findings": {
+          "status": "unavailable",
+          "reason": "finding population requires scope-dispositions --project run.md"
+        },
+        "gaps": [
+          "Git task-landing lookup unavailable: not returned"
+        ],
+        "git": {
+          "status": "unavailable",
+          "ids": []
+        },
+        "fixHistory": {
+          "scope": "supported durable records in observed sources",
+          "attempts": 0,
+          "fixed": 0
+        },
+        "discrepancies": {
+          "ledgerOnly": [],
+          "completedOnly": []
+        }
+      },
+      "ledgerAppendFailed": [],
+      "slowness": [],
+      "humanActions": [],
+      "worktreesKept": [],
+      "processSweep": {
+        "stopped": [],
+        "survived": [],
+        "unknown": [
+          "PROCESS SWEEP UNAVAILABLE — processLines was missing; run processes under .worktrees/epic-bd-100-integration/.worktrees, .worktrees/epic-bd-100-integration/.superpowers/sdd/bd-100-plan/tmp, /tmp/sp-899787ab were not checked"
+        ],
+        "kept": []
+      }
+    }
+  }
+]

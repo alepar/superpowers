@@ -1,0 +1,161 @@
+scope-dispositions
+  [PASS] exits 0
+  [PASS] Blocking/unrouted defaults, cluster pull-in, override, all-punch cluster untouched and reported dropped
+  [PASS] no step-back file: no cluster pull-in
+  [PASS] cluster members of another round are ignored
+  [PASS] a cluster with no member in this round is not reported dropped
+  [PASS] every present member punch-listed: cluster dropped line, with its rule, before the summary
+  [PASS] non-numeric round exits 2
+  [PASS] missing findings file exits 2
+  [PASS] missing jq exits 4
+  [PASS] missing jq prints the manual-computation line
+  [PASS] the manual-computation line includes the cluster dropped rule
+
+step-back-check
+  [PASS] valid patch record (no scope:) is ok
+  [PASS] valid redesign with rN-prefixed, comma-bearing keys is ok
+  [PASS] unknown key exits 3
+  [PASS] unprefixed and unknown keys each get a reject line
+  [PASS] missing decision: is rejected
+  [PASS] redesign without scope: is rejected
+  [PASS] missing step-back file exits 2
+  [PASS] missing --keys exits 2
+report-status
+caller-owned root acceptance
+  [PASS] source-bound required reviews, measurements, recovery and human gates control caller root acceptance
+44 root acceptance assertions passed
+  [PASS] clean run
+  [PASS] clean run exits 0
+  [PASS] clean run prints no qualifier lines
+  [PASS] degraded-verdict qualifiers come from the part before ' — ' (a bracket in the tail is ignored); beyond-cap and graph-change do not count
+  [PASS] parked escalation plus codeBuckets.escalated count as escalations; one qualifier line each
+  [PASS] skipped roasts (t/f flag values) are qualifiers
+  [PASS] roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking
+  [PASS] roastCodeCapped written at a thrash exit counts its keys
+  [PASS] proceeded design cap counts its keys and leads the qualifiers
+  [PASS] design cap with no stopped/proceeded slot counts as proceeded
+  [PASS] phase capped-blocking is a stall; no codeBuckets before phase report adds no qualifier
+  [PASS] codeBuckets.stalled true is a stall at code
+  [PASS] pendingRetry forces completed form; non-CLEAN review is a qualifier
+  [PASS] no codeBuckets block at phase report gives the none-recorded qualifiers
+  [PASS] a bucket line missing from codeBuckets is a qualifier
+  [PASS] deferred sweep is a qualifier
+  [PASS] a non-zero failed count is a qualifier
+  [PASS] MEASUREMENT INVALID is a qualifier
+  [PASS] a passing sweep-fix re-run rewritten into codeBuckets.sweep keeps clean
+  [PASS] a passing sweep with no @ <sha> stamp is a qualifier
+  [PASS] a non-zero errors count is a qualifier
+  [PASS] SWEEP UNAVAILABLE is a qualifier
+  [PASS] a sweep outside the pinned grammar is a qualifier, never a pass
+  [PASS] --tip matching the sweep SHA keeps clean
+  [PASS] --tip that does not resolve against the sweep SHA is a qualifier
+  [PASS] only run-directory commits between the sweep stamp and --tip keep clean
+  [PASS] a commit outside this run's directory, even under docs/superpowers/runs, is a qualifier
+  [PASS] a code commit between the sweep stamp and --tip is a qualifier
+  [PASS] a resolves-on: sweep degraded verdict is skipped when the sweep passes at --tip; others stay
+  [PASS] without --tip a resolves-on: sweep degraded verdict keeps its qualifier
+  [PASS] a sweep not at the tip does not resolve it
+  [PASS] a sweep that is not a pass does not resolve it
+  [PASS] review: not ready (...) is a qualifier; review: ready is clean
+  [PASS] review: ready (after the phase-6 sweep @ sha) is clean
+  [PASS] --stalled before RUN_MD
+  [PASS] --stalled wins; qualifier lines still printed
+  [PASS] unknown --stalled phase exits 2
+  [PASS] non-SHA --tip exits 2
+  [PASS] missing run.md exits 2
+  [PASS] run.md without phase: exits 2
+  [PASS] a phase: value that is not a run-state.md token exits 2
+  [PASS] run.md without flags: exits 2
+  [PASS] a flags: line missing skipCodeRoast= exits 2
+  [PASS] no arguments exits 2
+  [PASS] step-back-check runs with only bash and awk on PATH (no jq)
+  [PASS] report-status runs with only bash and awk on PATH (no jq)
+run attribution: caller retention
+  [PASS] caller run.md accepts durable regression and gap pointers in existing parked records
+  [PASS] clean latest buckets preserve run owner and attribution gap qualifiers
+  [PASS] SKILL.md carries regression and missing-baseline obligations
+  [PASS] run-state.md carries regression and missing-baseline obligations
+  [PASS] report-prompt.md carries regression and missing-baseline obligations
+
+scope-dispositions: outstanding occurrence projection
+  [PASS] projection accepts retained complete extraction and supported dispositions
+  [PASS] ambiguous twins remain separate, archive dedupes and original text survives
+  [PASS] deterministic metrics separate repaired rejected deferred and outstanding
+  [PASS] raw rejected and unverified sections are separate from actionable finding counts
+  raw section metrics fixture: {"scope":"retained sources","sources":3,"sourceKinds":["final-review","roast"],"occurrences":7,"occurrenceGroups":7,"findings":5,"otherSectionGroups":2,"sections":["Must fix","Deferred OK","Rejected","Not verified"],"repaired":1,"rejected":1,"outstanding":3,"deferred":1,"gaps":0}
+  [PASS] linked occurrences count once as a finding but retain raw occurrence count
+  [PASS] metric projection preserves gap exit
+  [PASS] partial projection retains supported metrics with explicit scope
+  [PASS] keys contain deferred A only; verified B, rejected C and active D excluded
+  [PASS] explicit reference link accepted
+  [PASS] only explicit references combine source appearances
+  [PASS] unsupported produces an explicit evidence gap
+  [PASS] unsupported cannot delete known open A
+  [PASS] bad-ref produces an explicit evidence gap
+  [PASS] bad-ref cannot delete known open A
+  [PASS] no-basis produces an explicit evidence gap
+  [PASS] no-basis cannot delete known open A
+  [PASS] malformed produces an explicit evidence gap
+  [PASS] malformed cannot delete known open A
+  [PASS] bad-link produces an explicit evidence gap
+  [PASS] bad-link cannot delete known open A
+  [PASS] missing external input reports a gap
+  [PASS] missing external input preserves local open evidence
+  [PASS] external-malformed external input reports a gap
+  [PASS] external-malformed external input preserves local open evidence
+  [PASS] external external input reports a gap
+  [PASS] external external input preserves local open evidence
+  [PASS] supported external verification may resolve explicitly referenced A
+  [PASS] verified fix supplied elsewhere leaves punch list
+  [PASS] silent ready retry is a valid source without dispositions
+  [PASS] assignment, closed fix and later silence retain deferred A
+  [PASS] legacy key transport dedupes equal keys across distinct deferred occurrences
+  [PASS] changed immutable source reports a gap
+  [PASS] conflicting source preserves text variants and blocks resolution
+  [PASS] no retained sources is an explicit gap rather than a clean review
+  [PASS] projection works without jq
+  [PASS] no-jq projection retains identical key output
+  [PASS] missing Node gives unavailable status, never a clean empty result
+  [PASS] manual fallback preserves continuity obligations
+  [PASS] unavailable source artifacts are an explicit gap
+  [PASS] retained occurrences survive unavailable source
+review collection and caller continuity
+  [PASS] malformed new collection cannot appear clean
+  [PASS] collection resumes after interrupted copy
+  [PASS] resume replays complete collections
+  [PASS] second resume changes no records
+  [PASS] producer direct package archived byte for byte after replay
+  [PASS] completed collection inventories the producer direct package
+  [PASS] conflicting direct package blocks collection completion
+  [PASS] conflicting direct package is never overwritten
+  [PASS] direct package source is preserved through archive conflict
+  [PASS] repaired direct package restores verified completion
+  [PASS] split assembled input archived
+  [PASS] ready silent retry collected independently
+  [PASS] collected producer records validate in predecessor projection
+  [PASS] one occurrence per source identity and supported disposition survives ready retry
+  [PASS] status exposes historical outstanding findings despite latest ready
+  [PASS] settled intent history creates no false collection gaps
+  [PASS] integrated ready retry retains measurement and findings until independently supported outcomes
+integrated collection -> ordinary evidence -> caller gate -> disposition -> metrics passed
+  [PASS] verified complete archive survives source workspace removal
+  [PASS] null review with no work landed preserves null semantics
+  [PASS] null no-work with only the producer direct package remains a gap
+  [PASS] null result still archives the recoverable direct package
+  [PASS] direct-only null bundle records reconciliation and missing review gaps
+  [PASS] direct-only null gap persists on replay
+  [PASS] direct-only null replay changes no records
+  [PASS] null no-work with a partial bundle remains a gap
+  [PASS] unexpected null bundle still retains complete extraction
+  [PASS] null result never erases discoverable findings
+  [PASS] missing declared direct input blocks collection completion
+  [PASS] null required review is a durable evidence gap
+  [PASS] status exposes collection gaps
+  [PASS] missing required bundle remains pending
+  [PASS] conflicting archive is not overwritten on replay
+  [PASS] conflicting archive bytes retained for recovery
+  [PASS] known inline sources remain valid through collection gap
+  [PASS] supported rejected item stays off punch list while active defects stay open
+  [PASS] unrelated missing collections remain gaps after local archive repair
+  [PASS] repaired collection appends completion after an earlier identical completion
+All super-auto script tests passed

@@ -1,0 +1,76 @@
+{
+  "failure": {
+    "id": "run-failure:test",
+    "failure": "same diagnostic",
+    "command": "targeted-check",
+    "configuration": "quiet",
+    "classification": "pre-run",
+    "owner": null,
+    "state": "open",
+    "taskExonerations": [],
+    "gaps": [
+      "implement:new: run-introduced claim conflicts with evidenced pre-run failure"
+    ],
+    "comparisons": [
+      {
+        "task": "old",
+        "dispatch": "implement:old",
+        "observed": {
+          "sourceTree": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "command": "targeted-check",
+          "configuration": "quiet",
+          "location": "history/b-fail.log",
+          "kind": "live",
+          "outcome": "fail"
+        },
+        "runBaseline": {
+          "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "command": "targeted-check",
+          "configuration": "quiet",
+          "location": "history/a-fail.log",
+          "kind": "live",
+          "outcome": "fail"
+        },
+        "taskBase": null,
+        "verification": null
+      },
+      {
+        "task": "new",
+        "dispatch": "implement:new",
+        "observed": {
+          "sourceTree": "cccccccccccccccccccccccccccccccccccccccc",
+          "command": "targeted-check",
+          "configuration": "quiet",
+          "location": "history/c-fail.log",
+          "kind": "live",
+          "outcome": "fail"
+        },
+        "runBaseline": {
+          "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "command": "targeted-check",
+          "configuration": "quiet",
+          "location": "history/a-pass.log",
+          "kind": "live",
+          "outcome": "pass"
+        },
+        "taskBase": null,
+        "verification": null
+      }
+    ]
+  },
+  "control": {
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"ffffffffffffffffffffffffffffffffffffffff\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "actual": {
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"ffffffffffffffffffffffffffffffffffffffff\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  },
+  "classificationControl": {
+    "status": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"ffffffffffffffffffffffffffffffffffffffff\",\"eligible\":false,\"pending\":[\"run-failure:test: gap open; owner: caller\"],\"gaps\":[\"run-failure:test: implement:new: run-introduced claim conflicts with evidenced pre-run failure\"],\"nonblockingFindings\":[]}\n",
+    "stderr": ""
+  }
+}

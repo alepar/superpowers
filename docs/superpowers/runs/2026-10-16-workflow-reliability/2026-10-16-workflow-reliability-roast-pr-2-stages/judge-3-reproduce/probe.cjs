@@ -1,0 +1,23 @@
+const fs=require('fs'),cp=require('child_process'),path=require('path'),assert=require('assert/strict');
+const root='/tmp/ufz-pr2-controller/source',own=__dirname,skills=path.join(root,'skills'),sha=c=>c.repeat(40);
+const ledger=path.join(own,'progress.md');
+fs.writeFileSync(ledger,'Launch: args '+JSON.stringify({epicId:'R',integrationBranch:'integ',integrationWorktree:own,invocationId:'independent-reproduce',config:{}})+'\n');
+const invoke=(exe,args)=>{const p=cp.spawnSync(exe,args,{encoding:'utf8',cwd:own});return {status:p.status,stdout:p.stdout,stderr:p.stderr}};
+const bind=invoke(process.execPath,[path.join(skills,'super-code/scripts/dispatch-text.mjs'),'--ledger',ledger,'bind-review-source','--base',sha('a'),'--head',sha('b')]);assert.equal(bind.status,0,bind.stderr);
+const digest=invoke('bash',[path.join(skills,'super-code/scripts/ledger-digest'),ledger]);assert.equal(digest.status,0,digest.stderr);fs.writeFileSync(path.join(own,'digest.txt'),digest.stdout);
+const source=fs.readFileSync(path.join(skills,'super-code/coordinator.js'),'utf8');
+const slice=source.slice(source.indexOf('const recoveryObligations = new Map()'),source.indexOf('function recoveryGap('));
+fs.writeFileSync(path.join(own,'actual-reader-source.js'),slice);
+const read=new Function('lines',slice+'\nfor(const line of lines)readRecovery(line);return {obligations:[...recoveryObligations.values()],gaps:recoveryGaps};');
+const recovered=read(digest.stdout.split('\n').filter(l=>l.startsWith('Recovery:')));assert.equal(recovered.obligations.length,1);
+const tree=sha('c');
+const measurement={sourceTree:tree,command:'test suite',configuration:'host',kind:'live',outcome:'pass',location:'sweep.log'};
+const snapshot={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'review',kind:'review',owner:'super-auto'},{id:'sweep',kind:'measurement',owner:'super-auto',command:measurement.command,configuration:measurement.configuration,requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[measurement],reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:'review.md'}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['synthetic fixture human decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],gaps:[],requiredLiveChecks:[]},runFailures:[]};
+fs.writeFileSync(path.join(own,'review.md'),'## Verdict\nready\n');
+const finding={version:1,source:'fixture/final',artifact:'review.md',kind:'final-review',verdict:'ready',occurrences:[]};
+function check(name,obligations){const run=path.join(own,name+'.md');fs.writeFileSync(run,'phase: done\nflags: skipPlanRoast=false skipCodeRoast=false\napprovals:\n- finding-source · '+JSON.stringify(finding)+'\n- root-acceptance · '+JSON.stringify({...snapshot,recovery:{obligations,gaps:[]}})+'\n');const r=invoke('bash',[path.join(skills,'super-auto/scripts/report-status'),'--acceptance',run,'--tree',tree]);return {...r,result:JSON.parse(r.stdout)}}
+const control=check('control',[]),withBinding=check('with-binding',recovered.obligations);
+assert.equal(control.status,0);assert.equal(control.result.eligible,true);
+assert.equal(withBinding.status,3);assert.deepEqual(withBinding.result.gaps,['review-source:independent-reproduce: measurement identity unavailable']);assert.deepEqual(withBinding.result.pending,[]);
+const receipt={notes:'Synthetic already-satisfied acceptance fixture, real unmodified bind CLI, ledger-digest, extracted actual recovery reader, acceptance CLI and projection/status children. No child process mocks.',bind,digest,recovered,control,withBinding};
+fs.writeFileSync(path.join(own,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt,null,2));

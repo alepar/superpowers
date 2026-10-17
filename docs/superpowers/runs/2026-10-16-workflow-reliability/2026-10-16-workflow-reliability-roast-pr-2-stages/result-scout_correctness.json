@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "claim": "Root acceptance discards retained attribution contradictions whenever the failure's current classification is pre-run, allowing eligibility before that conflicting source history is reconciled.",
+      "location": "skills/super-auto/scripts/report-status:131",
+      "category": "correctness",
+      "external": false,
+      "evidence": "The new acceptance loop executes `if(f.classification==='pre-run')continue` before propagating `f.gaps`, and the matching Recovery obligation then exits via `if(r.data.runFailure)...continue` at line 137. The actual coordinator `classifyRunFailure` can retain classification `pre-run` while adding `run-introduced claim conflicts with evidenced pre-run failure`: in the reproduced history, the same immutable run-baseline tree a...a first has live/fail evidence and subsequently live/pass evidence, followed by a failing observation with an introducing task. This is an attribution contradiction, not merely an old failure for which repair is optional; run-state.md:274-277 explicitly requires same-tree pass/fail reconciliation. `/tmp/ufz-pr2-controller/evidence-correctness/probe.mjs` executes that actual frozen classifier and the unmodified acceptance command with an otherwise satisfied review/suite/human control and valid empty finding source. Receipt `/tmp/ufz-pr2-controller/evidence-correctness/receipt.json` records the producer's nonempty gaps and classification pre-run, yet acceptance exits 0 with eligible:true, pending:[], gaps:[]. Reclassifying only that same record as gap exits 3 and exposes the retained contradiction. The targeted failure is distinct from the independently passing required suite, so generic measurement matching does not catch it. No actual run acceptance, human decision, or live Workflow execution is supplied by this isolated fixture.",
+      "kind": "ISSUE"
+    }
+  ]
+}

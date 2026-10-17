@@ -1,0 +1,19 @@
+{ "t0": "2026-10-06T05:00:00Z", "idPrefix": "y",
+  "launch": { "epicId": "y", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "close-epics", "phase": "Close", "start": 5, "end": 12, "result": { "rootClosed": false, "closedThisRun": [] } },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 13, "result": { "ids": ["y.1"] } },
+    { "label": "plan", "phase": "Plan", "start": 14, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/y-plan/y-plan.md", "mapping": [
+      { "n": 1, "id": "y.1", "files": ["a.ts"], "deps": [] }, { "n": 2, "id": "y.2", "files": ["b.ts"], "deps": ["y.1"] } ] } },
+    { "label": "impl:y.1", "start": 40, "end": 300, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:y.1", "start": 300, "end": 330, "result": { "status": "CLEAN" } },
+    { "label": "merge:y.1", "phase": "Integrate", "start": 330, "end": 360, "result": { "merged": true } },
+    { "label": "plan-rest", "phase": "Plan", "start": 41, "end": 200, "result": { "planPath": "/w/.superpowers/sdd/y-plan/y-plan.md", "mapping": [
+      { "n": 1, "id": "y.1", "files": ["a.ts"], "deps": [] }, { "n": 2, "id": "y.2", "files": ["b.ts"], "deps": ["y.1"] } ],
+      "missingEdges": [ { "dependent": "y.1", "blocker": "y.2", "reason": "misjudged direction" } ] } },
+    { "label": "impl:y.2", "start": 362, "end": 600, "result": { "status": "IMPLEMENTED", "base": "aaaaaaa" } },
+    { "label": "review:y.2", "start": 600, "end": 630, "result": { "status": "CLEAN" } },
+    { "label": "merge:y.2", "phase": "Integrate", "start": 630, "end": 660, "result": { "merged": true } }
+  ] }

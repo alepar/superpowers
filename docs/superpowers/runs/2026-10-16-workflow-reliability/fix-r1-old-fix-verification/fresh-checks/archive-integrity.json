@@ -1,0 +1,18 @@
+{
+  "command": [
+    "bash",
+    "tests/super-auto/archive-integrity-r1.sh"
+  ],
+  "exitCode": 0,
+  "configuration": {
+    "TMPDIR": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/tmpdir",
+    "HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/home",
+    "XDG_CONFIG_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/xdg_config_home",
+    "XDG_CACHE_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/xdg_cache_home",
+    "XDG_DATA_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/xdg_data_home",
+    "XDG_STATE_HOME": "/private/tmp/old-fix-semantic-r1-89nok4u2/archive-integrity/xdg_state_home"
+  },
+  "kind": "fresh real CLI deterministic fixture",
+  "stdout": "PASS: complete matching archive remains eligible and unchanged\nPASS: matching archive remains eligible after source cleanup\nPASS: missing final-review-integrity.md.diff blocks acceptance with a specific gap\nPASS: corrupted final-review-integrity.md.diff blocks acceptance with a specific gap\nPASS: missing final-review-integrity.md blocks acceptance with a specific gap\nPASS: corrupted final-review-integrity.md blocks acceptance with a specific gap\nPASS: missing final-review-integrity.cluster-1.md blocks acceptance with a specific gap\nPASS: corrupted final-review-integrity.cluster-1.md blocks acceptance with a specific gap\nPASS: missing assembled/final-review-integrity-final/clusters.json blocks acceptance with a specific gap\nPASS: corrupted assembled/final-review-integrity-final/clusters.json blocks acceptance with a specific gap\nPASS: missing assembled/final-review-integrity-final/slices/core.diff blocks acceptance with a specific gap\nPASS: corrupted assembled/final-review-integrity-final/slices/core.diff blocks acceptance with a specific gap\nPASS: missing required-input.diff blocks acceptance with a specific gap\nPASS: corrupted required-input.diff blocks acceptance with a specific gap\nPASS: integrity gaps preserve independent human acceptance obligations\narchive integrity: 15 scenarios passed\n",
+  "stderr": ""
+}

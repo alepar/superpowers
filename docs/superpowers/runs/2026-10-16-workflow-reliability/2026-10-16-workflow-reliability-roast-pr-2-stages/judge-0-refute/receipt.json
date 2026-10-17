@@ -1,0 +1,15 @@
+{
+  "collection": {
+    "code": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  },
+  "ordinaryStatus": {
+    "code": 0,
+    "stdout": "status: clean\n",
+    "stderr": ""
+  },
+  "outsideFileExists": true,
+  "outsideContent": "judge destination sentinel\n",
+  "runText": "# super-auto run \u2014 2026-07-31-per-tenant-rate-limiter\n\nflags: planOneShot=false skipPlanRoast=false skipCodeRoast=false autonomous=true\nphase: report\n\nidea: add a per-tenant rate limiter to the public API\nepic: bd-412\n\nroastDesignRound: 2\nroastCodeRound: 1\n\ncodeBuckets:\n  completed: bd-413, bd-414\n  escalated:\n  pendingRetry:\n  parked:\n  stalled: false\n  review: CLEAN\n  sweep: 3f9c2e1 \u2014 412 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: npm test @ 3f9c2e1\napprovals:\n- review-collection \u00b7 {\"invocationId\":\"probe\",\"workspace\":\"/tmp/ufz-pr2-controller/judge-0-refute/workspace\",\"reviewPath\":\"/tmp/ufz-pr2-controller/judge-0-refute/workspace/final-review-probe.md\",\"review\":\"ready\",\"required\":[\"payload/new-file.txt\"],\"settled\":true}\n- finding-source \u00b7 {\"version\":1,\"source\":\"probe/final\",\"artifact\":\"reviews/probe/final-review-probe.md\",\"kind\":\"final-review\",\"verdict\":\"ready\",\"occurrences\":[]}\n- review-collection \u00b7 {\"invocationId\":\"probe\",\"workspace\":\"/tmp/ufz-pr2-controller/judge-0-refute/workspace\",\"reviewPath\":\"/tmp/ufz-pr2-controller/judge-0-refute/workspace/final-review-probe.md\",\"review\":\"ready\",\"required\":[\"payload/new-file.txt\"],\"settled\":true,\"files\":[{\"path\":\"final-review-probe.md\",\"sha256\":\"92ac5c813579c7b44562e9b3b8af1e6fa9bb26b51fdce1943353667bd2061141\"},{\"path\":\"payload/new-file.txt\",\"sha256\":\"185e27110cc2e11f00f5c638a762cc4409cfd513a8c9633d7b48550f6dcf6b73\"}],\"complete\":true,\"gaps\":[]}\n"
+}

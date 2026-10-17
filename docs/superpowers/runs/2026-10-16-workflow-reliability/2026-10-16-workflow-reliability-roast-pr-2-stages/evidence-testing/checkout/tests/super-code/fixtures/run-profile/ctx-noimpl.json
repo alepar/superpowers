@@ -1,0 +1,9 @@
+{ "t0": "2026-10-10T00:00:00Z", "idPrefix": "cn",
+  "launch": { "epicId": "cn", "config": { "concurrency": 2, "runtimeSlots": 4, "earlyUnblock": true }, "dryRun": false },
+  "session": [["prompt", -50, "Run super-code please"], ["usage", -40, 70000], ["usage", 30, 90000]],
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 5 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "bd-ready", "phase": "Ready", "start": 5, "end": 10, "result": { "ids": [] } },
+    { "label": "plan", "phase": "Plan", "start": 10, "end": 40, "context": [[11, 20000], [39, 120000]], "result": { "planPath": "/w/.superpowers/sdd/cn-plan/cn-plan.md", "mapping": [] } }
+  ] }

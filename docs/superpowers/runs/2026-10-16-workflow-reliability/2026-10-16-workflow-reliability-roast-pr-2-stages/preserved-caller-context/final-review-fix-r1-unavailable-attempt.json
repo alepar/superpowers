@@ -1,0 +1,12 @@
+{
+  "status": "UNAVAILABLE",
+  "reviewPath": null,
+  "verdict": null,
+  "packageWritten": false,
+  "reportWritten": false,
+  "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+  "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+  "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "cause": "Current generated product dispatch forbids direct fallback for selection gaps; pinned d84541ae workflow explicitly routes assembler exit2 to direct-input single review. Captured selector reports690gaps. First agent ended with no mutations.",
+  "recovery": "fresh bounded manual review follows exact pinned policy and retains all gaps; no source binding or prior artifact overwrite allowed"
+}

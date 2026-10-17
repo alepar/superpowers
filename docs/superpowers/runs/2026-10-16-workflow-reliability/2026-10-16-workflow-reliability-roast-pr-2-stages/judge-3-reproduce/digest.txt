@@ -1,0 +1,2 @@
+# ledger-digest: 1 of 3 lines
+Recovery: {"version":1,"id":"review-source:independent-reproduce","kind":"deferred","operation":"record","reason":"immutable invocation review source","evidence":["/private/tmp/ufz-pr2-controller/judge-3-reproduce/progress.md"],"data":{"reviewSource":{"invocationId":"independent-reproduce","base":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","head":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}}}

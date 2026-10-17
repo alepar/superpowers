@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# SessionStart (matcher: compact) hook entry for Codex: re-injects the run block (card, then state)
+# of an active super-auto / super-code run after compaction. Never emits the Claude bootstrap.
+# Usage: session-start-codex   (hook JSON on stdin; `source` is never read)
+# Emits hookSpecificOutput.additionalContext only when a live marker resolves; otherwise no output.
+# Always exits 0.
+set -u
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=run-block.sh
+. "$SCRIPT_DIR/run-block.sh" 2>/dev/null || exit 0
+
+rb_read_stdin
+sid=$(rb_field session_id)
+[ -n "$sid" ] || sid="${CODEX_THREAD_ID:-}"
+
+# Codex records no child identifier, and a child thread has its own session_id with the coordinator's
+# cwd. The cwd store scan would hand it the run block, so pass cwd with `own` (--own-only): only the
+# caller's own session-keyed fallback marker is found by cwd, never another session's marker.
+cwd=$(rb_field cwd)
+rb_resolve "$sid" "$cwd" own || exit 0
+
+if text=$(rb_digest all 18000 5 2>/dev/null); then
+  :
+else
+  card=$(cat "$RB_CARD" 2>/dev/null) || exit 0
+  [ -n "$card" ] || exit 0
+  text="$card"$'\n\n'"$RB_STATE_FALLBACK"
+fi
+
+text=$(printf '%s' "$text" | rb_sanitize)
+if [ "$(printf '%s' "$text" | LC_ALL=C wc -c | tr -d ' ')" -gt 17500 ]; then
+  cut=$(printf '%s' "$text" | LC_ALL=C head -c 17500)
+  case "$cut" in
+    *$'\n'*) cut="${cut%$'\n'*}" ;;
+    *) fixed=$(printf '%s' "$cut" | iconv -f UTF-8 -t UTF-8 -c 2>/dev/null); [ -n "$fixed" ] && cut="$fixed" ;;
+  esac
+  text="$cut"
+fi
+
+rb_emit_claude "$text"
+exit 0

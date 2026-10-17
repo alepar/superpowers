@@ -1,0 +1,11 @@
+{
+  "verifiedSourceEntries": 1322,
+  "priorDifferingArtifactsPreserved": [
+    "results.json"
+  ],
+  "reportSHA256": "1e4b0c9881a7906a467ccd31d4dae5dfe050bb8077a21862aacefdd6d534a434",
+  "coverageSHA256": "681faf3f53d5a79db25c4616cebbb93c5c4cb1c83df484ed0cde32576a8f5893",
+  "sourceHashMapSHA256": "0ebed18302ffc3b2186656285dab628e601fc92723e09e714ecbef26bb79d302",
+  "reporterOutputSHA256": "bc468db57f1c7d98c01e26bd5d2efcb21ca6bcb9de85c03f876670bb2181bddd",
+  "engineOutputSHA256": "346286c2d44ca44dbafe0db5538652e0f705df5f3e600f7be4b8f679994d0a0a"
+}

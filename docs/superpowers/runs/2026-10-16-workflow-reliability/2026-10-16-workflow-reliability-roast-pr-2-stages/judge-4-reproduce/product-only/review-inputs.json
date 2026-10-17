@@ -1,0 +1,17 @@
+{
+  "base": "123384c10cc6218d6989a73f57fd76a030362131",
+  "head": "aa485e7f7a96239c437276b86aba457303cf6ea6",
+  "status": "complete",
+  "changed": [
+    "product.js"
+  ],
+  "slices": [
+    {
+      "path": "product.js",
+      "slice": "slices/000001.diff"
+    }
+  ],
+  "archives": [],
+  "omitted": [],
+  "gaps": []
+}

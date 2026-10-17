@@ -1,0 +1,60 @@
+{
+  "base": "f3338270c314871120c32c9516c2e6c15291e77f",
+  "productHead": "4c6c5b07156c79d382f4fb0e8cb6af7b0a92e031",
+  "head": "4a4ab1ae20dbc461151ff53e252a70c7376afeff",
+  "fixtureRun": "docs/run/reviews/historical-probe/snapshots/run.md",
+  "selection": {
+    "status": 3,
+    "signal": null,
+    "output": [
+      null,
+      "{\"status\":\"unavailable\",\"dir\":\"/private/tmp/ufz-pr2-controller/evidence-regression/nested-assembly\",\"selected\":2,\"omitted\":0,\"gaps\":[\"4a4ab1ae20dbc461151ff53e252a70c7376afeff:docs/run/reviews/historical-probe/snapshots/run.md:2 archived-inv: missing or non-regular captured file: docs/run/reviews/historical-probe/snapshots/reviews/archived-inv/final-review-archived-inv.md\"]}\n",
+      ""
+    ],
+    "pid": 86499,
+    "stdout": "{\"status\":\"unavailable\",\"dir\":\"/private/tmp/ufz-pr2-controller/evidence-regression/nested-assembly\",\"selected\":2,\"omitted\":0,\"gaps\":[\"4a4ab1ae20dbc461151ff53e252a70c7376afeff:docs/run/reviews/historical-probe/snapshots/run.md:2 archived-inv: missing or non-regular captured file: docs/run/reviews/historical-probe/snapshots/reviews/archived-inv/final-review-archived-inv.md\"]}\n",
+    "stderr": ""
+  },
+  "control": {
+    "status": 0,
+    "slices": [
+      {
+        "path": "product.js",
+        "slice": "slices/000001.diff"
+      }
+    ]
+  },
+  "selected": {
+    "base": "f3338270c314871120c32c9516c2e6c15291e77f",
+    "head": "4a4ab1ae20dbc461151ff53e252a70c7376afeff",
+    "status": "unavailable",
+    "changed": [
+      "docs/run/reviews/historical-probe/snapshots/run.md",
+      "product.js"
+    ],
+    "slices": [],
+    "archives": [
+      {
+        "revision": "4a4ab1ae20dbc461151ff53e252a70c7376afeff",
+        "run": "docs/run/reviews/historical-probe/snapshots/run.md",
+        "recordLine": 2,
+        "invocationId": "archived-inv",
+        "archive": "docs/run/reviews/historical-probe/snapshots/reviews/archived-inv",
+        "report": "docs/run/reviews/historical-probe/snapshots/reviews/archived-inv/final-review-archived-inv.md",
+        "files": [
+          {
+            "path": "final-review-archived-inv.md",
+            "sha256": "251233969aaf3848b03a5ddd23bb64dbc0cf90360f6e2e5832a36855ad358ee6"
+          }
+        ]
+      }
+    ],
+    "omitted": [],
+    "gaps": [
+      "4a4ab1ae20dbc461151ff53e252a70c7376afeff:docs/run/reviews/historical-probe/snapshots/run.md:2 archived-inv: missing or non-regular captured file: docs/run/reviews/historical-probe/snapshots/reviews/archived-inv/final-review-archived-inv.md"
+    ]
+  },
+  "exactFinishCondition": "if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause",
+  "finishRefusal": "review input selection: 4a4ab1ae20dbc461151ff53e252a70c7376afeff:docs/run/reviews/historical-probe/snapshots/run.md:2 archived-inv: missing or non-regular captured file: docs/run/reviews/historical-probe/snapshots/reviews/archived-inv/final-review-archived-inv.md",
+  "promptHasUnconditionalUnavailable": true
+}

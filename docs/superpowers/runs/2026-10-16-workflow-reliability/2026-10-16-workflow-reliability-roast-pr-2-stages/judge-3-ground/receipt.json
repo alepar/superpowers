@@ -1,0 +1,55 @@
+{
+  "producer": {
+    "status": 0,
+    "stdout": "{\"invocationId\":\"ground-probe\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}\n",
+    "stderr": ""
+  },
+  "digest": "# ledger-digest: 1 of 3 lines\nRecovery: {\"version\":1,\"id\":\"review-source:ground-probe\",\"kind\":\"deferred\",\"operation\":\"record\",\"reason\":\"immutable invocation review source\",\"evidence\":[\"/private/tmp/ufz-pr2-controller/judge-3-ground/progress.md\"],\"data\":{\"reviewSource\":{\"invocationId\":\"ground-probe\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}}}\n",
+  "recovered": [
+    {
+      "version": 1,
+      "id": "review-source:ground-probe",
+      "kind": "deferred",
+      "operation": "record",
+      "reason": "immutable invocation review source",
+      "evidence": [
+        "/private/tmp/ufz-pr2-controller/judge-3-ground/progress.md"
+      ],
+      "data": {
+        "reviewSource": {
+          "invocationId": "ground-probe",
+          "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      }
+    }
+  ],
+  "control": {
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": "",
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    }
+  },
+  "withBinding": {
+    "status": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"eligible\":false,\"pending\":[],\"gaps\":[\"review-source:ground-probe: measurement identity unavailable\"],\"nonblockingFindings\":[]}\n",
+    "stderr": "",
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "review-source:ground-probe: measurement identity unavailable"
+      ],
+      "nonblockingFindings": []
+    }
+  }
+}

@@ -1,0 +1,905 @@
+diff --git a/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md
+new file mode 100644
+index 00000000..9967d335
+--- /dev/null
++++ b/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md
+@@ -0,0 +1,51 @@
++# Finding continuity across invocations
++
++Bead: super-plan-ufz.8
++Parent: ../../specs/2026-10-16-workflow-reliability-design.md
++
++## Goal
++
++Preserve actionable invocation-review findings and deferred findings across retries and interruptions until an explicit, supported disposition accounts for them. Keep the latest review verdict separate from outstanding findings.
++
++## Chosen contract
++
++Keep runTag as the enclosing run identity. Give each super-code invocation a distinct identity, persisted in its existing launch record before producing review artifacts. Single, cluster, seam and stub artifacts include that identity. result.reviewPath retains its current meaning and null behavior, pointing to this invocation's review.
++
++Super-auto appends invocation/source pointers and finding dispositions to existing run records rather than replacing history with the latest codeBuckets.review. Preserve the settled review bundle in the committed run directory at the existing profile-collection boundary. Resume collects completed but uncollected bundles before another invocation or cleanup. Missing/incomplete artifacts are evidence gaps.
++
++Add a complete extraction mode to report-verdict that preserves section and occurrence identity, including deferred items; preserve existing default and --keys behavior. Extend scope-dispositions to project outstanding findings mechanically from source, routing and disposition records. Its existing key-only punch-list consumer format is generated from outstanding deferred findings, replacing the historical union.
++
++## Identity and supported disposition
++
++An occurrence retains its immutable source identity: invocation/report, artifact, section and occurrence position, original key and text. Archive copies preserve that identity. Merge appearances only through explicit references; identical wording, severity or location alone does not merge uncertain matches.
++
++Existing records can hold assignment, fix-task link, deferral reason and verification evidence together. Assignment, task closure, success claims, silence and proposed redesign do not resolve a finding. Resolution names the finding and supporting verification of the relevant fix; rejection retains its reasoning or evidence. A fix supplied elsewhere follows the same rule.
++
++Helpers validate references and evidence fields; the agent judges whether the evidence supports the semantic disposition. A passing sweep clears only the measurement obligation it establishes. No mandatory six-state lifecycle or general-purpose finding database is introduced.
++
++## External ownership and failure behavior
++
++The parallel roast-redesign run owns its roast ledger, triggers and amend workflow. This subtree introduces none of those. Existing roast reports and scope decisions remain source records.
++
++Supported external projections may provide attributed links and disposition evidence, supplementary to retained local evidence. Absent, unsupported, malformed or incomplete input cannot remove or resolve a finding. Dissolution based only on later silence is unsupported under the parent invariant. The local guarantee does not depend on the external interface's eventual syntax; integration can use explicit source references and retain unresolved evidence when it cannot interpret a projection.
++
++## Acceptance
++
++- Two invocations sharing runTag preserve distinct single/split review artifacts and current reviewPath/null semantics.
++- A blocked review followed by a silent or ready retry retains earlier actionable findings and their source.
++- Interrupted collection resumes without overwriting artifacts, duplicating occurrences or losing supported dispositions.
++- Complete extraction includes deferred items without changing existing --keys output.
++- Deferred findings leave the punch list only after explicit supported resolution or rejection, including fixes supplied elsewhere.
++- Task success, closed fix beads and silence alone leave findings outstanding.
++- Explicit references link appearances; uncertain matches remain separate; rejection retains its basis.
++- Missing artifacts and unsupported projections retain unresolved evidence and expose the gap.
++- Resume, Remaining and status qualifiers consume the same outstanding projection; latest ready cannot conceal earlier findings.
++- Deterministic producer/extraction/projection fixtures cover both execution paths. The enclosing coordinator owns fresh-agent interrupted-invocation and changed-instruction evaluations.
++
++## Key abstractions
++
++No new abstractions; extends existing super-code invocation review artifacts and extraction, super-auto run-state and finding/task records, scope-disposition projection, resume and acceptance reporting. These are the existing components named by the parent design.
++
++## Post-Implementation Notes
++
++*As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
+diff --git a/skills/super-auto/SKILL.md b/skills/super-auto/SKILL.md
+index 655a3ecf..af1a02ff 100644
+--- a/skills/super-auto/SKILL.md
++++ b/skills/super-auto/SKILL.md
+@@ -25,7 +25,7 @@ These hold for the whole run. Other sections and files point here.
+ - I5 (human-owned merge): **merging the run branch into `base` is the human's choice in every mode**; `autonomous` buys an unattended run, never an unattended merge, because that merge is the one step a human cannot cheaply undo. Merges into the run's own branch, which `super-code` performs serially, need no confirmation.
+ - I6 (run.md field names): write `run.md` only with the names and line formats in run-state.md §Field table; every later phase, the report and a resume read them literally.
+ - I7 (after compaction): re-read `run.md` and this block from the skill file before acting on a gate, then continue from `run.md`'s `phase`. Do not re-invoke super-auto mid-run: that re-enters Pre-flight, whose version check can stop the run.
+-- I8 (read rule): every read the orchestrator makes to route the run follows `super-code/coordinator-card.md`'s read rule: run state from run.md's fields or `run-digest`, the ledger through `ledger-digest`, child and roast reports (roast reports once written to disk, final reviews by their path) through `bash <skills-root>/super-code/scripts/report-verdict <file>`; the finding keys the fix loop writes (§Step 1 — step back, §Step 2 — scope filter, §Final-review items) come only from `bash <skills-root>/super-code/scripts/report-verdict --keys <file>`, which prints every key uncapped; a null `reviewPath` means no review file exists, so never pass it to `report-verdict` (§Final-review items); never a report body, spec, plan, source or diff to route.
++- I8 (read rule): every read the orchestrator makes to route the run follows `super-code/coordinator-card.md`'s read rule: run state from run.md's fields or `run-digest`, the ledger through `ledger-digest`, child and roast reports through `bash <skills-root>/super-code/scripts/report-verdict <file>`. Retain findings with `report-verdict --complete --source` and derive accumulated obligations with `scope-dispositions --project RUN_MD` (run-state.md §Finding continuity records and projection). `--keys` on that projection is the outstanding-deferred punch-list transport; check its exit status as well as stdout. Read the full projection for active findings and evidence gaps. A null `reviewPath` means no review file exists (§Final-review items); never pass it to `report-verdict`. Pass paths and validated records, never a report body, spec, plan, source or diff to route.
+ 
+ ## Boundary
+ 
+@@ -168,13 +168,111 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
+ | 1 | Design (`design`) | `super-design` | Pass: the goal (on a resume, `run.md`'s recorded `idea:`), the artifact-directory override, the `run.md` path together with run-state.md, whose field names and formats govern every write (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. Say the hand-off is `super-auto`'s. It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
+ | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per `super-design` §Run-State File (when a caller supplies one) and §Who writes run.md. After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
+ | 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous` with Workflow, pass `config.edgeCuts: 'apply-safe'` so its optional edge audit may apply safe edge cuts. Ordinary-subagent mode runs no background edge audit. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Pass `args.runTag` = run.md's `runTag:` on this and every re-entry, and `config.contextWindows` from `context-preflight --json`; at phase 3's start re-register the marker with `--epic` and `--ledger <run worktree>/.superpowers/sdd/<epic>-plan/progress.md`. Also pass the friction-log path — the git-ignored `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md`, never `<run-dir>/friction.md` (see the friction rule under §Phase 6 — report — report) — so phase 3 can append to it, `processRoots: [<absolute run dir>]` so super-code's Finish process sweep covers the run directory too, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). Its final review is consumed per §Final-review items. |
+-| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. Before each round, run the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent returns nothing or a non-zero `exit`, run the round on today's inputs and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
++| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the prior round's punch-list file (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent reports a cause prefixed `review input selection:`, preserve its `review-inputs.json` and generated-input provenance gap, record the round as unavailable, and recover the claimed provenance before re-entry; direct fallback cannot clear that gap. For other missing or non-zero assembler results, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
+ | 5 | Fix loop (`fix-loop`) | — | Per round: step-back, scope filter, fix beads, re-enter `super-code`, loop to phase 4; see §Phase 5 — the code fix loop. |
+ | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
+-| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping, since the report on disk says otherwise. Before removing this run's worktree, remove the task worktrees nested under it: `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>` from the run worktree, which stops their processes and keeps anything uncommitted or unmerged (list what it kept to the human). Once `done` is written, `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. Then stop the run's remaining processes, including any watcher you started on the ledger or run directory: `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`, run from outside the run worktree, and list any `survived:` line to the human. |
++| 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping. Supply §Phase 7 — cleanup preconditions to the finisher: its Step 6 must wait for these checks, and any retained/unknown resource prevents removal of its containing parent. Delivery and the human's branch choice can finish while cleanup stays pending; record the retained facts before writing `done` and clearing the marker with `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. No process sweep or required state write may be deferred until after its resources are removed. |
+ 
+ Phase 7 is entered only through §Invariants I2 (phase-7 gate).
+ 
++### Phase 7 — cleanup preconditions
++
++A clean parent Git status does not protect dirty ignored `.worktrees/` descendants. The
++finisher's branch choice never authorizes deleting retained work or process-dependent resources.
++Inventory registered nested worktrees, retained temporary roots and existing
++`codeBuckets.worktreesKept`/`processSweep` facts before any cleanup. Keep their exact paths,
++reasons and helper exit statuses; missing results remain unconfirmed.
++
++1. Verify run-owned processes **before deleting each dependent resource**. Use the existing
++   `stop-run-processes` ownership matching, from outside the roots being checked. While nested
++   worktrees exist, use valid leaf task roots and their own temporary roots (and the separate run
++   directory when safe); do not pass their outer integration parent. A refused parent root is
++   unknown inspection, never permission to broaden roots or kills. Parent verification remains
++   pending until step 3; this permits only independently verified leaf cleanup, not deletion of
++   the parent or shared temporary resources. `survived:` means observed alive; `unknown:` or
++   unavailable inspection means unverified; `kept:` means deliberately preserved. Each retains
++   all resources dependent on that outcome. A real invocation of the fail-closed helper with a
++   captured exit 0 verifies discovery/termination for its supplied roots; legitimately empty
++   stdout is allowed only with that confirmed execution. An exit-zero empty output from a
++   wrapper, missing dispatch result or unavailable helper supplies no such proof.
++2. Sweep task worktrees with
++   `bash <skills-root>/super-code/scripts/remove-task-worktree --sweep <run worktree>/.worktrees <branch>`.
++   The helper verifies leaf processes before deleting their resources. If task-specific roots
++   themselves contain registered children, work from the innermost leaves rather than retrying
++   a refused broad root. Honor exit 3 or 4 and every `kept:`/`unknown:`/`survived:` resource: retain
++   its worktree/temp roots **and every containing parent**, even when Git says the parent is clean.
++   Exit 2, an unavailable invocation or missing output is also unverified, not successful cleanup.
++   Preserve explicit temporary resources with their retained task; do not delete a common temp
++   root while any dependent worktree or process is retained. Inspect `git worktree list --porcelain`
++   afterward and reconcile all retained/unchecked paths, including ignored unregistered nested
++   work and evidence. A zero sweep status alone cannot clear earlier retention without verifying
++   the named resource is now safe. If anything remains retained, defer parent removal.
++3. Only after no retained descendants or retained dependent temporary resources remain, verify the
++   parent/run roots with
++   `bash <skills-root>/super-code/scripts/stop-run-processes <run worktree> <run dir>`
++   plus any separately recorded run temporary roots, from outside all supplied roots. If a root
++   overlaps the caller/ancestor cwd or is otherwise refused, retain it as unknown; never bypass
++   the helper's root guards. Capture the actual exit and inspection facts before the finisher's
++   Step 6 or any temp deletion. Only verified termination/discovery, no surviving/unknown/kept
++   processes, and a reconciled inventory with no retained descendants permit ordinary parent
++   removal. Leave process ownership matching unchanged.
++
++Apply every applicable refusal below before the positive row; these are cleanup facts, not
++mutually exclusive run states. `retain` includes containing parents and dependent temp roots.
++
++| Fact | Evidence / precondition | Parent action |
++|---|---|---|
++| `task-retained` | Task cleanup exit 3 or 4, or retained/unchecked task resources | `retain` |
++| `resource-retained` | Any retained descendant worktree, ignored work, temp root or required unarchived evidence | `retain` |
++| `process-survived` | Owned process observed alive after attempted termination | `retain` |
++| `process-unknown` | Inspection/termination unavailable or root refused | `retain` |
++| `process-kept` | Deliberately preserved owned process | `retain` |
++| `process-unconfirmed` | Final parent verification pending or invocation/result missing | `retain` |
++| `verified-clear` | Confirmed successful final process verification and no retained descendants/resources | `remove` |
++
++Persist phase-7 cleanup facts through run-state.md and update report.md's Remaining section
++before teardown. Keep stopped, survived, unknown and deliberately kept outcomes distinct.
++If cleanup remains pending, report each preserved parent/worktree/temp path, reason and next
++safe check to the human. `phase: done` records completed delivery/choice, not verified cleanup;
++never remove a retained parent to make that status look tidy.
++
++For report/feedback metrics, use the reconciled ledger `Metrics:` source facts and
++`scope-dispositions --project <run.md>` JSON metrics/gaps. Exit 3 retains partial results;
++report counts by retained source population, with missing populations explicit. Latest clean
++invocations keep earlier durable fix history and unresolved finding evidence. Count supported
++resolved groups as repairs, deferred/rejected separately; raw occurrences and linked groups are
++different units. `baseAbsorbed` adds zero task landings, and ordinary execution selection adds
++zero friction events. Profile collection keeps its existing invocation owner and labels.
++
++**Root acceptance stays with this caller.** Every phase-3 launch and every later super-code
++re-entry (fix loop, gated final-SHA leaves, regression pass, sweep fix and final-review fix)
++passes `rootAcceptance: "caller"` as a Workflow arg or explicit ordinary-subagent launch parameter,
++alongside `deferSweep: true`. These are separate options: deferring the suite does not transfer
++root ownership by itself. Retain the option in Launch and on resume. Every coordinator closure,
++including refill's preliminary pass, uses `close-in-tree-epics EPIC --exclude-root`.
++Finished leaves and eligible inner epics can close while this root remains open; `ready-drained`
++returns implementation to the caller normally, without demanding root closure or inventing a stall.
++
++Before code, record the actual acceptance requirements with owners in `approvals · root-acceptance`
++per run-state.md §Caller-owned root acceptance. Include the required whole-epic review, final
++measurement and existing phase-7 choice, plus reserved human gates and any explicit live criteria.
++After every settled invocation carry forward Recovery, checkEvidence and runFailures facts before
++overwriting buckets. Collect its review bundle and use the validated outstanding projection for
++remaining findings. Neither a later ready verdict nor a merged fix bead resolves an earlier finding.
++Required failed/unavailable checks and missing live evidence remain pending, with source pointers.
++
++Phase 6's sweep records sourceTree, command/configuration, outcome, kind and output location;
++bind its measurement requirement to only the deferred Recovery IDs it actually satisfies. A pass
++never resolves an actual code finding or a different measurement. Preserve unresolved reviews,
++Recovery holds, run-owned failures and reserved human choices independently. The report and phase-7
++menu still describe pending acceptance honestly; this adds no new pause before that existing menu.
++Record the human's actual choice there. A kept branch or cancellation may finish the run while
++root acceptance stays open. After authorized final acceptance, run
++`report-status --acceptance RUN_MD --tree FULL_GIT_TREE` against the confirmed final code identity;
++only exit 0 with `eligible:true` permits this caller to close the root explicitly. Exit 3 keeps the
++root open with named pending/gap owners; exit 2/4 establishes no acceptance. No agent answers or
++closes an unresolved human gate. The checker itself is read-only.
++
+ ### Gates, final-SHA evidence and base drift
+ 
+ **Gates.** A hold that someone outside `super-code` releases is a gate bead: `bd create --type task
+@@ -275,7 +373,7 @@ in-scope, and pulls each cluster with an in-scope member in as a unit (except a
+ `clusterOverride`). Record its output in `run.md` as `scopeFilter-round-<N>` (run-state.md item 7 (Design decisions)), its `cluster dropped: <cluster id> — <rule>` lines (a cluster whose members were all punch-listed) and aggregate line included. Punch-list findings
+ go to `report.md`'s Remaining, tagged `out of scope (filtered)`, and are never filed.
+ 
+-Then write the punch-list file beside the round's report as `…-roast-pr-<N>-punch-list.txt`: every key punch-listed so far, this round's plus the previous round's file, one `[SEV] <location>` per line. The next roast round (and any `post-cap audit`) gets it as its punch-listed input (§Phase sequence, phase 4), so a punch-listed finding the roast meets again is reported as open, not as new.
++Then write the punch-list file beside the round's report as `…-roast-pr-<N>-punch-list.txt`: the stdout of `bash <this skill's dir>/scripts/scope-dispositions --project RUN_MD --keys`, after retaining the round's complete source and `finding-route` records (§Review collection). This is the outstanding deferred view, including earlier invocations, with supported resolutions/rejections excluded. Exit 3 retains known keys plus explicit gaps; recover the gaps before further invocation/cleanup. Exit 2/4 establishes no key view. The next roast round (and any `post-cap audit`) gets this file as its punch-listed input (§Phase sequence, phase 4), so a deferred finding met again is reported as open.
+ 
+ #### Step 3 — file fix beads
+ 
+@@ -287,12 +385,12 @@ Re-enter `super-code` with the new beads and `deferSweep: true`, then loop to ph
+ 
+ #### Final-review items
+ 
+-Every `super-code` invocation ends with its own final whole-epic review, verdict `ready` or `not ready (<summary>)`, recorded as `codeBuckets.review` (run-state.md item 6 (Code buckets)). Under `deferSweep` each is informational when it returns: it judged a tree no full suite had run on. The one that counts is the final review of the last `super-code` invocation, read after the phase-6 sweep has measured that tree; `report.md` uses that one.
++Every `super-code` invocation ends with its own review, recorded in `codeBuckets.review`. It describes that invocation, including `no work landed`; accumulated outstanding findings come from `scope-dispositions --project RUN_MD`. A later ready verdict, task closure or silence supplies no disposition for earlier findings.
+ 
+-Its Must-fix and untested-scope items, and any bead a task filed outside the epic's `sp:<epic>` label, feed the next round's step-back as findings: take its keys from `bash <skills-root>/super-code/scripts/report-verdict --keys <reviewPath>` (Must-fix items as `[Must-fix] <item>`, untested scopes as `[Must-fix] untested: <item>`, uncapped), prefix each `rN `, and add them to the step-back keys file; an off-label bead is still keyed by hand as `rN [Must-fix] bead <id>`. Its verdict line is `codeBuckets.review`; its full text is the file `super-code` returns as `reviewPath` (ordinary mode: `<workspace>/final-review-<runTag>.md`). Read the verdict through `bash <skills-root>/super-code/scripts/report-verdict <reviewPath>` and pass the step-back the path, not the text. A null `reviewPath` means no review file exists (`super-code` wrote none): call neither form, take the verdict from the returned `review` (`codeBuckets.review`), and key it as the single item `rN [Must-fix] untested: whole-epic review`, routed like any other final-review item, except when `review` reads `no work landed`: nothing landed, no tree was reviewed, and there is nothing to key. Then:
++Its Must-fix and untested-scope items come from the outstanding full projection after §Review collection, including older invocations. Carry each item's original `ref` with its key. Prefix active step-back keys with `rN ` for the consuming round without changing source identity; an off-label bead is still keyed as `rN [Must-fix] bead <id>`. Read the latest verdict through `report-verdict <reviewPath>` only when non-null. A null `reviewPath` means no review file exists: take the returned verdict into `codeBuckets.review`; `no work landed` with no bundle adds no source or finding (unexpected partial artifacts are preserved with a gap), while any other verdict retains `[Must-fix] untested: whole-epic review` as a collection gap tagged `final review`, with the orchestrator owning recovery. Then:
+ 
+-- An item a roast panel already rejected stays rejected, unless the final review cites evidence that panel's report did not have (the same narrow exception `super-roast`'s reporter applies).
+-- In an autonomous run, while the loop is still running, an item no panel saw becomes a fix bead in §Step 3 — file fix beads, unless an applied redesign dissolved it. In an interactive run it goes through the scope filter with the round's findings, its key added to the scope keys file.
++- An item with a supported recorded rejection stays rejected, unless the final review cites evidence that panel's report did not have (the same narrow exception `super-roast`'s reporter applies).
++- In an autonomous run, while the loop is still running, an item no panel saw becomes a fix bead in §Step 3 — file fix beads, unless supported verification explicitly disposes it. In an interactive run it goes through the scope filter with the round's findings, its key added to the scope keys file.
+ - After the loop has exited (a review from a phase-6 re-entry, or from the re-entry before a converged round), it goes to the punch list, tagged `final review`. Decided exception, autonomous runs only, once per run: Must-fix items that are correctness defects (Critical or Important) in a goal-named path, by the in-scope test in scope-filter-prompt.md §Prompt, get one fix round. File them as fix beads (§Step 3 — file fix beads) and re-enter `super-code` once with `deferSweep: true`, before phase 6's sweep, or before the sweep-fix re-run when they came from that re-entry. The post-cap audit covers what lands (§Gates, final-SHA evidence and base drift), with those findings named in its stated intent to re-check. A finding still open there, and that re-entry's own final-review items, go to the punch list.
+ - With `skipCodeRoast` there is no loop: file the items as fix beads once, re-enter `super-code` once, and do not review again.
+ 
+@@ -307,19 +405,66 @@ whole-branch roast outside this loop, such as a post-cap audit or a re-review af
+ ruling, is invoked with iteration `post-cap audit`, which `super-roast`'s header accepts, never
+ with a fabricated round number.
+ 
++For every resulting owner/fix/deferred decision, append `finding-route` with the original occurrence ref (run-state.md §Finding continuity records and projection). Punch-listed final-review items carry a nonempty `deferred` reason. Phase 5 and post-cap punch-list input is `bash <this skill's dir>/scripts/scope-dispositions --project RUN_MD --keys`; the detailed projection supplies reasons, owners and evidence gaps. Supported resolution/rejection removes an item from this derived view. A later empty key stream alone establishes nothing: inspect projection gaps and collection status. A passing sweep can support disposition of its matching unmeasured-scope occurrence, with the exact check and SHA, while unrelated code findings stay outstanding.
++
++### Run-regression repair ownership
++
++Keep `super-code`'s `runFailures`/Recovery attribution independently of invocation buckets. Before
++replacing `codeBuckets` after phase 3 or any re-entry, reconcile returned run facts with the prior
++ledger Recovery records and record each open run-regression or attribution gap in the existing
++`parked` list as kind `degraded-verdict`, with the ledger/record id, exact check/source-output
++references and introducing owner or missing attribution evidence. Update that same source entry
++on later invocations; empty new buckets and a later task's base exoneration never erase it. Do not
++mark these entries `resolves-on: sweep`: an overall passing count alone does not associate a fix
++with the recorded failure. Retire the open qualifier only when linked live/pass fix verification
++establishes resolution, retaining the Recovery history and verification pointer.
++
++A run-start live/pass followed by A's failing source and B's failing task base exonerates B while
++A remains the run owner. A failure evidenced at run start is `pre-run`, separately recorded and
++not automatically this run's fix scope. Missing, unavailable or non-live baseline measurements
++remain an attribution gap; they establish neither a passing baseline nor exoneration of a known
++run owner. Match exact commands/configurations and reviewed source chronology, rather than
++merging equal display text. Keep uncertain correspondence explicit.
++
++In the existing code/fix-loop and sweep-fix passes, retain the owner and source references in the
++fix bead/repair assignment for a run-introduced failure even if the latest task is exonerated.
++Reuse an existing open repair assignment rather than filing a duplicate. Resolve attribution
++against recorded run-start/task-base/fix evidence when available; no new mandatory baseline
++phase is added. Do not force unrelated evidenced pre-run failures into repair scope. Existing
++pass limits still apply: a remaining run-regression or attribution gap at the cap is reported in
++Remaining with its owner/evidence; ownership retention creates no additional retry round.
++
+ ### Phase 6 — report
+ 
+ Every `super-code` invocation ran with `deferSweep: true` (its `sweep` reads `SWEEP DEFERRED (caller-owned)` and its merges ran only the build-only `mergeCheck`), so the run's one full-suite sweep happens here, after phase 5 exits, against the tip the roast cleared. In order:
+ 
+ 1. Sweep. Run the command `super-code`'s ledger `Launch:` line records (the declared `config.sweep`, else the project's full test command under its `AGENTS.md` envelope), and record its one-line result as `codeBuckets.sweep` in the form run-state.md §Field table gives (`super-code`'s sweep form, or `MEASUREMENT INVALID: <cause>`), stamped ` @ <sha>` with the SHA it measured. Run it, and any other full-suite command, only while no roast or coordinator Workflow is in flight on this host: a timing-sensitive suite fails under that load, and a failure seen under it is unconfirmed until it reproduces with the host quiet. Which stamps still count as at the tip is defined in report-prompt.md §The status block. When this branch does not land alone (a prerequisite branch lands with it, or the base moved materially), run the sweep, and any other once-per-branch verification such as a readiness gate, against the exact SHA that will land, after reviewing that combined tree's conflicts and its clean auto-merges.
+-2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: file the failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
++2. Sweep-fix pass, once. A failing sweep gets one fix pass, whether or not a regression pass ran just before it: apply §Run-regression repair ownership and file the in-scope failing tests as fix beads (tests sharing one cause in one bead) per §Fix-bead template, each linking the sweep output, after checking each test against the spec: a test the code fails because the code follows a later spec decision is named as the bead's defect; re-enter `super-code` with them and `deferSweep: true`; re-run the sweep once at the new tip, write its result to `codeBuckets.sweep` as in step 1 (replacing the `SWEEP DEFERRED (caller-owned)` the re-entry's bucket overwrite left), and record `sweepFix:` (run-state.md item 6 (Code buckets)). Decided: a re-run failure in a test that was green in the previous sweep, which the sweep-fix pass therefore caused, gets exactly one regression-only fix bead and one more sweep re-run, mirroring §Regression-only pass (only those tests, no step-back, no scope filter), recorded in the same `sweepFix:` line. Any other second failure, and any failure after that re-run, is reported as it stands. A `MEASUREMENT INVALID` sweep is not a failure to fix; report it.
+ 3. Changes landed after the loop: run the scoped `post-cap audit` roast, or list the conflict-resolved hunks instead, per §Gates, final-SHA evidence and base drift (changes landed after the loop). The items of a phase-6 re-entry's final review go to the punch list, except for the one fix round §Final-review items allows.
+-4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the final review that counts (§Final-review items), whose verdict you read through `report-verdict <reviewPath>` (with a null `reviewPath` the verdict is `codeBuckets.review` as returned, and a missing review is never rewritten to `ready (after the phase-6 sweep @ <sha>)`), reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
++4. Before the report, record in `run.md` `friction: <N> events` (the `- [` lines in `<run-dir>/friction.md`) or `friction: none recorded` (header only). If the latest invocation review (§Final-review items), whose verdict you read through `report-verdict <reviewPath>` (with a null `reviewPath` the verdict is `codeBuckets.review` as returned, and a missing review is never rewritten to `ready (after the phase-6 sweep @ <sha>)`), reads `not ready` only because the branch was unmeasured under the deferred sweep, and step 1's sweep (or the sweep-fix re-run) passed at the tip, rewrite `codeBuckets.review` to `ready (after the phase-6 sweep @ <sha>)`; if the sweep did not pass, leave it. Any other degraded verdict that a passing sweep at the tip resolves is parked ending ` · resolves-on: sweep`, which `scripts/report-status` drops once that sweep is stamped.
+ 5. Write `report.md` per `./report-prompt.md`, before anything is torn down. A drafter is dispatched per §Subagent dispatch (report drafter row); it writes `report.draft.md`, and you splice in the status block, rename it to `report.md` and commit it (report-prompt.md has the mechanics). The first write's `metrics:` line reads `metrics: pending (upstream-feedback not yet run)`. Its status line comes from `scripts/report-status`, run as report-prompt.md §The status block says, which also defines the `--tip` it is passed.
+ 6. Invoke `superpowers:upstream-feedback`, once: this run is the outermost invocation. In an autonomous run its proposal parks and surfaces at the phase-7 menu, never mid-run; an attended run is asked directly.
+ 7. After it returns, rewrite only `report.md`'s `metrics:` line in place, per report-prompt.md §The status block.
+ 
+-Throughout all phases, append friction events to `<run-dir>/friction.md` the moment they happen, per `upstream-feedback` §The friction log (written by the enclosing run, read here), and commit it with the `run.md` writes. **Except while a `super-code` coordinator runs** (phase 3 and each fix-loop re-entry): the run worktree is then its integration worktree, where an uncommitted file holds every merge and a commit can race one. In that window, write nothing tracked there — append friction to `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md` (inside super-code's git-ignored workspace) and leave `run.md` alone; when the coordinator returns, move those lines into `<run-dir>/friction.md`, delete the pending file, and commit with that phase's `run.md` write. Copy that invocation's run profile (`profile-<runId>.md` and `.json`, which `super-code`'s Finish writes beside its ledger) into `<run-dir>/` in the same commit, so the per-bead timing outlives the worktree.
++Throughout all phases, append friction events to `<run-dir>/friction.md` the moment they happen, per `upstream-feedback` §The friction log (written by the enclosing run, read here), and commit it with the `run.md` writes. **Except while a `super-code` coordinator runs** (phase 3 and each fix-loop re-entry): the run worktree is then its integration worktree, where an uncommitted file holds every merge and a commit can race one. In that window, write nothing tracked there — append friction to `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md` (inside super-code's git-ignored workspace) and leave `run.md` alone; when the coordinator returns, move those lines into `<run-dir>/friction.md`, delete the pending file, and commit with that phase's `run.md` write. After each settled Workflow or ordinary invocation, the invoking session runs `run-profile` and appends its complete stdout once, as coordinator-workflow.md / coordinator-subagents.md specify, including qualified or unavailable output. At that settled boundary, complete §Review collection before any re-entry or cleanup. After collection, copy that invocation's existing profile md/json pair from beside its ledger into `<run-dir>/` in the same commit, so timing outlives the worktree. Finish and the collection step do not regenerate or append the profile again.
++
++### Review collection
++
++Before each phase-3 launch or fix-loop re-entry, mint a fresh filesystem-safe `invocationId` and pass it through Workflow args or the ordinary launch protocol, together with the unchanged `runTag`. Commit a `review-collection` intent in `approvals:` before launch: run-state.md §Review collection records gives its JSON. This records the expected workspace and invocation review path with `settled:false`. Leave tracked run files alone while the coordinator is running.
++
++After the invocation settles, at the existing friction/profile collection boundary, run:
++
++```bash
++bash <this skill's dir>/scripts/report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review REVIEW_PATH_OR_none --verdict RETURNED_REVIEW
++```
++
++Quote the actual arguments. `ID` is the persisted Launch token; `WORKSPACE` is its `.superpowers/sdd/<epic>-plan` directory. Use the returned `reviewPath`, or literal `none` for null; never manufacture a clean review. Add repeated `--required RELATIVE_FILE` arguments for any known required direct inputs not discoverable in the bundle. Collection preserves the invocation's final review, split reviews, direct `.diff` and assembled input tree under `<run-dir>/reviews/<ID>/`. It appends exact `report-verdict --complete --source` records, changing only their artifact pointer to the archive. Completion records include file hashes. Copying identical bytes is idempotent; differing destinations remain untouched and produce a gap.
++
++On later `final-review` and `roast-code` assemblies, the shared assembler's `dispatch-text review-inputs` operation reads these records and archived blobs from the captured Git range. Its selected diffstat/slices omit only exact manifest-claimed generated input files with verified saved hashes; original final/cluster reports, findings, collection metadata and unclaimed files remain review inputs. The digest carries the omitted payloads' captured revision, run-record/invocation, archive/report paths and hashes. Keep the complete archives unchanged. Omission supplies no finding disposition or verdict; corrupt, missing, conflicting or incomplete claimed provenance remains an explicit unavailable evidence gap, including through fallback.
++
++Run `report-status --collect RUN_MD` to replay pending collection before any subsequent invocation or cleanup. Exit 0 confirms preservation; exit 3 retains durable gaps/pending evidence with the orchestrator as owner. Exit 2/4 establishes no collection. Preserve the source workspace and all archive copies until collection succeeds; a missing required review or split input blocks re-entry/cleanup. Confirm a previously unsettled launch actually ended from its ledger/result before supplying settlement arguments; artifact presence alone is insufficient. Commit the collection and profile/friction records together after settlement. Neither collection nor Finish regenerates or overwrites the invocation bundle.
++
++For each settled roast source already in the committed run directory, append its complete extraction as `finding-source` with an immutable source such as `roast-code/round-N`; record the scope filter's decisions as `finding-route` refs. Keep the existing externally owned roast ledger, triggers and amend workflow; adapt an external disposition only after validating explicit refs and semantic support. Unsupported silence-based dissolution leaves the local finding open. Resume and reporting consume the same local projection.
+ 
+ ## Subagent dispatch
+ 
+@@ -404,7 +549,7 @@ Recorded decisions replay per run-state.md item 7 (Design decisions).
+ 
+ ### Where the zone ends
+ 
+-The zone ends when the work is done, not at a phase number: once every bead under the epic is terminal and `report.md` is written, the run presents the report and hands control back (stop 2 in §Ending turns in an autonomous run). A run sitting at the integration decision is done, not blocked, and the merge into `base` follows §Invariants I5 (human-owned merge).
++The zone ends when implementation and the required report are ready for hand-back (stop 2 in §Ending turns in an autonomous run). Implementation leaves may be terminal while the root awaits caller-owned reviews, measurements or reserved human choices. Present the report and existing integration menu with those obligations visible; root closure follows the acceptance gate above. The merge into `base` follows §Invariants I5 (human-owned merge).
+ 
+ ### Roast caps
+ 
+diff --git a/skills/super-auto/run-state.md b/skills/super-auto/run-state.md
+index 1c6835f1..e82ce94e 100644
+--- a/skills/super-auto/run-state.md
++++ b/skills/super-auto/run-state.md
+@@ -48,12 +48,18 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+ | `codeBuckets.review` | `  review: ready \| not ready (<summary>)`, or `  review: ready (after the phase-6 sweep @ <sha>)` when the review's only blocker was the unmeasured branch; `  review: CLEAN` and `  review: <verdict> (<N> confirmed)` are older forms, read as `ready` and `not ready` | 6 | super-auto |
+ | `codeBuckets.sweep` | `  sweep: <one-line result> @ <sha>`, the result in `super-code`'s sweep form, `<sha7> — <P> passed, <F> failed, <E> errors, <S> skipped; failing: <ids, or none>; command: <command>`, or `MEASUREMENT INVALID: <cause>`; `  sweep: SWEEP DEFERRED (caller-owned)` until phase 6 | 6 | super-auto (SKILL.md §Phase 6 — report steps 1 and 2) |
+ | `codeBuckets.slowness` | `  slowness: <items>`, appended across invocations | 6 | super-auto |
+-| `codeBuckets.worktreesKept` | `  worktreesKept: <worktree — reason>, …` (empty when every finished task's worktree was removed) | 6 | super-auto |
+-| `codeBuckets.processSweep` | `  processSweep: stopped <N> · survived <M>[ — <pid command — why>; …]` (the survivors listed; `PROCESS SWEEP UNAVAILABLE — …` when super-code's sweep could not run) | 6 | super-auto |
++| `codeBuckets.worktreesKept` | `  worktreesKept: <worktree-or-temp-root — reason>, …` (empty after verified resource cleanup; unavailable cleanup names unchecked roots) | 6 | super-auto |
++| `codeBuckets.processSweep` | `  processSweep: stopped <N> · survived <M> · unknown <U> · kept <K>[ — survived: <fact>; unknown: <root-or-pid — failed inspection>; kept: <pid command — reason>; …]` (preserve stopped/survived/unknown/kept facts; unavailable sweep or missing output is unknown) | 6 | super-auto |
+ | `sweepFix` | `sweepFix: <N> failing → <fix bead ids> · re-run <result> @ <sha>`, then ` · regression <K> failing → <fix bead id> · re-run <result> @ <sha>` when the regression-only bead ran; `<result>` in the `codeBuckets.sweep` form | 6 | super-auto |
+ | `approvals` | `approvals:` then one `- <record>` line per decision below | 7 | super-design; super-auto (`design-review`) |
+ | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
+ | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
++| `approvals · review-collection` | `- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>` | 7 | super-auto, before launch and after settled collection |
++| `approvals · root-acceptance` | `- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>` | 7 | super-auto, before code and after settlement or acceptance evidence changes |
++| `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
++| `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
++| `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
++| `approvals · finding-disposition` | `- finding-disposition · <JSON ref and supported disposition/basis>` | 7 | super-auto, after judging verification or rejection support |
+ | `approvals · coverage-round-<N>` | `- coverage-round-<N> · <each finding's disposition, marked auto \| human>`; round 1 also carries the canonical R-list and the `requirements: N · mapped: M · unmapped: K (…)` line | 7 | super-design |
+ | `baseAbsorbed` | `baseAbsorbed: <base sha> → <merge sha>, <N> conflicted files`, one line per absorption | 7 | super-auto |
+ | `stepBackCode-round-<N>` | the line format `super-design/step-back-prompt.md` defines | 7 | super-auto |
+@@ -74,7 +80,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+ 
+    A stall at phases 1–5 writes `report.md` (status line per report-prompt.md §The status block) but leaves `phase` where it was. A stall at phase 6 leaves `phase: report` with a `stalled` status line, which is why the phase-7 gate also checks the status line (SKILL.md §Invariants I2 (phase-7 gate)).
+ 
+-3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. The exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` names this run in every assembled-input dir and final-review file and in the run marker; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
++3. **Pointers** — the raw idea text, spec path, epic id, integration branch, the base branch the run merges back into (the repo branch this run's worktree was cut from, usually `main`), and the roast report paths. `branch` is this run's own branch, which is also the integration branch `super-code` merges into. There is no plan pointer: a tracker is required (SKILL.md §Pre-flight), so the epic and its beads are the plan, and a `plan:` line would send a resume looking for a file that does not exist. `base` is written in pre-flight, when this run's worktree is created, so phase 7 can supply it instead of asking; a resumed run has no other way to know it. Pointers only, never inline content: `run.md` says where the spec and reports live and does not restate them. Finding-source records retain complete extraction JSON under approvals so unavailable artifacts cannot erase known occurrences. The other exception is `idea`, which carries the raw idea verbatim because resume.md §Finding a run matches on it, and a run that dies during phase 1 has no spec yet. `runTag` groups this run and its run marker; each super-code invocation separately persists `invocationId` in its Launch before producing its immutable final-review bundle; `context` records each role's context window at pre-flight. `skillSource` appears only after a mid-run definitions switch or a pre-flight that proceeded on the updated cache instead of restarting (SKILL.md §Pre-flight), and a resume reads skills from it; `migrated` lines beside it map fields the new contract dropped (resume.md §Switching definitions mid-run).
+ 
+    Path-valued pointers are relative to the run directory (`docs/superpowers/runs/YYYY-MM-DD-<slug>/`), never bare filenames or full repo-relative paths: one convention, so two writers produce compatible files.
+ 
+@@ -90,6 +96,16 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+    - degraded-verdict: a sibling's own mandated pause that autonomous mode answered on the human's behalf instead of asking, such as a declined re-roast-at-raised-`config.panelCap` offer, or a `clean [low coverage]` / `clean [panel-capped: N unverified]` verdict autonomous mode proceeded past. Recorded with which branch was taken, e.g. `"clean [low coverage] — proceeded"`. A goal- or scope-changing redesign the phase-5 step-back proposed and autonomous mode did not apply is this kind too: `"redesign proposed, not applied — <one line>"`;
+    - graph-change: an edge change or proposal from super-design's parallelism pass that was not applied (outside the safe class), as super-design recorded it beside its `graph-pass:` line.
+ 
++   Run attribution uses these existing records, without a new top-level field: retain an open
++   `run-regression` or `attribution gap` as `degraded-verdict` with the super-code ledger's Recovery
++   id, introducing owner (when known), exact command/configuration and source-output pointers.
++   A task-base exoneration is a separate fact and does not clear the run owner. Preserve these
++   entries across code bucket replacement and later clean invocations; update the same source
++   entry rather than duplicating it. Only linked live/pass fix verification retires the open
++   qualifier, retaining its durable history and verification pointer in Recovery. These entries
++   never use `resolves-on: sweep`. A recorded pre-run failure stays distinct and does not by
++   itself assign this run repair work. Missing baseline evidence remains an attribution gap.
++
+    A `degraded-verdict` line may end ` · resolves-on: sweep`: the qualifier stands only until the phase-6 sweep passes, and `scripts/report-status` skips it once `codeBuckets.sweep` is a pass stamped at the tip. Phase 6 adds the key when it parks a final review that read `not ready` only because the deferred sweep left the branch unmeasured (SKILL.md §Phase 6 — report step 4).
+ 
+    Parking is mode-independent: a `beyond-cap` or `degraded-verdict` item is recorded the same way whether autonomous mode or a human answered, noting who chose, because the question was raised and an unverified Blocking candidate survived it either way. These items carry open concerns and self-made calls a resumed session never saw raised.
+@@ -102,11 +118,11 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+ 
+    `roastCodeExit` is written by `super-auto` the moment the phase-5 loop ends (SKILL.md §Loop exits): `converged`, `thrash`, `capped`, or `operator-skipped (<reason>)` when the operator ended it early. Any value means the loop has ended, and a resume starts no further round (resume.md §Resuming at a phase). Absent when the loop never ran (`skipCodeRoast`) or has not ended.
+ 
+-6. **Code buckets** — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`, `sweep`, `slowness` (appended across invocations, not overwritten), `worktreesKept`, `processSweep`, recorded verbatim at every phase 3→4 transition and overwritten on each fix-loop re-entry, because the latest `super-code` return is the current truth. The exception is `sweep`, which phase 6 rewrites after each sweep it runs (SKILL.md §Phase 6 — report). `super-code` returns them once and does not persist them, and report-prompt.md §Sections and their sources reads them.
++6. **Code buckets** — `completed`, `escalated`, `pendingRetry`, `parked`, `stalled`, `review`, `sweep`, `slowness` (appended across invocations, not overwritten), `worktreesKept`, `processSweep`, recorded verbatim at every phase 3→4 transition and overwritten on each fix-loop re-entry, because the latest `super-code` return is the current truth. The exception is `sweep`, which phase 6 rewrites after each sweep it runs (SKILL.md §Phase 6 — report). `super-code` returns them once and does not persist them, and report-prompt.md §Sections and their sources reads them. `completed` describes delivered code; `worktreesKept` and `processSweep` independently describe cleanup. Preserve unknown inspection, known survivors and deliberate retention with their resource paths even when code landed. Older processSweep lines without unknown/kept counts leave those outcomes unrecorded, rather than verified empty.
+ 
+    Refresh them from the tracker as phase 3 proceeds, so a session that ends inside phase 3 resumes with the last completed round: closed task beads under the epic are `completed`, quarantined ones `escalated`. A `review: <id>` bead (label `sp:review`) is `super-code`'s bookkeeping, never a task, and a task whose review bead is still open is in flight. When `super-code` returns, overwrite the buckets with its returned fields verbatim.
+ 
+-   `review` records the verdict of `super-code`'s final whole-epic review: `ready` or `not ready (<summary>)`. A `run.md` written before this form has `CLEAN` or `<verdict> (<N> confirmed)`; read them as `ready` and `not ready`. Under `deferSweep` each invocation's review is informational; the one the report uses is the last invocation's, read after the phase-6 sweep, and its items are routed per SKILL.md §Final-review items. That review is mandatory even when `skipCodeRoast` is set.
++   `review` records the verdict of `super-code`'s final whole-epic review: `ready` or `not ready (<summary>)`. A `run.md` written before this form has `CLEAN` or `<verdict> (<N> confirmed)`; read them as `ready` and `not ready`. Under `deferSweep` each invocation's review is informational; the report describes the latest verdict after the phase-6 sweep, while its outstanding items come from the accumulated projection per SKILL.md §Final-review items. That review is mandatory even when `skipCodeRoast` is set.
+ 
+    `sweep` is the run's one full-suite result in the §Field table form, stamped with the SHA it measured; it reads `SWEEP DEFERRED (caller-owned)` until phase 6. `scripts/report-status` counts it as a pass only in that form with zero failed and zero errors, stamped at the report's tip as report-prompt.md §The status block defines it; any other value becomes a qualifier.
+ 
+@@ -186,6 +202,185 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+    they never saw, which is the failure mode this record exists to prevent, arrived
+    at from the other direction.
+ 
++## Review collection records
++
++Use existing `approvals:` records, with one JSON object per line after `- review-collection · `.
++Before launch commit `{"invocationId":"inv-a","workspace":"<absolute workspace>","reviewPath":"<absolute workspace>/final-review-inv-a.md","review":"pending","required":[],"settled":false}`. Pass that ID to either coordinator mechanism; runTag remains the enclosing run identity. The caller adds relative `required` files when a known direct input is required beyond discovered `.diff`/assembled/split inputs. These are collection facts, not new producer result fields.
++
++After confirmed settlement, `report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review PATH_OR_none --verdict REVIEW [--required RELATIVE_FILE]...` appends the settled intent before copying. Preserve the exact original required-input list. `reviewPath:null` records a null result: only `review:"no work landed"` permits collection without a review. Any other null/missing review leaves an evidence gap, owned by the orchestrator; no clean review/source is invented. Unexpected recoverable bundle artifacts with a null result are still extracted and archived, with a gap requiring reconciliation.
++
++The helper appends complete extraction JSON under `finding-source`, preserving immutable `ID/final` and `ID/cluster-N` identities and every section/position/key/text, with an archive pointer under `reviews/ID/`. It copies final/cluster review files, the direct `.diff` when present, and the complete assembled input directory, checking declared files and split manifest slices. An interrupted copy is replayable before completion. Identical copies do not change; conflicting bytes remain untouched. Completion adds `complete:true`, `files:[{"path":"<bundle-relative path>","sha256":"<hash>"}]` and `gaps:[]`; missing/incomplete/conflicting artifacts add `complete:false` and nonempty `gaps`. Earlier records and supported finding dispositions remain append-only. The last collection record per invocation describes recovery progress; it never disposes a finding.
++
++`report-status --collect RUN_MD` replays all retained collections. It verifies complete archive hashes even after source cleanup. Exit 0 confirms preservation; exit 3 leaves pending/gaps and requires preserving the source workspace plus archive before later invocation or cleanup; exit 2/4 establishes no collection. Unsettled intents require ledger/result confirmation, not inference from artifact presence. A missing source extraction retains known inline occurrences and exposes unavailable coverage. Ordinary `report-status RUN_MD` is read-only: with new records it adds `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N` and/or `finding evidence gaps: N` qualifiers as applicable, derived from this collection history and the shared outstanding projection. Unavailable tooling/projection is qualified explicitly. Without new records legacy status output is unchanged.
++
++## Caller-owned root acceptance
++
++Every super-auto launch and re-entry supplies `rootAcceptance: "caller"` independently of
++`deferSweep`. All helper closures use `close-in-tree-epics EPIC --exclude-root`. Completed leaves,
++Git landing, an empty ready set, and a ready review each establish their own facts; the root stays
++open while caller acceptance is pending. Standalone super-code keeps its default root ownership.
++
++The existing `approvals:` block carries `root-acceptance` JSON snapshots, version 1, owner
++`super-auto`. Each has `sourceTree` (the full Git tree of the reviewed/measured code), `requirements`,
++`evidence`, `reviews`, `decisions`, `recovery`, `checkEvidence`, and `runFailures`. Write the initial
++snapshot before code, with pending requirements and empty evidence/decisions. After each settled
++invocation, preserve its returned Recovery obligations/gaps, source-bound checkEvidence records,
++requiredLiveChecks/gaps, and runFailures classification/state, using the exact prerequisite
++contracts. Carry still-open facts forward on bucket replacement; reconcile them from their durable
++ledger before removing them from a later snapshot. Earlier snapshots stay as evidence history.
++
++Each requirement has `id`, `kind` (`review`, `measurement`, `human`), and `owner`. Include the final
++whole-epic review, final full-suite measurement, existing phase-7 human choice, and every additional
++acceptance criterion or reserved human gate the run actually requires. This record describes those
++existing obligations; it introduces no additional approval ceremony. Measurement requirements add
++`command`, `configuration`, `requiredLive` (boolean), and optionally `sourceTree` for a check tied
++to a particular earlier tree. Without that override they measure the snapshot's final tree.
++Optional `obligations: [<exact Recovery ids>]` binds deferred final-suite records to that final
++measurement. Preserve a declared Recovery command; a different command cannot discharge it.
++Other deferred measurements need their own command/configuration/source binding. Requirements
++omitted in a later snapshot remain required; an amendment changes the existing requirement by ID
++with its authority/evidence retained in approvals. Never erase a required check by omission.
++
++`evidence` uses the existing sourceTree/command/configuration/outcome/location/kind records.
++`reviews` entries are `{id, sourceTree, outcome, location}`: `pass` means the required review's
++coverage and supported dispositions were verified, rather than copying a ready verdict over
++unresolved findings. `decisions` entries are `{id, authority:"human", decision, evidence:[...]}`.
++Only an actual human's `accept` decision satisfies a human requirement. `keep` and `cancel` preserve
++those outcomes and leave acceptance open, even when the run phase is `done`. Never invent an agent
++decision or infer acceptance from child closure. Retain every reserved human gate separately.
++
++Optional `findingAcceptance` entries carry `{ref, judgment:"supported", effect, basis, evidence}`.
++The existing caller assessment judges `effect:"required"` with the named `requirement` it blocks,
++or `effect:"nonblocking"` with evidence supporting its exclusion from required acceptance. Judge
++each outstanding projected finding/group once using an exact original source ref; explicit links
++make duplicate occurrences one group, while all their original refs remain available. A deferred
++or explicitly non-actionable source item is not automatically a required code defect. Missing or
++unsupported relevance is an acceptance gap. This judgment changes only its acceptance effect:
++nonblocking findings remain outstanding in the shared projection and punch list. It never invents
++a resolution or demands new human approval for every minor; human authority is required only for
++the human decisions already reserved by the task/spec and phase-7 menu.
++
++`report-status --acceptance RUN_MD --tree FULL_GIT_TREE` is a read-only root-close gate: exit 0 and
++`eligible:true` establish that recorded obligations are satisfied; exit 3 returns `pending`/`gaps`;
++2/4 establish no acceptance. Resolve the reviewed/measured source identity and confirm it still
++matches the final code (run-directory-only commits may be excluded per
++report-prompt.md §The status block) before passing that tree. Ordinary status also qualifies pending root acceptance when the
++record is present, using its recorded tree. Legacy status without the record is unchanged.
++
++The gate independently checks required reviews, matching measurements (live when required),
++Recovery holds/pending closures/deferred obligations, source-bound required live checks, run-owned
++failures, collection integrity and supported requirement relevance in the shared outstanding finding projection. A passing measurement
++discharges only its matching obligation. Failed and unavailable outcomes stay distinct; simulated
++or fallback evidence cannot satisfy live requirements. A contradictory pass/fail at the same tree
++requires reconciliation. An open run-introduced failure retains its owner; a missing attribution
++remains a gap. Evidenced pre-run failures are diagnostic unless a requirement separately calls for
++repair. A valid empty finding projection can pass; an empty key stream or missing extraction cannot.
++
++Only after the existing final choice and all required gates are supported, rerun this gate against
++the final code identity and explicitly close the root on exit 0. A passing gate never closes a bead
++or supplies a human decision. A report/hand-back may still describe delivered leaves with pending
++acceptance; keep the root open and name each owner and evidence gap.
++
++## Finding continuity records and projection
++
++Append the finding records below to the existing `approvals:` block. Preserve earlier records
++across code bucket replacement; the latest review verdict describes its own invocation, while
++this projection accounts for outstanding findings from every retained source. These additive
++facts are independent: ownership, fix-task reference and deferral can coexist with verification.
++They impose no state sequence and do not replace the externally owned roast ledger.
++
++**Source.** Use `bash skills/super-code/scripts/report-verdict --complete --source
++'<invocationId>/<logical-artifact>' FILE`. The invocation token comes from the persisted
++super-code Launch, separate from runTag; e.g. `inv-a/final` identifies
++`final-review-inv-a.md`. Split artifacts have their own logical suffix (e.g. `inv-a/cluster-1`).
++Retain the exact returned object as one JSON line after `- finding-source · `, including
++`version:1`, `source`, `artifact`, `kind`, `verdict`, and every occurrence's `section`, `position`,
++`key` and `text`. JSON escapes preserve multiline text and keys with commas or Unicode.
++Keep the original artifact alongside the extraction. Relative artifact paths resolve from the
++run.md directory; when archiving, update only `artifact` to the retained copy, preserving
++`source` and the complete occurrence array. Source identity is never derived from archive paths.
++An unavailable artifact reports a gap while its inline extraction still preserves known findings.
++Extraction failure is a gap, never a replacement empty source. An explicit clean recognized
++review may have `occurrences:[]`; a run with no retained sources has unknown coverage.
++
++**Reference and link.** An occurrence reference is exactly
++`{"source":"inv-a/final","section":"Deferred OK","position":1}`. Section and source strings
++match exactly, and position is the extractor's positive section-local integer. Source path,
++wording, severity and key alone do not link appearances. Append
++`- finding-link · {"refs":[<ref>,<other-ref>],"basis":"why these appearances are the same obligation"}`
++only after judging the explicit match. Links combine referenced occurrences transitively.
++Ambiguous matches remain separate. Archive copies with identical source/section/position and
++text deduplicate; conflicting extractions retain text variants, expose a gap and keep affected
++findings outstanding even if a disposition claims resolution.
++
++**Routing.** Append `- finding-route · {"ref":<ref>,"owner":"<bead>","fix":"<fix bead>",
++"deferred":"<reason>"}` as one JSON line, with any nonempty subset of owner/fix/deferred.
++Deferral is explicit routing, not inferred from a section name. A fix-task assignment, closed
++bead, success claim or a later silent/ready review leaves the finding outstanding.
++
++**Supported disposition.** Append
++`- finding-disposition · {"ref":<ref>,"disposition":"resolved","judgment":"supported",
++"basis":"why the fix addresses this finding","evidence":["verification.log @ <sha>"],
++"verification":"exact relevant check and observed repaired behavior"}` as one JSON line.
++A rejection uses `"disposition":"rejected"`, keeps its reasoning in `basis` and supporting
++references in the nonempty `evidence` array, and does not require `verification`. Helpers validate
++references and required fields. The owning agent first judges whether the evidence semantically
++supports this particular fix or rejection, then records `judgment:"supported"`; a nonempty
++file name or a successful task is insufficient. Verification of a fix supplied by another task
++uses the same contract. A passing sweep settles only the measurement obligation it establishes;
++it cannot stand in for verification of unrelated actionable findings. Unsupported disposition
++records remain visible with a gap and do not resolve findings. A supported disposition applies
++to the explicitly linked group; other appearances remain independent.
++
++**CLI and output.** Run `bash skills/super-auto/scripts/scope-dispositions --project RUN_MD`
++for JSON `{version:1,findings:[...],gaps:[{origin,message}]}`. Each finding holds its first retained
++`ref`, original `occurrences` (including source/artifact/section/position/key/text), all archive
++`artifacts`, conflicting `variants`, explicit `links`, `routes`, `dispositions` with mechanically
++validated `supported`, and booleans `outstanding`/`deferred`. Source order is deterministic.
++No source/disposition is removed from run.md by projection. Append-only history stays available
++even after a supported disposition makes a finding no longer outstanding.
++
++Add `--keys` for the legacy punch-list transport: one exact original key per line, from only
++outstanding deferred groups, deduplicated in first appearance order. Resolved/rejected findings
++and active nondeferred findings are excluded. This is derived from the same validated projection;
++an empty key stream alone cannot establish clean acceptance. Detailed JSON retains all distinct
++occurrences despite equal printed keys. Consumers must check exit status and gaps, and use the
++full projection for Remaining/resume/status rather than treating the latest ready verdict as
++clearance of earlier findings.
++
++Optional `--external FILE` consumes a supplementary JSON object
++`{"version":1,"records":[{"type":"finding-link",...},{"type":"finding-disposition",...}]}`.
++Each record has the same refs/basis/support fields as the local counterpart and can reference
++only retained local occurrences. This is a consumer seam, not a new roast-ledger API or policy.
++Unsupported/unknown types (including silence-based dissolution), absent files, malformed or
++incomplete records produce gaps without replacing local evidence; valid supplementary records
++are applied individually. Omitting this optional argument does not imply an external disposition.
++
++Exit 0 means projection validated; 3 means projection returned retained findings plus explicit
++gaps; 2 means bad CLI or unreadable run record and no projection; 4 means Node unavailable.
++In key mode gaps go to stderr as `FINDING_GAP:`; JSON mode includes them in `gaps`.
++No jq is required by projection (the legacy round mode still uses its existing jq/manual fallback).
++If Node is unavailable, `NODE_UNAVAILABLE:` is printed on stderr and no projection is established:
++retain all known occurrences, manually follow explicit links and supported dispositions, and
++list every unresolved deferred key plus any evidence gaps. Never interpret unavailable output
++as an empty punch list or a clean review.
++
++Projection JSON also carries additive `metrics` over retained sources: raw `occurrences`,
++`occurrenceGroups`, actionable `findings`, supported `repaired`/`rejected`, `outstanding`,
++outstanding `deferred`, `otherSectionGroups`, source kinds, section labels and gap count.
++Actionable groups have an occurrence in Confirmed findings, Must fix, Deferred, Concerns,
++Blockers, Findings or Untested scope; other extraction sections remain separately visible.
++A group counts as repaired only with a supported resolved disposition and no outstanding
++conflict. Rejection/deferral contributes zero repairs. Explicit links can reduce group counts
++without reducing raw occurrence counts. Exit 3 retains these supported partial metrics and gaps.
++The scope is retained sources: absent task-report/roast/final-review populations remain
++unestablished rather than supplying zero run-wide findings. No new run.md field is required.
++
++Report sources preserve the latest invocation verdict separately from durable Recovery fix
++history and the finding projection. A `baseAbsorbed` record supplies zero task landings;
++normal execution-mechanism selection supplies zero friction events. An unavailable ledger can
++still supply known invocation results, labelled with a run-total gap.
++
+ ## File format — worked example
+ 
+ An illustrative `run.md` mid-run: the design phase went through two roast
+@@ -213,10 +408,19 @@ roastDesignRound: 2
+ roastCodeRound: 1
+ 
+ approvals:
++- root-acceptance · {"version":1,"owner":"super-auto","sourceTree":"1111111111111111111111111111111111111111","requirements":[{"id":"final-review","kind":"review","owner":"super-auto"},{"id":"sweep","kind":"measurement","owner":"super-auto","command":"npm test","configuration":"quiet host","requiredLive":true,"obligations":["bd-412:sweep:rate-limiter-20260731T120000"]},{"id":"finish","kind":"human","owner":"human"}],"evidence":[],"reviews":[],"decisions":[],"recovery":{"obligations":[],"gaps":[]},"checkEvidence":{"records":[],"requiredLiveChecks":[],"gaps":[]},"runFailures":[]}
++- review-collection · {"invocationId":"inv-a","workspace":"/work/project/.superpowers/sdd/bd-root-plan","reviewPath":"/work/project/.superpowers/sdd/bd-root-plan/final-review-inv-a.md","review":"pending","required":[],"settled":false}
+ - top-split · auto · bd-413 PROMOTE, bd-414 PROMOTE, bd-415 LEAF, bd-416 LEAF
++- finding-source · {"version":1,"source":"inv-a/final","artifact":"final-review-inv-a.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — inconsistent formatting","text":"[Nit] lib/format.ts:12 — inconsistent formatting"}]}
++- finding-source · {"version":1,"source":"inv-b/final","artifact":"final-review-inv-b.md","kind":"final-review","verdict":"not ready","occurrences":[{"section":"Deferred OK","position":1,"key":"[Nit] lib/format.ts:12 — same formatting obligation","text":"[Nit] lib/format.ts:12 — same formatting obligation"}]}
++- finding-link · {"refs":[{"source":"inv-a/final","section":"Deferred OK","position":1},{"source":"inv-b/final","section":"Deferred OK","position":1}],"basis":"reviewed as the same source location and defect"}
++- finding-route · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"owner":"bd-421","fix":"bd-421","deferred":"formatting lies outside the goal"}
++- finding-disposition · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"disposition":"resolved","judgment":"supported","basis":"bd-422 supplied the formatting fix","evidence":["format-verification.log @ 1a2b3c4"],"verification":"formatter check passes on both affected ranges"}
+ - coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
+ 
+ parked:
++- ../../../../.superpowers/sdd/bd-412-plan/progress.md#run-failure-F · degraded-verdict · "run-regression F owner bd-413; command npm test -- F; configuration target=staging; run-start/A/B-base evidence in Recovery; bd-414 task-base exonerated"
++- ../../../../.superpowers/sdd/bd-412-plan/progress.md#run-failure-G · degraded-verdict · "attribution gap G: missing run baseline; evidence/G.log"
+ - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · escalation · "cache invalidation premise unverified — no valid judge votes"
+ - 2026-07-31-per-tenant-rate-limiter-roast-design-2.md · degraded-verdict · "clean [low coverage] — proceeded, not re-roasted"
+ - 2026-08-01-per-tenant-rate-limiter-roast-pr-1.md · beyond-cap · "Blocking candidate left unjudged at panel cap"
+@@ -231,9 +435,33 @@ codeBuckets:
+   sweep: SWEEP DEFERRED (caller-owned)
+   slowness:
+   worktreesKept:
+-  processSweep: stopped 0 · survived 0
++  processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
+ ```
+ 
++## Phase-7 cleanup facts
++
++The existing `codeBuckets.worktreesKept` and `codeBuckets.processSweep` also carry phase-7 cleanup
++results. Before finishing can remove the outer worktree, refresh these facts from actual helper
++results and the retained-resource inventory (SKILL.md §Phase 7 — cleanup preconditions).
++Retain each task cleanup exit 3 or 4 with its exact worktree/temp paths and reason, and include
++containing parent paths that cannot be removed. Refused roots, pending final parent inspection,
++unavailable invocations and missing results are unknown/unchecked, not verified empty.
++
++Keep stopped (verified terminated), survived (observed alive), unknown (inspection/termination
++unverified) and kept (deliberately preserved) facts distinct, with their resource dependencies.
++A verified no-match helper invocation can establish zero processes; an unconfirmed exit-zero
++empty wrapper output cannot. A successful leaf sweep establishes only its own resources' safety;
++final parent verification must happen after no retained descendants remain and before deletion.
++Clear a retained fact only after its named resource has been freshly verified safe, not because
++another invocation returned zero. Existing phase-3 bucket replacement must preserve unresolved
++phase-7 cleanup facts if implementation is re-entered.
++
++Write these facts and update report.md Remaining before teardown; preserve required unarchived
++evidence. `phase: done` can record completed delivery and the human's branch choice while cleanup
++remains pending. On resume, inspect these retained paths before attempting cleanup again; do not
++re-merge or delete a preserved parent merely because the delivery phase is done. No new field,
++cleanup engine or change to root acceptance is introduced.
++
+ ## The resume rule
+ 
+ Resume from the recorded `phase`; never re-ask the flags and never reset a counter (SKILL.md §Resume).
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index 56ab808f..fcca3313 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -54,9 +54,218 @@
+ # Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+ # Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+ # JQ_UNAVAILABLE.
+-# Exit 0 ok, 2 bad input.
++# Ordinary status: exit 0 ok, 2 bad input; legacy records require only Bash/awk.
++# Additive finding/collection records use Node for the shared projection; unavailability
++# is an explicit qualifier. --collect is the settled-bundle write mode (usage below):
++# exit 0 preserved, 3 evidence gaps, 2 bad input, 4 Node unavailable.
+ set -euo pipefail
+ 
++# This is a read-only root-close gate. Requirements and producer facts live in the
++# existing approvals block; neither completed leaves nor the latest verdict supplies them.
++if [ "${1:-}" = --acceptance ]; then
++  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: caller root acceptance unverified' >&2; exit 4; }
++  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++  node - "$script_dir" "$@" <<'ACCEPTANCE'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
++const [scripts,,run,...args]=process.argv.slice(2);
++if(!run || (args.length && (args.length!==2 || args[0]!=='--tree'))){console.error('usage: report-status --acceptance RUN_MD [--tree FULL_GIT_TREE]');process.exit(2)}
++const tree=args[1],pending=[],gaps=[],requirements=new Map(),snapshots=[],nonblockingFindings=[];
++const text=v=>typeof v==='string'&&v.trim()!=='',hash=v=>typeof v==='string'&&/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v);
++const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
++const gap=s=>gaps.push(s),wait=s=>pending.push(s);
++let input;try{input=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
++let approvals=false;
++for(const line of input.split(/\r?\n/)){
++ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
++ if(!line.startsWith('- root-acceptance'))continue;
++ try{
++  if(!approvals||!line.startsWith('- root-acceptance · '))throw Error('outside approvals or malformed record');
++  const r=JSON.parse(line.slice('- root-acceptance · '.length));
++  if(!object(r)||r.version!==1||r.owner!=='super-auto'||!hash(r.sourceTree))throw Error('invalid source/owner/version');
++  if(!Array.isArray(r.requirements)||!r.requirements.length)throw Error('missing acceptance requirements');
++  for(const q of r.requirements){
++   if(!object(q)||!text(q.id)||!text(q.owner)||!['review','measurement','human'].includes(q.kind))throw Error('invalid acceptance requirements');
++   if(q.kind==='measurement'&&(!text(q.command)||!text(q.configuration)||typeof q.requiredLive!=='boolean'))throw Error('invalid measurement requirements');
++   requirements.set(q.id,q);
++  }
++  for(const k of ['evidence','reviews','decisions','runFailures'])if(!Array.isArray(r[k]))throw Error('missing '+k);
++  if(r.findingAcceptance!==undefined&&!Array.isArray(r.findingAcceptance))throw Error('invalid finding acceptance judgments');
++  if(!object(r.recovery)||!Array.isArray(r.recovery.obligations)||!Array.isArray(r.recovery.gaps)||!object(r.checkEvidence)||!['records','gaps','requiredLiveChecks'].every(k=>Array.isArray(r.checkEvidence[k])))throw Error('missing producer obligations/check evidence');
++  snapshots.push(r);
++ }catch(e){gap('root acceptance record: '+e.message)}
++}
++const current=snapshots.at(-1);
++if(!current)gap('caller acceptance requirements unavailable');
++else{
++ if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}
++ if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');
++ const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);
++ const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);
++ const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);
++ for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');
++ function measure(q,label){
++  if(!identity(q)){gap(label+': measurement identity unavailable');return false}
++  const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));
++  // Contradictory outcomes at an immutable source do not silently turn into a pass.
++  if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;
++  const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');
++  wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;
++ }
++ for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');
++ for(const q of requirements.values()){
++  if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);
++  else if(q.kind==='review'){
++   const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);
++   if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);
++  }else{
++   const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);
++   if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);
++  }
++ }
++ for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));
++ for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));
++ const failures=new Map();
++ for(const f of current.runFailures){
++  if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
++  failures.set(f.id,f);
++  if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
++  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
++  if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
++ }
++ for(const r of current.recovery.obligations){
++  if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
++  if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
++  if(r.kind==='deferred'){
++   const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
++   // Deferred final-suite records predate any tested tree. The caller explicitly binds
++   // their exact IDs to the final measurement; a pass cannot clear another obligation.
++   if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);
++   else measure({...r.data,requiredLive:true},r.id);
++  }
++  else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
++ }
++}
++// Use the same validated projection as Remaining and resume. Valid empty is distinct
++// from a missing extraction or an empty --keys stream carrying gaps.
++const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
++try{
++ if(![0,3].includes(projection.status))throw Error('unavailable');
++ const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');
++ for(const g of p.gaps)gap('finding evidence: '+JSON.stringify(g));
++ const sameRef=(a,b)=>a&&b&&a.source===b.source&&a.section===b.section&&a.position===b.position;
++ for(const f of p.findings.filter(f=>f.outstanding)){
++  const refs=f.occurrences.map(o=>({source:o.source,section:o.section,position:o.position}));
++  // Explicit projection links establish one finding group. Assess it once through
++  // any exact member ref, retaining every original source occurrence in the result.
++  const judgment=(current?.findingAcceptance||[]).filter(j=>refs.some(ref=>sameRef(j?.ref,ref))).at(-1);
++  if(!judgment||judgment.judgment!=='supported'||!text(judgment.basis)||!Array.isArray(judgment.evidence)||!judgment.evidence.length||!judgment.evidence.every(text)||!['required','nonblocking'].includes(judgment.effect))gap('finding acceptance relevance unproven: '+JSON.stringify(refs));
++  else if(judgment.effect==='required'){
++   if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));
++   wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));
++  }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection
++ }
++}catch{gap('finding projection unavailable')}
++// Reuse ordinary status collection validation without recursively running this gate.
++const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
++if(status.status!==0)gap('run status unavailable');
++else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
++const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
++console.log(JSON.stringify(result));process.exit(result.eligible?0:3);
++ACCEPTANCE
++  exit $?
++fi
++
++# Collection writes only after the caller has confirmed this invocation settled. Launch
++# intent records (settled:false) remain visible until that confirmation; file presence alone
++# cannot establish settlement. Ordinary status mode below remains read-only.
++if [ "${1:-}" = --collect ]; then
++  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: retain source bundles; collection is unverified' >&2; exit 4; }
++  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++  node - "$script_dir" "$@" <<'COLLECT'
++const fs=require('node:fs'), path=require('node:path'), crypto=require('node:crypto'), cp=require('node:child_process');
++const [scriptDir,,run,...args]=process.argv.slice(2);
++const usage=()=>{console.error('usage: report-status --collect RUN_MD [--invocation ID --workspace DIR --review FILE|none --verdict TEXT [--required RELATIVE_FILE]...]');process.exit(2)};
++if(!run)usage();
++const o={},required=[];
++for(let i=0;i<args.length;i+=2){if(!args[i+1])usage();if(args[i]==='--required')required.push(args[i+1]);else if(['--invocation','--workspace','--review','--verdict'].includes(args[i])&&!o[args[i]])o[args[i]]=args[i+1];else usage();}
++let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
++const dir=path.dirname(path.resolve(run)), latest=new Map();let approvals=false;
++function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
++const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
++ typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
++ (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
++ typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
++ Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
++ (r.complete===undefined || typeof r.complete==='boolean') &&
++ (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
++ (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
++ (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
++ (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
++let malformed=false;
++for(const line of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';if(!line.startsWith('- review-collection'))continue;try{if(!approvals||!line.startsWith('- review-collection · '))throw Error();const r=JSON.parse(line.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{malformed=true}}
++if(args.length){if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};const old=latest.get(r.invocationId);if(old&&(old.workspace!==r.workspace||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null))||JSON.stringify(old.required)!==JSON.stringify(r.required))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});console.error('COLLECTION_GAP: invocation identity or required bundle changed; retain both sources');process.exit(3)}if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}}
++const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
++const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
++let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
++for(const previous of latest.values()){
++ const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
++ const gap=m=>{if(!problems.includes(m))problems.push(m)};
++ // lstat on a leaf alone follows earlier directory symlinks. Validate the full
++ // source path before enumeration, manifest reads, hashing or extraction.
++ function source(relative){
++  const unsafe=()=>{gap('unsafe bundle path: '+relative);throw Error('unsafe bundle path')};
++  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))unsafe();
++  let full=r.workspace;
++  if(fs.lstatSync(full).isSymbolicLink())unsafe();
++  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())unsafe()}
++  const resolved=path.relative(fs.realpathSync(r.workspace),fs.realpathSync(full));
++  if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))unsafe();
++  return full;
++ }
++ if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
++ else if(r.reviewPath===null&&!hasBundle(r,id)){if(r.review!=='no work landed')gap('required review is null; owner: orchestrator; recover whole-epic review')}
++ else{
++  const expected=path.join(r.workspace,prefix+'.md');
++  if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
++  else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
++  const files=new Set(r.required);
++  function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
++  files.add(prefix+'.md');
++  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
++  const assembled=path.join('assembled',prefix+'-final');
++  try{source(assembled);walk(assembled)}catch{}
++  const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
++  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
++  // A completed archive remains usable after the source worktree is intentionally removed.
++  if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
++  const manifests=[];
++  for(const rel of [...files].sort()){
++   if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
++   const src=path.join(r.workspace,rel),dst=path.join(archive,rel),saved=previous.files?.find(f=>f.path===rel);
++   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
++   try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
++   if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
++    const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
++    const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',id+'/'+logical,src],{encoding:'utf8'});
++    try{if(result.status!==0)throw Error();const source=JSON.parse(result.stdout);source.artifact=path.relative(dir,dst);append('finding-source',source)}catch{gap('complete extraction unavailable: '+rel)}
++   }
++   if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
++   if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
++   if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(dst)}catch{gap('archive copy failed: '+rel)}}
++   if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
++   manifests.push({path:rel,sha256:dstHash});
++  }
++  r.files=manifests;
++ }
++ r.complete=problems.length===0;r.gaps=problems;
++ append('review-collection',r);
++ if(problems.length){gaps+=problems.length;for(const p of problems)console.error('COLLECTION_GAP: '+id+': '+p+'; keep source workspace and archive; owner: orchestrator')}
++}
++console.log(gaps?'collection: gaps — retain sources; block later invocation and cleanup':'collection: complete');process.exit(gaps?3:0);
++COLLECT
++  exit $?
++fi
++
+ usage() { echo "usage: report-status RUN_MD [--tip SHA] [--stalled PHASE]" >&2; exit 2; }
+ run='' stalled='' tip=''
+ while [ $# -gt 0 ]; do
+@@ -76,7 +285,75 @@ esac
+ [ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+ rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+ 
+-RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
++continuity=''
++if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }' "$run"; then
++  if command -v node >/dev/null 2>&1; then
++    script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
++    continuity=$(node - "$script_dir" "$run" <<'STATUS'
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
++const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
++const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
++ typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
++ (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
++ typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
++ Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
++ (r.complete===undefined || typeof r.complete==='boolean') &&
++ (r.gaps===undefined || (Array.isArray(r.gaps) && r.gaps.every(g=>typeof g==='string' && g!==''))) &&
++ (r.files===undefined || (Array.isArray(r.files) && r.files.every(f=>f && typeof f.path==='string' && f.path!=='' && !path.isAbsolute(f.path) && !f.path.split(/[\\/]/).includes('..') && /^[a-f0-9]{64}$/.test(f.sha256)))) &&
++ (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
++ (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
++for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
++// Collection metadata describes the last preservation attempt. Recheck retained bytes
++// on every read; status and acceptance must never repair or recollect an archive.
++let pending=0;const integrityGaps=[];
++for(const r of latest.values()){
++ let invalid=false;
++ for(const f of r.files||[]){
++  const file=path.join(path.dirname(path.resolve(run)),'reviews',r.invocationId,f.path);
++  let actual;
++  try{if(!fs.lstatSync(file).isFile())throw Error();actual=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}
++  catch{integrityGaps.push(r.invocationId+': archive unavailable: '+f.path);invalid=true;continue}
++  if(actual!==f.sha256){integrityGaps.push(r.invocationId+': archive integrity mismatch: '+f.path);invalid=true}
++ }
++ if(!r.complete||invalid)pending++;
++ errors+=(r.gaps||[]).length;
++}
++errors+=integrityGaps.length;
++for(const g of integrityGaps)console.log('review collection gap: '+g);
++if(pending)console.log('review collections pending: '+pending);
++if(errors)console.log('review collection gaps: '+errors);
++if(/^- finding-/m.test(text)){
++ const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
++ try{if(![0,3].includes(p.status))throw Error();const d=JSON.parse(p.stdout),n=d.findings.filter(f=>f.outstanding).length;if(n)console.log('outstanding findings: '+n);if(d.gaps.length)console.log('finding evidence gaps: '+d.gaps.length)}catch{console.log('finding projection unavailable — retain known findings')}
++}else if([...latest.values()].some(r=>r.reviewPath!==null))console.log('finding evidence gaps: source extraction unavailable');
++STATUS
++)
++  else
++    continuity='finding projection unavailable — retain known findings; review collection unverified'
++  fi
++fi
++
++if [ "${RS_SKIP_ACCEPTANCE:-}" != 1 ] && awk '/^- root-acceptance/ { found=1; exit } END { exit !found }' "$run"; then
++  if command -v node >/dev/null 2>&1; then
++    set +e
++    acceptance=$(bash "$0" --acceptance "$run")
++    acceptance_exit=$?
++    set -e
++    if [ "$acceptance_exit" = 3 ]; then
++      qualifier=$(node -e 'const d=JSON.parse(process.argv[1]); console.log([...d.pending,...d.gaps].join("; "))' "$acceptance")
++      continuity="${continuity}${continuity:+
++}root acceptance pending: $qualifier"
++    elif [ "$acceptance_exit" != 0 ]; then
++      continuity="${continuity}${continuity:+
++}root acceptance unverified"
++    fi
++  else
++    continuity="${continuity}${continuity:+
++}root acceptance unverified: Node unavailable"
++  fi
++fi
++
++RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+   function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+   function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
+   function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
+@@ -173,6 +450,8 @@ RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+       addq("final review: none recorded")
+       addq("sweep: none recorded")
+     }
++    nc = split(ENVIRON["RS_CONTINUITY"], cq, "\n")
++    for (i = 1; i <= nc; i++) addq(cq[i])
+     suffix = ""
+     for (i = 1; i <= nq; i++) suffix = suffix (i == 1 ? " [degraded: " : ", ") qs[i]
+     if (nq) suffix = suffix "]"

@@ -1,0 +1,73 @@
+{
+  "matchesExistingDurableBytes": [
+    {
+      "path": "result-scout_api-contract.json",
+      "sha256": "f60ec50c78197b4de0dab85658434cdbd1263ba9e094d229f64ed1d768202633"
+    },
+    {
+      "path": "result-scout_concurrency-async.json",
+      "sha256": "c9c15dda04850d2be4e985ab53f08f83dbbb56a8c596e805d52564d577f3930b"
+    },
+    {
+      "path": "result-scout_correctness.json",
+      "sha256": "15dc56d45d15759bba9e5852581d4bc1091e9750e718bef0448e9db844626afd"
+    },
+    {
+      "path": "result-scout_data-migrations.json",
+      "sha256": "23621dffb5bae2ae152806ffd7df2bf5aaa1152848a6bc51507346d33dffe1f3"
+    },
+    {
+      "path": "result-scout_deploy-safety.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-scout_hot-path-perf.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-scout_hygiene-docs.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-scout_observability.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-scout_premortem.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-scout_regression.json",
+      "sha256": "cf31cacf1ef0a59fde3bd8dc6d4edc93580effb4c4d4ddbc08c59ef69f3fbbf7"
+    },
+    {
+      "path": "result-scout_security.json",
+      "sha256": "b7c258cad30783c5618319068124b2d90fec0890724e1f1b835f138d4a0ef417"
+    },
+    {
+      "path": "result-scout_simplicity-design.json",
+      "sha256": "27587aa9ff8bfcdc81d1af57efe27b7ba5400d6e60db228fddf258ff8b8eae46"
+    },
+    {
+      "path": "result-scout_testing.json",
+      "sha256": "8aa973100a15bf817985395637131e838cf84e427be4792583def923f020f5fa"
+    },
+    {
+      "path": "result-dedupe.json",
+      "sha256": "26aa63b549d635acd704138d42c6b796824926d98bc9d967a07b7c8870faaafb"
+    },
+    {
+      "path": "result-judge_reproduce-0.json",
+      "sha256": "f101122c91b93f747de796a7f20dbb3048e93a25e8e2e920a004b5294aae76eb"
+    },
+    {
+      "path": "result-judge_refute-0.json",
+      "sha256": "aea8e8b679371d8d7dd0a68566670cbed9be9dcc1c1bfc3dd19b5b228fda15d4"
+    }
+  ],
+  "notInEarlierPartialDurableSnapshot": [
+    "result-judge_ground-0.json"
+  ],
+  "allOriginalScratchResultsRetained": true,
+  "completedStageReruns": 0
+}

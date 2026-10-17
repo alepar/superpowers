@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "purpose": "Mechanical historical report-format adapters; raw reports remain immutable.",
+  "adapterDirectory": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters",
+  "files": [
+    {
+      "rawPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "rawSha256": "37be65798bda8efb4bd1ba5e6f856099be0a3a8da8c7ff6a64e8e85d3442c4d3",
+      "adaptedPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md",
+      "adaptedSha256": "bf12912db81e5ab29acc95916a9025d5bbeeaca4b4559e5b425139a8b9b67e0f",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-1",
+      "historicalSourceIdentity": "612ea0a7/cluster-29-part-1",
+      "transformation": "Replaced the sole no-must-fix Must-fix section body with parser-supported `None`; moved the complete original body verbatim under `## Historical explanatory prose`. No actual finding text was present.",
+      "originalNoFindingDeclaration": "None established within this part. No existing not-ready artifact or earlier obligation is resolved merely by this verdict. The enclosing reviewer must combine the remaining bounded reviews and preserve their findings and gaps before deciding the former cluster's disposition.",
+      "originalMustFixBody": "None established within this part. No existing not-ready artifact or earlier obligation is resolved merely by this verdict. The enclosing reviewer must combine the remaining bounded reviews and preserve their findings and gaps before deciding the former cluster's disposition.",
+      "additionalMechanicalFormatting": [],
+      "proseMovementProof": {
+        "exactOriginalBodyRetained": true,
+        "mustFixBodyIsParserNone": true,
+        "nonTargetTextBytePreservedExceptListedMarkerInsertions": true,
+        "adapterReconstructedByteForByteFromRawAndListedTransforms": true,
+        "originalMustFixBodySha256": "4e85473df364b79343fc81a53b944a68986ba0522bfc76fee819bc0aa5f2e7e6",
+        "actualFindingItemsInOriginalMustFix": 0,
+        "untestedAndDeferredOccurrenceTextAndOrderMatchRaw": true,
+        "rawUnchangedSha256Rechecked": "37be65798bda8efb4bd1ba5e6f856099be0a3a8da8c7ff6a64e8e85d3442c4d3"
+      },
+      "completeJsonPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.complete.json",
+      "extractionStatus": "passed",
+      "completeJsonSha256": "016869bde73152a74bd751478aeee50a951263fd0c5e3b701dc5852b8a63338f",
+      "occurrenceCount": 8,
+      "completeJsonResult": {
+        "kind": "final-review",
+        "verdict": "ready — bounded historical evidence review of former cluster 29, part 01 only. No must-fix defect established in these assigned bytes. This completes inspection of inventory entries 1–7, not the remaining 23 source entries or the whole cluster, and does not certify current product behavior or root acceptance.",
+        "occurrenceCount": 8
+      }
+    },
+    {
+      "rawPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "rawSha256": "94fa46bc1099ebaa9b9c8dc1b9d88875a8d4062acc3c6ceba78b0fdb424007a8",
+      "adaptedPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+      "adaptedSha256": "a59807dbb565fab26242c2e6fabb74be82e5df5e11ce8e4106b0d5a2f94406ed",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-2",
+      "historicalSourceIdentity": "612ea0a7/cluster-29-part-2",
+      "transformation": "Replaced the sole no-must-fix Must-fix section body with parser-supported `None`; moved the complete original body verbatim under `## Historical explanatory prose`. No actual finding text was present.",
+      "originalNoFindingDeclaration": "None established within this part's bounded historical-evidence scope. The retained observations are internally consistent with the narrow sampling claim in the contextual report and preserve unavailable process evidence as unavailable, as required by the root design's workspace/process-safety and evidence/reporting invariants.",
+      "originalMustFixBody": "None established within this part's bounded historical-evidence scope. The retained observations are internally consistent with the narrow sampling claim in the contextual report and preserve unavailable process evidence as unavailable, as required by the root design's workspace/process-safety and evidence/reporting invariants.\n\nWhat the retained bytes establish:\n\n| Source record numbers | Exact label | State |\n| --- | --- | --- |\n| 1 | `initial` | A |\n| 2–60 | `waiting:seat-a.ready,seat-b.ready` | A |\n| 61 | `checkpoint:seat-a.ready,seat-b.ready` | A |\n| 62 | `after-advance1` | B |\n| 63–135 | `waiting:seat-a.phase1,seat-b.phase1` | B |\n| 136 | `checkpoint:seat-a.phase1,seat-b.phase1` | B |\n| 137 | `after-advance2` | C |\n| 138–243 | `reviews-finishing` | C |\n| 244 | `final` | C |\n\nA comprises 61 records with `HEAD` and `refs/heads/integration` both `7ddd110053fb302c4f6a0bd645ddbf28c512c563` and empty status. B comprises 75 records with both refs `25a3ee0d2089c3edacfa7633c6456f5f5f0e5afa`; C comprises 108 records with both refs `9323074ae09c0501a41d428382f7eac0f2d506b2`. All 183 B/C records have exactly ` M caller-session.txt` followed by a newline as status. The recorded refs never revert within the observations. This supports the observed advancing-caller-state claim; it does not independently identify the actor or prove commit ancestry.\n\nAll 244 records retain these identical file hashes under `/private/tmp/ufz-live-isolation/`:\n\n| Relative file | SHA-256 |\n| --- | --- |\n| `caller/caller-sentinel.txt` | `aa116ea1e33d8930bdc304890783acad5e9d7ca1c9396adddf44c60fe18f702f` |\n| `caller/build/caller-output.txt` | `2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9` |\n| `caller/lib/generated.mjs` | `f5d2e8f319f757ef6e661b3647daef5fc3dfef1ba03d4c7895a0827af50ff552` |\n| `seat-b/existing-output.txt` | `56f7f4069d3219ba689341f8e85482abd327ba50da39abe63054f647c1c88529` |\n\n`caller/caller-session.txt` changes from `37943edd83f080b70e8f9ac3cfe7075acbf651a3c8977d589ca5fa8ba34672fd` in A to `bc18b033081ea19a51a852df7efc2fc1e7581ed08d6b23bb1e06eaf0183a89b9` in B/C. `caller/lib/format.mjs` changes from `04224c0c2d9a4f36e0bf3e5525690b4bd2d0d9f8b560a7b169418dd502142804` in A/B to `6bd929261aef2c32c8862489ae0857478865d85e5323b0562bc9c570d103beea` in C. No additional hash variation occurs. These sampled changes agree with the contextual report's declared pending edit and second caller advance; observations alone do not establish their causes or the content of either changed file.\n\nEvery `processes` array contains exactly the same one string: `process enumeration unavailable: sandbox EPERM; own controller pid 41210`. It contains neither a successful process inventory nor evidence that PID 41210 or any descendant stopped.\n\nAll 244 recorded timestamps increase strictly, from `1792224970.915891` to `1792225037.221168`, a recorded span of 66.305277 seconds. Adjacent sample gaps range from 0.016707 to 0.2939272 seconds. These are sample timing facts, not continuous monitoring guarantees or agent-concurrency measurements.",
+      "additionalMechanicalFormatting": [],
+      "proseMovementProof": {
+        "exactOriginalBodyRetained": true,
+        "mustFixBodyIsParserNone": true,
+        "nonTargetTextBytePreservedExceptListedMarkerInsertions": true,
+        "adapterReconstructedByteForByteFromRawAndListedTransforms": true,
+        "originalMustFixBodySha256": "bd94833a37130cd60ed8a1acb914684cb67c5ca0c48b9674b4541fe61c5ee00d",
+        "actualFindingItemsInOriginalMustFix": 0,
+        "untestedAndDeferredOccurrenceTextAndOrderMatchRaw": true,
+        "rawUnchangedSha256Rechecked": "94fa46bc1099ebaa9b9c8dc1b9d88875a8d4062acc3c6ceba78b0fdb424007a8"
+      },
+      "completeJsonPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.complete.json",
+      "extractionStatus": "passed",
+      "completeJsonSha256": "8238f3ea7a8e0ae6bf9757faac5b7b5e7d6d22e439a3469c807226f6aac709b3",
+      "occurrenceCount": 10,
+      "completeJsonResult": {
+        "kind": "final-review",
+        "verdict": "ready — complete independent historical-evidence review of former cluster 29, part 02 only. No must-fix was established in this assigned artifact. This is neither whole-cluster acceptance nor a verdict on the current product tip or the run's outstanding acceptance obligations.",
+        "occurrenceCount": 10
+      }
+    },
+    {
+      "rawPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "rawSha256": "f1e236f0f26fe4ea12a633cc680a66a81d124b080df5e1db6a817dd6f8428de9",
+      "adaptedPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md",
+      "adaptedSha256": "b4c6a6ca28c8cf676dd6dd71df2d36281335fe6c4934ae72d46b08cd4e717f35",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-5",
+      "historicalSourceIdentity": "612ea0a7/cluster-29-part-5",
+      "transformation": "Replaced the sole no-must-fix Must-fix section body with parser-supported `None`; moved the complete original body verbatim under `## Historical explanatory prose`. No actual finding text was present.",
+      "originalNoFindingDeclaration": "None identified in the assigned Part 5 evidence and slices, subject to the explicit scope limits. The records support the limited observations above and do not contradict the claim context's qualified cleanup description. This is not a finding that the rest of the historical cluster or implementation is defect-free.",
+      "originalMustFixBody": "None identified in the assigned Part 5 evidence and slices, subject to the explicit scope limits. The records support the limited observations above and do not contradict the claim context's qualified cleanup description. This is not a finding that the rest of the historical cluster or implementation is defect-free.",
+      "additionalMechanicalFormatting": [],
+      "proseMovementProof": {
+        "exactOriginalBodyRetained": true,
+        "mustFixBodyIsParserNone": true,
+        "nonTargetTextBytePreservedExceptListedMarkerInsertions": true,
+        "adapterReconstructedByteForByteFromRawAndListedTransforms": true,
+        "originalMustFixBodySha256": "c7502d580c79c8e361739276a59512a2da23530fdd6fd67a063cc9b3b140d4d0",
+        "actualFindingItemsInOriginalMustFix": 0,
+        "untestedAndDeferredOccurrenceTextAndOrderMatchRaw": true,
+        "rawUnchangedSha256Rechecked": "f1e236f0f26fe4ea12a633cc680a66a81d124b080df5e1db6a817dd6f8428de9"
+      },
+      "completeJsonPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.complete.json",
+      "extractionStatus": "passed",
+      "completeJsonSha256": "15b350b98b9aac52a0f6ff971a5e345e407453787ed7bbe982efae686f4a2468",
+      "occurrenceCount": 6,
+      "completeJsonResult": {
+        "kind": "final-review",
+        "verdict": "ready",
+        "occurrenceCount": 6
+      }
+    },
+    {
+      "rawPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "rawSha256": "60d495ae06411bb3b4f4f3f3f64491e68e8b9b32c60f8aedabc4020e0454423a",
+      "adaptedPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md",
+      "adaptedSha256": "9bb427723e16385a414c4283afabba4d5fd1cf0a60d91c317c43874325c818b9",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-52-part-5",
+      "historicalSourceIdentity": "612ea0a7/cluster-52-part-5",
+      "transformation": "Replaced the sole no-must-fix Must-fix section body with parser-supported `None`; moved the complete original body verbatim under `## Historical explanatory prose`. No actual finding text was present.",
+      "originalNoFindingDeclaration": "None found within these exact assigned evidence bytes and their qualified claims.",
+      "originalMustFixBody": "None found within these exact assigned evidence bytes and their qualified claims.\n\nThe log contains 91 `[PASS]` lines, no `[FAIL]` lines, and the terminal line `All super-roast assemble-args tests passed`. It records shape/round/prompt checks (lines 1–21), literal replacement and generated-script checks (22–42), a pinned-input and isolated-reproduction fixture (43–46), invalid-input and missing-Node cases (47–60), and explicitly labeled mock-agent engine cases (61–99). This supports reporting those historical fixture outcomes as logged. There is no contradictory result within this file or its exact addition slice.",
+      "additionalMechanicalFormatting": {
+        "exactListMarkerPrefixesAddedToUnmarkedItems": [
+          {
+            "section": "Untested scope",
+            "itemText": "The log does not itself record the test runner command, exit status, execution timestamp, complete tested source tree, environment, or source-manifest binding. Equality to the captured head proves which log bytes were committed, not which implementation revision produced them. The two `Preparing worktree (detached HEAD 33fb033)` lines belong to the fixture output and do not identify the overall tested tree. I did not inspect the other parts' source manifests or result records, the test implementation, or runtime implementation, and I ran no tests."
+          },
+          {
+            "section": "Untested scope",
+            "itemText": "The engine section explicitly uses mock agents; its dispatch, convergence, prompt and roster assertions do not demonstrate independent live-agent operation. The pinned-input fixture's PASS message is historical test-output evidence, not a fresh observation of caller or sibling preservation in a real review session. Missing source attribution in this standalone log remains a limit on its use, not proof that attribution is absent from the other packages."
+          },
+          {
+            "section": "Untested scope",
+            "itemText": "I read the parent `docs/superpowers/specs/2026-10-16-workflow-reliability-design.md` and nested `docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-finding-continuity-design.md` for interpretation. Their separation of implementation, review, measurement and acceptance, and their supported-disposition requirements, prohibit treating this one passing fixture log as evidence of live interruption/retry behavior, cross-invocation finding preservation, resumed collection, supported finding resolution, or overall acceptance. Those guarantees are outside this package's demonstrated scope."
+          },
+          {
+            "section": "Untested scope",
+            "itemText": "Parts 01–04 of former cluster 52 and every other cluster remain outside this verdict. This report completes only part 05's evidence inspection; the prior whole-cluster not-ready artifacts and unresolved obligations retain their independent meaning."
+          },
+          {
+            "section": "Deferred OK",
+            "itemText": "No new defect is deferred by this review. Retaining the log and slice as qualified historical deterministic/mock evidence is acceptable. Source-qualified measurements, live changed-instruction evaluations, the remaining bounded parts, and any broader acceptance decision stay with the enclosing review and acceptance owner; none is silently discharged here."
+          }
+        ],
+        "itemTextAndOccurrenceOrderPreserved": true
+      },
+      "proseMovementProof": {
+        "exactOriginalBodyRetained": true,
+        "mustFixBodyIsParserNone": true,
+        "nonTargetTextBytePreservedExceptListedMarkerInsertions": true,
+        "adapterReconstructedByteForByteFromRawAndListedTransforms": true,
+        "originalMustFixBodySha256": "46129c124f37cf8f853445ad0081e583a3d537675e31d81c6a06bfa40a1e34bb",
+        "actualFindingItemsInOriginalMustFix": 0,
+        "untestedAndDeferredOccurrenceTextAndOrderMatchRaw": true,
+        "rawUnchangedSha256Rechecked": "60d495ae06411bb3b4f4f3f3f64491e68e8b9b32c60f8aedabc4020e0454423a"
+      },
+      "completeJsonPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-52-part-5.md.complete.json",
+      "extractionStatus": "passed",
+      "completeJsonSha256": "d83652d52c2aff7839012dcc547f23123be8893697bbc844758e752d925d7b18",
+      "occurrenceCount": 5,
+      "completeJsonResult": {
+        "kind": "final-review",
+        "verdict": "ready — former cluster 52, part 05 only. This is a completed bounded review of the historical evidence bytes assigned to inventory position 90, not a whole-cluster clean verdict, implementation acceptance, or a fresh execution result.",
+        "occurrenceCount": 5
+      }
+    }
+  ],
+  "scratchExtractions": [
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-1.md.scratch-612ea0a7.complete.json",
+      "source": "612ea0a7/cluster-29-part-1",
+      "authoritative": false
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md.scratch-612ea0a7.complete.json",
+      "source": "612ea0a7/cluster-29-part-2",
+      "authoritative": false
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/historical-report-format-adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-5.md.scratch-612ea0a7.complete.json",
+      "source": "612ea0a7/cluster-29-part-5",
+      "authoritative": false
+    }
+  ],
+  "gaps": [],
+  "verification": {
+    "method": "Rebuilt each adapter byte-for-byte from immutable raw input using only listed section replacement/movement and, for cluster-52-part-5, top-level list-marker insertion. Compared parser occurrences against source prose reconstructed in original section order. Rechecked original raw SHA-256 values.",
+    "allAdaptersReconstructedExactly": true,
+    "allFindingUntestedDeferredOccurrencesRetainedInOrder": true,
+    "allOriginalRawHashesRechecked": true
+  }
+}

@@ -1,0 +1,900 @@
+{
+  "originalRelativePath": "evidence-regression/repo/.git",
+  "originalScratchPath": "/tmp/ufz-pr2-controller/evidence-regression/repo/.git",
+  "representation": "standard uncompressed PAX tar; inert regular file, not extracted",
+  "archiveRelativePath": "evidence-regression/repo/git-metadata.evidence.tar",
+  "archiveSHA256": "37ca7900066f45eec3cbfde192e5cd68158c090fd485b6a43d308e5f45677d2e",
+  "archiveRoot": ".git",
+  "rootMetadata": {
+    "relativePath": "evidence-regression/repo/.git",
+    "mode": 493,
+    "mtimeNs": 1792254319659362700,
+    "type": "directory"
+  },
+  "inventory": [
+    {
+      "relativePath": "COMMIT_EDITMSG",
+      "mode": 420,
+      "mtimeNs": 1792254319658312142,
+      "type": "file",
+      "bytes": 31,
+      "sha256": "fe32e4eadcf411b87f5eba104a021e8c221df6b3caaca6bc44b478d56ce33fcc"
+    },
+    {
+      "relativePath": "HEAD",
+      "mode": 420,
+      "mtimeNs": 1792254319502773199,
+      "type": "file",
+      "bytes": 21,
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+    },
+    {
+      "relativePath": "config",
+      "mode": 420,
+      "mtimeNs": 1792254319512937234,
+      "type": "file",
+      "bytes": 204,
+      "sha256": "56f35acd71606cc93128c42a087b50d85144202f4eaec20cfddfb6d6fa9f48ef"
+    },
+    {
+      "relativePath": "description",
+      "mode": 420,
+      "mtimeNs": 1792254319499384396,
+      "type": "file",
+      "bytes": 73,
+      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+    },
+    {
+      "relativePath": "hooks",
+      "mode": 493,
+      "mtimeNs": 1792254319500846252,
+      "type": "directory"
+    },
+    {
+      "relativePath": "hooks/applypatch-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500060573,
+      "type": "file",
+      "bytes": 478,
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "relativePath": "hooks/commit-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499668567,
+      "type": "file",
+      "bytes": 1972,
+      "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+    },
+    {
+      "relativePath": "hooks/fsmonitor-watchman.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500172492,
+      "type": "file",
+      "bytes": 4611,
+      "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+    },
+    {
+      "relativePath": "hooks/post-update.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500445496,
+      "type": "file",
+      "bytes": 189,
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "relativePath": "hooks/pre-applypatch.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500613832,
+      "type": "file",
+      "bytes": 424,
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "relativePath": "hooks/pre-commit.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499983405,
+      "type": "file",
+      "bytes": 1649,
+      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+    },
+    {
+      "relativePath": "hooks/pre-merge-commit.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500530414,
+      "type": "file",
+      "bytes": 416,
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "relativePath": "hooks/pre-push.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500699000,
+      "type": "file",
+      "bytes": 1374,
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "relativePath": "hooks/pre-rebase.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499805111,
+      "type": "file",
+      "bytes": 4898,
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "relativePath": "hooks/pre-receive.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500262576,
+      "type": "file",
+      "bytes": 544,
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "relativePath": "hooks/prepare-commit-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500349286,
+      "type": "file",
+      "bytes": 1492,
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "relativePath": "hooks/push-to-checkout.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500876003,
+      "type": "file",
+      "bytes": 2783,
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "relativePath": "hooks/sendemail-validate.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499895446,
+      "type": "file",
+      "bytes": 2308,
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+    },
+    {
+      "relativePath": "hooks/update.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500785668,
+      "type": "file",
+      "bytes": 3650,
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    },
+    {
+      "relativePath": "index",
+      "mode": 420,
+      "mtimeNs": 1792254319657690382,
+      "type": "file",
+      "bytes": 429,
+      "sha256": "2f5540650694ab2357be0fd4affb38a93d93c6a9a47e1703af8bd99555b7736c"
+    },
+    {
+      "relativePath": "info",
+      "mode": 493,
+      "mtimeNs": 1792254319499208643,
+      "type": "directory"
+    },
+    {
+      "relativePath": "info/exclude",
+      "mode": 420,
+      "mtimeNs": 1792254319499270727,
+      "type": "file",
+      "bytes": 240,
+      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+    },
+    {
+      "relativePath": "logs",
+      "mode": 493,
+      "mtimeNs": 1792254319526937537,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/HEAD",
+      "mode": 420,
+      "mtimeNs": 1792254319659004194,
+      "type": "file",
+      "bytes": 510,
+      "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+    },
+    {
+      "relativePath": "logs/refs",
+      "mode": 493,
+      "mtimeNs": 1792254319526984663,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/refs/heads",
+      "mode": 493,
+      "mtimeNs": 1792254319527023705,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/refs/heads/main",
+      "mode": 420,
+      "mtimeNs": 1792254319659033986,
+      "type": "file",
+      "bytes": 510,
+      "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+    },
+    {
+      "relativePath": "objects",
+      "mode": 493,
+      "mtimeNs": 1792254319666275933,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/18",
+      "mode": 493,
+      "mtimeNs": 1792254319657662048,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/18/77cf8b0b71ceb8fe502f24431556c6d7d8c350",
+      "mode": 292,
+      "mtimeNs": 1792254319657369377,
+      "type": "file",
+      "bytes": 86,
+      "sha256": "14db7494b8e322b8695f20393fdc005b95b1e678a02f722ffae9fe9119a7393d"
+    },
+    {
+      "relativePath": "objects/1c",
+      "mode": 493,
+      "mtimeNs": 1792254319657265167,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/1c/bb7f0d8fbd1214810de0d075e290bad8e12d32",
+      "mode": 292,
+      "mtimeNs": 1792254319656960120,
+      "type": "file",
+      "bytes": 45,
+      "sha256": "ed11e0bed1200c17597d6bfde45b10d72a29d1164b3e7e4a5973994284a0f2ac"
+    },
+    {
+      "relativePath": "objects/4a",
+      "mode": 493,
+      "mtimeNs": 1792254319658747482,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/4a/4ab1ae20dbc461151ff53e252a70c7376afeff",
+      "mode": 292,
+      "mtimeNs": 1792254319658447894,
+      "type": "file",
+      "bytes": 182,
+      "sha256": "2faf1f2d19287d89d4e1dce77d87ae5d2bf79b3bc3244bc6ae5ec076930e2073"
+    },
+    {
+      "relativePath": "objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+      "mode": 292,
+      "mtimeNs": 1792254319648895000,
+      "type": "file",
+      "bytes": 35,
+      "sha256": "44e4a3392bf1ca5774dc5f12c77f240135dbe5da43d3b00e757bfa80b96a6a6e"
+    },
+    {
+      "relativePath": "objects/4c",
+      "mode": 493,
+      "mtimeNs": 1792254319551673134,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/4c/6c5b07156c79d382f4fb0e8cb6af7b0a92e031",
+      "mode": 292,
+      "mtimeNs": 1792254319551366837,
+      "type": "file",
+      "bytes": 164,
+      "sha256": "a57f1f9366710e6777926301fd45851d1bfbf599556241c0e2269f199da084af"
+    },
+    {
+      "relativePath": "objects/64",
+      "mode": 493,
+      "mtimeNs": 1792254319525486431,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+      "mode": 292,
+      "mtimeNs": 1792254319525163551,
+      "type": "file",
+      "bytes": 55,
+      "sha256": "645cfeea1184ad06833bcd006145b7e2d7989dde0b7bc3019b0dbf54f5e98aab"
+    },
+    {
+      "relativePath": "objects/6f",
+      "mode": 493,
+      "mtimeNs": 1792254319656831910,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/6f/33d09483e4b22c47072bc90ba00c4ebe31a980",
+      "mode": 292,
+      "mtimeNs": 1792254319656527739,
+      "type": "file",
+      "bytes": 49,
+      "sha256": "dd9bd049ca9b20e1ab79dc800bd0972c9aac94bffbc4e6453c9dd13d10ad8d0b"
+    },
+    {
+      "relativePath": "objects/71",
+      "mode": 493,
+      "mtimeNs": 1792254319655537431,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/71/5afb97ca762c96dea22cd99fd55c93b37f94a0",
+      "mode": 292,
+      "mtimeNs": 1792254319655212093,
+      "type": "file",
+      "bytes": 51,
+      "sha256": "6a3a07c805f30033970dce9a53af36c5622f5a972202354ad46b04d4cd1e6fcc"
+    },
+    {
+      "relativePath": "objects/79",
+      "mode": 493,
+      "mtimeNs": 1792254319656419820,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/79/7d6dbab8cec3ef4ce4f28b7d951e38945d8771",
+      "mode": 292,
+      "mtimeNs": 1792254319656104357,
+      "type": "file",
+      "bytes": 59,
+      "sha256": "b6e9dc9280afed46a2a2ceea0edffb4a701c6606bf310f52faeaffa4bddc57bd"
+    },
+    {
+      "relativePath": "objects/9a",
+      "mode": 493,
+      "mtimeNs": 1792254319550559449,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+      "mode": 292,
+      "mtimeNs": 1792254319550214153,
+      "type": "file",
+      "bytes": 55,
+      "sha256": "e3e559b07e6f1ebea905421bddd9fb5f0c1a4d332a9eae5e32222063a25858fa"
+    },
+    {
+      "relativePath": "objects/c3",
+      "mode": 493,
+      "mtimeNs": 1792254319649421044,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/c3/278194dfdcd5d3a14d299b6c8bf6b7505cf5ac",
+      "mode": 292,
+      "mtimeNs": 1792254319649081038,
+      "type": "file",
+      "bytes": 244,
+      "sha256": "d6ead08d32b867b4e5be54cd19ff34bcfd50c058bddd2c555c4ea8c0f3e96742"
+    },
+    {
+      "relativePath": "objects/d8",
+      "mode": 493,
+      "mtimeNs": 1792254319655975813,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/d8/ace5e43aff32cd687507adf15ee8f56990a7d5",
+      "mode": 292,
+      "mtimeNs": 1792254319655662600,
+      "type": "file",
+      "bytes": 52,
+      "sha256": "5ff11c96546c9059895a78a0ef16ff4653371648815a8bf11a640dd48fb3121a"
+    },
+    {
+      "relativePath": "objects/e8",
+      "mode": 493,
+      "mtimeNs": 1792254319519616922,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+      "mode": 292,
+      "mtimeNs": 1792254319519268292,
+      "type": "file",
+      "bytes": 35,
+      "sha256": "3c85d4e06a87020ef915afe3b5a16937fc654c9ef032440fab574f328d4585f0"
+    },
+    {
+      "relativePath": "objects/f3",
+      "mode": 493,
+      "mtimeNs": 1792254319526490697,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/f3/338270c314871120c32c9516c2e6c15291e77f",
+      "mode": 292,
+      "mtimeNs": 1792254319526178817,
+      "type": "file",
+      "bytes": 132,
+      "sha256": "1b7b549a43adc97949b292767c6c3f9d224003d5d68446dfb0d27b740d4ff3b4"
+    },
+    {
+      "relativePath": "objects/info",
+      "mode": 493,
+      "mtimeNs": 1792254319502938118,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/pack",
+      "mode": 493,
+      "mtimeNs": 1792254319502903660,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs",
+      "mode": 493,
+      "mtimeNs": 1792254319502682573,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs/heads",
+      "mode": 493,
+      "mtimeNs": 1792254319659094071,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs/heads/main",
+      "mode": 420,
+      "mtimeNs": 1792254319658974860,
+      "type": "file",
+      "bytes": 41,
+      "sha256": "0526e55af7c344ef4c3610c114aeb2667cfcbac175dff8f34ba5ac2035e1ca0e"
+    },
+    {
+      "relativePath": "refs/tags",
+      "mode": 493,
+      "mtimeNs": 1792254319502681281,
+      "type": "directory"
+    }
+  ],
+  "originalScratchInventory": [
+    {
+      "relativePath": "COMMIT_EDITMSG",
+      "mode": 420,
+      "mtimeNs": 1792254319658312142,
+      "type": "file",
+      "bytes": 31,
+      "sha256": "fe32e4eadcf411b87f5eba104a021e8c221df6b3caaca6bc44b478d56ce33fcc"
+    },
+    {
+      "relativePath": "HEAD",
+      "mode": 420,
+      "mtimeNs": 1792254319502773199,
+      "type": "file",
+      "bytes": 21,
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+    },
+    {
+      "relativePath": "config",
+      "mode": 420,
+      "mtimeNs": 1792254319512937234,
+      "type": "file",
+      "bytes": 204,
+      "sha256": "56f35acd71606cc93128c42a087b50d85144202f4eaec20cfddfb6d6fa9f48ef"
+    },
+    {
+      "relativePath": "description",
+      "mode": 420,
+      "mtimeNs": 1792254319499384396,
+      "type": "file",
+      "bytes": 73,
+      "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+    },
+    {
+      "relativePath": "hooks",
+      "mode": 493,
+      "mtimeNs": 1792254319500846252,
+      "type": "directory"
+    },
+    {
+      "relativePath": "hooks/applypatch-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500060573,
+      "type": "file",
+      "bytes": 478,
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "relativePath": "hooks/commit-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499668567,
+      "type": "file",
+      "bytes": 1972,
+      "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+    },
+    {
+      "relativePath": "hooks/fsmonitor-watchman.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500172492,
+      "type": "file",
+      "bytes": 4611,
+      "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+    },
+    {
+      "relativePath": "hooks/post-update.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500445496,
+      "type": "file",
+      "bytes": 189,
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "relativePath": "hooks/pre-applypatch.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500613832,
+      "type": "file",
+      "bytes": 424,
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "relativePath": "hooks/pre-commit.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499983405,
+      "type": "file",
+      "bytes": 1649,
+      "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+    },
+    {
+      "relativePath": "hooks/pre-merge-commit.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500530414,
+      "type": "file",
+      "bytes": 416,
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "relativePath": "hooks/pre-push.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500699000,
+      "type": "file",
+      "bytes": 1374,
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "relativePath": "hooks/pre-rebase.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499805111,
+      "type": "file",
+      "bytes": 4898,
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "relativePath": "hooks/pre-receive.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500262576,
+      "type": "file",
+      "bytes": 544,
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "relativePath": "hooks/prepare-commit-msg.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500349286,
+      "type": "file",
+      "bytes": 1492,
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "relativePath": "hooks/push-to-checkout.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500876003,
+      "type": "file",
+      "bytes": 2783,
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "relativePath": "hooks/sendemail-validate.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319499895446,
+      "type": "file",
+      "bytes": 2308,
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+    },
+    {
+      "relativePath": "hooks/update.sample",
+      "mode": 493,
+      "mtimeNs": 1792254319500785668,
+      "type": "file",
+      "bytes": 3650,
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    },
+    {
+      "relativePath": "index",
+      "mode": 420,
+      "mtimeNs": 1792254319657690382,
+      "type": "file",
+      "bytes": 429,
+      "sha256": "2f5540650694ab2357be0fd4affb38a93d93c6a9a47e1703af8bd99555b7736c"
+    },
+    {
+      "relativePath": "info",
+      "mode": 493,
+      "mtimeNs": 1792254319499208643,
+      "type": "directory"
+    },
+    {
+      "relativePath": "info/exclude",
+      "mode": 420,
+      "mtimeNs": 1792254319499270727,
+      "type": "file",
+      "bytes": 240,
+      "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+    },
+    {
+      "relativePath": "logs",
+      "mode": 493,
+      "mtimeNs": 1792254319526937537,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/HEAD",
+      "mode": 420,
+      "mtimeNs": 1792254319659004194,
+      "type": "file",
+      "bytes": 510,
+      "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+    },
+    {
+      "relativePath": "logs/refs",
+      "mode": 493,
+      "mtimeNs": 1792254319526984663,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/refs/heads",
+      "mode": 493,
+      "mtimeNs": 1792254319527023705,
+      "type": "directory"
+    },
+    {
+      "relativePath": "logs/refs/heads/main",
+      "mode": 420,
+      "mtimeNs": 1792254319659033986,
+      "type": "file",
+      "bytes": 510,
+      "sha256": "dc598bbde80d42a37be017b84d9fdd7525aec19a5a43386260e7326f86326c3f"
+    },
+    {
+      "relativePath": "objects",
+      "mode": 493,
+      "mtimeNs": 1792254319666275933,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/18",
+      "mode": 493,
+      "mtimeNs": 1792254319657662048,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/18/77cf8b0b71ceb8fe502f24431556c6d7d8c350",
+      "mode": 292,
+      "mtimeNs": 1792254319657369377,
+      "type": "file",
+      "bytes": 86,
+      "sha256": "14db7494b8e322b8695f20393fdc005b95b1e678a02f722ffae9fe9119a7393d"
+    },
+    {
+      "relativePath": "objects/1c",
+      "mode": 493,
+      "mtimeNs": 1792254319657265167,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/1c/bb7f0d8fbd1214810de0d075e290bad8e12d32",
+      "mode": 292,
+      "mtimeNs": 1792254319656960120,
+      "type": "file",
+      "bytes": 45,
+      "sha256": "ed11e0bed1200c17597d6bfde45b10d72a29d1164b3e7e4a5973994284a0f2ac"
+    },
+    {
+      "relativePath": "objects/4a",
+      "mode": 493,
+      "mtimeNs": 1792254319658747482,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/4a/4ab1ae20dbc461151ff53e252a70c7376afeff",
+      "mode": 292,
+      "mtimeNs": 1792254319658447894,
+      "type": "file",
+      "bytes": 182,
+      "sha256": "2faf1f2d19287d89d4e1dce77d87ae5d2bf79b3bc3244bc6ae5ec076930e2073"
+    },
+    {
+      "relativePath": "objects/4a/fe2ededa27634921b9c55ce86efd8ab605efce",
+      "mode": 292,
+      "mtimeNs": 1792254319648895000,
+      "type": "file",
+      "bytes": 35,
+      "sha256": "44e4a3392bf1ca5774dc5f12c77f240135dbe5da43d3b00e757bfa80b96a6a6e"
+    },
+    {
+      "relativePath": "objects/4c",
+      "mode": 493,
+      "mtimeNs": 1792254319551673134,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/4c/6c5b07156c79d382f4fb0e8cb6af7b0a92e031",
+      "mode": 292,
+      "mtimeNs": 1792254319551366837,
+      "type": "file",
+      "bytes": 164,
+      "sha256": "a57f1f9366710e6777926301fd45851d1bfbf599556241c0e2269f199da084af"
+    },
+    {
+      "relativePath": "objects/64",
+      "mode": 493,
+      "mtimeNs": 1792254319525486431,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/64/5a60e6a8e671f2bb28819b8dd484335fc766ed",
+      "mode": 292,
+      "mtimeNs": 1792254319525163551,
+      "type": "file",
+      "bytes": 55,
+      "sha256": "645cfeea1184ad06833bcd006145b7e2d7989dde0b7bc3019b0dbf54f5e98aab"
+    },
+    {
+      "relativePath": "objects/6f",
+      "mode": 493,
+      "mtimeNs": 1792254319656831910,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/6f/33d09483e4b22c47072bc90ba00c4ebe31a980",
+      "mode": 292,
+      "mtimeNs": 1792254319656527739,
+      "type": "file",
+      "bytes": 49,
+      "sha256": "dd9bd049ca9b20e1ab79dc800bd0972c9aac94bffbc4e6453c9dd13d10ad8d0b"
+    },
+    {
+      "relativePath": "objects/71",
+      "mode": 493,
+      "mtimeNs": 1792254319655537431,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/71/5afb97ca762c96dea22cd99fd55c93b37f94a0",
+      "mode": 292,
+      "mtimeNs": 1792254319655212093,
+      "type": "file",
+      "bytes": 51,
+      "sha256": "6a3a07c805f30033970dce9a53af36c5622f5a972202354ad46b04d4cd1e6fcc"
+    },
+    {
+      "relativePath": "objects/79",
+      "mode": 493,
+      "mtimeNs": 1792254319656419820,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/79/7d6dbab8cec3ef4ce4f28b7d951e38945d8771",
+      "mode": 292,
+      "mtimeNs": 1792254319656104357,
+      "type": "file",
+      "bytes": 59,
+      "sha256": "b6e9dc9280afed46a2a2ceea0edffb4a701c6606bf310f52faeaffa4bddc57bd"
+    },
+    {
+      "relativePath": "objects/9a",
+      "mode": 493,
+      "mtimeNs": 1792254319550559449,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/9a/0f2451241708ead6300a7f30e707b1bf225aca",
+      "mode": 292,
+      "mtimeNs": 1792254319550214153,
+      "type": "file",
+      "bytes": 55,
+      "sha256": "e3e559b07e6f1ebea905421bddd9fb5f0c1a4d332a9eae5e32222063a25858fa"
+    },
+    {
+      "relativePath": "objects/c3",
+      "mode": 493,
+      "mtimeNs": 1792254319649421044,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/c3/278194dfdcd5d3a14d299b6c8bf6b7505cf5ac",
+      "mode": 292,
+      "mtimeNs": 1792254319649081038,
+      "type": "file",
+      "bytes": 244,
+      "sha256": "d6ead08d32b867b4e5be54cd19ff34bcfd50c058bddd2c555c4ea8c0f3e96742"
+    },
+    {
+      "relativePath": "objects/d8",
+      "mode": 493,
+      "mtimeNs": 1792254319655975813,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/d8/ace5e43aff32cd687507adf15ee8f56990a7d5",
+      "mode": 292,
+      "mtimeNs": 1792254319655662600,
+      "type": "file",
+      "bytes": 52,
+      "sha256": "5ff11c96546c9059895a78a0ef16ff4653371648815a8bf11a640dd48fb3121a"
+    },
+    {
+      "relativePath": "objects/e8",
+      "mode": 493,
+      "mtimeNs": 1792254319519616922,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/e8/f7328d6ee564f8eaa6f996665813a207b26179",
+      "mode": 292,
+      "mtimeNs": 1792254319519268292,
+      "type": "file",
+      "bytes": 35,
+      "sha256": "3c85d4e06a87020ef915afe3b5a16937fc654c9ef032440fab574f328d4585f0"
+    },
+    {
+      "relativePath": "objects/f3",
+      "mode": 493,
+      "mtimeNs": 1792254319526490697,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/f3/338270c314871120c32c9516c2e6c15291e77f",
+      "mode": 292,
+      "mtimeNs": 1792254319526178817,
+      "type": "file",
+      "bytes": 132,
+      "sha256": "1b7b549a43adc97949b292767c6c3f9d224003d5d68446dfb0d27b740d4ff3b4"
+    },
+    {
+      "relativePath": "objects/info",
+      "mode": 493,
+      "mtimeNs": 1792254319502938118,
+      "type": "directory"
+    },
+    {
+      "relativePath": "objects/pack",
+      "mode": 493,
+      "mtimeNs": 1792254319502903660,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs",
+      "mode": 493,
+      "mtimeNs": 1792254319502682573,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs/heads",
+      "mode": 493,
+      "mtimeNs": 1792254319659094071,
+      "type": "directory"
+    },
+    {
+      "relativePath": "refs/heads/main",
+      "mode": 420,
+      "mtimeNs": 1792254319658974860,
+      "type": "file",
+      "bytes": 41,
+      "sha256": "0526e55af7c344ef4c3610c114aeb2667cfcbac175dff8f34ba5ac2035e1ca0e"
+    },
+    {
+      "relativePath": "refs/tags",
+      "mode": 493,
+      "mtimeNs": 1792254319502681281,
+      "type": "directory"
+    }
+  ],
+  "verification": "Every original member identity/type/mode and regular-file byte hash verified against the archive; no extraction or link traversal performed. Original scratch directory timestamps and modes can differ from the earlier durable copy; their exact inventory is separately retained.",
+  "originalScratchPreserved": true
+}

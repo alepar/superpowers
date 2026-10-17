@@ -1,0 +1,27 @@
+{
+  "verifiedSourceEntries": 1322,
+  "priorDifferingArtifactsPreserved": [
+    "results.json"
+  ],
+  "reportSHA256": "1e4b0c9881a7906a467ccd31d4dae5dfe050bb8077a21862aacefdd6d534a434",
+  "coverageSHA256": "681faf3f53d5a79db25c4616cebbb93c5c4cb1c83df484ed0cde32576a8f5893",
+  "sourceHashMapSHA256": "5adba8d0dcfec9321b8a76716fc1c24b42b8bd20804444096c0b137770633165",
+  "reporterOutputSHA256": "bc468db57f1c7d98c01e26bd5d2efcb21ca6bcb9de85c03f876670bb2181bddd",
+  "engineOutputSHA256": "346286c2d44ca44dbafe0db5538652e0f705df5f3e600f7be4b8f679994d0a0a",
+  "archivePackagingManifestSHA256": "82aab0e5347656fbcb68d45253ca0a8c69c00aa289e309e4765fe90a397f4ab3",
+  "priorPersistenceVerification": "archive-packaging-prior/persistence-verification.json",
+  "packagingCorrectionOnly": true,
+  "largeArtifactEncoding": {
+    "logicalArtifact": "authored.diff",
+    "logicalBytes": 136599903,
+    "logicalSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "storedRelativePath": "authored.diff.gz",
+    "storedBytes": 30203817,
+    "storedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "decodeMethod": "gzip -dc authored.diff.gz",
+    "decodedBytesVerified": 136599903,
+    "decodedSHA256Verified": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "exactMatch": true
+  },
+  "currentPayloadEntryCount": 1180
+}

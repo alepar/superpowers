@@ -1,0 +1,6 @@
+{
+  "temporaryPrefix": "/tmp/ufz-pr2-controller",
+  "durablePrefix": "docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages",
+  "mapping": "Literal prefix replacement in the human report only. All raw stage outputs remain byte-for-byte unchanged; symlink fixture targets are preserved verbatim and not followed.",
+  "previousVersions": "Differing pre-continuation durable bytes retained under controller-before-continuation/"
+}

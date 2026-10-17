@@ -1,0 +1,22 @@
+{ "t0": "2026-10-09T06:00:00Z", "end": 1000, "epic": "cq", "cwd": "/w",
+  "beads": [
+    { "id": "cq", "issue_type": "epic", "status": "open" },
+    { "id": "cq.1", "issue_type": "task", "status": "closed", "parent": "cq" }
+  ],
+  "caller": [ { "cmd": "git -C /w/.worktrees/epic-cq--task-cq.1 rebase epic-cq", "start": 710, "end": 720 } ],
+  "coord": [
+    ["prompt", -90, "run $super-auto on cq"],
+    ["usage", -80, 50000, 100000],
+    ["usage", 200, 85000, 100000],
+    ["compacted", 210, 95000],
+    ["usage", 220, 20000, 400000],
+    ["usage", 900, 300000, 400000],
+    ["record", 950, 320000],
+    ["compacted", 960, 336000],
+    ["usage", 970, 30000, 400000]
+  ],
+  "agents": [
+    { "codex": "impl_cq_1", "start": 0, "end": 600, "context": [[1, 40000, 258400], [300, 240000, 258400], [320, 30000, 258400]], "compact": [[310, 245000]] },
+    { "codex": "probe", "parent": "impl_cq_1", "start": 100, "end": 200, "context": [[101, 10000, 258400]] },
+    { "codex": "review_cq_1", "start": 600, "end": 700, "inherited": true, "forkCompacted": 200000, "context": [[601, 120000, 258400], [650, 130000, 258400]] }
+  ] }

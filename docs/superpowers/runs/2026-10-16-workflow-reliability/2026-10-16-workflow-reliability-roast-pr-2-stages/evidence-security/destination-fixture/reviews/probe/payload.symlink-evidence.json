@@ -1,0 +1,20 @@
+{
+  "relativePath": "evidence-security/destination-fixture/reviews/probe/payload",
+  "mode": 493,
+  "mtimeNs": 1792254278638371515,
+  "type": "symlink",
+  "target": "/tmp/ufz-pr2-controller/evidence-security/destination-fixture/outside",
+  "targetBytesBase64": "L3RtcC91ZnotcHIyLWNvbnRyb2xsZXIvZXZpZGVuY2Utc2VjdXJpdHkvZGVzdGluYXRpb24tZml4dHVyZS9vdXRzaWRl",
+  "targetBytesSHA256": "97acb94477a791c9a886ab1cc85b07f0a337d71546928c33de5cde61206c2568",
+  "representation": "inert symbolic-link descriptor; original link was not followed",
+  "originalDurablePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/2026-10-16-workflow-reliability-roast-pr-2-stages/evidence-security/destination-fixture/reviews/probe/payload",
+  "originalScratchPath": "/tmp/ufz-pr2-controller/evidence-security/destination-fixture/reviews/probe/payload",
+  "originalIdentity": {
+    "device": 16777234,
+    "inode": 217409767,
+    "uid": 501,
+    "gid": 20,
+    "size": 69
+  },
+  "originalScratchPreserved": true
+}

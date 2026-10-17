@@ -1,0 +1,1851 @@
+{
+  "schemaVersion": 1,
+  "purpose": "byte-exact report and review history intake; extraction only; no resolution classification",
+  "archiveRoot": "task-report-history-r1",
+  "sourcePlanDirectory": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan",
+  "mappings": {
+    "planMappingFile": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/mapping-all.json",
+    "fixInvocationFile": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/launch-fix-r1.json",
+    "originalTaskOrdinals": "1-18",
+    "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+    "fixTaskOrdinals": "19-29",
+    "fixCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b"
+  },
+  "rawFileCount": 110,
+  "rawMarkdownCount": 106,
+  "rawJsonCount": 4,
+  "rawFiles": [
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-1-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-1-brief.md",
+      "sha256": "9d9891cc80ad219f31c0095127401de8d50cd479545450a4208c3adfa2efbf3a",
+      "byteCount": 5469,
+      "logicalRole": "brief",
+      "ordinal": 1,
+      "logicalTaskId": "super-plan-ufz.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-1-report.md",
+      "durablePath": "task-report-history-r1/raw/task-1-report.md",
+      "sha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "byteCount": 10857,
+      "logicalRole": "report",
+      "ordinal": 1,
+      "logicalTaskId": "super-plan-ufz.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-1-review.md",
+      "durablePath": "task-report-history-r1/raw/task-1-review.md",
+      "sha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+      "byteCount": 4560,
+      "logicalRole": "review",
+      "ordinal": 1,
+      "logicalTaskId": "super-plan-ufz.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-10-brief.md",
+      "sha256": "12c3b655b034458a36cdc8618a211695d722f88f6833677d8ee296d1af81068a",
+      "byteCount": 5939,
+      "logicalRole": "brief",
+      "ordinal": 10,
+      "logicalTaskId": "super-plan-ufz.7",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-report-fix.md",
+      "durablePath": "task-report-history-r1/raw/task-10-report-fix.md",
+      "sha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+      "byteCount": 7526,
+      "logicalRole": "report-fix",
+      "ordinal": 10,
+      "logicalTaskId": "super-plan-ufz.7",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-report.md",
+      "durablePath": "task-report-history-r1/raw/task-10-report.md",
+      "sha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+      "byteCount": 24964,
+      "logicalRole": "report",
+      "ordinal": 10,
+      "logicalTaskId": "super-plan-ufz.7",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-10-review-seam.md",
+      "sha256": "0207f7ebb7bd0c49f2aba519a6837addbf5598f359f7683a43bd2e216c816257",
+      "byteCount": 3892,
+      "logicalRole": "review-seam",
+      "ordinal": 10,
+      "logicalTaskId": "super-plan-ufz.7",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-10-review.md",
+      "durablePath": "task-report-history-r1/raw/task-10-review.md",
+      "sha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+      "byteCount": 4327,
+      "logicalRole": "review",
+      "ordinal": 10,
+      "logicalTaskId": "super-plan-ufz.7",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-11-brief.md",
+      "sha256": "281fe878ccde03d46ef2536221062190630af791ab58e9264ef16aa352a1b8ec",
+      "byteCount": 4540,
+      "logicalRole": "brief",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-report-fix.md",
+      "durablePath": "task-report-history-r1/raw/task-11-report-fix.md",
+      "sha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+      "byteCount": 5266,
+      "logicalRole": "report-fix",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-report.md",
+      "durablePath": "task-report-history-r1/raw/task-11-report.md",
+      "sha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "byteCount": 23500,
+      "logicalRole": "report",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-review-seam-round-1.md",
+      "durablePath": "task-report-history-r1/raw/task-11-review-seam-round-1.md",
+      "sha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+      "byteCount": 3417,
+      "logicalRole": "review-seam-round-1",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-11-review-seam.md",
+      "sha256": "4557d37e47897380f2d615e380d9c7ef4c04cb5b946c59fc26e6cf55f890f324",
+      "byteCount": 3119,
+      "logicalRole": "review-seam",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-11-review.md",
+      "durablePath": "task-report-history-r1/raw/task-11-review.md",
+      "sha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+      "byteCount": 4441,
+      "logicalRole": "review",
+      "ordinal": 11,
+      "logicalTaskId": "super-plan-ufz.12",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-12-brief.md",
+      "sha256": "86e26b8646b9514c8ce5417133cf911b53e2bd1c01179432ce36d616796fc7d6",
+      "byteCount": 4917,
+      "logicalRole": "brief",
+      "ordinal": 12,
+      "logicalTaskId": "super-plan-ufz.13",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-report.md",
+      "durablePath": "task-report-history-r1/raw/task-12-report.md",
+      "sha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "byteCount": 22639,
+      "logicalRole": "report",
+      "ordinal": 12,
+      "logicalTaskId": "super-plan-ufz.13",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-12-review-seam.md",
+      "sha256": "9d4696f8a994235bcf3b38b12a334e6b9d4ea12884c101b3ff79f55f3291026b",
+      "byteCount": 3283,
+      "logicalRole": "review-seam",
+      "ordinal": 12,
+      "logicalTaskId": "super-plan-ufz.13",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-review.md",
+      "durablePath": "task-report-history-r1/raw/task-12-review.md",
+      "sha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+      "byteCount": 4332,
+      "logicalRole": "review",
+      "ordinal": 12,
+      "logicalTaskId": "super-plan-ufz.13",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-12-seam-findings.md",
+      "durablePath": "task-report-history-r1/raw/task-12-seam-findings.md",
+      "sha256": "d63d25b32fe1deb6ee8a2725884152a74e58ab2d6838f37ece45e3db03e4f520",
+      "byteCount": 633,
+      "logicalRole": "seam-findings",
+      "ordinal": 12,
+      "logicalTaskId": "super-plan-ufz.13",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-13-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-13-brief.md",
+      "sha256": "1ba67659f3c5b002400cc4e196fc24f89856a8355f972eaf8e3f967c63601936",
+      "byteCount": 7139,
+      "logicalRole": "brief",
+      "ordinal": 13,
+      "logicalTaskId": "super-plan-ufz.8.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-13-report.md",
+      "durablePath": "task-report-history-r1/raw/task-13-report.md",
+      "sha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "byteCount": 18230,
+      "logicalRole": "report",
+      "ordinal": 13,
+      "logicalTaskId": "super-plan-ufz.8.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-13-review.md",
+      "durablePath": "task-report-history-r1/raw/task-13-review.md",
+      "sha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+      "byteCount": 4419,
+      "logicalRole": "review",
+      "ordinal": 13,
+      "logicalTaskId": "super-plan-ufz.8.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-14-brief.md",
+      "sha256": "584e4aae15c020e3fe14d3b46b8cccecef22c14363298ac69f3cb39cd2c13671",
+      "byteCount": 7008,
+      "logicalRole": "brief",
+      "ordinal": 14,
+      "logicalTaskId": "super-plan-ufz.8.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-report-fix.md",
+      "durablePath": "task-report-history-r1/raw/task-14-report-fix.md",
+      "sha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+      "byteCount": 9461,
+      "logicalRole": "report-fix",
+      "ordinal": 14,
+      "logicalTaskId": "super-plan-ufz.8.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-report.md",
+      "durablePath": "task-report-history-r1/raw/task-14-report.md",
+      "sha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+      "byteCount": 24993,
+      "logicalRole": "report",
+      "ordinal": 14,
+      "logicalTaskId": "super-plan-ufz.8.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-14-review.md",
+      "durablePath": "task-report-history-r1/raw/task-14-review.md",
+      "sha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+      "byteCount": 4111,
+      "logicalRole": "review",
+      "ordinal": 14,
+      "logicalTaskId": "super-plan-ufz.8.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-15-brief.md",
+      "sha256": "8c6e852a570af50121b000de81d2abf8f3c5d2147dcea3ebab5c2c530997c042",
+      "byteCount": 7289,
+      "logicalRole": "brief",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-report-fix.md",
+      "durablePath": "task-report-history-r1/raw/task-15-report-fix.md",
+      "sha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+      "byteCount": 8168,
+      "logicalRole": "report-fix",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-report.md",
+      "durablePath": "task-report-history-r1/raw/task-15-report.md",
+      "sha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "byteCount": 29301,
+      "logicalRole": "report",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-review-seam-report.json",
+      "durablePath": "task-report-history-r1/raw/task-15-review-seam-report.json",
+      "sha256": "7771b03af5001f2dd8facfb6759a1f39172a199e6d817326244785132fb73361",
+      "byteCount": 3139,
+      "logicalRole": null,
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "json"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-15-review-seam.md",
+      "sha256": "f7d10c60db55b9d887c10e652f41eec032543d4e72695c669cf4f3a13c4ca525",
+      "byteCount": 3154,
+      "logicalRole": "review-seam",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-review.md",
+      "durablePath": "task-report-history-r1/raw/task-15-review.md",
+      "sha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+      "byteCount": 5177,
+      "logicalRole": "review",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-15-seam-findings.md",
+      "durablePath": "task-report-history-r1/raw/task-15-seam-findings.md",
+      "sha256": "27a00268406c455df66d5e086295003d28e21bebeb7c8f64f197543737048f32",
+      "byteCount": 641,
+      "logicalRole": "seam-findings",
+      "ordinal": 15,
+      "logicalTaskId": "super-plan-ufz.9",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-16-brief.md",
+      "sha256": "2d7667c654207996e5b133b74274ffcdff35c9267419582b7df850cd7ccafb6f",
+      "byteCount": 6827,
+      "logicalRole": "brief",
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-report.md",
+      "durablePath": "task-report-history-r1/raw/task-16-report.md",
+      "sha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "byteCount": 20563,
+      "logicalRole": "report",
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.json",
+      "durablePath": "task-report-history-r1/raw/task-16-review-seam.json",
+      "sha256": "db5f75ac1c3054a636fe115c1745010dacfb72201bba49c38ef8654a7b241cc9",
+      "byteCount": 2631,
+      "logicalRole": null,
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "json"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-16-review-seam.md",
+      "sha256": "12e2cb1026153ac7517679eeb152f204cf16af385166dc6c9da804be40d7c4e6",
+      "byteCount": 2646,
+      "logicalRole": "review-seam",
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-review.md",
+      "durablePath": "task-report-history-r1/raw/task-16-review.md",
+      "sha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+      "byteCount": 5689,
+      "logicalRole": "review",
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-16-seam-findings.md",
+      "durablePath": "task-report-history-r1/raw/task-16-seam-findings.md",
+      "sha256": "cb4c7bb62ed4e37059a20834a847393bb232993914aab25ef2ac74292d856e1c",
+      "byteCount": 740,
+      "logicalRole": "seam-findings",
+      "ordinal": 16,
+      "logicalTaskId": "super-plan-ufz.6",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-17-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-17-brief.md",
+      "sha256": "0c8b9eeb5e6314bd42c221b53dbe2074a1f2fc38a0273dbbffce77e69f7ef062",
+      "byteCount": 7260,
+      "logicalRole": "brief",
+      "ordinal": 17,
+      "logicalTaskId": "super-plan-ufz.14",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-17-report.md",
+      "durablePath": "task-report-history-r1/raw/task-17-report.md",
+      "sha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "byteCount": 18094,
+      "logicalRole": "report",
+      "ordinal": 17,
+      "logicalTaskId": "super-plan-ufz.14",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-17-review.md",
+      "durablePath": "task-report-history-r1/raw/task-17-review.md",
+      "sha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "byteCount": 6122,
+      "logicalRole": "review",
+      "ordinal": 17,
+      "logicalTaskId": "super-plan-ufz.14",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-18-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-18-brief.md",
+      "sha256": "68a4dc44460acf259bb6d6bab47eb0e3fc5dda41ed2fbb42d761c8bd02faa6b5",
+      "byteCount": 8161,
+      "logicalRole": "brief",
+      "ordinal": 18,
+      "logicalTaskId": "super-plan-ufz.20",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-18-report.md",
+      "durablePath": "task-report-history-r1/raw/task-18-report.md",
+      "sha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "byteCount": 12714,
+      "logicalRole": "report",
+      "ordinal": 18,
+      "logicalTaskId": "super-plan-ufz.20",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-18-review.md",
+      "durablePath": "task-report-history-r1/raw/task-18-review.md",
+      "sha256": "5e31f71a616f85d8c1a0aa5787c3c8bb175c38fccca877e25da2b7cf8dc86f8e",
+      "byteCount": 4652,
+      "logicalRole": "review",
+      "ordinal": 18,
+      "logicalTaskId": "super-plan-ufz.20",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-19-brief.md",
+      "sha256": "6ba6e61cbd096b5e6904da82f33adeaeda31f3ead0e98954fc72e4fab38f6ddf",
+      "byteCount": 8861,
+      "logicalRole": "brief",
+      "ordinal": 19,
+      "logicalTaskId": "super-plan-ufz.22",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+      "durablePath": "task-report-history-r1/raw/task-19-report.md",
+      "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "byteCount": 47192,
+      "logicalRole": "report",
+      "ordinal": 19,
+      "logicalTaskId": "super-plan-ufz.22",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+      "durablePath": "task-report-history-r1/raw/task-19-review.md",
+      "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+      "byteCount": 20313,
+      "logicalRole": "review",
+      "ordinal": 19,
+      "logicalTaskId": "super-plan-ufz.22",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-2-brief.md",
+      "sha256": "90ca19b8691319490af4249aa179bc99cf838bbb99f1510ace4fc01371895e6b",
+      "byteCount": 5231,
+      "logicalRole": "brief",
+      "ordinal": 2,
+      "logicalTaskId": "super-plan-ufz.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-report.md",
+      "durablePath": "task-report-history-r1/raw/task-2-report.md",
+      "sha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+      "byteCount": 12343,
+      "logicalRole": "report",
+      "ordinal": 2,
+      "logicalTaskId": "super-plan-ufz.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-2-review-seam.md",
+      "sha256": "dc36c10aefd1eda3670393dca42ea32451dfca9d8af4dcef5f6c0de29ed2ef43",
+      "byteCount": 2152,
+      "logicalRole": "review-seam",
+      "ordinal": 2,
+      "logicalTaskId": "super-plan-ufz.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-2-review.md",
+      "durablePath": "task-report-history-r1/raw/task-2-review.md",
+      "sha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "byteCount": 3681,
+      "logicalRole": "review",
+      "ordinal": 2,
+      "logicalTaskId": "super-plan-ufz.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-20-brief.md",
+      "sha256": "1ee8ef9592a9231f4edb430faa05b9a2c8c181db2c44f6c0b82e09f109140086",
+      "byteCount": 9074,
+      "logicalRole": "brief",
+      "ordinal": 20,
+      "logicalTaskId": "super-plan-ufz.23",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+      "durablePath": "task-report-history-r1/raw/task-20-report.md",
+      "sha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "byteCount": 214271,
+      "logicalRole": "report",
+      "ordinal": 20,
+      "logicalTaskId": "super-plan-ufz.23",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+      "durablePath": "task-report-history-r1/raw/task-20-review.md",
+      "sha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "byteCount": 15003,
+      "logicalRole": "review",
+      "ordinal": 20,
+      "logicalTaskId": "super-plan-ufz.23",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-21-brief.md",
+      "sha256": "cc06bb43ba6d116b33ec3885d8dd099363fa2328b00b6b03a528747d22c7baa7",
+      "byteCount": 4629,
+      "logicalRole": "brief",
+      "ordinal": 21,
+      "logicalTaskId": "super-plan-ufz.24",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-report.md",
+      "durablePath": "task-report-history-r1/raw/task-21-report.md",
+      "sha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+      "byteCount": 22585,
+      "logicalRole": "report",
+      "ordinal": 21,
+      "logicalTaskId": "super-plan-ufz.24",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-21-review.md",
+      "durablePath": "task-report-history-r1/raw/task-21-review.md",
+      "sha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+      "byteCount": 9145,
+      "logicalRole": "review",
+      "ordinal": 21,
+      "logicalTaskId": "super-plan-ufz.24",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-22-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-22-brief.md",
+      "sha256": "981b8d8d640c699e2f5bffc71cd81a25dd95902f16ada31078542cfab791993f",
+      "byteCount": 3929,
+      "logicalRole": "brief",
+      "ordinal": 22,
+      "logicalTaskId": "super-plan-ufz.25",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-22-report.md",
+      "durablePath": "task-report-history-r1/raw/task-22-report.md",
+      "sha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+      "byteCount": 25598,
+      "logicalRole": "report",
+      "ordinal": 22,
+      "logicalTaskId": "super-plan-ufz.25",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-22-review.md",
+      "durablePath": "task-report-history-r1/raw/task-22-review.md",
+      "sha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+      "byteCount": 10361,
+      "logicalRole": "review",
+      "ordinal": 22,
+      "logicalTaskId": "super-plan-ufz.25",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-23-brief.md",
+      "sha256": "5909419d30362108bfc50e1a322d1477162967d18fc572a77657df549301af5b",
+      "byteCount": 15421,
+      "logicalRole": "brief",
+      "ordinal": 23,
+      "logicalTaskId": "super-plan-ufz.26",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-report.md",
+      "durablePath": "task-report-history-r1/raw/task-23-report.md",
+      "sha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "byteCount": 53038,
+      "logicalRole": "report",
+      "ordinal": 23,
+      "logicalTaskId": "super-plan-ufz.26",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-review.md",
+      "durablePath": "task-report-history-r1/raw/task-23-review.md",
+      "sha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+      "byteCount": 16469,
+      "logicalRole": "review",
+      "ordinal": 23,
+      "logicalTaskId": "super-plan-ufz.26",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-23-scope-held-result.json",
+      "durablePath": "task-report-history-r1/raw/task-23-scope-held-result.json",
+      "sha256": "3b1dae31c22c45e16fd5211b0072507a8b39ae37af2286852930f4e0075dc6cd",
+      "byteCount": 3113,
+      "logicalRole": null,
+      "ordinal": 23,
+      "logicalTaskId": "super-plan-ufz.26",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "json"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-24-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-24-brief.md",
+      "sha256": "aa5f44c014be98099284bfa43afd47fc7d8d3859dae0ed5e440f079499492794",
+      "byteCount": 3555,
+      "logicalRole": "brief",
+      "ordinal": 24,
+      "logicalTaskId": "super-plan-ufz.27",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-24-report.md",
+      "durablePath": "task-report-history-r1/raw/task-24-report.md",
+      "sha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+      "byteCount": 10067,
+      "logicalRole": "report",
+      "ordinal": 24,
+      "logicalTaskId": "super-plan-ufz.27",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-24-review.md",
+      "durablePath": "task-report-history-r1/raw/task-24-review.md",
+      "sha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "byteCount": 9804,
+      "logicalRole": "review",
+      "ordinal": 24,
+      "logicalTaskId": "super-plan-ufz.27",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-25-brief.md",
+      "sha256": "a5cf4a8f72f91161db83fd9ff5cad1b7eb6b6972450bd675b2f4b3a2b1be4c12",
+      "byteCount": 3996,
+      "logicalRole": "brief",
+      "ordinal": 25,
+      "logicalTaskId": "super-plan-ufz.28",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-report.md",
+      "durablePath": "task-report-history-r1/raw/task-25-report.md",
+      "sha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+      "byteCount": 11553,
+      "logicalRole": "report",
+      "ordinal": 25,
+      "logicalTaskId": "super-plan-ufz.28",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-25-review.md",
+      "durablePath": "task-report-history-r1/raw/task-25-review.md",
+      "sha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+      "byteCount": 10824,
+      "logicalRole": "review",
+      "ordinal": 25,
+      "logicalTaskId": "super-plan-ufz.28",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-26-brief.md",
+      "sha256": "4fe39ab364e52dfa958511a6b81463f137ad6367e9c5312f7cda5e2dfbff8443",
+      "byteCount": 5327,
+      "logicalRole": "brief",
+      "ordinal": 26,
+      "logicalTaskId": "super-plan-ufz.29",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+      "durablePath": "task-report-history-r1/raw/task-26-report.md",
+      "sha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "byteCount": 12757,
+      "logicalRole": "report",
+      "ordinal": 26,
+      "logicalTaskId": "super-plan-ufz.29",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+      "durablePath": "task-report-history-r1/raw/task-26-review.md",
+      "sha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "byteCount": 14808,
+      "logicalRole": "review",
+      "ordinal": 26,
+      "logicalTaskId": "super-plan-ufz.29",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-27-brief.md",
+      "sha256": "f0d5177b12e1969dad11024e8d6f50815bf957a02002a5ec746ab679c9875348",
+      "byteCount": 4668,
+      "logicalRole": "brief",
+      "ordinal": 27,
+      "logicalTaskId": "super-plan-ufz.30",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-report.md",
+      "durablePath": "task-report-history-r1/raw/task-27-report.md",
+      "sha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "byteCount": 22592,
+      "logicalRole": "report",
+      "ordinal": 27,
+      "logicalTaskId": "super-plan-ufz.30",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-27-review.md",
+      "durablePath": "task-report-history-r1/raw/task-27-review.md",
+      "sha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "byteCount": 8933,
+      "logicalRole": "review",
+      "ordinal": 27,
+      "logicalTaskId": "super-plan-ufz.30",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-28-brief.md",
+      "sha256": "b0f30531b2696fd16d3c7cf4f3de4ad6be1bf38dff6744a30f2c955fe2ccecc8",
+      "byteCount": 6862,
+      "logicalRole": "brief",
+      "ordinal": 28,
+      "logicalTaskId": "super-plan-ufz.31",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-report.md",
+      "durablePath": "task-report-history-r1/raw/task-28-report.md",
+      "sha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+      "byteCount": 15006,
+      "logicalRole": "report",
+      "ordinal": 28,
+      "logicalTaskId": "super-plan-ufz.31",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-28-review.md",
+      "durablePath": "task-report-history-r1/raw/task-28-review.md",
+      "sha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+      "byteCount": 9736,
+      "logicalRole": "review",
+      "ordinal": 28,
+      "logicalTaskId": "super-plan-ufz.31",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-29-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-29-brief.md",
+      "sha256": "ed12961a41ca39049f6e544016c4cb502dc9c46be1acf42bb1790f453d844b34",
+      "byteCount": 15875,
+      "logicalRole": "brief",
+      "ordinal": 29,
+      "logicalTaskId": "super-plan-ufz.32",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-29-report.md",
+      "durablePath": "task-report-history-r1/raw/task-29-report.md",
+      "sha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+      "byteCount": 24995,
+      "logicalRole": "report",
+      "ordinal": 29,
+      "logicalTaskId": "super-plan-ufz.32",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-29-review.md",
+      "durablePath": "task-report-history-r1/raw/task-29-review.md",
+      "sha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "byteCount": 27085,
+      "logicalRole": "review",
+      "ordinal": 29,
+      "logicalTaskId": "super-plan-ufz.32",
+      "originalCodeInvocation": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-3-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-3-brief.md",
+      "sha256": "100718cebc4e5c30c982ad967b4ac1703af0b099ab0b6a798342bf3e703c8f15",
+      "byteCount": 4922,
+      "logicalRole": "brief",
+      "ordinal": 3,
+      "logicalTaskId": "super-plan-ufz.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-3-report.md",
+      "durablePath": "task-report-history-r1/raw/task-3-report.md",
+      "sha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+      "byteCount": 8419,
+      "logicalRole": "report",
+      "ordinal": 3,
+      "logicalTaskId": "super-plan-ufz.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-3-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-3-review-seam.md",
+      "sha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+      "byteCount": 3347,
+      "logicalRole": "review-seam",
+      "ordinal": 3,
+      "logicalTaskId": "super-plan-ufz.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-3-review.md",
+      "durablePath": "task-report-history-r1/raw/task-3-review.md",
+      "sha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+      "byteCount": 5261,
+      "logicalRole": "review",
+      "ordinal": 3,
+      "logicalTaskId": "super-plan-ufz.3",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-4-brief.md",
+      "sha256": "5088c1cefe71281f8c243c9eb3b6a4f87eedcb1b319db0ef7f17fa7d2af5bf61",
+      "byteCount": 4639,
+      "logicalRole": "brief",
+      "ordinal": 4,
+      "logicalTaskId": "super-plan-ufz.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-report.md",
+      "durablePath": "task-report-history-r1/raw/task-4-report.md",
+      "sha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+      "byteCount": 18859,
+      "logicalRole": "report",
+      "ordinal": 4,
+      "logicalTaskId": "super-plan-ufz.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-4-review-seam.md",
+      "sha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+      "byteCount": 3500,
+      "logicalRole": "review-seam",
+      "ordinal": 4,
+      "logicalTaskId": "super-plan-ufz.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-review.md",
+      "durablePath": "task-report-history-r1/raw/task-4-review.md",
+      "sha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+      "byteCount": 4412,
+      "logicalRole": "review",
+      "ordinal": 4,
+      "logicalTaskId": "super-plan-ufz.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-4-seam-findings.md",
+      "durablePath": "task-report-history-r1/raw/task-4-seam-findings.md",
+      "sha256": "31884f5cbc94461343cbb07ad2525e89daa26848e34678ccf9c3a746f1cd301a",
+      "byteCount": 517,
+      "logicalRole": "seam-findings",
+      "ordinal": 4,
+      "logicalTaskId": "super-plan-ufz.4",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-5-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-5-brief.md",
+      "sha256": "72b3728f3c32c109210da2044c3125010b49114935297a02eb63017d4e7db602",
+      "byteCount": 4423,
+      "logicalRole": "brief",
+      "ordinal": 5,
+      "logicalTaskId": "super-plan-ufz.5",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-5-report.md",
+      "durablePath": "task-report-history-r1/raw/task-5-report.md",
+      "sha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+      "byteCount": 11769,
+      "logicalRole": "report",
+      "ordinal": 5,
+      "logicalTaskId": "super-plan-ufz.5",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-5-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-5-review-seam.md",
+      "sha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+      "byteCount": 2628,
+      "logicalRole": "review-seam",
+      "ordinal": 5,
+      "logicalTaskId": "super-plan-ufz.5",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-5-review.md",
+      "durablePath": "task-report-history-r1/raw/task-5-review.md",
+      "sha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+      "byteCount": 4536,
+      "logicalRole": "review",
+      "ordinal": 5,
+      "logicalTaskId": "super-plan-ufz.5",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-6-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-6-brief.md",
+      "sha256": "6b167c6e597e9daa8f966e5cc8e36f19acac7bb7bc793f9bf670772900053271",
+      "byteCount": 5698,
+      "logicalRole": "brief",
+      "ordinal": 6,
+      "logicalTaskId": "super-plan-ufz.10",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-6-report.md",
+      "durablePath": "task-report-history-r1/raw/task-6-report.md",
+      "sha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+      "byteCount": 13960,
+      "logicalRole": "report",
+      "ordinal": 6,
+      "logicalTaskId": "super-plan-ufz.10",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-6-review.md",
+      "durablePath": "task-report-history-r1/raw/task-6-review.md",
+      "sha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+      "byteCount": 5580,
+      "logicalRole": "review",
+      "ordinal": 6,
+      "logicalTaskId": "super-plan-ufz.10",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-7-brief.md",
+      "sha256": "51b2981af58cd23f79e01d49cdad02bc8cba526b6d2adf7800ef7325a9028d1a",
+      "byteCount": 4297,
+      "logicalRole": "brief",
+      "ordinal": 7,
+      "logicalTaskId": "super-plan-ufz.11",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-report.md",
+      "durablePath": "task-report-history-r1/raw/task-7-report.md",
+      "sha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+      "byteCount": 10563,
+      "logicalRole": "report",
+      "ordinal": 7,
+      "logicalTaskId": "super-plan-ufz.11",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.json",
+      "durablePath": "task-report-history-r1/raw/task-7-review-seam.json",
+      "sha256": "e5472ff4a34c151b99b04b2c1f69d43e82e1d82d6554e448571a2b2f66e1cb13",
+      "byteCount": 2316,
+      "logicalRole": null,
+      "ordinal": 7,
+      "logicalTaskId": "super-plan-ufz.11",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "json"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-review-seam.md",
+      "durablePath": "task-report-history-r1/raw/task-7-review-seam.md",
+      "sha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+      "byteCount": 2331,
+      "logicalRole": "review-seam",
+      "ordinal": 7,
+      "logicalTaskId": "super-plan-ufz.11",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-review.md",
+      "durablePath": "task-report-history-r1/raw/task-7-review.md",
+      "sha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+      "byteCount": 3933,
+      "logicalRole": "review",
+      "ordinal": 7,
+      "logicalTaskId": "super-plan-ufz.11",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-8-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-8-brief.md",
+      "sha256": "4a8dc847d88c6d42b07de6908dc9c33fc6a2004d33492a07cf8ae66ccc31e59c",
+      "byteCount": 4325,
+      "logicalRole": "brief",
+      "ordinal": 8,
+      "logicalTaskId": "super-plan-ufz.8.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-8-report.md",
+      "durablePath": "task-report-history-r1/raw/task-8-report.md",
+      "sha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+      "byteCount": 11108,
+      "logicalRole": "report",
+      "ordinal": 8,
+      "logicalTaskId": "super-plan-ufz.8.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-8-review.md",
+      "durablePath": "task-report-history-r1/raw/task-8-review.md",
+      "sha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+      "byteCount": 4482,
+      "logicalRole": "review",
+      "ordinal": 8,
+      "logicalTaskId": "super-plan-ufz.8.1",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-9-brief.md",
+      "durablePath": "task-report-history-r1/raw/task-9-brief.md",
+      "sha256": "259ed790c1ada2e94e2540479f4e5468441581ed4600a559c64920eea3595693",
+      "byteCount": 4425,
+      "logicalRole": "brief",
+      "ordinal": 9,
+      "logicalTaskId": "super-plan-ufz.8.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-9-report.md",
+      "durablePath": "task-report-history-r1/raw/task-9-report.md",
+      "sha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+      "byteCount": 10165,
+      "logicalRole": "report",
+      "ordinal": 9,
+      "logicalTaskId": "super-plan-ufz.8.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-9-review.md",
+      "durablePath": "task-report-history-r1/raw/task-9-review.md",
+      "sha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+      "byteCount": 3083,
+      "logicalRole": "review",
+      "ordinal": 9,
+      "logicalTaskId": "super-plan-ufz.8.2",
+      "originalCodeInvocation": "inv-mvc60k41-xt8p35rk04d",
+      "disposition": "copied",
+      "fileType": "markdown"
+    }
+  ],
+  "relatedEvidencePathReferences": [
+    {
+      "sourceDirectory": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1",
+      "retention": "existing path reference; raw evidence corpus not duplicated",
+      "files": [
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/diagnostic.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/digest-base.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/digest-final-source.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/digest-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/digest-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/digest.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/focused-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/focused-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/green.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/invocation-start-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/legacy-fixture-base.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/legacy-fixture-task.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/malformed-pointer-red.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/red-source-bound.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/red.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/replay-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/replay-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/replay.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/startup-builder-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-original-evidence-r1/verification-base.mjs"
+      ]
+    },
+    {
+      "sourceDirectory": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1",
+      "retention": "existing path reference; raw evidence corpus not duplicated",
+      "files": [
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/diagnostic.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/digest-base.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/digest-final-source.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/digest-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/digest-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/digest.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-digest-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-focused-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-hygiene-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-invocation-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-before-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-replay-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-startup-final-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-verification-fixture-r1.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/fix-verification-fixture-r2.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/focused-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/focused-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/green.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/invocation-start-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/legacy-fixture-base.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/legacy-fixture-task.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/malformed-pointer-red.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/red-source-bound.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/red.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/replay-final.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/replay-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/replay.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/startup-builder-rebased.log",
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-fix-evidence-r1/verification-base.mjs"
+      ]
+    }
+  ],
+  "proposedSourceRecords": [
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-report",
+      "rawArtifact": "task-report-history-r1/raw/task-1-report.md",
+      "parsedSourceJSON": "task-report-history-r1/parsed/task-1-report.md.complete.json",
+      "kind": "task-report",
+      "verdict": "IMPLEMENTED",
+      "occurrences": 2
+    },
+    {
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-report",
+      "rawArtifact": "task-report-history-r1/raw/task-17-report.md",
+      "parsedSourceJSON": "task-report-history-r1/parsed/task-17-report.md.complete.json",
+      "kind": "task-report",
+      "verdict": "IMPLEMENTED",
+      "occurrences": 7
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-report",
+      "rawArtifact": "task-report-history-r1/raw/task-19-report.md",
+      "parsedSourceJSON": "task-report-history-r1/parsed/task-19-report.md.complete.json",
+      "kind": "task-report",
+      "verdict": "FIXED",
+      "occurrences": 4
+    },
+    {
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-report",
+      "rawArtifact": "task-report-history-r1/raw/task-23-report.md",
+      "parsedSourceJSON": "task-report-history-r1/parsed/task-23-report.md.complete.json",
+      "kind": "task-report",
+      "verdict": "IMPLEMENTED",
+      "occurrences": 7
+    },
+    {
+      "source": "workflow-reliability-20261017T054545/roast-design-round-1",
+      "rawArtifact": "2026-10-16-workflow-reliability-roast-design-1.md",
+      "parsedSourceJSON": "task-report-history-r1/parsed/2026-10-16-workflow-reliability-roast-design-1.md.complete.json",
+      "kind": "roast",
+      "verdict": "Should-fix (1 confirmed)",
+      "occurrences": 4,
+      "rawSourceAlreadyDurable": true
+    }
+  ],
+  "extractionGaps": [
+    {
+      "rawPath": "task-report-history-r1/raw/task-1-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-1-review",
+      "error": "report-verdict: --complete: unrecognized finding source"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-10-report-fix.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report-fix",
+      "error": "report-verdict: --complete: finding text without a list marker in Finding and correction"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-10-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Finding and correction"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-10-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-10-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-10-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-11-report-fix.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report-fix",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-11-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-11-review-seam-round-1.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam-round-1",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-11-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-11-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-11-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-12-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-12-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-12-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-12-seam-findings.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-12-seam-findings",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-13-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-13-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-13-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-14-report-fix.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report-fix",
+      "error": "report-verdict: --complete: finding text without a list marker in Finding and narrow correction"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-14-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator evaluation"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-14-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-14-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-15-report-fix.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report-fix",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-15-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and limits"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-15-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-15-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-15-seam-findings.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-15-seam-findings",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-16-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-report",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-16-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-16-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-16-seam-findings.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-16-seam-findings",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-17-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-17-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-18-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-report",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-18-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-18-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-19-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-19-review",
+      "error": "report-verdict: --complete: finding text without a list marker in Findings"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-2-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and coordinator-owned evidence"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-2-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-2-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-2-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-20-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Finding and bounded repair"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-20-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-20-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-21-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-21-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-21-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-22-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-22-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-22-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-23-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-23-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-24-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-24-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-24-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-25-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-25-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-25-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-26-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-report",
+      "error": "report-verdict: --complete: unrecognized finding source"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-26-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-26-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-27-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-report",
+      "error": "report-verdict: --complete: unrecognized finding source"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-27-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-27-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-28-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-28-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-28-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-29-report.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-report",
+      "error": "report-verdict: --complete: unrecognized finding source"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-29-review.md",
+      "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/task-29-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-3-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-report",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-3-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-3-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-3-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-4-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-4-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-4-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-4-seam-findings.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-4-seam-findings",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-5-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-5-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-5-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-5-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-6-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns and remaining evaluation"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-6-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-6-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-7-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-7-review-seam.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review-seam",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-7-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-7-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-8-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-8-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-8-review",
+      "error": "report-verdict: --complete: missing finding sections"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-9-report.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-report",
+      "error": "report-verdict: --complete: finding text without a list marker in Concerns"
+    },
+    {
+      "rawPath": "task-report-history-r1/raw/task-9-review.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/task-9-review",
+      "error": "report-verdict: --complete: unrecognized finding source"
+    },
+    {
+      "rawPath": "2026-10-16-workflow-reliability-roast-pr-1.md",
+      "source": "inv-mvc60k41-xt8p35rk04d/roast-code-round-1",
+      "error": "report-verdict: --complete: none marker has finding text in Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent"
+    }
+  ],
+  "populationLimits": [
+    "Only top-level regular task-*.md and task-*.json were copied.",
+    "Raw log/code evidence under task-19-original-evidence-r1 and task-19-fix-evidence-r1 remains by existing path reference and was not duplicated.",
+    "Existing fix-r1-handoff/source raw corpus was not duplicated; its already-retained bytes are outside this intake archive.",
+    "Extractor output preserves all occurrences verbatim as parsed; no severity rewriting, linking, disposition, or success/resolution inference was performed.",
+    "No records were added to run.md."
+  ],
+  "verification": {
+    "method": "SHA-256 and byte-count equality against source",
+    "verifiedRawFiles": 110
+  },
+  "alreadyRetainedTask19VariantPathReferences": [
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-report.md",
+      "retainedPath": "fix-r1-handoff/source/task-19-report.md",
+      "sha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "byteCount": 47192,
+      "relationship": "byte-identical already-retained handoff artifact; not duplicated in raw corpus"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review.md",
+      "retainedPath": "fix-r1-handoff/source/task-19-review.md",
+      "sha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+      "byteCount": 20313,
+      "relationship": "byte-identical already-retained handoff artifact; not duplicated in raw corpus"
+    },
+    {
+      "sourcePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-19-review-initial.diff",
+      "retainedPath": "fix-r1-handoff/source/task-19-review-initial.diff",
+      "sha256": "ba6e49d02081b96f5d0e0edc698ea5f1a8a3bdd4b5ad6d3ad6beb252fbc525a7",
+      "byteCount": 33655,
+      "relationship": "byte-identical already-retained handoff artifact; not duplicated in raw corpus"
+    }
+  ]
+}

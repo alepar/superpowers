@@ -1,0 +1,31 @@
+{
+  "exit": 0,
+  "stdout": "collection: complete\n",
+  "stderr": "",
+  "record": {
+    "invocationId": "probe",
+    "workspace": "/tmp/ufz-pr2-controller/evidence-security/destination-fixture/workspace",
+    "reviewPath": "/tmp/ufz-pr2-controller/evidence-security/destination-fixture/workspace/final-review-probe.md",
+    "review": "ready",
+    "required": [
+      "payload/new-file.txt"
+    ],
+    "settled": true,
+    "files": [
+      {
+        "path": "final-review-probe.md",
+        "sha256": "01b10700a4910b0bc0597648632f0027adff252d1fa20827b9a1feea9ccbbd5b"
+      },
+      {
+        "path": "payload/new-file.txt",
+        "sha256": "f52156c976b94ec266dbb13218c9579f67611dfd619d7fe5d2dcbca9cd9126f9"
+      }
+    ],
+    "complete": true,
+    "gaps": []
+  },
+  "outsideCreated": true,
+  "outsideBytes": "REVIEW INPUT SENTINEL\n",
+  "statusExit": 0,
+  "statusOutput": "status: clean\n"
+}

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-9",
+  "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-9.md",
+  "kind": "final-review",
+  "verdict": "ready",
+  "occurrences": [
+    {
+      "section": "Must-fix",
+      "position": 1,
+      "key": "None identified in the assigned historical helper and slice. The historical cluster-9 placeholder remains an accurate record that no review occurred then; this new report supplies a distinct later judgment without rewriting it.",
+      "text": "None identified in the assigned historical helper and slice. The historical cluster-9 placeholder remains an accurate record that no review occurred then; this new report supplies a distinct later judgment without rewriting it."
+    },
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "This was static historical-source review plus byte/hash/membership verification. The helper was not executed, and its output-file write, invocation environment and recorded historical executions were not independently reproduced. No latest-tip tests ran.",
+      "text": "This was static historical-source review plus byte/hash/membership verification. The helper was not executed, and its output-file write, invocation environment and recorded historical executions were not independently reproduced. No latest-tip tests ran."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "The manifest is a provenance aid, not an atomic filesystem snapshot: it hashes tracked `skills`/`tests` bytes and subsequently obtains Git identities. It does not itself enforce a frozen checkout or include untracked inputs or working changes outside those directories. No evidence in this assigned scope establishes an actual source race or an omitted tested dependency; broader source-binding claims require their own evidence.",
+      "text": "The manifest is a provenance aid, not an atomic filesystem snapshot: it hashes tracked `skills`/`tests` bytes and subsequently obtains Git identities. It does not itself enforce a frozen checkout or include untracked inputs or working changes outside those directories. No evidence in this assigned scope establishes an actual source race or an omitted tested dependency; broader source-binding claims require their own evidence."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "Historical `verification.md` was read for claim context. Its suite outcomes, source-manifest contents and 331-file count belong to other scopes, including cluster 52, and are not validated here. Script presence does not establish that tests ran, that source stayed unchanged throughout execution, or that live agent behavior passed.",
+      "text": "Historical `verification.md` was read for claim context. Its suite outcomes, source-manifest contents and 331-file count belong to other scopes, including cluster 52, and are not validated here. Script presence does not establish that tests ran, that source stayed unchanged throughout execution, or that live agent behavior passed."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "No review of finding collection, acceptance gates, cleanup, or whole-run correctness is implied. Any required live checks, caller sweep and human acceptance remain independently owned obligations.",
+      "text": "No review of finding collection, acceptance gates, cleanup, or whole-run correctness is implied. Any required live checks, caller sweep and human acceptance remain independently owned obligations."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "None proposed. The stated limitations qualify this bounded review; they do not waive another cluster's coverage or evidence obligations.",
+      "text": "None proposed. The stated limitations qualify this bounded review; they do not waive another cluster's coverage or evidence obligations."
+    }
+  ]
+}

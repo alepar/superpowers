@@ -1,0 +1,75 @@
+[
+  {
+    "label": "settle unavailable",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-refute/run.md",
+      "--invocation",
+      "test",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-refute/workspace",
+      "--review",
+      "none",
+      "--verdict",
+      "UNAVAILABLE"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: test: required review is null; owner: orchestrator; recover whole-epic review; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "reconcile recovered report",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-refute/run.md",
+      "--invocation",
+      "test",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-refute/workspace",
+      "--review",
+      "/tmp/ufz-pr2-controller/judge-5-refute/workspace/final-review-test.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 3,
+    "stdout": "",
+    "stderr": "COLLECTION_GAP: invocation identity or required bundle changed; retain both sources\n"
+  },
+  {
+    "label": "replay recovered artifacts",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-refute/run.md"
+    ],
+    "exit": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: test: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "status",
+    "args": [
+      "/tmp/ufz-pr2-controller/judge-5-refute/run.md"
+    ],
+    "exit": 0,
+    "stdout": "status: clean [degraded: review collections pending: 1, review collection gaps: 1]\nqualifier: review collections pending: 1\nqualifier: review collection gaps: 1\n",
+    "stderr": ""
+  },
+  {
+    "label": "positive control",
+    "args": [
+      "--collect",
+      "/tmp/ufz-pr2-controller/judge-5-refute/control.md",
+      "--invocation",
+      "test",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/judge-5-refute/workspace",
+      "--review",
+      "/tmp/ufz-pr2-controller/judge-5-refute/workspace/final-review-test.md",
+      "--verdict",
+      "ready"
+    ],
+    "exit": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  }
+]

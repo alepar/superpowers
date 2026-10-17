@@ -1,0 +1,116 @@
+diff --git a/skills/super-code/scripts/ledger-digest b/skills/super-code/scripts/ledger-digest
+index b17b9ed7..ea0310b9 100755
+--- a/skills/super-code/scripts/ledger-digest
++++ b/skills/super-code/scripts/ledger-digest
+@@ -3,37 +3,75 @@
+ # The coordinator reads the ledger through a mechanical agent that echoes it; a large ledger (mostly
+ # `minor (deferred)` reviewer prose) is slow to echo and gets refused by model safeguards. This
+ # prints only:
++#   - compact `Recovery:` records, verbatim; a line over 4096 characters becomes
++#     `Recovery gap: <source line number> <ledger path>` (the complete record stays on disk).
++#     Malformed/unknown-version compact records reach the reader for explicit gap reporting;
+ #   - `Merge:` and `Human action:` lines, verbatim (Resume dedupes human actions on their text);
+ #   - `Edge add:` lines, reduced to `Edge add: <dependent> <- <blocker> (<source>)`;
+ #   - `Task <n> (<id>): <state>` lines whose state the coordinator acts on, reduced to their state
+-#     tokens: `complete[, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
++#     tokens: `complete[, verification-only][, already merged][, review clean][, fix pass][, parked][, commits base..tip]`,
+ #     `landed, commits base..tip[, review id][, blocker id]`, `pending retry`,
+ #     `BLOCKED…` (first word), `cancelled (` / `cancelled`, `stacked on <id>`, `fix pass <OUTCOME>`;
+ #     a `[cause: …]` tag after `pending retry` / `BLOCKED…` is kept, and a `minor (deferred)` line
+-#     whose text starts with a `[class]` tag becomes `minor [class]` (recurrence counts for Resume).
+-# Every other line (header, untagged minors, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
++#     becomes `minor [raw class, if any] [recurrence-id: v1-…] [source-line: N]`. The byte
++#     fingerprint keeps unrelated details distinct; N points into this authoritative ledger.
++#     Original finding text stays on disk; process aliases are resolved only by the coordinator.
++# Every other line (header, `Detector:`, `Launch:`, `Metrics:`, …) is dropped.
+ # The first line printed is always `# ledger-digest: <kept> of <total> lines`, so a reader can tell
+ # an empty ledger from a lost or truncated echo.
+-# Line order is kept: the last line per id wins on resume.
++# Line order is kept: latest Task state wins; Recovery fix history remains append-only.
+ #
+-# Usage: bash ledger-digest LEDGER_PATH
+-# A missing or empty ledger prints nothing and exits 0 (a fresh epic). Exits 2 on a bad argument.
++# Usage: bash ledger-digest [--recovery-line N] LEDGER_PATH
++# Targeted recovery transports that one retained Recovery record verbatim, without the cap.
++# It never projects fields or rewrites the ledger; the coordinator validates the full record.
++# Missing/unreadable ledgers print # ledger-status: <status>; valid empty files print a zero
++# counting header. These observations exit 0; exits 2 on a bad argument.
+ set -euo pipefail
+ 
++recovery_line=0
++if [ "${1:-}" = --recovery-line ]; then
++  if [ $# -ne 3 ] || [[ ! "$2" =~ ^[1-9][0-9]*$ ]]; then
++    echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
++    exit 2
++  fi
++  recovery_line=$2
++  shift 2
++fi
+ if [ $# -ne 1 ]; then
+-  echo "usage: ledger-digest LEDGER_PATH" >&2
++  echo "usage: ledger-digest [--recovery-line N] LEDGER_PATH" >&2
+   exit 2
+ fi
+-[ -s "$1" ] || exit 0
++if [ ! -e "$1" ]; then echo '# ledger-status: missing'; exit 0; fi
++if [ ! -f "$1" ] || [ ! -r "$1" ]; then echo '# ledger-status: unreadable'; exit 0; fi
+ 
+-awk '
++if digest=$(LC_ALL=C awk -v recovery_line="$recovery_line" '
++BEGIN { for (i = 1; i < 256; i++) ord[sprintf("%c", i)] = i }
++function fingerprint(s, a, b, i, c) {
++  if (match(s, / \[recurrence-id: v1-[0-9]+-[0-9]+-[0-9]+\]$/)) return substr(s, RSTART, RLENGTH)
++  s = trim(s); a = 0; b = 0
++  for (i = 1; i <= length(s); i++) { c = ord[substr(s, i, 1)]; a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }
++  return " [recurrence-id: v1-" length(s) "-" sprintf("%.0f", a) "-" sprintf("%.0f", b) "]"
++}
++function minor(r, text, tag) {
++  text = r; sub(/^minor \(deferred\):[ \t]*/, "", text)
++  tag = match(text, /^\[[A-Za-z0-9][A-Za-z0-9 -]*\]/) ? " " substr(text, RSTART, RLENGTH) : ""
++  return "minor" tag fingerprint(text) " [source-line: " FNR "]"
++}
+ function trim(s) { sub(/^[ \t\r]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+ function range(r) { return match(r, /commits [a-fA-F0-9]+\.\.[a-fA-F0-9]+/) ? ", " substr(r, RSTART, RLENGTH) : "" }
+ function closure(r, kind) { return match(r, kind " [A-Za-z0-9_.-]+") ? ", " substr(r, RSTART, RLENGTH) : "" }
+-function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) : "" }
++function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART, RLENGTH) " [source-line: " FNR "]" : "" }
+ {
+   total++
+   line = trim($0)
++  if (recovery_line) {
++    if (FNR == recovery_line && line ~ /^Recovery:/) out[++kept] = line
++    next
++  }
++  if (line ~ /^Recovery:/) {
++    out[++kept] = length(line) > 4096 ? "Recovery gap: " FNR " " FILENAME : line
++    next
++  }
+   if (line ~ /^(Merge|Human action):[ \t]/) { out[++kept] = line; next }
+   if (line ~ /^Edge add:[ \t]/) { e = line; sub(/\)[ \t].*$/, ")", e); out[++kept] = e; next }
+   if (line !~ /^Task[ \t]+[^ \t]+[ \t]+\([^)]+\):/) next
+@@ -42,6 +80,7 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART,
+   n = split(rest, w, /[ \t]+/)
+   if (rest ~ /^complete/) {
+     s = "complete"
++    if (index(rest, "verification-only")) s = s ", verification-only"
+     if (index(rest, "already merged")) s = s ", already merged"
+     if (index(rest, "review clean")) s = s ", review clean"
+     if (index(rest, "fix pass")) s = s ", fix pass"
+@@ -54,11 +93,15 @@ function cause(r) { return match(r, /\[cause: [^]]*\]/) ? " " substr(r, RSTART,
+   else if (rest ~ /^cancelled/) s = "cancelled"
+   else if (rest ~ /^stacked on/) s = "stacked on " w[3]
+   else if (rest ~ /^fix pass/) s = "fix pass " w[3]
+-  else if (rest ~ /^minor \(deferred\): \[[A-Za-z0-9][A-Za-z0-9 -]*\]/) { match(rest, /\[[^]]*\]/); s = "minor " tolower(substr(rest, RSTART, RLENGTH)) }
++  else if (rest ~ /^minor \(deferred\):/) s = minor(rest)
+   else next
+   out[++kept] = head ": " s
+ }
+ END {
+   print "# ledger-digest: " kept + 0 " of " total + 0 " lines"
+   for (i = 1; i <= kept; i++) print out[i]
+-}' "$1"
++}' "$1"); then
++  printf '%s\n' "$digest"
++else
++  echo '# ledger-status: unreadable'
++fi

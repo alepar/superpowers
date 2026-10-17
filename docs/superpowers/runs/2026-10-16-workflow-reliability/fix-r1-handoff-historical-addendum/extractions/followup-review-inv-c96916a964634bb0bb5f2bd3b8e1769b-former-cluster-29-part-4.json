@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-4",
+  "artifact": "fix-r1-handoff-historical-addendum/raw/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-4.md",
+  "kind": "final-review",
+  "verdict": "ready",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "This partition does not independently review Parts 1, 2, 3 or 5. Their source records include the agent dispatch, controller, 244 raw observations, Seat A commands and trace, verifier Git trace, and final worktree listing. Part 4's verifier stdout reports checks of several of those records; that is evidence that the verifier reported them, not fresh independent review of all underlying inputs. Whole-cluster closure requires the other bounded reports and integration judgment.",
+      "text": "This partition does not independently review Parts 1, 2, 3 or 5. Their source records include the agent dispatch, controller, 244 raw observations, Seat A commands and trace, verifier Git trace, and final worktree listing. Part 4's verifier stdout reports checks of several of those records; that is evidence that the verifier reported them, not fresh independent review of all underlying inputs. Whole-cluster closure requires the other bounded reports and integration judgment."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "The corrected `verify.py`, recorder, controller, source manifest and operative prompt files are outside this partition. Both verifier executions and exact result outputs are present, but presence of `verifier-first.py` alone would not prove execution or correctness of the corrected implementation. Part 4 independently corroborates the Seat B reset attribution, captured reads, isolated reproduction, and artifact generation from its raw trace/commands/archive.",
+      "text": "The corrected `verify.py`, recorder, controller, source manifest and operative prompt files are outside this partition. Both verifier executions and exact result outputs are present, but presence of `verifier-first.py` alone would not prove execution or correctness of the corrected implementation. Part 4 independently corroborates the Seat B reset attribution, captured reads, isolated reproduction, and artifact generation from its raw trace/commands/archive."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "No product test, fixture reproduction, live agent evaluation, process inspection, cleanup or network command was rerun during this review. Metadata inspection, read-only captured Git retrieval, hashes and in-memory archive inspection establish provenance and assess historical records only.",
+      "text": "No product test, fixture reproduction, live agent evaluation, process inspection, cleanup or network command was rerun during this review. Metadata inspection, read-only captured Git retrieval, hashes and in-memory archive inspection establish provenance and assess historical records only."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "The recorded assembler failure is the controlled `unavailable-assembler.py` exit 3. The successful product `dispatch-text.mjs` invocation and Seat B `review-package` command do not establish execution of the real coordinator's assembler-failure transition, an assembled/fallback comparison, or task-review no-test compliance. The claim report explicitly retains these limits.",
+      "text": "The recorded assembler failure is the controlled `unavailable-assembler.py` exit 3. The successful product `dispatch-text.mjs` invocation and Seat B `review-package` command do not establish execution of the real coordinator's assembler-failure transition, an assembled/fallback comparison, or task-review no-test compliance. The claim report explicitly retains these limits."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "The behavior observation covers one disclosed, barrier-coordinated representative run and its captured source version. It supplies no baseline/control, multi-repetition certification, other-model coverage, hosted Workflow coverage, or later-source certification. The fixture's captured formatter remains not ready; its later caller fix does not retroactively change the pinned verdict.",
+      "text": "The behavior observation covers one disclosed, barrier-coordinated representative run and its captured source version. It supplies no baseline/control, multi-repetition certification, other-model coverage, hosted Workflow coverage, or later-source certification. The fixture's captured formatter remains not ready; its later caller fix does not retroactively change the pinned verdict."
+    },
+    {
+      "section": "Untested scope",
+      "position": 6,
+      "key": "The global `ps` denial and controller completion are stated by report/verifier records, while their direct command records are outside this partition. Neither the 24 passing checks nor synchronous-child claims prove absence of arbitrary detached descendants. Polling cannot establish absence of transient write-and-restore activity between observations. Preserve those stated qualifications.",
+      "text": "The global `ps` denial and controller completion are stated by report/verifier records, while their direct command records are outside this partition. Neither the 24 passing checks nor synchronous-child claims prove absence of arbitrary detached descendants. Polling cannot establish absence of transient write-and-restore activity between observations. Preserve those stated qualifications."
+    },
+    {
+      "section": "Untested scope",
+      "position": 7,
+      "key": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design.",
+      "text": "This fixture's ledger has no prior actionable/deferred/parked finding to exercise cross-invocation finding continuity. Distinct review artifacts and the retained fixture defect support their named observations only; they do not complete the nested finding-continuity acceptance criteria or the remaining categories of the root design."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "`seat-b-commands.jsonl` contains ten complete start/process/finish groups. The recorded worktree creation verifies both commits and creates a detached Seat B worktree at fixture head `7ddd110053fb302c4f6a0bd645ddbf28c512c563`. Later captured diff/show reads still target that head while caller HEAD is `9323074ae09c0501a41d428382f7eac0f2d506b2` with only `caller-session.txt` tracked dirt. The response reports changes without attributing them or restoring caller files, consistent with the root workspace-safety invariant.",
+      "text": "`seat-b-commands.jsonl` contains ten complete start/process/finish groups. The recorded worktree creation verifies both commits and creates a detached Seat B worktree at fixture head `7ddd110053fb302c4f6a0bd645ddbf28c512c563`. Later captured diff/show reads still target that head while caller HEAD is `9323074ae09c0501a41d428382f7eac0f2d506b2` with only `caller-session.txt` tracked dirt. The response reports changes without attributing them or restoring caller files, consistent with the root workspace-safety invariant."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "All 369 Seat B trace events were read, including 27 Git starts. The sole reset is a child of `git worktree add --detach`, SID `20261017T081626.934234Z-H0c8f6953-P0001657e/20261017T081626.944353Z-H0c8f6953-P0001659a`; `def_repo` is `/private/tmp/ufz-live-isolation/seat-b/review-worktree`, and index writes target its `caller/.git/worktrees/review-worktree1/` metadata. This supports the reported internal-initialization explanation; it is not evidence of caller reset/repair. Other recorded Git commands do not move caller refs or restore caller source.",
+      "text": "All 369 Seat B trace events were read, including 27 Git starts. The sole reset is a child of `git worktree add --detach`, SID `20261017T081626.934234Z-H0c8f6953-P0001657e/20261017T081626.944353Z-H0c8f6953-P0001659a`; `def_repo` is `/private/tmp/ufz-live-isolation/seat-b/review-worktree`, and index writes target its `caller/.git/worktrees/review-worktree1/` metadata. This supports the reported internal-initialization explanation; it is not evidence of caller reset/repair. Other recorded Git commands do not move caller refs or restore caller source."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 3,
+      "key": "The raw Seat B reproduction runs in the owned review worktree with distinct `OUT_DIR=.../seat-b/output/build` and `TMPDIR=.../seat-b/output/tmp`, exits 0, and reports the captured -50 defect as `$0.50`. Its later independent 401-input oracle exits 1 and reports exactly 99 failures from -99 to -1. The historical final response preserves that defect as not ready. The intentional reproduction failure is not relabeled as a successful product sweep or an isolation failure. Archived generated source is true and its captured diff is the single false-to-true change, matching the recorded owned reproduction.",
+      "text": "The raw Seat B reproduction runs in the owned review worktree with distinct `OUT_DIR=.../seat-b/output/build` and `TMPDIR=.../seat-b/output/tmp`, exits 0, and reports the captured -50 defect as `$0.50`. Its later independent 401-input oracle exits 1 and reports exactly 99 failures from -99 to -1. The historical final response preserves that defect as not ready. The intentional reproduction failure is not relabeled as a successful product sweep or an isolation failure. Archived generated source is true and its captured diff is the single false-to-true change, matching the recorded owned reproduction."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 4,
+      "key": "`setup-commands.jsonl` has 14 actual command/outcome records, including controlled assembler exit 3, real prompt-builder exits 0, source commit identity `0bb280edcf5fc6a60499fdfdb090d1819a432963`, and fixture tree `ab110314039e030a728c5d17e9ba7572ae89dac3`. Seat B's comment calling the successful review-package helper the unavailable assembler is preserved as raw testimony and explicitly corrected/qualified by the claim report; it cannot support a real assembler-transition pass.",
+      "text": "`setup-commands.jsonl` has 14 actual command/outcome records, including controlled assembler exit 3, real prompt-builder exits 0, source commit identity `0bb280edcf5fc6a60499fdfdb090d1819a432963`, and fixture tree `ab110314039e030a728c5d17e9ba7572ae89dac3`. Seat B's comment calling the successful review-package helper the unavailable assembler is preserved as raw testimony and explicitly corrected/qualified by the claim report; it cannot support a real assembler-transition pass."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 5,
+      "key": "`verifier-commands.jsonl` has six complete start/process/finish groups. First verification exits 1 and its stdout equals `verification-first.json` byte for byte (24 checks, three failures); corrected verification exits 0 and its stdout equals `verification.json` byte for byte (24 checks, all passing). The first checker rejects all reset argv tokens without worktree attribution and assumes Seat B output directly under `output/amounts.json`, explaining its three initial failures against the actual trace and output/build command. Both outcomes remain available, satisfying the evidence invariant better than replacement by a latest-success claim.",
+      "text": "`verifier-commands.jsonl` has six complete start/process/finish groups. First verification exits 1 and its stdout equals `verification-first.json` byte for byte (24 checks, three failures); corrected verification exits 0 and its stdout equals `verification.json` byte for byte (24 checks, all passing). The first checker rejects all reset argv tokens without worktree attribution and assumes Seat B output directly under `output/amounts.json`, explaining its three initial failures against the actual trace and output/build command. Both outcomes remain available, satisfying the evidence invariant better than replacement by a latest-success claim."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 6,
+      "key": "The verifier command log records cleanup.py and exact removal of the two owned review-worktree paths, both exiting 0, followed by a remaining-worktree string naming only the fixture caller on integration. This supports the recorded narrow removal outcomes, with no claim of arbitrary-process absence. The Seat B archive and nine-file hash inventory preserve the pre-removal worktree evidence; archival is not inferred merely from cleanup script presence.",
+      "text": "The verifier command log records cleanup.py and exact removal of the two owned review-worktree paths, both exiting 0, followed by a remaining-worktree string naming only the fixture caller on integration. This supports the recorded narrow removal outcomes, with no claim of arbitrary-process absence. The Seat B archive and nine-file hash inventory preserve the pre-removal worktree evidence; archival is not inferred merely from cleanup script presence."
+    }
+  ]
+}

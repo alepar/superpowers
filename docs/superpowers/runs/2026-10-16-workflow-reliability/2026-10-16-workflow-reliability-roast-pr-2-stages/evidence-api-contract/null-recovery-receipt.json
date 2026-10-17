@@ -1,0 +1,47 @@
+[
+  {
+    "label": "settled unavailable result",
+    "args": [
+      "--invocation",
+      "contract-probe",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/evidence-api-contract/workspace",
+      "--review",
+      "none",
+      "--verdict",
+      "UNAVAILABLE"
+    ],
+    "code": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: contract-probe: required review is null; owner: orchestrator; recover whole-epic review; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "recover same invocation report",
+    "args": [
+      "--invocation",
+      "contract-probe",
+      "--workspace",
+      "/tmp/ufz-pr2-controller/evidence-api-contract/workspace",
+      "--review",
+      "/tmp/ufz-pr2-controller/evidence-api-contract/workspace/final-review-contract-probe.md",
+      "--verdict",
+      "ready"
+    ],
+    "code": 3,
+    "stdout": "",
+    "stderr": "COLLECTION_GAP: invocation identity or required bundle changed; retain both sources\n"
+  },
+  {
+    "label": "replay after recovered report",
+    "args": [],
+    "code": 3,
+    "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+    "stderr": "COLLECTION_GAP: contract-probe: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+  },
+  {
+    "label": "positive direct report collection",
+    "code": 0,
+    "stdout": "collection: complete\n",
+    "stderr": ""
+  }
+]

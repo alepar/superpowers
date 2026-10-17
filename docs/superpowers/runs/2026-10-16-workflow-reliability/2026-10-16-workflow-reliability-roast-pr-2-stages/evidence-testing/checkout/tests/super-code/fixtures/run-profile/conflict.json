@@ -1,0 +1,33 @@
+{
+  "t0": "2026-10-02T00:00:00Z",
+  "idPrefix": "k",
+  "launch": { "epicId": "kp", "config": { "concurrency": 3, "runtimeSlots": 5, "earlyUnblock": true } },
+  "agents": [
+    { "label": "read-ledger", "phase": "Resume", "start": 0, "end": 4 },
+    { "label": "ledger-append:launch", "phase": "Resume", "start": 1, "end": 3 },
+    { "label": "bd-ready", "phase": "Ready", "start": 4, "end": 10, "result": { "ids": ["kp.1", "kp.2", "kp.4"] } },
+    { "label": "plan", "phase": "Plan", "start": 10, "end": 40, "result": { "planPath": "/w/.superpowers/sdd/kp-plan/kp-plan.md", "mapping": [
+      { "n": 1, "id": "kp.1", "files": ["src/shared.ts"], "deps": [] },
+      { "n": 2, "id": "kp.2", "files": ["src/other.ts"], "deps": [] },
+      { "n": 3, "id": "kp.3", "files": ["src/k.ts"], "deps": ["kp.1", "kp.2"] },
+      { "n": 4, "id": "kp.4", "files": ["src/shared.ts"], "deps": [] } ] } },
+    { "label": "impl:kp.1", "start": 40, "end": 340, "result": { "status": "IMPLEMENTED" } },
+    { "label": "impl:kp.2", "start": 40, "end": 400, "result": { "status": "IMPLEMENTED" } },
+    { "label": "impl:kp.4", "start": 40, "end": 200, "result": { "status": "IMPLEMENTED" } },
+    { "label": "review:kp.4", "start": 200, "end": 230, "result": { "status": "CLEAN" } },
+    { "label": "merge:kp.4", "phase": "Integrate", "start": 230, "end": 260, "result": { "id": "kp.4", "merged": false, "seamOverlap": ["src/shared.ts"], "rebaseConflictFiles": 0 } },
+    { "label": "seam-review:kp.4", "phase": "Integrate", "start": 260, "end": 560, "result": { "status": "NEEDS_FIX" } },
+    { "label": "review:kp.1", "start": 340, "end": 370, "result": { "status": "CLEAN" } },
+    { "label": "review-bead:kp.1", "start": 340, "end": 350, "result": { "reviewBead": "kp.8", "implClosed": true } },
+    { "label": "review:kp.2", "start": 400, "end": 430, "result": { "status": "CLEAN" } },
+    { "label": "review-bead:kp.2", "start": 400, "end": 410, "result": { "reviewBead": "kp.9", "implClosed": true } },
+    { "label": "impl:kp.3", "start": 402, "end": 420, "result": { "status": "STACK_CONFLICT", "finding": "Parent task-kp.1 conflicts on merge: src/shared.ts, src/other.ts" } },
+    { "label": "fix:kp.4:seam", "phase": "Integrate", "start": 560, "end": 860, "result": { "status": "FIXED" } },
+    { "label": "merge:kp.4:seam-cleared", "phase": "Integrate", "start": 860, "end": 890, "result": { "id": "kp.4", "merged": true } },
+    { "label": "merge:kp.1", "phase": "Integrate", "start": 890, "end": 920, "result": { "id": "kp.1", "merged": true } },
+    { "label": "merge:kp.2", "phase": "Integrate", "start": 920, "end": 950, "result": { "id": "kp.2", "merged": true } },
+    { "label": "impl:kp.3", "start": 952, "end": 1252, "result": { "status": "IMPLEMENTED" } },
+    { "label": "review:kp.3", "start": 1252, "end": 1282, "result": { "status": "CLEAN" } },
+    { "label": "merge:kp.3", "phase": "Integrate", "start": 1282, "end": 1312, "result": { "id": "kp.3", "merged": true } }
+  ]
+}

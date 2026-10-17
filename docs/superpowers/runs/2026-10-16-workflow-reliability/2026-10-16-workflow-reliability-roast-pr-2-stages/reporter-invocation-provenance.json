@@ -1,0 +1,16 @@
+{
+  "agent": "/root/roast_pr_r2_static_resume/reporter",
+  "model": "gpt-6-luna",
+  "effort": "high",
+  "fork": "none",
+  "prompt": "reporter-live.md",
+  "promptSHA256": "b19324ebd6c7d50408b65c69dbb7fa35783095e75d32079b239fa4b4b355e33b",
+  "supplement": "reporter-continuation-context.md",
+  "supplementSHA256": "25ec58c2266d7ac7839548fa2a30b0fcb35f67ecb50f6162bd34b067a8986d7a",
+  "result": "result-reporter.json",
+  "controllerOutcomeDirection": false,
+  "completed": true,
+  "resultSHA256": "bc468db57f1c7d98c01e26bd5d2efcb21ca6bcb9de85c03f876670bb2181bddd",
+  "sameRoleFormattingCorrection": "Original Blocking-count parenthetical corrected to total confirmed count; first output retained and all other content verified unchanged",
+  "firstOutput": "reporter-first-output.json"
+}

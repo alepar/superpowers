@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "source": "inv-c96916a964634bb0bb5f2bd3b8e1769b/historical-cluster-29-part-2",
+  "artifact": "fix-r1-handoff-historical-addendum/adapters/followup-review-inv-c96916a964634bb0bb5f2bd3b8e1769b-former-cluster-29-part-2.md",
+  "kind": "final-review",
+  "verdict": "ready \u2014 complete independent historical-evidence review of former cluster 29, part 02 only. No must-fix was established in this assigned artifact. This is neither whole-cluster acceptance nor a verdict on the current product tip or the run's outstanding acceptance obligations.",
+  "occurrences": [
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "No historical exercise, product test, reproduction, controller, verifier, or cleanup script was executed in this review. The retained sampling data were audited with read-only Python/Git operations. Script presence and report text do not establish historical execution.",
+      "text": "No historical exercise, product test, reproduction, controller, verifier, or cleanup script was executed in this review. The retained sampling data were audited with read-only Python/Git operations. Script presence and report text do not establish historical execution."
+    },
+    {
+      "section": "Untested scope",
+      "position": 2,
+      "key": "No transient write-and-restore between observations can be excluded. The records cover six named file hashes and two refs/status snapshots, not every caller file, Git action, output directory, resource, or process.",
+      "text": "No transient write-and-restore between observations can be excluded. The records cover six named file hashes and two refs/status snapshots, not every caller file, Git action, output directory, resource, or process."
+    },
+    {
+      "section": "Untested scope",
+      "position": 3,
+      "key": "Barrier labels document the observer's named checkpoints; these bytes alone do not prove two fresh live agents, their model/settings, their active overlap, detached worktree ownership, captured-source reads, reproduction results, generated prompts/packages, or absence of caller mutations by command trace. Those require the separately assigned evidence.",
+      "text": "Barrier labels document the observer's named checkpoints; these bytes alone do not prove two fresh live agents, their model/settings, their active overlap, detached worktree ownership, captured-source reads, reproduction results, generated prompts/packages, or absence of caller mutations by command trace. Those require the separately assigned evidence."
+    },
+    {
+      "section": "Untested scope",
+      "position": 4,
+      "key": "The records do not verify the origin/content/ancestry of the fixture commits or a formatter fix, command exits, the reported 24-check verification, controlled assembler failure, actual coordinator fallback transition, task-review no-test behavior, or hosted Workflow behavior.",
+      "text": "The records do not verify the origin/content/ancestry of the fixture commits or a formatter fix, command exits, the reported 24-check verification, controlled assembler failure, actual coordinator fallback transition, task-review no-test behavior, or hosted Workflow behavior."
+    },
+    {
+      "section": "Untested scope",
+      "position": 5,
+      "key": "Process inspection remains unknown. Cleanup, termination, absence of detached descendants, retained-resource ownership, inventories, and archive/removal success are not established by this part.",
+      "text": "Process inspection remains unknown. Cleanup, termination, absence of detached descendants, retained-resource ownership, inventories, and archive/removal success are not established by this part."
+    },
+    {
+      "section": "Untested scope",
+      "position": 6,
+      "key": "No multi-invocation finding-continuity, interrupted collection/resume, extraction/projection, supported disposition, acceptance ownership, scheduling, or metrics behavior is established here. The nested design's unresolved-finding guarantees are not discharged by a ready review of this observation file.",
+      "text": "No multi-invocation finding-continuity, interrupted collection/resume, extraction/projection, supported disposition, acceptance ownership, scheduling, or metrics behavior is established here. The nested design's unresolved-finding guarantees are not discharged by a ready review of this observation file."
+    },
+    {
+      "section": "Untested scope",
+      "position": 7,
+      "key": "Former cluster 29 parts 01 and 03\u201305, all other clusters, subsequent revisions, and whole-run/category acceptance remain outside this verdict. The original whole-cluster unreviewed obligation needs the other part reviews and integration judgment; this report supplies only item 8's completed independent review.",
+      "text": "Former cluster 29 parts 01 and 03\u201305, all other clusters, subsequent revisions, and whole-run/category acceptance remain outside this verdict. The original whole-cluster unreviewed obligation needs the other part reviews and integration judgment; this report supplies only item 8's completed independent review."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "Preserve the existing distinctions between observed samples, corroborating command/trace evidence elsewhere, unavailable global process inspection, and untested behavior. The contextual report already states polling and EPERM limitations; no contradiction requiring an edit was found in these records.",
+      "text": "Preserve the existing distinctions between observed samples, corroborating command/trace evidence elsewhere, unavailable global process inspection, and untested behavior. The contextual report already states polling and EPERM limitations; no contradiction requiring an edit was found in these records."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 2,
+      "key": "It is acceptable to retain the sampled caller advances and pending edit without attributing damage or restoring caller state. Their presence is consistent with the root requirement that legitimate concurrent changes not be treated as reviewer damage.",
+      "text": "It is acceptable to retain the sampled caller advances and pending edit without attributing damage or restoring caller state. Their presence is consistent with the root requirement that legitimate concurrent changes not be treated as reviewer damage."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 3,
+      "key": "Keep this unique follow-up artifact as the bounded coverage record. Do not replace old reports, infer completion from the prior interrupted agent, merge unrelated findings by silence, or turn this part's ready verdict into global acceptance. Wider required checks retain their existing owners and dispositions.",
+      "text": "Keep this unique follow-up artifact as the bounded coverage record. Do not replace old reports, infer completion from the prior interrupted agent, merge unrelated findings by silence, or turn this part's ready verdict into global acceptance. Wider required checks retain their existing owners and dispositions."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "status": "verified",
+  "scope": "owned archive metadata hash publication correction only",
+  "declaredEntries": 1180,
+  "finalDiskAudit": {
+    "checked": 1180,
+    "mismatches": 0,
+    "allSizesAndSHA256Matched": true
+  },
+  "correctedEntries": [
+    "archive-packaging-manifest.json",
+    "durable-path-map.json"
+  ],
+  "dependencyOrder": [
+    "archive-packaging-manifest.json and durable-path-map.json finalized first",
+    "artifact-source-hash-map.json records their final byte lengths and SHA-256 values",
+    "persistence-verification.json records the final source-map and manifest hashes",
+    "archive-packaging-verification.json records final manifest, source-map, and persistence hashes",
+    "final audit hashes all source-map entries after these writes"
+  ],
+  "cyclesAvoided": {
+    "sourceMapExcludes": [
+      "archive-packaging-verification.json",
+      "artifact-source-hash-map.json",
+      "persistence-verification.json"
+    ],
+    "explanation": "The source map excludes itself and the two receipts that depend on it; the persistence receipt and archive verification receipt depend downstream and do not feed back into declared source entries."
+  },
+  "priorMapsPreservedByteForByte": {
+    "artifact-source-hash-map.json": "0ebed18302ffc3b2186656285dab628e601fc92723e09e714ecbef26bb79d302",
+    "durable-path-map.json": "c2c80f832191317f3d707c0b0171baa5d6b0174156d331647352c4f231db1760",
+    "persistence-verification.json": "4848c14963bc67d88079b0142b063d544829e63656afb00aa56018c84cd2ab56"
+  },
+  "originalArtifact": {
+    "logicalArtifact": "authored.diff",
+    "encodedFilename": "authored.diff.gz",
+    "logicalBytes": 136599903,
+    "logicalSHA256": "9443e32afefe53e05b5c54395d6eff775eeaea19764d15bf504e7b06ce5f95c1",
+    "encodedBytes": 30203817,
+    "encodedSHA256": "485bbc500df23352be9b0654a4a1797e479b28a1c369e087522beae21b538318",
+    "decodeMethod": "gzip -dc authored.diff.gz",
+    "exactDecodePreviouslyVerified": true
+  },
+  "gaps": []
+}

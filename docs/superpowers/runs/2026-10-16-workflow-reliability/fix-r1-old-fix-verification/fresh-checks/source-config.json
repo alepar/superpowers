@@ -1,0 +1,38 @@
+{
+  "codehead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+  "sourceTree": "f062b7c7ec1b967aa64952fad937ff6982cdb084",
+  "extraction": "git archive ee275436bc69c3dd77cf1753399e0f93b44f2cff skills tests",
+  "root": "/private/tmp/old-fix-semantic-r1-89nok4u2",
+  "source": "/private/tmp/old-fix-semantic-r1-89nok4u2/source",
+  "archiveSha256": "370bf2244663299f49f57a6ab8152cbe1e1d8c38af9cb9512341b033c9874c63",
+  "files": {
+    "skills/super-code/coordinator.js": {
+      "sha256": "770395ccc586aebb49f9e851fdd818f7141e7c083ee00f0c84da7d15a1b816b7",
+      "checkoutMatches": true
+    },
+    "skills/super-code/scripts/dispatch-text.mjs": {
+      "sha256": "e2bf8e7fdc891b466d56bcd669c1c5f82f8849785e3f7dc82eb6bce0f6937b38",
+      "checkoutMatches": true
+    },
+    "skills/super-auto/scripts/report-status": {
+      "sha256": "fd29d9fcafa34e75cb33273b442009221f26c922d427cd0a9f67c14cf3c35be8",
+      "checkoutMatches": true
+    },
+    "tests/super-code/invocation-source-binding-r1.mjs": {
+      "sha256": "96bc655d4e7fbe6375f21285bcefd15769a9f15b01de96620d581e1391e37ff7",
+      "checkoutMatches": true
+    },
+    "tests/super-auto/archive-integrity-r1.sh": {
+      "sha256": "21285fda3051e7dd001ca757310c128d55d29fdd630cd4b38ec19f56d828085c",
+      "checkoutMatches": true
+    },
+    "tests/super-auto/generated-review-inputs-r1.sh": {
+      "sha256": "a7da9f3718adf97186d277859164ae6dda6675ff463a448a91ff1d7192129b0c",
+      "checkoutMatches": true
+    },
+    "tests/super-auto/outer-cleanup-r1.sh": {
+      "sha256": "41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4",
+      "checkoutMatches": true
+    }
+  }
+}

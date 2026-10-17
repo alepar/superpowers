@@ -1,0 +1,63 @@
+{
+  "producer": {
+    "status": 0,
+    "signal": null,
+    "output": [
+      null,
+      "{\"invocationId\":\"regression-probe\",\"base\":\"f3338270c314871120c32c9516c2e6c15291e77f\",\"head\":\"4c6c5b07156c79d382f4fb0e8cb6af7b0a92e031\"}\n",
+      ""
+    ],
+    "pid": 86492,
+    "stdout": "{\"invocationId\":\"regression-probe\",\"base\":\"f3338270c314871120c32c9516c2e6c15291e77f\",\"head\":\"4c6c5b07156c79d382f4fb0e8cb6af7b0a92e031\"}\n",
+    "stderr": ""
+  },
+  "recoveryLine": "Recovery: {\"version\":1,\"id\":\"review-source:regression-probe\",\"kind\":\"deferred\",\"operation\":\"record\",\"reason\":\"immutable invocation review source\",\"evidence\":[\"/private/tmp/ufz-pr2-controller/evidence-regression/progress.md\"],\"data\":{\"reviewSource\":{\"invocationId\":\"regression-probe\",\"base\":\"f3338270c314871120c32c9516c2e6c15291e77f\",\"head\":\"4c6c5b07156c79d382f4fb0e8cb6af7b0a92e031\"}}}",
+  "obligations": [
+    {
+      "version": 1,
+      "id": "review-source:regression-probe",
+      "kind": "deferred",
+      "operation": "record",
+      "reason": "immutable invocation review source",
+      "evidence": [
+        "/private/tmp/ufz-pr2-controller/evidence-regression/progress.md"
+      ],
+      "data": {
+        "reviewSource": {
+          "invocationId": "regression-probe",
+          "base": "f3338270c314871120c32c9516c2e6c15291e77f",
+          "head": "4c6c5b07156c79d382f4fb0e8cb6af7b0a92e031"
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "name": "without-source-binding",
+      "status": 0,
+      "result": {
+        "owner": "super-auto",
+        "sourceTree": "9a0f2451241708ead6300a7f30e707b1bf225aca",
+        "eligible": true,
+        "pending": [],
+        "gaps": [],
+        "nonblockingFindings": []
+      }
+    },
+    {
+      "name": "with-produced-and-recovered-binding",
+      "status": 3,
+      "result": {
+        "owner": "super-auto",
+        "sourceTree": "9a0f2451241708ead6300a7f30e707b1bf225aca",
+        "eligible": false,
+        "pending": [],
+        "gaps": [
+          "review-source:regression-probe: measurement identity unavailable"
+        ],
+        "nonblockingFindings": []
+      }
+    }
+  ],
+  "limits": "Acceptance prerequisite facts and filesystem/projection/status consumers are synthetic controls. Producer and recovery reader are actual frozen product code."
+}

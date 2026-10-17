@@ -1,0 +1,10 @@
+{
+  "manualFanout": true,
+  "maxActiveChildren": 3,
+  "freshFork": "none",
+  "engineReplay": "same canonical engine and adapter with dir substitution only; every stage result live fresh",
+  "punchList": "raw cumulative preserved byte-for-byte; compatible subset via assemble-args; no severity translation for unrepresented obligations",
+  "triageCapture": "complete frozen --stat supplied using --diff-stat after node child-process ENOBUFS",
+  "isolation": "read-only Git+frozen owned extracted snapshot, all probes own scratch",
+  "schedulerIncident": "A brief completed-correctness provenance follow-up inadvertently reactivated a fourth child while 3 scouts active; interrupted immediately before result. No additional reviewer output entered pipeline. All fresh substantive role dispatches remain throttled to 3."
+}

@@ -1,0 +1,63 @@
+{
+  "notes": "Synthetic already-satisfied acceptance fixture, real unmodified bind CLI, ledger-digest, extracted actual recovery reader, acceptance CLI and projection/status children. No child process mocks.",
+  "bind": {
+    "status": 0,
+    "stdout": "{\"invocationId\":\"independent-reproduce\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}\n",
+    "stderr": ""
+  },
+  "digest": {
+    "status": 0,
+    "stdout": "# ledger-digest: 1 of 3 lines\nRecovery: {\"version\":1,\"id\":\"review-source:independent-reproduce\",\"kind\":\"deferred\",\"operation\":\"record\",\"reason\":\"immutable invocation review source\",\"evidence\":[\"/private/tmp/ufz-pr2-controller/judge-3-reproduce/progress.md\"],\"data\":{\"reviewSource\":{\"invocationId\":\"independent-reproduce\",\"base\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"head\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}}}\n",
+    "stderr": ""
+  },
+  "recovered": {
+    "obligations": [
+      {
+        "version": 1,
+        "id": "review-source:independent-reproduce",
+        "kind": "deferred",
+        "operation": "record",
+        "reason": "immutable invocation review source",
+        "evidence": [
+          "/private/tmp/ufz-pr2-controller/judge-3-reproduce/progress.md"
+        ],
+        "data": {
+          "reviewSource": {
+            "invocationId": "independent-reproduce",
+            "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      }
+    ],
+    "gaps": []
+  },
+  "control": {
+    "status": 0,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"cccccccccccccccccccccccccccccccccccccccc\",\"eligible\":true,\"pending\":[],\"gaps\":[],\"nonblockingFindings\":[]}\n",
+    "stderr": "",
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "cccccccccccccccccccccccccccccccccccccccc",
+      "eligible": true,
+      "pending": [],
+      "gaps": [],
+      "nonblockingFindings": []
+    }
+  },
+  "withBinding": {
+    "status": 3,
+    "stdout": "{\"owner\":\"super-auto\",\"sourceTree\":\"cccccccccccccccccccccccccccccccccccccccc\",\"eligible\":false,\"pending\":[],\"gaps\":[\"review-source:independent-reproduce: measurement identity unavailable\"],\"nonblockingFindings\":[]}\n",
+    "stderr": "",
+    "result": {
+      "owner": "super-auto",
+      "sourceTree": "cccccccccccccccccccccccccccccccccccccccc",
+      "eligible": false,
+      "pending": [],
+      "gaps": [
+        "review-source:independent-reproduce: measurement identity unavailable"
+      ],
+      "nonblockingFindings": []
+    }
+  }
+}

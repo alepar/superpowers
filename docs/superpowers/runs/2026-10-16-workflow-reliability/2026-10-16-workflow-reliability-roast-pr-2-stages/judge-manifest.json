@@ -1,0 +1,840 @@
+[
+  {
+    "label": "triage",
+    "phase": "Triage",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "lanes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data-migrations",
+              "deploy-safety",
+              "api-contract",
+              "observability",
+              "testing",
+              "dependency",
+              "hygiene-docs"
+            ]
+          }
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "lanes",
+        "domains"
+      ]
+    },
+    "effort": "low",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-triage.md"
+  },
+  {
+    "label": "scout:correctness",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_correctness.md"
+  },
+  {
+    "label": "scout:security",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_security.md"
+  },
+  {
+    "label": "scout:premortem",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_premortem.md"
+  },
+  {
+    "label": "scout:simplicity-design",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_simplicity-design.md"
+  },
+  {
+    "label": "scout:hot-path-perf",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_hot-path-perf.md"
+  },
+  {
+    "label": "scout:concurrency-async",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_concurrency-async.md"
+  },
+  {
+    "label": "scout:regression",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_regression.md"
+  },
+  {
+    "label": "scout:data-migrations",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_data-migrations.md"
+  },
+  {
+    "label": "scout:deploy-safety",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_deploy-safety.md"
+  },
+  {
+    "label": "scout:api-contract",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_api-contract.md"
+  },
+  {
+    "label": "scout:observability",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_observability.md"
+  },
+  {
+    "label": "scout:testing",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_testing.md"
+  },
+  {
+    "label": "scout:hygiene-docs",
+    "phase": "Scout",
+    "model": "gpt-6.1-sol",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "external": {
+                "type": "boolean"
+              },
+              "kind": {
+                "enum": [
+                  "GAP",
+                  "UNVERIFIED-ASSUMPTION",
+                  "ISSUE"
+                ]
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "spike": {
+                "type": "string"
+              },
+              "previouslyRejected": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "claim",
+              "location",
+              "category",
+              "external",
+              "evidence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "findings"
+      ]
+    },
+    "effort": "high",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-scout_hygiene-docs.md"
+  },
+  {
+    "label": "dedupe",
+    "phase": "Dedupe",
+    "model": "gpt-6-luna",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "suggestedSeverity": {
+                "enum": [
+                  "Blocking",
+                  "Should-fix",
+                  "Nit",
+                  "FYI"
+                ]
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "mergedClaim": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ids",
+              "suggestedSeverity",
+              "rank"
+            ]
+          }
+        }
+      },
+      "required": [
+        "groups"
+      ]
+    },
+    "effort": "low",
+    "promptPath": "/tmp/ufz-pr2-controller/dispatch-dedupe.md"
+  }
+]

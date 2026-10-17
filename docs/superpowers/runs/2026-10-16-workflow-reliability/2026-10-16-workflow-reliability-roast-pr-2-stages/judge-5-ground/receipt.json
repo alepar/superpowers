@@ -1,0 +1,110 @@
+{
+  "steps": [
+    {
+      "label": "settle-null",
+      "exit": 3,
+      "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+      "stderr": "COLLECTION_GAP: ground5: required review is null; owner: orchestrator; recover whole-epic review; keep source workspace and archive; owner: orchestrator\n"
+    },
+    {
+      "label": "recover-path",
+      "exit": 3,
+      "stdout": "",
+      "stderr": "COLLECTION_GAP: invocation identity or required bundle changed; retain both sources\n"
+    },
+    {
+      "label": "replay-recovered",
+      "exit": 3,
+      "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+      "stderr": "COLLECTION_GAP: ground5: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+    },
+    {
+      "label": "subsequent-invocation",
+      "exit": 3,
+      "stdout": "collection: gaps \u2014 retain sources; block later invocation and cleanup\n",
+      "stderr": "COLLECTION_GAP: ground5: null review has recoverable bundle artifacts; reconcile returned result; keep source workspace and archive; owner: orchestrator\n"
+    },
+    {
+      "label": "control",
+      "exit": 0,
+      "stdout": "collection: complete\n",
+      "stderr": ""
+    }
+  ],
+  "collections": [
+    {
+      "invocationId": "ground5",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": null,
+      "review": "UNAVAILABLE",
+      "required": [],
+      "settled": true
+    },
+    {
+      "invocationId": "ground5",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": null,
+      "review": "UNAVAILABLE",
+      "required": [],
+      "settled": true,
+      "complete": false,
+      "gaps": [
+        "required review is null; owner: orchestrator; recover whole-epic review"
+      ]
+    },
+    {
+      "invocationId": "ground5",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": null,
+      "review": "UNAVAILABLE",
+      "required": [],
+      "settled": true,
+      "complete": false,
+      "gaps": [
+        "invocation identity or required bundle changed; retain both sources"
+      ]
+    },
+    {
+      "invocationId": "ground5",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": null,
+      "review": "UNAVAILABLE",
+      "required": [],
+      "settled": true,
+      "complete": false,
+      "gaps": [
+        "null review has recoverable bundle artifacts; reconcile returned result"
+      ],
+      "files": [
+        {
+          "path": "final-review-ground5.md",
+          "sha256": "01b10700a4910b0bc0597648632f0027adff252d1fa20827b9a1feea9ccbbd5b"
+        }
+      ]
+    },
+    {
+      "invocationId": "ground5fresh",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": "/tmp/ufz-pr2-controller/judge-5-ground/workspace/final-review-ground5fresh.md",
+      "review": "ready",
+      "required": [],
+      "settled": true
+    },
+    {
+      "invocationId": "ground5fresh",
+      "workspace": "/tmp/ufz-pr2-controller/judge-5-ground/workspace",
+      "reviewPath": "/tmp/ufz-pr2-controller/judge-5-ground/workspace/final-review-ground5fresh.md",
+      "review": "ready",
+      "required": [],
+      "settled": true,
+      "files": [
+        {
+          "path": "final-review-ground5fresh.md",
+          "sha256": "01b10700a4910b0bc0597648632f0027adff252d1fa20827b9a1feea9ccbbd5b"
+        }
+      ],
+      "complete": true,
+      "gaps": []
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "canonicalEngineEnforcement": [
+    "lanes: 5 confirmed entries tagged",
+    "fix-regression: 1 entry tagged",
+    "header: lane-yield inserted",
+    "confirmedCount 5 vs 6 confirmed default routes (overrules account for the gap)"
+  ],
+  "confirmedCount": 5,
+  "escalationCount": 1,
+  "requiredHeaderAndSectionsPresent": true,
+  "allThreeOriginalSourceObligationsPreservedVerbatim": true,
+  "citedProofPathsExist": 17,
+  "all18SeatsValid": true,
+  "reporterCorrectionOnlyCountChanged": true
+}

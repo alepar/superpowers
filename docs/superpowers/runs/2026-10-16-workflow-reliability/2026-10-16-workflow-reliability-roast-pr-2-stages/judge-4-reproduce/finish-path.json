@@ -1,0 +1,6 @@
+{
+  "actualGuard": "  if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause",
+  "refusal": "review input selection: c233b4a46552acd2ec690dbaf467b710088e39bb:docs/run/reviews/new/snapshots/run.md:4 old: missing or non-regular captured file: docs/run/reviews/new/snapshots/reviews/old/final-review-old.md; c97ea05ce68fd3e22b5d2000bd5a59e0321a66a0:docs/run/reviews/new/snapshots/run.md:4 old: missing or non-regular captured file: docs/run/reviews/new/snapshots/reviews/old/final-review-old.md",
+  "directPromptStatus": 0,
+  "directPromptHasRefusal": true
+}
