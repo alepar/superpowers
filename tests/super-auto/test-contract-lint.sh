@@ -209,6 +209,7 @@ check_disputed() { # SKILL_DIR
   [ -n "$para" ] || { echo "(disputed) report-prompt.md: no §Disputed Blocking findings paragraph"; return; }
   printf '%s' "$para" | grep -qF 'roastCodeCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastCodeCapped:"
   printf '%s' "$para" | grep -qF 'roastDesignCapped:' || echo "(disputed) report-prompt.md: disputed route does not name roastDesignCapped:"
+  printf '%s' "$para" | grep -qF 'counts every Blocking row of either findings ledger whose status is `disputed`' || echo "(disputed) report-prompt.md: disputed route does not count disputed ledger rows"
   cap=$(awk '/^#+ / { s = ($0 == "#### Cap disposition"); next } s' "$1/SKILL.md")
   printf '%s' "$cap" | grep -qF 'roastCodeCapped:' || echo "(disputed) SKILL.md: §Cap disposition does not write roastCodeCapped:"
 }
@@ -401,8 +402,10 @@ copy; sed 's/^| `redesign-<loop>-<K>` |\(.*\)beads-filed\\|/| `redesign-<loop>-<
 expect_caught "a redesign record row missing the beads-filed state fails the baseline" "lacks baseline line format: redesign-<code|design>-<K>"
 copy; sed 's/`local \\| redesign`/`patch \\| redesign`/g' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
 expect_caught "a step-back decision vocabulary without local fails the baseline" 'lacks baseline line format: its decision `local | redesign`'
-copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/`roastDesignCapped:` for the design loop/the design loop/; /^## Disputed Blocking findings/,/^## Smells/s/(the design loop)//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/ or `roastDesignCapped:`//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "a disputed route that drops roastDesignCapped fails" "disputed route does not name roastDesignCapped:"
+copy; sed '/^## Disputed Blocking findings/,/^## Smells/s/of either findings ledger/of the code ledger/' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
+expect_caught "a disputed route that stops counting disputed ledger rows fails" "disputed route does not count disputed ledger rows"
 copy; sed 's/`redesign incomplete`/`redesign unfinished`/' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"
 expect_caught "a Remaining row that drops redesign incomplete fails" "Remaining row lacks redesign incomplete"
 copy; sed '/^| Gotchas/s/ and its `designRoast`//' "$REPO_ROOT/skills/super-auto/report-prompt.md" > "$SA/report-prompt.md"

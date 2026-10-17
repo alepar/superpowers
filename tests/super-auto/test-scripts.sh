@@ -99,9 +99,13 @@ qualifier: code findings parked" "parked escalation plus codeBuckets.escalated c
 assert_eq "$(rs_status "$RF/roast-skipped.md")" "status: clean [degraded: plan roast skipped, code roast skipped]" "skipped roasts (t/f flag values) are qualifiers"
 assert_eq "$(rs_status "$RF/code-capped.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped keys (comma-bearing locations) count as unresolved Blocking"
 assert_eq "$(rs_status "$RF/code-thrash.md")" "status: completed with 2 unresolved Blocking, 0 escalations" "roastCodeCapped written at a thrash exit counts its keys"
-assert_eq "$(rs_status "$RF/disputed-capped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking key held in roastCodeCapped counts as unresolved Blocking (never clean)"
-assert_eq "$(rs_status "$RF/disputed-design-capped-proceeded.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "a disputed Blocking key held in a proceeded roastDesignCapped counts as unresolved Blocking"
-assert_eq "$(rs_status "$RF/disputed-design-capped-stopped.md" --tip 9e8d7c6)" "status: clean" "a disputed key in a stopped roastDesignCapped is not counted"
+assert_eq "$(rs_status "$RF/disputed-capped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking ledger row whose key roastCodeCapped also holds counts once"
+assert_eq "$(rs_status "$RF/disputed-design-capped-proceeded.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations [degraded: design roast capped-blocking]" "a disputed Blocking design-ledger row whose key a proceeded roastDesignCapped also holds counts once"
+assert_eq "$(rs_status "$RF/disputed-design-capped-stopped.md" --tip 9e8d7c6)" "status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking design-ledger row counts though the stopped roastDesignCapped holding its key does not"
+run bash "$RS" "$RF/disputed-uncapped.md" --tip 9e8d7c6
+assert_eq "$code:$out" "0:status: completed with 1 unresolved Blocking, 0 escalations" "a disputed Blocking ledger row counts as unresolved with no cap line (the roast no longer confirms it); disputed Should-fix, resolved and dissolved Blocking rows do not"
+sed "s/^findingsLedger: .*/findingsLedger: no-such-ledger.md/" "$RF/disputed-uncapped.md" > "$T/ledger-missing.md"
+assert_eq "$(rs_status "$T/ledger-missing.md" --tip 9e8d7c6)" "status: clean [degraded: findings ledger not found: no-such-ledger.md]" "a findings-ledger pointer to a missing file is a qualifier"
 run bash "$RS" "$RF/degraded-redesign-parks.md" --tip 3f9c2e1
 assert_eq "$out" "status: clean [degraded: redesign budget spent, redesign gate not computable, redesign declined by human, redesign aborted, redesign incomplete, amend roast finding not fixed]
 qualifier: redesign budget spent

@@ -5,7 +5,7 @@ phase: report
 
 roastCodeRound: 4
 roastDesignCapped: [Blocking] docs/spec.md §Retry · 2026-10-16-disputed-roast-design-4.md · proceeded
-findingsLedger: findings-ledger.md
+findingsLedgerDesign: disputed-design-ledger.md
 
 codeBuckets:
   completed: bd-1

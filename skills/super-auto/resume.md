@@ -48,7 +48,7 @@ A `redesign-<loop>-<K>` record (run-state.md item 7 (Design decisions)) whose `s
 - `beads-filed`: write any dispute line missing from the overrides file, run the coverage-amend round unless the `coverage-amend-<loop>-<K>` approvals line exists, then the calling loop's remaining steps. In the code loop they depend on `designRoast`:
   - `-`: run the amend-roast step, with its design-cap gate;
   - `r<M>` and no round-M design roast report: run roast round M without incrementing `roastDesignRound` again;
-  - `r<M>` and its report: finish the fix step (spec fixes, tasks deduped by title under `sp:redesign-code-<K>-roast`, commit) and write `r<M> fixed`;
+  - `r<M>` and its report: finish the fix step (spec fixes; tasks from the work-list file `<run-dir>/amend-code-<K>-roast.md`, written first when absent, filed only for its titles missing from the beads labelled `sp:redesign-code-<K>-roast`; commit) and write `r<M> fixed`;
   - `r<M> fixed`, `skipped — design cap spent` or `none`: go on.
 
   `applied` is written only after these remaining steps (for the code loop, the `designRoast` sub-states), so a record still at `beads-filed` always replays the amend roast steps; Amend Mode's return never wrote it early. Then write state `applied`, re-enter `super-code`, and run the next numbered round. The design loop's `redesign-design-<K>` has no `designRoast` step: after the coverage round it writes `applied`, and its next round is the post-amendment design roast.

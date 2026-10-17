@@ -5,7 +5,7 @@ phase: report
 
 roastCodeRound: 4
 roastCodeCapped: [Blocking] src/seat.ts:41 · 2026-10-16-disputed-roast-pr-4.md · disputed by amend, still confirmed by the roast at the cap
-findingsLedger: findings-ledger.md
+findingsLedger: disputed-code-ledger.md
 
 codeBuckets:
   completed: bd-1
