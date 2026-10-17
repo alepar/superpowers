@@ -14,3 +14,4 @@ epic: super-plan-59b
 
 approvals:
 - top-split · auto · super-plan-59b.1 LEAF, super-plan-59b.2 LEAF, super-plan-59b.3 LEAF, super-plan-59b.4 LEAF, super-plan-59b.5 LEAF, super-plan-59b.6 LEAF (PROMOTE overruled → split, sp:demoted-by-session), super-plan-59b.7 LEAF, super-plan-59b.8 LEAF, super-plan-59b.9 LEAF, super-plan-59b.10 LEAF
+- coverage-round-1 · canonical R-list: docs/superpowers/runs/2026-10-16-roast-findings-redesign-loop/coverage-round-1-requirements.md (R1–R14) · requirements: 14 · mapped: 12 · unmapped: 3 (R12, R13, R14) · auto: L2 rejected; L3–L6, L8–L13 applied (bead amendments to .1 .2 .4 .6 .7 .8 .10); L7 deferred to integration sweep
