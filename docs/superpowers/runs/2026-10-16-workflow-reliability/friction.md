@@ -7,3 +7,7 @@
 ## Execution metadata
 
 Design roast round 1 uses the supported manual fan-out rung because Workflow is unavailable. Installed engine helpers perform merging, routing, coverage and enforcement; stage bounds unchanged. Mechanism selection itself is not a defect/friction event.
+
+## Run events
+
+- Planner workspace-helper retry was rejected by automatic approval review: parent brief barred Git mutations, helper writes ignored workspace .gitignore. Parent had already completed canonical setup. Resolution: use existing workspace and explicitly authorize only append-only planner outputs; no retry of refused helper or permission-setting change.
