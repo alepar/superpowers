@@ -28,7 +28,8 @@ where it lands:
 | design mode (A/B) | relayed to every `brainstorming` invocation, root and nested (`autonomous` forces Mode B); with `autonomous`, it sets the design gates — §Gates by Mode |
 | autonomous | no stops after launch — §Gates by Mode, §Unattended Runs |
 | roast preference (on/off) | §Adversarial Review Loop's offer is pre-decided either way — never re-asked |
-| starting roast round | §Hand-off — resume the cap-3 loop from it rather than from 1 |
+| starting roast round | §Hand-off — resume the roast loop from it rather than from 1 |
+| redesign records (`findingsLedgerDesign`, `redesignCycles-design`, `redesign-design-<K>` lines) | §Re-entry — adopt them; the counter is never reset |
 | hand-off ownership | §Hand-off's caller-owned branch |
 
 ## Gates by Mode
@@ -111,6 +112,16 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 | §The Process step 6 / §Coverage | a recorded top-split decision, and the coverage rounds already spent — see §Run-State File |
 | §Coverage, root integration sweep | an existing `Integration sweep:` bead for this root — adopt it; **never create a second** (two sweeps each fanning in on every leaf split the join) |
 | §Parallelism Pass | a recorded `graph-pass:` line (§Run-State File) — the pass has run; parked changes stay parked |
+| §Adversarial Review Loop, ledger and amend files | `findings-ledger-design.md`, `findings-overrides-design.md` and any `amend-design-<K>.md` in the artifact directory — adopt them (rebuild the ledger from the reports and overrides rather than starting one), and never reset `redesignCycles-design`; an amend file is acted on only after `amend-check` passes it, on resume too |
+| §Adversarial Review Loop, an interrupted redesign cycle | the `redesign-design-<K>` record's `state` (run-state file, or the round summaries when standalone) — see below |
+
+**Resuming a redesign cycle** dispatches only from its record's `state`, never from what looks half-done:
+
+- `started`: with an amend file and a spec diff present, re-run `amend-check` on them; on ok continue from §Amend Mode's commit step, otherwise restore the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-run §Amend Mode from its first step. With no amend file, restore and re-run from the first step.
+- `amend-checked`: re-run `amend-check` before committing anything; ok → commit, reject → restore the specs and rewrite the state to `aborted — amend rejected on resume`.
+- `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
+- `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
+- `applied`, `aborted — …`, `thrash — …`: nothing to replay; the loop continues from its other records.
 
 **A partially-written artifact is not an adoptable one.** Adopt a spec only if it is committed, and
 an epic only if it carries its own `sp:` label — the label flip and the commit are the "done"
@@ -685,18 +696,84 @@ report. The report file is the only cross-iteration state. **Three of its sectio
 | `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. Unattended, the answer is no: park them and fix the confirmed queue. |
 | `## Not verified (dedupe failed or judge lost)` | Findings the engine could not get judged (dedupe died, or a judge was lost). Treat them like the beyond-cap section: surface next to the escalations and offer a re-roast; unattended, park them and fix the confirmed queue. |
 
-**Step back before fixing.** Every round whose report has confirmed findings, before step 1,
-dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never an agent that
-does the fixes) with every roast report of this loop so far, the settled tree, and every prior
-step-back record. Save its output beside the report and record `stepBackDesign-round-<N>` in the
-run-state file, both as the template specifies. On `patch`, continue with step 1. On `redesign`:
-interactive (§Gates by Mode), present it with its recommendation and let the human choose;
-unattended, apply it when its `scope` is `inside`, and when it is `outside` record it as `parked`,
-patch this round's findings, and surface it at the loop exit. Applying a redesign means amending
-the spec(s) where the changed decision is stated and restructuring the affected tasks through
-step 2; an amendment that touches a `## Key abstractions` section is applied and synced
-(§Decomposition, "Key abstractions sync"); its `dissolves` findings get no fix task (the step-back file records why), its `remains`
-findings go through step 1, and step 3 re-roasts, since a design decision changed.
+**Round order.** A round's report is handled in this order: the converged test (the fix list's item 4),
+Step 1, the thrash and cap tests (item 4), then the branch Step 1 chose. "The fix list" is the
+numbered items 1–4 below; Step 1 is not its item 1.
+
+**Step 1 — before fixing.** Every round whose report has confirmed findings runs this ordered
+procedure; each outcome has its branch. Paths live in the artifact directory (§Artifact Location):
+the ledger `findings-ledger-design.md`, the overrides file `findings-overrides-design.md` (create
+it empty when absent), and the amend record `amend-design-<K>.md`.
+
+1. **Keys file.** Write `…-roast-design-<N>-step-back-keys.txt` beside the round's report: for each
+   `roast-design` round `<M>`'s report, `bash <base>/../super-code/scripts/report-verdict --keys
+   <that report> | sed 's/^/r<M> /'`, one `rM [SEV] <location>` line per confirmed key, every round
+   so far, every severity. Its consumer is `scripts/step-back-check`.
+2. **Ledger.** Run `bash <base>/scripts/findings-ledger --loop design --out
+   <artifact-dir>/findings-ledger-design.md --report 1=<roast-design-1 report> … --overrides
+   <artifact-dir>/findings-overrides-design.md`, one `--report <M>=<path>` per round, and record
+   `findingsLedgerDesign: <path>`. Every later rebuild this round uses the same input set. On exit
+   2, from this call or any later rebuild, drop the bad input it names from this and every later
+   invocation (a round whose previous round is missing computes no triggers). If it still exits 2,
+   the gate is not computable: record `stepBackDesign-round-<N>: local — gate not computable:
+   <reason>`, park a `degraded-verdict` `redesign gate not computable — <reason>`, skip the
+   step-back, and run the fix list with every finding its own task and no clusters.
+3. **Last-known-good breach.** When this round is the first after redesign cycle K, that cycle's
+   `redesign-design-<K>` state is `applied`, and this round's effective open Blocking count (the
+   ledger's `r<N>=`) is higher than the previous round's, rewrite that record's state to `thrash —
+   lastGood breach` and take the thrash exit. Nothing else in Step 1 runs.
+4. **Step-back.** Dispatch `./step-back-prompt.md` (mode `design`, model opus, fresh context, never
+   an agent that does the fixes) with the ledger path (`[LEDGER_PATH]`), the keys file
+   (`[KEYS_FILE]`), every roast report of this loop so far, the settled tree, and every prior
+   step-back record. Save its output beside the report; record `stepBackDesign-round-<N>` as the
+   template specifies.
+5. **Check.** Run `bash <base>/scripts/step-back-check --step-back <file> --keys <keys file>
+   --ledger <ledger>`. Exit 0: continue. Exit 3: re-dispatch the step-back once with the reject
+   lines and check again. A second exit 3 never falls back to `local` when the ledger names a
+   mechanical trigger: it is a forced redesign (recorded `redesign — forced: step-back record
+   rejected: <reject lines>`, scope `inside`, triggers from the ledger) while `redesignCycles-design`
+   < 2, else the thrash exit. With no mechanical trigger, run `local` with every finding its own
+   task and no clusters, recorded `local — step-back record rejected: <reject lines>`. Exit 2: a
+   bad invocation; fix it and run again.
+6. **Dissolves.** Append each validated `dissolves:` key to the overrides file as `<key> ·
+   dissolved@r<N>`, then rebuild the ledger (item 2).
+7. **Interactive runs** (§Gates by Mode). A `redesign`, mandated or not, is presented with the
+   step-back's recommendation and the human chooses. A decline is recorded `stepBackDesign-round-<N>:
+   local — redesign declined by human`, parked as a `degraded-verdict` `redesign declined by human
+   — <triggers>`, and the round runs `local`. The check is not re-run on the human's choice.
+8. **Branch.**
+   - `local`: the fix list, items 1–4.
+   - `redesign`, scope `inside`, `redesignCycles-design` < 2: commit any uncommitted spec changes
+     (so HEAD is the pre-amendment spec state every Amend Mode restore returns to); record
+     `lastGood` as that HEAD commit SHA (reported, never reverted: nothing has executed);
+     increment `redesignCycles-design` to K; write `redesign-design-<K>` with state `started`;
+     then run the exit tests below. This round does not take the cap exit; the redesign cycle
+     runs.
+   - `redesign`, scope `outside`: unattended, record it as `parked`, park a `degraded-verdict`
+     `redesign proposed, not applied`, run `local`, and surface it at the loop exit. Interactive,
+     offer it to the human with the recommendation; the round runs `local`.
+   - `redesign` with the budget spent (`redesignCycles-design` = 2): under a mechanical trigger,
+     the thrash exit; otherwise park a `degraded-verdict` `redesign budget spent` and run `local`.
+
+**Redesign cycle.** After the exit tests pass, run §Amend Mode inline: `--loop design`, K, the
+ledger and overrides paths, this loop's `findings-ledger` invocation (item 2's input set, dropped
+inputs excluded), the step-back record, the task-tree dump, the run-state file, and the bead
+context (§Decomposition's flag triple and the `Integration sweep:` wiring). After each of its
+steps, rewrite the `redesign-design-<K>` record's `state` in place (`amend-checked`,
+`specs-committed`, `beads-filed`, `applied`); fill its `amended` field from the amend record.
+- `aborted — <reason>`: rewrite the state, park a `degraded-verdict` `redesign aborted —
+  <reason>`, and run the round `local`. The spent cycle is not refunded.
+- `applied`: the loop's own next numbered round is the design roast after the amendment, always
+  when `amended:` is non-empty (re-invoke `superpowers:super-roast`, fix item 3, with its prior
+  report the latest report), with the ledger path in its stated intent as reference-only input:
+  the previously open findings and their statuses, to re-check. The round that ran the redesign
+  skips the fix list's items 1–2; Amend Mode files and supersedes the beads. With `amended: none`,
+  item 3's scope rule decides.
+- Design roast rounds the code loop runs after an amendment also increment `roastDesignRound` and
+  rebuild `findingsLedgerDesign`, so they spend this loop's cap.
+
+Standalone (no caller run-state file), the ledger, overrides and amend files stay in the artifact
+directory and the redesign records go to the round summaries (§Re-entry adopts them).
 
 **Declined: offering a split when findings concentrate in one subsystem.** A step-back redesign
 can already target that one decision, and a split is a new design the human starts. **Declined:
@@ -715,8 +792,11 @@ recurrence; the delta stays an instance count.
    - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
      findings → re-invoke `superpowers:super-roast`, passing the prior report so it can skip
      re-litigating what it already cleared.
-4. **Cap at 3 iterations.** Two early exits, opposite in meaning — check the convergence one
-   first:
+4. **Loop exits.** Tested in the round order above: converged first, then Step 1, then these. The
+   effective cap is `3 + redesignCycles-design`, using the counter as Step 1 left it, so a cycle
+   Step 1 starts raises the cap before the cap test. Pass super-roast the computed number as
+   `config.iterationCap`: `3 + redesignCycles-design`, plus 1 in the extension round or in the
+   post-amendment roast that replaced it (below).
    - **Converged** — the report's verdict carries `[converged]` (a non-degraded round ≥ 2
      confirming zero Blocking of any provenance: no new, no carried, no regressed — see
      super-roast's Report format / `reporter-prompt.md` Steps 3–4). The roast has nothing
@@ -725,18 +805,27 @@ recurrence; the delta stays an instance count.
      human (or the exit summary, when unattended) as a **punch list** — file the ones worth
      doing as ordinary tasks with the §Decomposition flag triple, or decline them explicitly;
      do not re-roast to chase them. This exit exists because, without it, a run that has
-     genuinely converged still spends round 3 manufacturing marginal findings a human then has
-     to shut down by hand.
-   - **Thrash** — an iteration resolves nothing: the confirmed-Blocking count did not shrink
-     from the prior report. That's thrash, not progress — stop and pause for the human as
-     below. (A carried/still-open Blocking lands here, never in the converged exit.)
+     genuinely converged still spends the last round manufacturing marginal findings a human then
+     has to shut down by hand. Checked first.
+   - **Thrash** — Step 1 reached the thrash exit: the redesign budget is spent while a
+     mechanical trigger (no-progress or recurrence) still fires, or a last-known-good breach
+     (item 3 of Step 1). That is thrash, not progress — stop and pause for the human as below. (A
+     carried/still-open Blocking lands here only through those two paths, never in the converged
+     exit.) The breach means the amendment left more open Blocking than the state before it; the
+     pre-amendment spec commit is `lastGood`, reported, never reverted.
+   - **Cap** — `roastDesignRound` ≥ `3 + redesignCycles-design` after Step 1. A round in which
+     Step 1 started a cycle never takes the cap exit: its redesign branch runs, so a trigger first
+     firing on the cap round starts a redesign instead of exiting capped.
 
-   **Capped Blocking — the cap is a cost control, not a clearance.** When round 3 (the cap)
-   still ends with a confirmed-Blocking verdict, extend the cap by exactly ONE round — one more
-   fix + re-roast — and require that extension to come back clean or `[converged]`. If the
-   extension still ends Blocking, three-plus independent rounds called the same kernel
-   defective and the latest fixes are unverified. Record `capped-blocking` in the run-state
-   file with the unresolved Blocking finding ids and the extension round's report path, then:
+   **Capped Blocking — the cap is a cost control, not a clearance.** When the effective cap
+   round still ends with a confirmed-Blocking verdict (and Step 1 started no cycle), extend the
+   cap by exactly ONE round — one more fix + re-roast — and require that extension to come back
+   clean or `[converged]`. A redesign started in the extension round (budget left) replaces the
+   extension: the post-amendment roast is the loop's last round, and if it still ends Blocking,
+   record `capped-blocking` exactly as after the extension. If the extension (or that roast)
+   still ends Blocking, independent rounds called the same kernel defective and the latest fixes
+   are unverified. Record `capped-blocking` in the run-state file with the unresolved Blocking
+   finding ids and the extension round's report path, then:
    - Interactive or one-shot: the design does not proceed to execution. The exit pause (in a
      one-shot run, the design-ready stop) is where it stops, and the human owns what happens
      next. A later, human-relaunched run that executes the tree anyway first acknowledges the
@@ -757,7 +846,7 @@ recurrence; the delta stays an instance count.
   progress than it looks, and the early-stop test above can be fooled by it.
 
 Every exit — cap-out, clean, converged, and thrash — **summarizes for the human**, restating any
-open escalations, any beyond-panel-cap candidates, any parked redesign, the converged exit's punch
+open escalations, any beyond-panel-cap candidates, any parked or aborted redesign and any `redesign-design-<K>` record that ended `thrash — lastGood breach`, the converged exit's punch
 list (when that exit fired), and any qualifier still on the verdict. An unqualified `clean`
 proceeds to §Parallelism Pass after its summary; every other exit **pauses** there. This loop never
 declares itself finished, mirroring `super-roast`'s own handoff contract. Unattended (§Unattended
@@ -939,7 +1028,10 @@ Write these, each as it happens:
 | each roast report path | `super-roast` returns it |
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
-| `stepBackDesign-round-<N>: patch \| redesign — <one line>` (format: `./step-back-prompt.md`), one line per round, appended | that round's step-back decision is made |
+| `findingsLedgerDesign: <path>` (`<artifact-dir>/findings-ledger-design.md`; single-valued, replaced) | Step 1 first builds the ledger |
+| `stepBackDesign-round-<N>: local \| redesign — <one line>` (format: `./step-back-prompt.md`; a `patch` line reads as `local`), one line per round, appended | that round's step-back decision is made |
+| `redesignCycles-design: <K>` (single-valued, replaced, never reset) | Step 1's branch starts a redesign cycle |
+| `redesign-design-<K>: round <N> · triggers <list> · amended <§s\|none> · lastGood <sha\|-> · designRoast - · state <started\|amend-checked\|specs-committed\|beads-filed\|applied\|aborted — <reason>\|thrash — lastGood breach>` (one line per K, rewritten in place, never appended; `designRoast` stays `-`: that field is the code loop's) | `started` before the exit tests, then at each transition of §Amend Mode's steps and of the loop's exits |
 | the caller's phase token, if it supplied one for this stage | entering that stage |
 | **each top-split decision, asked or applied, with the shape it covers** | the moment it is made |
 | `capped-blocking`, with the unresolved Blocking ids, the extension report, and stopped or proceeded | the extension round ends Blocking |
@@ -1001,7 +1093,7 @@ skill's work instead of re-running all of it.
 - Treat a `clean` verdict carrying `[low coverage]` or `[panel-capped: N unverified]` as a
   clearance — that's a degraded run, and the user decides whether to proceed (unattended: proceed
   and hand the qualifier back verbatim; never drop it).
-- Start a roast round's fix work before its step-back pass has decided `patch` or `redesign`, or
+- Start a roast round's fix work before its Step 1 has decided `local` or `redesign`, or
   hand a fixer only the latest round's report.
 - Hand-assemble the coverage inputs, paste full spec prose into a coverage review, or drop beads
   to fit the byte target — `scripts/coverage-inputs` builds the compact inputs, and full specs
@@ -1036,6 +1128,6 @@ skill's work instead of re-running all of it.
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
 - Dispatches `./key-abstractions-prompt.md` (handing it `./design-distillate.md`), `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`, and, in Amend Mode, `./amend-prompt.md` (the only dispatch Amend Mode makes besides the coverage-amend round's `./coverage-reviewer-prompt.md`).
-- Runs `./scripts/amend-check` and `./scripts/findings-ledger` (the rebuild after disputes) in Amend Mode (§Amend Mode); `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass.
+- Runs `./scripts/amend-check` and `./scripts/findings-ledger` (the rebuild after disputes) in Amend Mode (§Amend Mode); `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass; runs `./scripts/findings-ledger` and `./scripts/step-back-check` in §Adversarial Review Loop.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.
