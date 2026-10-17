@@ -1,0 +1,26 @@
+{"invocation":"inv-1","files":2,"bytes":357,"maxBasename":31}
+{"invocation":"inv-2","files":9,"bytes":5208,"maxBasename":108}
+node:internal/assert/utils:146
+  throw error;
+  ^
+
+AssertionError [ERR_ASSERTION]: prior collected packages must not become fresh slices
+    at [stdin]:40:2
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:485:12
+    at [stdin]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:483:60)
+    at evalFunction (node:internal/process/execution:317:30)
+    at evalTypeScript (node:internal/process/execution:329:3)
+    at node:internal/main/eval_stdin:51:5
+    at ReadStream.<anonymous> (node:internal/process/execution:239:5)
+    at ReadStream.emit (node:events:514:20) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.9.0

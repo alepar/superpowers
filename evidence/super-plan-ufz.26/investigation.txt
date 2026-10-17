@@ -1,0 +1,50 @@
+Task: super-plan-ufz.26
+Scope-held handoff; no production edits.
+Base: 18b0b6d5fdfa772f3aa74d53706d6a4615b4ae86
+
+The collector copies assembled/final-review-ID-final and direct final-review-ID.md.diff
+into the committed run's reviews/ID archive. assembler-prompt.md steps 2/4 enumerate
+all captured-range changed files with no archive exclusion. The fresh invocation then
+creates slices for those old slices and diffs. The collector copies that larger package,
+and another invocation repeats the process.
+
+The named fixture uses the actual collector. GENERATED_REVIEW_INPUTS_BASELINE=1 executes
+the existing assembler prompt's git diff --stat and one-git-diff-per-changed-file recipe.
+The default fixture provisionally expects an additive --review-inputs mode in the
+existing report-status component; that interface is NOT implemented and can be revised
+by the fresh implementation owner after the coordinator's scope amendment.
+
+RED (revised fixture):
+TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.26 GENERATED_REVIEW_INPUTS_BASELINE=1 bash tests/super-auto/generated-review-inputs-r1.sh
+Exit 1: prior collected packages must not become fresh slices.
+inv-1: 2 files, 357 slice bytes, 31-byte maximum basename.
+inv-2: 9 files, 5211 slice bytes, 108-byte maximum basename.
+The first collector completed, including complete finding extraction. The second
+assembly consumed the committed archive and failed the exclusion assertion.
+Assertions after that failure, cycles 3-5, later-product control, final archive
+hashes and post-source-cleanup replay remain UNMEASURED. No GREEN claim.
+
+Source capture (commands ran in the assigned task worktree):
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red.index git read-tree HEAD
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red.index git add tests/super-auto/generated-review-inputs-r1.sh
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red.index git write-tree
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red2.index git read-tree HEAD
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red2.index git add tests/super-auto/generated-review-inputs-r1.sh
+GIT_INDEX_FILE=/tmp/sp-bce79baa/super-plan-ufz.26/red2.index git write-tree
+The original index was not changed by these captures. Snapshot hashes are retained
+in red-source-tree.txt and red2-source-tree.txt. Raw logs are retained separately.
+
+Test hygiene: initial check from the task worktree refused its own cwd (exit 2;
+red-hygiene.log). The corrected check from /private/tmp returned 0, no matches
+(red-hygiene-corrected.log); revised RED check also returned 0, no matches
+(red2-hygiene.log). The fixture starts no background process.
+
+Constraints: Historical repository evidence remains unchanged. No production code,
+agent roles, engine, lifecycle or filename-only repair was added. The narrower rejected
+direct frozen-Git fallback materiality finding remains rejected. .24/.29/.23/.32
+contracts have no production changes. No full suite, merge, rebase, push, Herdr mutation,
+tracker mutation or root closure was performed by this seat.
+
+Skills: systematic-debugging and test-driven-development supplied reproduction/TDD;
+writing-skills was read for the prospective operative prompt change, but prompt changes
+and coordinator-owned bounded instruction evaluation remain pending.
