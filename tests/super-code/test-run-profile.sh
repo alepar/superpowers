@@ -336,6 +336,38 @@ missing=""
 for k in $kinds; do grep -qF "case '$k'" "$REPO_ROOT/skills/super-code/scripts/run-profile.mjs" || missing="$missing $k"; done
 assert_eq "${missing:-none}" "none" "coordinator label kinds are all classified (missing:${missing:- none})"
 
+echo "run-profile: resume observations are run-level readiness work"
+node - "$FX" "$T" <<'JS'
+const fs = require('node:fs'), [FX, T] = process.argv.slice(2)
+const workflow = JSON.parse(fs.readFileSync(`${FX}/chain.json`, 'utf8'))
+const observation = workflow.agents.find(a => a.label === 'bd-ready')
+observation.label = 'resume-check:ep.1'
+observation.phase = 'Resume'
+observation.result = { landed: true, sourceVerified: false, closed: ['ep.1'], open: [] }
+fs.writeFileSync(`${T}/resume-label-workflow.json`, JSON.stringify(workflow))
+const ordinary = JSON.parse(fs.readFileSync(`${FX}/ordinary.json`, 'utf8'))
+ordinary.agents.push({ codex: 'resume_check_cx_1', label: 'resume-check:cx.1', start: 0, end: 10 })
+fs.writeFileSync(`${T}/resume-label-ordinary.json`, JSON.stringify(ordinary))
+JS
+node "$BUILD" "$T/resume-label-workflow.json" "$T/resume-label-workflow"
+run bash "$P" --workflow "$T/resume-label-workflow" --out "$T/resume-label-w"
+assert_eq "$code" 0 "resume observation Workflow profile exits 0"
+assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.criticalPath.segments.filter(s => s.label === 'resume-check:ep.1').map(s => [s.kind,s.bead,s.ms]))")" '[["ready",null,10000]]' "resume observation is run-level ready time"
+assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.beads)")" "$(q "$T/chain-p.json" "JSON.stringify(d.beads)")" "resume observation creates no task attempt or task timing"
+assert_eq "$(q "$T/resume-label-w.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/chain-p.json" "JSON.stringify(d.taskSlots)")" "resume observation uses no task slot"
+RC=$(node "$ORD" "$T/resume-label-ordinary.json" codex "$T/resume-label-codex")
+run bash "$P" --codex "$RC" --codex-home "$T/resume-label-codex/codex" --ledger "$T/resume-label-codex/progress.md" --beads "$T/resume-label-codex/beads.json" --out "$T/resume-label-x"
+assert_eq "$code" 0 "resume observation Codex profile exits 0"
+RS=$(node "$ORD" "$T/resume-label-ordinary.json" claude "$T/resume-label-claude")
+run bash "$P" --subagents "$RS" --ledger "$T/resume-label-claude/progress.md" --beads "$T/resume-label-claude/beads.json" --out "$T/resume-label-c"
+assert_eq "$code" 0 "resume observation Claude profile exits 0"
+for pair in 'x ox' 'c oc'; do
+  read -r variant baseline <<< "$pair"
+  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.concurrency.kinds.filter(k => k.kind === 'resume-check').map(k => [k.mapped,k.n,k.ms]))")" '[[true,1,10000]]' "ordinary resume observation is mapped ($variant)"
+  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.beads)")" "$(q "$T/$baseline.json" "JSON.stringify(d.beads)")" "ordinary resume observation preserves bead population and attempts ($variant)"
+  assert_eq "$(q "$T/resume-label-$variant.json" "JSON.stringify(d.taskSlots)")" "$(q "$T/$baseline.json" "JSON.stringify(d.taskSlots)")" "ordinary resume observation preserves task slots ($variant)"
+done
+
 echo "run-profile: context-pass module (synthetic rows)"
 # context-pass-unit.mjs prints `ok <name>` / `not ok <name>` per check over synthetic transcript rows.
 seen=0
