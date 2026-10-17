@@ -28,10 +28,25 @@
 #                           are never read. Reports may be given in any order (sorted by ROUND).
 #   --final-review ROUND=F  (code loop only) the round's final-review keys file: `[Must-fix] <item>`
 #                           lines, a leading `rN ` allowed. Rows get `source final-review`; they are
-#                           open while in the highest-round file passed and `resolved@r<that round>`
-#                           otherwise. They never feed the mechanical triggers.
+#                           open while in the highest-round non-empty file passed and
+#                           `resolved@r<that round>` otherwise; with no non-empty file every such row
+#                           stays open. They never feed the mechanical triggers. A round given twice
+#                           is bad input (exit 2), as for --report.
 #   --punch-list FILE       keys the reporter punch-listed, one per line (leading `rN ` allowed).
 #   --overrides FILE        see "Overrides file".
+#
+# Absent, empty, degraded. Each per-round input says what those mean, and a round with no real review
+# never resolves a key:
+#   --report N        absent: round N is missing, so no-progress, `returned` and regressed are not
+#                     computed when N or N-1 is missing. Empty is not possible (a report with no
+#                     confirmed finding still has a verdict line, so its keys are empty and the round
+#                     is present). Degraded: `[low coverage]` or `[panel-capped: ...]` on the verdict
+#                     line.
+#   --final-review N  absent or empty (the review read `no work landed`, or nothing was keyed): no
+#                     review that round. Such a round is treated like a degraded one: it is never the
+#                     highest-round file, so it resolves nothing.
+#   --punch-list      absent or empty: no key is `punch-listed`. The caller passes the latest existing
+#                     punch list, because a redesign round writes none.
 #
 # Canonical key form: `[SEV] <location>`, the text `report-verdict --keys` prints (`[SEV]` is
 # Blocking, Should-fix, Nit or Must-fix; `<location>` is the text before the finding's first ` — `).
@@ -52,7 +67,7 @@
 # `owners:` disputes. A line that does not parse is treated like an unknown key (ignored, counted).
 #
 # Statuses: `open` (confirmed in the latest round); `open (returned r<N>)` (confirmed in latest round
-# N, confirmed earlier, absent from the nearest preceding non-degraded round); `resolved@r<K>`
+# N, confirmed earlier, absent from the nearest preceding non-degraded round, and first raised before that round); `resolved@r<K>`
 # (confirmed earlier, absent from non-degraded round K, the first such round after its last
 # confirmation, not punch-listed); `punch-listed`; `dissolved@r<N>`; `disputed@r<N> (<reason>)`.
 #
@@ -173,12 +188,16 @@ EOF
 # Final-review keys files, sorted by round.
 if [ "${#finals[@]}" -gt 0 ]; then
   fsorted=$(for a in "${finals[@]}"; do split_arg "$a"; printf '%s\t%s\n' "$round" "$path"; done | sort -n -k1,1 -s)
+  prev_fround=0
   while IFS=$'\t' read -r round path; do
+    [ "$round" != "$prev_fround" ] || die "bad input: $path: round $round given twice"
+    prev_fround=$round
     readable "$path"
-    printf 'G\t%s\n' "$round" >> "$stream"
+    nkeys=0
     while IFS= read -r k || [ -n "$k" ]; do
-      [ -z "$k" ] || printf 'F\t%s\t%s\t%s\n' "$round" "$path" "$k"
+      [ -z "$k" ] || { printf 'F\t%s\t%s\t%s\n' "$round" "$path" "$k"; nkeys=$((nkeys + 1)); }
     done < "$path" >> "$stream"
+    printf 'G\t%s\t%s\n' "$round" "$nkeys" >> "$stream"
   done <<EOF
 $fsorted
 EOF
@@ -214,7 +233,7 @@ awk -v loop="$loop" '
     if (k ~ /^\[Blocking\]/) nblk[r]++
     next
   }
-  $1 == "G" { frmax = $2 + 0; next }
+  $1 == "G" { if ($3 + 0 > 0) frmax = $2 + 0; next }
   $1 == "F" {
     r = $2 + 0; k = canon($4)
     if (k == "" || ((r SUBSEP k) in conf)) next
@@ -242,11 +261,11 @@ awk -v loop="$loop" '
     for (i = 1; i <= nk; i++) {
       k = ord[i]
       if (src[k] == "final-review") {
-        s0 = (conf[frmax, k]) ? "open" : "resolved@r" frmax
+        s0 = (frmax == 0 || conf[frmax, k]) ? "open" : "resolved@r" frmax
       } else if (conf[N, k]) {
         p = 0
         for (j = nr; j >= 1; j--) if (rounds[j] < N && !deg[rounds[j]]) { p = rounds[j]; break }
-        if (first[k] < N && p && !conf[p, k]) s0 = "open (returned r" N ")"; else s0 = "open"
+        if (first[k] < N && p && first[k] < p && !conf[p, k]) s0 = "open (returned r" N ")"; else s0 = "open"
       } else {
         s0 = ""
         for (j = 1; j <= nr; j++) if (rounds[j] > last[k] && !deg[rounds[j]]) { s0 = "resolved@r" rounds[j]; break }
