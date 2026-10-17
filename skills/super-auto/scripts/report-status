@@ -278,7 +278,7 @@ if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }'
   if command -v node >/dev/null 2>&1; then
     script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
     continuity=$(node - "$script_dir" "$run" <<'STATUS'
-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
 const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8'),latest=new Map();let errors=0,block=false;
 const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
  typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
@@ -291,7 +291,23 @@ const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.inv
  (!r.complete || (r.settled && Array.isArray(r.gaps) && r.gaps.length===0 &&
  (r.reviewPath===null ? r.review==='no work landed' : r.files?.some(f=>f.path==='final-review-'+r.invocationId+'.md'))));
 for(const l of text.split('\n')){if(/^[A-Za-z][A-Za-z0-9-]*:/.test(l))block=l==='approvals:';if(l.startsWith('- review-collection'))try{if(!block||!l.startsWith('- review-collection · '))throw Error();const r=JSON.parse(l.slice('- review-collection · '.length));if(!validCollection(r))throw Error();latest.set(r.invocationId,r)}catch{errors++}}
-let pending=0;for(const r of latest.values()){if(!r.complete)pending++;errors+=(r.gaps||[]).length}
+// Collection metadata describes the last preservation attempt. Recheck retained bytes
+// on every read; status and acceptance must never repair or recollect an archive.
+let pending=0;const integrityGaps=[];
+for(const r of latest.values()){
+ let invalid=false;
+ for(const f of r.files||[]){
+  const file=path.join(path.dirname(path.resolve(run)),'reviews',r.invocationId,f.path);
+  let actual;
+  try{if(!fs.lstatSync(file).isFile())throw Error();actual=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}
+  catch{integrityGaps.push(r.invocationId+': archive unavailable: '+f.path);invalid=true;continue}
+  if(actual!==f.sha256){integrityGaps.push(r.invocationId+': archive integrity mismatch: '+f.path);invalid=true}
+ }
+ if(!r.complete||invalid)pending++;
+ errors+=(r.gaps||[]).length;
+}
+errors+=integrityGaps.length;
+for(const g of integrityGaps)console.log('review collection gap: '+g);
 if(pending)console.log('review collections pending: '+pending);
 if(errors)console.log('review collection gaps: '+errors);
 if(/^- finding-/m.test(text)){
