@@ -192,8 +192,11 @@ Then append the qualifiers, in this order:
 - `coverage.panelCappedTag` (after a space), when it is non-empty.
 - ` [review readiness incomplete]` when `coverage.reviewReadiness` is missing, malformed, or
   does not state coverage `complete` and provenance `available` with a nonempty evidence basis.
-  Report the supplied basis and source limits without inventing inspection counts. Stage
-  `lowCoverage` remains separate from this source-readiness qualification.
+  Also append `[low coverage]` for compatibility with existing degradation consumers, including
+  when readiness-incomplete is your own veto against affirmative caller readiness. This preserves
+  omitted prior findings and suppresses absence-based signals. Report the supplied basis and source
+  limits without inventing inspection counts. Stage `coverage.lowCoverage` stays separate and may
+  remain false while the verdict carries both source-readiness qualifiers.
 - ` [converged]` — the signal a caller's fix loop uses to stop iterating — when
   `coverage.convergenceEligible` is true (a late round with a prior report, affirmative
   source readiness, and neither stage-loss nor panel-cap qualifier), you did not add `[low coverage]` yourself, and **no Blocking of any

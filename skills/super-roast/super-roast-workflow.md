@@ -219,10 +219,13 @@ not supply this evidence. Manual/reconstructed args use the same gate.
 
 The engine returns this object as `coverage.reviewReadiness`, includes it in `{{COVERAGE_JSON}}`,
 and writes its status and basis on the `coverage:` line. Nonready or unknown readiness adds
-`[review readiness incomplete]` to the verdict and prevents `[converged]`, without changing
-stage counts or `lowCoverage`. A reporter's `[low coverage]` or `[review readiness incomplete]`
+`[review readiness incomplete]` and the existing `[low coverage]` compatibility qualifier to
+the verdict and prevents `[converged]`, without changing stage counts or `coverage.lowCoverage`.
+The low-coverage verdict qualifier keeps existing degradation consumers from resolving absent
+findings or computing absence-based signals from source-incomplete rounds. A reporter's `[low coverage]` or `[review readiness incomplete]`
 on either verdict path is preserved and vetoes convergence, including with affirmative caller
-readiness. A differing reporter `coverage:` header is retained as `reporter coverage:` alongside
+readiness. Any readiness-incomplete verdict, including a reporter-only veto, also carries the
+`[low coverage]` compatibility qualifier. A differing reporter `coverage:` header is retained as `reporter coverage:` alongside
 the authoritative stage metrics. Bounded-source prose and historical/native holds remain in the report; no
 inspection counts or clearance are inferred from this object.
 
@@ -580,8 +583,9 @@ const coverageLine = [
 function qualify(verdict, allowConverged, forceLow = false, forceReadinessIncomplete = false) {
   const v = String(verdict ?? '').replace(/^super-roast verdict:\s*/, '')
   const base = v.replace(/\s*\[(low coverage|panel-capped[^\]]*|review readiness incomplete|converged)\]/g, '').trim()
-  const low = forceLow || lowCoverage || v.includes('[low coverage]')
   const readinessIncomplete = !!readinessTag || forceReadinessIncomplete || v.includes('[review readiness incomplete]')
+  // Existing degradation consumers require the compatibility tag to preserve absent findings.
+  const low = forceLow || lowCoverage || readinessIncomplete || v.includes('[low coverage]')
   const converged = allowConverged && coverage.convergenceEligible && !low && !readinessIncomplete && !/^Blocking\b/.test(base) && (emptyLateRound || v.includes('[converged]'))
   return [base, low && '[low coverage]', panelCappedTag, readinessIncomplete && '[review readiness incomplete]', converged && '[converged]'].filter(Boolean).join(' ')
 }
@@ -816,7 +820,7 @@ depend on the label.
 For these topology-only fixtures, supply `args.reviewReadiness` as
 `{coverage:"complete", provenance:"available", basis:"Synthetic topology fixture only."}`.
 This exercises affirmative qualifier routing without claiming a real source review. Omitted
-readiness instead appends `[review readiness incomplete]` to each expected verdict; counts
+readiness instead appends `[low coverage] [review readiness incomplete]` to each expected verdict; counts
 and stage `lowCoverage` stay the same. The design-mode variants below use the same fixture.
 `node tests/super-roast/test-convergence-readiness.mjs` runs all five documented scenarios
 locally with deterministic structured-output stubs (22/23/22/12/13 calls).

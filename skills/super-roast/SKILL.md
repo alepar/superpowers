@@ -235,7 +235,9 @@ convergence or thrash reading, and, being sub-Blocking by construction, leaves `
 unchanged. `[converged]` additionally requires caller-supplied `reviewReadiness` with coverage
 `complete`, provenance `available`, and a nonempty source-evidence basis. Pass that object with
 `assemble-args --review-readiness <json|@file>`; omission or malformed readiness is unknown,
-adds `[review readiness incomplete]`, and prevents convergence. Source readiness is separate
+adds `[low coverage] [review readiness incomplete]`, and prevents convergence. The existing
+low-coverage verdict qualifier keeps degradation consumers from resolving omitted prior findings;
+any reporter readiness-incomplete veto also carries both qualifiers. Source readiness is separate
 from stage `lowCoverage` and is returned in `coverage.reviewReadiness` and the coverage header.
 Successful scouts, selected paths and zero candidates do not establish it.
 `[converged]` appears on the verdict when that source-ready, non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —

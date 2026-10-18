@@ -1,6 +1,10 @@
 // Exercise the canonical fence, including reconstructed/manual JSON arguments.
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { test } from 'node:test'
 
 const doc = readFileSync(new URL('../../skills/super-roast/super-roast-workflow.md', import.meta.url), 'utf8')
@@ -199,3 +203,46 @@ for (const variant of ['canonical', 'dead-reporter', 'unsettled', 'design-domain
   if (variant === 'unsettled') assert.equal(result.escalations.length, 2)
   if (design) assert.equal(calls.some(o => o.label === 'scout:security'), variant === 'design-widen')
 })
+
+
+// Consumer compatibility: pass actual canonical-engine reports to the actual ledger script.
+// An omitted old Blocking in an unqualified source round must remain open, in either loop.
+for (const loop of ['code', 'design']) for (const scenario of ['bounded', 'missing', 'reporter-verdict-veto', 'reporter-header-veto', 'ready']) {
+  test(`engine to findings-ledger: ${loop} ${scenario}`, async () => {
+    const prior = 'super-roast verdict: Blocking (1 confirmed)\ninputs: captured source\n## Confirmed findings\n- [Blocking] unreviewed.js:1 — existing defect in unreviewed source\n'
+    const rep = report('clean (0 nits)', '## Confirmed findings\n- none\n')
+    if (scenario === 'reporter-verdict-veto') rep.verdict += ' [review readiness incomplete]'
+    if (scenario === 'reporter-header-veto') rep.reportMarkdown = rep.reportMarkdown.replace('super-roast verdict: clean (0 nits)', 'super-roast verdict: clean (0 nits) [review readiness incomplete]')
+    const { result } = await execute({
+      readiness: scenario === 'bounded' ? bounded : scenario === 'missing' ? undefined : ready,
+      report: rep,
+      args: { priorReport: prior, mode: loop === 'code' ? 'pr' : 'design', config: loop === 'code' ? { coreLanes: ['core1'] } : { coreLenses: ['core1'], widenLenses: [] } },
+    })
+    const dir = mkdtempSync(join(tmpdir(), 'convergence-ledger-'))
+    try {
+      writeFileSync(join(dir, 'r1.md'), prior)
+      writeFileSync(join(dir, 'r2.md'), result.reportMarkdown)
+      const ledger = spawnSync('bash', [fileURLToPath(new URL('../../skills/super-design/scripts/findings-ledger', import.meta.url)), '--loop', loop, '--out', join(dir, 'ledger.md'), '--report', `1=${join(dir, 'r1.md')}`, '--report', `2=${join(dir, 'r2.md')}`], { encoding: 'utf8' })
+      assert.equal(ledger.status, 0, ledger.stderr)
+      const text = readFileSync(join(dir, 'ledger.md'), 'utf8')
+      const row = text.split('\n').find(l => l.startsWith('- [Blocking] unreviewed.js:1'))
+      assert.ok(row, text)
+      assert.equal(result.coverage.lowCoverage, false, 'source qualification never changes stage completion')
+      if (scenario === 'ready') {
+        assert.ok(row.includes(' · resolved@r2 · '), text)
+        assert.ok(text.includes('degraded=none'), text)
+        assert.ok(result.verdict.includes('[converged]'))
+        assert.ok(!result.verdict.includes('[low coverage]'))
+      } else {
+        assert.ok(row.includes(' · open · '), text)
+        assert.ok(!row.includes('resolved@'), text)
+        assert.ok(text.includes('degraded=r2'), text)
+        assert.match(text, /not-computable=[^\n]*no-progress/, 'degraded absence-based trigger stays unavailable')
+        assert.ok(result.verdict.includes('[low coverage]'), result.verdict)
+        assert.ok(result.verdict.includes('[review readiness incomplete]'), result.verdict)
+        assert.ok(result.reportMarkdown.startsWith(`super-roast verdict: ${result.verdict}`))
+        noConvergence(result)
+      }
+    } finally { rmSync(dir, { recursive: true, force: true }) }
+  })
+}
