@@ -65,7 +65,7 @@ with a friction log invoked the roast, is appended to that log.
      refute vote.
   4. Compute what the engine computes before the reporter — the coverage object (every field
      `{{COVERAGE_JSON}}` carries, including `lowCoverage`, `panelCappedTag`,
-     `convergenceEligible`), the coverage line, the seat-agreement line, and each packet's
+     `convergenceEligible`, `reviewReadiness`), the coverage line, the seat-agreement line, and each packet's
      `defaultRoute` — by running the engine script's own helpers (`defaultRoute`,
      `seatAgreementLine`, the coverage block) under node over the collected results, not by
      hand. Persist the coverage object next to the report. A manual run without it writes
@@ -183,9 +183,12 @@ loop's cap tripped passes `post-cap audit`), and `args.inputs` (the spec paths, 
 call — scout dispatch/dead counts, `unknownLanes`, `domainsDropped`, the raw→deduped funnel,
 `dedupeOrphans`, `beyondCap`, `beyondPanelCap`, `dedupeDead`, panel/spot/promoted counts,
 `judgeLost`, `spotLost`, `laneYield`, and the qualifier inputs `lowCoverage`, `panelCappedTag`,
-`emptyLateRound`, `convergenceEligible`. `emptyLateRound` is true on a round ≥ 2 with every scout
-alive and zero raw findings: the engine then drops a reporter-added `[low coverage]` and sets
-`[converged]` itself, since nothing confirmed means no Blocking of any provenance. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
+`emptyLateRound`, `convergenceEligible`, and `reviewReadiness`. `emptyLateRound` describes a
+late round with every scout alive and zero raw findings; it does not establish source readiness.
+`convergenceEligible` additionally requires affirmative `reviewReadiness` and no panel cap.
+A late round has a nonempty prior report and an iteration number ≥ 2 or the exact label
+`post-cap audit`; iteration 1 stays ineligible even if reconstructed args carry a prior report.
+The engine preserves a reporter-added `[low coverage]` on every round. Only panel-tier seat losses, a lost judge dispatch, a dead triage, scout
 or dedupe set `lowCoverage`; a lost Nit spot check is counted (`spotLost`) and does not. `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` are the
 engine-rendered header lines (the latter empty when no full panel exists). Each packet in
 `{{PACKETS_JSON}}` is `{finding, votes, tier, valid, preExisting, defaultRoute}` (`preExisting`
@@ -203,6 +206,23 @@ string. Its `lanes` schema is an enum built at runtime from the conditional lane
 `prompts.scouts`, so an invented lane is retried by schema validation; a lane that still has no
 prompt is logged and recorded in `coverage.unknownLanes`, not counted as a dead scout. A function
 anywhere in `args` makes the script unrunnable.
+
+**`args.reviewReadiness`** is source evidence supplied by the caller, separate from execution-stage
+`lowCoverage`. Pass it through `assemble-args --review-readiness <json|@file>`; the assembler
+validates and preserves the same object. Its required fields are `coverage` (`complete`,
+`bounded`, `unknown`), `provenance` (`available`, `unavailable`, `unknown`), and string `basis`.
+Affirmative readiness requires `complete`, `available`, and a nonempty evidence basis tied to
+the captured source and inspected scope. Omission or malformed engine input becomes
+`{coverage:"unknown", provenance:"unknown", basis:""}`. The assembler rejects malformed explicit
+input. Successful scout dispatch, selected paths, zero candidates, and absence of parser gaps do
+not supply this evidence. Manual/reconstructed args use the same gate.
+
+The engine returns this object as `coverage.reviewReadiness`, includes it in `{{COVERAGE_JSON}}`,
+and writes its status and basis on the `coverage:` line. Nonready or unknown readiness adds
+`[review readiness incomplete]` to the verdict and prevents `[converged]`, without changing
+stage counts or `lowCoverage`. A reporter's `[low coverage]` on its verdict or report header is
+also preserved. Bounded-source prose and historical/native holds remain in the report; no
+inspection counts or clearance are inferred from this object.
 
 **`config.effort`** (optional, `{role: effort}`) sets the reasoning effort per stage, for the
 roles `triage`, `scout`, `dedupe`, `judge` (panel seats), `spot` (spot checks) and `reporter`.
@@ -515,9 +535,20 @@ const validSeats = panelJudged.reduce((a, j) => a + j.votes.filter(Boolean).leng
 const spotLost = judged.filter(j => j.tier === 'spot' && !j.votes[0]).length
 const lowCoverage = triageDead || scoutsDead > 0 || dedupeDead || judgeLost > 0 || validSeats < totalSeats
 const panelCappedTag = beyondPanelCap.length ? `[panel-capped: ${beyondPanelCap.length} unverified]` : ''
-// A round ≥ 2 whose every scout returned and found nothing is convergence evidence, not a blind
-// run: the late-round stance names "no material findings" as an expected outcome.
-const emptyLateRound = String(priorReport).trim() !== '' && raw.length === 0 && !lowCoverage
+// Source readiness is supplied evidence, independent of stage completion. Missing or malformed
+// input is unknown; neither successful scouts nor empty candidates establish source readiness.
+const unknownReadiness = { coverage: 'unknown', provenance: 'unknown', basis: '' }
+const r = A.reviewReadiness
+const readinessValid = r && !Array.isArray(r) && ['complete', 'bounded', 'unknown'].includes(r.coverage)
+  && ['available', 'unavailable', 'unknown'].includes(r.provenance) && typeof r.basis === 'string'
+  && (!(r.coverage === 'complete' && r.provenance === 'available') || r.basis.trim() !== '')
+const reviewReadiness = readinessValid ? r : unknownReadiness
+const sourceReady = reviewReadiness.coverage === 'complete' && reviewReadiness.provenance === 'available'
+const readinessTag = sourceReady ? '' : '[review readiness incomplete]'
+const lateRound = String(priorReport).trim() !== '' &&
+  ((/^\d+$/.test(String(iteration)) && Number(iteration) >= 2) || iteration === 'post-cap audit')
+// Empty candidates describe topology only; convergence also requires affirmative source readiness.
+const emptyLateRound = lateRound && raw.length === 0 && !lowCoverage
 const coverage = {
   triageDead,
   scoutsDispatched: scoutNames.length, scoutsDead, unknownLanes, domainsDropped,
@@ -528,8 +559,8 @@ const coverage = {
   promotedCount: judged.filter(j => j.tier === 'promoted').length,
   judgeLost, spotLost, laneYield,
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
-  lowCoverage, panelCappedTag, emptyLateRound,
-  convergenceEligible: String(priorReport).trim() !== '' && !lowCoverage && !panelCappedTag,
+  lowCoverage, panelCappedTag, emptyLateRound, reviewReadiness,
+  convergenceEligible: lateRound && sourceReady && !lowCoverage && !panelCappedTag,
 }
 const coverageLine = [
   `coverage: scouts ${scoutNames.length - scoutsDead}/${scoutNames.length} (${scoutNames.join(', ')})${scoutsDead ? ` — dead: ${deadScouts.join(', ')}` : ''}`,
@@ -539,16 +570,17 @@ const coverageLine = [
   `raw ${raw.length} → deduped ${deduped.length}${dedupeDead ? ` (dedupe failed — ${raw.length} raw unverified)` : ''} → panel ${coverage.panelCount} · spot ${coverage.spotCount} · promoted ${coverage.promotedCount}${beyondPanelCap.length ? ` · beyond panel cap ${beyondPanelCap.length}` : ''}${judgeLost ? ` · judge lost ${judgeLost}` : ''}`,
   `judge completion ${totalSeats ? coverage.judgeCompletionPct + '%' : 'n/a (no panels)'}${spotLost ? ` (spot checks lost ${spotLost})` : ''}`,
   `remainder-capped: ${beyondCap}`,
+  `review readiness: coverage ${reviewReadiness.coverage}, provenance ${reviewReadiness.provenance} — basis: ${JSON.stringify(reviewReadiness.basis)}`,
 ].join(' · ')
 
 // Verdict qualifiers are re-applied to whatever the reporter returns, so a missed or spurious
 // qualifier can't make a degraded round read clean or converged.
 function qualify(verdict, allowConverged, forceLow = false) {
   const v = String(verdict ?? '').replace(/^super-roast verdict:\s*/, '')
-  const base = v.replace(/\s*\[(low coverage|panel-capped[^\]]*|converged)\]/g, '').trim()
-  const low = forceLow || lowCoverage || (!emptyLateRound && v.includes('[low coverage]'))
-  const converged = allowConverged && coverage.convergenceEligible && !low && (emptyLateRound || v.includes('[converged]'))
-  return [base, low && '[low coverage]', panelCappedTag, converged && '[converged]'].filter(Boolean).join(' ')
+  const base = v.replace(/\s*\[(low coverage|panel-capped[^\]]*|review readiness incomplete|converged)\]/g, '').trim()
+  const low = forceLow || lowCoverage || v.includes('[low coverage]')
+  const converged = allowConverged && coverage.convergenceEligible && !low && !/^Blocking\b/.test(base) && (emptyLateRound || v.includes('[converged]'))
+  return [base, low && '[low coverage]', panelCappedTag, readinessTag, converged && '[converged]'].filter(Boolean).join(' ')
 }
 
 // Reporter — final placement, env-aware severity, report markdown. Re-dispatched once on failure.
@@ -610,8 +642,11 @@ function fallbackReport() {
 // FYI is rewritten to FYI (with the verdict's severity recomputed from the Confirmed section).
 const enforcement = []
 function enforce(rep) {
-  let verdict = qualify(rep.verdict, true)
   let lines = String(rep.reportMarkdown ?? '').split('\n')
+  // Preserve a coverage limitation supplied on either reporter verdict path before overwriting.
+  const headerVerdict = lines.find(l => l.startsWith('super-roast verdict:')) ?? ''
+  const reporterLow = headerVerdict.includes('[low coverage]')
+  let verdict = qualify(rep.verdict, true, reporterLow)
   // preExisting → FYI, matched on the `- [SEV] <location> — ` entry line.
   let rewrote = 0
   for (const p of packets.filter(p => p.preExisting)) {
@@ -769,6 +804,14 @@ depend on the label.
 
 ## Assertions for the canonical dryRun (mode `pr`, `config.remainderCap: 3`)
 
+For these topology-only fixtures, supply `args.reviewReadiness` as
+`{coverage:"complete", provenance:"available", basis:"Synthetic topology fixture only."}`.
+This exercises affirmative qualifier routing without claiming a real source review. Omitted
+readiness instead appends `[review readiness incomplete]` to each expected verdict; counts
+and stage `lowCoverage` stay the same. The design-mode variants below use the same fixture.
+`node tests/super-roast/test-convergence-readiness.mjs` runs all five documented scenarios
+locally with deterministic structured-output stubs (22/23/22/12/13 calls).
+
 - triage: 1 call, dispatched concurrently with the 3 core scouts.
 - scouts: 4 calls (3 core-configured + 1 triage-activated `data-migrations`).
 - dedupe: 1 call.
@@ -817,7 +860,8 @@ should cover, beyond the canonical topology and the two variants above:
 | lost judge | the `spot#3` dispatch throws | `routeCounts["not-verified:judge-lost"]` 1, `judgeLost` 1, `lowCoverage` true |
 | dead spot checks | `seat:refute:spot` returns nothing | 3 × `not-verified:dead-spot`, `spotLost` 3, `lowCoverage` false |
 | empty raw | every scout returns `[]` | no dedupe call, 6 agents |
-| empty late round | round 2 with a prior report, every scout returns `[]`, the reporter adds `[low coverage]` | `emptyLateRound` true, verdict `clean (0 nits) [converged]`; on round 1, or with a dead scout, the verdict keeps `[low coverage]` |
+| empty late round | round 2 with prior report, every scout returns `[]`, reporter adds `[low coverage]` | `emptyLateRound` true; reporter `[low coverage]` preserved, never `[converged]`; unknown/nonready source also adds `[review readiness incomplete]` |
+| source readiness | empty late round, complete/available readiness with nonempty evidence basis, reporter has no coverage limitation | `[converged]`; bounded/unknown/malformed/missing readiness prevents convergence and is written in the coverage header |
 | dedupe orphans | groups claim only ids 0, 1, 4 (plus an out-of-range id) | `dedupeOrphans` 5, `dedupedFindings` 7 |
 | reporter enforcement | refute seats CONFIRM with `preExisting`; reporter returns a made-up `coverage:` line and Blocking entries | entries rewritten to `[FYI]`, verdict severity recomputed, header lines overwritten, `enforcement` non-empty |
 | real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |

@@ -112,10 +112,12 @@ if (scenario === 'pr-r2') {
   check('punch-listed keys reach the reporter', () => assert.ok(by('reporter')[0].prompt.includes('<punch_listed>\n[Should-fix] c.js:1\n[Nit] d.js:2; e.js:3\n</punch_listed>')))
 }
 if (scenario === 'pr-r2-empty') {
-  check('empty late round with every scout alive converges', () => {
+  check('empty late round preserves reporter limitation and unknown source readiness', () => {
     assert.equal(r.coverage.emptyLateRound, true)
-    assert.equal(r.verdict, 'clean (0 nits) [converged]')
-    assert.ok(r.reportMarkdown.startsWith('super-roast verdict: clean (0 nits) [converged]'))
+    assert.equal(r.verdict, 'clean (0 nits) [low coverage] [review readiness incomplete]')
+    assert.equal(r.coverage.lowCoverage, false)
+    assert.equal(r.coverage.convergenceEligible, false)
+    assert.ok(r.reportMarkdown.startsWith('super-roast verdict: ' + r.verdict))
   })
 }
 if (scenario === 'design-r1') {

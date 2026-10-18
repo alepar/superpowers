@@ -14,7 +14,7 @@ the Task tool with no engine-specific syntax. It contains ten engine-substituted
 `{{PRIOR_REPORT}}` (the previous iteration's report, or empty), `{{PUNCH_LISTED}}` (the prior
 round's punch-listed keys a caller passed with `assemble-args --punch-listed`, or empty),
 `{{COVERAGE_JSON}}` (the coverage object, including the qualifier inputs `lowCoverage`, `panelCappedTag`,
-`convergenceEligible`), `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` (engine-rendered header
+`convergenceEligible`, `reviewReadiness`), `{{COVERAGE_LINE}}` and `{{SEAT_AGREEMENT}}` (engine-rendered header
 lines), and the run facts `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus one
 orchestrator-rendered token, `{{INDEPENDENCE}}`, filled before the engine runs (see
 `./super-roast-workflow.md` "Prompt contract"). After the reporter returns, the engine
@@ -186,14 +186,17 @@ may parse this line, and `clean (<n> nits)` deliberately does NOT carry the word
 since nothing did.
 Then append the qualifiers, in this order:
 - ` [low coverage]` when `coverage.lowCoverage` is true (a dead triage, scout, dedupe or judge
-  seat), or, on iteration 1 only, when `coverage.rawFindings` is 0 and you judge the artifact
-  non-trivial. On a later round `coverage.emptyLateRound` (every scout returned, none found
-  anything) is convergence evidence, not low coverage. Low coverage is a fact about the run —
-  append it to a `clean` verdict too.
+  seat), or when source inspection or provenance is limited, or when zero findings leave a
+  non-trivial artifact insufficiently reviewed. Preserve that qualification on empty late rounds:
+  returning scouts and zero candidates do not establish source completeness.
 - `coverage.panelCappedTag` (after a space), when it is non-empty.
+- ` [review readiness incomplete]` when `coverage.reviewReadiness` is missing, malformed, or
+  does not state coverage `complete` and provenance `available` with a nonempty evidence basis.
+  Report the supplied basis and source limits without inventing inspection counts. Stage
+  `lowCoverage` remains separate from this source-readiness qualification.
 - ` [converged]` — the signal a caller's fix loop uses to stop iterating — when
-  `coverage.convergenceEligible` is true (a prior report exists and neither coverage
-  qualifier applies), you did not add `[low coverage]` yourself, and **no Blocking of any
+  `coverage.convergenceEligible` is true (a late round with a prior report, affirmative
+  source readiness, and neither stage-loss nor panel-cap qualifier), you did not add `[low coverage]` yourself, and **no Blocking of any
   provenance is confirmed this round**: zero new, zero regressed, AND zero carried/still-open
   (a carried Blocking means the fix pass failed on it; that is the caller's thrash exit, never
   convergence). Confirmed findings below Blocking do not block convergence. Punch-listed
@@ -221,7 +224,7 @@ Write the free-text parts (evidence, reasons, fix-shape hints) as plain, literal
 reviewer can scan: short sentences, one fact per line, no metaphor or flourish.
 
 ---
-super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [review readiness incomplete] [converged]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>

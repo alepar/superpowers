@@ -26,6 +26,7 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
   --independence <text>           independence label (default: derived from config.models.judge,
                                   ending \` · rung: Workflow\` with --script, else
                                   \` · rung: manual fan-out\`)
+  --review-readiness <json|@file> source coverage/provenance/basis evidence; omission is unknown
   --config <json|@file>           merged over the defaults (models merged per key)
   --seats-safe                    add prompts.seatsSafe (static-review wording for seat retries)
   --report-dir <dir> --topic <slug> [--date YYYY-MM-DD]
@@ -46,7 +47,7 @@ for (let i = 0; i < argv.length; i++) {
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   opt[a.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = argv[++i]
 }
-const known = ['mode','inputs','iteration','priorReport','punchListed','profile','spec','context','repo','base','head','diffStat','artifact','independence','config','seatsSafe','reportDir','topic','date','out','script']
+const known = ['mode','inputs','iteration','priorReport','punchListed','profile','spec','context','repo','base','head','diffStat','artifact','independence','reviewReadiness','config','seatsSafe','reportDir','topic','date','out','script']
 for (const k of Object.keys(opt)) if (!known.includes(k)) die(2, `unknown option --${k.replace(/[A-Z]/g, c => '-' + c.toLowerCase())}`)
 const textArg = v => v?.startsWith('@') ? readFileSync(v.slice(1), 'utf8') : v
 
@@ -284,11 +285,21 @@ const independence = opt.independence ?? `same-family (${family(config.models.ju
 }
 
 // ---- args ----
+let reviewReadiness = { coverage: 'unknown', provenance: 'unknown', basis: '' }
+if (opt.reviewReadiness !== undefined) {
+  try { reviewReadiness = JSON.parse(textArg(opt.reviewReadiness)) }
+  catch (e) { die(2, `--review-readiness is not readable JSON: ${e.message}`) }
+  const r = reviewReadiness
+  if (!r || Array.isArray(r) || !['complete', 'bounded', 'unknown'].includes(r.coverage)
+      || !['available', 'unavailable', 'unknown'].includes(r.provenance) || typeof r.basis !== 'string'
+      || (r.coverage === 'complete' && r.provenance === 'available' && !r.basis.trim()))
+    die(2, '--review-readiness needs coverage complete|bounded|unknown, provenance available|unavailable|unknown, and a string basis (nonempty for complete/available)')
+}
 const priorReport = opt.priorReport ? readFileSync(opt.priorReport, 'utf8') : ''
 const args = {
   mode, profile: opt.profile ?? 'not supplied by the caller — infer it from the repository and state it',
   inputs: opt.inputs, iteration: numbered ? Number(iteration) : iteration,
-  priorReport, punchListed, independence, prompts, config,
+  priorReport, punchListed, independence, prompts, config, reviewReadiness,
   ...(source ? { source } : {}),
 }
 const json = JSON.stringify(args, null, 2)

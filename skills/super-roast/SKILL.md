@@ -182,7 +182,7 @@ budget:
 ### Report format
 
 ```
-super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [converged]
+super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [review readiness incomplete] [converged]
 mode: design | PR        iteration: N of <cap>
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
@@ -232,11 +232,19 @@ only; both absent on iteration 1). The delta line counts confirmed findings as n
 resolved / regressed / punch-listed (open) against the prior report, with Blocking sub-counts.
 A punch-listed (open) finding was left unfixed on purpose: it never counts as resolved for any
 convergence or thrash reading, and, being sub-Blocking by construction, leaves `[converged]`
-unchanged. `[converged]` appears on the verdict when a non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
+unchanged. `[converged]` additionally requires caller-supplied `reviewReadiness` with coverage
+`complete`, provenance `available`, and a nonempty source-evidence basis. Pass that object with
+`assemble-args --review-readiness <json|@file>`; omission or malformed readiness is unknown,
+adds `[review readiness incomplete]`, and prevents convergence. Source readiness is separate
+from stage `lowCoverage` and is returned in `coverage.reviewReadiness` and the coverage header.
+Successful scouts, selected paths and zero candidates do not establish it.
+`[converged]` appears on the verdict when that source-ready, non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
 no new, no regressed, no carried — and is never emitted alongside `[low coverage]` or
 `[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
-A round ≥ 2 whose scouts all returned and found nothing is the opposite case: the engine marks it
-`emptyLateRound` and sets `[converged]` itself.
+A round ≥ 2 whose scouts all returned and found nothing is marked `emptyLateRound`; the engine
+sets `[converged]` only when source readiness is affirmative and the reporter supplied no
+`[low coverage]` limitation. The engine preserves a reporter coverage limitation on every round,
+including an empty late round, and retains bounded-source prose and historical/native holds.
 It tells the caller's fix loop to stop iterating and treat any remaining sub-Blocking
 confirmations as a punch list instead of running another round into diminishing returns.
 Full semantics: `./reporter-prompt.md` Steps 3–4.

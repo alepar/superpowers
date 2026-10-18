@@ -173,6 +173,35 @@ printf 'c.js:1\n' > "$T/punch-bare.txt"
 run bash "$A" --mode pr --inputs x --iteration 2 --prior-report "$T/prior.md" --diff-stat x --punch-listed "$T/punch-bare.txt"
 assert_eq "$code" 2 "a --punch-listed line without [SEV] exits 2"
 
+echo "assemble-args: source review readiness"
+node --input-type=module - "$A" "$T" <<'NODE'
+import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
+import { readFileSync, writeFileSync } from 'node:fs'
+const [assembler, dir] = process.argv.slice(2)
+const base = ['--mode', 'pr', '--inputs', 'captured-source', '--diff-stat', 'M a.js']
+const unknown = { coverage: 'unknown', provenance: 'unknown', basis: '' }
+const values = [
+  { coverage: 'complete', provenance: 'available', basis: 'Verified captured-source full-range inspection inventory.', evidenceRef: 'inventory.json' },
+  { coverage: 'bounded', provenance: 'unavailable', basis: 'Only four inspected ranges; archived provenance missing.' },
+  unknown,
+]
+for (const value of values) {
+  writeFileSync(`${dir}/readiness.json`, JSON.stringify(value))
+  for (const input of [JSON.stringify(value), `@${dir}/readiness.json`]) {
+    const result = spawnSync('bash', [assembler, ...base, '--review-readiness', input], { encoding: 'utf8' })
+    assert.equal(result.status, 0, result.stderr)
+    assert.deepEqual(JSON.parse(result.stdout).reviewReadiness, value, 'same caller JSON object survives transport')
+  }
+}
+assert.deepEqual(JSON.parse(readFileSync(`${dir}/pr1.json`)).reviewReadiness, unknown)
+for (const value of ['', '{', 'null', '[]', JSON.stringify({ coverage: 'complete', provenance: 'available', basis: '' }), JSON.stringify({ coverage: 'all', provenance: 'available', basis: 'e' })]) {
+  const result = spawnSync('bash', [assembler, ...base, '--review-readiness', value], { encoding: 'utf8' })
+  assert.equal(result.status, 2, result.stderr)
+}
+console.log('  [PASS] readiness omission is unknown; JSON and @file preserve valid evidence; malformed input exits 2')
+NODE
+
 echo "assemble-args: no node"
 nonode=$(mktemp -d)
 for b in bash dirname; do ln -s "$(command -v "$b")" "$nonode/$b"; done
