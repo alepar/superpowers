@@ -148,7 +148,9 @@ function reviewInputs(repo, base, head, out, current = null) {
   const pristine = record => Object.keys(record).every(k => ['invocationId', 'workspace', 'reviewPath', 'review', 'required', 'settled'].includes(k)) &&
     record.invocationId === current?.invocationId && record.workspace === current?.workspace &&
     record.reviewPath === current?.reviewPath && record.review === 'pending' && record.settled === false
-  function snapshot(revision) {
+  function snapshot(revision, onlyRun = null) {
+    let valid = true
+    const snapshotGap = text => { valid = false; gap(text) }
     const tree = new Map(git('ls-tree', '-r', '-z', revision).toString().split('\0').filter(Boolean).map(entry => {
       const tab = entry.indexOf('\t'), [mode, type, oid] = entry.slice(0, tab).split(' ')
       return [entry.slice(tab + 1), { mode, type, oid }]
@@ -160,9 +162,9 @@ function reviewInputs(repo, base, head, out, current = null) {
     }
     const archives = [], claims = new Map(), saved = new Map(), collections = []
     for (const run of tree.keys()) {
-      if (posix.basename(run) !== 'run.md') continue
+      if (posix.basename(run) !== 'run.md' || (onlyRun !== null && run !== onlyRun)) continue
       let text
-      try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
+      try { text = blob(run).toString() } catch (e) { snapshotGap(revision + ': ' + e.message); continue }
       const latest = new Map(), identities = new Map(), savedHashes = new Map(), history = new Map()
       let approvals = false
       for (const [lineNumber, line] of text.split('\n').entries()) {
@@ -194,29 +196,31 @@ function reviewInputs(repo, base, head, out, current = null) {
               (hash(JSON.stringify(previous)) === recovery.recordSha256 || (previous?.reviewPath === r.reviewPath && previous.review === r.review && JSON.stringify(previous.recovery) === JSON.stringify(recovery))))
             if (!recovered) throw Error('invalid settled-null recovery provenance')
           }
-          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath && !recovered))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
+          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath && !recovered))) snapshotGap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
           identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
           for (const f of r.files || []) {
             const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
-            if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
+            if (previous && previous !== f.sha256) snapshotGap(revision + ':' + run + ': conflicting saved hash ' + key)
             savedHashes.set(key, f.sha256)
           }
           latest.set(r.invocationId, { ...r, line: lineNumber + 1, record: r })
           history.set(hash(JSON.stringify(r)), r)
-        } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
+        } catch (e) { snapshotGap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
       }
-      collections.push({ run, latest, savedHashes })
-      if (current && run === current.run) for (const r of history.values()) {
+      collections.push({ run, latest, savedHashes, collectionLines: text.split('\n').filter(line => line.startsWith('- review-collection')) })
+      if (onlyRun === null && current && run === current.run) for (const r of history.values()) {
         if (r.invocationId !== current.invocationId) continue
         const identity = JSON.stringify([r.workspace, r.required])
-        if (currentIdentity !== null && currentIdentity !== identity) gap(revision + ':' + run + ': conflicting current collection identity across captured endpoints')
+        if (currentIdentity !== null && currentIdentity !== identity) snapshotGap(revision + ':' + run + ': conflicting current collection identity across captured endpoints')
         currentIdentity = identity
         if (!pristine(r)) currentHistoryPristine = false
       }
     }
-    return { tree, blob, archives, claims, saved, collections }
+    return { tree, blob, archives, claims, saved, collections, valid }
   }
-  function validateCollections(snapshot, revision) {
+  function validateCollections(snapshot, revision, allowCurrent = true) {
+    let valid = true
+    const collectionGap = text => { valid = false; gap(text) }
     const { tree, blob, archives, claims, saved } = snapshot
     for (const { run, latest, savedHashes } of snapshot.collections) {
       for (const r of latest.values()) {
@@ -226,20 +230,20 @@ function reviewInputs(repo, base, head, out, current = null) {
         const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
         // A caller-bound prelaunch intent promises future artifacts; it grants no
         // archive/omission authority. Validate all history first and accept no claims.
-        if (current && run === current.run && pristine(r.record) &&
+        if (allowCurrent && current && run === current.run && pristine(r.record) &&
             currentHistoryPristine &&
             ![...tree.keys()].some(p => p.startsWith(archive + '/'))) continue
-        if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
+        if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) collectionGap(context + ': incomplete claimed collection')
         if (r.reviewPath === null) {
-          if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
+          if (r.review !== 'no work landed' || files.size) collectionGap(context + ': invalid null-review bundle')
         } else {
-          if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) gap(context + ': incomplete claimed final report')
-          for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
+          if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) collectionGap(context + ': incomplete claimed final report')
+          for (const required of r.required) if (!files.has(required)) collectionGap(context + ': incomplete required bundle: ' + required)
         }
-        if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
+        if ((r.files || []).length !== files.size) collectionGap(context + ': conflicting duplicate manifest paths')
         for (const [key, sha256] of savedHashes) if (key.startsWith(r.invocationId + '/')) {
           const relative = key.slice(r.invocationId.length + 1)
-          if (files.get(relative) !== sha256) gap(context + ': previously saved claim lost: ' + relative)
+          if (files.get(relative) !== sha256) collectionGap(context + ': previously saved claim lost: ' + relative)
         }
         const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
         let bounded = false
@@ -252,9 +256,9 @@ function reviewInputs(repo, base, head, out, current = null) {
               return { changed: git('diff', '--no-renames', '--name-only', '-z', b + '..' + h).toString().split('\0').filter(Boolean), diff: p => git('diff', '--no-renames', b + '..' + h, '--', p).toString() }
             } })
             bounded = true
-          } catch (e) { gap(context + ': invalid failed assembly archive: ' + e.message) }
+          } catch (e) { collectionGap(context + ': invalid failed assembly archive: ' + e.message) }
         }
-        if (inputs.length && !bounded) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
+        if (inputs.length && !bounded) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) collectionGap(context + ': incomplete assembled bundle: ' + name)
         const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
         if (clusters.length || files.has(assembled + 'clusters.json')) {
           try {
@@ -264,31 +268,106 @@ function reviewInputs(repo, base, head, out, current = null) {
               if ((clusters.length && !files.has(prefix + '.cluster-' + (n + 1) + '.md')) || !Array.isArray(c.slices)) throw Error('missing cluster report or slices')
               for (const slice of c.slices) if (!safe(slice) || !files.has(assembled + slice)) throw Error('missing claimed cluster slice')
             }
-          } catch (e) { gap(context + ': incomplete split bundle: ' + e.message) }
+          } catch (e) { collectionGap(context + ': incomplete split bundle: ' + e.message) }
         }
         for (const [relative, sha256] of files) {
           const p = posix.join(archive, relative)
-          try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
-          catch (e) { gap(context + ': ' + e.message) }
+          try { if (hash(blob(p)) !== sha256) collectionGap(context + ': saved hash mismatch: ' + p) }
+          catch (e) { collectionGap(context + ': ' + e.message) }
           saved.set(p, { sha256 })
           if (!bounded && (relative.startsWith(assembled) || relative === prefix + '.md.diff')) {
             const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
-            if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
+            if (claims.has(p) && claims.get(p).sha256 !== sha256) collectionGap(context + ': conflicting payload claim: ' + p)
             claims.set(p, claim)
           }
         }
         archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
       }
     }
+    return valid
+  }
+  const collectionOrigins = []
+  const declarationSuffix = '.collection-origin.json'
+  const equalLines = (a, b) => a.length === b.length && a.every((line, n) => line === b[n])
+  // Declarations confer semantics only after independent captured-byte and history checks.
+  // Parse all runs first: malformed/conflicting mirror records remain evidence gaps.
+  function authenticateOrigins(endpoint, revision, other, otherRevision, allowFallback) {
+    const candidates = new Map()
+    const declared = new Set([...endpoint.tree.keys()].filter(p => p.endsWith(declarationSuffix)).map(p => p.slice(0, -declarationSuffix.length)))
+    if (allowFallback) for (const p of other.tree.keys()) {
+      if (p.endsWith(declarationSuffix) && endpoint.tree.has(p.slice(0, -declarationSuffix.length))) declared.add(p.slice(0, -declarationSuffix.length))
+    }
+    for (const run of declared) {
+      const sidecar = run + declarationSuffix
+      const declarationRevision = endpoint.tree.has(sidecar) ? revision : otherRevision
+      const declarationSnapshot = endpoint.tree.has(sidecar) ? endpoint : other
+      const context = revision + ':' + sidecar
+      try {
+        const bytes = declarationSnapshot.blob(sidecar)
+        if (endpoint.tree.has(sidecar) && other.tree.has(sidecar) && !bytes.equals(other.blob(sidecar))) throw Error('different declarations across captured endpoints')
+        const d = JSON.parse(bytes.toString())
+        if (!d || d.version !== 1 || d.kind !== 'collection-history-mirror' || !/^[a-f0-9]{64}$/.test(d.copySha256) ||
+            !d.origin || !/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(d.origin.commit) || !/^[a-f0-9]{64}$/.test(d.origin.sha256) ||
+            !safe(d.origin.run) || posix.basename(d.origin.run) !== 'run.md') throw Error('invalid collection origin declaration')
+        const copy = endpoint.collections.find(c => c.run === run)
+        if (!copy || hash(endpoint.blob(run)) !== d.copySha256) throw Error('missing copy or copy hash mismatch')
+        if (current?.run === run || run === d.origin.run) throw Error('mirror cannot be current run or its own origin')
+        if (git('rev-parse', '--verify', d.origin.commit + '^{commit}').toString().trim() !== d.origin.commit) throw Error('origin must be a full commit')
+        git('merge-base', '--is-ancestor', d.origin.commit, revision)
+        const source = snapshot(d.origin.commit, d.origin.run)
+        if (source.tree.has(d.origin.run + declarationSuffix) || endpoint.tree.has(d.origin.run + declarationSuffix)) throw Error('mirror origin cannot itself be a mirror')
+        if (hash(source.blob(d.origin.run)) !== d.origin.sha256) throw Error('origin source hash mismatch')
+        const historical = source.collections.find(c => c.run === d.origin.run)
+        const retained = endpoint.collections.find(c => c.run === d.origin.run)
+        if (!historical || !retained || !historical.collectionLines.length || !equalLines(copy.collectionLines, historical.collectionLines) ||
+            !equalLines(historical.collectionLines, retained.collectionLines.slice(0, historical.collectionLines.length))) throw Error('origin requires exact complete ordered history retained as prefix')
+        // Fatal decoding prevents different invalid byte sequences from becoming
+        // equal replacement characters in the parser's raw-line projection.
+        for (const bytes of [endpoint.blob(run), source.blob(d.origin.run), endpoint.blob(d.origin.run)]) {
+          try { new TextDecoder('utf-8', { fatal: true }).decode(bytes) }
+          catch { throw Error('invalid UTF-8 in mirror copy or origin source') }
+        }
+        const reviews = posix.join(posix.dirname(run), 'reviews')
+        if ([...endpoint.tree.keys()].some(p => p.startsWith(reviews + '/') || (p === reviews && endpoint.tree.get(p).mode !== '120000'))) throw Error('mirror cannot own a sibling reviews archive')
+        const validSourceCollections = validateCollections(source, d.origin.commit, false)
+        if (!source.valid || !validSourceCollections) throw Error('historical source collection validation failed')
+        for (const [p, claim] of source.saved) {
+          if (hash(endpoint.blob(p)) !== claim.sha256) throw Error('historical source saved claim changed: ' + p)
+        }
+        for (const [key, sha256] of historical.savedHashes) if (retained.savedHashes.get(key) !== sha256) throw Error('historical source saved claim lost: ' + key)
+        candidates.set(run, { copy, historical, d, declarationRevision })
+      } catch (e) { gap(context + ': invalid collection origin: ' + e.message) }
+    }
+    // Only authenticated declarations can remove an archive-owner candidate.
+    // A forged sidecar must never suppress an otherwise ambiguous authoritative run.
+    for (const [run, candidate] of candidates) {
+      const matches = endpoint.collections.filter(c => !candidates.has(c.run) &&
+        [...candidate.historical.latest.values()].some(source =>
+          [...c.latest.values()].some(record => record.invocationId === source.invocationId && record.workspace === source.workspace)))
+      if (matches.length !== 1 || matches[0].run !== candidate.d.origin.run) {
+        gap(revision + ':' + run + ': ambiguous collection origin identity')
+        continue
+      }
+      collectionOrigins.push({ revision, run, declarationRevision: candidate.declarationRevision,
+        origin: candidate.d.origin, copySha256: candidate.d.copySha256, collectionRecords: candidate.copy.collectionLines.length })
+    }
+    const valid = new Set(collectionOrigins.filter(o => o.revision === revision).map(o => o.run))
+    endpoint.collections = endpoint.collections.filter(c => !valid.has(c.run))
   }
   let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
   try {
     // Capture and validate current identity history at BOTH endpoints before any
     // pending-intent deferral; a settled identity cannot become fresh by replacement.
     const before = snapshot(base), after = snapshot(head)
+    authenticateOrigins(before, base, after, head, true)
+    authenticateOrigins(after, head, before, base, false)
     validateCollections(before, base)
     validateCollections(after, head)
     archives = after.archives
+    for (const origin of collectionOrigins) {
+      after.claims.delete(origin.run)
+      after.claims.delete(origin.run + declarationSuffix)
+    }
     // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
     for (const [p, claim] of before.saved) {
       try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
@@ -312,13 +391,14 @@ function reviewInputs(repo, base, head, out, current = null) {
       }
     }
   } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
-  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, collectionOrigins, omitted, gaps }
   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
   writeFileSync(join(out, 'generated-input-provenance.md'), [
     '## Generated-input provenance',
     'Captured range: ' + base + '..' + head,
     'Selection: ' + result.status + '; selected product/input paths: ' + selected.length + '; omitted historical payloads: ' + omitted.length + '.',
     'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
+    ...collectionOrigins.map(o => '- Collection origin: ' + JSON.stringify(o)),
     ...omitted.map(o => '- ' + JSON.stringify(o)),
     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
